@@ -5,11 +5,15 @@ description = "turn (almost) any python functions into a gui in a few lines of c
 authors = ["zimolab <zimolab@aliyun.com>"]
 readme = "README.md"
 
+[tool.poetry.scripts]
+autogen = "autouic:main"
+
 [tool.poetry.dependencies]
 python = "^3.10, <3.11"
 function2widgets = "^0.2.0"
-pyqt6 = "^6.6.1"
 
+[tool.poetry.group.dev.dependencies]
+black = "^24.2.0"
 
 [build-system]
 requires = ["poetry-core"]
