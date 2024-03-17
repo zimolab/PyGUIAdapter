@@ -15,9 +15,9 @@ from PyQt6.QtWidgets import (
 )
 from function2widgets.widget import BaseParameterWidget
 
-from pyguiadapter.bundle import FunctionBundle
+from pyguiadapter.adapter.bundle import FunctionBundle
 from pyguiadapter.commons import clear_layout, get_widget_factory
-from pyguiadapter.executor import FunctionExecutor
+from pyguiadapter.adapter.executor import FunctionExecutor
 from pyguiadapter.interact import uprint
 from pyguiadapter.ui.config import WindowConfig
 from pyguiadapter.ui.generated.ui_execution_window import Ui_ExecutionWindow

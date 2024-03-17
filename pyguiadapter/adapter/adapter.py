@@ -5,7 +5,7 @@ from typing import Type, TypeAlias, Callable
 
 from PyQt6.QtWidgets import QApplication, QMessageBox
 
-from pyguiadapter.bundle import FunctionBundle
+from pyguiadapter.adapter.bundle import FunctionBundle
 from pyguiadapter.commons import T, DocumentFormat
 from pyguiadapter.exceptions import (
     AlreadyExistsError,

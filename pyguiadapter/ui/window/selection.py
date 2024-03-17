@@ -6,7 +6,7 @@ from PyQt6.QtCore import QSize, Qt
 from PyQt6.QtGui import QIcon, QCloseEvent
 from PyQt6.QtWidgets import QMainWindow, QListWidget, QListWidgetItem, QMessageBox
 
-from pyguiadapter.bundle import FunctionBundle, DEFAULT_ICON
+from pyguiadapter.adapter.bundle import FunctionBundle, DEFAULT_ICON
 from pyguiadapter.commons import get_icon_file
 from pyguiadapter.ui.config import WindowConfig
 from pyguiadapter.ui.generated.ui_selection_window import Ui_SelectionWindow

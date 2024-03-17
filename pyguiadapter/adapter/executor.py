@@ -3,7 +3,7 @@ import traceback
 
 from PyQt6.QtCore import QThread, pyqtSignal
 
-from pyguiadapter.bundle import FunctionBundle
+from pyguiadapter.adapter.bundle import FunctionBundle
 
 
 class FunctionExecutor(QThread):

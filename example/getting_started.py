@@ -1,5 +1,3 @@
-import time
-
 from pyguiadapter.interact import ulogging
 from pyguiadapter.interact.uprint import uprint
 
