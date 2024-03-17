@@ -23,7 +23,6 @@ def user_function(a: int, b: int) -> int:
 
 
 gui_adapter = GUIAdapter()
-gui_adapter.always_show_selection_window = True
 gui_adapter.add(user_function)
 gui_adapter.run()
 ```
