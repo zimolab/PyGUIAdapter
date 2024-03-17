@@ -52,7 +52,6 @@ class UPopup(QObject):
         text: str | None = None,
         echo_mode: QLineEdit.EchoMode = QLineEdit.EchoMode.Normal,
     ):
-        print(threading.current_thread())
         if not title:
             title = QApplication.tr("Input")
         if not label:
