@@ -1,4 +1,3 @@
-import threading
 from concurrent.futures import Future
 
 from PyQt6.QtCore import QObject, pyqtSignal
@@ -243,6 +242,7 @@ def set_current_window(window):
     __current_window = window
 
 
+# noinspection PyUnresolvedReferences
 def _popup() -> UPopup:
     # w = QApplication.activeWindow()
     # assert hasattr(w, "popup") and isinstance(w.popup, UPopup)
