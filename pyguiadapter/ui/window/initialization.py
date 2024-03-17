@@ -17,6 +17,8 @@ from pyguiadapter.commons import (
     get_widget_factory,
     get_function_parser,
 )
+from pyguiadapter.interact import upopup
+from pyguiadapter.interact.upopup import UPopup
 from pyguiadapter.ui.config import WindowConfig
 from pyguiadapter.ui.generated.ui_initialization_window import Ui_InitializationWindow
 
@@ -53,10 +55,18 @@ class InitializationWindow(QDialog):
         self._ui = Ui_InitializationWindow()
         self._window_config: InitializationWindowConfig = window_config
 
+        self._upopup = UPopup(self)
+
         self._setup_ui()
         self.window_config = window_config
 
         self._setup_parameter_widgets()
+
+        upopup.set_current_window(self)
+
+    @property
+    def popup(self) -> UPopup:
+        return self._upopup
 
     @property
     def window_config(self) -> InitializationWindowConfig:

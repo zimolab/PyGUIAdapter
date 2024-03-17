@@ -1,4 +1,4 @@
-from pyguiadapter.interact import ulogging
+from pyguiadapter.interact import ulogging, upopup
 from pyguiadapter.interact.uprint import uprint
 
 
@@ -6,7 +6,8 @@ class Foo(object):
     def __init__(
         self, a: int, b: float, c: str, d: bool, e: list[int], f: dict[str, int]
     ):
-        pass
+        msg = upopup.get_text()
+        upopup.information(f"you input: {msg}")
 
     def a(self, arg1: int, arg2: float):
         """
