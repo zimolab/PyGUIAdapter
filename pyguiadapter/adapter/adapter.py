@@ -20,6 +20,8 @@ from pyguiadapter.ui.window.initialization import (
 )
 from pyguiadapter.ui.window.selection import SelectionWindowConfig, SelectionWindow
 
+ALWAYS_SHOW_SELECTION_WINDOW: bool = False
+
 ApplicationStartedHook: TypeAlias = Callable[[QApplication], None]
 
 
@@ -31,7 +33,7 @@ class GUIAdapter:
         initialization_window_config: InitializationWindowConfig | None = None,
         selection_window_config: SelectionWindowConfig | None = None,
         execution_window_config: ExecutionWindowConfig | None = None,
-        always_show_selection_window: bool = True,
+        always_show_selection_window: bool = ALWAYS_SHOW_SELECTION_WINDOW,
     ):
         if argv is None:
             argv = sys.argv
