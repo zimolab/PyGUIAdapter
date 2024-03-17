@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QTextBrowser
+from PyQt6.QtWidgets import QTextEdit
 
 from pyguiadapter.commons import DocumentFormat
 from pyguiadapter.ui.styles import (
@@ -6,19 +6,19 @@ from pyguiadapter.ui.styles import (
     DEFAULT_TEXT_COLOR,
     DEFAULT_FONT_FAMILY,
     DEFAULT_FONT_SIZE,
-    get_textbrowser_stylesheet,
+    get_text_edit_stylesheet,
 )
 
 
-def setup_textbrowser_stylesheet(
-    textbrowser: QTextBrowser,
+def setup_text_edit_stylesheet(
+    text_edit: QTextEdit,
     bg_color: str = DEFAULT_BG_COLOR,
     text_color: str = DEFAULT_TEXT_COLOR,
     font_family: str = DEFAULT_FONT_FAMILY,
     font_size: int = DEFAULT_FONT_SIZE,
 ):
-    textbrowser.setStyleSheet(
-        get_textbrowser_stylesheet(
+    text_edit.setStyleSheet(
+        get_text_edit_stylesheet(
             bg_color=bg_color,
             text_color=text_color,
             font_family=font_family,
@@ -27,12 +27,11 @@ def setup_textbrowser_stylesheet(
     )
 
 
-def set_textbrowser_text(
-    textbrowser: QTextBrowser, text: str, text_format: DocumentFormat
-):
+def set_text_edit_text(text_edit: QTextEdit, text: str, text_format: DocumentFormat):
     if text_format == DocumentFormat.HTML:
-        textbrowser.setHtml(text)
+        text_edit.setHtml(text)
     elif text_format == DocumentFormat.MARKDOWN:
-        textbrowser.setMarkdown(text)
+        text_edit.setMarkdown(text)
     else:
-        textbrowser.setHtml(f"<pre>{text}</pre>")
+        text_edit.setPlainText("")
+        text_edit.append(text)

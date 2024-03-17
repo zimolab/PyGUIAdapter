@@ -136,8 +136,8 @@
       <number>5</number>
      </property>
      <item>
-      <widget class="QTextBrowser" name="textbrowser_document">
-       <property name="openExternalLinks">
+      <widget class="QTextEdit" name="textedit_document">
+       <property name="readOnly">
         <bool>true</bool>
        </property>
       </widget>
@@ -170,11 +170,7 @@
       <number>5</number>
      </property>
      <item>
-      <widget class="QTextBrowser" name="textbrowser_output">
-       <property name="openExternalLinks">
-        <bool>false</bool>
-       </property>
-      </widget>
+      <widget class="QTextEdit" name="textedit_output"/>
      </item>
     </layout>
    </widget>

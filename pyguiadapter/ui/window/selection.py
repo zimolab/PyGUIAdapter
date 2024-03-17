@@ -3,8 +3,14 @@ import os.path
 import warnings
 
 from PyQt6.QtCore import QSize, Qt
-from PyQt6.QtGui import QIcon, QCloseEvent
-from PyQt6.QtWidgets import QMainWindow, QListWidget, QListWidgetItem, QMessageBox
+from PyQt6.QtGui import QIcon, QCloseEvent, QTextOption
+from PyQt6.QtWidgets import (
+    QMainWindow,
+    QListWidget,
+    QListWidgetItem,
+    QMessageBox,
+    QTextEdit,
+)
 
 from pyguiadapter.adapter.bundle import FunctionBundle, DEFAULT_ICON
 from pyguiadapter.commons import get_icon_file
@@ -16,7 +22,7 @@ from pyguiadapter.ui.styles import (
     DEFAULT_DOCUMENT_BG_COLOR,
     DEFAULT_DOCUMENT_TEXT_COLOR,
 )
-from pyguiadapter.ui.utils import setup_textbrowser_stylesheet, set_textbrowser_text
+from pyguiadapter.ui.utils import setup_text_edit_stylesheet, set_text_edit_text
 from pyguiadapter.ui.window.execution import ExecutionWindow
 
 
@@ -94,7 +100,7 @@ class SelectionWindow(QMainWindow):
         )
 
         self._set_view_mode()
-        self._setup_document_textbrowser()
+        self._setup_document_widget()
 
         self._set_functions_label_text()
         self._set_document_label_text()
@@ -105,7 +111,7 @@ class SelectionWindow(QMainWindow):
     def _on_current_item_changed(self, item: QListWidgetItem):
         if not item:
             self._ui.button_select.setEnabled(False)
-            self._ui.textbrowser_document.setText("")
+            self._ui.textedit_document.setText("")
         else:
             self._ui.button_select.setEnabled(True)
             self._set_function_document(function=item.data(Qt.ItemDataRole.UserRole))
@@ -136,9 +142,7 @@ class SelectionWindow(QMainWindow):
 
     def _set_function_document(self, function: FunctionBundle):
         text = function.display_document
-        set_textbrowser_text(
-            self._ui.textbrowser_document, text, function.document_format
-        )
+        set_text_edit_text(self._ui.textedit_document, text, function.document_format)
 
     def _setup_functions_listwidget(self):
         self._cleanup_functions_listwidget()
@@ -189,11 +193,14 @@ class SelectionWindow(QMainWindow):
         else:
             self._ui.listwidget_functions.setViewMode(QListWidget.ViewMode.ListMode)
 
-    def _setup_document_textbrowser(self):
-        setup_textbrowser_stylesheet(
-            self._ui.textbrowser_document,
+    def _setup_document_widget(self):
+        setup_text_edit_stylesheet(
+            self._ui.textedit_document,
             bg_color=self.window_config.document_bg_color,
             text_color=self.window_config.document_text_color,
             font_family=self.window_config.document_font_family,
             font_size=self.window_config.document_font_size,
         )
+        self._ui.textedit_document.setWordWrapMode(QTextOption.WrapMode.WordWrap)
+        self._ui.textedit_document.setLineWrapMode(QTextEdit.LineWrapMode.WidgetWidth)
+        self._ui.textedit_document.setReadOnly(True)

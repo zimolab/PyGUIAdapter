@@ -3,7 +3,7 @@ import enum
 from typing import Any, Tuple
 
 from PyQt6.QtCore import Qt, QObject
-from PyQt6.QtGui import QCloseEvent, QTextCursor
+from PyQt6.QtGui import QCloseEvent, QTextCursor, QTextOption
 from PyQt6.QtWidgets import (
     QMainWindow,
     QVBoxLayout,
@@ -12,12 +12,13 @@ from PyQt6.QtWidgets import (
     QDockWidget,
     QMessageBox,
     QApplication,
+    QTextEdit,
 )
 from function2widgets.widget import BaseParameterWidget
 
 from pyguiadapter.adapter.bundle import FunctionBundle
-from pyguiadapter.commons import clear_layout, get_widget_factory
 from pyguiadapter.adapter.executor import FunctionExecutor
+from pyguiadapter.commons import clear_layout, get_widget_factory
 from pyguiadapter.interact import uprint, upopup
 from pyguiadapter.interact.upopup import UPopup
 from pyguiadapter.ui.config import WindowConfig
@@ -32,7 +33,7 @@ from pyguiadapter.ui.styles import (
     DEFAULT_DOCUMENT_FONT_FAMILY,
     DEFAULT_DOCUMENT_FONT_SIZE,
 )
-from pyguiadapter.ui.utils import setup_textbrowser_stylesheet, set_textbrowser_text
+from pyguiadapter.ui.utils import setup_text_edit_stylesheet, set_text_edit_text
 
 
 class DockWidgetState(enum.Enum):
@@ -146,12 +147,12 @@ class ExecutionWindow(QMainWindow):
         if self._is_busy() and not force:
             self._alert_busy()
             return
-        self._ui.textbrowser_output.clear()
+        self._ui.textedit_output.clear()
 
     def append_output(self, text: str, html: bool = False):
         if text and not html:
             text = f"<pre>{text}</pre>"
-        cursor: QTextCursor = self._ui.textbrowser_output.textCursor()
+        cursor: QTextCursor = self._ui.textedit_output.textCursor()
         if text:
             cursor.insertHtml(text)
         cursor.insertHtml("<br>")
@@ -236,8 +237,8 @@ class ExecutionWindow(QMainWindow):
         self._set_widgets_text()
         self._set_function_document()
 
-        self._setup_output_textbrowser()
-        self._setup_document_textbrowser()
+        self._setup_output_widget()
+        self._setup_document_widget()
 
         self._ui.checkbox_auto_clear.setChecked(
             self.window_config.auto_clear_output is True
@@ -343,9 +344,8 @@ class ExecutionWindow(QMainWindow):
 
     def _set_function_document(self):
         text = self._function.display_document
-        set_textbrowser_text(
-            self._ui.textbrowser_document, text, self._function.document_format
-        )
+        text_format = self._function.document_format
+        set_text_edit_text(self._ui.textedit_document, text, text_format)
 
     def _set_widgets_text(self):
         if self.window_config.parameters_groupbox_title is not None:
@@ -361,20 +361,26 @@ class ExecutionWindow(QMainWindow):
         if self.window_config.clear_button_text is not None:
             self._ui.button_clear.setText(self.window_config.clear_button_text)
 
-    def _setup_output_textbrowser(self):
-        setup_textbrowser_stylesheet(
-            self._ui.textbrowser_output,
+    def _setup_output_widget(self):
+        setup_text_edit_stylesheet(
+            self._ui.textedit_output,
             bg_color=self.window_config.output_bg_color,
             text_color=self.window_config.output_text_color,
             font_family=self.window_config.output_font_family,
             font_size=self.window_config.output_font_size,
         )
+        self._ui.textedit_output.setLineWrapMode(QTextEdit.LineWrapMode.WidgetWidth)
+        self._ui.textedit_output.setWordWrapMode(QTextOption.WrapMode.WordWrap)
+        self._ui.textedit_output.setReadOnly(True)
 
-    def _setup_document_textbrowser(self):
-        setup_textbrowser_stylesheet(
-            self._ui.textbrowser_document,
+    def _setup_document_widget(self):
+        setup_text_edit_stylesheet(
+            self._ui.textedit_document,
             bg_color=self.window_config.document_bg_color,
             text_color=self.window_config.document_text_color,
             font_family=self.window_config.document_font_family,
             font_size=self.window_config.document_font_size,
         )
+        self._ui.textedit_document.setLineWrapMode(QTextEdit.LineWrapMode.WidgetWidth)
+        self._ui.textedit_document.setWordWrapMode(QTextOption.WrapMode.WordWrap)
+        self._ui.textedit_document.setReadOnly(True)
