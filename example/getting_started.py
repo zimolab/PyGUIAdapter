@@ -29,6 +29,9 @@ class Foo(object):
         ulogging.info("hello world")
         ulogging.warning("hello world")
         ulogging.critical("hello world")
+        message = upopup.get_multiline_text("Your Message", "Message")
+        uprint()
+        uprint(message)
 
 
 if __name__ == "__main__":

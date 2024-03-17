@@ -18,7 +18,8 @@ from function2widgets.widget import BaseParameterWidget
 from pyguiadapter.adapter.bundle import FunctionBundle
 from pyguiadapter.commons import clear_layout, get_widget_factory
 from pyguiadapter.adapter.executor import FunctionExecutor
-from pyguiadapter.interact import uprint
+from pyguiadapter.interact import uprint, upopup
+from pyguiadapter.interact.upopup import UPopup
 from pyguiadapter.ui.config import WindowConfig
 from pyguiadapter.ui.generated.ui_execution_window import Ui_ExecutionWindow
 from pyguiadapter.ui.styles import (
@@ -114,12 +115,19 @@ class ExecutionWindow(QMainWindow):
 
         self._executor: FunctionExecutor | None = None
 
+        self._upopup = UPopup(self)
+
         self._setup_ui()
         self.window_config = window_config
 
         self._setup_parameter_widgets()
 
         uprint.set_print_destination(self.append_output)
+        upopup.set_current_window(self)
+
+    @property
+    def popup(self) -> UPopup:
+        return self._upopup
 
     @property
     def window_config(self) -> ExecutionWindowConfig:
