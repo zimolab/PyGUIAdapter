@@ -1,6 +1,6 @@
 import string
 
-DEFAULT_FONT_FAMILY = "Arial, sans-serif"
+DEFAULT_FONT_FAMILY = """"Times New Roman",Georgia,Serif"""
 DEFAULT_FONT_SIZE = 16
 DEFAULT_TEXT_COLOR = "#FFFFFF"
 DEFAULT_BG_COLOR = "#380C2A"
