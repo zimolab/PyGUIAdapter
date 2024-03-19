@@ -154,10 +154,14 @@ class ExecutionWindow(QMainWindow):
             text = f"<pre>{text}</pre>"
         cursor: QTextCursor = self._ui.textedit_output.textCursor()
         if text:
-            cursor.insertHtml(text)
+            cursor.insertHtml(f"<div>{text}</div>")
         cursor.insertHtml("<br>")
-        # self._ui.textbrowser_output.ensureCursorVisible()
-        # self._ui.textbrowser_output.moveCursor(QTextCursor.MoveOperation.End)
+        self._ui.textedit_output.ensureCursorVisible()
+        self._ui.textedit_output.moveCursor(QTextCursor.MoveOperation.End)
+        # if not text:
+        #     self._ui.textedit_output.append("\n")
+        # else:
+        #     self._ui.textedit_output.append(text)
 
     def execute_function(self):
         if self._is_busy():

@@ -69,7 +69,7 @@ widgets_config = {
         "show_docstring": True,
         "placeholder": "input account here",
     },
-    "email": {
+    "password": {
         "type": "LineEdit",
         "label": "Password",
         "show_label": True,
