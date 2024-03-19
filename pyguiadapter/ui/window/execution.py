@@ -24,10 +24,10 @@ from pyguiadapter.interact.upopup import UPopup
 from pyguiadapter.ui.config import WindowConfig
 from pyguiadapter.ui.generated.ui_execution_window import Ui_ExecutionWindow
 from pyguiadapter.ui.styles import (
-    DEFAULT_BG_COLOR,
-    DEFAULT_TEXT_COLOR,
-    DEFAULT_FONT_FAMILY,
-    DEFAULT_FONT_SIZE,
+    DEFAULT_OUTPUT_BG_COLOR,
+    DEFAULT_OUTPUT_TEXT_COLOR,
+    DEFAULT_OUTPUT_FONT_FAMILY,
+    DEFAULT_OUTPUT_FONT_SIZE,
     DEFAULT_DOCUMENT_BG_COLOR,
     DEFAULT_DOCUMENT_TEXT_COLOR,
     DEFAULT_DOCUMENT_FONT_FAMILY,
@@ -61,10 +61,10 @@ class ExecutionWindowConfig(WindowConfig):
     execute_button_text: str | None = None
     clear_button_text: str | None = None
 
-    output_font_family: str = DEFAULT_FONT_FAMILY
-    output_font_size: int = DEFAULT_FONT_SIZE
-    output_bg_color: str = DEFAULT_BG_COLOR
-    output_text_color: str = DEFAULT_TEXT_COLOR
+    output_font_family: str = DEFAULT_OUTPUT_FONT_FAMILY
+    output_font_size: int = DEFAULT_OUTPUT_FONT_SIZE
+    output_bg_color: str = DEFAULT_OUTPUT_BG_COLOR
+    output_text_color: str = DEFAULT_OUTPUT_TEXT_COLOR
 
     document_font_family: str = DEFAULT_DOCUMENT_FONT_FAMILY
     document_font_size: int = DEFAULT_DOCUMENT_FONT_SIZE
@@ -151,7 +151,8 @@ class ExecutionWindow(QMainWindow):
 
     def append_output(self, text: str, html: bool = False):
         if text and not html:
-            text = f"<pre>{text}</pre>"
+            self._ui.textedit_output.insertPlainText(text)
+            return
         cursor: QTextCursor = self._ui.textedit_output.textCursor()
         if text:
             cursor.insertHtml(f"<div>{text}</div>")
@@ -374,7 +375,6 @@ class ExecutionWindow(QMainWindow):
             font_size=self.window_config.output_font_size,
         )
         self._ui.textedit_output.setLineWrapMode(QTextEdit.LineWrapMode.WidgetWidth)
-        self._ui.textedit_output.setWordWrapMode(QTextOption.WrapMode.WordWrap)
         self._ui.textedit_output.setReadOnly(True)
 
     def _setup_document_widget(self):

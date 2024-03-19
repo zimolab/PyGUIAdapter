@@ -53,10 +53,14 @@ Refer to each widget type's __init__() to know all the parameters.
 """
 
 from pyguiadapter.adapter import GUIAdapter
+from pyguiadapter.interact.uprint import uprint
 
 
 def customize_widget_1(name: str, password: str, age: int, intro: str):
-    pass
+    uprint("name:", name)
+    uprint("password:", password)
+    uprint("age:", age)
+    uprint("intro:", intro)
 
 
 gui_adapter = GUIAdapter()
@@ -72,6 +76,7 @@ widgets_config = {
     "password": {
         "type": "LineEdit",
         "label": "Password",
+        "echo_mode": "Password",
         "show_label": True,
         "show_docstring": True,
         "docstring": "input your password",

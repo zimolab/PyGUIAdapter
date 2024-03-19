@@ -3,6 +3,7 @@ This demo shows different types of line edit.
 """
 
 from pyguiadapter.adapter import GUIAdapter
+from pyguiadapter.interact.uprint import uprint
 
 
 def lineedits_demo(str_lineedit: str, int_lineedit: int, float_lineedit: float):
@@ -33,7 +34,9 @@ def lineedits_demo(str_lineedit: str, int_lineedit: int, float_lineedit: float):
 
     @end
     """
-    pass
+    uprint("int_lineedit:", int_lineedit)
+    uprint("str_lineedit:", str_lineedit)
+    uprint("float_lineedit:", float_lineedit)
 
 
 gui_adapter = GUIAdapter()

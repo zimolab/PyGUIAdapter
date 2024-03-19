@@ -24,6 +24,7 @@ suffix="°"
 """
 
 from pyguiadapter.adapter import GUIAdapter
+from pyguiadapter.interact.uprint import uprint
 
 
 def customize_widget_2(param_a: int = 10, param_b: int = 180):
@@ -50,7 +51,8 @@ def customize_widget_2(param_a: int = 10, param_b: int = 180):
 
     @end
     """
-    pass
+    uprint("param_a:", param_a)
+    uprint("param_b:", param_b)
 
 
 gui_adapter = GUIAdapter()

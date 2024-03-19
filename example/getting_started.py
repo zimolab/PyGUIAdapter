@@ -22,7 +22,7 @@ class Foo(object):
         轻轻地我走了，正如我轻轻地来，
         我轻轻地挥一挥手，
         告别西天的云彩。
-        """.rstrip()
+        """.strip()
         uprint(msg)
         ulogging.enable_timestamp(True)
         ulogging.debug("hello world", timestamp=True)

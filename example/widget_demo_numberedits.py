@@ -3,6 +3,7 @@ This demo shows widgets for inputting numbers, see: function2widgets.widgets.num
 """
 
 from pyguiadapter.adapter import GUIAdapter
+from pyguiadapter.interact.uprint import uprint
 
 
 def numberedits_demo(
@@ -75,7 +76,10 @@ def numberedits_demo(
 
     @end
     """
-    pass
+    uprint("int_spin:", int_spin)
+    uprint("float_spin:", float_spin)
+    uprint("dail:", dail)
+    uprint("slider:", slider)
 
 
 gui_adapter = GUIAdapter()

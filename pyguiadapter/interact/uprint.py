@@ -5,8 +5,9 @@ class UPrint(QObject):
     printed = pyqtSignal(str, bool)
 
     def print(self, *args, sep=" ", end="\n", html: bool = False):
+        text = sep.join([str(arg) for arg in args]) + end
         # noinspection PyUnresolvedReferences
-        self.printed.emit(sep.join([str(arg) for arg in args]) + end, html)
+        self.printed.emit(text, html)
 
 
 __uprint = UPrint()

@@ -28,6 +28,8 @@ def greeting(your_name: str):
     ulogging.debug(f"hello, world!")
     ulogging.warning(f"hello, world!")
     ulogging.critical(f"hello, world!")
+    ulogging.critical(f"")
+    uprint("hello world!")
 
 
 gui_adapter = GUIAdapter()

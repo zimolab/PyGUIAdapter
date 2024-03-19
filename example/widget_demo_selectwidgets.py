@@ -1,7 +1,5 @@
 from typing import Literal
 
-from function2widgets.widgets.selectwidget import *
-
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.interact.uprint import uprint
 

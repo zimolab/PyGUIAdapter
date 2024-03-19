@@ -3,6 +3,7 @@ This demo shows widgets for selecting and editing paths, see: function2widgets.w
 """
 
 from pyguiadapter.adapter import GUIAdapter
+from pyguiadapter.interact.uprint import uprint
 
 
 def pathedits_demo(
@@ -82,7 +83,11 @@ def pathedits_demo(
 
     @end
     """
-    pass
+    uprint("open_file_path:", open_file_path)
+    uprint("save_file_path:", save_file_path)
+    uprint("files_path:", files_path)
+    uprint("dir_path:", dir_path)
+    uprint("save_dir_path:", save_dir_path)
 
 
 gui_adapter = GUIAdapter()

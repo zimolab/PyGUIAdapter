@@ -2,20 +2,20 @@ from PyQt6.QtWidgets import QTextEdit
 
 from pyguiadapter.commons import DocumentFormat
 from pyguiadapter.ui.styles import (
-    DEFAULT_BG_COLOR,
-    DEFAULT_TEXT_COLOR,
-    DEFAULT_FONT_FAMILY,
-    DEFAULT_FONT_SIZE,
+    DEFAULT_OUTPUT_BG_COLOR,
+    DEFAULT_OUTPUT_TEXT_COLOR,
+    DEFAULT_OUTPUT_FONT_FAMILY,
+    DEFAULT_OUTPUT_FONT_SIZE,
     get_text_edit_stylesheet,
 )
 
 
 def setup_text_edit_stylesheet(
     text_edit: QTextEdit,
-    bg_color: str = DEFAULT_BG_COLOR,
-    text_color: str = DEFAULT_TEXT_COLOR,
-    font_family: str = DEFAULT_FONT_FAMILY,
-    font_size: int = DEFAULT_FONT_SIZE,
+    bg_color: str = DEFAULT_OUTPUT_BG_COLOR,
+    text_color: str = DEFAULT_OUTPUT_TEXT_COLOR,
+    font_family: str = DEFAULT_OUTPUT_FONT_FAMILY,
+    font_size: int = DEFAULT_OUTPUT_FONT_SIZE,
 ):
     text_edit.setStyleSheet(
         get_text_edit_stylesheet(

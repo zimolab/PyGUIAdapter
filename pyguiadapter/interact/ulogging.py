@@ -120,7 +120,7 @@ def log(
     if timestamp:
         timestamp_str = datetime.now().strftime(timestamp_format)
         msg = f"[{timestamp_str}] {msg}"
-    print_func(msg, html=False)
+    print_func(msg, html=True)
     if additional_nl:
         print_func(html=False)
 

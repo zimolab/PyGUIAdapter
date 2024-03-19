@@ -1,9 +1,9 @@
 import string
 
-DEFAULT_FONT_FAMILY = """"Times New Roman",Georgia,Serif"""
-DEFAULT_FONT_SIZE = 16
-DEFAULT_TEXT_COLOR = "#FFFFFF"
-DEFAULT_BG_COLOR = "#380C2A"
+DEFAULT_OUTPUT_FONT_FAMILY = "Arial, sans-serif"
+DEFAULT_OUTPUT_FONT_SIZE = 16
+DEFAULT_OUTPUT_TEXT_COLOR = "#FFFFFF"
+DEFAULT_OUTPUT_BG_COLOR = "#380C2A"
 
 DEFAULT_DOCUMENT_FONT_FAMILY = "Arial, sans-serif"
 DEFAULT_DOCUMENT_BG_COLOR = "#FFFFFF"
@@ -47,10 +47,10 @@ QScrollBar::add-page:vertical{
 
 
 def get_text_edit_stylesheet(
-    bg_color: str = DEFAULT_BG_COLOR,
-    text_color: str = DEFAULT_TEXT_COLOR,
-    font_family: str = DEFAULT_FONT_FAMILY,
-    font_size: int = DEFAULT_FONT_SIZE,
+    bg_color: str = DEFAULT_OUTPUT_BG_COLOR,
+    text_color: str = DEFAULT_OUTPUT_TEXT_COLOR,
+    font_family: str = DEFAULT_OUTPUT_FONT_FAMILY,
+    font_size: int = DEFAULT_OUTPUT_FONT_SIZE,
 ):
     css = string.Template(TEXT_EDIT_STYLESHEET).substitute(
         bg_color=bg_color,
