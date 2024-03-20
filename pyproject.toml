@@ -4,6 +4,10 @@ version = "0.1.4"
 description = "turn (almost) any python functions into a gui in a few lines of code"
 authors = ["zimolab <zimolab@aliyun.com>"]
 readme = "README.md"
+homepage = "https://github.com/zimolab/PyGUIAdapter"
+repository = "https://github.com/zimolab/PyGUIAdapter"
+documentation = "https://github.com/zimolab/PyGUIAdapter"
+
 
 [tool.poetry.scripts]
 autogen = "autouic:main"
