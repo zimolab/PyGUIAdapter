@@ -1,6 +1,7 @@
 import dataclasses
 import os.path
 import warnings
+from typing import Callable
 
 from PyQt6.QtCore import QSize, Qt
 from PyQt6.QtGui import QIcon, QCloseEvent, QTextOption
@@ -49,6 +50,10 @@ class SelectionWindow(QMainWindow):
         functions: list[FunctionBundle],
         window_config: SelectionWindowConfig | None = None,
         execution_window_config: WindowConfig | None = None,
+        window_created_callback: Callable[[QMainWindow], None] | None = None,
+        execution_window_created_callback: (
+            Callable[[ExecutionWindow], None] | None
+        ) = None,
         parent=None,
     ):
 
@@ -62,12 +67,18 @@ class SelectionWindow(QMainWindow):
 
         self._ui = Ui_SelectionWindow()
 
+        self._window_created_callback = window_created_callback
+
         self._execution_window: ExecutionWindow | None = None
+        self._execution_window_started_callback = execution_window_created_callback
 
         self._setup_ui()
         self.window_config = window_config
 
         self._setup_functions_listwidget()
+
+        if self._window_created_callback is not None:
+            self._window_created_callback(self)
 
     @property
     def window_config(self) -> SelectionWindowConfig:
@@ -132,6 +143,7 @@ class SelectionWindow(QMainWindow):
             self._execution_window = ExecutionWindow(
                 function=function,
                 window_config=self._execution_window_config,
+                created_callback=self._execution_window_started_callback,
                 parent=self,
             )
         except BaseException as e:

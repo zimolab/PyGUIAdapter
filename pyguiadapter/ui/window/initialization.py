@@ -1,5 +1,5 @@
 import dataclasses
-from typing import Type, Any
+from typing import Type, Any, Callable
 
 from PyQt6.QtWidgets import (
     QDialog,
@@ -41,6 +41,7 @@ class InitializationWindow(QDialog):
         self,
         klass: Type[T],
         window_config: InitializationWindowConfig = None,
+        window_created_callback: Callable[["InitializationWindow"], None] | None = None,
         parent=None,
     ):
         window_config = window_config or InitializationWindowConfig()
@@ -51,6 +52,8 @@ class InitializationWindow(QDialog):
         self._class_instance: T | None = None
         self._parameter_widgets: list[BaseParameterWidget] = []
         self._layout_parameter_widgets = QVBoxLayout()
+
+        self._window_create_callback = window_created_callback
 
         self._ui = Ui_InitializationWindow()
         self._window_config: InitializationWindowConfig = window_config
@@ -63,6 +66,9 @@ class InitializationWindow(QDialog):
         self._setup_parameter_widgets()
 
         upopup.set_current_window(self)
+
+        if self._window_create_callback is not None:
+            self._window_create_callback(self)
 
     @property
     def popup(self) -> UPopup:
@@ -95,9 +101,15 @@ class InitializationWindow(QDialog):
         cls,
         klass: Type[T],
         window_config: InitializationWindowConfig = None,
+        window_created_callback: Callable[["InitializationWindow"], None] | None = None,
         parent=None,
     ) -> T | None:
-        _window = cls(klass=klass, window_config=window_config, parent=parent)
+        _window = cls(
+            klass=klass,
+            window_config=window_config,
+            window_created_callback=window_created_callback,
+            parent=parent,
+        )
         ret = _window.exec()
         if ret == QDialog.DialogCode.Accepted:
             _instance = _window.get_class_instance()

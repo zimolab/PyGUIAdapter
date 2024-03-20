@@ -1,7 +1,7 @@
 import contextlib
 import inspect
 import sys
-from typing import Type, TypeAlias, Callable
+from typing import Type, Callable
 
 from PyQt6.QtWidgets import QApplication, QMessageBox
 
@@ -22,24 +22,31 @@ from pyguiadapter.ui.window.selection import SelectionWindowConfig, SelectionWin
 
 ALWAYS_SHOW_SELECTION_WINDOW: bool = False
 
-ApplicationStartedHook: TypeAlias = Callable[[QApplication], None]
-
 
 class GUIAdapter:
     def __init__(
         self,
         argv: list[str] = None,
-        application_started_hook: ApplicationStartedHook | None = None,
+        *,
         initialization_window_config: InitializationWindowConfig | None = None,
         selection_window_config: SelectionWindowConfig | None = None,
         execution_window_config: ExecutionWindowConfig | None = None,
+        application_started_callback: Callable[[QApplication], None] | None = None,
         always_show_selection_window: bool = ALWAYS_SHOW_SELECTION_WINDOW,
+        initialization_window_created_callback: (
+            Callable[[InitializationWindow], None] | None
+        ) = None,
+        selection_window_created_callback: (
+            Callable[[SelectionWindow], None] | None
+        ) = None,
+        execution_window_created_callback: (
+            Callable[[ExecutionWindow], None] | None
+        ) = None,
     ):
         if argv is None:
             argv = sys.argv
 
         self._argv = argv
-        self._application_started_hook = application_started_hook
         self._initialization_window_config = (
             initialization_window_config or InitializationWindowConfig()
         )
@@ -49,6 +56,13 @@ class GUIAdapter:
         self._execution_window_config = (
             execution_window_config or ExecutionWindowConfig()
         )
+
+        self._application_started_callback = application_started_callback
+        self._execution_window_created_callback = execution_window_created_callback
+        self._initialization_window_created_callback = (
+            initialization_window_created_callback
+        )
+        self._selection_window_created_callback = selection_window_created_callback
 
         self.always_show_selection_window = always_show_selection_window
 
@@ -118,6 +132,20 @@ class GUIAdapter:
             self._show_selection_window()
         self._execute_application()
 
+    def on_application_started(self, callback: Callable[[QApplication], None]):
+        self._application_started_callback = callback
+
+    def on_initialization_window_created(
+        self, callback: Callable[[InitializationWindow], None]
+    ):
+        self._initialization_window_created_callback = callback
+
+    def on_selection_window_created(self, callback: Callable[[SelectionWindow], None]):
+        self._selection_window_created_callback = callback
+
+    def on_execution_window_created(self, callback: Callable[[ExecutionWindow], None]):
+        self._execution_window_created_callback = callback
+
     @property
     def initialization_window_config(self) -> InitializationWindowConfig:
         return self._initialization_window_config
@@ -134,8 +162,8 @@ class GUIAdapter:
         if self._application is not None:
             return
         self._application = QApplication(self._argv)
-        if self._application_started_hook is not None:
-            self._application_started_hook(self._application)
+        if self._application_started_callback is not None:
+            self._application_started_callback(self._application)
 
     def _execute_application(self):
         if self._application is None:
@@ -145,15 +173,17 @@ class GUIAdapter:
     def _shutdown_application(self):
         if not self._application:
             return
-        print("shutdown application")
-        self._application.exit(0)
+        self._application.exit()
         self._application = None
 
     def _create_instance(self, klass: Type[T]) -> T:
         if not inspect.isclass(klass):
             raise TypeError(f"klass must be a class, not {type(klass)}")
         instance = InitializationWindow.initialize_class(
-            klass=klass, window_config=self._initialization_window_config
+            klass=klass,
+            window_config=self._initialization_window_config,
+            window_created_callback=self._initialization_window_created_callback,
+            parent=None,
         )
         if instance is None:
             raise InitializationCancelled(
@@ -170,6 +200,8 @@ class GUIAdapter:
             functions=list(self._functions.values()),
             window_config=self.selection_window_config,
             execution_window_config=self.execution_window_config,
+            window_created_callback=self._selection_window_created_callback,
+            execution_window_created_callback=self._execution_window_created_callback,
             parent=None,
         )
         self._selection_window.show()
@@ -182,6 +214,7 @@ class GUIAdapter:
         self._execution_window = ExecutionWindow(
             function=list(self._functions.values())[0],
             window_config=self.execution_window_config,
+            created_callback=self._execution_window_created_callback,
             parent=None,
         )
         self._execution_window.show()

@@ -1,6 +1,6 @@
 import dataclasses
 import enum
-from typing import Any, Tuple
+from typing import Any, Tuple, Callable
 
 from PyQt6.QtCore import Qt, QObject
 from PyQt6.QtGui import QCloseEvent, QTextCursor, QTextOption
@@ -89,17 +89,12 @@ class ExecutionWindowConfig(WindowConfig):
         super().apply_to(w)
 
 
-class _FunctionExecutionCallbacks(QObject):
-    def __init__(self, window: "ExecutionWindow"):
-        super().__init__(parent=window)
-        self._window = window
-
-
 class ExecutionWindow(QMainWindow):
     def __init__(
         self,
         function: FunctionBundle,
         window_config: ExecutionWindowConfig = None,
+        created_callback: Callable[["ExecutionWindow"], None] = None,
         parent=None,
     ):
         window_config = window_config or ExecutionWindowConfig()
@@ -116,6 +111,8 @@ class ExecutionWindow(QMainWindow):
 
         self._executor: FunctionExecutor | None = None
 
+        self._created_callback = created_callback
+
         self._upopup = UPopup(self)
 
         self._setup_ui()
@@ -125,6 +122,9 @@ class ExecutionWindow(QMainWindow):
 
         uprint.set_print_destination(self.append_output)
         upopup.set_current_window(self)
+
+        if self._created_callback is not None:
+            self._created_callback(self)
 
     @property
     def popup(self) -> UPopup:
@@ -163,6 +163,27 @@ class ExecutionWindow(QMainWindow):
         #     self._ui.textedit_output.append("\n")
         # else:
         #     self._ui.textedit_output.append(text)
+
+    def set_parameter_values(
+        self, arguments: dict[str, Any], ignore_exceptions: bool = False
+    ):
+        if self._is_busy():
+            self._alert_busy()
+            return
+        for widget in self._parameter_widgets:
+            parameter_name = widget.parameter_name
+            if parameter_name not in arguments:
+                continue
+            arg = arguments[parameter_name]
+            try:
+                widget.set_value(arg)
+            except BaseException as e:
+                msg = QApplication.tr(
+                    f"Can not value of of parameter '{parameter_name}'!\n\n  {e}"
+                )
+                QMessageBox.critical(self, QApplication.tr("Error"), msg)
+                if not ignore_exceptions:
+                    break
 
     def execute_function(self):
         if self._is_busy():

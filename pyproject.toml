@@ -11,6 +11,7 @@ autogen = "autouic:main"
 [tool.poetry.dependencies]
 python = "^3.10, <3.11"
 function2widgets = "^0.3.0"
+qt-material = "^2.14"
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.2.0"
