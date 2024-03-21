@@ -15,7 +15,7 @@ def interact_with_popups(popup_type: str = "get_int"):
     column_count=3
     @end
     """
-    pass
+    return 1 / 0
 
 
 gui_adapter = GUIAdapter()

@@ -20,7 +20,7 @@ class LogLevel(enum.Enum):
 
 __colored_msg_template = "<font color=%s>%s</font>"
 __timestamp = False
-__timestamp_format = "%Y-%m-%d %H:%M:%S"
+__timestamp_pattern = "%Y-%m-%d %H:%M:%S"
 __print_func = uprint
 __additional_newline = False
 __color_info = COLOR_INFO
@@ -46,8 +46,8 @@ def enable_timestamp(enabled: bool):
 
 
 def set_timestamp_format(timestamp_format: str):
-    global __timestamp_format
-    __timestamp_format = timestamp_format
+    global __timestamp_pattern
+    __timestamp_pattern = timestamp_format
 
 
 def set_color_msg_template(color_msg_tpl: str):
@@ -88,15 +88,15 @@ def log(
     level: LogLevel,
     msg: str,
     timestamp: bool = None,
-    timestamp_format: str = None,
+    timestamp_pattern: str = None,
     additional_nl: bool = None,
     print_func: callable = None,
 ):
-    global __timestamp, __timestamp_format, __print_func, __additional_newline
+    global __timestamp, __timestamp_pattern, __print_func, __additional_newline
     if timestamp is None:
         timestamp = __timestamp
-    if timestamp_format is None:
-        timestamp_format = __timestamp_format
+    if timestamp_pattern is None:
+        timestamp_pattern = __timestamp_pattern
     if additional_nl is None:
         additional_nl = __additional_newline
     if print_func is None:
@@ -118,7 +118,7 @@ def log(
     else:
         pass
     if timestamp:
-        timestamp_str = datetime.now().strftime(timestamp_format)
+        timestamp_str = datetime.now().strftime(timestamp_pattern)
         msg = f"[{timestamp_str}] {msg}"
     print_func(msg, html=True)
     if additional_nl:
@@ -128,7 +128,7 @@ def log(
 def info(
     msg: str,
     timestamp: bool = None,
-    time_format: str = None,
+    timestamp_pattern: str = None,
     additional_nl: bool = None,
     print_func: callable = None,
 ):
@@ -136,7 +136,7 @@ def info(
         LogLevel.INFO,
         msg,
         timestamp=timestamp,
-        timestamp_format=time_format,
+        timestamp_pattern=timestamp_pattern,
         additional_nl=additional_nl,
         print_func=print_func,
     )
@@ -145,7 +145,7 @@ def info(
 def debug(
     msg: str,
     timestamp: bool = None,
-    time_format: str = None,
+    timestamp_pattern: str = None,
     additional_nl: bool = None,
     print_func: callable = None,
 ):
@@ -153,7 +153,7 @@ def debug(
         LogLevel.DEBUG,
         msg,
         timestamp=timestamp,
-        timestamp_format=time_format,
+        timestamp_pattern=timestamp_pattern,
         additional_nl=additional_nl,
         print_func=print_func,
     )
@@ -162,7 +162,7 @@ def debug(
 def warning(
     msg: str,
     timestamp: bool = None,
-    time_format: str = None,
+    timestamp_pattern: str = None,
     additional_nl: bool = None,
     print_func: callable = None,
 ):
@@ -170,7 +170,7 @@ def warning(
         LogLevel.WARNING,
         msg,
         timestamp=timestamp,
-        timestamp_format=time_format,
+        timestamp_pattern=timestamp_pattern,
         additional_nl=additional_nl,
         print_func=print_func,
     )
@@ -179,7 +179,7 @@ def warning(
 def critical(
     msg: str,
     timestamp: bool = None,
-    time_format: str = None,
+    timestamp_pattern: str = None,
     additional_nl: bool = None,
     print_func: callable = None,
 ):
@@ -187,7 +187,7 @@ def critical(
         LogLevel.CRITICAL,
         msg,
         timestamp=timestamp,
-        timestamp_format=time_format,
+        timestamp_pattern=timestamp_pattern,
         additional_nl=additional_nl,
         print_func=print_func,
     )
@@ -196,7 +196,7 @@ def critical(
 def fatal(
     msg: str,
     timestamp: bool = None,
-    time_format: str = None,
+    timestamp_pattern: str = None,
     additional_nl: bool = None,
     print_func: callable = None,
 ):
@@ -204,7 +204,7 @@ def fatal(
         LogLevel.FATAL,
         msg,
         timestamp=timestamp,
-        timestamp_format=time_format,
+        timestamp_pattern=timestamp_pattern,
         additional_nl=additional_nl,
         print_func=print_func,
     )

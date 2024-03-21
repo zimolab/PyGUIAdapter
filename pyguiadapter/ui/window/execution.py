@@ -19,7 +19,7 @@ from function2widgets.widget import BaseParameterWidget
 from pyguiadapter.adapter.bundle import FunctionBundle
 from pyguiadapter.adapter.executor import FunctionExecutor
 from pyguiadapter.commons import clear_layout, get_widget_factory
-from pyguiadapter.interact import uprint, upopup
+from pyguiadapter.interact import uprint, upopup, ulogging
 from pyguiadapter.interact.upopup import UPopup
 from pyguiadapter.ui.config import WindowConfig
 from pyguiadapter.ui.generated.ui_execution_window import Ui_ExecutionWindow
@@ -73,20 +73,32 @@ class ExecutionWindowConfig(WindowConfig):
 
     auto_clear_output: bool = True
 
-    show_exception_dialog: bool = True
-
     print_function_result: bool = True
-    function_result_message: str = None
+    function_result_message: str = QApplication.tr("Function result returned: {}")
     show_function_result_dialog: bool = True
-    function_result_dialog_title: str = None
-    function_result_dialog_message: str = None
+    function_result_dialog_title: str = QApplication.tr("Function Result")
+    function_result_dialog_message: str = QApplication.tr(
+        "Function result returned: {}"
+    )
 
-    print_execution_start_info: bool = True
-    print_execution_finish_info: bool = True
-    print_execution_error_info: bool = True
+    print_function_started_info: bool = True
+    function_started_message: str = QApplication.tr("Start to execute function...")
+
+    print_function_finished_info: bool = True
+    function_finished_message: str = QApplication.tr("Function finished.")
+
+    show_function_error_dialog: bool = True
+    function_error_dialog_title: str = QApplication.tr("Function Exception")
+    function_error_dialog_message: str = QApplication.tr(
+        "A exception raised during the function execution: {}"
+    )
+    print_function_error_info: bool = True
+    function_error_message: str = QApplication.tr(
+        "A exception raised during the function execution: {}"
+    )
 
     timestamp: bool = True
-    time_format: str = "%Y-%m-%d %H:%M:%S"
+    timestamp_pattern: str = "%Y-%m-%d %H:%M:%S"
 
     def apply_to(self, w: "ExecutionWindow") -> None:
         super().apply_to(w)
@@ -222,7 +234,12 @@ class ExecutionWindow(QMainWindow):
             self.clear_output()
 
     def _on_function_started(self):
-        pass
+        if self.window_config.print_function_started_info:
+            if self.window_config.function_started_message:
+                message = self.window_config.function_started_message.format(
+                    self._function.function.__name__
+                )
+                self._ulogging_info(message)
 
     def _on_function_finished(self):
         if self._executor is not None:
@@ -230,29 +247,47 @@ class ExecutionWindow(QMainWindow):
             self._executor = None
         self._ui.button_clear.setEnabled(True)
         self._ui.button_execute.setEnabled(True)
+        if self.window_config.print_function_finished_info:
+            if self.window_config.function_finished_message:
+                message = self.window_config.function_finished_message.format(
+                    self._function.function.__name__
+                )
+                self._ulogging_info(message)
 
     def _on_function_error(self, error: BaseException):
-        msg = QApplication.tr(
-            f"A exception raised during the execution of function '{self._function.function.__name__}':\n\n {error}"
-        )
-        if self.window_config.show_exception_dialog:
-            QMessageBox.warning(self, self.tr("Error"), msg)
+        if self.window_config.print_function_error_info:
+            if self.window_config.function_error_message:
+                message = self.window_config.function_error_message.format(str(error))
+                self._ulogging_error(message)
+
+        if self.window_config.show_function_error_dialog:
+            if self.window_config.function_error_dialog_message:
+                title = (
+                    self.window_config.function_error_dialog_title
+                    or QApplication.tr("Function Exception")
+                )
+                message = self.window_config.function_error_dialog_message.format(
+                    str(error)
+                )
+                QMessageBox.critical(self, title, message)
 
     def _on_function_result(self, result: Any):
+        result = str(result)
         if self.window_config.print_function_result:
-            message = self.window_config.function_result_message or self.tr(
-                "function executed: result={}"
-            )
-            uprint.uprint(message.format(str(result)))
+            if self.window_config.function_result_message:
+                message = self.window_config.function_result_message.format(result)
+                self._ulogging_info(message)
 
         if self.window_config.show_function_result_dialog:
-            title = self.window_config.function_result_dialog_title or self.tr(
-                "Function Executed"
-            )
-            message = self.window_config.function_result_dialog_message or self.tr(
-                "result={}"
-            )
-            QMessageBox.information(self, title, message.format(str(result)))
+            if self.window_config.function_result_dialog_message:
+                title = (
+                    self.window_config.function_result_dialog_title
+                    or QApplication.tr("Function Result")
+                )
+                message = self.window_config.function_result_dialog_message.format(
+                    result
+                )
+                QMessageBox.information(self, title, message)
 
     def _setup_ui(self):
         self._ui.setupUi(self)
@@ -409,3 +444,17 @@ class ExecutionWindow(QMainWindow):
         self._ui.textedit_document.setLineWrapMode(QTextEdit.LineWrapMode.WidgetWidth)
         self._ui.textedit_document.setWordWrapMode(QTextOption.WrapMode.WordWrap)
         self._ui.textedit_document.setReadOnly(True)
+
+    def _ulogging_info(self, message: str):
+        ulogging.info(
+            message,
+            timestamp=self.window_config.timestamp,
+            timestamp_pattern=self.window_config.timestamp_pattern,
+        )
+
+    def _ulogging_error(self, message):
+        ulogging.critical(
+            message,
+            timestamp=self.window_config.timestamp,
+            timestamp_pattern=self.window_config.timestamp_pattern,
+        )
