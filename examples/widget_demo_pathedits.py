@@ -90,6 +90,7 @@ def pathedits_demo(
     uprint("save_dir_path:", save_dir_path)
 
 
-gui_adapter = GUIAdapter()
-gui_adapter.add(pathedits_demo)
-gui_adapter.run()
+if __name__ == "__main__":
+    gui_adapter = GUIAdapter()
+    gui_adapter.add(pathedits_demo)
+    gui_adapter.run()

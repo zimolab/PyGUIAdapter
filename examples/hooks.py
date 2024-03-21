@@ -42,13 +42,14 @@ def on_selection_window_created(selection_window: SelectionWindow):
     print("Selection window created!", threading.current_thread())
 
 
-gui_adapter = GUIAdapter()
-gui_adapter.always_show_selection_window = True
-gui_adapter.on_application_started(on_application_started)
-gui_adapter.on_initialization_window_created(on_initialization_window_created)
-gui_adapter.on_selection_window_created(on_selection_window_created)
-gui_adapter.on_execution_window_created(on_execution_window_created)
+if __name__ == "__main__":
+    gui_adapter = GUIAdapter()
+    gui_adapter.always_show_selection_window = True
+    gui_adapter.on_application_started(on_application_started)
+    gui_adapter.on_initialization_window_created(on_initialization_window_created)
+    gui_adapter.on_selection_window_created(on_selection_window_created)
+    gui_adapter.on_execution_window_created(on_execution_window_created)
 
-with gui_adapter.initialize_class(Foo) as foo_instance:
-    gui_adapter.add(Foo.foo, bind=foo_instance)
-    gui_adapter.run()
+    with gui_adapter.initialize_class(Foo) as foo_instance:
+        gui_adapter.add(Foo.foo, bind=foo_instance)
+        gui_adapter.run()

@@ -52,29 +52,30 @@ def interact_with_popups(popup_type: str = "get_int"):
             upopup.critical("Unknown popup type!")
 
 
-gui_adapter = GUIAdapter()
-gui_adapter.execution_window_config.show_function_result_dialog = False
-gui_adapter.add(
-    interact_with_popups,
-    widgets_config={
-        "popup_type": {
-            "type": "ComboBox",
-            "items": [
-                "get_int",
-                "get_float",
-                "get_text",
-                "get_multiline_text",
-                "get_item",
-                "get_open_file_path",
-                "get_open_file_paths",
-                "get_save_file_path",
-                "get_directory_path",
-                "information",
-                "warning",
-                "critical",
-                "question",
-            ],
-        }
-    },
-)
-gui_adapter.run()
+if __name__ == "__main__":
+    gui_adapter = GUIAdapter()
+    gui_adapter.execution_window_config.show_function_result_dialog = False
+    gui_adapter.add(
+        interact_with_popups,
+        widgets_config={
+            "popup_type": {
+                "type": "ComboBox",
+                "items": [
+                    "get_int",
+                    "get_float",
+                    "get_text",
+                    "get_multiline_text",
+                    "get_item",
+                    "get_open_file_path",
+                    "get_open_file_paths",
+                    "get_save_file_path",
+                    "get_directory_path",
+                    "information",
+                    "warning",
+                    "critical",
+                    "question",
+                ],
+            }
+        },
+    )
+    gui_adapter.run()

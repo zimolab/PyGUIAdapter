@@ -39,6 +39,7 @@ def lineedits_demo(str_lineedit: str, int_lineedit: int, float_lineedit: float):
     uprint("float_lineedit:", float_lineedit)
 
 
-gui_adapter = GUIAdapter()
-gui_adapter.add(lineedits_demo)
-gui_adapter.run()
+if __name__ == "__main__":
+    gui_adapter = GUIAdapter()
+    gui_adapter.add(lineedits_demo)
+    gui_adapter.run()

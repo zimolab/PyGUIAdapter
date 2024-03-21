@@ -63,38 +63,39 @@ def customize_widget_1(name: str, password: str, age: int, intro: str):
     uprint("intro:", intro)
 
 
-gui_adapter = GUIAdapter()
-widgets_config = {
-    "name": {
-        "type": "LineEdit",
-        "label": "Account",
-        "docstring": "input your name here",
-        "show_label": True,
-        "show_docstring": True,
-        "placeholder": "input account here",
-    },
-    "password": {
-        "type": "LineEdit",
-        "label": "Password",
-        "echo_mode": "Password",
-        "show_label": True,
-        "show_docstring": True,
-        "docstring": "input your password",
-    },
-    "age": {
-        "type": "IntSpinBox",
-        "label": "Your age",
-        "docstring": "input your age here",
-        "show_label": True,
-        "show_docstring": True,
-        "min_value": 0,
-        "max_value": 100,
-    },
-    "intro": {
-        "type": "PlainTextEdit",
-        "docstring": "this text will not be seen, cause show_docstring is set to False",
-        "show_docstring": False,
-    },
-}
-gui_adapter.add(customize_widget_1, widgets_config=widgets_config)
-gui_adapter.run()
+if __name__ == "__main__":
+    gui_adapter = GUIAdapter()
+    widgets_config = {
+        "name": {
+            "type": "LineEdit",
+            "label": "Account",
+            "docstring": "input your name here",
+            "show_label": True,
+            "show_docstring": True,
+            "placeholder": "input account here",
+        },
+        "password": {
+            "type": "LineEdit",
+            "label": "Password",
+            "echo_mode": "Password",
+            "show_label": True,
+            "show_docstring": True,
+            "docstring": "input your password",
+        },
+        "age": {
+            "type": "IntSpinBox",
+            "label": "Your age",
+            "docstring": "input your age here",
+            "show_label": True,
+            "show_docstring": True,
+            "min_value": 0,
+            "max_value": 100,
+        },
+        "intro": {
+            "type": "PlainTextEdit",
+            "docstring": "this text will not be seen, cause show_docstring is set to False",
+            "show_docstring": False,
+        },
+    }
+    gui_adapter.add(customize_widget_1, widgets_config=widgets_config)
+    gui_adapter.run()

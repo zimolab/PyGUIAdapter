@@ -30,6 +30,7 @@ then None is used as its default value.
 from typing import Literal
 
 from pyguiadapter.adapter import GUIAdapter
+from pyguiadapter.interact.uprint import uprint
 
 
 def supported_types(
@@ -56,9 +57,18 @@ def supported_types(
     :param any_param:
     :return:
     """
-    pass
+    uprint("int_param: ", int_param)
+    uprint("float_param: ", float_param)
+    uprint("bool_param: ", bool_param)
+    uprint("str_param: ", str_param)
+    uprint("list_param: ", list_param)
+    uprint("tuple_param: ", tuple_param)
+    uprint("dict_param: ", dict_param)
+    uprint("literal_param: ", literal_param)
+    uprint("any_param: ", any_param)
 
 
-gui_adapter = GUIAdapter()
-gui_adapter.add(supported_types)
-gui_adapter.run()
+if __name__ == "__main__":
+    gui_adapter = GUIAdapter()
+    gui_adapter.add(supported_types)
+    gui_adapter.run()

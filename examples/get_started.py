@@ -17,6 +17,7 @@ def user_function(a: int, b: int) -> int:
     return a + b
 
 
-gui_adapter = GUIAdapter()
-gui_adapter.add(user_function)
-gui_adapter.run()
+if __name__ == "__main__":
+    gui_adapter = GUIAdapter()
+    gui_adapter.add(user_function)
+    gui_adapter.run()

@@ -31,6 +31,7 @@ def textedits_demo(plain_text: str, sourcecode_text: str):
     uprint("sourcecode_text:", sourcecode_text)
 
 
-gui_adapter = GUIAdapter()
-gui_adapter.add(textedits_demo)
-gui_adapter.run()
+if __name__ == "__main__":
+    gui_adapter = GUIAdapter()
+    gui_adapter.add(textedits_demo)
+    gui_adapter.run()

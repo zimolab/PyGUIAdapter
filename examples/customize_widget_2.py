@@ -55,6 +55,7 @@ def customize_widget_2(param_a: int = 10, param_b: int = 180):
     uprint("param_b:", param_b)
 
 
-gui_adapter = GUIAdapter()
-gui_adapter.add(customize_widget_2)
-gui_adapter.run()
+if __name__ == "__main__":
+    gui_adapter = GUIAdapter()
+    gui_adapter.add(customize_widget_2)
+    gui_adapter.run()

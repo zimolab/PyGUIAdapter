@@ -58,6 +58,7 @@ def selectwidgets_demo(
     uprint("radio_button_group:", radio_button_group)
 
 
-gui_adapter = GUIAdapter()
-gui_adapter.add(selectwidgets_demo)
-gui_adapter.run()
+if __name__ == "__main__":
+    gui_adapter = GUIAdapter()
+    gui_adapter.add(selectwidgets_demo)
+    gui_adapter.run()

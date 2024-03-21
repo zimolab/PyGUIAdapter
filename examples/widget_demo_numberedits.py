@@ -82,6 +82,7 @@ def numberedits_demo(
     uprint("slider:", slider)
 
 
-gui_adapter = GUIAdapter()
-gui_adapter.add(numberedits_demo)
-gui_adapter.run()
+if __name__ == "__main__":
+    gui_adapter = GUIAdapter()
+    gui_adapter.add(numberedits_demo)
+    gui_adapter.run()
