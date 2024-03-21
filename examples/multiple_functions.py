@@ -7,6 +7,7 @@ from examples.widget_demo_numberedits import numberedits_demo
 from examples.widget_demo_textedits import textedits_demo
 from examples.widget_demo_selectwidgets import selectwidgets_demo
 from examples.widget_demo_pathedits import pathedits_demo
+from examples.widget_demo_codeeditors import codeeditors_demo
 
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.commons import DocumentFormat
@@ -29,4 +30,5 @@ if __name__ == "__main__":
     gui_adapter.add(textedits_demo)
     gui_adapter.add(selectwidgets_demo)
     gui_adapter.add(pathedits_demo)
+    gui_adapter.add(codeeditors_demo)
     gui_adapter.run()
