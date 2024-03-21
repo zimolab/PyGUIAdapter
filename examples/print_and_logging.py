@@ -7,7 +7,7 @@ from pyguiadapter.interact.uprint import uprint
 from pyguiadapter.interact import ulogging
 
 
-def greeting(your_name: str):
+def print_logging_demo(your_name: str):
     """Use uprint and ulogging to print message to the output window"""
     ulogging.enable_timestamp(True)
 
@@ -34,5 +34,5 @@ def greeting(your_name: str):
 
 if __name__ == "__main__":
     gui_adapter = GUIAdapter()
-    gui_adapter.add(greeting)
+    gui_adapter.add(print_logging_demo)
     gui_adapter.run()

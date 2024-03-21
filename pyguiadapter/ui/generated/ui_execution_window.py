@@ -36,7 +36,7 @@ class Ui_ExecutionWindow(object):
         self.scrollarea.setWidgetResizable(True)
         self.scrollarea.setObjectName("scrollarea")
         self.scrollarea_content = QtWidgets.QWidget()
-        self.scrollarea_content.setGeometry(QtCore.QRect(0, 0, 507, 445))
+        self.scrollarea_content.setGeometry(QtCore.QRect(0, 0, 394, 445))
         self.scrollarea_content.setObjectName("scrollarea_content")
         self.scrollarea.setWidget(self.scrollarea_content)
         self.vlayout_4.addWidget(self.scrollarea)
