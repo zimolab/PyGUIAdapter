@@ -2,7 +2,7 @@ import dataclasses
 import enum
 from typing import Any, Tuple, Callable
 
-from PyQt6.QtCore import Qt, QObject
+from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QCloseEvent, QTextCursor, QTextOption
 from PyQt6.QtWidgets import (
     QMainWindow,
@@ -71,17 +71,20 @@ class ExecutionWindowConfig(WindowConfig):
     document_bg_color: str = DEFAULT_DOCUMENT_BG_COLOR
     document_text_color: str = DEFAULT_DOCUMENT_TEXT_COLOR
 
-    function_executing_status_text: str | None = None
-    function_executed_status_text: str | None = None
-    function_execution_error_status_text: str | None = None
-
     auto_clear_output: bool = True
+
     show_exception_dialog: bool = True
-    show_result_dialog: bool = True
+
+    print_function_result: bool = True
+    function_result_message: str = None
+    show_function_result_dialog: bool = True
+    function_result_dialog_title: str = None
+    function_result_dialog_message: str = None
+
     print_execution_start_info: bool = True
     print_execution_finish_info: bool = True
     print_execution_error_info: bool = True
-    print_execution_result: bool = True
+
     timestamp: bool = True
     time_format: str = "%Y-%m-%d %H:%M:%S"
 
@@ -219,10 +222,7 @@ class ExecutionWindow(QMainWindow):
             self.clear_output()
 
     def _on_function_started(self):
-        status_text = self.window_config.function_executing_status_text or self.tr(
-            "Executing..."
-        )
-        self.statusBar().showMessage(status_text)
+        pass
 
     def _on_function_finished(self):
         if self._executor is not None:
@@ -232,10 +232,6 @@ class ExecutionWindow(QMainWindow):
         self._ui.button_execute.setEnabled(True)
 
     def _on_function_error(self, error: BaseException):
-        status_text = (
-            self.window_config.function_execution_error_status_text or self.tr("Error")
-        )
-        self.statusBar().showMessage(status_text)
         msg = QApplication.tr(
             f"A exception raised during the execution of function '{self._function.function.__name__}':\n\n {error}"
         )
@@ -243,16 +239,20 @@ class ExecutionWindow(QMainWindow):
             QMessageBox.warning(self, self.tr("Error"), msg)
 
     def _on_function_result(self, result: Any):
-        status_text = self.window_config.function_executing_status_text or self.tr(
-            "Executed"
-        )
-        self.statusBar().showMessage(status_text)
-        if self.window_config.show_result_dialog:
-            QMessageBox.information(
-                self,
-                QApplication.tr("Finished"),
-                QApplication.tr(f"Function executed and the result is:\n  {result}"),
+        if self.window_config.print_function_result:
+            message = self.window_config.function_result_message or self.tr(
+                "function executed: result={}"
             )
+            uprint.uprint(message.format(str(result)))
+
+        if self.window_config.show_function_result_dialog:
+            title = self.window_config.function_result_dialog_title or self.tr(
+                "Function Executed"
+            )
+            message = self.window_config.function_result_dialog_message or self.tr(
+                "result={}"
+            )
+            QMessageBox.information(self, title, message.format(str(result)))
 
     def _setup_ui(self):
         self._ui.setupUi(self)
