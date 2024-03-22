@@ -1,6 +1,6 @@
 import dataclasses
 import enum
-from typing import Any, Tuple, Callable
+from typing import Any, Tuple, Callable, Optional, List, Dict
 
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QCloseEvent, QTextCursor, QTextOption
@@ -44,7 +44,7 @@ class DockWidgetState(enum.Enum):
 
 @dataclasses.dataclass
 class DockConfig(object):
-    title: str | None = None
+    title: Optional[str] = None
     state: DockWidgetState = DockWidgetState.Shown
     floating_size: Tuple[int, int] = (400, 600)
 
@@ -56,10 +56,10 @@ class ExecutionWindowConfig(WindowConfig):
     output_dock_config: DockConfig = DockConfig()
     document_dock_config: DockConfig = DockConfig()
 
-    parameters_groupbox_title: str | None = None
-    auto_clear_checkbox_text: str | None = None
-    execute_button_text: str | None = None
-    clear_button_text: str | None = None
+    parameters_groupbox_title: Optional[str] = None
+    auto_clear_checkbox_text: Optional[str] = None
+    execute_button_text: Optional[str] = None
+    clear_button_text: Optional[str] = None
 
     output_font_family: str = DEFAULT_OUTPUT_FONT_FAMILY
     output_font_size: int = DEFAULT_OUTPUT_FONT_SIZE
@@ -120,11 +120,11 @@ class ExecutionWindow(QMainWindow):
         self._window_config = window_config
         self._ui = Ui_ExecutionWindow()
 
-        self._parameter_widgets: list[BaseParameterWidget] = []
+        self._parameter_widgets: List[BaseParameterWidget] = []
 
         self._layout_parameter_widgets = QVBoxLayout()
 
-        self._executor: FunctionExecutor | None = None
+        self._executor: Optional[FunctionExecutor] = None
 
         self._created_callback = created_callback
 
@@ -180,7 +180,7 @@ class ExecutionWindow(QMainWindow):
         #     self._ui.textedit_output.append(text)
 
     def set_parameter_values(
-        self, arguments: dict[str, Any], ignore_exceptions: bool = False
+        self, arguments: Dict[str, Any], ignore_exceptions: bool = False
     ):
         if self._is_busy():
             self._alert_busy()
@@ -346,7 +346,7 @@ class ExecutionWindow(QMainWindow):
             widget.deleteLater()
         self._parameter_widgets.clear()
 
-    def _get_arguments(self) -> dict[str, Any]:
+    def _get_arguments(self) -> Dict[str, Any]:
         return {
             param_widget.parameter_name: param_widget.get_value()
             for param_widget in self._parameter_widgets

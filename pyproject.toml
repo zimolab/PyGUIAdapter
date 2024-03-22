@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pyguiadapter"
-version = "0.1.10"
+version = "0.2.0"
 description = "turn (almost) any python functions into a gui in a few lines of code"
 authors = ["zimolab <zimolab@aliyun.com>"]
 readme = "README.md"
@@ -13,8 +13,8 @@ documentation = "https://github.com/zimolab/PyGUIAdapter"
 autogen = "autouic:main"
 
 [tool.poetry.dependencies]
-python = "^3.10, <3.11"
-function2widgets = "^0.3.0"
+python = ">3.8, <=3.11"
+function2widgets = "^0.4.0"
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.2.0"

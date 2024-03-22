@@ -1,5 +1,6 @@
 import dataclasses
 import warnings
+from typing import Optional, Union
 
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QMainWindow, QDialog
@@ -9,16 +10,16 @@ from pyguiadapter.commons import safe_read
 
 @dataclasses.dataclass
 class WindowConfig(object):
-    title: str | None = None
-    icon: str | None = None
-    width: int | None = None
-    height: int | None = None
-    x: int | None = None
-    y: int | None = None
+    title: Optional[str] = None
+    icon: Optional[str] = None
+    width: Optional[int] = None
+    height: Optional[int] = None
+    x: Optional[int] = None
+    y: Optional[int] = None
 
-    stylesheet: str | None = None
+    stylesheet: Optional[str] = None
 
-    def apply_to(self, w: QMainWindow | QDialog) -> None:
+    def apply_to(self, w: Union[QMainWindow, QDialog]) -> None:
         if self.title is not None:
             w.setWindowTitle(self.title)
         if self.icon is not None:
@@ -35,7 +36,7 @@ class WindowConfig(object):
             else:
                 w.setStyleSheet(self.stylesheet)
 
-    def _set_icon(self, w: QMainWindow | QDialog):
+    def _set_icon(self, w: Union[QMainWindow, QDialog]):
         if self.icon is None:
             return
         try:

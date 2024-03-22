@@ -1,5 +1,4 @@
 import os
-import sys
 
 OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "pyguiadapter/ui/generated")
 DESIGNER_FILE_DIR = os.path.join(os.path.dirname(__file__), "designer/")

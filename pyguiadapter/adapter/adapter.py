@@ -1,7 +1,7 @@
 import contextlib
 import inspect
 import sys
-from typing import Type, Callable
+from typing import Type, Callable, Optional, List, Dict
 
 from PyQt6.QtWidgets import QApplication, QMessageBox
 
@@ -26,22 +26,22 @@ ALWAYS_SHOW_SELECTION_WINDOW: bool = False
 class GUIAdapter:
     def __init__(
         self,
-        argv: list[str] = None,
+        argv: List[str] = None,
         *,
-        initialization_window_config: InitializationWindowConfig | None = None,
-        selection_window_config: SelectionWindowConfig | None = None,
-        execution_window_config: ExecutionWindowConfig | None = None,
-        application_started_callback: Callable[[QApplication], None] | None = None,
+        initialization_window_config: Optional[InitializationWindowConfig] = None,
+        selection_window_config: Optional[SelectionWindowConfig] = None,
+        execution_window_config: Optional[ExecutionWindowConfig] = None,
+        application_started_callback: Optional[Callable[[QApplication], None]] = None,
         always_show_selection_window: bool = ALWAYS_SHOW_SELECTION_WINDOW,
-        initialization_window_created_callback: (
-            Callable[[InitializationWindow], None] | None
-        ) = None,
-        selection_window_created_callback: (
-            Callable[[SelectionWindow], None] | None
-        ) = None,
-        execution_window_created_callback: (
-            Callable[[ExecutionWindow], None] | None
-        ) = None,
+        initialization_window_created_callback: Optional[
+            Callable[[InitializationWindow], None]
+        ] = None,
+        selection_window_created_callback: Optional[
+            Callable[[SelectionWindow], None]
+        ] = None,
+        execution_window_created_callback: Optional[
+            Callable[[ExecutionWindow], None]
+        ] = None,
     ):
         if argv is None:
             argv = sys.argv
@@ -67,10 +67,10 @@ class GUIAdapter:
         self.always_show_selection_window = always_show_selection_window
 
         self._functions = {}
-        self._application: QApplication | None = None
+        self._application: Optional[QApplication] = None
 
-        self._selection_window: SelectionWindow | None = None
-        self._execution_window: ExecutionWindow | None = None
+        self._selection_window: Optional[SelectionWindow] = None
+        self._execution_window: Optional[ExecutionWindow] = None
 
     def add(
         self,
@@ -80,7 +80,7 @@ class GUIAdapter:
         display_icon: str = None,
         display_document: str = None,
         document_format: DocumentFormat = DocumentFormat.PLAIN,
-        widgets_config: dict[str, dict] = None,
+        widgets_config: Dict[str, dict] = None,
     ):
         if function in self._functions:
             raise AlreadyExistsError(f"function '{function.__name__}' already added")
@@ -103,7 +103,7 @@ class GUIAdapter:
             raise NotExistError(f"function '{function.__name__}' not found")
         del self._functions[function]
 
-    def get(self, function: callable) -> FunctionBundle | None:
+    def get(self, function: callable) -> Optional[FunctionBundle]:
         return self._functions.get(function, None)
 
     def clear(self):

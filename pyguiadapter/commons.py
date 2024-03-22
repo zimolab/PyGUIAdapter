@@ -1,13 +1,13 @@
 import enum
 import os
 import warnings
-from typing import TypeAlias, TypeVar
+from typing import TypeVar, Optional
 
 from PyQt6.QtWidgets import QLayout
 from function2widgets.parser import FunctionDescriptionParser
 from function2widgets.factory import ParameterWidgetFactory
 
-T: TypeAlias = TypeVar("T")
+T = TypeVar("T")
 
 
 __res_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "res/"))
@@ -80,7 +80,7 @@ def get_icon_file(icon_name: str):
     return os.path.join(__icon_dir, f"{icon_name}{__icon_file_ext}")
 
 
-def safe_read(filename: str, encoding: str = "utf-8") -> str | None:
+def safe_read(filename: str, encoding: str = "utf-8") -> Optional[str]:
     if not os.path.isfile(filename):
         return None
     try:

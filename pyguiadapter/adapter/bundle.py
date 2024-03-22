@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Optional, Dict
 
 from function2widgets.description import FunctionDescription
 
@@ -13,12 +13,12 @@ class FunctionBundle(object):
     def __init__(
         self,
         function: callable,
-        bind: T | None = None,
-        display_name: str | None = None,
-        display_icon: str | None = None,
-        display_document: str | None = None,
-        document_format: DocumentFormat | None = DocumentFormat.PLAIN,
-        widgets_configs: dict[str, dict] | None = None,
+        bind: Optional[T] = None,
+        display_name: Optional[str] = None,
+        display_icon: Optional[str] = None,
+        display_document: Optional[str] = None,
+        document_format: Optional[DocumentFormat] = DocumentFormat.PLAIN,
+        widgets_configs: Optional[Dict[str, dict]] = None,
     ):
         self._function = function
         self._bind = bind
@@ -43,7 +43,7 @@ class FunctionBundle(object):
         return self._function_description
 
     @property
-    def bind(self) -> T | None:
+    def bind(self) -> Optional[T]:
         return self._bind
 
     @property
@@ -67,7 +67,7 @@ class FunctionBundle(object):
             return self._function(*args, **kwargs)
         return self._function(self._bind, *args, **kwargs)
 
-    def apply_widgets_config(self, widgets_config: dict[str, dict]):
+    def apply_widgets_config(self, widgets_config: Dict[str, dict]):
         if not widgets_config:
             return
         for parameter_description in self.function_description.parameters:

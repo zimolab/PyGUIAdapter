@@ -8,6 +8,7 @@ from PyQt6.QtWidgets import (
     QMessageBox,
     QFileDialog,
 )
+from typing import List, Optional
 
 
 class UPopup(QObject):
@@ -45,10 +46,10 @@ class UPopup(QObject):
 
     def _on_get_text(
         self,
-        future: Future[str | None],
-        title: str | None = None,
-        label: str | None = None,
-        text: str | None = None,
+        future: Future,
+        title: Optional[str] = None,
+        label: Optional[str] = None,
+        text: Optional[str] = None,
         echo_mode: QLineEdit.EchoMode = QLineEdit.EchoMode.Normal,
     ):
         if not title:
@@ -64,7 +65,7 @@ class UPopup(QObject):
 
     def _on_get_int(
         self,
-        future: Future[int | None],
+        future: Future,
         title: str = None,
         label: str = None,
         value: int = 0,
@@ -85,9 +86,9 @@ class UPopup(QObject):
 
     def _on_get_float(
         self,
-        future: Future[int | None],
-        title: str | None = None,
-        label: str | None = None,
+        future: Future,
+        title: Optional[str] = None,
+        label: Optional[str] = None,
         value: float = 0.0,
         min_val: float = -2147483647.0,
         max_val: float = 2147483647.0,
@@ -108,10 +109,10 @@ class UPopup(QObject):
 
     def _on_get_multiline_text(
         self,
-        future: Future[str | None],
-        title: str | None = None,
-        label: str | None = None,
-        text: str | None = None,
+        future: Future,
+        title: Optional[str] = None,
+        label: Optional[str] = None,
+        text: Optional[str] = None,
     ):
         if not title:
             title = QApplication.tr("Input")
@@ -127,10 +128,10 @@ class UPopup(QObject):
 
     def _on_get_item(
         self,
-        future: Future[str | None],
-        items: list[str],
-        title: str | None = None,
-        label: str | None = None,
+        future: Future,
+        items: List[str],
+        title: Optional[str] = None,
+        label: Optional[str] = None,
         current: int = 0,
         editable: bool = False,
     ):
@@ -145,27 +146,27 @@ class UPopup(QObject):
             result = None
         future.set_result(result)
 
-    def _on_information(self, future: Future, message: str, title: str | None = None):
+    def _on_information(
+        self, future: Future, message: str, title: Optional[str] = None
+    ):
         if not title:
             title = QApplication.tr("Information")
         QMessageBox.information(self._window, title, message)
         future.set_result(None)
 
-    def _on_warning(self, future: Future, message: str, title: str | None = None):
+    def _on_warning(self, future: Future, message: str, title: Optional[str] = None):
         if not title:
             title = QApplication.tr("Warning")
         QMessageBox.warning(self._window, title, message)
         future.set_result(None)
 
-    def _on_critical(self, future: Future, message: str, title: str | None = None):
+    def _on_critical(self, future: Future, message: str, title: Optional[str] = None):
         if not title:
             title = QApplication.tr("Critical")
         QMessageBox.critical(self._window, title, message)
         future.set_result(None)
 
-    def _on_question(
-        self, future: Future[bool], message: str, title: str | None = None
-    ):
+    def _on_question(self, future: Future, message: str, title: Optional[str] = None):
         if not title:
             title = QApplication.tr("Question")
         result = QMessageBox.question(
@@ -178,7 +179,7 @@ class UPopup(QObject):
 
     def _on_get_open_file_path(
         self,
-        future: Future[str | None],
+        future: Future,
         title: str = None,
         directory: str = None,
         filters: str = None,
@@ -194,7 +195,7 @@ class UPopup(QObject):
 
     def _on_get_save_file_path(
         self,
-        future: Future[str | None],
+        future: Future,
         title: str = None,
         directory: str = None,
         filters: str = None,
@@ -210,7 +211,7 @@ class UPopup(QObject):
 
     def _on_get_open_file_paths(
         self,
-        future: Future[list[str] | None],
+        future: Future,
         title: str = None,
         directory: str = None,
         filters: str = None,
@@ -225,7 +226,7 @@ class UPopup(QObject):
             future.set_result(paths)
 
     def _on_get_directory_path(
-        self, future: Future[str | None], title: str = None, directory: str = None
+        self, future: Future, title: str = None, directory: str = None
     ):
         paths = QFileDialog.getExistingDirectory(self._window, title, directory)
         if paths is None:
@@ -309,7 +310,7 @@ def get_multiline_text(
 
 # noinspection PyUnresolvedReferences
 def get_item(
-    items: list[str],
+    items: List[str],
     title: str = None,
     label: str = None,
     current: int = 0,
@@ -321,28 +322,28 @@ def get_item(
 
 
 # noinspection PyUnresolvedReferences
-def information(message: str, title: str | None = None):
+def information(message: str, title: Optional[str] = None):
     future = Future()
     _popup().request_information.emit(future, message, title)
     return future.result()
 
 
 # noinspection PyUnresolvedReferences
-def warning(message: str, title: str | None = None):
+def warning(message: str, title: Optional[str] = None):
     future = Future()
     _popup().request_warning.emit(future, message, title)
     return future.result()
 
 
 # noinspection PyUnresolvedReferences
-def critical(message: str, title: str | None = None):
+def critical(message: str, title: Optional[str] = None):
     future = Future()
     _popup().request_critical.emit(future, message, title)
     return future.result()
 
 
 # noinspection PyUnresolvedReferences
-def question(message: str, title: str | None = None) -> bool:
+def question(message: str, title: Optional[str] = None) -> bool:
     future = Future()
     _popup().request_question.emit(future, message, title)
     return future.result()
@@ -354,7 +355,7 @@ def get_open_file_path(
     directory: str = None,
     filters: str = None,
     init_filter: str = None,
-) -> str | None:
+) -> Optional[str]:
     future = Future()
     _popup().request_get_open_file_path.emit(
         future, title, directory, filters, init_filter
@@ -368,7 +369,7 @@ def get_open_file_paths(
     directory: str = None,
     filters: str = None,
     init_filter: str = None,
-) -> list[str] | None:
+) -> Optional[List[str]]:
     future = Future()
     _popup().request_get_open_file_paths.emit(
         future, title, directory, filters, init_filter
@@ -382,7 +383,7 @@ def get_save_file_path(
     directory: str = None,
     filters: str = None,
     init_filter: str = None,
-) -> str | None:
+) -> Optional[str]:
     future = Future()
     _popup().request_get_save_file_path.emit(
         future, title, directory, filters, init_filter
@@ -391,7 +392,7 @@ def get_save_file_path(
 
 
 # noinspection PyUnresolvedReferences
-def get_directory_path(title: str = None, directory: str = None) -> str | None:
+def get_directory_path(title: str = None, directory: str = None) -> Optional[str]:
     future = Future()
     _popup().request_get_directory_path.emit(future, title, directory)
     return future.result()

@@ -1,7 +1,7 @@
 import dataclasses
 import os.path
 import warnings
-from typing import Callable
+from typing import Callable, List, Optional
 
 from PyQt6.QtCore import QSize, Qt
 from PyQt6.QtGui import QIcon, QCloseEvent, QTextOption
@@ -30,10 +30,10 @@ from pyguiadapter.ui.window.execution import ExecutionWindow
 @dataclasses.dataclass
 class SelectionWindowConfig(WindowConfig):
     icon_mode: bool = True
-    icon_size: int | None = 48
-    functions_label_text: str | None = None
-    document_label_text: str | None = None
-    select_button_text: str | None = None
+    icon_size: Optional[int] = 48
+    functions_label_text: Optional[str] = None
+    document_label_text: Optional[str] = None
+    select_button_text: Optional[str] = None
 
     document_font_family: str = DEFAULT_DOCUMENT_FONT_FAMILY
     document_font_size: int = DEFAULT_DOCUMENT_FONT_SIZE
@@ -47,13 +47,13 @@ class SelectionWindowConfig(WindowConfig):
 class SelectionWindow(QMainWindow):
     def __init__(
         self,
-        functions: list[FunctionBundle],
-        window_config: SelectionWindowConfig | None = None,
-        execution_window_config: WindowConfig | None = None,
-        window_created_callback: Callable[[QMainWindow], None] | None = None,
-        execution_window_created_callback: (
-            Callable[[ExecutionWindow], None] | None
-        ) = None,
+        functions: List[FunctionBundle],
+        window_config: Optional[SelectionWindowConfig] = None,
+        execution_window_config: Optional[WindowConfig] = None,
+        window_created_callback: Optional[Callable[[QMainWindow], None]] = None,
+        execution_window_created_callback: Optional[
+            Callable[[ExecutionWindow], None]
+        ] = None,
         parent=None,
     ):
 
@@ -69,7 +69,7 @@ class SelectionWindow(QMainWindow):
 
         self._window_created_callback = window_created_callback
 
-        self._execution_window: ExecutionWindow | None = None
+        self._execution_window: Optional[ExecutionWindow] = None
         self._execution_window_started_callback = execution_window_created_callback
 
         self._setup_ui()

@@ -1,5 +1,5 @@
 import dataclasses
-from typing import Type, Any, Callable
+from typing import Type, Any, Callable, Optional, List, Dict
 
 from PyQt6.QtWidgets import (
     QDialog,
@@ -25,8 +25,8 @@ from pyguiadapter.ui.generated.ui_initialization_window import Ui_Initialization
 
 @dataclasses.dataclass
 class InitializationWindowConfig(WindowConfig):
-    label_text: str | None = None
-    button_text: str | None = None
+    label_text: Optional[str] = None
+    button_text: Optional[str] = None
 
     def apply_to(self, w: "InitializationWindow") -> None:
         super().apply_to(w)
@@ -41,7 +41,9 @@ class InitializationWindow(QDialog):
         self,
         klass: Type[T],
         window_config: InitializationWindowConfig = None,
-        window_created_callback: Callable[["InitializationWindow"], None] | None = None,
+        window_created_callback: Optional[
+            Callable[["InitializationWindow"], None]
+        ] = None,
         parent=None,
     ):
         window_config = window_config or InitializationWindowConfig()
@@ -49,8 +51,8 @@ class InitializationWindow(QDialog):
         super().__init__(parent=parent)
 
         self._class: Type[T] = klass
-        self._class_instance: T | None = None
-        self._parameter_widgets: list[BaseParameterWidget] = []
+        self._class_instance: Optional[T] = None
+        self._parameter_widgets: List[BaseParameterWidget] = []
         self._layout_parameter_widgets = QVBoxLayout()
 
         self._window_create_callback = window_created_callback
@@ -93,7 +95,7 @@ class InitializationWindow(QDialog):
     def set_button_text(self, text: str):
         self._ui.button_initialize.setText(text)
 
-    def get_class_instance(self) -> T | None:
+    def get_class_instance(self) -> Optional[T]:
         return self._class_instance
 
     @classmethod
@@ -101,9 +103,11 @@ class InitializationWindow(QDialog):
         cls,
         klass: Type[T],
         window_config: InitializationWindowConfig = None,
-        window_created_callback: Callable[["InitializationWindow"], None] | None = None,
+        window_created_callback: Optional[
+            Callable[["InitializationWindow"], None]
+        ] = None,
         parent=None,
-    ) -> T | None:
+    ) -> Optional[T]:
         _window = cls(
             klass=klass,
             window_config=window_config,
@@ -170,7 +174,7 @@ class InitializationWindow(QDialog):
             widget.deleteLater()
         self._parameter_widgets.clear()
 
-    def _get_arguments(self) -> dict[str, Any]:
+    def _get_arguments(self) -> Dict[str, Any]:
         return {
             param_widget.parameter_name: param_widget.get_value()
             for param_widget in self._parameter_widgets
