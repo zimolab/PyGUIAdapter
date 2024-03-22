@@ -353,13 +353,14 @@ class ExecutionWindow(QMainWindow):
         }
 
     def _setup_docks(self):
+        if self.window_config.tabify_docks:
+            self._tabify_docks()
         self.resizeDocks(
             [self._ui.dockwidget_document, self._ui.dockwidget_output],
             [460, 460],
             Qt.Orientation.Horizontal,
         )
-        if self.window_config.tabify_docks:
-            self._tabify_docks()
+
         self._setup_dock(
             self._ui.dockwidget_document, self.window_config.document_dock_config
         )
@@ -371,7 +372,7 @@ class ExecutionWindow(QMainWindow):
             self.resize(460, 600)
 
     def _tabify_docks(self):
-        docks = [self._ui.dockwidget_output, self._ui.dockwidget_document]
+        docks = [self._ui.dockwidget_document, self._ui.dockwidget_output]
         if self.window_config.tabify_docks:
             self.tabifyDockWidget(*docks)
 
