@@ -20,7 +20,7 @@
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout_5">
+   <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="QGroupBox" name="groupbox_parameters">
       <property name="enabled">
@@ -64,8 +64,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>394</width>
-            <height>445</height>
+            <width>507</width>
+            <height>469</height>
            </rect>
           </property>
          </widget>
@@ -75,38 +75,29 @@
      </widget>
     </item>
     <item>
-     <widget class="QGroupBox" name="groupbox">
-      <property name="title">
-       <string/>
+     <widget class="QCheckBox" name="checkbox_auto_clear">
+      <property name="text">
+       <string>clear output before execution</string>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout">
-       <item>
-        <widget class="QCheckBox" name="checkbox_auto_clear">
-         <property name="text">
-          <string>clear output before execution</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="hlayout_1">
-         <item>
-          <widget class="QPushButton" name="button_execute">
-           <property name="text">
-            <string>Execute</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="button_clear">
-           <property name="text">
-            <string>Clear Output</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-      </layout>
      </widget>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="hlayout_1">
+      <item>
+       <widget class="QPushButton" name="button_execute">
+        <property name="text">
+         <string>Execute</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="button_clear">
+        <property name="text">
+         <string>Clear Output</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </item>
    </layout>
   </widget>
