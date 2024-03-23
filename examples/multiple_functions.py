@@ -1,4 +1,4 @@
-from examples.parameter_types import supported_types
+from examples.parameter_types import parameter_types_demo
 from examples.customize_widget_1 import customize_widget_1
 from examples.customize_widget_2 import customize_widget_2
 from examples.print_and_logging import print_logging_demo
@@ -17,7 +17,7 @@ from pyguiadapter.commons import DocumentFormat
 if __name__ == "__main__":
     gui_adapter = GUIAdapter()
     gui_adapter.selection_window_config.icon_mode = False
-    gui_adapter.add(supported_types)
+    gui_adapter.add(parameter_types_demo)
 
     widgets_config = {
         "name": {

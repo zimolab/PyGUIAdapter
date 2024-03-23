@@ -33,7 +33,8 @@ from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.interact.uprint import uprint
 
 
-def supported_types(
+# noinspection PyDefaultArgument
+def parameter_types_demo(
     int_param: int,
     float_param: float,
     bool_param: bool,
@@ -66,9 +67,10 @@ def supported_types(
     uprint("dict_param: ", dict_param)
     uprint("literal_param: ", literal_param)
     uprint("any_param: ", any_param)
+    return "Hello world!"
 
 
 if __name__ == "__main__":
     gui_adapter = GUIAdapter()
-    gui_adapter.add(supported_types)
+    gui_adapter.add(parameter_types_demo)
     gui_adapter.run()
