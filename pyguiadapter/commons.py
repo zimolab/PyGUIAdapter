@@ -1,6 +1,7 @@
 import enum
 import os
 import warnings
+import importlib.resources
 from typing import TypeVar, Optional
 
 from PyQt6.QtWidgets import QLayout
@@ -10,12 +11,7 @@ from function2widgets.factory import ParameterWidgetFactory
 T = TypeVar("T")
 
 
-__res_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "res/"))
-
-__icon_dir = os.path.join(__res_dir, "icons")
-__icon_file_ext = ".svg"
-
-__font_dir = os.path.join(__res_dir, "fonts")
+ICON_FILE_EXT = ".svg"
 
 __function_parser = FunctionDescriptionParser()
 __widget_factory = ParameterWidgetFactory()
@@ -38,46 +34,17 @@ def get_widget_factory() -> ParameterWidgetFactory:
 
 
 def get_res_dir() -> str:
-    global __res_dir
-    return __res_dir
-
-
-def set_res_dir(res_dir: str):
-    global __res_dir
-    __res_dir = res_dir
-
-
-def get_icon_dir() -> str:
-    global __icon_dir
-    return __icon_dir
-
-
-def set_icon_dir(icon_dir: str):
-    global __icon_dir
-    __icon_dir = icon_dir
-
-
-def get_icon_file_ext() -> str:
-    global __icon_file_ext
-    return __icon_file_ext
-
-
-def set_icon_file_ext(icon_file_ext: str):
-    global __icon_file_ext
-    __icon_file_ext = icon_file_ext
-
-
-def get_font_dir(path: str) -> str:
-    global __font_dir
-    return os.path.join(__res_dir, path)
+    with importlib.resources.path("pyguiadapter", "res") as res_dir:
+        return str(res_dir)
 
 
 def get_icon_file(icon_name: str):
-    global __icon_dir
-    global __icon_file_ext
     if os.path.isfile(icon_name):
         return icon_name
-    return os.path.join(__icon_dir, f"{icon_name}{__icon_file_ext}")
+    res_dir = get_res_dir()
+    icons_dir = os.path.join(res_dir, "icons")
+    icon_file = os.path.join(icons_dir, f"{icon_name}{ICON_FILE_EXT}")
+    return icon_file
 
 
 def safe_read(filename: str, encoding: str = "utf-8") -> Optional[str]:
