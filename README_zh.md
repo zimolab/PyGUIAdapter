@@ -30,7 +30,10 @@ poetry add pyguiadapter
 
 要将你的python函数转换为GUI应用是一件非常简单的事情，只需几行代码。
 
-1) 首先准备好作为GUI应用的函数，这里需使用python的类型注解语法，标注好每个参数的类型，比如你有下面这么一个函数（不用管它的具体功能，仅关注其参数是如何定义的）：
+
+(1) 首先准备一个函数，使用python的类型注解语法，标注好每个参数的类型。 
+
+比如你有下面这么一个函数（不用管它的具体功能，仅关注其参数是如何定义的）：
 
 ```python
 import os.path
@@ -45,7 +48,8 @@ def create_file(path: str, filename: str, content: str, overwrite: bool = False)
     return False
 ```
 
-2) 创建GUIAdapter实例，将你的函数添加到该实例中：
+(2) 创建GUIAdapter实例，将你的函数添加到该实例中：
+
 ```python
 from pyguiadapter.adapter.adapter import GUIAdapter
 
@@ -53,7 +57,7 @@ gui_adapter = GUIAdapter()
 gui_adapter.add(create_file)
 ```
 
-3) 调用`GUIAdapter.run()`方法，即可运行GUI应用。
+(3) 调用`GUIAdapter.run()`方法，即可运行GUI应用。
 
 ```python
 gui_adapter.run()
