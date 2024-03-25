@@ -46,7 +46,7 @@ class DockWidgetState(enum.Enum):
 class DockConfig(object):
     title: Optional[str] = None
     state: DockWidgetState = DockWidgetState.Shown
-    floating_size: Tuple[int, int] = (400, 600)
+    floating_size: Tuple[int, int] = dataclasses.field(default=(400, 600))
 
 
 @dataclasses.dataclass
