@@ -47,7 +47,7 @@ if __name__ == "__main__":
     gui_adapter.add(
         customize_widget_1,
         display_document="customize parameter widgets by widget_configs",
-        widgets_config=widgets_config,
+        widget_configs=widgets_config,
     )
     gui_adapter.add(customize_widget_2)
     gui_adapter.add(

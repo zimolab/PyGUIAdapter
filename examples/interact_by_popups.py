@@ -69,7 +69,7 @@ if __name__ == "__main__":
     gui_adapter.execution_window_config.show_function_result_dialog = False
     gui_adapter.add(
         interact_with_popups,
-        widgets_config={
+        widget_configs={
             "popup_type": {
                 "widget_class": "ComboBox",
                 "items": [

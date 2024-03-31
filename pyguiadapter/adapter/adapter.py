@@ -80,7 +80,7 @@ class GUIAdapter:
         display_icon: str = None,
         display_document: str = None,
         document_format: DocumentFormat = DocumentFormat.PLAIN,
-        widgets_config: Dict[str, dict] = None,
+        widget_configs: Dict[str, dict] = None,
     ):
         if function in self._functions:
             raise AlreadyExistsError(f"function '{function.__name__}' already added")
@@ -91,14 +91,11 @@ class GUIAdapter:
             display_icon=display_icon,
             display_document=display_document,
             document_format=document_format,
-            widgets_configs=widgets_config,
+            widgets_configs=widget_configs,
         )
         self._functions[function] = bundle
 
-    def remove(
-        self,
-        function: callable,
-    ):
+    def remove(self, function: callable):
         if function not in self._functions:
             raise NotExistError(f"function '{function.__name__}' not found")
         del self._functions[function]

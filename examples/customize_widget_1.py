@@ -84,5 +84,5 @@ if __name__ == "__main__":
             # "description": "this text will not be seen, cause show_docstring is set to False",
         },
     }
-    gui_adapter.add(customize_widget_1, widgets_config=widgets_config)
+    gui_adapter.add(customize_widget_1, widget_configs=widgets_config)
     gui_adapter.run()
