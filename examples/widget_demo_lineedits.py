@@ -15,22 +15,22 @@ def lineedits_demo(str_lineedit: str, int_lineedit: int, float_lineedit: float):
     :param float_lineedit: used for input float number
     :return:
 
-    @begin
+    @widgets
     [str_lineedit]
-    type="LineEdit"
-    #below are parameters of LineEdit widget
-    #placeholder = ""
-    #clear_button = false
-    #echo_mode = "Normal"
-    #regex =  ".*"
-    #input_mask = "00.0000.000"
+    widget_class="LineEdit"
+    #below are some args for LineEdit widget
+    placeholder = ""
+    clear_button = false
+    echo_mode = "Normal"
+    regex =  ".*"
+    input_mask = "00.0000.000"
 
     [int_lineedit]
-    type="IntLineEdit"
+    widget_class="IntLineEdit"
 
 
     [float_lineedit]
-    type="FloatLineEdit"
+    widget_class="FloatLineEdit"
 
     @end
     """

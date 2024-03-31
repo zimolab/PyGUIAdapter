@@ -1,12 +1,12 @@
 """
-This demo shows widgets for inputting numbers, see: function2widgets.widgets.numberedit
+This demo shows widgets for inputting numbers, see: function2widgets.widgets.numberinput
 """
 
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.interact.uprint import uprint
 
 
-def numberedits_demo(
+def number_input_demo(
     int_spin: int,
     float_spin: float,
     dail: int,
@@ -21,9 +21,9 @@ def numberedits_demo(
     :param slider:
     :return:
 
-    @begin
+    @widgets
     [int_spin]
-    type="IntSpinBox"
+    widget_class="IntSpinBox"
     min_value=0
     max_value=100
     step=1
@@ -32,7 +32,7 @@ def numberedits_demo(
     default=10
 
     [float_spin]
-    type="FloatSpinBox"
+    widget_class="FloatSpinBox"
     min_value=0.0
     max_value=1.0
     step=0.00000001
@@ -43,7 +43,7 @@ def numberedits_demo(
 
 
     [dail]
-    type="Dial"
+    widget_class="Dial"
     min_value=0
     max_value=180
     step=1
@@ -59,7 +59,7 @@ def numberedits_demo(
     value_suffix="°"
 
     [slider]
-    type="Slider"
+    widget_class="Slider"
     min_value=0
     max_value=100
     step=1
@@ -84,5 +84,5 @@ def numberedits_demo(
 
 if __name__ == "__main__":
     gui_adapter = GUIAdapter()
-    gui_adapter.add(numberedits_demo)
+    gui_adapter.add(number_input_demo)
     gui_adapter.run()

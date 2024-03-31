@@ -71,7 +71,7 @@ if __name__ == "__main__":
         interact_with_popups,
         widgets_config={
             "popup_type": {
-                "type": "ComboBox",
+                "widget_class": "ComboBox",
                 "items": [
                     "get_int",
                     "get_float",

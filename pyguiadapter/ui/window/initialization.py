@@ -8,7 +8,7 @@ from PyQt6.QtWidgets import (
     QSizePolicy,
     QMessageBox,
 )
-from function2widgets.description import FunctionDescription
+from function2widgets.info import FunctionInfo
 from function2widgets.widget import BaseParameterWidget
 
 from pyguiadapter.commons import (
@@ -144,18 +144,16 @@ class InitializationWindow(QDialog):
         clear_layout(self._layout_parameter_widgets)
         parser = get_function_parser()
         constructor_description = parser.parse(
-            func=self._class, parse_class=True, ignore_self_param=True
+            func_obj=self._class, ignore_self_param=True
         )
         self._create_parameter_widgets(constructor_description)
         self._add_parameter_widgets()
 
-    def _create_parameter_widgets(self, function_description: FunctionDescription):
+    def _create_parameter_widgets(self, function_info: FunctionInfo):
         factory = get_widget_factory()
         try:
-            for parameter_description in function_description.parameters:
-                parameter_widget = factory.create_widget_from_description(
-                    parameter_description
-                )
+            for parameter_info in function_info.parameters:
+                parameter_widget = factory.create_widget_for_parameter(parameter_info)
                 self._parameter_widgets.append(parameter_widget)
         except BaseException as e:
             self._cleanup_parameter_widgets()

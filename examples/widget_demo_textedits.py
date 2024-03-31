@@ -2,19 +2,20 @@ from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.interact.uprint import uprint
 
 
-def textedits_demo(plain_text: str, sourcecode_text: str):
+def text_edits_demo(plain_text: str, sourcecode_text: str):
     """
     This demo shows text edits
 
     :param plain_text: show a plain text edit
     :param sourcecode_text: show a source code edit
     :return:
-    @begin
+
+    @widgets
     [plain_text]
-    type="PlainTextEdit"
+    widget_class="PlainTextEdit"
 
     [sourcecode_text]
-    type="SourceCodeEdit"
+    widget_class="CodeEdit"
     configs.AutoIndent=true
     configs.IndentationWidth=2
     configs.Lexer="JSON"
@@ -33,5 +34,5 @@ def textedits_demo(plain_text: str, sourcecode_text: str):
 
 if __name__ == "__main__":
     gui_adapter = GUIAdapter()
-    gui_adapter.add(textedits_demo)
+    gui_adapter.add(text_edits_demo)
     gui_adapter.run()

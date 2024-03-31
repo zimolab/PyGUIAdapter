@@ -5,7 +5,7 @@ import importlib.resources
 from typing import TypeVar, Optional
 
 from PyQt6.QtWidgets import QLayout
-from function2widgets.parser import FunctionDescriptionParser
+from function2widgets.parser.function_parser import FunctionInfoParser
 from function2widgets.factory import ParameterWidgetFactory
 
 T = TypeVar("T")
@@ -13,7 +13,7 @@ T = TypeVar("T")
 
 ICON_FILE_EXT = ".svg"
 
-__function_parser = FunctionDescriptionParser()
+__function_parser = FunctionInfoParser()
 __widget_factory = ParameterWidgetFactory()
 
 
@@ -23,7 +23,7 @@ class DocumentFormat(enum.Enum):
     PLAIN = "plain"
 
 
-def get_function_parser() -> FunctionDescriptionParser:
+def get_function_parser() -> FunctionInfoParser:
     global __function_parser
     return __function_parser
 

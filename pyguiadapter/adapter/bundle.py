@@ -1,6 +1,6 @@
 from typing import Any, Optional, Dict
 
-from function2widgets.description import FunctionDescription
+from function2widgets.info import FunctionInfo
 
 from pyguiadapter import commons
 from pyguiadapter.commons import T, DocumentFormat
@@ -27,20 +27,21 @@ class FunctionBundle(object):
         self._display_document = display_document
         self._document_format = document_format
 
-        self._function_description = commons.get_function_parser().parse(
-            func=function, parse_class=False, ignore_self_param=True
+        self._function_info = commons.get_function_parser().parse(
+            func_obj=function,
+            ignore_self_param=True,
         )
 
         if widgets_configs:
-            self.apply_widgets_config(widgets_configs)
+            self.apply_widget_configs(widgets_configs)
 
     @property
     def function(self) -> callable:
         return self._function
 
     @property
-    def function_description(self) -> FunctionDescription:
-        return self._function_description
+    def function_info(self) -> FunctionInfo:
+        return self._function_info
 
     @property
     def bind(self) -> Optional[T]:
@@ -48,7 +49,7 @@ class FunctionBundle(object):
 
     @property
     def display_name(self) -> str:
-        return self._display_name or self._function_description.name
+        return self._display_name or self._function_info.name
 
     @property
     def display_icon(self) -> str:
@@ -56,7 +57,7 @@ class FunctionBundle(object):
 
     @property
     def display_document(self) -> str:
-        return self._display_document or self._function_description.docstring
+        return self._display_document or self._function_info.description
 
     @property
     def document_format(self) -> DocumentFormat:
@@ -67,23 +68,23 @@ class FunctionBundle(object):
             return self._function(*args, **kwargs)
         return self._function(self._bind, *args, **kwargs)
 
-    def apply_widgets_config(self, widgets_config: Dict[str, dict]):
-        if not widgets_config:
+    def apply_widget_configs(self, widget_configs: Dict[str, dict]):
+        if not widget_configs:
             return
-        for parameter_description in self.function_description.parameters:
-            name = parameter_description.name
-            if name not in widgets_config:
+        for parameter_info in self.function_info.parameters:
+            name = parameter_info.name
+            if name not in widget_configs:
                 continue
 
-            widget_config = widgets_config[name]
+            widget_config = widget_configs[name]
             if not isinstance(widget_config, dict):
                 continue
 
-            widget_description = parameter_description.widget
-            if widget_description is None:
+            widget_info = parameter_info.widget
+            if widget_info is None:
                 continue
 
-            widget_description.update_with_flattened_dict(widget_config)
+            widget_info.update_with_flattened_dict(widget_config)
 
     def __repr__(self):
         return f"<FunctionBundle function={self.function} bind={self.bind}>"

@@ -5,11 +5,11 @@ from examples.print_and_logging import print_logging_demo
 from examples.interact_by_popups import interact_with_popups
 from examples.get_started import user_function
 from examples.widget_demo_lineedits import lineedits_demo
-from examples.widget_demo_numberedits import numberedits_demo
-from examples.widget_demo_textedits import textedits_demo
-from examples.widget_demo_selectwidgets import selectwidgets_demo
-from examples.widget_demo_pathedits import pathedits_demo
-from examples.widget_demo_codeeditors import codeeditors_demo
+from examples.widget_demo_numberinputs import number_input_demo
+from examples.widget_demo_textedits import text_edits_demo
+from examples.widget_demo_selectwidgets import select_widgets_demo
+from examples.widget_demo_pathedits import path_edits_demo
+from examples.widget_demo_editors import editors_demo
 
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.commons import DocumentFormat
@@ -21,34 +21,26 @@ if __name__ == "__main__":
 
     widgets_config = {
         "name": {
-            "type": "LineEdit",
+            "widget_class": "LineEdit",
             "label": "Account",
-            "docstring": "input your name here",
-            "show_label": True,
-            "show_docstring": True,
+            "description": "input your name here",
             "placeholder": "input account here",
         },
         "password": {
-            "type": "LineEdit",
+            "widget_class": "LineEdit",
             "label": "Password",
             "echo_mode": "Password",
-            "show_label": True,
-            "show_docstring": True,
-            "docstring": "input your password",
+            "description": "input your password",
         },
         "age": {
-            "type": "IntSpinBox",
+            "widget_class": "IntSpinBox",
             "label": "Your age",
-            "docstring": "input your age here",
-            "show_label": True,
-            "show_docstring": True,
+            "description": "input your age here",
             "min_value": 0,
             "max_value": 100,
         },
         "intro": {
-            "type": "PlainTextEdit",
-            "docstring": "this text will not be seen, cause show_docstring is set to False",
-            "show_docstring": False,
+            "widget_class": "PlainTextEdit",
         },
     }
 
@@ -68,9 +60,9 @@ if __name__ == "__main__":
     gui_adapter.add(interact_with_popups)
     gui_adapter.add(user_function)
     gui_adapter.add(lineedits_demo)
-    gui_adapter.add(numberedits_demo)
-    gui_adapter.add(textedits_demo)
-    gui_adapter.add(selectwidgets_demo)
-    gui_adapter.add(pathedits_demo)
-    gui_adapter.add(codeeditors_demo)
+    gui_adapter.add(number_input_demo)
+    gui_adapter.add(text_edits_demo)
+    gui_adapter.add(select_widgets_demo)
+    gui_adapter.add(path_edits_demo)
+    gui_adapter.add(editors_demo)
     gui_adapter.run()

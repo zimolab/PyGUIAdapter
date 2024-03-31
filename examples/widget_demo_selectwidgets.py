@@ -4,7 +4,7 @@ from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.interact.uprint import uprint
 
 
-def selectwidgets_demo(
+def select_widgets_demo(
     combo_1: Literal["opt1", "opt2", "opt3"],
     combo_2: str,
     combo_3: str,
@@ -22,29 +22,28 @@ def selectwidgets_demo(
     :param radio_button_group: <b>radio group: multiple options but only one choice</b>
     :return:
 
-    @begin
+    @widgets
     [combo_2]
-    type="ComboBox"
+    widget_class="ComboBox"
     # when you use ComboBox, items must be provided, or an error will be raised
     items=["选项1", "选项2", "选项3"]
 
     [combo_3]
-    type="ComboBoxEdit"
-    # when you use ComboBoxEdit, items must be provided, or an error will be raised
+    widget_class="ComboBoxEdit"
     items=["选项1", "选项2", "选项3"]
 
     [checkbox]
-    type="CheckBox"
+    widget_class="CheckBox"
     text="Use this option"
 
     [checkbox_group]
-    type="CheckBoxGroup"
+    widget_class="CheckBoxGroup"
     # when you use CheckBoxGroup, items must be provided, or an error will be raised
     items=["A", "B", "C", "D", "E", "F" , "G", "H", "I", "J"]
     column_count=3
 
     [radio_button_group]
-    type="RadioButtonGroup"
+    widget_class="RadioButtonGroup"
     # when you use CheckBoxGroup, items must be provided, or an error will be raised
     items=["A", "B", "C", "D", "E", "F" , "G", "H", "I", "J"]
     column_count=3
@@ -60,5 +59,5 @@ def selectwidgets_demo(
 
 if __name__ == "__main__":
     gui_adapter = GUIAdapter()
-    gui_adapter.add(selectwidgets_demo)
+    gui_adapter.add(select_widgets_demo)
     gui_adapter.run()

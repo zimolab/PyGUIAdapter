@@ -1,54 +1,48 @@
 """
 Usually, the widget for a parameter depends on its type, but there are ways to customize the widget.
 
-To do this, we can use the widgets_config parameter of the PyGUIAdapter.run() function.
-
-widgets_config should be a mapping(dict) whose key is the parameter names you want to customize
-and the value is the widget configs which is also a dict.
+To do this, we can use the widget_configs parameter of PyGUIAdapter.run() function.
 
 e.g.
+```python
 ...
-widgets_config = {
+widget_configs = {
     "param_1": {
-        type: "IntSpinBox",
-        label: "age",
-        docstring: "this parameter means age",
-        show_label: True,
-        show_docstring: True,
-        min_value: 0
-        max_value: 200
+        "widget_class": "IntSpinBox",
+        "label": "age",
+        "description": "this parameter means age",
+        "min_value": 0,
+        "max_value": 200
+        # more args of this parameter widget
     }
+
+    "param_2": {
+        ...
+    },
+    ...
 }
-gui_adapter.run(some_func, widgets_config = widgets_config)
+
+gui_adapter.run(some_func, widget_configs = widget_configs)
+```
 ...
 
-Every widget has the following configs:
- - type: the name of widget types, str.
-    PyGUIAdapter provides a rich set of built-in widget types.
-    see the function2widgets.widgets.allwidgets.BASIC_PARAMETER_WIDGETS.
-    You can also create your own widget type which should be very easy to do.
+Every widget shares the following args:
+- default: the default value of this parameter
+- label: the label of the parameter, if not specified, will be the parameter name
+- description: the description of the parameter, if not specified, will look into docstring to see if there is description
+               of the parameter
+- stylesheet: the stylesheet string of the parameter widget
+- set_default_on_init: whether to set the default value to the parameter widget when the widget is created
+- hide_default_widget: whether to hide the default widget(usually a checkbox)
+                        if the default value if None, this will be ignored
+- default_widget_text: text template for the default widget
+- separate_line: whether to add a horizontal line in the bottom of the parameter widget
 
- - label: the display name of a parameter, str.
-    If not provided, it uses the parameter name as defined in the function signature.
-    In above example, parameter 'param_1' will be displayed as 'age'
+Every widget also has it own args, which can be found in the source code of the widget class.
 
- - docstring:  the document string of a parameter, str.
-    If not provided, the parameter's docstring text will be extracted from the function's docstring.
+You can refer to function2widgets.widgets.* for all available widgets classes, like LineEdit IntSpinBox ComboBox etc.
 
- - show_label: whether to show the label of a parameter, bool.
-
- - show_docstring: whether to shoe the docstring of parameter, bool.
-
- - stylesheet: qss string or file
-
-And each type of widget has its own set of parameters.
-For instance:
-  IntSpinxBox
-    -
-  LineEdit
-
-Refer to each widget type's __init__() to know all the parameters.
-
+For each widget class arguments, check the <WIDGET_CLASSNAME>Args class, such as LineEditArgs IntSpinBoxArgs ComboBoxArgs etc.
 
 """
 
@@ -67,34 +61,27 @@ if __name__ == "__main__":
     gui_adapter = GUIAdapter()
     widgets_config = {
         "name": {
-            "type": "LineEdit",
+            "widget_class": "LineEdit",
             "label": "Account",
-            "docstring": "input your name here",
-            "show_label": True,
-            "show_docstring": True,
+            "description": "input your name here",
             "placeholder": "input account here",
         },
         "password": {
-            "type": "LineEdit",
+            "widget_class": "LineEdit",
             "label": "Password",
             "echo_mode": "Password",
-            "show_label": True,
-            "show_docstring": True,
-            "docstring": "input your password",
+            "description": "input your password",
         },
         "age": {
-            "type": "IntSpinBox",
+            "widget_class": "IntSpinBox",
             "label": "Your age",
-            "docstring": "input your age here",
-            "show_label": True,
-            "show_docstring": True,
+            "description": "input your age here",
             "min_value": 0,
             "max_value": 100,
         },
         "intro": {
-            "type": "PlainTextEdit",
-            "docstring": "this text will not be seen, cause show_docstring is set to False",
-            "show_docstring": False,
+            "widget_class": "PlainTextEdit",
+            # "description": "this text will not be seen, cause show_docstring is set to False",
         },
     }
     gui_adapter.add(customize_widget_1, widgets_config=widgets_config)

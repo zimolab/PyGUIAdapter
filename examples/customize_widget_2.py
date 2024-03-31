@@ -1,20 +1,20 @@
 """
 Another way to customize the widget of a parameter:
 
-Using @begin...@end tag to wrap the widgets config in the function's docstring
+Using @widgets...@end tag to wrap the widget configs in the function's docstring
 
-Note: the widgets config between @begin and @end  should be in TOML format
+Note: the widget configs between @widget and @end  should be in TOML format
 
 e.g.
 
-@begin
+@widgets
 
 [param_a]
-type="Slider"
+widget_class="Slider"
 label="Amount"
 
 [param_b]
-type="Dial"
+widget_class="Dial"
 label="Angel"
 prefix="angel"
 suffix="°"
@@ -35,19 +35,22 @@ def customize_widget_2(param_a: int = 10, param_b: int = 180):
     :param param_b:
     :return:
 
-    @begin
+    @widgets
     [param_a]
-      type="Slider"
+      widget_class="Slider"
       label="Amount"
+      show_value_label=true
+      tracking=false
 
     [param_b]
-      type="Dial"
+      widget_class="Dial"
       label="Angel"
       min_value=0
       max_value=180
       show_value_label=true
       value_prefix="angle="
       value_suffix="°"
+      tracking=true
 
     @end
     """

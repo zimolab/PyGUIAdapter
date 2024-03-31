@@ -2,7 +2,7 @@ from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.interact.uprint import uprint
 
 
-def codeeditors_demo(
+def editors_demo(
     universal_code: str,
     json_obj: any = 10,
     list_obj: list = [],
@@ -11,9 +11,9 @@ def codeeditors_demo(
 ):
     """This demo show widgets for complex data types
 
-    @begin
+    @widgets
     [universal_code]
-    type="UniversalSourceCodeEditor"
+    widget_class="CodeEditor"
     configs.Lexer="Python"
     @end
     """
@@ -27,5 +27,5 @@ def codeeditors_demo(
 if __name__ == "__main__":
     gui_adapter = GUIAdapter()
     gui_adapter.execution_window_config.show_function_result_dialog = False
-    gui_adapter.add(codeeditors_demo)
+    gui_adapter.add(editors_demo)
     gui_adapter.run()

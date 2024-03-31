@@ -24,11 +24,10 @@ def print_logging_demo(your_name: str):
     """.strip()
     uprint(poem_text, html=True)
 
-    ulogging.info(f"hello, world!")
-    ulogging.debug(f"hello, world!")
-    ulogging.warning(f"hello, world!")
-    ulogging.critical(f"hello, world!")
-    ulogging.critical(f"")
+    ulogging.info(f"hello world!")
+    ulogging.debug(f"hello world!")
+    ulogging.warning(f"hello world!")
+    ulogging.critical(f"hello world!")
     uprint("hello world!")
 
 

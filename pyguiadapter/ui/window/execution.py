@@ -324,10 +324,8 @@ class ExecutionWindow(QMainWindow):
     def _create_parameter_widgets(self):
         factory = get_widget_factory()
         try:
-            for parameter_description in self._function.function_description.parameters:
-                parameter_widget = factory.create_widget_from_description(
-                    parameter_description
-                )
+            for parameter_info in self._function.function_info.parameters:
+                parameter_widget = factory.create_widget_for_parameter(parameter_info)
                 self._parameter_widgets.append(parameter_widget)
         except BaseException as e:
             self._cleanup_parameter_widgets()
@@ -335,9 +333,10 @@ class ExecutionWindow(QMainWindow):
 
     def _add_parameter_widgets(self):
         for widget in self._parameter_widgets:
+            widget.setParent(self._ui.scrollarea_content)
             self._layout_parameter_widgets.addWidget(widget)
         spacer_item = QSpacerItem(
-            0, 0, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding
+            40, 40, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding
         )
         self._layout_parameter_widgets.addSpacerItem(spacer_item)
 
