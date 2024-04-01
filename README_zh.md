@@ -8,6 +8,8 @@
 
 ![PyGUIAdapter](./screenshoots/pyguiadapter_mid.png)
 
+一个真实的应用案例：[Simple-OTP](https://github.com/zimolab/simple-otp)
+
 ---
 
 ## 1. 快速开始

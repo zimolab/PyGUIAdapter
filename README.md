@@ -8,6 +8,8 @@ A library that makes it easy to convert (almost) any Python functions into a GUI
 
 ![PyGUIAdapter](./screenshoots/pyguiadapter_mid.png)
 
+A real world application using this library: [Simple-OTP](https://github.com/zimolab/simple-otp)
+
 ---
 
 ## 1. Quick Start
