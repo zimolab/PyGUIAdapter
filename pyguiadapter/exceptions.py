@@ -6,9 +6,9 @@ class NotExistError(Exception):
     pass
 
 
-class ApplicationNotStartedError(Exception):
+class AppNotStartedError(Exception):
     pass
 
 
-class InitializationCancelled(Exception):
+class ClassInitCancelled(Exception):
     pass

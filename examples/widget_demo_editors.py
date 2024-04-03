@@ -26,6 +26,6 @@ def editors_demo(
 
 if __name__ == "__main__":
     gui_adapter = GUIAdapter()
-    gui_adapter.execution_window_config.show_function_result_dialog = False
+    gui_adapter.execution_window_config.show_func_result_dialog = False
     gui_adapter.add(editors_demo)
     gui_adapter.run()

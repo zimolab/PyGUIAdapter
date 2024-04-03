@@ -25,9 +25,9 @@ class Ui_SelectionWindow(object):
         self.verticalLayout = QtWidgets.QVBoxLayout(self.layoutWidget)
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.label_functions = QtWidgets.QLabel(parent=self.layoutWidget)
-        self.label_functions.setObjectName("label_functions")
-        self.verticalLayout.addWidget(self.label_functions)
+        self.label_func_list = QtWidgets.QLabel(parent=self.layoutWidget)
+        self.label_func_list.setObjectName("label_func_list")
+        self.verticalLayout.addWidget(self.label_func_list)
         self.listwidget_functions = QtWidgets.QListWidget(parent=self.layoutWidget)
         self.listwidget_functions.setObjectName("listwidget_functions")
         self.verticalLayout.addWidget(self.listwidget_functions)
@@ -62,7 +62,7 @@ class Ui_SelectionWindow(object):
     def retranslateUi(self, SelectionWindow):
         _translate = QtCore.QCoreApplication.translate
         SelectionWindow.setWindowTitle(_translate("SelectionWindow", "Select Function"))
-        self.label_functions.setText(_translate("SelectionWindow", "Functions"))
+        self.label_func_list.setText(_translate("SelectionWindow", "Functions"))
         self.button_select.setText(_translate("SelectionWindow", "Select"))
         self.label_document.setText(_translate("SelectionWindow", "Documentation"))
         self.textedit_document.setHtml(_translate("SelectionWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"

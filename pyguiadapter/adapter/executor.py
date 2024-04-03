@@ -10,9 +10,9 @@ class FunctionExecutor(QThread):
     exception_occurred = pyqtSignal(BaseException)
     result_ready = pyqtSignal(object)
 
-    def __init__(self, function: FunctionBundle, arguments: dict, parent=None):
+    def __init__(self, func_bundle: FunctionBundle, arguments: dict, parent=None):
         super().__init__(parent)
-        self._function = function
+        self._func_bundle = func_bundle
         self._arguments = copy.deepcopy(arguments)
 
     def run(self):
@@ -27,4 +27,4 @@ class FunctionExecutor(QThread):
             self.result_ready.emit(result)
 
     def on_execute(self):
-        return self._function.execute(**self._arguments)
+        return self._func_bundle.execute_function(**self._arguments)

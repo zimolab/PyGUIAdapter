@@ -23,7 +23,7 @@
       <widget class="QWidget" name="layoutWidget">
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
-         <widget class="QLabel" name="label_functions">
+         <widget class="QLabel" name="label_func_list">
           <property name="text">
            <string>Functions</string>
           </property>

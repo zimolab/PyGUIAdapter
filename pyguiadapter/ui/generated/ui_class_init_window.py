@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file 'D:\Projects\PyGUIAdapter\designer\initialization_window.ui'
+# Form implementation generated from reading ui file 'D:\Projects\PyGUIAdapter\designer\class_init_window.ui'
 #
 # Created by: PyQt6 UI code generator 6.6.1
 #
@@ -9,21 +9,21 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 
-class Ui_InitializationWindow(object):
-    def setupUi(self, InitializationWindow):
-        InitializationWindow.setObjectName("InitializationWindow")
-        InitializationWindow.resize(410, 619)
-        self.verticalLayout = QtWidgets.QVBoxLayout(InitializationWindow)
+class Ui_ClassInitWindow(object):
+    def setupUi(self, ClassInitWindow):
+        ClassInitWindow.setObjectName("ClassInitWindow")
+        ClassInitWindow.resize(410, 619)
+        self.verticalLayout = QtWidgets.QVBoxLayout(ClassInitWindow)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.label = QtWidgets.QLabel(parent=InitializationWindow)
-        self.label.setObjectName("label")
-        self.verticalLayout.addWidget(self.label)
-        self.line = QtWidgets.QFrame(parent=InitializationWindow)
+        self.label_title = QtWidgets.QLabel(parent=ClassInitWindow)
+        self.label_title.setObjectName("label_title")
+        self.verticalLayout.addWidget(self.label_title)
+        self.line = QtWidgets.QFrame(parent=ClassInitWindow)
         self.line.setFrameShape(QtWidgets.QFrame.Shape.HLine)
         self.line.setFrameShadow(QtWidgets.QFrame.Shadow.Sunken)
         self.line.setObjectName("line")
         self.verticalLayout.addWidget(self.line)
-        self.scrollarea = QtWidgets.QScrollArea(parent=InitializationWindow)
+        self.scrollarea = QtWidgets.QScrollArea(parent=ClassInitWindow)
         self.scrollarea.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
         self.scrollarea.setFrameShadow(QtWidgets.QFrame.Shadow.Plain)
         self.scrollarea.setWidgetResizable(True)
@@ -33,20 +33,20 @@ class Ui_InitializationWindow(object):
         self.param_widgets_container.setObjectName("param_widgets_container")
         self.scrollarea.setWidget(self.param_widgets_container)
         self.verticalLayout.addWidget(self.scrollarea)
-        self.line_2 = QtWidgets.QFrame(parent=InitializationWindow)
+        self.line_2 = QtWidgets.QFrame(parent=ClassInitWindow)
         self.line_2.setFrameShape(QtWidgets.QFrame.Shape.HLine)
         self.line_2.setFrameShadow(QtWidgets.QFrame.Shadow.Sunken)
         self.line_2.setObjectName("line_2")
         self.verticalLayout.addWidget(self.line_2)
-        self.button_initialize = QtWidgets.QPushButton(parent=InitializationWindow)
+        self.button_initialize = QtWidgets.QPushButton(parent=ClassInitWindow)
         self.button_initialize.setObjectName("button_initialize")
         self.verticalLayout.addWidget(self.button_initialize)
 
-        self.retranslateUi(InitializationWindow)
-        QtCore.QMetaObject.connectSlotsByName(InitializationWindow)
+        self.retranslateUi(ClassInitWindow)
+        QtCore.QMetaObject.connectSlotsByName(ClassInitWindow)
 
-    def retranslateUi(self, InitializationWindow):
+    def retranslateUi(self, ClassInitWindow):
         _translate = QtCore.QCoreApplication.translate
-        InitializationWindow.setWindowTitle(_translate("InitializationWindow", "Initialization"))
-        self.label.setText(_translate("InitializationWindow", "Initialization Parameters"))
-        self.button_initialize.setText(_translate("InitializationWindow", "Initialize"))
+        ClassInitWindow.setWindowTitle(_translate("ClassInitWindow", "Initialization"))
+        self.label_title.setText(_translate("ClassInitWindow", "Initialization Parameters"))
+        self.button_initialize.setText(_translate("ClassInitWindow", "Initialize"))

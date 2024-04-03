@@ -13,7 +13,7 @@ T = TypeVar("T")
 
 ICON_FILE_EXT = ".svg"
 
-__function_parser = FunctionInfoParser()
+__func_parser = FunctionInfoParser()
 __widget_factory = ParameterWidgetFactory()
 
 
@@ -24,8 +24,8 @@ class DocumentFormat(enum.Enum):
 
 
 def get_function_parser() -> FunctionInfoParser:
-    global __function_parser
-    return __function_parser
+    global __func_parser
+    return __func_parser
 
 
 def get_widget_factory() -> ParameterWidgetFactory:

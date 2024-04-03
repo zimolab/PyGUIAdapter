@@ -11,7 +11,7 @@ DEFAULT_DOCUMENT_TEXT_COLOR = "#000000"
 DEFAULT_DOCUMENT_FONT_SIZE = 16
 
 
-TEXT_EDIT_STYLESHEET = """
+TEXTEDIT_STYLESHEET = """
 QTextEdit{
     background-color: ${bg_color};
     color: ${text_color};
@@ -46,13 +46,13 @@ QScrollBar::add-page:vertical{
 """
 
 
-def get_text_edit_stylesheet(
+def get_textedit_stylesheet(
     bg_color: str = DEFAULT_OUTPUT_BG_COLOR,
     text_color: str = DEFAULT_OUTPUT_TEXT_COLOR,
     font_family: str = DEFAULT_OUTPUT_FONT_FAMILY,
     font_size: int = DEFAULT_OUTPUT_FONT_SIZE,
 ):
-    css = string.Template(TEXT_EDIT_STYLESHEET).substitute(
+    css = string.Template(TEXTEDIT_STYLESHEET).substitute(
         bg_color=bg_color,
         text_color=text_color,
         font_family=font_family,

@@ -66,7 +66,7 @@ def interact_with_popups(popup_type: str = "get_int"):
 
 if __name__ == "__main__":
     gui_adapter = GUIAdapter()
-    gui_adapter.execution_window_config.show_function_result_dialog = False
+    gui_adapter.execution_window_config.show_func_result_dialog = False
     gui_adapter.add(
         interact_with_popups,
         widget_configs={

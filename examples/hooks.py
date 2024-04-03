@@ -5,9 +5,9 @@ from qt_material import apply_stylesheet
 
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.interact.uprint import uprint
-from pyguiadapter.ui.window.execution import ExecutionWindow
-from pyguiadapter.ui.window.initialization import InitializationWindow
-from pyguiadapter.ui.window.selection import SelectionWindow
+from pyguiadapter.ui.window.func_execution import ExecutionWindow
+from pyguiadapter.ui.window.class_init import ClassInitWindow
+from pyguiadapter.ui.window.func_selection import SelectionWindow
 
 
 class Foo(object):
@@ -34,7 +34,7 @@ def on_execution_window_created(execution_window: ExecutionWindow):
     print("Execution window created!", threading.current_thread())
 
 
-def on_initialization_window_created(initialization_window: InitializationWindow):
+def on_initialization_window_created(initialization_window: ClassInitWindow):
     print("Initialization window created!", threading.current_thread())
 
 
@@ -45,11 +45,11 @@ def on_selection_window_created(selection_window: SelectionWindow):
 if __name__ == "__main__":
     gui_adapter = GUIAdapter()
     gui_adapter.always_show_selection_window = True
-    gui_adapter.on_application_started(on_application_started)
-    gui_adapter.on_initialization_window_created(on_initialization_window_created)
+    gui_adapter.on_app_started(on_application_started)
+    gui_adapter.on_class_init_window_created(on_initialization_window_created)
     gui_adapter.on_selection_window_created(on_selection_window_created)
     gui_adapter.on_execution_window_created(on_execution_window_created)
 
-    with gui_adapter.initialize_class(Foo) as foo_instance:
+    with gui_adapter.instantiate_class(Foo) as foo_instance:
         gui_adapter.add(Foo.foo, bind=foo_instance)
         gui_adapter.run()

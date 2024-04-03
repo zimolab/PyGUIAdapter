@@ -6,19 +6,19 @@ from pyguiadapter.ui.styles import (
     DEFAULT_OUTPUT_TEXT_COLOR,
     DEFAULT_OUTPUT_FONT_FAMILY,
     DEFAULT_OUTPUT_FONT_SIZE,
-    get_text_edit_stylesheet,
+    get_textedit_stylesheet,
 )
 
 
-def setup_text_edit_stylesheet(
-    text_edit: QTextEdit,
+def setup_textedit_stylesheet(
+    textedit: QTextEdit,
     bg_color: str = DEFAULT_OUTPUT_BG_COLOR,
     text_color: str = DEFAULT_OUTPUT_TEXT_COLOR,
     font_family: str = DEFAULT_OUTPUT_FONT_FAMILY,
     font_size: int = DEFAULT_OUTPUT_FONT_SIZE,
 ):
-    text_edit.setStyleSheet(
-        get_text_edit_stylesheet(
+    textedit.setStyleSheet(
+        get_textedit_stylesheet(
             bg_color=bg_color,
             text_color=text_color,
             font_family=font_family,
@@ -27,11 +27,11 @@ def setup_text_edit_stylesheet(
     )
 
 
-def set_text_edit_text(text_edit: QTextEdit, text: str, text_format: DocumentFormat):
+def set_textedit_text(textedit: QTextEdit, text: str, text_format: DocumentFormat):
     if text_format == DocumentFormat.HTML:
-        text_edit.setHtml(text)
+        textedit.setHtml(text)
     elif text_format == DocumentFormat.MARKDOWN:
-        text_edit.setMarkdown(text)
+        textedit.setMarkdown(text)
     else:
-        text_edit.setPlainText("")
-        text_edit.append(text)
+        textedit.setPlainText("")
+        textedit.append(text)
