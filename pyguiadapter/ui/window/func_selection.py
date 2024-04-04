@@ -1,7 +1,7 @@
 import dataclasses
 import os.path
 import warnings
-from typing import Callable, List, Optional
+from typing import List, Optional
 
 from PyQt6.QtCore import QSize, Qt
 from PyQt6.QtGui import QIcon, QTextOption
@@ -13,7 +13,7 @@ from PyQt6.QtWidgets import (
     QTextEdit,
 )
 
-from pyguiadapter.adapter.bundle import FunctionBundle, DEFAULT_ICON
+from pyguiadapter.adapter.bundle import Callable, DEFAULT_ICON, FunctionBundle
 from pyguiadapter.commons import get_icon_file
 from pyguiadapter.ui.config import WindowConfig
 from pyguiadapter.ui.generated.ui_selection_window import Ui_SelectionWindow
@@ -46,7 +46,7 @@ class SelectionWindowConfig(WindowConfig):
 class SelectionWindow(QMainWindow):
     def __init__(
         self,
-        func_bundles: List[FunctionBundle],
+        func_bundles: List[Callable],
         config: Optional[SelectionWindowConfig] = None,
         config_execution_window: Optional[WindowConfig] = None,
         callback_window_created: Optional[Callable[[QMainWindow], None]] = None,

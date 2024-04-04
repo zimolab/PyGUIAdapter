@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QTextEdit
+from PyQt6.QtWidgets import QTextEdit, QWidget, QMessageBox
 
 from pyguiadapter.commons import DocumentFormat
 from pyguiadapter.ui.styles import (
@@ -35,3 +35,25 @@ def set_textedit_text(textedit: QTextEdit, text: str, text_format: DocumentForma
     else:
         textedit.setPlainText("")
         textedit.append(text)
+
+
+def show_info_dialog(parent: QWidget, message: str, *, title: str = None):
+    QMessageBox.information(parent, title, message)
+
+
+def show_warning_dialog(parent: QWidget, message: str, *, title: str = None):
+    QMessageBox.warning(parent, title, message)
+
+
+def show_critical_dialog(parent: QWidget, message: str, *, title: str = None):
+    QMessageBox.critical(parent, title, message)
+
+
+def show_question_dialog(parent: QWidget, message: str, *, title: str = None) -> bool:
+    result = QMessageBox.question(
+        parent,
+        title,
+        message,
+        QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+    )
+    return result == QMessageBox.StandardButton.Yes

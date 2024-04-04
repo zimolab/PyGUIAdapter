@@ -1,11 +1,14 @@
 import contextlib
 import inspect
 import sys
-from typing import Type, Callable, Optional, List, Dict
+from typing import Type, Optional, List, Dict, Callable, Union
 
 from PyQt6.QtWidgets import QApplication, QMessageBox
 
-from pyguiadapter.adapter.bundle import FunctionBundle, CANCEL_EVENT_PARAM_NAME
+from pyguiadapter.adapter.bundle import (
+    CANCEL_EVENT_PARAM_NAME,
+    FunctionBundle,
+)
 from pyguiadapter.commons import T, DocumentFormat
 from pyguiadapter.exceptions import (
     AlreadyExistsError,
@@ -13,11 +16,12 @@ from pyguiadapter.exceptions import (
     AppNotStartedError,
     ClassInitCancelled,
 )
-from pyguiadapter.ui.window.func_execution import ExecutionWindowConfig, ExecutionWindow
+from pyguiadapter.ui.menus import ActionItem, Separator
 from pyguiadapter.ui.window.class_init import (
     ClassInitWindow,
     ClassInitWindowConfig,
 )
+from pyguiadapter.ui.window.func_execution import ExecutionWindowConfig, ExecutionWindow
 from pyguiadapter.ui.window.func_selection import SelectionWindowConfig, SelectionWindow
 
 ALWAYS_SHOW_SELECTION_WINDOW: bool = False
@@ -78,9 +82,11 @@ class GUIAdapter:
         display_icon: str = None,
         display_document: str = None,
         document_format: DocumentFormat = DocumentFormat.PLAIN,
-        widget_configs: Dict[str, dict] = None,
+        widget_configs: Optional[Dict[str, Dict]] = None,
         cancelable: bool = False,
         cancel_event_param_name: str = CANCEL_EVENT_PARAM_NAME,
+        menus: Optional[Dict[str, Dict]] = None,
+        toolbar_actions: Optional[List[Union[ActionItem, type(Separator)]]] = None,
     ):
         if func_obj in self._func_bundles:
             raise AlreadyExistsError(f"function '{func_obj.__name__}' already added")
@@ -94,6 +100,8 @@ class GUIAdapter:
             widgets_configs=widget_configs,
             cancelable=cancelable,
             cancel_event_param_name=cancel_event_param_name,
+            menus=menus,
+            toolbar_actions=toolbar_actions,
         )
         self._func_bundles[func_obj] = bundle
 
@@ -102,7 +110,7 @@ class GUIAdapter:
             raise NotExistError(f"function '{func_obj.__name__}' not found")
         del self._func_bundles[func_obj]
 
-    def get(self, func_obj: callable) -> Optional[FunctionBundle]:
+    def get(self, func_obj: callable) -> Optional[Callable]:
         return self._func_bundles.get(func_obj, None)
 
     def clear(self):

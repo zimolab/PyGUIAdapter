@@ -181,9 +181,9 @@ Next, you need to register the widget type you created(`Point2DInput`) to the pa
 The code might look like this:
 
 ```python
-from pyguiadapter.commons import get_widget_factory
+from pyguiadapter.commons import get_param_widget_factory
 
-factory = get_widget_factory()
+factory = get_param_widget_factory()
 factory.register("Point2DInput", Point2DInput)
 ```
 

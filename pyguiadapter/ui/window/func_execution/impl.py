@@ -1,115 +1,38 @@
-import dataclasses
-import enum
-from typing import Any, Tuple, Callable, Optional, List, Dict
+import warnings
+from typing import Any, Optional, List, Dict, Callable
 
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QCloseEvent, QTextCursor, QTextOption
 from PyQt6.QtWidgets import (
-    QMainWindow,
     QVBoxLayout,
     QSpacerItem,
     QSizePolicy,
     QDockWidget,
     QMessageBox,
-    QApplication,
     QTextEdit,
 )
 from function2widgets.widget import BaseParameterWidget
 
 from pyguiadapter.adapter.bundle import FunctionBundle
 from pyguiadapter.adapter.executor import FunctionExecutor
-from pyguiadapter.commons import clear_layout, get_widget_factory
+from pyguiadapter.commons import clear_layout, get_param_widget_factory
 from pyguiadapter.interact import uprint, upopup, ulogging
 from pyguiadapter.interact.upopup import UPopup
-from pyguiadapter.ui.config import WindowConfig
 from pyguiadapter.ui.generated.ui_execution_window import Ui_ExecutionWindow
-from pyguiadapter.ui.styles import (
-    DEFAULT_OUTPUT_BG_COLOR,
-    DEFAULT_OUTPUT_TEXT_COLOR,
-    DEFAULT_OUTPUT_FONT_FAMILY,
-    DEFAULT_OUTPUT_FONT_SIZE,
-    DEFAULT_DOCUMENT_BG_COLOR,
-    DEFAULT_DOCUMENT_TEXT_COLOR,
-    DEFAULT_DOCUMENT_FONT_FAMILY,
-    DEFAULT_DOCUMENT_FONT_SIZE,
-)
 from pyguiadapter.ui.utils import setup_textedit_stylesheet, set_textedit_text
-
-FUNC_RESULT_MSG = QApplication.tr("function result: {}")
-FUNC_RESULT_DIALOG_TITLE = QApplication.tr("Function Result")
-FUNC_START_MSG = QApplication.tr("function execution started")
-FUNC_FINISH_MSG = QApplication.tr("function execution finished")
-FUNC_ERROR_MSG = QApplication.tr("function execution error: {}")
-FUNC_ERROR_DIALOG_TITLE = QApplication.tr("Function Execution Error")
-BUSY_MSG = QApplication.tr("A function is already running!")
-BUSY_DIALOG_TITLE = QApplication.tr("Busy")
-
-DOCK_SIZES = (460, 460)
-
-SOLE_WINDOW_SIZE = (460, 600)
+from .base import BaseExecutionWindow
+from .config import DockWidgetState, DockConfig, ExecutionWindowConfig
+from .constants import BUSY_MSG, BUSY_DIALOG_TITLE, DOCK_SIZES, SOLE_WINDOW_SIZE
+from .context import ExecutionContext
+from .exceptions import (
+    SetParameterValueError,
+    NoSuchParameterError,
+    FunctionNotCancelableError,
+    FunctionNotExecutingError,
+)
 
 
-class DockWidgetState(enum.Enum):
-    Shown = 0
-    Hidden = 1
-    Floating = 3
-
-
-@dataclasses.dataclass
-class DockConfig(object):
-    title: Optional[str] = None
-    state: DockWidgetState = DockWidgetState.Shown
-    floating_size: Tuple[int, int] = dataclasses.field(default=(400, 600))
-
-
-@dataclasses.dataclass
-class ExecutionWindowConfig(WindowConfig):
-
-    tabify_docks: bool = True
-    output_dock_config: DockConfig = DockConfig()
-    document_dock_config: DockConfig = DockConfig()
-
-    autoclear_output: bool = True
-
-    param_groupbox_title: Optional[str] = None
-    autoclear_checkbox_text: Optional[str] = None
-    execute_button_text: Optional[str] = None
-    clear_button_text: Optional[str] = None
-    cancel_button_text: Optional[str] = None
-
-    output_font_family: str = DEFAULT_OUTPUT_FONT_FAMILY
-    output_font_size: int = DEFAULT_OUTPUT_FONT_SIZE
-    output_bg_color: str = DEFAULT_OUTPUT_BG_COLOR
-    output_text_color: str = DEFAULT_OUTPUT_TEXT_COLOR
-
-    document_font_family: str = DEFAULT_DOCUMENT_FONT_FAMILY
-    document_font_size: int = DEFAULT_DOCUMENT_FONT_SIZE
-    document_bg_color: str = DEFAULT_DOCUMENT_BG_COLOR
-    document_text_color: str = DEFAULT_DOCUMENT_TEXT_COLOR
-
-    print_func_result: bool = True
-    func_result_msg: str = FUNC_RESULT_MSG
-    show_func_result_dialog: bool = True
-    func_result_dialog_title: str = FUNC_RESULT_DIALOG_TITLE
-    func_result_dialog_msg: str = FUNC_RESULT_MSG
-
-    print_func_start_msg: bool = True
-    func_start_msg: str = FUNC_START_MSG
-
-    print_func_finish_msg: bool = True
-    func_finish_msg: str = FUNC_FINISH_MSG
-
-    show_func_error_dialog: bool = True
-    func_error_dialog_title: str = FUNC_ERROR_DIALOG_TITLE
-    func_error_dialog_msg: str = FUNC_ERROR_MSG
-    print_func_error: bool = True
-    func_error_msg: str = FUNC_ERROR_MSG
-
-    timestamp: bool = True
-    timestamp_pattern: str = "%Y-%m-%d %H:%M:%S"
-
-
-class ExecutionWindow(QMainWindow):
+class ExecutionWindow(BaseExecutionWindow):
     def __init__(
         self,
         func_bundle: FunctionBundle,
@@ -130,6 +53,7 @@ class ExecutionWindow(QMainWindow):
         self._layout_param_widgets = QVBoxLayout()
 
         self._executor: Optional[FunctionExecutor] = None
+        self._execution_ctx: ExecutionContext = ExecutionContext(self)
 
         self._setup_ui()
         self._setup_param_widgets()
@@ -157,11 +81,27 @@ class ExecutionWindow(QMainWindow):
         self._config = config
         self._config.apply_basic_configs(self)
 
+    def is_func_executing(self):
+        return self._executor is not None and self._executor.isRunning()
+
+    def get_func(self) -> Callable:
+        return self._func_bundle.func_obj
+
+    def is_func_cancelable(self) -> bool:
+        return self._func_bundle.cancelable
+
     def clear_output(self, force: bool = False):
-        if self._is_busy() and not force:
+        if self.is_func_executing() and not force:
             self._alert_busy()
             return
         self._ui.textedit_output.clear()
+
+    def cancel_executing(self):
+        if not self._func_bundle.cancelable:
+            raise FunctionNotCancelableError("function is not cancelable")
+        if not self.is_func_executing():
+            raise FunctionNotExecutingError("function is not executing now")
+        self._cancel_executing()
 
     def append_output(self, text: str, html: bool = False):
         if text and not html:
@@ -174,33 +114,65 @@ class ExecutionWindow(QMainWindow):
         self._ui.textedit_output.ensureCursorVisible()
         self._ui.textedit_output.moveCursor(QTextCursor.MoveOperation.End)
 
+    def get_params_info(self) -> Dict[str, Any]:
+        return {p.name: p.typename for p in self._func_bundle.func_info.parameters}
+
+    def get_param_values(self) -> Dict[str, Any]:
+        return {
+            param_widget.parameter_name: param_widget.get_value()
+            for param_widget in self._param_widgets
+        }
+
+    def get_param_value(self, param_name: str) -> Any:
+        param_widget = None
+        for widget in self._param_widgets:
+            if widget.parameter_name == param_name:
+                param_widget = widget
+        if param_widget:
+            raise NoSuchParameterError(f"no such parameter {param_name}")
+        return param_widget.get_value()
+
+    def set_param_value(self, param_name: str, value: Any):
+        param_widget = None
+        for widget in self._param_widgets:
+            if widget.parameter_name == param_name:
+                param_widget = widget
+        if param_widget:
+            raise NoSuchParameterError(f"no such parameter {param_name}")
+        return param_widget.set_value(value)
+
     def set_param_values(
-        self, arguments: Dict[str, Any], ignore_exceptions: bool = False
+        self, param_values: Dict[str, Any], ignore_exception: bool = False
     ):
-        if self._is_busy():
-            self._alert_busy()
-            return
+        # if self.is_func_executing():
+        #     self._alert_busy()
+        #     return
         for widget in self._param_widgets:
             param_name = widget.parameter_name
-            if param_name not in arguments:
+            if param_name not in param_values:
                 continue
-            arg = arguments[param_name]
+            arg = param_values[param_name]
             try:
                 widget.set_value(arg)
             except BaseException as e:
-                msg = QApplication.tr(f"can not set parameter '{param_name}'!\n\n  {e}")
-                QMessageBox.critical(self, QApplication.tr("Error"), msg)
-                if not ignore_exceptions:
-                    break
+                msg = f"failed to set value for parameter {param_name}: {e}"
+                if not ignore_exception:
+                    raise SetParameterValueError(msg) from e
+                else:
+                    warnings.warn(msg)
+
+    @property
+    def execution_context(self) -> Any:
+        return self._execution_ctx
 
     def execute_function(self):
-        if self._is_busy():
+        if self.is_func_executing():
             self._alert_busy()
             return
         if self._executor is not None:
             self._executor.deleteLater()
             self._executor = None
-        arguments = self._get_arguments()
+        arguments = self.get_param_values()
         self._executor = FunctionExecutor(
             func_bundle=self._func_bundle, arguments=arguments
         )
@@ -212,7 +184,7 @@ class ExecutionWindow(QMainWindow):
         self._executor.start()
 
     def closeEvent(self, event: QCloseEvent):
-        if self._is_busy():
+        if self.is_func_executing():
             self._alert_busy()
             event.ignore()
             return
@@ -307,7 +279,7 @@ class ExecutionWindow(QMainWindow):
         if self._func_bundle.cancelable:
             self._ui.button_cancel.show()
             self._ui.button_cancel.setEnabled(False)
-            self._ui.button_cancel.clicked.connect(self._on_cancel_requested)
+            self._ui.button_cancel.clicked.connect(self._cancel_executing)
         else:
             self._ui.button_cancel.hide()
             self._ui.button_cancel.setEnabled(False)
@@ -319,24 +291,21 @@ class ExecutionWindow(QMainWindow):
         self._set_func_document()
         self._setup_output_widget()
         self._setup_document_widget()
+        self._clear_actions()
+        self._setup_menus()
+        self._setup_toolbar()
 
         self._ui.button_clear.clicked.connect(self.clear_output)
         self._ui.button_execute.clicked.connect(self.execute_function)
 
-    def _is_busy(self):
-        return self._executor is not None and self._executor.isRunning()
-
     def _alert_busy(self):
-        QMessageBox.warning(self, BUSY_DIALOG_TITLE, BUSY_MSG)
+        self.show_warning_dialog(title=BUSY_DIALOG_TITLE, message=BUSY_MSG)
 
     def _setup_param_widgets(self):
         self._cleanup_param_widgets()
         clear_layout(self._layout_param_widgets)
-        self._create_param_widgets()
-        self._add_param_widgets()
-
-    def _create_param_widgets(self):
-        factory = get_widget_factory()
+        factory = get_param_widget_factory()
+        # create param widgets
         try:
             for param_info in self._func_bundle.func_info.parameters:
                 param_widget = factory.create_widget_for_parameter(param_info)
@@ -344,8 +313,7 @@ class ExecutionWindow(QMainWindow):
         except BaseException as e:
             self._cleanup_param_widgets()
             raise e
-
-    def _add_param_widgets(self):
+        # add param widgets to layout
         for widget in self._param_widgets:
             widget.setParent(self._ui.scrollarea_content)
             self._layout_param_widgets.addWidget(widget)
@@ -358,12 +326,6 @@ class ExecutionWindow(QMainWindow):
         for widget in self._param_widgets:
             widget.deleteLater()
         self._param_widgets.clear()
-
-    def _get_arguments(self) -> Dict[str, Any]:
-        return {
-            param_widget.parameter_name: param_widget.get_value()
-            for param_widget in self._param_widgets
-        }
 
     def _setup_docks(self):
         if self.window_config.tabify_docks:
@@ -442,9 +404,33 @@ class ExecutionWindow(QMainWindow):
         self._ui.textedit_document.setWordWrapMode(QTextOption.WrapMode.WordWrap)
         self._ui.textedit_document.setReadOnly(True)
 
-    def _on_cancel_requested(self):
-        if not self._is_busy():
-            msg = self.tr("No function is in execution now!")
+    def _clear_actions(self):
+        self._actions.clear()
+
+    def _setup_menus(self):
+        self._ui.menubar.clear()
+        if not self.window_config.enable_menubar_actions or not self._func_bundle.menus:
+            self._ui.menubar.hide()
+            return
+        self._ui.menubar.show()
+        self._create_menus(self._ui.menubar, self._func_bundle.menus)
+
+    def _setup_toolbar(self):
+        self._ui.toolbar.clear()
+        if (
+            not self.window_config.enable_toolbar_actions
+            or not self._func_bundle.toolbar_actions
+        ):
+            self._ui.toolbar.hide()
+            return
+        self._ui.toolbar.show()
+        self._create_toolbar_actions(
+            self._ui.toolbar, self._func_bundle.toolbar_actions
+        )
+
+    def _cancel_executing(self):
+        if not self.is_func_executing():
+            msg = self.tr("function is not executing!")
             title = self.tr("Info")
             QMessageBox.information(self, title, msg)
             return

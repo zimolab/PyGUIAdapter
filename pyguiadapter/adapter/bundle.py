@@ -1,9 +1,10 @@
-from typing import Any, Optional, Dict, NoReturn
+from typing import Any, Optional, Dict, NoReturn, Callable, List
 
 from function2widgets.info import FunctionInfo
 
 from pyguiadapter import commons
 from pyguiadapter.commons import T, DocumentFormat
+from pyguiadapter.ui.menus import ActionItem
 
 DEFAULT_ICON = "puzzle"
 
@@ -11,7 +12,6 @@ CANCEL_EVENT_PARAM_NAME = "cancel_event"
 
 
 class FunctionBundle(object):
-
     def __init__(
         self,
         func_obj: callable,
@@ -23,6 +23,8 @@ class FunctionBundle(object):
         widgets_configs: Optional[Dict[str, dict]] = None,
         cancelable=False,
         cancel_event_param_name: Optional[str] = CANCEL_EVENT_PARAM_NAME,
+        menus: Optional[Dict[str, dict]] = None,
+        toolbar_actions: Optional[List[ActionItem]] = None,
     ):
         self._func_obj = func_obj
         self._bind = bind
@@ -34,6 +36,8 @@ class FunctionBundle(object):
         self._cancel_event_param_name = (
             cancel_event_param_name or CANCEL_EVENT_PARAM_NAME
         )
+        self._menus = menus
+        self._toolbar_actions = toolbar_actions
 
         func_info = commons.get_function_parser().parse(
             func_obj=func_obj,
@@ -49,7 +53,7 @@ class FunctionBundle(object):
             self.apply_widget_configs(widgets_configs)
 
     @property
-    def func_obj(self) -> callable:
+    def func_obj(self) -> Callable:
         return self._func_obj
 
     @property
@@ -83,6 +87,14 @@ class FunctionBundle(object):
     @property
     def cancel_event_param_name(self) -> str:
         return self._cancel_event_param_name or CANCEL_EVENT_PARAM_NAME
+
+    @property
+    def menus(self) -> Optional[Dict[str, dict]]:
+        return self._menus
+
+    @property
+    def toolbar_actions(self) -> Optional[List[ActionItem]]:
+        return self._toolbar_actions
 
     def execute_function(self, *args, **kwargs) -> Any:
         if self._bind is None:

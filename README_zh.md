@@ -173,9 +173,9 @@ class Point2DInput(BaseParameterWidget):
 接下来，你需要将`Point2DInput`注册到参数控件工厂中，代码可能长下面这样：
 
 ```python
-from pyguiadapter.commons import get_widget_factory
+from pyguiadapter.commons import get_param_widget_factory
 
-factory = get_widget_factory()
+factory = get_param_widget_factory()
 factory.register("2DPointInput", Point2DInput)
 ```
 

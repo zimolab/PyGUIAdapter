@@ -65,7 +65,7 @@
             <x>0</x>
             <y>0</y>
             <width>507</width>
-            <height>455</height>
+            <height>429</height>
            </rect>
           </property>
          </widget>
@@ -173,7 +173,7 @@
     </layout>
    </widget>
   </widget>
-  <widget class="QToolBar" name="toolBar">
+  <widget class="QToolBar" name="toolbar">
    <property name="windowTitle">
     <string>toolBar</string>
    </property>
@@ -183,6 +183,16 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>26</height>
+    </rect>
+   </property>
   </widget>
   <action name="action_output_view">
    <property name="checkable">

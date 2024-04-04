@@ -14,7 +14,7 @@ from function2widgets.widget import BaseParameterWidget
 from pyguiadapter.commons import (
     T,
     clear_layout,
-    get_widget_factory,
+    get_param_widget_factory,
     get_function_parser,
 )
 from pyguiadapter.interact import upopup
@@ -135,7 +135,7 @@ class ClassInitWindow(QDialog):
         self._add_param_widgets()
 
     def _create_param_widgets(self, function_info: FunctionInfo):
-        factory = get_widget_factory()
+        factory = get_param_widget_factory()
         try:
             for param_info in function_info.parameters:
                 param_widget = factory.create_widget_for_parameter(param_info)

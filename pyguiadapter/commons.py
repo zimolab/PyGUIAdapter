@@ -28,7 +28,7 @@ def get_function_parser() -> FunctionInfoParser:
     return __func_parser
 
 
-def get_widget_factory() -> ParameterWidgetFactory:
+def get_param_widget_factory() -> ParameterWidgetFactory:
     global __widget_factory
     return __widget_factory
 
