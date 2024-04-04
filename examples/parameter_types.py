@@ -27,6 +27,7 @@ means use the default value as argument. If a default value for a parameter is n
 then None is used as its default value.
 """
 
+from datetime import datetime, date, time
 from typing import Literal
 
 from pyguiadapter.adapter import GUIAdapter
@@ -39,14 +40,20 @@ def parameter_types_demo(
     float_param: float,
     bool_param: bool,
     str_param: str = "this is a string",
+    datetime_param: datetime = datetime.now(),
+    date_param: date = datetime.now().date(),
+    time_param: time = datetime.now().time(),
     list_param: list = None,
     tuple_param: tuple = (1, 2, "3"),
     dict_param: dict = {"a": 1, "b": 2, "c": "3"},
     literal_param: Literal["foo", "bar", "张三", "李四"] = "李四",
     any_param: any = None,
 ):
-    """This function shows default widget for all supported parameter types
+    """This function shows default widget for supported parameter types
 
+    :param time_param:
+    :param date_param:
+    :param datetime_param:
     :param int_param:
     :param float_param:
     :param bool_param:
@@ -62,6 +69,9 @@ def parameter_types_demo(
     uprint("float_param: ", float_param)
     uprint("bool_param: ", bool_param)
     uprint("str_param: ", str_param)
+    uprint("datetime_param: ", datetime_param)
+    uprint("date_param: ", date_param)
+    uprint("time_param: ", time_param)
     uprint("list_param: ", list_param)
     uprint("tuple_param: ", tuple_param)
     uprint("dict_param: ", dict_param)
