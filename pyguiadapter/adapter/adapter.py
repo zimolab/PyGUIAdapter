@@ -5,7 +5,7 @@ from typing import Type, Callable, Optional, List, Dict
 
 from PyQt6.QtWidgets import QApplication, QMessageBox
 
-from pyguiadapter.adapter.bundle import FunctionBundle
+from pyguiadapter.adapter.bundle import FunctionBundle, CANCEL_EVENT_PARAM_NAME
 from pyguiadapter.commons import T, DocumentFormat
 from pyguiadapter.exceptions import (
     AlreadyExistsError,
@@ -79,6 +79,8 @@ class GUIAdapter:
         display_document: str = None,
         document_format: DocumentFormat = DocumentFormat.PLAIN,
         widget_configs: Dict[str, dict] = None,
+        cancelable: bool = False,
+        cancel_event_param_name: str = CANCEL_EVENT_PARAM_NAME,
     ):
         if func_obj in self._func_bundles:
             raise AlreadyExistsError(f"function '{func_obj.__name__}' already added")
@@ -90,6 +92,8 @@ class GUIAdapter:
             display_document=display_document,
             document_format=document_format,
             widgets_configs=widget_configs,
+            cancelable=cancelable,
+            cancel_event_param_name=cancel_event_param_name,
         )
         self._func_bundles[func_obj] = bundle
 

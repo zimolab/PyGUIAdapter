@@ -1,3 +1,4 @@
+from examples.cancelable_function import cancelable_function
 from examples.parameter_types import parameter_types_demo
 from examples.customize_widget_1 import customize_widget_1
 from examples.customize_widget_2 import customize_widget_2
@@ -65,4 +66,5 @@ if __name__ == "__main__":
     gui_adapter.add(select_widgets_demo)
     gui_adapter.add(path_edits_demo)
     gui_adapter.add(editors_demo)
+    gui_adapter.add(cancelable_function, cancelable=True)
     gui_adapter.run()

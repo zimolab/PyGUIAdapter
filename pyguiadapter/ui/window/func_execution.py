@@ -35,21 +35,14 @@ from pyguiadapter.ui.styles import (
 )
 from pyguiadapter.ui.utils import setup_textedit_stylesheet, set_textedit_text
 
-FUNC_RESULT_MSG = QApplication.translate("ExecutionWindow", "function result: {}")
-FUNC_RESULT_DIALOG_TITLE = QApplication.translate("ExecutionWindow", "Function Result")
-FUNC_START_MSG = QApplication.translate("ExecutionWindow", "function execution started")
-FUNC_FINISH_MSG = QApplication.translate(
-    "ExecutionWindow", "function execution finished"
-)
-FUNC_ERROR_MSG = QApplication.translate(
-    "ExecutionWindow", "function execution error: {}"
-)
-FUNC_ERROR_DIALOG_TITLE = QApplication.translate(
-    "ExecutionWindow", "Function Execution Error"
-)
-
-BUSY_MSG = QApplication.tr("ExecutionWindow", "A function is already running!")
-BUSY_DIALOG_TITLE = QApplication.tr("ExecutionWindow", "Busy")
+FUNC_RESULT_MSG = QApplication.tr("function result: {}")
+FUNC_RESULT_DIALOG_TITLE = QApplication.tr("Function Result")
+FUNC_START_MSG = QApplication.tr("function execution started")
+FUNC_FINISH_MSG = QApplication.tr("function execution finished")
+FUNC_ERROR_MSG = QApplication.tr("function execution error: {}")
+FUNC_ERROR_DIALOG_TITLE = QApplication.tr("Function Execution Error")
+BUSY_MSG = QApplication.tr("A function is already running!")
+BUSY_DIALOG_TITLE = QApplication.tr("Busy")
 
 DOCK_SIZES = (460, 460)
 
@@ -82,6 +75,7 @@ class ExecutionWindowConfig(WindowConfig):
     autoclear_checkbox_text: Optional[str] = None
     execute_button_text: Optional[str] = None
     clear_button_text: Optional[str] = None
+    cancel_button_text: Optional[str] = None
 
     output_font_family: str = DEFAULT_OUTPUT_FONT_FAMILY
     output_font_size: int = DEFAULT_OUTPUT_FONT_SIZE
@@ -235,6 +229,9 @@ class ExecutionWindow(QMainWindow):
             self.clear_output()
 
     def _on_func_started(self):
+        if self._func_bundle.cancelable:
+            self._ui.button_cancel.setEnabled(True)
+
         if self.window_config.print_func_start_msg:
             if self.window_config.func_start_msg:
                 msg = self.window_config.func_start_msg.format(
@@ -243,6 +240,9 @@ class ExecutionWindow(QMainWindow):
                 self._ulogging_info(msg)
 
     def _on_func_finished(self):
+        if self._func_bundle.cancelable:
+            self._ui.button_cancel.setEnabled(False)
+
         if self._executor is not None:
             self._executor.deleteLater()
             self._executor = None
@@ -301,6 +301,16 @@ class ExecutionWindow(QMainWindow):
 
         if self.window_config.execute_button_text is not None:
             self._ui.button_execute.setText(self.window_config.execute_button_text)
+
+        if self.window_config.cancel_button_text is not None:
+            self._ui.button_cancel.setText(self.window_config.cancel_button_text)
+        if self._func_bundle.cancelable:
+            self._ui.button_cancel.show()
+            self._ui.button_cancel.setEnabled(False)
+            self._ui.button_cancel.clicked.connect(self._on_cancel_requested)
+        else:
+            self._ui.button_cancel.hide()
+            self._ui.button_cancel.setEnabled(False)
 
         if self.window_config.clear_button_text is not None:
             self._ui.button_clear.setText(self.window_config.clear_button_text)
@@ -431,6 +441,15 @@ class ExecutionWindow(QMainWindow):
         self._ui.textedit_document.setLineWrapMode(QTextEdit.LineWrapMode.WidgetWidth)
         self._ui.textedit_document.setWordWrapMode(QTextOption.WrapMode.WordWrap)
         self._ui.textedit_document.setReadOnly(True)
+
+    def _on_cancel_requested(self):
+        if not self._is_busy():
+            msg = self.tr("No function is in execution now!")
+            title = self.tr("Info")
+            QMessageBox.information(self, title, msg)
+            return
+        if self._executor is not None:
+            self._executor.cancel_requested.emit()
 
     def _ulogging_info(self, message: str):
         ulogging.info(

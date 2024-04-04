@@ -91,6 +91,13 @@
        </widget>
       </item>
       <item>
+       <widget class="QPushButton" name="button_cancel">
+        <property name="text">
+         <string>Cancel</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="button_clear">
         <property name="text">
          <string>Clear Output</string>

@@ -7,6 +7,8 @@ from pyguiadapter.commons import T, DocumentFormat
 
 DEFAULT_ICON = "puzzle"
 
+CANCEL_EVENT_PARAM_NAME = "cancel_event"
+
 
 class FunctionBundle(object):
 
@@ -19,6 +21,8 @@ class FunctionBundle(object):
         display_document: Optional[str] = None,
         document_format: Optional[DocumentFormat] = DocumentFormat.PLAIN,
         widgets_configs: Optional[Dict[str, dict]] = None,
+        cancelable=False,
+        cancel_event_param_name: Optional[str] = CANCEL_EVENT_PARAM_NAME,
     ):
         self._func_obj = func_obj
         self._bind = bind
@@ -26,11 +30,20 @@ class FunctionBundle(object):
         self._display_icon = display_icon
         self._display_document = display_document
         self._document_format = document_format
+        self._cancelable = cancelable
+        self._cancel_event_param_name = (
+            cancel_event_param_name or CANCEL_EVENT_PARAM_NAME
+        )
 
-        self._func_info = commons.get_function_parser().parse(
+        func_info = commons.get_function_parser().parse(
             func_obj=func_obj,
             ignore_self_param=True,
         )
+
+        if cancelable:
+            func_info = self._handle_cancelable_func(func_info)
+
+        self._func_info = func_info
 
         if widgets_configs:
             self.apply_widget_configs(widgets_configs)
@@ -63,6 +76,14 @@ class FunctionBundle(object):
     def document_format(self) -> DocumentFormat:
         return self._document_format
 
+    @property
+    def cancelable(self) -> bool:
+        return self._cancelable
+
+    @property
+    def cancel_event_param_name(self) -> str:
+        return self._cancel_event_param_name or CANCEL_EVENT_PARAM_NAME
+
     def execute_function(self, *args, **kwargs) -> Any:
         if self._bind is None:
             return self._func_obj(*args, **kwargs)
@@ -85,6 +106,21 @@ class FunctionBundle(object):
                 continue
 
             widget_info.update_with_flattened_dict(widget_config)
+
+    def _handle_cancelable_func(self, func_info: FunctionInfo) -> FunctionInfo:
+        params = func_info.parameters
+        cancel_event_param = None
+        for param_info in params:
+            if param_info.name == self.cancel_event_param_name:
+                cancel_event_param = param_info
+                break
+        if cancel_event_param is None:
+            raise RuntimeError(
+                f"a cancelable function must provide a keyword parameter named '{self._cancel_event_param_name}'"
+            )
+        else:
+            params.remove(cancel_event_param)
+        return func_info
 
     def __repr__(self):
         return f"<FunctionBundle function={self.func_obj} bind={self.bind}>"
