@@ -1,3 +1,5 @@
+from typing import Optional, List, Tuple
+
 from PyQt6.QtWidgets import QApplication
 
 FUNC_RESULT_MSG = QApplication.tr("function result: {}")
@@ -12,3 +14,6 @@ BUSY_DIALOG_TITLE = QApplication.tr("Busy")
 DOCK_SIZES = (460, 460)
 
 SOLE_WINDOW_SIZE = (460, 600)
+
+# (typename, [...type_extras])
+ParamInfoType = Tuple[str, Optional[List[str]]]

@@ -1,7 +1,3 @@
-class FunctionExecutingError(RuntimeError):
-    pass
-
-
 class FunctionNotExecutingError(RuntimeError):
     pass
 
@@ -15,4 +11,8 @@ class SetParameterValueError(RuntimeError):
 
 
 class FunctionNotCancelableError(RuntimeError):
+    pass
+
+
+class NotCallableError(ValueError):
     pass

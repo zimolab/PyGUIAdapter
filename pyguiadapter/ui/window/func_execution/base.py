@@ -1,6 +1,7 @@
 import abc
 from typing import Dict, Any, List
 
+from PyQt6.QtCore import pyqtSignal
 from PyQt6.QtGui import QAction, QIcon
 from PyQt6.QtWidgets import QMainWindow, QMenu, QToolBar, QMenuBar
 
@@ -12,13 +13,18 @@ from pyguiadapter.ui.utils import (
     show_critical_dialog,
     show_question_dialog,
 )
+from pyguiadapter.ui.window.func_execution.constants import ParamInfoType
 
 
 class BaseExecutionWindow(QMainWindow):
 
+    run_on_ui_thread_requested = pyqtSignal(object, tuple, dict)
+
     def __init__(self, parent=None):
         super().__init__(parent)
         self._actions: Dict[int, QAction] = {}
+        # noinspection PyUnresolvedReferences
+        self.run_on_ui_thread_requested.connect(self._run_on_ui_thread)
 
     @abc.abstractmethod
     def get_func(self) -> Callable:
@@ -33,11 +39,15 @@ class BaseExecutionWindow(QMainWindow):
         pass
 
     @abc.abstractmethod
+    def execute_function(self):
+        pass
+
+    @abc.abstractmethod
     def cancel_executing(self):
         pass
 
     @abc.abstractmethod
-    def clear_output(self) -> None:
+    def clear_output(self):
         pass
 
     @abc.abstractmethod
@@ -49,7 +59,7 @@ class BaseExecutionWindow(QMainWindow):
         pass
 
     @abc.abstractmethod
-    def get_param_values(self) -> Dict[str, Any]:
+    def get_param_values(self) -> Dict[str, ParamInfoType]:
         pass
 
     @abc.abstractmethod
@@ -130,3 +140,13 @@ class BaseExecutionWindow(QMainWindow):
         action_callback = action.data()
         assert action_callback is not None and callable(action_callback)
         action_callback(self.execution_context)
+
+    # noinspection PyMethodMayBeStatic
+    def _run_on_ui_thread(self, func: Callable, args: tuple, kwargs: dict):
+        if not callable(func):
+            return
+        if args is None:
+            args = ()
+        if kwargs is None:
+            kwargs = kwargs or {}
+        func(*args, **kwargs)

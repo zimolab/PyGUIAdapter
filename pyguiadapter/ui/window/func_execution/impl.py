@@ -8,21 +8,30 @@ from PyQt6.QtWidgets import (
     QSpacerItem,
     QSizePolicy,
     QDockWidget,
-    QMessageBox,
     QTextEdit,
 )
 from function2widgets.widget import BaseParameterWidget
 
 from pyguiadapter.adapter.bundle import FunctionBundle
 from pyguiadapter.adapter.executor import FunctionExecutor
-from pyguiadapter.commons import clear_layout, get_param_widget_factory
+from pyguiadapter.commons import get_param_widget_factory
 from pyguiadapter.interact import uprint, upopup, ulogging
 from pyguiadapter.interact.upopup import UPopup
 from pyguiadapter.ui.generated.ui_execution_window import Ui_ExecutionWindow
-from pyguiadapter.ui.utils import setup_textedit_stylesheet, set_textedit_text
+from pyguiadapter.ui.utils import (
+    setup_textedit_stylesheet,
+    set_textedit_text,
+    clear_layout,
+)
 from .base import BaseExecutionWindow
 from .config import DockWidgetState, DockConfig, ExecutionWindowConfig
-from .constants import BUSY_MSG, BUSY_DIALOG_TITLE, DOCK_SIZES, SOLE_WINDOW_SIZE
+from .constants import (
+    BUSY_MSG,
+    BUSY_DIALOG_TITLE,
+    DOCK_SIZES,
+    SOLE_WINDOW_SIZE,
+    ParamInfoType,
+)
 from .context import ExecutionContext
 from .exceptions import (
     SetParameterValueError,
@@ -114,8 +123,11 @@ class ExecutionWindow(BaseExecutionWindow):
         self._ui.textedit_output.ensureCursorVisible()
         self._ui.textedit_output.moveCursor(QTextCursor.MoveOperation.End)
 
-    def get_params_info(self) -> Dict[str, Any]:
-        return {p.name: p.typename for p in self._func_bundle.func_info.parameters}
+    def get_params_info(self) -> Dict[str, ParamInfoType]:
+        return {
+            p.name: (p.typename, p.type_extras)
+            for p in self._func_bundle.func_info.parameters
+        }
 
     def get_param_values(self) -> Dict[str, Any]:
         return {
@@ -155,7 +167,7 @@ class ExecutionWindow(BaseExecutionWindow):
             try:
                 widget.set_value(arg)
             except BaseException as e:
-                msg = f"failed to set value for parameter {param_name}: {e}"
+                msg = self.tr(f"failed to set value for parameter {param_name}: {e}")
                 if not ignore_exception:
                     raise SetParameterValueError(msg) from e
                 else:
@@ -237,7 +249,7 @@ class ExecutionWindow(BaseExecutionWindow):
             if self.window_config.func_error_dialog_msg:
                 title = self.window_config.func_error_dialog_title
                 msg = self.window_config.func_error_dialog_msg.format(str(error))
-                QMessageBox.critical(self, title, msg)
+                self.show_critical_dialog(title=title, message=msg)
 
     def _on_func_result(self, result: Any):
         result = str(result)
@@ -250,7 +262,7 @@ class ExecutionWindow(BaseExecutionWindow):
             if self.window_config.func_result_dialog_msg:
                 title = self.window_config.func_result_dialog_title
                 msg = self.window_config.func_result_dialog_msg.format(result)
-                QMessageBox.information(self, title, msg)
+                self.show_info_dialog(title=title, message=msg)
 
     def _setup_ui(self):
         self._ui.setupUi(self)
@@ -430,9 +442,9 @@ class ExecutionWindow(BaseExecutionWindow):
 
     def _cancel_executing(self):
         if not self.is_func_executing():
-            msg = self.tr("function is not executing!")
             title = self.tr("Info")
-            QMessageBox.information(self, title, msg)
+            msg = self.tr("function is not executing!")
+            self.show_info_dialog(title=title, message=msg)
             return
         if self._executor is not None:
             self._executor.cancel_requested.emit()

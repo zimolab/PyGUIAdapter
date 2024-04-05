@@ -1,12 +1,11 @@
 import enum
+import importlib.resources
 import os
 import warnings
-import importlib.resources
 from typing import TypeVar, Optional
 
-from PyQt6.QtWidgets import QLayout
-from function2widgets.parser.function_parser import FunctionInfoParser
 from function2widgets.factory import ParameterWidgetFactory
+from function2widgets.parser.function_parser import FunctionInfoParser
 
 T = TypeVar("T")
 
@@ -56,23 +55,3 @@ def safe_read(filename: str, encoding: str = "utf-8") -> Optional[str]:
     except BaseException as e:
         warnings.warn(f"failed to read file '{filename}': {e}")
         return None
-
-
-def clear_layout(layout: QLayout) -> None:
-    if not layout:
-        return
-    while layout.count() > 0:
-        item = layout.takeAt(0)
-
-        widget = item.widget()
-        if widget:
-            widget.deleteLater()
-
-        child_layout = item.layout()
-        if child_layout:
-            clear_layout(child_layout)
-            continue
-
-        spacer_item = item.spacerItem()
-        if spacer_item:
-            layout.removeItem(spacer_item)

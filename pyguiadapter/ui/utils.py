@@ -1,4 +1,7 @@
-from PyQt6.QtWidgets import QTextEdit, QWidget, QMessageBox
+import os
+from typing import Optional, List
+
+from PyQt6.QtWidgets import QTextEdit, QWidget, QMessageBox, QLayout, QFileDialog
 
 from pyguiadapter.commons import DocumentFormat
 from pyguiadapter.ui.styles import (
@@ -57,3 +60,91 @@ def show_question_dialog(parent: QWidget, message: str, *, title: str = None) ->
         QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
     )
     return result == QMessageBox.StandardButton.Yes
+
+
+def get_open_file_path(
+    parent: QWidget,
+    title: str = None,
+    directory: str = None,
+    filters: str = None,
+    initial_filter: str = None,
+) -> str:
+    filepath, _ = QFileDialog.getOpenFileName(
+        parent,
+        title,
+        directory,
+        filters,
+        initial_filter,
+    )
+    if not filepath:
+        return ""
+    return os.path.abspath(filepath)
+
+
+def get_open_file_paths(
+    parent: QWidget,
+    title: str,
+    directory: str = None,
+    filters: str = None,
+    initial_filter: str = None,
+) -> Optional[List[str]]:
+    ret, _ = QFileDialog.getOpenFileNames(
+        parent,
+        title,
+        directory,
+        filters,
+        initial_filter,
+    )
+    if not ret:
+        return None
+    return [os.path.abspath(f) for f in ret]
+
+
+def get_open_directory_path(
+    parent: QWidget,
+    title: str = None,
+    directory: str = None,
+) -> Optional[str]:
+    directory = QFileDialog.getExistingDirectory(parent, title, directory)
+    if not directory:
+        return None
+    return os.path.abspath(directory)
+
+
+def get_save_file_path(
+    parent: QWidget,
+    title: str = None,
+    directory: str = None,
+    filters: str = None,
+    initial_filter: str = None,
+) -> Optional[str]:
+    filepath, _ = QFileDialog.getSaveFileName(
+        parent,
+        title,
+        directory,
+        filters,
+        initial_filter,
+    )
+    if not filepath:
+        return None
+    return os.path.abspath(filepath)
+
+
+def clear_layout(layout: QLayout):
+    if not layout:
+        return
+    while layout.count() > 0:
+        item = layout.takeAt(0)
+
+        widget = item.widget()
+        if widget:
+            widget.deleteLater()
+
+        child_layout = item.layout()
+        if child_layout:
+            clear_layout(child_layout)
+            continue
+
+        spacer_item = item.spacerItem()
+        if spacer_item:
+            layout.removeItem(spacer_item)
