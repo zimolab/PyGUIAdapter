@@ -1,13 +1,14 @@
 import enum
+import html
 from datetime import datetime
 
 from pyguiadapter.interact.uprint import uprint
 
-COLOR_INFO = "#00FF00"
-COLOR_DEBUG = "#FFFFFF"
-COLOR_WARNING = "#FFFF00"
-COLOR_CRITICAL = "#FF0000"
-COLOR_FATAL = "#FF0000"
+DEFAULT_COLOR_INFO = "#00FF00"
+DEFAULT_COLOR_DEBUG = "#FFFFFF"
+DEFAULT_COLOR_WARNING = "#FFFF00"
+DEFAULT_COLOR_CRITICAL = "#FF0000"
+DEFAULT_COLOR_FATAL = "#A61C00"
 
 
 class LogLevel(enum.Enum):
@@ -23,11 +24,11 @@ __timestamp = False
 __timestamp_pattern = "%Y-%m-%d %H:%M:%S"
 __print_func = uprint
 __additional_newline = False
-__color_info = COLOR_INFO
-__color_warning = COLOR_WARNING
-__color_debug = COLOR_DEBUG
-__color_critical = COLOR_CRITICAL
-__color_fatal = COLOR_FATAL
+__color_info = DEFAULT_COLOR_INFO
+__color_warning = DEFAULT_COLOR_WARNING
+__color_debug = DEFAULT_COLOR_DEBUG
+__color_critical = DEFAULT_COLOR_CRITICAL
+__color_fatal = DEFAULT_COLOR_FATAL
 
 
 def set_print_func(print_func):
@@ -103,6 +104,8 @@ def log(
         print_func = __print_func
 
     global __color_info, __color_warning, __color_debug, __color_critical, __color_fatal
+
+    msg = html.escape(msg)
     if level == LogLevel.INFO:
         msg = _message(msg, __color_info)
     elif level == LogLevel.DEBUG:
@@ -117,10 +120,11 @@ def log(
         msg = _message(msg, __color_fatal)
     else:
         pass
+
     if timestamp:
         timestamp_str = datetime.now().strftime(timestamp_pattern)
         msg = f"[{timestamp_str}] {msg}"
-    print_func(msg, html=True)
+    print_func(f"{msg}", html=True)
     if additional_nl:
         print_func(html=False)
 

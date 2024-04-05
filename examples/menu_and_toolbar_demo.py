@@ -1,7 +1,5 @@
 import json
-import random
 import threading
-import time
 
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.ui.menus import ActionItem
@@ -17,26 +15,29 @@ def on_load_file(ctx: ExecutionContext):
     try:
         with open(filepath, "r", encoding="utf-8") as f:
             param_values = json.load(f)
-        ctx.set_param_values(param_values, ignore_exceptions=True)
+        # set_param_values() may raise an exception
+        # we need to handle it by ourself.
+        ctx.set_param_values(param_values, ignore_exceptions=False)
     except BaseException as e:
-        ctx.show_critical_dialog(f"load file failed: {e}", title="Error")
+        print(e)
+        ctx.logging_fatal(f"{e}")
         return
 
 
 def on_save_file(ctx: ExecutionContext):
     def _after_save(p: str, e: Exception):
-        print("_after_save(): ", threading.current_thread())
         if e is not None:
-            ctx.show_critical_dialog(f"save file failed: {e}", title="Error")
+            ctx.show_critical_dialog(f"failed to save file: {e}", title="Error")
+            ctx.logging_fatal(f"failed to save file: {e}")
             return
         ctx.show_info_dialog(f"saved: {p}", title="Info")
+        ctx.logging_info(f"file saved: {p}")
 
     def _save_file_in_background(path_: str, param_values_):
         # Note:
         # remember we are not in the main thread now, so if we need to do the ui operation,
         # we need to use ctx.run_on_ui_thread() to submit the ui operation to the main thread,
         # if we call the ui operation directly, it may cause error
-        print("_save_file_in_background(): ", threading.current_thread())
         e = None
         try:
             with open(path_, "w", encoding="utf-8") as f:
@@ -47,8 +48,6 @@ def on_save_file(ctx: ExecutionContext):
         ctx.run_on_ui_thread(_after_save, path_, e)
         # better not do this
         # _after_save(p, e)
-
-        print("on_save_file(): ", threading.current_thread())
 
     path = ctx.get_save_file_path()
     if not path:
@@ -61,7 +60,7 @@ def on_save_file(ctx: ExecutionContext):
     threading.Thread(target=_save_file_in_background, args=(path, param_values)).start()
 
 
-def core_logic(a: int, b: float, c: str):
+def core_logic(a: int, b: float, w: dict, c: str):
     """
     This demo shows how to add menus and toolbar actions to the execution window.
 

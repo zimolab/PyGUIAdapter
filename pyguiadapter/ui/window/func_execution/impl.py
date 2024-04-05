@@ -221,7 +221,7 @@ class ExecutionWindow(BaseExecutionWindow):
                 msg = self.window_config.func_start_msg.format(
                     self._func_bundle.func_obj.__name__
                 )
-                self._ulogging_info(msg)
+                self.ulogging_info(msg)
 
     def _on_func_finished(self):
         if self._func_bundle.cancelable:
@@ -237,13 +237,13 @@ class ExecutionWindow(BaseExecutionWindow):
                 msg = self.window_config.func_finish_msg.format(
                     self._func_bundle.func_obj.__name__
                 )
-                self._ulogging_info(msg)
+                self.ulogging_info(msg)
 
     def _on_func_error(self, error: BaseException):
         if self.window_config.print_func_error:
             if self.window_config.func_error_msg:
                 msg = self.window_config.func_error_msg.format(str(error))
-                self._ulogging_error(msg)
+                self.ulogging_critical(msg)
 
         if self.window_config.show_func_error_dialog:
             if self.window_config.func_error_dialog_msg:
@@ -256,7 +256,7 @@ class ExecutionWindow(BaseExecutionWindow):
         if self.window_config.print_func_result:
             if self.window_config.func_result_msg:
                 msg = self.window_config.func_result_msg.format(result)
-                self._ulogging_info(msg)
+                self.ulogging_info(msg)
 
         if self.window_config.show_func_result_dialog:
             if self.window_config.func_result_dialog_msg:
@@ -449,15 +449,36 @@ class ExecutionWindow(BaseExecutionWindow):
         if self._executor is not None:
             self._executor.cancel_requested.emit()
 
-    def _ulogging_info(self, message: str):
+    def ulogging_info(self, message: str):
         ulogging.info(
             message,
             timestamp=self.window_config.timestamp,
             timestamp_pattern=self.window_config.timestamp_pattern,
         )
 
-    def _ulogging_error(self, message):
+    def ulogging_critical(self, message):
         ulogging.critical(
+            message,
+            timestamp=self.window_config.timestamp,
+            timestamp_pattern=self.window_config.timestamp_pattern,
+        )
+
+    def ulogging_fatal(self, message):
+        ulogging.fatal(
+            message,
+            timestamp=self.window_config.timestamp,
+            timestamp_pattern=self.window_config.timestamp_pattern,
+        )
+
+    def ulogging_debug(self, message):
+        ulogging.debug(
+            message,
+            timestamp=self.window_config.timestamp,
+            timestamp_pattern=self.window_config.timestamp_pattern,
+        )
+
+    def ulogging_warning(self, message):
+        ulogging.warning(
             message,
             timestamp=self.window_config.timestamp,
             timestamp_pattern=self.window_config.timestamp_pattern,

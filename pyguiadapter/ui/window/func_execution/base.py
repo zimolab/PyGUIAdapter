@@ -93,6 +93,26 @@ class BaseExecutionWindow(QMainWindow):
     def show_question_dialog(self, message: str, *, title: str = None) -> bool:
         return show_question_dialog(self, message, title=title)
 
+    @abc.abstractmethod
+    def ulogging_critical(self, message) -> None:
+        pass
+
+    @abc.abstractmethod
+    def ulogging_info(self, message) -> None:
+        pass
+
+    @abc.abstractmethod
+    def ulogging_warning(self, message) -> None:
+        pass
+
+    @abc.abstractmethod
+    def ulogging_debug(self, message) -> None:
+        pass
+
+    @abc.abstractmethod
+    def ulogging_fatal(self, message) -> None:
+        pass
+
     def _create_menus(self, menubar: QMenuBar, menu_configs: Dict[str, Dict]):
         for menu_name, items in menu_configs.items():
             if not isinstance(items, dict):

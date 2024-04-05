@@ -2,7 +2,6 @@ import warnings
 from typing import Dict, Any, Optional, List, Callable
 
 from PyQt6.QtCore import QObject
-from PyQt6.QtWidgets import QDialog, QMessageBox
 
 from pyguiadapter.ui.utils import (
     get_open_file_path,
@@ -40,21 +39,12 @@ class ExecutionContext(QObject):
         return self._window.get_params_info()
 
     def set_param_value(self, param_name: str, value: Any):
-        try:
-            self._window.set_param_value(param_name, value)
-        except NoSuchParameterError:
-            warnings.warn(f"No such parameter: {param_name}")
-        except BaseException as e:
-            msg = self.tr(f"Error: {e}")
-            self._window.show_critical_dialog(msg)
+        self._window.set_param_value(param_name, value)
 
     def set_param_values(
         self, param_values: Dict[str, Any], ignore_exceptions: bool = False
     ):
-        try:
-            self._window.set_param_values(param_values, ignore_exceptions)
-        except BaseException as e:
-            self._window.show_critical_dialog(str(e))
+        self._window.set_param_values(param_values, ignore_exceptions)
 
     def show_info_dialog(self, message: str, *, title: str = None):
         self._window.show_info_dialog(message, title=title)
@@ -117,3 +107,18 @@ class ExecutionContext(QObject):
 
     def get_window(self) -> BaseExecutionWindow:
         return self._window
+
+    def logging_info(self, message: str):
+        self._window.ulogging_info(message)
+
+    def logging_debug(self, message: str):
+        self._window.ulogging_debug(message)
+
+    def logging_warning(self, message: str):
+        self._window.ulogging_warning(message)
+
+    def logging_critical(self, message: str):
+        self._window.ulogging_critical(message)
+
+    def logging_fatal(self, message: str):
+        self._window.ulogging_fatal(message)
