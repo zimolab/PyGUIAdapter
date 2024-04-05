@@ -1,4 +1,4 @@
-import dataclasses
+import os.path
 import os.path
 import warnings
 from typing import List, Optional
@@ -17,30 +17,9 @@ from pyguiadapter.adapter.bundle import Callable, DEFAULT_ICON, FunctionBundle
 from pyguiadapter.commons import get_icon_file
 from pyguiadapter.ui.config import WindowConfig
 from pyguiadapter.ui.generated.ui_selection_window import Ui_SelectionWindow
-from pyguiadapter.ui.styles import (
-    DEFAULT_DOCUMENT_FONT_FAMILY,
-    DEFAULT_DOCUMENT_FONT_SIZE,
-    DEFAULT_DOCUMENT_BG_COLOR,
-    DEFAULT_DOCUMENT_TEXT_COLOR,
-)
 from pyguiadapter.ui.utils import setup_textedit_stylesheet, set_textedit_text
 from pyguiadapter.ui.window.func_execution import ExecutionWindow
-
-DEFAULT_ICON_SIZE = 48
-
-
-@dataclasses.dataclass
-class SelectionWindowConfig(WindowConfig):
-    icon_mode: bool = True
-    icon_size: Optional[int] = DEFAULT_ICON_SIZE
-    func_list_label_text: Optional[str] = None
-    document_label_text: Optional[str] = None
-    select_button_text: Optional[str] = None
-
-    document_font_family: str = DEFAULT_DOCUMENT_FONT_FAMILY
-    document_font_size: int = DEFAULT_DOCUMENT_FONT_SIZE
-    document_bg_color: str = DEFAULT_DOCUMENT_BG_COLOR
-    document_text_color: str = DEFAULT_DOCUMENT_TEXT_COLOR
+from .config import SelectionWindowConfig
 
 
 class SelectionWindow(QMainWindow):

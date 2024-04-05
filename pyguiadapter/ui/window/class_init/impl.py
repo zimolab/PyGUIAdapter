@@ -1,4 +1,3 @@
-import dataclasses
 from typing import Type, Any, Callable, Optional, List, Dict
 
 from PyQt6.QtWidgets import (
@@ -14,15 +13,10 @@ from function2widgets.widget import BaseParameterWidget
 from pyguiadapter.commons import T, get_param_widget_factory, get_function_parser
 from pyguiadapter.interact import upopup
 from pyguiadapter.interact.upopup import UPopup
-from pyguiadapter.ui.config import WindowConfig
 from pyguiadapter.ui.generated.ui_class_init_window import Ui_ClassInitWindow
 from pyguiadapter.ui.utils import clear_layout
 
-
-@dataclasses.dataclass
-class ClassInitWindowConfig(WindowConfig):
-    title_label_text: Optional[str] = None
-    init_button_text: Optional[str] = None
+from .config import ClassInitWindowConfig
 
 
 class ClassInitWindow(QDialog):
