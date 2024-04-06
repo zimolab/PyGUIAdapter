@@ -5,7 +5,6 @@ from PyQt6.QtWidgets import (
     QVBoxLayout,
     QSpacerItem,
     QSizePolicy,
-    QMessageBox,
 )
 from function2widgets.info import FunctionInfo
 from function2widgets.widget import BaseParameterWidget
@@ -14,9 +13,9 @@ from pyguiadapter.commons import T, get_param_widget_factory, get_function_parse
 from pyguiadapter.interact import upopup
 from pyguiadapter.interact.upopup import UPopup
 from pyguiadapter.ui.generated.ui_class_init_window import Ui_ClassInitWindow
-from pyguiadapter.ui.utils import clear_layout
-
+from pyguiadapter.ui.utils import clear_layout, show_critical_dialog
 from .config import ClassInitWindowConfig
+from .constants import CLASS_INIT_FAILED_MSG, ERROR_DIALOG_TITLE
 
 
 class ClassInitWindow(QDialog):
@@ -112,8 +111,8 @@ class ClassInitWindow(QDialog):
             self.accept()
         except BaseException as e:
             self._class_instance = None
-            msg = self.tr(f"Failed to initialize class {self._class}!\n\nError: \n{e}")
-            QMessageBox.critical(self, self.tr("Error"), msg)
+            msg = CLASS_INIT_FAILED_MSG + "\n\n" + str(e)
+            show_critical_dialog(self, title=ERROR_DIALOG_TITLE, message=msg)
             return
 
     def _setup_parameter_widgets(self):

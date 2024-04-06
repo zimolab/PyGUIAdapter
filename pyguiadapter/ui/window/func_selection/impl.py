@@ -9,7 +9,6 @@ from PyQt6.QtWidgets import (
     QMainWindow,
     QListWidget,
     QListWidgetItem,
-    QMessageBox,
     QTextEdit,
 )
 
@@ -18,8 +17,18 @@ from pyguiadapter.commons import get_icon_file
 from pyguiadapter.ui.config import WindowConfig
 from pyguiadapter.ui.generated.ui_selection_window import Ui_SelectionWindow
 from pyguiadapter.ui.utils import setup_textedit_stylesheet, set_textedit_text
+from pyguiadapter.ui.utils import (
+    show_critical_dialog,
+    show_warning_dialog,
+)
 from pyguiadapter.ui.window.func_execution import ExecutionWindow
 from .config import SelectionWindowConfig
+from .constants import (
+    DEFAULT_SPLIT_SIZE,
+    ERROR_DIALOG_TITLE,
+    WARNING_DIALOG_TITLE,
+    NO_FUNC_SELECTED_MSG,
+)
 
 
 class SelectionWindow(QMainWindow):
@@ -69,7 +78,7 @@ class SelectionWindow(QMainWindow):
     def _setup_ui(self):
         self._ui.setupUi(self)
 
-        self._ui.splitter.setSizes([200, 300])
+        self._ui.splitter.setSizes(DEFAULT_SPLIT_SIZE)
 
         if not self._func_bundles:
             self._ui.button_select.setEnabled(False)
@@ -111,8 +120,8 @@ class SelectionWindow(QMainWindow):
     def _open_execution_window(self):
         current_item = self._ui.listwidget_functions.currentItem()
         if not current_item:
-            QMessageBox.warning(
-                self, self.tr("Warn"), self.tr("please select a function first!")
+            show_warning_dialog(
+                self, title=WARNING_DIALOG_TITLE, message=NO_FUNC_SELECTED_MSG
             )
             return
         func_bundle = current_item.data(Qt.ItemDataRole.UserRole)
@@ -128,7 +137,7 @@ class SelectionWindow(QMainWindow):
                 parent=self,
             )
         except BaseException as e:
-            QMessageBox.critical(self, self.tr("Error"), str(e))
+            show_critical_dialog(self, title=ERROR_DIALOG_TITLE, message=str(e))
         else:
             self._execution_window.setWindowModality(Qt.WindowModality.ApplicationModal)
             self._execution_window.show()
