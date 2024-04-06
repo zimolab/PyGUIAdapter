@@ -96,6 +96,9 @@ class SelectionWindow(QMainWindow):
             self._ui.button_select.setText(text)
 
         self._ui.button_select.clicked.connect(self._open_execution_window)
+        self._ui.listwidget_functions.itemDoubleClicked.connect(
+            self._open_execution_window
+        )
 
     def _on_current_item_changed(self, item: QListWidgetItem):
         if not item:
@@ -112,14 +115,14 @@ class SelectionWindow(QMainWindow):
                 self, self.tr("Warn"), self.tr("please select a function first!")
             )
             return
-        function = current_item.data(Qt.ItemDataRole.UserRole)
+        func_bundle = current_item.data(Qt.ItemDataRole.UserRole)
         if self._execution_window is not None:
             self._execution_window.close()
             self._execution_window.deleteLater()
             self._execution_window = None
         try:
             self._execution_window = ExecutionWindow(
-                func_bundle=function,
+                func_bundle=func_bundle,
                 config=self._config_execution_window,
                 callback_window_created=self._callback_execution_window_created,
                 parent=self,
