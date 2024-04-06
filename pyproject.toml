@@ -14,7 +14,7 @@ autogen = "autouic:main"
 
 [tool.poetry.dependencies]
 python = ">=3.8, <4.0"
-function2widgets = ">=0.6.7"
+function2widgets = ">=0.6.8"
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.2.0"
