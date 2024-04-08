@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file 'D:\Projects\PyGUIAdapter\designer\execution_window.ui'
+# Form implementation generated from reading ui file 'designer\execution_window.ui'
 #
 # Created by: PyQt6 UI code generator 6.6.1
 #
@@ -83,6 +83,7 @@ class Ui_ExecutionWindow(object):
         self.vlayout_2.setObjectName("vlayout_2")
         self.textedit_document = QtWidgets.QTextEdit(parent=self.dockwidget_content_2)
         self.textedit_document.setReadOnly(True)
+        self.textedit_document.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.LinksAccessibleByMouse|QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
         self.textedit_document.setObjectName("textedit_document")
         self.vlayout_2.addWidget(self.textedit_document)
         self.dockwidget_document.setWidget(self.dockwidget_content_2)

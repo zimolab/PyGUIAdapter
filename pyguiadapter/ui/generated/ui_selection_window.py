@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file 'D:\Projects\PyGUIAdapter\designer\selection_window.ui'
+# Form implementation generated from reading ui file 'designer\selection_window.ui'
 #
 # Created by: PyQt6 UI code generator 6.6.1
 #
