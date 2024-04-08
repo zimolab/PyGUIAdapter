@@ -271,9 +271,7 @@ class ExecutionWindow(BaseExecutionWindow):
         self._ui.scrollarea_content.setLayout(self._layout_param_widgets)
 
         if self.window_config.param_groupbox_title is not None:
-            self._ui.groupbox_params.setWindowTitle(
-                self.window_config.param_groupbox_title
-            )
+            self._ui.groupbox_params.setTitle(self.window_config.param_groupbox_title)
 
         if self.window_config.autoclear_checkbox_text is not None:
             self._ui.checkbox_autoclear.setText(
