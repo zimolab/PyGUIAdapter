@@ -40,8 +40,8 @@ class DockConfig(object):
 class ExecutionWindowConfig(WindowConfig):
 
     tabify_docks: bool = True
-    output_dock_config: DockConfig = DockConfig()
-    document_dock_config: DockConfig = DockConfig()
+    output_dock_config: DockConfig = dataclasses.field(default_factory=DockConfig)
+    document_dock_config: DockConfig = dataclasses.field(default_factory=DockConfig)
 
     autoclear_output: bool = True
 
