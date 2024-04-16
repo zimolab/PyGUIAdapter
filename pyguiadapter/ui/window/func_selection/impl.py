@@ -191,3 +191,4 @@ class SelectionWindow(QMainWindow):
         self._ui.textedit_document.setWordWrapMode(QTextOption.WrapMode.WordWrap)
         self._ui.textedit_document.setLineWrapMode(QTextEdit.LineWrapMode.WidgetWidth)
         self._ui.textedit_document.setReadOnly(True)
+        self._ui.textedit_document.setOpenExternalLinks(True)
