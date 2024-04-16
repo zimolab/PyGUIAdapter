@@ -1,1 +1,1 @@
-from pyguiadapter.adapter.adapter import GUIAdapter
+from pyguiadapter.adapter.adapter import GUIAdapter, DocumentFormat
