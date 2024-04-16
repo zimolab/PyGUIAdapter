@@ -64,8 +64,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>507</width>
-            <height>429</height>
+            <width>512</width>
+            <height>452</height>
            </rect>
           </property>
          </widget>
@@ -134,7 +134,7 @@
       <number>5</number>
      </property>
      <item>
-      <widget class="QTextEdit" name="textedit_output"/>
+      <widget class="QTextBrowser" name="textedit_output"/>
      </item>
     </layout>
    </widget>
@@ -164,14 +164,7 @@
       <number>5</number>
      </property>
      <item>
-      <widget class="QTextEdit" name="textedit_document">
-       <property name="readOnly">
-        <bool>true</bool>
-       </property>
-       <property name="textInteractionFlags">
-        <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
-       </property>
-      </widget>
+      <widget class="QTextBrowser" name="textedit_document"/>
      </item>
     </layout>
    </widget>
@@ -193,7 +186,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>26</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>

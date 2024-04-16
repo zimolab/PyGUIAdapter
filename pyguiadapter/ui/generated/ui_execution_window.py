@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file 'designer\execution_window.ui'
+# Form implementation generated from reading ui file 'C:\Users\zyzz_\Projects\PyGUIAdapter\designer\execution_window.ui'
 #
 # Created by: PyQt6 UI code generator 6.6.1
 #
@@ -36,7 +36,7 @@ class Ui_ExecutionWindow(object):
         self.scrollarea.setWidgetResizable(True)
         self.scrollarea.setObjectName("scrollarea")
         self.scrollarea_content = QtWidgets.QWidget()
-        self.scrollarea_content.setGeometry(QtCore.QRect(0, 0, 507, 429))
+        self.scrollarea_content.setGeometry(QtCore.QRect(0, 0, 512, 452))
         self.scrollarea_content.setObjectName("scrollarea_content")
         self.scrollarea.setWidget(self.scrollarea_content)
         self.vlayout_4.addWidget(self.scrollarea)
@@ -68,7 +68,7 @@ class Ui_ExecutionWindow(object):
         self.vlayout_3.setContentsMargins(2, 2, 2, 5)
         self.vlayout_3.setSpacing(2)
         self.vlayout_3.setObjectName("vlayout_3")
-        self.textedit_output = QtWidgets.QTextEdit(parent=self.dockwidget_content)
+        self.textedit_output = QtWidgets.QTextBrowser(parent=self.dockwidget_content)
         self.textedit_output.setObjectName("textedit_output")
         self.vlayout_3.addWidget(self.textedit_output)
         self.dockwidget_output.setWidget(self.dockwidget_content)
@@ -81,9 +81,7 @@ class Ui_ExecutionWindow(object):
         self.vlayout_2.setContentsMargins(2, 2, 2, 5)
         self.vlayout_2.setSpacing(2)
         self.vlayout_2.setObjectName("vlayout_2")
-        self.textedit_document = QtWidgets.QTextEdit(parent=self.dockwidget_content_2)
-        self.textedit_document.setReadOnly(True)
-        self.textedit_document.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.LinksAccessibleByMouse|QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
+        self.textedit_document = QtWidgets.QTextBrowser(parent=self.dockwidget_content_2)
         self.textedit_document.setObjectName("textedit_document")
         self.vlayout_2.addWidget(self.textedit_document)
         self.dockwidget_document.setWidget(self.dockwidget_content_2)
@@ -92,7 +90,7 @@ class Ui_ExecutionWindow(object):
         self.toolbar.setObjectName("toolbar")
         ExecutionWindow.addToolBar(QtCore.Qt.ToolBarArea.TopToolBarArea, self.toolbar)
         self.menubar = QtWidgets.QMenuBar(parent=ExecutionWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 26))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 21))
         self.menubar.setObjectName("menubar")
         ExecutionWindow.setMenuBar(self.menubar)
         self.action_output_view = QtGui.QAction(parent=ExecutionWindow)

@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file 'designer\class_init_window.ui'
+# Form implementation generated from reading ui file 'C:\Users\zyzz_\Projects\PyGUIAdapter\designer\class_init_window.ui'
 #
 # Created by: PyQt6 UI code generator 6.6.1
 #
