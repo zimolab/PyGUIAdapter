@@ -14,17 +14,14 @@ __uprint = UPrint()
 
 
 def set_print_destination(func: callable):
-    global __uprint
     # noinspection PyUnresolvedReferences
     __uprint.printed.connect(func)
 
 
 def remove_print_destination(func: callable):
-    global __uprint
     # noinspection PyUnresolvedReferences
     __uprint.printed.disconnect(func)
 
 
 def uprint(*args, sep=" ", end="\n", html: bool = False):
-    global __uprint
     __uprint.print(*args, sep=sep, end=end, html=html)

@@ -9,7 +9,6 @@ from function2widgets.parser.function_parser import FunctionInfoParser
 
 T = TypeVar("T")
 
-
 ICON_FILE_EXT = ".svg"
 
 __func_parser = FunctionInfoParser()
@@ -23,12 +22,10 @@ class DocumentFormat(enum.Enum):
 
 
 def get_function_parser() -> FunctionInfoParser:
-    global __func_parser
     return __func_parser
 
 
 def get_param_widget_factory() -> ParameterWidgetFactory:
-    global __widget_factory
     return __widget_factory
 
 
@@ -55,3 +52,11 @@ def safe_read(filename: str, encoding: str = "utf-8") -> Optional[str]:
     except BaseException as e:
         warnings.warn(f"failed to read file '{filename}': {e}")
         return None
+
+
+def safe_del(d: dict, key_to_del: str, *more_keys: str) -> dict:
+    keys = {key_to_del, *more_keys}
+    for key in keys:
+        if key in d:
+            del d[key]
+    return d

@@ -5,7 +5,7 @@ from typing import Optional
 
 from PyQt6.QtCore import QThread, pyqtSignal
 
-from pyguiadapter.adapter.bundle import FunctionBundle
+from .bundle import FunctionBundle
 
 
 class FunctionExecutor(QThread):

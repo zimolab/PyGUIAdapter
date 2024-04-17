@@ -15,8 +15,7 @@ from function2widgets.widget import BaseParameterWidget
 from pyguiadapter.adapter.bundle import FunctionBundle
 from pyguiadapter.adapter.executor import FunctionExecutor
 from pyguiadapter.commons import get_param_widget_factory
-from pyguiadapter.interact import uprint, upopup, ulogging
-from pyguiadapter.interact.upopup import UPopup
+from pyguiadapter.interact import upopup, uprint, ulogging
 from pyguiadapter.ui.generated.ui_execution_window import Ui_ExecutionWindow
 from pyguiadapter.ui.utils import (
     setup_textedit_stylesheet,
@@ -68,7 +67,7 @@ class ExecutionWindow(BaseExecutionWindow):
         self._setup_param_widgets()
         self.window_config = config
 
-        self._upopup = UPopup(self)
+        self._upopup = upopup.UPopup(self)
         uprint.set_print_destination(self.append_output)
         upopup.set_current_window(self)
 
@@ -76,7 +75,7 @@ class ExecutionWindow(BaseExecutionWindow):
             self._callback_window_created(self)
 
     @property
-    def popup(self) -> UPopup:
+    def popup(self) -> upopup.UPopup:
         return self._upopup
 
     @property

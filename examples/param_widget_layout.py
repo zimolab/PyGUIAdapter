@@ -4,7 +4,7 @@ Change the position of the description label:
   it can be below the center_widget with args.description_position=1
 """
 
-from pyguiadapter.adapter import GUIAdapter
+from pyguiadapter import GUIAdapter
 
 
 def user_function(a: int, b: int) -> int:

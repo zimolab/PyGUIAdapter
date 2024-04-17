@@ -2,7 +2,7 @@ import enum
 import html
 from datetime import datetime
 
-from pyguiadapter.interact.uprint import uprint
+from .uprint import uprint
 
 DEFAULT_COLOR_INFO = "#00FF00"
 DEFAULT_COLOR_DEBUG = "#FFFFFF"

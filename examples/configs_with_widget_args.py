@@ -1,7 +1,6 @@
-from function2widgets.widgets import LineEdit
-from function2widgets.widgets.lineedit import LineEditArgs
+from function2widgets import LineEdit, LineEditArgs
 
-from pyguiadapter.adapter import AS_IS, GUIAdapter
+from pyguiadapter import AS_IS, GUIAdapter
 
 
 def foo(msg: str):

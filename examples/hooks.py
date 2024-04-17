@@ -3,11 +3,11 @@ import threading
 from PyQt6.QtWidgets import QApplication
 from qt_material import apply_stylesheet
 
-from pyguiadapter.adapter import GUIAdapter
+from pyguiadapter import GUIAdapter
 from pyguiadapter.interact.uprint import uprint
-from pyguiadapter.ui.window.func_execution import ExecutionWindow
-from pyguiadapter.ui.window.class_init import ClassInitWindow
-from pyguiadapter.ui.window.func_selection import SelectionWindow
+from pyguiadapter.ui import ExecutionWindow
+from pyguiadapter.ui import ClassInitWindow
+from pyguiadapter.ui import SelectionWindow
 
 
 class Foo(object):

@@ -1,6 +1,6 @@
 from datetime import datetime, date, time
 
-from pyguiadapter.adapter import GUIAdapter
+from pyguiadapter import GUIAdapter
 from pyguiadapter.interact import ulogging
 
 

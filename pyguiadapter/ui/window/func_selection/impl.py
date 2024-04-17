@@ -1,7 +1,7 @@
 import os.path
 import os.path
 import warnings
-from typing import List, Optional
+from typing import List, Optional, Callable
 
 from PyQt6.QtCore import QSize, Qt
 from PyQt6.QtGui import QIcon, QTextOption
@@ -12,7 +12,8 @@ from PyQt6.QtWidgets import (
     QTextEdit,
 )
 
-from pyguiadapter.adapter.bundle import Callable, DEFAULT_ICON, FunctionBundle
+from pyguiadapter.adapter.bundle import FunctionBundle
+from pyguiadapter.adapter.constants import DEFAULT_ICON
 from pyguiadapter.commons import get_icon_file
 from pyguiadapter.ui.config import WindowConfig
 from pyguiadapter.ui.generated.ui_selection_window import Ui_SelectionWindow

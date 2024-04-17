@@ -2,7 +2,7 @@
 This demo shows different types of line edit.
 """
 
-from pyguiadapter.adapter import GUIAdapter
+from pyguiadapter import GUIAdapter
 from pyguiadapter.interact.uprint import uprint
 
 

@@ -52,7 +52,7 @@ def create_file(
 
 
 if __name__ == "__main__":
-    from pyguiadapter.adapter.adapter import GUIAdapter
+    from pyguiadapter import GUIAdapter
 
     gui_adapter = GUIAdapter()
     gui_adapter.add(create_file)

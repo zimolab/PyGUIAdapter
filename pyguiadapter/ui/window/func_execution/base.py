@@ -1,11 +1,10 @@
 import abc
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Callable
 
 from PyQt6.QtCore import pyqtSignal
 from PyQt6.QtGui import QAction, QIcon
 from PyQt6.QtWidgets import QMainWindow, QMenu, QToolBar, QMenuBar
 
-from pyguiadapter.adapter.bundle import Callable
 from pyguiadapter.ui.menus import create_menu_items, ActionItem, Separator
 from pyguiadapter.ui.utils import (
     show_info_dialog,
@@ -13,7 +12,7 @@ from pyguiadapter.ui.utils import (
     show_critical_dialog,
     show_question_dialog,
 )
-from pyguiadapter.ui.window.func_execution.constants import ParamInfoType
+from .constants import ParamInfoType
 
 
 class BaseExecutionWindow(QMainWindow):

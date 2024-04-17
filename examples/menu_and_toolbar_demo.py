@@ -1,9 +1,9 @@
 import json
 import threading
 
-from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.ui.menus import ActionItem
-from pyguiadapter.ui.window.func_execution.context import ExecutionContext
+from pyguiadapter import GUIAdapter
+from pyguiadapter.ui import ActionItem
+from pyguiadapter.ui import ExecutionContext
 
 
 def on_load_file(ctx: ExecutionContext):

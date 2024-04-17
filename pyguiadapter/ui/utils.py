@@ -4,7 +4,7 @@ from typing import Optional, List
 from PyQt6.QtWidgets import QTextEdit, QWidget, QMessageBox, QLayout, QFileDialog
 
 from pyguiadapter.commons import DocumentFormat
-from pyguiadapter.ui.styles import (
+from .styles import (
     DEFAULT_OUTPUT_BG_COLOR,
     DEFAULT_OUTPUT_TEXT_COLOR,
     DEFAULT_OUTPUT_FONT_FAMILY,

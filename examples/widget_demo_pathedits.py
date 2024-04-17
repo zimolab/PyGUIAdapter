@@ -2,7 +2,7 @@
 This demo shows widgets for selecting and editing paths, see: function2widgets.widgets.pathedit
 """
 
-from pyguiadapter.adapter import GUIAdapter
+from pyguiadapter import GUIAdapter
 from pyguiadapter.interact.uprint import uprint
 
 

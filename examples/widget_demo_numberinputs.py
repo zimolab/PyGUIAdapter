@@ -2,7 +2,7 @@
 This demo shows widgets for inputting numbers, see: function2widgets.widgets.numberinput
 """
 
-from pyguiadapter.adapter import GUIAdapter
+from pyguiadapter import GUIAdapter
 from pyguiadapter.interact.uprint import uprint
 
 

@@ -12,8 +12,7 @@ from examples.widget_demo_selectwidgets import select_widgets_demo
 from examples.widget_demo_pathedits import path_edits_demo
 from examples.widget_demo_editors import editors_demo
 
-from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.commons import DocumentFormat
+from pyguiadapter import GUIAdapter, DocumentFormat
 
 if __name__ == "__main__":
     gui_adapter = GUIAdapter()

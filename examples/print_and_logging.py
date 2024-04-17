@@ -2,7 +2,7 @@
 In PyGUIAdapter, we use uprint and ulogging to show the messages in the output window
 """
 
-from pyguiadapter.adapter import GUIAdapter
+from pyguiadapter import GUIAdapter
 from pyguiadapter.interact.uprint import uprint
 from pyguiadapter.interact import ulogging
 

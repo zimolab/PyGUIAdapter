@@ -1,15 +1,17 @@
 import dataclasses
 from typing import Any, Optional, Dict, NoReturn, Callable, List
 
-from function2widgets.common import safe_pop
-from function2widgets.widgets.base import CommonParameterWidgetArgs
-from function2widgets.info import FunctionInfo
+from function2widgets import FunctionInfo, CommonParameterWidgetArgs
 
-from pyguiadapter import commons
-from pyguiadapter.commons import T, DocumentFormat
+from pyguiadapter.commons import T, DocumentFormat, safe_del, get_function_parser
 from pyguiadapter.ui.menus import ActionItem
 
-from .constants import DEFAULT_ICON, CANCEL_EVENT_PARAM_NAME, _KEY_WIDGET_ARGS
+from .constants import (
+    DEFAULT_ICON,
+    CANCEL_EVENT_PARAM_NAME,
+    _KEY_WIDGET_ARGS,
+    _KEY_PARAM_NAME,
+)
 
 
 class FunctionBundle(object):
@@ -40,9 +42,8 @@ class FunctionBundle(object):
         self._menus = menus
         self._toolbar_actions = toolbar_actions
 
-        func_info = commons.get_function_parser().parse(
-            func_obj=func_obj,
-            ignore_self_param=True,
+        func_info = get_function_parser().parse(
+            func_obj=func_obj, ignore_self_param=True
         )
 
         if cancelable:
@@ -120,11 +121,11 @@ class FunctionBundle(object):
 
             if _KEY_WIDGET_ARGS in widget_config:
                 widget_args = widget_config[_KEY_WIDGET_ARGS]
-                safe_pop(widget_config, _KEY_WIDGET_ARGS)
+                safe_del(widget_config, _KEY_WIDGET_ARGS)
                 # 'widget_args' in widget_configs must be an instance of CommonParameterWidgetArgs
                 assert isinstance(widget_args, CommonParameterWidgetArgs)
                 widget_args_dict = dataclasses.asdict(widget_args)
-                safe_pop(widget_args_dict, "parameter_name")
+                safe_del(widget_args_dict, _KEY_PARAM_NAME)
                 widget_config.update(widget_args_dict)
             widget_info.update_with_flattened_dict(widget_config)
 

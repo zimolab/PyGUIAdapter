@@ -9,7 +9,7 @@ Turn your function into gui is easy:
 
 """
 
-from pyguiadapter.adapter import GUIAdapter
+from pyguiadapter import GUIAdapter
 
 
 def user_function(a: int, b: int) -> int:

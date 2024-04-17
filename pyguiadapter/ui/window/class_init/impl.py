@@ -6,12 +6,10 @@ from PyQt6.QtWidgets import (
     QSpacerItem,
     QSizePolicy,
 )
-from function2widgets.info import FunctionInfo
-from function2widgets.widget import BaseParameterWidget
+from function2widgets import FunctionInfo, BaseParameterWidget
 
 from pyguiadapter.commons import T, get_param_widget_factory, get_function_parser
 from pyguiadapter.interact import upopup
-from pyguiadapter.interact.upopup import UPopup
 from pyguiadapter.ui.generated.ui_class_init_window import Ui_ClassInitWindow
 from pyguiadapter.ui.utils import clear_layout, show_critical_dialog
 from .config import ClassInitWindowConfig
@@ -40,7 +38,7 @@ class ClassInitWindow(QDialog):
         self._layout_param_widgets = QVBoxLayout()
         self._ui = Ui_ClassInitWindow()
 
-        self._upopup = UPopup(self)
+        self._upopup = upopup.UPopup(self)
         upopup.set_current_window(self)
         self.window_config = config
         self._setup_ui()
@@ -50,7 +48,7 @@ class ClassInitWindow(QDialog):
             self._callback_window_created(self)
 
     @property
-    def popup(self) -> UPopup:
+    def popup(self) -> upopup.UPopup:
         return self._upopup
 
     @property

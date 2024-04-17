@@ -1,8 +1,8 @@
 from threading import Event
 import time
 
-from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.interact.ulogging import debug
+from pyguiadapter import GUIAdapter
+from pyguiadapter.interact import ulogging
 
 
 def cancelable_function(
@@ -18,9 +18,9 @@ def cancelable_function(
     """
     for i in range(iterations):
         if cancel_event and cancel_event.is_set():
-            debug("cancel requested!")
+            ulogging.debug("cancel requested!")
             return
-        debug(f"iteration: {i}")
+        ulogging.debug(f"iteration: {i}")
         if delay_time > 0:
             time.sleep(delay_time)
 

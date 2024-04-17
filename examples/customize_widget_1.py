@@ -46,7 +46,7 @@ For each widget class arguments, check the <WIDGET_CLASSNAME>Args class, such as
 
 """
 
-from pyguiadapter.adapter import GUIAdapter
+from pyguiadapter import GUIAdapter
 from pyguiadapter.interact.uprint import uprint
 
 

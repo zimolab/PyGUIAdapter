@@ -4,12 +4,9 @@ import sys
 from typing import Type, Optional, List, Dict, Callable, Union
 
 from PyQt6.QtWidgets import QApplication, QMessageBox
-from function2widgets.widgets.base import CommonParameterWidgetArgs
+from function2widgets import CommonParameterWidgetArgs
 
-from pyguiadapter.adapter.bundle import (
-    CANCEL_EVENT_PARAM_NAME,
-    FunctionBundle,
-)
+
 from pyguiadapter.commons import T, DocumentFormat
 from pyguiadapter.exceptions import (
     AlreadyExistsError,
@@ -17,15 +14,18 @@ from pyguiadapter.exceptions import (
     AppNotStartedError,
     ClassInitCancelled,
 )
+from pyguiadapter.ui.window.class_init import ClassInitWindow, ClassInitWindowConfig
+from pyguiadapter.ui.window.func_execution import ExecutionWindow, ExecutionWindowConfig
+from pyguiadapter.ui.window.func_selection import SelectionWindow, SelectionWindowConfig
 from pyguiadapter.ui.menus import ActionItem, Separator
-from pyguiadapter.ui.window.class_init import (
-    ClassInitWindow,
-    ClassInitWindowConfig,
-)
-from pyguiadapter.ui.window.func_execution import ExecutionWindowConfig, ExecutionWindow
-from pyguiadapter.ui.window.func_selection import SelectionWindowConfig, SelectionWindow
 
-from .constants import ALWAYS_SHOW_SELECTION_WINDOW, AS_IS, _KEY_WIDGET_ARGS
+from .bundle import FunctionBundle
+from .constants import (
+    ALWAYS_SHOW_SELECTION_WINDOW,
+    AS_IS,
+    _KEY_WIDGET_ARGS,
+    CANCEL_EVENT_PARAM_NAME,
+)
 
 
 class GUIAdapter:
@@ -92,21 +92,8 @@ class GUIAdapter:
         if func_obj in self._func_bundles:
             raise AlreadyExistsError(f"function '{func_obj.__name__}' already added")
 
-        for param_name, widget_config in widget_configs.items():
-            if not isinstance(widget_config, dict):
-                raise ValueError(f"'{param_name}' in widget_configs must be a dict")
-            if _KEY_WIDGET_ARGS in widget_config:
-                widget_args = widget_config[_KEY_WIDGET_ARGS]
-                if not isinstance(widget_args, CommonParameterWidgetArgs):
-                    raise ValueError(
-                        f"'widget_args' must be an instance of CommonParameterWidgetArgs "
-                        f"in '{param_name}''s widget_config, got {type(widget_args)}"
-                    )
-                if (
-                    widget_args.parameter_name != param_name
-                    and widget_args.parameter_name != AS_IS
-                ):
-                    raise ValueError("parameter_name should keep as-is")
+        if isinstance(widget_configs, dict):
+            self._check_widget_configs(widget_configs)
 
         bundle = FunctionBundle(
             func_obj=func_obj,
@@ -239,3 +226,21 @@ class GUIAdapter:
             parent=None,
         )
         self._execution_window.show()
+
+    @staticmethod
+    def _check_widget_configs(widget_configs: dict):
+        for param_name, widget_config in widget_configs.items():
+            if not isinstance(widget_config, dict):
+                raise ValueError(f"'{param_name}' in widget_configs must be a dict")
+            if _KEY_WIDGET_ARGS in widget_config:
+                widget_args = widget_config[_KEY_WIDGET_ARGS]
+                if not isinstance(widget_args, CommonParameterWidgetArgs):
+                    raise ValueError(
+                        f"'widget_args' must be an instance of CommonParameterWidgetArgs "
+                        f"in '{param_name}''s widget_config, got {type(widget_args)}"
+                    )
+                if (
+                    widget_args.parameter_name != param_name
+                    and widget_args.parameter_name != AS_IS
+                ):
+                    raise ValueError("parameter_name should keep as-is")

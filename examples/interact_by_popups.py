@@ -1,4 +1,4 @@
-from pyguiadapter.adapter import GUIAdapter
+from pyguiadapter import GUIAdapter
 from pyguiadapter.interact import upopup
 
 
