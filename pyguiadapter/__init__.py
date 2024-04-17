@@ -1,1 +1,1 @@
-from .adapter import GUIAdapter
+from .adapter import *

@@ -1,14 +1,15 @@
+import dataclasses
 from typing import Any, Optional, Dict, NoReturn, Callable, List
 
+from function2widgets.common import safe_pop
+from function2widgets.widgets.base import CommonParameterWidgetArgs
 from function2widgets.info import FunctionInfo
 
 from pyguiadapter import commons
 from pyguiadapter.commons import T, DocumentFormat
 from pyguiadapter.ui.menus import ActionItem
 
-DEFAULT_ICON = "puzzle"
-
-CANCEL_EVENT_PARAM_NAME = "cancel_event"
+from .constants import DEFAULT_ICON, CANCEL_EVENT_PARAM_NAME, _KEY_WIDGET_ARGS
 
 
 class FunctionBundle(object):
@@ -105,11 +106,11 @@ class FunctionBundle(object):
         if not widget_configs:
             return
         for parameter_info in self.func_info.parameters:
-            name = parameter_info.name
-            if name not in widget_configs:
+            param_name = parameter_info.name
+            if param_name not in widget_configs:
                 continue
 
-            widget_config = widget_configs[name]
+            widget_config = widget_configs[param_name]
             if not isinstance(widget_config, dict):
                 continue
 
@@ -117,6 +118,14 @@ class FunctionBundle(object):
             if widget_info is None:
                 continue
 
+            if _KEY_WIDGET_ARGS in widget_config:
+                widget_args = widget_config[_KEY_WIDGET_ARGS]
+                safe_pop(widget_config, _KEY_WIDGET_ARGS)
+                # 'widget_args' in widget_configs must be an instance of CommonParameterWidgetArgs
+                assert isinstance(widget_args, CommonParameterWidgetArgs)
+                widget_args_dict = dataclasses.asdict(widget_args)
+                safe_pop(widget_args_dict, "parameter_name")
+                widget_config.update(widget_args_dict)
             widget_info.update_with_flattened_dict(widget_config)
 
     def _handle_cancelable_func(self, func_info: FunctionInfo) -> FunctionInfo:
