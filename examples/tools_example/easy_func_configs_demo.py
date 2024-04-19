@@ -37,6 +37,6 @@ if __name__ == "__main__":
     configs_generator = FuncConfigsGenerator()
     configs_generator.generate_configs_file(
         foo,
-        onefile=True,
+        onefile=False,
         constants_filename="_constants.py",
     )

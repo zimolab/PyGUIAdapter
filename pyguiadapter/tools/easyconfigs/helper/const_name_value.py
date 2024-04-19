@@ -1,14 +1,21 @@
 import abc
 import inspect
 from datetime import datetime, date, time
-from typing import Any, Optional, Union, Dict
+from typing import Any, Union, Optional, Dict
 
 from PyQt6.QtCore import QDateTime, QDate, QTime
 from PyQt6.QtGui import QColor
-from function2widgets import Color, FunctionInfo
+from function2widgets import Color
 
-from .constants import *
-from .structures import _Constants
+from pyguiadapter.tools.easyconfigs.constants import (
+    DEFAULT_QUOTE,
+    PARAM_LABEL_PREFIX,
+    PARAM_DESC_PREFIX,
+    PARAM_DEFAULT_VALUE_DESC_PREFIX,
+    PARAM_DEFAULT_VALUE_PREFIX,
+    DEFAULT_VALUE_DESC,
+    DEFAULT_TR_FUNCTION,
+)
 
 
 class BaseValueMapper(abc.ABC):
@@ -124,6 +131,12 @@ class ConstNameValueHelper(object):
     def constvalue_param_default_value_description(self) -> str:
         return self.make_tr_str_literal(self._default_value_desc)
 
+    def constvalue_param_label(self, label_text: str) -> str:
+        return self.make_tr_str_literal(label_text)
+
+    def constvalue_param_description(self, description_text: str) -> str:
+        return self.make_tr_str_literal(description_text)
+
     def try_make_literal(self, raw_value: Any) -> Any:
         """
         尝试从raw_value中重建其字面量表示。
@@ -157,71 +170,3 @@ class ConstNameValueHelper(object):
     @staticmethod
     def is_multiline_str(s: str) -> bool:
         return len(s.splitlines()) > 1
-
-
-class ConstantsHelper(object):
-
-    def __init__(
-        self, func_info: FunctionInfo, const_name_value_helper: ConstNameValueHelper
-    ):
-        self._const_name_value_helper = const_name_value_helper
-        self._func_info = func_info
-
-    def make_constants(self) -> _Constants:
-        func_name_literal = self._const_name_value_helper.make_tr_str_literal(
-            self._func_info.name
-        )
-        func_description_literal = self._const_name_value_helper.make_tr_str_literal(
-            self._func_info.description
-        )
-        constants = _Constants(
-            func_name=func_name_literal, func_description=func_description_literal
-        )
-
-        for param_info in self._func_info.parameters:
-            param_name = param_info.name
-            param_description = param_info.description.strip()
-            param_default_value = param_info.default
-            self._add_param_label(constants, param_name)
-            self._add_param_description(constants, param_name, param_description)
-            self._add_param_default_value(constants, param_name, param_default_value)
-            self._add_param_default_value_description(constants, param_name)
-
-        return constants
-
-    def _add_param_label(self, constants: _Constants, param_name: str):
-        constname = self._const_name_value_helper.constname_param_label(param_name)
-        constvalue = self._const_name_value_helper.make_str_literal(param_name)
-        constants.param_labels[constname] = constvalue
-
-    def _add_param_description(
-        self, constants: _Constants, param_name: str, param_desc: str
-    ):
-        constname = self._const_name_value_helper.constname_param_description(
-            param_name
-        )
-        constvalue = self._const_name_value_helper.make_str_literal(param_desc)
-        constants.param_descriptions[constname] = constvalue
-
-    def _add_param_default_value_description(
-        self, constants: _Constants, param_name: str
-    ):
-        constname = (
-            self._const_name_value_helper.constname_param_default_value_description(
-                param_name
-            )
-        )
-        constants.param_default_value_descriptions[constname] = (
-            self._const_name_value_helper.constvalue_param_default_value_description()
-        )
-
-    def _add_param_default_value(
-        self, constants: _Constants, param_name: str, raw_value: Any
-    ):
-        constname = self._const_name_value_helper.constname_param_default_value(
-            param_name
-        )
-        default_value_literal = self._const_name_value_helper.try_make_literal(
-            raw_value
-        )
-        constants.param_default_values[constname] = default_value_literal
