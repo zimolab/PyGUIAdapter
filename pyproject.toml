@@ -19,6 +19,7 @@ function2widgets = ">=0.6.15"
 [tool.poetry.group.dev.dependencies]
 black = "^24.2.0"
 qt-material = "^2.14"
+mako = "^1.3.3"
 
 [build-system]
 requires = ["poetry-core"]
