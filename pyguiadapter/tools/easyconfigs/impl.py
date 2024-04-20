@@ -18,11 +18,9 @@ from .structures import _ParameterConstants, _ParamWidgetConfig, _Imports
 from .utils import get_constants_tpl_file, get_configs_tpl_file
 
 
-class FuncConfigsGenerator(object):
+class ParameterWidgetConfigsCodeGenerator(object):
     def __init__(
         self,
-        func_info_parser: FunctionInfoParser = None,
-        param_widget_factory: ParameterWidgetFactory = None,
         str_quote: str = DEFAULT_QUOTE,
         param_label_prefix: str = PARAM_LABEL_PREFIX,
         param_description_prefix: str = PARAM_DESC_PREFIX,
@@ -52,9 +50,6 @@ class FuncConfigsGenerator(object):
 
         self._configs_varname = configs_varname
 
-        self._parser = func_info_parser or get_function_parser()
-        self._factory = param_widget_factory or get_param_widget_factory()
-
     def generate_configs_file(
         self,
         func: Callable,
@@ -62,7 +57,12 @@ class FuncConfigsGenerator(object):
         filename: str = DEFAULT_CONFIGS_FILENAME,
         onefile: bool = False,
         constants_filename: str = DEFAULT_CONSTANTS_FILENAME,
+        func_info_parser: FunctionInfoParser = None,
+        param_widget_factory: ParameterWidgetFactory = None,
     ):
+        func_info_parser = func_info_parser or get_function_parser()
+        param_widget_factory = param_widget_factory or get_param_widget_factory()
+
         if not onefile and not constants_filename:
             raise ValueError(
                 "constants_filename must be specified when onefile is False"
@@ -84,7 +84,7 @@ class FuncConfigsGenerator(object):
         else:
             constants_filepath = None
 
-        func_info = self._parser.parse(func, ignore_self_param=True)
+        func_info = func_info_parser.parse(func, ignore_self_param=True)
 
         param_constants_helper = ParameterConstantsHelper(
             func_info, self._const_name_value_helper
@@ -92,7 +92,7 @@ class FuncConfigsGenerator(object):
         param_constants = param_constants_helper.make_constants()
 
         param_widget_configs_helper = ParameterWidgetConfigsHelper(
-            self._factory, self._const_name_value_helper
+            param_widget_factory, self._const_name_value_helper
         )
         param_widget_configs = param_widget_configs_helper.make_configs(func_info)
 
@@ -104,7 +104,7 @@ class FuncConfigsGenerator(object):
         )
 
         if constants_filepath is not None:
-            self.generate_separated_files(
+            self._generate_separated_files(
                 constants_filepath,
                 configs_filepath,
                 imports,
@@ -143,7 +143,7 @@ class FuncConfigsGenerator(object):
             output.write("\n")
             output.flush()
 
-    def generate_separated_files(
+    def _generate_separated_files(
         self,
         constants_filepath: str,
         configs_filepath: str,
@@ -222,3 +222,12 @@ class FuncConfigsGenerator(object):
                 configs_varname=self._configs_varname,
                 param_widget_configs=param_widget_configs,
             )
+
+
+# global instance
+
+__configs_code_generator = ParameterWidgetConfigsCodeGenerator()
+
+
+def get_configs_code_generator() -> ParameterWidgetConfigsCodeGenerator:
+    return __configs_code_generator

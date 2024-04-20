@@ -58,9 +58,9 @@ class DateTimeMapper(BaseValueMapper):
         elif isinstance(raw_value, QDateTime):
             return "QDateTime.currentDateTime()"
         elif isinstance(raw_value, QDate):
-            return "QTime.currentTime()"
-        elif isinstance(raw_value, QTime):
             return "QDate.currentDate()"
+        elif isinstance(raw_value, QTime):
+            return "QTime.currentTime()"
         else:
             raise ValueError(f"unsupported type: {type(raw_value)}")
 
