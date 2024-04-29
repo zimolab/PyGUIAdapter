@@ -2,7 +2,7 @@ import warnings
 from typing import Any, Optional, List, Dict, Callable
 
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QCloseEvent, QTextCursor, QTextOption
+from PyQt6.QtGui import QCloseEvent, QTextCursor, QTextOption, QIcon
 from PyQt6.QtWidgets import (
     QVBoxLayout,
     QSpacerItem,
@@ -88,6 +88,18 @@ class ExecutionWindow(BaseExecutionWindow):
             raise TypeError(f"config must be ExecutionWindowConfig, got {type(config)}")
         self._config = config
         self._config.apply_basic_configs(self)
+        # apply some configs defined in the function bundle
+        if self._func_bundle.window_title is not None:
+            self.setWindowTitle(self._func_bundle.window_title)
+        if self._func_bundle.window_icon is not None:
+            try:
+                icon = QIcon(self._func_bundle.window_icon)
+            except BaseException as e:
+                warnings.warn(
+                    self.tr(f"failed to load icon {self._func_bundle.window_icon}: {e}")
+                )
+            else:
+                self.setWindowIcon(icon)
 
     def is_func_executing(self):
         return self._executor is not None and self._executor.isRunning()

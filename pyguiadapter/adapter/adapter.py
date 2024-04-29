@@ -88,6 +88,8 @@ class GUIAdapter:
         cancel_event_param_name: str = CANCEL_EVENT_PARAM_NAME,
         menus: Optional[Dict[str, Dict]] = None,
         toolbar_actions: Optional[List[Union[ActionItem, type(Separator)]]] = None,
+        window_title: Optional[str] = None,
+        window_icon: Optional[str] = None,
     ):
         if func_obj in self._func_bundles:
             raise AlreadyExistsError(f"function '{func_obj.__name__}' already added")
@@ -107,6 +109,8 @@ class GUIAdapter:
             cancel_event_param_name=cancel_event_param_name,
             menus=menus,
             toolbar_actions=toolbar_actions,
+            window_title=window_title,
+            window_icon=window_icon,
         )
         self._func_bundles[func_obj] = bundle
 

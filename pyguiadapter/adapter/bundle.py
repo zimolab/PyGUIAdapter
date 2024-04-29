@@ -28,6 +28,8 @@ class FunctionBundle(object):
         cancel_event_param_name: Optional[str] = CANCEL_EVENT_PARAM_NAME,
         menus: Optional[Dict[str, dict]] = None,
         toolbar_actions: Optional[List[ActionItem]] = None,
+        window_title: Optional[str] = None,
+        window_icon: Optional[str] = None,
     ):
         self._func_obj = func_obj
         self._bind = bind
@@ -41,6 +43,8 @@ class FunctionBundle(object):
         )
         self._menus = menus
         self._toolbar_actions = toolbar_actions
+        self._window_title = window_title
+        self._window_icon = window_icon
 
         func_info = get_function_parser().parse(
             func_obj=func_obj, ignore_self_param=True
@@ -97,6 +101,14 @@ class FunctionBundle(object):
     @property
     def toolbar_actions(self) -> Optional[List[ActionItem]]:
         return self._toolbar_actions
+
+    @property
+    def window_title(self) -> Optional[str]:
+        return self._window_title
+
+    @property
+    def window_icon(self) -> Optional[str]:
+        return self._window_icon
 
     def execute_function(self, *args, **kwargs) -> Any:
         if self._bind is None:
