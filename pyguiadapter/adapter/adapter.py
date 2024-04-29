@@ -3,7 +3,7 @@ import inspect
 import sys
 from typing import Type, Optional, List, Dict, Callable, Union
 
-from PyQt6.QtWidgets import QApplication, QMessageBox
+from PyQt6.QtWidgets import QApplication, QMessageBox, QStyleFactory
 from function2widgets import CommonParameterWidgetArgs
 
 
@@ -25,6 +25,7 @@ from .constants import (
     AS_IS,
     _KEY_WIDGET_ARGS,
     CANCEL_EVENT_PARAM_NAME,
+    DEFAULT_APP_STYLE,
 )
 
 
@@ -47,6 +48,7 @@ class GUIAdapter:
             Callable[[ExecutionWindow], None]
         ] = None,
         always_show_selection_window: bool = ALWAYS_SHOW_SELECTION_WINDOW,
+        app_style: Optional[str] = DEFAULT_APP_STYLE,
     ):
         if argv is None:
             argv = sys.argv
@@ -66,6 +68,8 @@ class GUIAdapter:
         self._callback_execution_window_created = callback_execution_window_created
         self._callback_class_init_window_created = callback_class_init_window_created
         self._callback_selection_window_created = callback_selection_window_created
+
+        self._app_style = app_style
 
         self.always_show_selection_window = always_show_selection_window
 
@@ -175,6 +179,8 @@ class GUIAdapter:
     def _start_application(self):
         if self._application is not None:
             return
+        if self._app_style:
+            QApplication.setStyle(QStyleFactory.create(self._app_style))
         self._application = QApplication(self._argv)
         if self._callback_app_started is not None:
             self._callback_app_started(self._application)
