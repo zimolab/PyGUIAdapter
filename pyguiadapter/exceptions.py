@@ -12,3 +12,7 @@ class AppNotStartedError(Exception):
 
 class ClassInitCancelled(Exception):
     pass
+
+
+class MethodNotRegistered(Exception):
+    pass

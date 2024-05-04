@@ -71,6 +71,17 @@ class ExecutionWindow(BaseExecutionWindow):
         uprint.set_print_destination(self.append_output)
         upopup.set_current_window(self)
 
+        self._register_ctx_callable("show_document_dock", self.show_document_dock)
+        self._register_ctx_callable("show_output_dock", self.show_output_dock)
+        self._register_ctx_callable("hide_document_dock", self.hide_document_dock)
+        self._register_ctx_callable("hide_output_dock", self.hide_output_dock)
+        self._register_ctx_callable(
+            "is_document_dock_visible", self.is_document_dock_visible
+        )
+        self._register_ctx_callable(
+            "is_output_dock_visible", self.is_output_dock_visible
+        )
+
         if self._callback_window_created is not None:
             self._callback_window_created(self)
 
@@ -493,3 +504,21 @@ class ExecutionWindow(BaseExecutionWindow):
             timestamp=self.window_config.timestamp,
             timestamp_pattern=self.window_config.timestamp_pattern,
         )
+
+    def show_document_dock(self):
+        self._ui.dockwidget_document.show()
+
+    def show_output_dock(self):
+        self._ui.dockwidget_output.show()
+
+    def hide_document_dock(self):
+        self._ui.dockwidget_document.hide()
+
+    def hide_output_dock(self):
+        self._ui.dockwidget_output.hide()
+
+    def is_document_dock_visible(self):
+        return self._ui.dockwidget_document.isVisible()
+
+    def is_output_dock_visible(self):
+        return self._ui.dockwidget_output.isVisible()

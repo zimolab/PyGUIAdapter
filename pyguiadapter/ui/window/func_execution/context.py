@@ -122,3 +122,6 @@ class ExecutionContext(QObject):
 
     def logging_fatal(self, message: str):
         self._window.ulogging_fatal(message)
+
+    def invoke(self, method_name: str, *args, **kwargs) -> Any:
+        return self._window.on_context_invoke(method_name, *args, **kwargs)

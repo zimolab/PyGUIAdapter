@@ -5,6 +5,7 @@ from PyQt6.QtCore import pyqtSignal
 from PyQt6.QtGui import QAction, QIcon
 from PyQt6.QtWidgets import QMainWindow, QMenu, QToolBar, QMenuBar
 
+from pyguiadapter.exceptions import MethodNotRegistered
 from pyguiadapter.ui.menus import create_menu_items, ActionItem, Separator
 from pyguiadapter.ui.utils import (
     show_info_dialog,
@@ -24,6 +25,8 @@ class BaseExecutionWindow(QMainWindow):
         self._actions: Dict[int, QAction] = {}
         # noinspection PyUnresolvedReferences
         self.run_on_ui_thread_requested.connect(self._run_on_ui_thread)
+
+        self._ctx_callables = {}
 
     @abc.abstractmethod
     def get_func(self) -> Callable:
@@ -111,6 +114,26 @@ class BaseExecutionWindow(QMainWindow):
     @abc.abstractmethod
     def ulogging_fatal(self, message) -> None:
         pass
+
+    def _register_ctx_callable(self, method_name: str, method_callable: Callable):
+        if not callable(method_callable):
+            raise ValueError(f"method {method_name} is not callable")
+        self._ctx_callables[method_name] = method_callable
+
+    def _unregister_ctx_callable(self, method_name: str):
+        if method_name in self._ctx_callables:
+            del self._ctx_callables[method_name]
+
+    def _clear_ctx_callables(self):
+        self._ctx_callables.clear()
+
+    def on_context_invoke(self, method_name: str, *args, **kwargs) -> Any:
+        method_callable = self._ctx_callables.get(method_name, None)
+        if method_callable is None:
+            raise MethodNotRegistered(f"method {method_name} is not registered")
+        if not callable(method_callable):
+            raise ValueError("method {method_name} is not callable")
+        return method_callable(*args, **kwargs)
 
     def _create_menus(self, menubar: QMenuBar, menu_configs: Dict[str, Dict]):
         for menu_name, items in menu_configs.items():
