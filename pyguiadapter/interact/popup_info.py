@@ -14,10 +14,10 @@ class BasePopupInfo(object):
     window_icon: Optional[str] = dataclasses.field(default=None)
     window_width: Optional[int] = dataclasses.field(default=None)
     window_height: Optional[int] = dataclasses.field(default=None)
-    buttons: QDialogButtonBox.StandardButton = dataclasses.field(
+    buttons: Optional[QDialogButtonBox.StandardButton] = dataclasses.field(
         default=QDialogButtonBox.StandardButton.Ok
     )
-    buttons_orientation: Qt.Orientation = dataclasses.field(
+    buttons_orientation: Optional[Qt.Orientation] = dataclasses.field(
         default=Qt.Orientation.Horizontal
     )
 

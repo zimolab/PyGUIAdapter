@@ -74,6 +74,10 @@ class BasePopupWindow(QDialog):
         buttons: Optional[QDialogButtonBox.StandardButton],
         orientation: Optional[Qt.Orientation],
     ):
+        if buttons is None:
+            self._button_box.setHidden(True)
+            return
+
         if orientation:
             self._button_box.setOrientation(orientation)
 

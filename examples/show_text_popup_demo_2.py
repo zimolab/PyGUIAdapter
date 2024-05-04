@@ -29,7 +29,9 @@ def show_text_popup_demo2():
 
 def _action_show_about(ctx: ExecutionContext):
     show_text_popup(
-        TextPopupInfo(text=info, window_title="About", open_external_link=True)
+        TextPopupInfo(
+            text=info, window_title="About", open_external_link=True, buttons=None
+        )
     )
 
 
