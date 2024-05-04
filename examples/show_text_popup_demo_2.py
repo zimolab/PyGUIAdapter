@@ -1,8 +1,6 @@
-from PyQt6.QtWidgets import QDialogButtonBox
-
 from pyguiadapter import GUIAdapter
 from pyguiadapter.interact.popup_info import TextPopupInfo
-from pyguiadapter.interact.upopup import show_license_popup, show_text_popup
+from pyguiadapter.interact.upopup import show_text_popup
 from pyguiadapter.ui import ExecutionContext, ActionItem
 
 info = """

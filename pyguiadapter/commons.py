@@ -43,6 +43,11 @@ def get_icon_file(icon_name: str):
     return icon_file
 
 
+def get_res_file(filename: str) -> str:
+    res_dir = get_res_dir()
+    return os.path.join(res_dir, filename)
+
+
 def safe_read(filename: str, encoding: str = "utf-8") -> Optional[str]:
     if not os.path.isfile(filename):
         return None

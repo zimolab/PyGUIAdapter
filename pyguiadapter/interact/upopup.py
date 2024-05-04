@@ -10,8 +10,8 @@ from PyQt6.QtWidgets import (
 )
 from typing import List, Optional
 
-from .popup_info import TextPopupInfo
-from ._popup_window import TextPopupWindow
+from .popup_info import TextPopupInfo, AboutPopupInfo
+from ._popup_window import TextPopupWindow, AboutPopupWindow
 
 
 class UPopup(QObject):
@@ -29,6 +29,7 @@ class UPopup(QObject):
     request_get_save_file_path = pyqtSignal(Future, str, str, str, str)
     request_get_directory_path = pyqtSignal(Future, str, str)
     request_show_text_popup = pyqtSignal(Future, TextPopupInfo)
+    request_show_about_popup = pyqtSignal(Future, AboutPopupInfo)
 
     # noinspection PyUnresolvedReferences
     def __init__(self, window):
@@ -48,6 +49,7 @@ class UPopup(QObject):
         self.request_get_save_file_path.connect(self._on_get_save_file_path)
         self.request_get_directory_path.connect(self._on_get_directory_path)
         self.request_show_text_popup.connect(self._on_show_text_popup)
+        self.request_show_about_popup.connect(self._on_show_about_popup)
 
     def _on_get_text(
         self,
@@ -244,6 +246,13 @@ class UPopup(QObject):
         accepted = text_popup_window.exec()
         future.set_result(accepted)
 
+    def _on_show_about_popup(self, future: Future, popup_info: AboutPopupInfo):
+        about_popup_window = AboutPopupWindow(
+            popup_info=popup_info, parent=self._window
+        )
+        accepted = about_popup_window.exec()
+        future.set_result(accepted)
+
 
 __current_window = None
 
@@ -419,3 +428,23 @@ def show_license_popup(license_text: str, **kwargs):
     popup_args = {"window_title": "License", **kwargs}
     popup_info = TextPopupInfo(text=license_text, **popup_args)
     return show_text_popup(popup_info)
+
+
+# noinspection PyUnresolvedReferences
+def show_about_popup(
+    app_name: str,
+    app_logo: Optional[str] = None,
+    app_copyright: Optional[str] = None,
+    app_fields: Optional[dict] = None,
+    **kwargs
+):
+    popup_info = AboutPopupInfo(
+        app_name=app_name,
+        app_logo=app_logo,
+        app_copyright=app_copyright,
+        app_fields=app_fields,
+        **kwargs,
+    )
+    future = Future()
+    _popup().request_show_about_popup.emit(future, popup_info)
+    return future.result()

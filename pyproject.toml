@@ -15,11 +15,11 @@ autogen = "autouic:main"
 [tool.poetry.dependencies]
 python = ">=3.8, <4.0"
 function2widgets = ">=0.6.17"
+mako = "^1.3.3"
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.2.0"
 qt-material = "^2.14"
-mako = "^1.3.3"
 
 [build-system]
 requires = ["poetry-core"]
