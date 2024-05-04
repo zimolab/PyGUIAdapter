@@ -25,3 +25,4 @@ class BasePopupInfo(object):
 @dataclasses.dataclass
 class TextPopupInfo(BasePopupInfo):
     text: str = ""
+    open_external_link: bool = True

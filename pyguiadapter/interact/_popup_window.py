@@ -92,5 +92,8 @@ class TextPopupWindow(BasePopupWindow):
         self, popup_info: TextPopupInfo
     ) -> Union[QWidget, QLayout]:
         self._text_display_widget = QTextBrowser(self)
+        self._text_display_widget.setOpenExternalLinks(
+            popup_info.open_external_link is True
+        )
         self._text_display_widget.setText(popup_info.text)
         return self._text_display_widget
