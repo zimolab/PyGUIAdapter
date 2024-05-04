@@ -10,6 +10,9 @@ from PyQt6.QtWidgets import (
 )
 from typing import List, Optional
 
+from .popup_info import TextPopupInfo
+from ._popup_window import TextPopupWindow
+
 
 class UPopup(QObject):
     request_get_text = pyqtSignal(Future, str, str, str, QLineEdit.EchoMode)
@@ -25,6 +28,7 @@ class UPopup(QObject):
     request_get_open_file_paths = pyqtSignal(Future, str, str, str, str)
     request_get_save_file_path = pyqtSignal(Future, str, str, str, str)
     request_get_directory_path = pyqtSignal(Future, str, str)
+    request_show_text_popup = pyqtSignal(Future, TextPopupInfo)
 
     # noinspection PyUnresolvedReferences
     def __init__(self, window):
@@ -43,6 +47,7 @@ class UPopup(QObject):
         self.request_get_open_file_paths.connect(self._on_get_open_file_paths)
         self.request_get_save_file_path.connect(self._on_get_save_file_path)
         self.request_get_directory_path.connect(self._on_get_directory_path)
+        self.request_show_text_popup.connect(self._on_show_text_popup)
 
     def _on_get_text(
         self,
@@ -234,6 +239,11 @@ class UPopup(QObject):
         else:
             future.set_result(paths)
 
+    def _on_show_text_popup(self, future: Future, popup_info: TextPopupInfo):
+        text_popup_window = TextPopupWindow(popup_info=popup_info, parent=self._window)
+        accepted = text_popup_window.exec()
+        future.set_result(accepted)
+
 
 __current_window = None
 
@@ -396,3 +406,16 @@ def get_directory_path(title: str = None, directory: str = None) -> Optional[str
     future = Future()
     _popup().request_get_directory_path.emit(future, title, directory)
     return future.result()
+
+
+# noinspection PyUnresolvedReferences
+def show_text_popup(popup_info: TextPopupInfo):
+    future = Future()
+    _popup().request_show_text_popup.emit(future, popup_info)
+    return future.result()
+
+
+def show_license_popup(license_text: str, **kwargs):
+    popup_args = {"window_title": "License", **kwargs}
+    popup_info = TextPopupInfo(text=license_text, **popup_args)
+    return show_text_popup(popup_info)
