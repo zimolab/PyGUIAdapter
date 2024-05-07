@@ -39,6 +39,7 @@ class TextPopupInfo(BasePopupInfo):
 @dataclasses.dataclass
 class AboutPopupInfo(BasePopupInfo):
     app_name: Optional[str] = None
+    app_description: Optional[str] = None
     app_copyright: Optional[str] = None
     app_logo: Optional[str] = None
     app_fields: Optional[dict] = dataclasses.field(default_factory=OrderedDict)

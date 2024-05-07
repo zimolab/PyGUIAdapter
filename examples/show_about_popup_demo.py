@@ -9,7 +9,9 @@ def show_text_popup_demo2():
 
 def _action_show_about(ctx: ExecutionContext):
     show_about_popup(
-        app_name="PyGUIAdapter",
+        app_name="<b>PyGUIAdapter</b>",
+        app_description="PyGUIAdapter is a GUI adapter for Python. "
+        "It makes it easy to turn almost any functions into a gui application",
         app_logo="./demo_logo_1.png",
         app_copyright="copyright © zimolab. All right reserved",
         app_fields={

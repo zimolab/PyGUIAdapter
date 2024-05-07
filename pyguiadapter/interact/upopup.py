@@ -433,6 +433,7 @@ def show_license_popup(license_text: str, **kwargs):
 # noinspection PyUnresolvedReferences
 def show_about_popup(
     app_name: str,
+    app_description: Optional[str] = None,
     app_logo: Optional[str] = None,
     app_copyright: Optional[str] = None,
     app_fields: Optional[dict] = None,
@@ -440,6 +441,7 @@ def show_about_popup(
 ):
     popup_info = AboutPopupInfo(
         app_name=app_name,
+        app_description=app_description,
         app_logo=app_logo,
         app_copyright=app_copyright,
         app_fields=app_fields,

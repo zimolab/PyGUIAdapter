@@ -1,4 +1,4 @@
-<p style="text-align: center;"> <strong>${app_name}</strong></p>
+<p>${app_description}</p>
 <div>
     %for name, value in app_fields.items():
     <p>${name}: ${value}</p>

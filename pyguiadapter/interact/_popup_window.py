@@ -127,29 +127,42 @@ class AboutPopupWindow(BasePopupWindow):
     def __init__(self, popup_info: AboutPopupInfo, parent):
         super().__init__(popup_info, parent)
 
+        self._right_layout: Optional[QVBoxLayout] = None
         self._content_layout: Optional[QHBoxLayout] = None
 
     def create_popup_content(
         self, popup_info: AboutPopupInfo
     ) -> Union[QWidget, QLayout]:
         self._content_layout = QHBoxLayout(self)
-        self._add_app_logo(popup_info.app_logo)
-        self._add_app_info(
-            app_name=popup_info.app_name,
-            app_copyright=popup_info.app_copyright,
+        self._right_layout = QVBoxLayout(self)
+
+        app_logo_widget = self._create_app_logo(popup_info.app_logo)
+        if app_logo_widget:
+            self._content_layout.addWidget(app_logo_widget)
+        self._content_layout.addLayout(self._right_layout)
+
+        app_name_widget = self._create_app_name_widget(popup_info.app_name)
+        if app_name_widget:
+            self._right_layout.addWidget(app_name_widget)
+
+        app_info_widget = self._create_app_info_widget(
+            app_description=popup_info.app_description,
             app_fields=popup_info.app_fields,
+            app_copyright=popup_info.app_copyright,
             open_external_link=popup_info.open_external_link,
         )
+        if app_info_widget:
+            self._right_layout.addWidget(app_info_widget)
         return self._content_layout
 
-    def _add_app_logo(self, app_logo: Optional[str]):
+    def _create_app_logo(self, app_logo: Optional[str]) -> Optional[QLabel]:
         if not app_logo or not os.path.isfile(app_logo):
-            return
+            return None
 
         app_logo_pixmap = QPixmap(app_logo)
 
         if app_logo_pixmap is None:
-            return
+            return None
 
         size_policy = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         size_policy.setHeightForWidth(True)
@@ -164,38 +177,55 @@ class AboutPopupWindow(BasePopupWindow):
 
         app_logo_label.setPixmap(app_logo_pixmap)
 
-        self._content_layout.addWidget(app_logo_label)
+        return app_logo_label
 
-    def _add_app_info(
+    def _create_app_name_widget(self, app_name: Optional[str]):
+        if not app_name:
+            return None
+        app_name_label = QLabel(self)
+        app_name_label.setText(app_name)
+        app_name_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        return app_name_label
+
+    def _create_app_info_widget(
         self,
-        app_name: Optional[str],
-        app_copyright: Optional[str],
+        app_description: Optional[str],
         app_fields: Optional[dict],
+        app_copyright: Optional[str],
         open_external_link: Optional[bool],
-    ):
-        app_name = app_name or ""
-        app_copyright = app_copyright or ""
+    ) -> Optional[QLabel]:
+        app_description = app_description or ""
         app_fields = app_fields or {}
+        app_copyright = app_copyright or ""
 
         app_info_label = QLabel(self)
         app_info_label.setAlignment(
             Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft
         )
+        app_info_label.setWordWrap(True)
         app_info_label.setTextFormat(Qt.TextFormat.AutoText)
         app_info_label.setOpenExternalLinks(open_external_link is True)
 
-        app_info_text = self._gen_app_info_text(app_name, app_copyright, app_fields)
+        app_info_text = self._gen_app_info_text(
+            app_description=app_description,
+            app_fields=app_fields,
+            app_copyright=app_copyright,
+        )
         app_info_label.setText(app_info_text)
 
-        self._content_layout.addWidget(app_info_label)
+        return app_info_label
 
     @staticmethod
-    def _gen_app_info_text(app_name: str, app_copyright: str, app_fields: dict) -> str:
+    def _gen_app_info_text(
+        app_description: str, app_fields: dict, app_copyright: str
+    ) -> str:
         tpl_file = get_res_file(APP_ABOUT_INFO_TPL)
 
         with open(tpl_file, "r", encoding="utf-8") as tpl_file:
             tpl_text = tpl_file.read()
             template = Template(tpl_text)
             return template.render(
-                app_name=app_name, app_copyright=app_copyright, app_fields=app_fields
+                app_description=app_description,
+                app_fields=app_fields,
+                app_copyright=app_copyright,
             )
