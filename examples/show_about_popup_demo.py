@@ -1,5 +1,4 @@
 from pyguiadapter import GUIAdapter
-from pyguiadapter.interact.popup_info import AboutPopupInfo
 from pyguiadapter.interact.upopup import show_about_popup
 from pyguiadapter.ui import ExecutionContext, ActionItem
 
