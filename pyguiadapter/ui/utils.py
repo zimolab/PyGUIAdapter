@@ -1,6 +1,7 @@
 import os
 from typing import Optional, List
 
+from PyQt6.QtGui import QTextCursor
 from PyQt6.QtWidgets import QTextEdit, QWidget, QMessageBox, QLayout, QFileDialog
 
 from pyguiadapter.commons import DocumentFormat
@@ -45,9 +46,11 @@ def set_textedit_text(
         textedit.append(text)
     # scroll to document start
     if goto_start:
-        vb = textedit.verticalScrollBar()
-        if vb:
-            vb.setValue(0)
+        cursor = textedit.textCursor()
+        cursor.movePosition(
+            QTextCursor.MoveOperation.Start, QTextCursor.MoveMode.MoveAnchor
+        )
+        textedit.setTextCursor(cursor)
 
 
 def show_info_dialog(parent: QWidget, message: str, *, title: str = None):
