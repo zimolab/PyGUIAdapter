@@ -411,7 +411,12 @@ class ExecutionWindow(BaseExecutionWindow):
     def _set_func_document(self):
         text = self._func_bundle.display_document
         text_format = self._func_bundle.document_format
-        set_textedit_text(self._ui.textedit_document, text, text_format)
+        set_textedit_text(
+            self._ui.textedit_document,
+            text,
+            text_format,
+            goto_start=self._func_bundle.goto_document_start,
+        )
 
     def _setup_output_widget(self):
         setup_textedit_stylesheet(

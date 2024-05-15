@@ -30,6 +30,7 @@ class FunctionBundle(object):
         toolbar_actions: Optional[List[ActionItem]] = None,
         window_title: Optional[str] = None,
         window_icon: Optional[str] = None,
+        goto_document_start: bool = False,
     ):
         self._func_obj = func_obj
         self._bind = bind
@@ -45,6 +46,7 @@ class FunctionBundle(object):
         self._toolbar_actions = toolbar_actions
         self._window_title = window_title
         self._window_icon = window_icon
+        self._goto_document_start = goto_document_start is True
 
         func_info = get_function_parser().parse(
             func_obj=func_obj, ignore_self_param=True
@@ -109,6 +111,10 @@ class FunctionBundle(object):
     @property
     def window_icon(self) -> Optional[str]:
         return self._window_icon
+
+    @property
+    def goto_document_start(self) -> bool:
+        return self._goto_document_start
 
     def execute_function(self, *args, **kwargs) -> Any:
         if self._bind is None:

@@ -116,7 +116,7 @@ class SelectionWindow(QMainWindow):
             self._ui.textedit_document.setText("")
         else:
             self._ui.button_select.setEnabled(True)
-            self._set_document(function=item.data(Qt.ItemDataRole.UserRole))
+            self._set_document(func_bundle=item.data(Qt.ItemDataRole.UserRole))
 
     def _open_execution_window(self):
         current_item = self._ui.listwidget_functions.currentItem()
@@ -143,14 +143,19 @@ class SelectionWindow(QMainWindow):
             self._execution_window.setWindowModality(Qt.WindowModality.ApplicationModal)
             self._execution_window.show()
 
-    def _set_document(self, function: FunctionBundle):
-        text = function.display_document
-        set_textedit_text(self._ui.textedit_document, text, function.document_format)
+    def _set_document(self, func_bundle: FunctionBundle):
+        text = func_bundle.display_document
+        set_textedit_text(
+            self._ui.textedit_document,
+            text,
+            func_bundle.document_format,
+            goto_start=func_bundle.goto_document_start,
+        )
 
     def _setup_func_listwidget(self):
         self._cleanup_func_listwidget()
-        for function in self._func_bundles:
-            item = self._create_func_listitem(function)
+        for func_bundle in self._func_bundles:
+            item = self._create_func_listitem(func_bundle)
             self._ui.listwidget_functions.addItem(item)
         self._ui.listwidget_functions.setCurrentRow(0)
 

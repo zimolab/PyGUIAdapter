@@ -30,7 +30,12 @@ def setup_textedit_stylesheet(
     )
 
 
-def set_textedit_text(textedit: QTextEdit, text: str, text_format: DocumentFormat):
+def set_textedit_text(
+    textedit: QTextEdit,
+    text: str,
+    text_format: DocumentFormat,
+    goto_start: bool = False,
+):
     if text_format == DocumentFormat.HTML:
         textedit.setHtml(text)
     elif text_format == DocumentFormat.MARKDOWN:
@@ -38,6 +43,11 @@ def set_textedit_text(textedit: QTextEdit, text: str, text_format: DocumentForma
     else:
         textedit.setPlainText("")
         textedit.append(text)
+    # scroll to document start
+    if goto_start:
+        vb = textedit.verticalScrollBar()
+        if vb:
+            vb.setValue(0)
 
 
 def show_info_dialog(parent: QWidget, message: str, *, title: str = None):

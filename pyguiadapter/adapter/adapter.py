@@ -94,6 +94,7 @@ class GUIAdapter:
         toolbar_actions: Optional[List[Union[ActionItem, type(Separator)]]] = None,
         window_title: Optional[str] = None,
         window_icon: Optional[str] = None,
+        goto_document_start: bool = False,
     ):
         if func_obj in self._func_bundles:
             raise AlreadyExistsError(f"function '{func_obj.__name__}' already added")
@@ -115,6 +116,7 @@ class GUIAdapter:
             toolbar_actions=toolbar_actions,
             window_title=window_title,
             window_icon=window_icon,
+            goto_document_start=goto_document_start,
         )
         self._func_bundles[func_obj] = bundle
 
