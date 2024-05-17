@@ -133,8 +133,8 @@ class AboutPopupWindow(BasePopupWindow):
     def create_popup_content(
         self, popup_info: AboutPopupInfo
     ) -> Union[QWidget, QLayout]:
-        self._content_layout = QHBoxLayout(self)
-        self._right_layout = QVBoxLayout(self)
+        self._content_layout = QHBoxLayout()
+        self._right_layout = QVBoxLayout()
 
         app_logo_widget = self._create_app_logo(popup_info.app_logo)
         if app_logo_widget:
