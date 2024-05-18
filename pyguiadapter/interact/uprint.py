@@ -10,6 +10,7 @@ class UPrint(QObject):
     printed = pyqtSignal(str, bool)
     progress_updated = pyqtSignal(int, str)
     progressbar_config_updated = pyqtSignal(ProgressBarConfig)
+    progressbar_visibility_updated = pyqtSignal(bool)
 
     def print(self, *args, sep=" ", end="\n", html: bool = False):
         text = sep.join([str(arg) for arg in args]) + end
@@ -23,6 +24,14 @@ class UPrint(QObject):
     ):
         # noinspection PyUnresolvedReferences
         self.progress_updated.emit(current_value, progress_info)
+
+    def hide_progressbar(self):
+        # noinspection PyUnresolvedReferences
+        self.progressbar_visibility_updated.emit(False)
+
+    def show_progressbar(self):
+        # noinspection PyUnresolvedReferences
+        self.progressbar_visibility_updated.emit(True)
 
     def update_progressbar_config(
         self,
@@ -65,6 +74,11 @@ def set_update_progressbar_config_destination(func: callable):
     __uprint.progressbar_config_updated.connect(func)
 
 
+def set_update_progressbar_visibility_destination(func: callable):
+    # noinspection PyUnresolvedReferences
+    __uprint.progressbar_visibility_updated.connect(func)
+
+
 def remove_print_destination(func: callable):
     # noinspection PyUnresolvedReferences
     __uprint.printed.disconnect(func)
@@ -78,6 +92,11 @@ def remove_update_progress_destination(func: callable):
 def remove_update_progressbar_config_destination(func: callable):
     # noinspection PyUnresolvedReferences
     __uprint.progressbar_config_updated.disconnect(func)
+
+
+def remove_update_progressbar_visibility_destination(func: callable):
+    # noinspection PyUnresolvedReferences
+    __uprint.progressbar_visibility_updated.disconnect(func)
 
 
 def uprint(*args, sep=" ", end="\n", html: bool = False):
@@ -117,3 +136,11 @@ def update_progressbar_config(
         progress_text_centered=progress_text_centered,
         progress_text_format=progress_text_format,
     )
+
+
+def hide_progressbar():
+    __uprint.hide_progressbar()
+
+
+def show_progressbar():
+    __uprint.show_progressbar()

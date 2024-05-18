@@ -22,7 +22,6 @@ from pyguiadapter.ui.utils import (
     setup_textedit_stylesheet,
     set_textedit_text,
     clear_layout,
-    hide_layout,
 )
 from .base import BaseExecutionWindow
 from .config import DockWidgetState, DockConfig, ExecutionWindowConfig
@@ -73,6 +72,9 @@ class ExecutionWindow(BaseExecutionWindow):
         uprint.set_print_destination(self.append_output)
         uprint.set_update_progress_destination(self.update_progressbar)
         uprint.set_update_progressbar_config_destination(self.update_progressbar_config)
+        uprint.set_update_progressbar_visibility_destination(
+            self.update_progressbar_visibility
+        )
         upopup.set_current_window(self)
 
         self._register_ctx_callable("show_document_dock", self.show_document_dock)
@@ -152,13 +154,16 @@ class ExecutionWindow(BaseExecutionWindow):
     def update_progressbar(
         self, current_value: int, progress_info: Optional[str] = None
     ):
-        if not self._func_bundle.enable_progressbar:
-            warnings.warn("progressbar is not enabled")
-            return
         self._ui.progressbar.setValue(current_value)
         if progress_info is None:
             return
         self._ui.label_progressbar_info.setText(progress_info)
+
+    def update_progressbar_visibility(self, visible: bool):
+        if visible is True:
+            self._ui.progressbar.show()
+        else:
+            self._ui.progressbar.hide()
 
     def update_progressbar_config(self, progressbar_config: ProgressBarConfig):
         if not progressbar_config:
@@ -509,8 +514,9 @@ class ExecutionWindow(BaseExecutionWindow):
 
     def _setup_progressbar(self):
         if not self._func_bundle.enable_progressbar:
-            hide_layout(self._ui.layout_progressbar)
+            self.update_progressbar_visibility(False)
             return
+        self.update_progressbar_visibility(True)
         config = self._func_bundle.progressbar_config or ProgressBarConfig()
         self.update_progressbar_config(config)
 
