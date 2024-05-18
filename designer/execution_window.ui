@@ -137,16 +137,16 @@
       <widget class="QTextBrowser" name="textedit_output"/>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
+      <layout class="QVBoxLayout" name="laoyout_progressbar">
        <item>
-        <widget class="QProgressBar" name="progressbar_progress">
+        <widget class="QProgressBar" name="progressbar">
          <property name="value">
           <number>24</number>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_progress_text">
+        <widget class="QLabel" name="label_progressbar_info">
          <property name="text">
           <string/>
          </property>
