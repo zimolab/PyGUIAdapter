@@ -27,6 +27,7 @@ from .constants import (
     CANCEL_EVENT_PARAM_NAME,
     DEFAULT_APP_STYLE,
 )
+from ..progressbar_config import ProgressBarConfig
 
 
 class GUIAdapter:
@@ -95,6 +96,8 @@ class GUIAdapter:
         window_title: Optional[str] = None,
         window_icon: Optional[str] = None,
         goto_document_start: bool = False,
+        enable_progressbar: bool = False,
+        progressbar_config: Optional[ProgressBarConfig] = None,
     ):
         if func_obj in self._func_bundles:
             raise AlreadyExistsError(f"function '{func_obj.__name__}' already added")
@@ -117,6 +120,8 @@ class GUIAdapter:
             window_title=window_title,
             window_icon=window_icon,
             goto_document_start=goto_document_start,
+            enable_progressbar=enable_progressbar,
+            progressbar_config=progressbar_config,
         )
         self._func_bundles[func_obj] = bundle
 

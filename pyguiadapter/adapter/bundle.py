@@ -4,6 +4,7 @@ from typing import Any, Optional, Dict, NoReturn, Callable, List
 from function2widgets import FunctionInfo, CommonParameterWidgetArgs
 
 from pyguiadapter.commons import T, DocumentFormat, safe_del, get_function_parser
+from pyguiadapter.progressbar_config import ProgressBarConfig
 from pyguiadapter.ui.menus import ActionItem
 
 from .constants import (
@@ -31,6 +32,8 @@ class FunctionBundle(object):
         window_title: Optional[str] = None,
         window_icon: Optional[str] = None,
         goto_document_start: bool = False,
+        enable_progressbar: bool = False,
+        progressbar_config: Optional[ProgressBarConfig] = None,
     ):
         self._func_obj = func_obj
         self._bind = bind
@@ -47,6 +50,8 @@ class FunctionBundle(object):
         self._window_title = window_title
         self._window_icon = window_icon
         self._goto_document_start = goto_document_start is True
+        self._enable_progressbar = enable_progressbar
+        self._progressbar_config = progressbar_config
 
         func_info = get_function_parser().parse(
             func_obj=func_obj, ignore_self_param=True
@@ -115,6 +120,14 @@ class FunctionBundle(object):
     @property
     def goto_document_start(self) -> bool:
         return self._goto_document_start
+
+    @property
+    def enable_progressbar(self) -> bool:
+        return self._enable_progressbar
+
+    @property
+    def progressbar_config(self) -> ProgressBarConfig:
+        return self._progressbar_config
 
     def execute_function(self, *args, **kwargs) -> Any:
         if self._bind is None:

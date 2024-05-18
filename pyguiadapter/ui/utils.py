@@ -161,3 +161,33 @@ def clear_layout(layout: QLayout):
         spacer_item = item.spacerItem()
         if spacer_item:
             layout.removeItem(spacer_item)
+
+
+def hide_layout(layout: QLayout):
+    if not layout:
+        return
+    for i in range(layout.count()):
+        item = layout.itemAt(i)
+        widget = item.widget()
+        if widget:
+            widget.hide()
+            continue
+        sub_layout = item.layout()
+        if sub_layout:
+            hide_layout(sub_layout)
+            continue
+
+
+def show_layout(layout: QLayout):
+    if not layout:
+        return
+    for i in range(layout.count()):
+        item = layout.itemAt(i)
+        widget = item.widget()
+        if widget:
+            widget.show()
+            continue
+        sub_layout = item.layout()
+        if sub_layout:
+            show_layout(sub_layout)
+            continue

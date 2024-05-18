@@ -16,11 +16,13 @@ from pyguiadapter.adapter.bundle import FunctionBundle
 from pyguiadapter.adapter.executor import FunctionExecutor
 from pyguiadapter.commons import get_param_widget_factory
 from pyguiadapter.interact import upopup, uprint, ulogging
+from pyguiadapter.progressbar_config import ProgressBarConfig
 from pyguiadapter.ui.generated.ui_execution_window import Ui_ExecutionWindow
 from pyguiadapter.ui.utils import (
     setup_textedit_stylesheet,
     set_textedit_text,
     clear_layout,
+    hide_layout,
 )
 from .base import BaseExecutionWindow
 from .config import DockWidgetState, DockConfig, ExecutionWindowConfig
@@ -69,6 +71,8 @@ class ExecutionWindow(BaseExecutionWindow):
 
         self._upopup = upopup.UPopup(self)
         uprint.set_print_destination(self.append_output)
+        uprint.set_update_progress_destination(self.update_progressbar)
+        uprint.set_update_progressbar_config_destination(self.update_progressbar_config)
         upopup.set_current_window(self)
 
         self._register_ctx_callable("show_document_dock", self.show_document_dock)
@@ -144,6 +148,42 @@ class ExecutionWindow(BaseExecutionWindow):
         cursor.insertHtml("<br>")
         self._ui.textedit_output.ensureCursorVisible()
         self._ui.textedit_output.moveCursor(QTextCursor.MoveOperation.End)
+
+    def update_progressbar(
+        self, current_value: int, progress_info: Optional[str] = None
+    ):
+        if not self._func_bundle.enable_progressbar:
+            warnings.warn("progressbar is not enabled")
+            return
+        self._ui.progressbar.setValue(current_value)
+        if progress_info is None:
+            return
+        self._ui.label_progressbar_info.setText(progress_info)
+
+    def update_progressbar_config(self, progressbar_config: ProgressBarConfig):
+        if not progressbar_config:
+            return
+        self._ui.progressbar.setRange(
+            progressbar_config.min_value, progressbar_config.max_value
+        )
+
+        self._ui.progressbar.setInvertedAppearance(
+            progressbar_config.inverted_appearance is True
+        )
+
+        self._ui.label_progressbar_info.setVisible(
+            progressbar_config.show_progressbar_info is True
+        )
+
+        self._ui.progressbar.setTextVisible(
+            progressbar_config.show_progress_text is True
+        )
+
+        if progressbar_config.progress_text_format:
+            self._ui.progressbar.setFormat(progressbar_config.progress_text_format)
+
+        if progressbar_config.progress_text_centered is True:
+            self._ui.progressbar.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
     def get_params_info(self) -> Dict[str, ParamInfoType]:
         return {
@@ -326,6 +366,7 @@ class ExecutionWindow(BaseExecutionWindow):
         self._clear_actions()
         self._setup_menus()
         self._setup_toolbar()
+        self._setup_progressbar()
 
         self._ui.button_clear.clicked.connect(self.clear_output)
         self._ui.button_execute.clicked.connect(self.execute_function)
@@ -465,6 +506,13 @@ class ExecutionWindow(BaseExecutionWindow):
         self._create_toolbar_actions(
             self._ui.toolbar, self._func_bundle.toolbar_actions
         )
+
+    def _setup_progressbar(self):
+        if not self._func_bundle.enable_progressbar:
+            hide_layout(self._ui.layout_progressbar)
+            return
+        config = self._func_bundle.progressbar_config or ProgressBarConfig()
+        self.update_progressbar_config(config)
 
     def _cancel_executing(self):
         if not self.is_func_executing():
