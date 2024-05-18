@@ -141,7 +141,13 @@
        <item>
         <widget class="QProgressBar" name="progressbar">
          <property name="value">
-          <number>24</number>
+          <number>0</number>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignBottom|Qt::AlignJustify</set>
+         </property>
+         <property name="textDirection">
+          <enum>QProgressBar::TopToBottom</enum>
          </property>
         </widget>
        </item>
