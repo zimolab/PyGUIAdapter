@@ -161,9 +161,9 @@ class ExecutionWindow(BaseExecutionWindow):
 
     def update_progressbar_visibility(self, visible: bool):
         if visible is True:
-            self._ui.progressbar.show()
+            self._ui.widget_progressbar_panel.show()
         else:
-            self._ui.progressbar.hide()
+            self._ui.widget_progressbar_panel.hide()
 
     def update_progressbar_config(self, progressbar_config: ProgressBarConfig):
         if not progressbar_config:
