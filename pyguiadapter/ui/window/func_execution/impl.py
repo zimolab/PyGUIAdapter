@@ -207,7 +207,8 @@ class ExecutionWindow(BaseExecutionWindow):
         for widget in self._param_widgets:
             if widget.parameter_name == param_name:
                 param_widget = widget
-        if param_widget:
+                break
+        if not param_widget:
             raise NoSuchParameterError(f"no such parameter {param_name}")
         return param_widget.get_value()
 
@@ -216,7 +217,8 @@ class ExecutionWindow(BaseExecutionWindow):
         for widget in self._param_widgets:
             if widget.parameter_name == param_name:
                 param_widget = widget
-        if param_widget:
+                break
+        if not param_widget:
             raise NoSuchParameterError(f"no such parameter {param_name}")
         return param_widget.set_value(value)
 
