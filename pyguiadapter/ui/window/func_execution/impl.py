@@ -209,7 +209,7 @@ class ExecutionWindow(BaseExecutionWindow):
                 param_widget = widget
                 break
         if not param_widget:
-            raise NoSuchParameterError(f"no such parameter {param_name}")
+            raise NoSuchParameterError(f"no such parameter: {param_name}")
         return param_widget.get_value()
 
     def set_param_value(self, param_name: str, value: Any):
@@ -219,7 +219,7 @@ class ExecutionWindow(BaseExecutionWindow):
                 param_widget = widget
                 break
         if not param_widget:
-            raise NoSuchParameterError(f"no such parameter {param_name}")
+            raise NoSuchParameterError(f"no such parameter: {param_name}")
         return param_widget.set_value(value)
 
     def set_param_values(
