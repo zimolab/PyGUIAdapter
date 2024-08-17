@@ -1,263 +1,293 @@
-import contextlib
-import inspect
+from __future__ import annotations
+
 import sys
-from typing import Type, Optional, List, Dict, Callable, Union
+import warnings
+from collections import OrderedDict
+from collections.abc import Callable, Sequence
+from typing import Literal, Dict, Any, Type, Tuple, List
 
-from PyQt6.QtWidgets import QApplication, QMessageBox, QStyleFactory
-from function2widgets import CommonParameterWidgetArgs
+from qtpy.QtGui import QIcon, QPixmap
+from qtpy.QtWidgets import QApplication, QStyleFactory, QWidget
 
-
-from pyguiadapter.commons import T, DocumentFormat
-from pyguiadapter.exceptions import (
-    AlreadyExistsError,
-    NotExistError,
-    AppNotStartedError,
-    ClassInitCancelled,
+from . import context
+from ..bundle import FnBundle, WidgetConfigTypes
+from ..fn import ParameterInfo
+from ..paramwidget import (
+    BaseParameterWidget,
+    BaseParameterWidgetConfig,
+    is_parameter_widget_class,
 )
-from pyguiadapter.ui.window.class_init import ClassInitWindow, ClassInitWindowConfig
-from pyguiadapter.ui.window.func_execution import ExecutionWindow, ExecutionWindowConfig
-from pyguiadapter.ui.window.func_selection import SelectionWindow, SelectionWindowConfig
-from pyguiadapter.ui.menus import ActionItem, Separator
-
-from .bundle import FunctionBundle
-from .constants import (
-    ALWAYS_SHOW_SELECTION_WINDOW,
-    AS_IS,
-    _KEY_WIDGET_ARGS,
-    CANCEL_EVENT_PARAM_NAME,
-    DEFAULT_APP_STYLE,
-)
-from ..progressbar_config import ProgressBarConfig
+from ..parser import FnParser
+from ..widgets import ParameterWidgetFactory
+from ..windows import FnExecuteWindowConfig, FnSelectWindow, FnSelectWindowConfig
 
 
-class GUIAdapter:
+class GUIAdapter(object):
+
     def __init__(
         self,
-        argv: List[str] = None,
         *,
-        config_class_init_window: Optional[ClassInitWindowConfig] = None,
-        config_selection_window: Optional[SelectionWindowConfig] = None,
-        config_execution_window: Optional[ExecutionWindowConfig] = None,
-        callback_app_started: Optional[Callable[[QApplication], None]] = None,
-        callback_class_init_window_created: Optional[
-            Callable[[ClassInitWindow], None]
-        ] = None,
-        callback_selection_window_created: Optional[
-            Callable[[SelectionWindow], None]
-        ] = None,
-        callback_execution_window_created: Optional[
-            Callable[[ExecutionWindow], None]
-        ] = None,
-        always_show_selection_window: bool = ALWAYS_SHOW_SELECTION_WINDOW,
-        app_style: Optional[str] = DEFAULT_APP_STYLE,
+        select_window_config: FnSelectWindowConfig | None = None,
+        app_style: str | None = None,
+        on_app_start: Callable[[QApplication], None] | None = None,
+        on_app_shutdown: Callable | None = None,
     ):
-        if argv is None:
-            argv = sys.argv
-
-        self._argv = argv
-        self._config_class_init_window = (
-            config_class_init_window or ClassInitWindowConfig()
-        )
-        self._config_selection_window = (
-            config_selection_window or SelectionWindowConfig()
-        )
-        self._config_execution_window = (
-            config_execution_window or ExecutionWindowConfig()
-        )
-
-        self._callback_app_started = callback_app_started
-        self._callback_execution_window_created = callback_execution_window_created
-        self._callback_class_init_window_created = callback_class_init_window_created
-        self._callback_selection_window_created = callback_selection_window_created
-
+        self._select_window_config = select_window_config
         self._app_style = app_style
+        self._on_app_start = on_app_start
+        self._on_app_shutdown: Callable | None = on_app_shutdown
 
-        self.always_show_selection_window = always_show_selection_window
+        self._fn_bundles: Dict[Callable, FnBundle] = OrderedDict()
+        self._fn_parser = FnParser()
 
-        self._func_bundles = {}
-        self._application: Optional[QApplication] = None
-
-        self._selection_window: Optional[SelectionWindow] = None
-        self._execution_window: Optional[ExecutionWindow] = None
+        self._application: QApplication | None = None
+        self._root_window: QWidget | None = None
+        self._select_window: FnSelectWindow | None = None
 
     def add(
         self,
-        func_obj: callable,
-        bind: T = None,
-        display_name: str = None,
-        display_icon: str = None,
-        display_document: str = None,
-        document_format: DocumentFormat = DocumentFormat.PLAIN,
-        widget_configs: Optional[Dict[str, Dict]] = None,
-        cancelable: bool = False,
-        cancel_event_param_name: str = CANCEL_EVENT_PARAM_NAME,
-        menus: Optional[Dict[str, Dict]] = None,
-        toolbar_actions: Optional[List[Union[ActionItem, type(Separator)]]] = None,
-        window_title: Optional[str] = None,
-        window_icon: Optional[str] = None,
-        goto_document_start: bool = False,
-        enable_progressbar: bool = False,
-        progressbar_config: Optional[ProgressBarConfig] = None,
+        fn: Callable,
+        display_name: str | None = None,
+        group: str | None = None,
+        icon: str | QIcon | QPixmap | None = None,
+        document: str | None = None,
+        document_format: Literal["markdown", "html", "plaintext"] = "markdown",
+        *,
+        window_config: FnExecuteWindowConfig | None = None,
+        widget_configs: Dict[str, WidgetConfigTypes] | None = None,
     ):
-        if func_obj in self._func_bundles:
-            raise AlreadyExistsError(f"function '{func_obj.__name__}' already added")
-
-        if isinstance(widget_configs, dict):
-            self._check_widget_configs(widget_configs)
-
-        bundle = FunctionBundle(
-            func_obj=func_obj,
-            bind=bind,
+        widget_configs = widget_configs or {}
+        fn_info = self._fn_parser.parse_fn_info(
+            fn,
             display_name=display_name,
-            display_icon=display_icon,
-            display_document=display_document,
+            group=group,
+            icon=icon,
+            document=document,
             document_format=document_format,
-            widgets_configs=widget_configs,
-            cancelable=cancelable,
-            cancel_event_param_name=cancel_event_param_name,
-            menus=menus,
-            toolbar_actions=toolbar_actions,
-            window_title=window_title,
-            window_icon=window_icon,
-            goto_document_start=goto_document_start,
-            enable_progressbar=enable_progressbar,
-            progressbar_config=progressbar_config,
         )
-        self._func_bundles[func_obj] = bundle
+        window_config = window_config or FnExecuteWindowConfig()
+        fn_widget_configs = self._fn_parser.parse_widget_configs(fn_info)
+        widget_configs = self._normalize_widget_configs(
+            fn_info.parameters, fn_widget_configs, widget_configs
+        )
+        # print(widget_configs)
+        fn_bundle = FnBundle(fn_info, window_config, widget_configs)
+        self._fn_bundles[fn] = fn_bundle
 
-    def remove(self, func_obj: callable):
-        if func_obj not in self._func_bundles:
-            raise NotExistError(f"function '{func_obj.__name__}' not found")
-        del self._func_bundles[func_obj]
+    def remove(self, fn: Callable):
+        if fn in self._fn_bundles:
+            del self._fn_bundles[fn]
 
-    def get(self, func_obj: callable) -> Optional[Callable]:
-        return self._func_bundles.get(func_obj, None)
+    def exists(self, fn: Callable) -> bool:
+        return fn in self._fn_bundles
 
-    def clear(self):
-        self._func_bundles.clear()
+    def get_bundle(self, fn: Callable) -> FnBundle | None:
+        return self._fn_bundles.get(fn, None)
 
-    @contextlib.contextmanager
-    def instantiate_class(self, klass: Type[T]) -> T:
+    def clear_bundles(self):
+        self._fn_bundles.clear()
+
+    def run(
+        self,
+        argv: Sequence[str] | None = None,
+        *,
+        always_show_select_window: bool = False,
+    ):
+        if self._application is None:
+            self._start_application(argv)
+
+        context.clear_windows()
+
+        count = len(self._fn_bundles)
+        if count == 0:
+            self._shutdown_application()
+            raise RuntimeError("no functions has been added")
+
         try:
-            if self._application is None:
-                self._start_application()
-            yield self._create_instance(klass=klass)
+
+            if count == 1 and not always_show_select_window:
+                fn_bundle = next(iter(self._fn_bundles.values()))
+                self._show_execute_window(fn_bundle)
+            else:
+                window_config = self._select_window_config or FnExecuteWindowConfig()
+                self._show_select_window(list(self._fn_bundles.values()), window_config)
+            self._application.exec_()
+        except Exception as e:
+            raise e
         finally:
             self._shutdown_application()
 
-    def run(self):
-        if self._application is None:
-            self._start_application()
-        func_count = len(self._func_bundles)
-        if func_count == 0:
-            msg = QApplication.tr("No functions have been added!")
-            QMessageBox.warning(None, QApplication.tr("Warning"), msg)
-            return
-        if func_count == 1 and not self.always_show_selection_window:
-            self._show_execution_window()
-        else:
-            self._show_selection_window()
-        self._execute_application()
-
-    def on_app_started(self, callback: Callable[[QApplication], None]):
-        self._callback_app_started = callback
-
-    def on_class_init_window_created(self, callback: Callable[[ClassInitWindow], None]):
-        self._callback_class_init_window_created = callback
-
-    def on_selection_window_created(self, callback: Callable[[SelectionWindow], None]):
-        self._callback_selection_window_created = callback
-
-    def on_execution_window_created(self, callback: Callable[[ExecutionWindow], None]):
-        self._callback_execution_window_created = callback
+    def is_application_started(self) -> bool:
+        return self._application is not None
 
     @property
-    def class_init_window_config(self) -> ClassInitWindowConfig:
-        return self._config_class_init_window
+    def application(self) -> QApplication | None:
+        return self._application
 
-    @property
-    def selection_window_config(self) -> SelectionWindowConfig:
-        return self._config_selection_window
+    def _start_application(self, argv: Sequence[str] | None):
+        if argv is None:
+            argv = sys.argv
 
-    @property
-    def execution_window_config(self) -> ExecutionWindowConfig:
-        return self._config_execution_window
-
-    def _start_application(self):
         if self._application is not None:
+            warnings.warn("application already started")
             return
+
         if self._app_style:
             QApplication.setStyle(QStyleFactory.create(self._app_style))
-        self._application = QApplication(self._argv)
-        if self._callback_app_started is not None:
-            self._callback_app_started(self._application)
 
-    def _execute_application(self):
-        if self._application is None:
-            raise AppNotStartedError("application not started")
-        self._application.exec()
+        self._application = QApplication(argv)
+
+        if self._on_app_start:
+            self._on_app_start(self._application)
 
     def _shutdown_application(self):
-        if not self._application:
+        if self._application is None:
+            warnings.warn("application not started yet")
             return
-        self._application.exit()
+
+        context.clear_windows()
+
+        self._application.closeAllWindows()
+        self._application.quit()
         self._application = None
 
-    def _create_instance(self, klass: Type[T]) -> T:
-        if not inspect.isclass(klass):
-            raise TypeError(f"klass must be a class, not {type(klass)}")
-        instance = ClassInitWindow.initialize_class(
-            klass=klass,
-            config=self._config_class_init_window,
-            callback_window_created=self._callback_class_init_window_created,
-            parent=None,
-        )
-        if instance is None:
-            raise ClassInitCancelled(f"user canceled the initialization of {klass}")
-        return instance
+        if self._on_app_shutdown:
+            self._on_app_shutdown()
 
-    def _show_selection_window(self):
-        if self._selection_window is not None:
-            self._selection_window.close()
-            self._selection_window.deleteLater()
-            self._selection_window = None
-        self._selection_window = SelectionWindow(
-            func_bundles=list(self._func_bundles.values()),
-            config=self.selection_window_config,
-            config_execution_window=self.execution_window_config,
-            callback_window_created=self._callback_selection_window_created,
-            callback_execution_window_created=self._callback_execution_window_created,
+    def _show_select_window(
+        self, fn_bundles: List[FnBundle], select_window_config: FnSelectWindowConfig
+    ):
+        if self._select_window is not None:
+            self._select_window.close()
+            self._select_window.deleteLater()
+            self._select_window = None
+        self._select_window = FnSelectWindow(
             parent=None,
+            bundles=fn_bundles,
+            config=select_window_config,
         )
-        self._selection_window.show()
+        self._select_window.start()
 
-    def _show_execution_window(self):
-        if self._execution_window is not None:
-            self._execution_window.close()
-            self._execution_window.deleteLater()
-            self._execution_window = None
-        self._execution_window = ExecutionWindow(
-            func_bundle=list(self._func_bundles.values())[0],
-            config=self.execution_window_config,
-            callback_window_created=self._callback_execution_window_created,
-            parent=None,
-        )
-        self._execution_window.show()
+    def _show_execute_window(self, fn_bundle: FnBundle):
+        pass
+
+    def _normalize_widget_configs(
+        self,
+        parameters: Dict[str, ParameterInfo],
+        fn_configs: Dict[str, Tuple[str | None, dict]],
+        user_configs: Dict[str, WidgetConfigTypes],
+    ) -> Dict[str, Tuple[Type[BaseParameterWidget], BaseParameterWidgetConfig | dict]]:
+        user_configs = user_configs.copy()
+        normalized_configs = OrderedDict()
+
+        for param_name, config_item in fn_configs.items():
+            param_info = parameters.get(param_name, None)
+            assert param_info is not None
+            widget_class, widget_config = config_item
+            user_config_item = user_configs.pop(param_name, None)
+
+            # if user config not provided
+            if not user_config_item:
+                if widget_class is None:
+                    widget_class = self._find_widget_class_by_type(param_info.typename)
+                else:
+                    widget_class = self._find_widget_class_by_name(widget_class)
+                normalized_configs[param_name] = (widget_class, widget_config)
+                continue
+
+            if not self._check_user_widget_config(user_config_item):
+                raise ValueError(
+                    f"invalid widget configs for parameter '{param_name}': {user_config_item}"
+                )
+
+            user_widget_class: Type[BaseParameterWidget] | str | None = None
+            user_widget_config: dict | BaseParameterWidgetConfig | None = None
+            if is_parameter_widget_class(user_config_item):
+                user_widget_class = user_config_item
+            elif isinstance(user_config_item, str):
+                user_widget_class = user_config_item
+            elif isinstance(user_config_item, dict):
+                user_widget_config = user_config_item
+            elif isinstance(user_config_item, BaseParameterWidgetConfig):
+                user_widget_class = user_config_item.target_widget_class()
+                user_widget_config = user_config_item
+            elif isinstance(user_config_item, tuple) and len(user_config_item) == 2:
+                user_widget_class = user_config_item[0]
+                user_widget_config = user_config_item[1]
+            else:
+                raise ValueError(
+                    f"invalid widget configs for parameter '{param_name}': {user_config_item}"
+                )
+
+            _widget_class = user_widget_class or widget_class
+            _widget_config = user_widget_config or widget_config
+
+            if _widget_class is None:
+                _widget_class = self._find_widget_class_by_type(param_info.typename)
+
+            if isinstance(_widget_class, str):
+                _widget_class = self._find_widget_class_by_name(_widget_class)
+
+            normalized_configs[param_name] = (_widget_class, _widget_config)
+
+        # process remaining user widget configs (if any)
+        # if user_configs:
+        #     for param_name, config_item in user_configs.items():
+        #         if not isinstance(config_item, tuple) or len(config_item) != 2:
+        #             raise ValueError(
+        #                 f"widget class and widget configs must be provided as a tuple for parameter '{param_name}"
+        #             )
+        #         _widget_class_2, _widget_config_2 = config_item
+        #         if not self._is_widget_class_type(_widget_class_2):
+        #             raise ValueError(
+        #                 f"invalid widget class for parameter '{param_name}': {_widget_class_2}"
+        #             )
+        #         if not self._is_widget_config_type(_widget_config_2):
+        #             raise ValueError(
+        #                 f"invalid widget configs for parameter '{param_name}': {_widget_config_2}"
+        #             )
+        #         if not is_parameter_widget_class(_widget_class_2):
+        #             _widget_class_2 = self._find_widget_class_by_name(_widget_class_2)
+        #
+        #         normalized_configs[param_name] = (_widget_class_2, _widget_config_2)
+
+        return normalized_configs
 
     @staticmethod
-    def _check_widget_configs(widget_configs: dict):
-        for param_name, widget_config in widget_configs.items():
-            if not isinstance(widget_config, dict):
-                raise ValueError(f"'{param_name}' in widget_configs must be a dict")
-            if _KEY_WIDGET_ARGS in widget_config:
-                widget_args = widget_config[_KEY_WIDGET_ARGS]
-                if not isinstance(widget_args, CommonParameterWidgetArgs):
-                    raise ValueError(
-                        f"'widget_args' must be an instance of CommonParameterWidgetArgs "
-                        f"in '{param_name}''s widget_config, got {type(widget_args)}"
-                    )
-                if (
-                    widget_args.parameter_name != param_name
-                    and widget_args.parameter_name != AS_IS
-                ):
-                    raise ValueError("parameter_name should keep as-is")
+    def _find_widget_class_by_type(typ: str | Type) -> Type[BaseParameterWidget]:
+        widget_class = ParameterWidgetFactory.get(typ)
+        if not is_parameter_widget_class(widget_class):
+            raise ValueError(f"no registered widget class found for type: {typ}")
+        return widget_class
+
+    @staticmethod
+    def _find_widget_class_by_name(widget_class_name: str) -> Type[BaseParameterWidget]:
+        widget_class = ParameterWidgetFactory.find_by_widget_class_name(
+            widget_class_name
+        )
+        if not is_parameter_widget_class(widget_class):
+            raise ValueError(f"no registered widget class found: {widget_class_name}")
+        return widget_class
+
+    @staticmethod
+    def _is_widget_config_type(item: Any) -> bool:
+        return isinstance(item, (BaseParameterWidgetConfig, dict))
+
+    @staticmethod
+    def _is_widget_class_type(item: Any) -> bool:
+        if is_parameter_widget_class(item):
+            return True
+        if isinstance(item, str) and item.strip() != "":
+            return True
+        return False
+
+    def _check_user_widget_config(self, item: Any) -> bool:
+        if self._is_widget_class_type(item):
+            return True
+        if self._is_widget_config_type(item):
+            return True
+        if isinstance(item, tuple) and len(item) == 2:
+            return self._is_widget_class_type(item[0]) and self._is_widget_config_type(
+                item[1]
+            )
+        return False
