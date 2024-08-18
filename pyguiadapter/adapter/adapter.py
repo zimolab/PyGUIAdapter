@@ -87,17 +87,10 @@ class GUIAdapter(object):
     def clear_bundles(self):
         self._fn_bundles.clear()
 
-    def run(
-        self,
-        argv: Sequence[str] | None = None,
-        *,
-        always_show_select_window: bool = False,
-    ):
+    def run(self, argv: Sequence[str] | None = None):
         if self._application is None:
             self._start_application(argv)
-
         context.clear_windows()
-
         count = len(self._fn_bundles)
         if count == 0:
             self._shutdown_application()
@@ -105,7 +98,7 @@ class GUIAdapter(object):
 
         try:
 
-            if count == 1 and not always_show_select_window:
+            if count == 1 and not self._select_window_config.always_show_select_window:
                 fn_bundle = next(iter(self._fn_bundles.values()))
                 self._show_execute_window(fn_bundle)
             else:
@@ -158,15 +151,17 @@ class GUIAdapter(object):
         self, fn_bundles: List[FnBundle], select_window_config: FnSelectWindowConfig
     ):
         if self._select_window is not None:
-            self._select_window.close()
-            self._select_window.deleteLater()
-            self._select_window = None
+            return
         self._select_window = FnSelectWindow(
             parent=None,
             bundles=fn_bundles,
             config=select_window_config,
         )
+        self._select_window.destroyed.connect(self._on_select_window_destroyed)
         self._select_window.start()
+
+    def _on_select_window_destroyed(self):
+        self._select_window = None
 
     def _show_execute_window(self, fn_bundle: FnBundle):
         pass

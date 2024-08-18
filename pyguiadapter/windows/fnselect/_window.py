@@ -39,6 +39,7 @@ class FnSelectWindowConfig(BaseWindowConfig):
     document_browser_config: DocumentBrowserConfig | None = dataclasses.field(
         default_factory=DocumentBrowserConfig
     )
+    always_show_select_window: bool = True
 
 
 class FnSelectWindow(BaseWindow):
@@ -49,9 +50,9 @@ class FnSelectWindow(BaseWindow):
         config: FnSelectWindowConfig | None,
     ):
         self._config: FnSelectWindowConfig = config or FnSelectWindowConfig()
-        self._initial_bundles = bundles
+        self._initial_bundles = bundles.copy()
         self._group_pages: Dict[str, FnGroupPage] = {}
-
+        self._current_exec_window: FnSelectWindow | None = None
         super().__init__(parent, config)
 
     def _update_ui(self):
@@ -94,6 +95,7 @@ class FnSelectWindow(BaseWindow):
         )
         document_browser_config.apply_to(self._textbrowser_fn_document)
         self._vlayout_right.addWidget(self._textbrowser_fn_document)
+
         # select button
         self._button_select = QPushButton(widget_right)
         self._button_select.setObjectName("button_select")
@@ -144,19 +146,21 @@ class FnSelectWindow(BaseWindow):
     def remove_bundle(self, bundle: FnBundle):
         group_name = self._group_name(bundle.fn_info.group)
         group_page = self._group_pages.get(group_name, None)
-        if group_page:
+        if group_page is not None:
             group_page.remove_bundle(bundle)
 
     def start(self):
         for bundle in self._initial_bundles:
             self.add_bundle(bundle)
+        del self._initial_bundles
         self._toolbox_fn_groups.setCurrentIndex(0)
         self.show()
 
     def _start_exec_window(self, bundle: FnBundle):
         assert isinstance(bundle, FnBundle)
-        exec_window = FnExecuteWindow(self, bundle=bundle)
+        exec_window = FnExecuteWindow(self, bundle)
         exec_window.setWindowModality(Qt.ApplicationModal)
+        exec_window.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose, True)
         exec_window.show()
 
     def _on_button_select_click(self):
@@ -235,8 +239,8 @@ class FnSelectWindow(BaseWindow):
         super()._on_cleanup()
         for group_page in self._group_pages.values():
             group_page.clear_bundles()
+            group_page.deleteLater()
         self._group_pages.clear()
-        self._initial_bundles.clear()
 
     def _group_name(self, group_name: str | None):
         if group_name is None:

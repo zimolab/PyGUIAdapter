@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import dataclasses
-from typing import Tuple, Literal, Dict
+from typing import Tuple, Literal, Dict, Union, Type, Any, List
 
 from qtpy.QtCore import QSize, Qt
 from qtpy.QtGui import QIcon
@@ -22,9 +22,19 @@ from .._docbrowser import DocumentBrowserConfig
 from ... import utils
 from ...adapter import context
 from ...bundle import FnBundle
+from ...paramwidget import (
+    BaseParameterWidget,
+    BaseParameterWidgetConfig,
+    is_parameter_widget_class,
+)
 from ...window import BaseWindow, BaseWindowConfig
 
 DEFAULT_WINDOW_SIZE = (1024, 768)
+
+ParameterWidgetType = Union[
+    Tuple[Type[BaseParameterWidget], Union[BaseParameterWidgetConfig, dict]],
+    BaseParameterWidgetConfig,
+]
 
 
 @dataclasses.dataclass
@@ -52,15 +62,12 @@ class FnExecuteWindowConfig(BaseWindowConfig):
 
 class FnExecuteWindow(BaseWindow):
     def __init__(self, parent: QWidget | None, bundle: FnBundle):
+
         self._bundle = bundle
-        self._parent = parent
 
         super().__init__(parent, bundle.window_config)
-
-        self._parent.hide()
-        self.setWindowModality(Qt.ApplicationModal)
-
         context.window_created(self)
+        self.add_paramters(self._bundle.widget_configs)
 
     def update_progressbar_config(self, config: ProgressBarConfig | None):
         self._area_log_output.update_progressbar_config(config)
@@ -84,6 +91,57 @@ class FnExecuteWindow(BaseWindow):
         self, document: str, document_format: Literal["markdown", "html", "plaintext"]
     ):
         self._area_document.set_fn_document(document, document_format)
+
+    def add_parameter(self, parameter_name: str, config: ParameterWidgetType):
+        if isinstance(config, tuple):
+            assert len(config) == 2
+            assert is_parameter_widget_class(config[0])
+            assert isinstance(config[1], (BaseParameterWidgetConfig, dict))
+            widget_class, widget_config = config
+        elif isinstance(config, BaseParameterWidgetConfig):
+            widget_class = config.target_widget_class()
+            widget_config = config
+        else:
+            raise TypeError(f"Invalid type for widget_config: {type(config)}")
+
+        if isinstance(widget_config, dict):
+            widget_config = widget_class.ConfigClass.new(**widget_config)
+
+        groupbox = self._area_parameters.parameter_group_box
+        groupbox.add_paramter(parameter_name, widget_class, widget_config)
+
+    def remove_parameter(self, parameter_name: str, safe_remove: bool = True):
+        groupbox = self._area_parameters.parameter_group_box
+        groupbox.remove_parameter(parameter_name, safe_remove=safe_remove)
+
+    def clear_parameters(self):
+        groupbox = self._area_parameters.parameter_group_box
+        groupbox.clear_parameters()
+        groupbox.add_default_group()
+
+    def get_parameter_value(self, parameter_name: str) -> Any:
+        groupbox = self._area_parameters.parameter_group_box
+        return groupbox.get_parameter_value(parameter_name)
+
+    def get_parameter_values(self) -> Dict[str, Any]:
+        groupbox = self._area_parameters.parameter_group_box
+        return groupbox.get_parameter_values()
+
+    def set_parameter_value(
+        self, parameter_name: str, value: Any, ignore_unknown_parameter: bool = True
+    ):
+        groupbox = self._area_parameters.parameter_group_box
+        groupbox.set_parameter_value(
+            parameter_name, value, ignore_unknown_parameter=ignore_unknown_parameter
+        )
+
+    def set_parameter_values(self, values: Dict[str, Any]) -> List[str]:
+        groupbox = self._area_parameters.parameter_group_box
+        return groupbox.set_parameter_values(values)
+
+    def add_paramters(self, configs: Dict[str, ParameterWidgetType]):
+        for parameter_name, config in configs.items():
+            self.add_parameter(parameter_name, config)
 
     def _update_ui(self):
         super()._update_ui()
@@ -153,5 +211,4 @@ class FnExecuteWindow(BaseWindow):
 
     def _on_destroy(self):
         super()._on_destroy()
-        context.window_destroyed(self)
-        self._parent.show()
+        context.window_closed(self)

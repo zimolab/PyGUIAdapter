@@ -112,10 +112,11 @@ class FnParser(object):
             widget_config = OrderedDict(
                 {
                     "default_value": param_info.default_value,
+                    # "group": None,
                     "label": param_name,
                     "description": param_info.description,
-                    "default_value_description": None,
-                    "stylesheet": None,
+                    # "default_value_description": None,
+                    # "stylesheet": None,
                 }
             )
             widget_class = None

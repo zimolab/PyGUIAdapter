@@ -20,7 +20,7 @@ class _Context(QObject):
         # noinspection PyUnresolvedReferences
         self.window_created.connect(self._on_window_created)
         # noinspection PyUnresolvedReferences
-        self.window_destroyed.connect(self._on_window_destroyed)
+        self.window_destroyed.connect(self._on_window_closed)
 
     @property
     def current_window(self) -> FnExecuteWindow | None:
@@ -37,8 +37,8 @@ class _Context(QObject):
             raise TypeError(f"expected FnExecuteWindow, got {type(window)}")
         self._windows.add(window)
 
-    def _on_window_destroyed(self, window: FnExecuteWindow):
-        if not window in self._windows:
+    def _on_window_closed(self, window: FnExecuteWindow):
+        if window not in self._windows:
             return
         self._windows.remove(window)
 
@@ -53,7 +53,7 @@ def window_created(window: FnExecuteWindow):
 
 
 # noinspection PyUnresolvedReferences
-def window_destroyed(window: FnExecuteWindow):
+def window_closed(window: FnExecuteWindow):
     global _context
     _context.window_destroyed.emit(window)
 

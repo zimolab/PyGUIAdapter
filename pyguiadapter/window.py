@@ -14,14 +14,14 @@ from .menu import MenuConfig, ToolbarConfig
 DEFAULT_WINDOW_SIZE = (800, 600)
 
 
-GLOBAL_STYLESHEET = "*{font-size: 12pt}"
+GLOBAL_STYLESHEET = "*{font-size: 10pt}"
 
 
 @dataclasses.dataclass
 class BaseWindowConfig(object):
     title: str = ""
-    size: Tuple[int, int] | QSize = DEFAULT_WINDOW_SIZE
     icon: utils.IconType = None
+    size: Tuple[int, int] | QSize = DEFAULT_WINDOW_SIZE
     toolbar: ToolbarConfig | None = None
     menus: List[MenuConfig | Separator] | None = None
     on_create: Callable[["BaseWindow"], None] | None = None
@@ -35,9 +35,13 @@ class BaseWindowConfig(object):
 class BaseWindow(QMainWindow):
     def __init__(self, parent: QWidget | None, config: BaseWindowConfig):
         super().__init__(parent)
+
+        self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose, True)
+
         self._config: BaseWindowConfig = config
         self._actions: Dict[int, QAction] = {}
         self._update_ui()
+
         self._on_create()
 
     def closeEvent(self, event):
@@ -59,12 +63,16 @@ class BaseWindow(QMainWindow):
     def _update_ui(self):
         if self._config is None:
             return
+
+        # set window title
         title = self._config.title or ""
         self.setWindowTitle(title)
 
+        # set window icon
         if self._config.icon:
             self.setWindowIcon(utils.get_icon(self._config.icon))
 
+        # set window size
         if self._config.size:
             if isinstance(self._config.size, tuple):
                 size = QSize(self._config.size[0], self._config.size[1])
@@ -74,12 +82,15 @@ class BaseWindow(QMainWindow):
             else:
                 raise ValueError(f"invalid size type: {type(self._config.size)}")
 
+        # create toolbar (if toolbar config provided)
         if self._config.toolbar:
             self._create_toolbar(toolbar_config=self._config.toolbar)
 
+        # create menu (if menu config provided)
         if self._config.menus:
             self._create_menus(menus=self._config.menus)
 
+        # apply stylesheet
         if self._config.stylesheet:
             self.setStyleSheet(self._config.stylesheet)
 
@@ -94,9 +105,7 @@ class BaseWindow(QMainWindow):
         if toolbar_config.icon_size:
             size = toolbar_config.icon_size
             if isinstance(size, tuple):
-                size = QSize()
-                size.setWidth(size[0])
-                size.setHeight(size[1])
+                size = QSize(size[0], size[1])
             toolbar.setIconSize(size)
 
         if toolbar_config.allowed_areas:
@@ -120,16 +129,18 @@ class BaseWindow(QMainWindow):
             if isinstance(action_config, Separator):
                 toolbar.addSeparator()
                 continue
+
             action = self._create_action(action_config)
             toolbar.addAction(action)
 
     def _create_menus(self, menus: List[MenuConfig]):
+        menubar = self.menuBar()
         for menu_config in menus:
             if isinstance(menu_config, Separator):
-                self.menuBar().addSeparator()
+                menubar.addSeparator()
                 continue
             menu = self._create_menu(menu_config)
-            self.menuBar().addMenu(menu)
+            menubar.addMenu(menu)
 
     def _create_menu(self, menu_config: MenuConfig) -> QMenu:
         menu = QMenu(self)
@@ -149,9 +160,12 @@ class BaseWindow(QMainWindow):
         return menu
 
     def _create_action(self, action_config: ActionConfig) -> QAction:
+
         action_config_id = id(action_config)
+        # reuse action if already created
         if action_config_id in self._actions:
             return self._actions[action_config_id]
+
         action = QAction(self)
         action.setText(action_config.text)
         if action_config.icon:
@@ -177,41 +191,51 @@ class BaseWindow(QMainWindow):
         if action_config.menu_role is not None:
             action.setMenuRole(action_config.menu_role)
 
-        def _on_trigger():
+        def _on_action_trigger():
             if action_config.on_trigger is not None:
                 action_config.on_trigger(self, action)
 
-        def _on_toggle():
+        def _on_action_toggle():
             if action_config.on_toggle is not None:
                 action_config.on_toggle(self, action)
 
         # noinspection PyUnresolvedReferences
-        action.triggered.connect(_on_trigger)
+        action.triggered.connect(_on_action_trigger)
         # noinspection PyUnresolvedReferences
-        action.toggled.connect(_on_toggle)
+        action.toggled.connect(_on_action_toggle)
+
         self._actions[action_config_id] = action
         return action
 
     def _on_create(self):
-        if self._config is not None and self._config.on_create:
+        if self._config is None or not callable(self._config.on_create):
+            return
+        if self._config.on_create:
             self._config.on_create(self)
 
     def _on_close(self) -> bool:
-        if self._config is not None and self._config.on_close:
-            return self._config.on_close(self)
-        return True
+        if self._config is None or not callable(self._config.on_close):
+            should_close = True
+        else:
+            should_close = self._config.on_close(self)
+        return should_close
 
     def _on_destroy(self):
-        if self._config is not None and self._config.on_destroy:
-            self._config.on_destroy(self)
+        if self._config is None or not callable(self._config.on_destroy):
+            return
+        self._config.on_destroy(self)
 
     def _on_hide(self):
-        if self._config is not None and self._config.on_hide:
-            self._config.on_hide(self)
+        if self._config is None or not callable(self._config.on_hide):
+            return
+        self._config.on_hide(self)
 
     def _on_show(self):
-        if self._config is not None and self._config.on_show:
-            self._config.on_show(self)
+        if self._config is None or not callable(self._config.on_show):
+            return
+        self._config.on_show(self)
 
     def _on_cleanup(self):
+        for action in self._actions.values():
+            action.deleteLater()
         self._actions.clear()

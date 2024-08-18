@@ -1,7 +1,7 @@
 from datetime import datetime, date, time
 
 from pyguiadapter.adapter.adapter import GUIAdapter
-from pyguiadapter.widgets import LineEdit, LineEditConfig
+from pyguiadapter.widgets import LineEditConfig
 from pyguiadapter.windows import (
     FnSelectWindowConfig,
     FnExecuteWindowConfig,
@@ -42,7 +42,7 @@ def datetime_edits_demo(dt: datetime, dt_str: str, d: date, t: time):
     pass
 
 
-def f1(arg1: str = "5678"):
+def f1(arg1: str, arg2: str):
     """
 
     :param arg1:
@@ -92,8 +92,7 @@ adapter = GUIAdapter(select_window_config=select_window_config)
 adapter.add(
     f1,
     window_config=exec_win_config,
-    widget_configs={"arg1": LineEditConfig(default_value="abcd")},
 )
 adapter.add(f2)
 adapter.add(f3, group="Other Functions")
-adapter.run(always_show_select_window=True)
+adapter.run()

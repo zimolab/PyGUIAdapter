@@ -8,12 +8,13 @@ from typing import Any, Type, TypeVar
 from qtpy.QtWidgets import QWidget
 
 
-DEFAULT_VALUE_DESCRIPTION = "Use default value({})"
+DEFAULT_VALUE_DESCRIPTION = "use default value({})"
 
 
 @dataclasses.dataclass(frozen=True)
 class BaseParameterWidgetConfig(object):
     default_value: Any
+    group: str | None = None
     label: str | None = None
     description: str | None = None
     default_value_description: str | None = DEFAULT_VALUE_DESCRIPTION
@@ -79,7 +80,9 @@ class BaseParameterWidget(QWidget):
 
     @property
     def default_value_description(self) -> str:
-        return self.__default_value_description or ""
+        if self.__default_value_description is None:
+            return DEFAULT_VALUE_DESCRIPTION
+        return self.__default_value_description
 
     @default_value_description.setter
     def default_value_description(self, value: str):
@@ -98,8 +101,13 @@ class BaseParameterWidget(QWidget):
         pass
 
     @classmethod
-    def new(cls, parent: QWidget | None, config: BaseParameterWidgetConfig) -> Self:
-        return cls(parent, config).build()
+    def new(
+        cls,
+        parent: QWidget | None,
+        parameter_name: str,
+        config: BaseParameterWidgetConfig,
+    ) -> Self:
+        return cls(parent, parameter_name, config).build()
 
 
 def is_parameter_widget_class(o: Any) -> bool:

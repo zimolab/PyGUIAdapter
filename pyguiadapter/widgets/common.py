@@ -3,7 +3,7 @@ from __future__ import annotations
 import copy
 import dataclasses
 from abc import abstractmethod
-from typing import Any, TypeVar
+from typing import Any, TypeVar, Type
 
 from qtpy.QtCore import Qt
 from qtpy.QtWidgets import (
@@ -21,6 +21,10 @@ from ..paramwidget import BaseParameterWidgetConfig, BaseParameterWidget
 
 @dataclasses.dataclass(frozen=True)
 class CommonParameterWidgetConfig(BaseParameterWidgetConfig):
+    @classmethod
+    def target_widget_class(cls) -> Type[BaseParameterWidget]:
+        return CommonParameterWidget
+
     set_default_value_on_init: bool = True
     hide_default_value_checkbox: bool = False
 
@@ -217,7 +221,7 @@ class CommonParameterWidget(BaseParameterWidget):
         error_message = str(error)
         self.show_validation_error(error_message)
 
-    def on_clear_validation_error_requested(self, parameter_name: str | None):
+    def on_clear_validation_error(self, parameter_name: str | None):
         if parameter_name is not None and parameter_name != self.parameter_name:
             return
         self.clear_validation_error()
