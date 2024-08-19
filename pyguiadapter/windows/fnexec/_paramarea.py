@@ -3,6 +3,7 @@ from __future__ import annotations
 from collections import OrderedDict
 from typing import Dict, Any, List, Tuple, Type, Literal
 
+from qtpy.QtCore import Signal
 from qtpy.QtGui import QIcon
 from qtpy.QtWidgets import (
     QWidget,
@@ -29,7 +30,7 @@ class FnParameterGroupPage(QWidget):
     def __init__(self, parent: QWidget, group_name: str):
         super().__init__(parent)
 
-        self._grouo_name = group_name
+        self._group_name = group_name
         self._parameters: Dict[str, BaseParameterWidget] = OrderedDict()
 
         self._vlayout_main = QVBoxLayout(self)
@@ -52,7 +53,7 @@ class FnParameterGroupPage(QWidget):
 
     @property
     def group_name(self) -> str:
-        return self._grouo_name
+        return self._group_name
 
     def scroll_to(self, parameter_name: str, x: int = 50, y: int = 50) -> None:
         widget = self.get_parameter_widget(parameter_name)
@@ -121,7 +122,7 @@ class FnParameterGroupPage(QWidget):
     def get_parameter_widget(self, parameter_name: str) -> BaseParameterWidget | None:
         return self._parameters.get(parameter_name, None)
 
-    def has_parameter_wigdet(self, parameter_name: str) -> bool:
+    def has_parameter_widget(self, parameter_name: str) -> bool:
         if not self._parameters:
             return False
         return parameter_name in self._parameters
@@ -240,7 +241,7 @@ class FnParameterGroupBox(QToolBox):
         self, parameter_name: str
     ) -> FnParameterGroupPage | None:
         for group_name, group in self._groups.items():
-            if group.has_parameter_wigdet(parameter_name):
+            if group.has_parameter_widget(parameter_name):
                 return group
         return None
 
@@ -248,11 +249,11 @@ class FnParameterGroupBox(QToolBox):
         if not self._groups:
             return False
         return any(
-            group.has_parameter_wigdet(parameter_name)
+            group.has_parameter_widget(parameter_name)
             for group in self._groups.values()
         )
 
-    def add_paramter(
+    def add_parameter(
         self,
         parameter_name: str,
         widget_class: Type[BaseParameterWidget],
@@ -322,7 +323,7 @@ class FnParameterGroupBox(QToolBox):
 
     def set_parameter_values(self, params: Dict[str, Any]) -> List[str]:
         """
-        Set the value of the parameters and collect the unknow parameter names
+        Set the value of the parameters and collect the unknown parameter names
         """
         params = params.copy()
         for group_page in self._groups.values():
@@ -333,7 +334,7 @@ class FnParameterGroupBox(QToolBox):
                 del params[used_param]
         return list(params.keys())
 
-    def active_paramter_group(self, group_name: str | None) -> bool:
+    def active_parameter_group(self, group_name: str | None) -> bool:
         group = self._get_parameter_group(group_name)
         if group is None:
             return False
@@ -348,7 +349,7 @@ class FnParameterGroupBox(QToolBox):
         if group is None or widget is None:
             return
 
-        if not self.active_paramter_group(group_name=group.group_name):
+        if not self.active_parameter_group(group_name=group.group_name):
             return
         group.scroll_to(parameter_name, x, y)
 
@@ -391,6 +392,11 @@ class FnParameterGroupBox(QToolBox):
 
 
 class FnParameterArea(QWidget):
+
+    execute_button_clicked = Signal()
+    cancel_button_clicked = Signal()
+    clear_button_clicked = Signal()
+
     def __init__(self, parent: QWidget, config: _window.FnExecuteWindowConfig):
         super().__init__(parent)
         self._config: _window.FnExecuteWindowConfig = config
@@ -405,27 +411,70 @@ class FnParameterArea(QWidget):
         self._vlayout_main.addWidget(self._groupbox_parameters)
 
     def _setup_bottom_zone(self):
-        self._operation_area = QWidget(self)
-        self._vlayout_operation_container = QVBoxLayout(self._operation_area)
-        self._vlayout_operation_container.setContentsMargins(0, 0, 0, 0)
-        # self._vlayout_operation_container.setSpacing(2)
 
-        self._vlayout_operation_container.addWidget(utils.hline(self._operation_area))
+        widget_texts = self._config.widget_texts
 
-        self._checkbox_clear_log_output = QCheckBox(self._operation_area)
-        self._checkbox_clear_log_output.setText(self._config.clear_checkbox_text)
-        self._vlayout_operation_container.addWidget(self._checkbox_clear_log_output)
+        self._widget_op_area = QWidget(self)
+        self._vlayout_op_widgets = QVBoxLayout(self._widget_op_area)
+        self._vlayout_op_widgets.setContentsMargins(0, 0, 0, 0)
 
-        self._hlayout_buttons = QHBoxLayout(self._operation_area)
+        self._vlayout_op_widgets.addWidget(utils.hline(self._widget_op_area))
+
+        self._checkbox_clear_log_output = QCheckBox(self._widget_op_area)
+        self._checkbox_clear_log_output.setText(widget_texts.clear_checkbox_text)
+        self._vlayout_op_widgets.addWidget(self._checkbox_clear_log_output)
+
+        self._hlayout_buttons = QHBoxLayout(self._widget_op_area)
+
+        # Execute button
         self._button_execute = QPushButton(self)
-        self._button_execute.setText(self._config.execute_button_text)
+        self._button_execute.setText(widget_texts.execute_button_text)
+        # noinspection PyUnresolvedReferences
+        self._button_execute.clicked.connect(self.execute_button_clicked)
         self._hlayout_buttons.addWidget(self._button_execute)
+
+        # Clear button
+        self._button_clear = QPushButton(self)
+        self._button_clear.setText(widget_texts.clear_button_text)
+        # noinspection PyUnresolvedReferences
+        self._button_clear.clicked.connect(self.clear_button_clicked)
+        self._hlayout_buttons.addWidget(self._button_clear)
+
+        # Cancel button
         self._button_cancel = QPushButton(self)
-        self._button_cancel.setText(self._config.cancel_button_text)
+        self._button_cancel.setText(widget_texts.cancel_button_text)
+        # noinspection PyUnresolvedReferences
+        self._button_cancel.clicked.connect(self.cancel_button_clicked)
         self._hlayout_buttons.addWidget(self._button_cancel)
-        self._vlayout_operation_container.addLayout(self._hlayout_buttons)
-        self._vlayout_main.addWidget(self._operation_area)
+
+        self._vlayout_op_widgets.addLayout(self._hlayout_buttons)
+        self._vlayout_main.addWidget(self._widget_op_area)
 
     @property
     def parameter_group_box(self) -> FnParameterGroupBox:
         return self._groupbox_parameters
+
+    @property
+    def is_auto_clear_enabled(self) -> bool:
+        return self._checkbox_clear_log_output.isChecked()
+
+    def hide_cancel_button(self):
+        self._button_cancel.hide()
+
+    def show_cancel_button(self):
+        self._button_cancel.show()
+
+    def hide_clear_button(self):
+        self._button_clear.hide()
+
+    def show_clear_button(self):
+        self._button_clear.show()
+
+    def enable_auto_clear(self, enable: bool):
+        self._checkbox_clear_log_output.setChecked(enable)
+
+    def enable_execute_button(self, enable: bool):
+        self._button_execute.setEnabled(enable)
+
+    def enable_cancel_button(self, enable: bool):
+        self._button_cancel.setEnabled(enable)

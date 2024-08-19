@@ -21,12 +21,13 @@ from ..paramwidget import BaseParameterWidgetConfig, BaseParameterWidget
 
 @dataclasses.dataclass(frozen=True)
 class CommonParameterWidgetConfig(BaseParameterWidgetConfig):
+
+    set_default_value_on_init: bool = True
+    hide_default_value_checkbox: bool = True
+
     @classmethod
     def target_widget_class(cls) -> Type[BaseParameterWidget]:
         return CommonParameterWidget
-
-    set_default_value_on_init: bool = True
-    hide_default_value_checkbox: bool = False
 
 
 class CommonParameterWidget(BaseParameterWidget):

@@ -1,8 +1,9 @@
 from __future__ import annotations
 
 import dataclasses
-from typing import Callable, Literal, Any, Dict, List
+from typing import Callable, Literal, Any, Dict, List, Type
 
+from . import executor
 from . import utils
 
 
@@ -23,3 +24,13 @@ class FnInfo(object):
     icon: utils.IconType = None
     group: str | None = None
     parameters: Dict[str, ParameterInfo] = dataclasses.field(default_factory=dict)
+    cancelable: bool = False
+    cancel_event_parameter_name: str = "cancel_event"
+    executor: Type[executor.BaseFunctionExecutor] | None = None
+
+    def is_cancelable(self) -> bool:
+        if not self.cancelable:
+            return False
+        if not isinstance(self.cancel_event_parameter_name, str):
+            return False
+        return self.cancel_event_parameter_name.strip() != ""

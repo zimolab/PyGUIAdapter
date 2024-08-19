@@ -1,45 +1,14 @@
-from datetime import datetime, date, time
+import threading
+from datetime import datetime
+
+import time
 
 from pyguiadapter.adapter.adapter import GUIAdapter
-from pyguiadapter.widgets import LineEditConfig
 from pyguiadapter.windows import (
     FnSelectWindowConfig,
     FnExecuteWindowConfig,
     FnExecuteWindow,
 )
-
-
-def datetime_edits_demo(dt: datetime, dt_str: str, d: date, t: time):
-    """This function demonstrates how to use the date and time edits.
-
-    @widgets
-    [dt]
-    label = "datetime"
-    display_format = "yyyy-MM-dd HH:mm"
-    calendar_popup = true
-    min_datetime = "2021-11-22 10:10"
-    max_datetime = "2024-12-21 10:10"
-
-    [dt_str]
-    label = "datetime by string"
-    widget_class = "DateTimeEdit"
-
-    [d]
-    display_format = "yyyy年MM月dd日"
-    calendar_popup = true
-    min_date = "2021年11月22日"
-    max_date = "2024年12月21日"
-
-    [t]
-    display_format = "HH:mm"
-    min_time = "8:30"
-    max_time = "17:30"
-
-
-    @end
-
-    """
-    pass
 
 
 def f1(arg1: str, arg2: str):
@@ -54,7 +23,7 @@ def f1(arg1: str, arg2: str):
 
     @end
     """
-    pass
+    return f"{arg1} + {arg2}"
 
 
 def f2():
@@ -70,7 +39,9 @@ def f3():
     # Function 3
     :return:
     """
-    pass
+    print("thread", threading.current_thread())
+    time.sleep(10)
+    return datetime.now()
 
 
 select_window_config = FnSelectWindowConfig(

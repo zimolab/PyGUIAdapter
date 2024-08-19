@@ -22,6 +22,6 @@ WidgetConfigTypes = Union[
 class FnBundle(object):
     fn_info: FnInfo
     window_config: _window.FnExecuteWindowConfig
-    widget_configs: Dict[
+    parameter_widget_configs: Dict[
         str, Tuple[Type[BaseParameterWidget], BaseParameterWidgetConfig | dict]
     ]

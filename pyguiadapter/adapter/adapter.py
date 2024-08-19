@@ -37,7 +37,7 @@ class GUIAdapter(object):
         self._on_app_start = on_app_start
         self._on_app_shutdown: Callable | None = on_app_shutdown
 
-        self._fn_bundles: Dict[Callable, FnBundle] = OrderedDict()
+        self._bundles: Dict[Callable, FnBundle] = OrderedDict()
         self._fn_parser = FnParser()
 
         self._application: QApplication | None = None
@@ -52,11 +52,12 @@ class GUIAdapter(object):
         icon: str | QIcon | QPixmap | None = None,
         document: str | None = None,
         document_format: Literal["markdown", "html", "plaintext"] = "markdown",
+        cancelable: bool = False,
         *,
         window_config: FnExecuteWindowConfig | None = None,
         widget_configs: Dict[str, WidgetConfigTypes] | None = None,
     ):
-        widget_configs = widget_configs or {}
+        # create the FnInfo from the function and given arguments
         fn_info = self._fn_parser.parse_fn_info(
             fn,
             display_name=display_name,
@@ -65,33 +66,41 @@ class GUIAdapter(object):
             document=document,
             document_format=document_format,
         )
-        window_config = window_config or FnExecuteWindowConfig()
-        fn_widget_configs = self._fn_parser.parse_widget_configs(fn_info)
-        widget_configs = self._normalize_widget_configs(
-            fn_info.parameters, fn_widget_configs, widget_configs
+        fn_info.cancelable = cancelable
+        # configs for parameter widget can be from various sources
+        # for example, from the function signature or function docstring, those are automatically parsed by FnParser
+        # user can override those auto-parsed configs with 'widget_configs' of this method
+        # That means the user's 'widget_configs' has a higher priority than the auto-parsed widget configs
+        user_widget_configs = widget_configs or {}
+        parsed_widget_configs = self._fn_parser.parse_widget_configs(fn_info)
+        widget_configs = self._merge_widget_configs(
+            parameters=fn_info.parameters,
+            parsed_configs=parsed_widget_configs,
+            user_configs=user_widget_configs,
         )
-        # print(widget_configs)
-        fn_bundle = FnBundle(fn_info, window_config, widget_configs)
-        self._fn_bundles[fn] = fn_bundle
+
+        window_config = window_config or FnExecuteWindowConfig()
+        bundle = FnBundle(fn_info, window_config, widget_configs)
+        self._bundles[fn] = bundle
 
     def remove(self, fn: Callable):
-        if fn in self._fn_bundles:
-            del self._fn_bundles[fn]
+        if fn in self._bundles:
+            del self._bundles[fn]
 
     def exists(self, fn: Callable) -> bool:
-        return fn in self._fn_bundles
+        return fn in self._bundles
 
     def get_bundle(self, fn: Callable) -> FnBundle | None:
-        return self._fn_bundles.get(fn, None)
+        return self._bundles.get(fn, None)
 
     def clear_bundles(self):
-        self._fn_bundles.clear()
+        self._bundles.clear()
 
     def run(self, argv: Sequence[str] | None = None):
         if self._application is None:
             self._start_application(argv)
         context.clear_windows()
-        count = len(self._fn_bundles)
+        count = len(self._bundles)
         if count == 0:
             self._shutdown_application()
             raise RuntimeError("no functions has been added")
@@ -99,12 +108,12 @@ class GUIAdapter(object):
         try:
 
             if count == 1 and not self._select_window_config.always_show_select_window:
-                fn_bundle = next(iter(self._fn_bundles.values()))
+                fn_bundle = next(iter(self._bundles.values()))
                 self._show_execute_window(fn_bundle)
             else:
                 window_config = self._select_window_config or FnExecuteWindowConfig()
-                self._show_select_window(list(self._fn_bundles.values()), window_config)
-            self._application.exec_()
+                self._show_select_window(list(self._bundles.values()), window_config)
+            self._application.exec()
         except Exception as e:
             raise e
         finally:
@@ -166,16 +175,16 @@ class GUIAdapter(object):
     def _show_execute_window(self, fn_bundle: FnBundle):
         pass
 
-    def _normalize_widget_configs(
+    def _merge_widget_configs(
         self,
         parameters: Dict[str, ParameterInfo],
-        fn_configs: Dict[str, Tuple[str | None, dict]],
+        parsed_configs: Dict[str, Tuple[str | None, dict]],
         user_configs: Dict[str, WidgetConfigTypes],
     ) -> Dict[str, Tuple[Type[BaseParameterWidget], BaseParameterWidgetConfig | dict]]:
         user_configs = user_configs.copy()
         normalized_configs = OrderedDict()
 
-        for param_name, config_item in fn_configs.items():
+        for param_name, config_item in parsed_configs.items():
             param_info = parameters.get(param_name, None)
             assert param_info is not None
             widget_class, widget_config = config_item
