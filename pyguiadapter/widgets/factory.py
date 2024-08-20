@@ -10,7 +10,7 @@ from ..paramwidget import (
     is_parameter_widget_class,
     BaseParameterWidgetConfig,
 )
-from .exceptions import AlreadyRegisteredError
+from ..exceptions import AlreadyRegisteredError
 from .builtin import BUILTIN_WIDGETS
 
 

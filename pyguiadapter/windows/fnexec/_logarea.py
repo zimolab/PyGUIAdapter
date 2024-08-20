@@ -110,24 +110,25 @@ class FnExecuteLogOutputArea(QWidget):
         self._progressbar.update_progress(current_value, message)
 
     def clear_log_output(self):
-        self._textbrowser_log_output.clear()
+        self._textbrowser_log.clear()
 
     def append_log_output(self, log_text: str, html: bool = False):
         if log_text and not html:
-            self._textbrowser_log_output.insertPlainText(log_text)
+            self._textbrowser_log.insertPlainText(log_text)
             return
-        cursor: QTextCursor = self._textbrowser_log_output.textCursor()
+        cursor: QTextCursor = self._textbrowser_log.textCursor()
         if log_text:
             cursor.insertHtml(f"<div>{log_text}</div>")
         cursor.insertHtml("<br>")
-        self._textbrowser_log_output.ensureCursorVisible()
-        self._textbrowser_log_output.moveCursor(QTextCursor.MoveOperation.End)
+        self._textbrowser_log.ensureCursorVisible()
+        self._textbrowser_log.moveCursor(QTextCursor.MoveOperation.End)
 
+    # noinspection SpellCheckingInspection
     def _setup_log_output(self, config: LogOutputConfig | None):
         self._log_output_config = config or LogOutputConfig()
-        self._textbrowser_log_output = QTextBrowser(self)
+        self._textbrowser_log = QTextBrowser(self)
         utils.set_textbrowser_wrap_mode(
-            self._textbrowser_log_output,
+            self._textbrowser_log,
             word_wrap_mode=self._log_output_config.word_wrap_mode,
             line_wrap_mode=self._log_output_config.line_wrap_mode,
             fixed_line_wrap_width=self._log_output_config.fixed_line_wrap_width,
@@ -139,8 +140,8 @@ class FnExecuteLogOutputArea(QWidget):
             font_size=self._log_output_config.font_size,
             font_family=self._log_output_config.font_family,
         )
-        self._textbrowser_log_output.setStyleSheet(stylesheet)
-        self._vlayout_main.addWidget(self._textbrowser_log_output)
+        self._textbrowser_log.setStyleSheet(stylesheet)
+        self._vlayout_main.addWidget(self._textbrowser_log)
 
     def _setup_progressbar(self, config: ProgressBarConfig | None):
         self._progressbar = ProgressBar(self, config=config)

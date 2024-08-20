@@ -44,6 +44,7 @@ class BaseWindow(QMainWindow):
 
         self._on_create()
 
+    # noinspection PyMethodOverriding
     def closeEvent(self, event):
         if not self._on_close():
             event.ignore()
@@ -52,10 +53,12 @@ class BaseWindow(QMainWindow):
         event.accept()
         self._on_destroy()
 
+    # noinspection PyPep8Naming
     def showEvent(self, event):
         self._on_show()
         super().showEvent(event)
 
+    # noinspection PyMethodOverriding
     def hideEvent(self, event):
         self._on_hide()
         super().hideEvent(event)
@@ -98,6 +101,7 @@ class BaseWindow(QMainWindow):
         toolbar = QToolBar(self)
         toolbar.setMovable(toolbar_config.moveable)
         toolbar.setFloatable(toolbar_config.floatable)
+        # noinspection PyUnresolvedReferences
         toolbar.setOrientation(
             Qt.Horizontal if toolbar_config.horizontal else Qt.Vertical
         )
@@ -119,6 +123,7 @@ class BaseWindow(QMainWindow):
 
         toolbar_area = toolbar_config.initial_area
         if toolbar_area is None:
+            # noinspection PyUnresolvedReferences
             toolbar_area = Qt.TopToolBarArea
         self.addToolBar(toolbar_area, toolbar)
 

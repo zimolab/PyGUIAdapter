@@ -15,3 +15,7 @@ class ParameterValidationError(Exception):
 
 class AlreadyRegisteredError(Exception):
     pass
+
+
+class NotRegisteredError(Exception):
+    pass

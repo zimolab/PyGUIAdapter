@@ -9,7 +9,7 @@ from typing import Literal, Dict, Any, Type, Tuple, List
 from qtpy.QtGui import QIcon, QPixmap
 from qtpy.QtWidgets import QApplication, QStyleFactory, QWidget
 
-from . import context
+from . import ucontext
 from ..bundle import FnBundle, WidgetConfigTypes
 from ..fn import ParameterInfo
 from ..paramwidget import (
@@ -99,7 +99,7 @@ class GUIAdapter(object):
     def run(self, argv: Sequence[str] | None = None):
         if self._application is None:
             self._start_application(argv)
-        context.clear_windows()
+        ucontext.clear_windows()
         count = len(self._bundles)
         if count == 0:
             self._shutdown_application()
@@ -147,7 +147,7 @@ class GUIAdapter(object):
             warnings.warn("application not started yet")
             return
 
-        context.clear_windows()
+        ucontext.clear_windows()
 
         self._application.closeAllWindows()
         self._application.quit()

@@ -5,7 +5,6 @@ import threading
 from dbm.dumb import error
 from typing import Tuple, Literal, Dict, Union, Type, Any, List
 
-from Tools.scripts.cleanfuture import dryrun
 from qtpy.QtCore import QSize, Qt
 from qtpy.QtGui import QIcon
 from qtpy.QtWidgets import (
@@ -23,7 +22,7 @@ from ._logarea import (
 from ._paramarea import FnParameterArea
 from .._docbrowser import DocumentBrowserConfig
 from ... import utils, fn
-from ...adapter import context
+from ...adapter import ucontext
 from ...bundle import FnBundle
 from ...executor import ExecuteStateListener, AlreadyExecutingError
 from ...executors import ThreadedFunctionExecutor
@@ -83,6 +82,7 @@ class FnExecuteWindowConfig(BaseWindowConfig):
     message_texts: MessageTexts = dataclasses.field(default_factory=MessageTexts)
 
 
+# noinspection SpellCheckingInspection
 class FnExecuteWindow(BaseWindow, ExecuteStateListener):
     def __init__(self, parent: QWidget | None, bundle: FnBundle):
         self._bundle = bundle
@@ -90,9 +90,10 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
         super().__init__(parent, bundle.window_config)
 
         executor_class = self._bundle.fn_info.executor or DEFAULT_EXECUTOR_CLASS
+        # noinspection PyTypeChecker
         self._executor = executor_class(self, self)
 
-        context.window_created(self)
+        ucontext.window_created(self)
 
         self.add_parameters(self._bundle.parameter_widget_configs)
 
@@ -109,22 +110,22 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
         return self.window_config.message_texts
 
     def update_progressbar_config(self, config: ProgressBarConfig | None):
-        self._area_log_output.update_progressbar_config(config)
+        self._area_log.update_progressbar_config(config)
 
     def show_progressbar(self):
-        self._area_log_output.show_progressbar()
+        self._area_log.show_progressbar()
 
     def hide_progressbar(self):
-        self._area_log_output.hide_progressbar()
+        self._area_log.hide_progressbar()
 
     def update_progress(self, current_value: int, message: str | None = None):
-        self._area_log_output.update_progress(current_value, message)
+        self._area_log.update_progress(current_value, message)
 
-    def append_log_output(self, log_text: str, html: bool = False):
-        self._area_log_output.append_log_output(log_text, html)
+    def append_log(self, log_text: str, html: bool = False):
+        self._area_log.append_log_output(log_text, html)
 
-    def clear_log_output(self):
-        self._area_log_output.clear_log_output()
+    def clear_log(self):
+        self._area_log.clear_log_output()
 
     def update_document(
         self, document: str, document_format: Literal["markdown", "html", "plaintext"]
@@ -182,6 +183,7 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
         for parameter_name, config in configs.items():
             self.add_parameter(parameter_name, config)
 
+    # noinspection PyUnresolvedReferences
     def _update_ui(self):
         super()._update_ui()
 
@@ -237,12 +239,12 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
         # create the dock widget and log output area
         self._dockwidget_log_output = QDockWidget(self)
         self._dockwidget_log_output.setWindowTitle(widget_texts.log_output_dock_title)
-        self._area_log_output = FnExecuteLogOutputArea(
+        self._area_log = FnExecuteLogOutputArea(
             self._dockwidget_log_output,
             progressbar_config=window_config.progressbar,
             log_output_config=window_config.log_output,
         )
-        self._dockwidget_log_output.setWidget(self._area_log_output)
+        self._dockwidget_log_output.setWidget(self._area_log)
         self.addDockWidget(Qt.BottomDockWidgetArea, self._dockwidget_log_output)
         if window_config.progressbar is None:
             self.hide_progressbar()
@@ -311,7 +313,7 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
 
     def _on_destroy(self):
         super()._on_destroy()
-        context.window_closed(self)
+        ucontext.window_closed(self)
 
     def _on_cancel_button_clicked(self):
         if not self._bundle.fn_info.is_cancelable():
