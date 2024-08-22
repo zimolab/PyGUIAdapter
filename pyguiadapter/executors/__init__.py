@@ -1,3 +1,3 @@
-from .thread import ThreadedFunctionExecutor
+from .thread import ThreadFunctionExecutor
 
-__all__ = ["ThreadedFunctionExecutor"]
+__all__ = ["ThreadFunctionExecutor"]

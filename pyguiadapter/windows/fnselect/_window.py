@@ -53,30 +53,27 @@ class FnSelectWindow(BaseWindow):
         self._initial_bundles = bundles.copy()
         self._group_pages: Dict[str, FnGroupPage] = {}
         self._current_exec_window: FnSelectWindow | None = None
+
         super().__init__(parent, config)
 
     def _update_ui(self):
         super()._update_ui()
-        self.setObjectName("FnSelectWindow")
+
         # Central widget
         self._central_widget: QWidget = QWidget(self)
-        self._central_widget.setObjectName("central_widget")
         self.setCentralWidget(self._central_widget)
 
         # main layout
         self._vlayout_main = QVBoxLayout(self._central_widget)
-        self._vlayout_main.setObjectName("vlayout_central")
 
         # Splitter
         self._spliter = QSplitter(self._central_widget)
-        self._spliter.setObjectName("spliter")
         self._spliter.setOrientation(Qt.Horizontal)
         self._vlayout_main.addWidget(self._spliter)
 
         # left area
         # toolbox
         self._toolbox_fn_groups: QToolBox = QToolBox(self._spliter)
-        self._toolbox_fn_groups.setObjectName("toolbox_fn_groups")
         # noinspection PyUnresolvedReferences
         self._toolbox_fn_groups.currentChanged.connect(self._on_current_group_change)
         self._spliter.addWidget(self._toolbox_fn_groups)
@@ -85,11 +82,9 @@ class FnSelectWindow(BaseWindow):
         # right layout
         widget_right = QWidget(self._spliter)
         self._vlayout_right = QVBoxLayout(widget_right)
-        self._vlayout_right.setObjectName("vlayout_right")
         self._vlayout_right.setContentsMargins(0, 0, 0, 0)
         # fn document display widget
         self._textbrowser_fn_document: QTextBrowser = QTextBrowser(widget_right)
-        self._textbrowser_fn_document.setObjectName("textbrowser_fn_document")
         document_browser_config = (
             self._config.document_browser_config or DocumentBrowserConfig()
         )
@@ -98,12 +93,11 @@ class FnSelectWindow(BaseWindow):
 
         # select button
         self._button_select = QPushButton(widget_right)
-        self._button_select.setObjectName("button_select")
         self._button_select.setText(self._config.select_button_text)
         self._vlayout_right.addWidget(self._button_select)
 
-        left_area_width = self.width() * LEFT_AREA_RATIO
-        right_area_width = self.width() * RIGHT_AREA_RATIO
+        left_area_width = int(self.width() * LEFT_AREA_RATIO)
+        right_area_width = int(self.width() * RIGHT_AREA_RATIO)
 
         self._spliter.setSizes([left_area_width, right_area_width])
 
@@ -115,10 +109,13 @@ class FnSelectWindow(BaseWindow):
         page = self._get_group_page(self._group_name(fn.group))
         page.add_bundle(bundle)
 
-    def get_bundles(self, group_name: str | None) -> Tuple[FnBundle, ...]:
+    def get_bundles_of(self, group_name: str | None) -> Tuple[FnBundle, ...]:
         group_name = self._group_name(group_name)
         group_page = self._group_pages.get(group_name, None)
         return group_page.bundles() if group_page is not None else ()
+
+    def get_group_names(self) -> List[str]:
+        return list(self._group_pages.keys())
 
     def get_all_bundles(self) -> List[FnBundle]:
         bundles = []
@@ -127,9 +124,6 @@ class FnSelectWindow(BaseWindow):
             if bs:
                 bundles.extend(bs)
         return bundles
-
-    def get_group_names(self) -> List[str]:
-        return list(self._group_pages.keys())
 
     def remove_group(self, group_name: str | None):
         group_name = self._group_name(group_name)
@@ -158,10 +152,16 @@ class FnSelectWindow(BaseWindow):
 
     def _start_exec_window(self, bundle: FnBundle):
         assert isinstance(bundle, FnBundle)
-        exec_window = FnExecuteWindow(self, bundle)
-        exec_window.setWindowModality(Qt.ApplicationModal)
-        exec_window.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose, True)
-        exec_window.show()
+        self._current_exec_window = FnExecuteWindow(self, bundle)
+        self._current_exec_window.setWindowModality(Qt.ApplicationModal)
+        self._current_exec_window.setAttribute(Qt.WA_DeleteOnClose, True)
+        self._current_exec_window.destroyed.connect(
+            self._on_current_exec_window_destroyed
+        )
+        self._current_exec_window.show()
+
+    def _on_current_exec_window_destroyed(self):
+        self._current_exec_window = None
 
     def _on_button_select_click(self):
         bundle = self._current_bundle()

@@ -8,7 +8,8 @@ from typing import Any, Dict
 
 from qtpy.QtCore import QObject, QThread, Signal
 
-from ..executor import BaseFunctionExecutor, ExecuteStateListener, AlreadyExecutingError
+from ..exceptions import FunctionAlreadyExecutingError
+from ..executor import BaseFunctionExecutor, ExecuteStateListener
 from ..fn import FnInfo
 
 
@@ -28,52 +29,38 @@ class _WorkerThread(QThread):
         super().__init__(parent)
         self._fn_info = fn_info
         self._arguments = OrderedDict(arguments)
-        self._cancel_event: threading.Event | None = None
 
-        if fn_info.is_cancelable():
-            self.cancel_requested.connect(self._on_cancel_requested)
+        self._cancel_event = threading.Event()
+        self.cancel_requested.connect(self._on_cancel_requested)
+
+    def is_cancel_event_set(self) -> bool:
+        return self._cancel_event.is_set()
 
     # noinspection PyUnresolvedReferences
     def run(self):
         try:
+            self._cancel_event.clear()
             result = self._on_execute()
         except Exception as e:
             traceback.print_exc()
             self.error_raised.emit(self._fn_info, self._arguments, e)
         else:
             self.result_ready.emit(self._fn_info, self._arguments, result)
-
-    def request_cancel(self):
-        if not self._fn_info.is_cancelable():
-            warnings.warn("function is not cancelable")
-            return
-        if self._cancel_event is None:
-            warnings.warn("cancel event is not created")
-            return
-        # noinspection PyUnresolvedReferences
-        self.cancel_requested.emit()
+        finally:
+            self._cancel_event.clear()
 
     def _on_execute(self) -> Any:
         arguments = self._arguments.copy()
-        if self._fn_info.is_cancelable():
-            self._cancel_event = threading.Event()
-            arguments[self._fn_info.cancel_event_parameter_name] = self._cancel_event
         func = self._fn_info.fn
         result = func(**arguments)
-        self._cancel_event = None
         return result
 
     def _on_cancel_requested(self):
-        if not self._fn_info.is_cancelable():
-            warnings.warn("current function is not cancellable")
-            return
-        if self._cancel_event is None:
-            warnings.warn("cancel event is not created")
-            return
         self._cancel_event.set()
 
 
-class ThreadedFunctionExecutor(BaseFunctionExecutor):
+class ThreadFunctionExecutor(BaseFunctionExecutor):
+
     def __init__(self, parent: QObject | None, listener: ExecuteStateListener | None):
         super().__init__(parent, listener)
 
@@ -83,10 +70,16 @@ class ThreadedFunctionExecutor(BaseFunctionExecutor):
     def is_executing(self) -> bool:
         return self._worker_thread is not None
 
+    @property
+    def is_cancelled(self) -> bool:
+        if not self.is_executing:
+            return False
+        return self._worker_thread.is_cancel_event_set()
+
     # noinspection PyUnresolvedReferences
     def execute(self, fn_info: FnInfo, arguments: Dict[str, Any]):
         if self.is_executing:
-            raise AlreadyExecutingError("function is already executing")
+            raise FunctionAlreadyExecutingError("function is already executing")
 
         def _callback_on_execute_start():
             self._on_execute_start(fn_info, arguments)
@@ -112,7 +105,10 @@ class ThreadedFunctionExecutor(BaseFunctionExecutor):
         if not self.is_executing:
             warnings.warn("function is not executing")
             return
-        self._worker_thread.request_cancel()
+        if self.is_cancelled:
+            warnings.warn("function is already cancelled")
+            return
+        self._worker_thread.cancel_requested.emit()
 
     def _before_execute(self, fn_info: FnInfo, arguments: Dict[str, Any]):
         if self._listener:

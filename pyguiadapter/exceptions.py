@@ -1,3 +1,6 @@
+from __future__ import annotations
+
+
 class ParameterValidationError(Exception):
     def __init__(self, parameter_name: str, message: str):
         self._parameter_name: str = parameter_name
@@ -18,4 +21,12 @@ class AlreadyRegisteredError(Exception):
 
 
 class NotRegisteredError(Exception):
+    pass
+
+
+class FunctionAlreadyExecutingError(RuntimeError):
+    pass
+
+
+class FunctionNotExecutingError(RuntimeError):
     pass

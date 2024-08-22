@@ -36,8 +36,6 @@ class BaseWindow(QMainWindow):
     def __init__(self, parent: QWidget | None, config: BaseWindowConfig):
         super().__init__(parent)
 
-        self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose, True)
-
         self._config: BaseWindowConfig = config
         self._actions: Dict[int, QAction] = {}
         self._update_ui()
@@ -242,5 +240,6 @@ class BaseWindow(QMainWindow):
 
     def _on_cleanup(self):
         for action in self._actions.values():
+            self.removeAction(action)
             action.deleteLater()
         self._actions.clear()

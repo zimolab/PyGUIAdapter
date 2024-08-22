@@ -1,3 +1,3 @@
-from .fnexec import *
-from .fnselect import *
+from .fnexec import FnExecuteWindow, FnExecuteWindowConfig
+from .fnselect import FnSelectWindow, FnSelectWindowConfig
 from ._docbrowser import DocumentBrowserConfig

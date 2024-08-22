@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import dataclasses
-import threading
 from dbm.dumb import error
 from typing import Tuple, Literal, Dict, Union, Type, Any, List
 
@@ -21,11 +20,12 @@ from ._logarea import (
 )
 from ._paramarea import FnParameterArea
 from .._docbrowser import DocumentBrowserConfig
+from ... import bundle as b
 from ... import utils, fn
 from ...adapter import ucontext
-from ...bundle import FnBundle
-from ...executor import ExecuteStateListener, AlreadyExecutingError
-from ...executors import ThreadedFunctionExecutor
+from ...exceptions import FunctionAlreadyExecutingError
+from ...executor import ExecuteStateListener, BaseFunctionExecutor
+from ...executors import ThreadFunctionExecutor
 from ...paramwidget import (
     BaseParameterWidget,
     BaseParameterWidgetConfig,
@@ -34,7 +34,7 @@ from ...paramwidget import (
 from ...window import BaseWindow, BaseWindowConfig
 
 DEFAULT_WINDOW_SIZE = (1024, 768)
-DEFAULT_EXECUTOR_CLASS = ThreadedFunctionExecutor
+DEFAULT_EXECUTOR_CLASS = ThreadFunctionExecutor
 
 ParameterWidgetType = Union[
     Tuple[Type[BaseParameterWidget], Union[BaseParameterWidgetConfig, dict]],
@@ -84,16 +84,16 @@ class FnExecuteWindowConfig(BaseWindowConfig):
 
 # noinspection SpellCheckingInspection
 class FnExecuteWindow(BaseWindow, ExecuteStateListener):
-    def __init__(self, parent: QWidget | None, bundle: FnBundle):
+    def __init__(self, parent: QWidget | None, bundle: b.FnBundle):
         self._bundle = bundle
-        self._process_cancelable_function()
         super().__init__(parent, bundle.window_config)
 
         executor_class = self._bundle.fn_info.executor or DEFAULT_EXECUTOR_CLASS
         # noinspection PyTypeChecker
         self._executor = executor_class(self, self)
 
-        ucontext.window_created(self)
+        # noinspection PyProtectedMember
+        ucontext._current_window_created(self)
 
         self.add_parameters(self._bundle.parameter_widget_configs)
 
@@ -108,6 +108,10 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
     @property
     def message_texts(self) -> MessageTexts:
         return self.window_config.message_texts
+
+    @property
+    def current_executor(self) -> BaseFunctionExecutor:
+        return self._executor
 
     def update_progressbar_config(self, config: ProgressBarConfig | None):
         self._area_log.update_progressbar_config(config)
@@ -268,23 +272,20 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
 
     def before_execute(self, fn_info: fn.FnInfo, arguments: Dict[str, Any]) -> None:
         super().before_execute(fn_info, arguments)
-        print("thread", threading.current_thread())
-        print("before_execute")
+        print("before_execute", ucontext.is_function_cancelled())
         print()
 
         self._area_parameters.enable_execute_button(False)
 
     def on_execute_start(self, fn_info: fn.FnInfo, arguments: Dict[str, Any]) -> None:
         super().on_execute_start(fn_info, arguments)
-        print("thread", threading.current_thread())
-        print("on_execute_start")
+        print("on_execute_start", ucontext.is_function_cancelled())
         print()
         self._area_parameters.enable_cancel_button(True)
 
     def on_execute_finish(self, fn_info: fn.FnInfo, arguments: Dict[str, Any]) -> None:
         super().on_execute_finish(fn_info, arguments)
-        print("thread", threading.current_thread())
-        print("on_execute_finish")
+        print("on_execute_finish", ucontext.is_function_cancelled())
         print()
         self._area_parameters.enable_execute_button(True)
         self._area_parameters.enable_cancel_button(False)
@@ -292,17 +293,13 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
     def on_execute_result(
         self, fn_info: fn.FnInfo, arguments: Dict[str, Any], result: Any
     ) -> None:
-        super().on_execute_result(fn_info, arguments, result)
-        print("thread", threading.current_thread())
-        print("on_execute_result", result)
+        print("on_execute_result", ucontext.is_function_cancelled())
         print()
 
     def on_execute_error(
         self, fn_info: fn.FnInfo, arguments: Dict[str, Any], exception: Exception
     ) -> None:
-        super().on_execute_error(fn_info, arguments, exception)
-        print("thread", threading.current_thread())
-        print("on_execute_error", error)
+        print("on_execute_error", error, ucontext.is_function_cancelled())
         print()
 
     def _on_close(self) -> bool:
@@ -311,12 +308,16 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
             return False
         return super()._on_close()
 
+    def _on_cleanup(self):
+        super()._on_cleanup()
+
     def _on_destroy(self):
         super()._on_destroy()
-        ucontext.window_closed(self)
+        # noinspection PyProtectedMember
+        ucontext._current_window_destroyed()
 
     def _on_cancel_button_clicked(self):
-        if not self._bundle.fn_info.is_cancelable():
+        if not self._bundle.fn_info.cancelable:
             utils.show_warning_message(self, self.message_texts.function_not_cancelable)
             return
         if not self._executor.is_executing:
@@ -331,18 +332,10 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
         try:
             arguments = self.get_parameter_values()
             self._executor.execute(self._bundle.fn_info, arguments)
-        except AlreadyExecutingError:
+        except FunctionAlreadyExecutingError:
             utils.show_warning_message(self, self.message_texts.function_is_executing)
 
     # noinspection PyMethodMayBeStatic
     def _on_clear_button_clicked(self):
         print("_on_clear_button_clicked")
         pass
-
-    def _process_cancelable_function(self):
-        fn_info = self._bundle.fn_info
-        if not fn_info.is_cancelable():
-            return
-        cancel_event_param_name = self._bundle.fn_info.cancel_event_parameter_name
-        widget_configs = self._bundle.parameter_widget_configs
-        widget_configs.pop(cancel_event_param_name, None)

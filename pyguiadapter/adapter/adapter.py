@@ -6,6 +6,7 @@ from collections import OrderedDict
 from collections.abc import Callable, Sequence
 from typing import Literal, Dict, Any, Type, Tuple, List
 
+from qtpy.QtCore import Qt
 from qtpy.QtGui import QIcon, QPixmap
 from qtpy.QtWidgets import QApplication, QStyleFactory, QWidget
 
@@ -99,7 +100,8 @@ class GUIAdapter(object):
     def run(self, argv: Sequence[str] | None = None):
         if self._application is None:
             self._start_application(argv)
-        ucontext.clear_windows()
+        # noinspection PyProtectedMember
+        ucontext._reset()
         count = len(self._bundles)
         if count == 0:
             self._shutdown_application()
@@ -146,8 +148,8 @@ class GUIAdapter(object):
         if self._application is None:
             warnings.warn("application not started yet")
             return
-
-        ucontext.clear_windows()
+        # noinspection PyProtectedMember
+        ucontext._reset()
 
         self._application.closeAllWindows()
         self._application.quit()
@@ -166,6 +168,7 @@ class GUIAdapter(object):
             bundles=fn_bundles,
             config=select_window_config,
         )
+        self._select_window.setAttribute(Qt.WA_DeleteOnClose, True)
         self._select_window.destroyed.connect(self._on_select_window_destroyed)
         self._select_window.start()
 

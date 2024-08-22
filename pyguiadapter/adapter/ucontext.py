@@ -4,9 +4,9 @@ import dataclasses
 import warnings
 from collections.abc import Sequence
 from concurrent.futures import Future
-from typing import Set, Any, Tuple, Type
+from typing import Any, Tuple, Type
 
-from qtpy.QtCore import QObject, Signal, Qt
+from qtpy.QtCore import QObject, Signal, Qt, QMutex
 from qtpy.QtGui import QPixmap
 from qtpy.QtWidgets import QMessageBox, QWidget
 
@@ -68,25 +68,33 @@ class DialogConfig(object):
 
 # noinspection PyMethodMayBeStatic,SpellCheckingInspection
 class _Context(QObject):
-    window_created = Signal(FnExecuteWindow)
-    window_destroyed = Signal(FnExecuteWindow)
+
+    current_window_created = Signal(FnExecuteWindow)
+    current_window_destroyed = Signal()
+
     # noinspection SpellCheckingInspection
     uprint = Signal(str, bool)
+
     show_dialog = Signal(Future, DialogConfig)
     show_custom_dialog = Signal(Future, object, dict)
 
     def __init__(self, parent):
         super().__init__(parent)
 
-        self._windows: Set[FnExecuteWindow] = set()
+        self._lock = QMutex()
+
+        self._current_window: FnExecuteWindow | None = None
+
         self._custom_dialog_factory = CustomDialogFactory()
 
         # noinspection PyUnresolvedReferences
-        self.window_created.connect(self._on_window_created)
+        self.current_window_created.connect(self._on_current_window_created)
         # noinspection PyUnresolvedReferences
-        self.window_destroyed.connect(self._on_window_closed)
+        self.current_window_destroyed.connect(self._on_current_window_destroyed)
+
         # noinspection PyUnresolvedReferences
         self.uprint.connect(self._on_uprint)
+
         # noinspection PyUnresolvedReferences
         self.show_dialog.connect(self._on_show_dialog)
         # noinspection PyUnresolvedReferences
@@ -98,28 +106,47 @@ class _Context(QObject):
 
     @property
     def current_window(self) -> FnExecuteWindow | None:
-        for window in self._windows:
-            if window.isActiveWindow():
-                return window
-        return None
+        return self._current_window
 
-    def clear_windows(self):
-        self._windows.clear()
+    def is_function_cancelled(self) -> bool:
+        wind = self.current_window
+        if not isinstance(wind, FnExecuteWindow):
+            return False
+        self._lock.lock()
+        executor = wind.current_executor
+        cancelled = False
+        if executor.is_executing:
+            cancelled = executor.is_cancelled
+        self._lock.unlock()
+        return cancelled
 
-    def _on_window_created(self, window: FnExecuteWindow):
+    def reset(self):
+        self._try_cleanup_old_window()
+
+    def _try_cleanup_old_window(self):
+        if self._current_window is not None:
+            try:
+                self._current_window.close()
+                self._current_window.deleteLater()
+            except Exception as e:
+                warnings.warn(f"error while closing window: {e}")
+            finally:
+                self._current_window = None
+
+    def _on_current_window_created(self, window: FnExecuteWindow):
         if not isinstance(window, FnExecuteWindow):
-            raise TypeError(f"expected FnExecuteWindow, got {type(window)}")
-        self._windows.add(window)
+            raise TypeError(f"FnExecuteWindow expected, got {type(window)}")
+        self._try_cleanup_old_window()
+        self._current_window = window
 
-    def _on_window_closed(self, window: FnExecuteWindow):
-        if window not in self._windows:
-            return
-        self._windows.remove(window)
+    def _on_current_window_destroyed(self):
+        self._current_window.deleteLater()
+        self._current_window = None
 
     def _on_uprint(self, msg: str, html: bool):
         win = self.current_window
         if not isinstance(win, FnExecuteWindow):
-            warnings.warn("FnExecuteWindow not found")
+            warnings.warn("current_window is None")
             print(msg)
             return
         win.append_log(msg, html)
@@ -127,7 +154,7 @@ class _Context(QObject):
     def _on_show_dialog(self, future: Future, config: DialogConfig):
         win = self.current_window
         if not isinstance(win, FnExecuteWindow):
-            warnings.warn("FnExecuteWindow not found")
+            warnings.warn("current_window is None")
             win = None
         dialog = config.create_messagebox(win)
         ret = dialog.exec_()
@@ -138,7 +165,7 @@ class _Context(QObject):
     ):
         win = self.current_window
         if not isinstance(win, FnExecuteWindow):
-            warnings.warn("FnExecuteWindow not found")
+            warnings.warn("current_window is None0")
             win = None
         dialog = _context.custom_dialog_factory.create(win, dialog_class, **kwargs)
         ret_code = dialog.exec_()
@@ -148,36 +175,49 @@ class _Context(QObject):
 
 _context = _Context(None)
 
+################################################################################################
+# Functions below with a leading '_' are for internal use only. DO NOT USE THEM IN USER'S CODE.#
+# Other functions are free to use in user's function code.                                     #
+################################################################################################
+
+
+def _reset():
+    global _context
+    _context.reset()
+
 
 # noinspection PyUnresolvedReferences
-def window_created(window: FnExecuteWindow):
+def _current_window_created(window: FnExecuteWindow):
     global _context
-    _context.window_created.emit(window)
+    _context.current_window_created.emit(window)
 
 
 # noinspection PyUnresolvedReferences
-def window_closed(window: FnExecuteWindow):
+def _current_window_destroyed():
     global _context
-    _context.window_destroyed.emit(window)
+    _context.current_window_destroyed.emit()
 
 
-def clear_windows():
+def get_current_window() -> FnExecuteWindow | None:
     global _context
-    _context.clear_windows()
-
-
-def current_window() -> FnExecuteWindow | None:
     return _context.current_window
+
+
+def is_function_cancelled() -> bool:
+    global _context
+    return _context.is_function_cancelled()
 
 
 # noinspection SpellCheckingInspection
 def uprint(*args, sep=" ", end="\n", html: bool = False):
+    global _context
     text = sep.join([str(arg) for arg in args]) + end
     # noinspection PyUnresolvedReferences
     _context.uprint.emit(text, html)
 
 
 def show_dialog(config: DialogConfig) -> Any:
+    global _context
     result_future = Future()
     # noinspection PyUnresolvedReferences
     _context.show_dialog.emit(result_future, config)
@@ -187,6 +227,7 @@ def show_dialog(config: DialogConfig) -> Any:
 def show_custom_dialog(
     dialog_class: str | Type[BaseCustomDialog], **kwargs
 ) -> Tuple[int, Any]:
+    global _context
     result_future = Future()
     # noinspection PyUnresolvedReferences
     _context.show_custom_dialog.emit(result_future, dialog_class, kwargs)

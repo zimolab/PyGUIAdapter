@@ -2,14 +2,11 @@ from __future__ import annotations
 
 from abc import abstractmethod
 from typing import Any, Dict
+from xml.sax import parse
 
 from qtpy.QtCore import QObject
 
 from . import fn
-
-
-class AlreadyExecutingError(RuntimeError):
-    pass
 
 
 class ExecuteStateListener(object):
@@ -55,4 +52,9 @@ class BaseFunctionExecutor(QObject):
 
     @abstractmethod
     def try_cancel(self):
+        pass
+
+    @property
+    @abstractmethod
+    def is_cancelled(self) -> bool:
         pass

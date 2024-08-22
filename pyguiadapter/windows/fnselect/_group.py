@@ -33,31 +33,29 @@ class FnGroupPage(QWidget):
         self._layout = QVBoxLayout(self)
         self._layout.setContentsMargins(0, 0, 0, 0)
 
-        self._listwidget_bundles = QListWidget(self)
+        self._listwidget = QListWidget(self)
         if icon_mode:
-            self._listwidget_bundles.setViewMode(QListWidget.IconMode)
+            self._listwidget.setViewMode(QListWidget.IconMode)
         else:
-            self._listwidget_bundles.setViewMode(QListWidget.ListMode)
+            self._listwidget.setViewMode(QListWidget.ListMode)
 
         if icon_size is not None:
             if isinstance(icon_size, tuple):
                 icon_size = QSize(icon_size[0], icon_size[1])
-            self._listwidget_bundles.setIconSize(icon_size)
-        self._layout.addWidget(self._listwidget_bundles)
+            self._listwidget.setIconSize(icon_size)
+        self._layout.addWidget(self._listwidget)
 
         # noinspection PyUnresolvedReferences
-        self._listwidget_bundles.currentItemChanged.connect(
-            self._on_current_item_change
-        )
+        self._listwidget.currentItemChanged.connect(self._on_current_item_change)
         # noinspection PyUnresolvedReferences
-        self._listwidget_bundles.doubleClicked.connect(self._on_double_click)
+        self._listwidget.doubleClicked.connect(self._on_double_clicked)
 
     def add_bundle(self, bundle: FnBundle):
         if bundle in self._bundles:
             return
         item = self._create_bundle_item(bundle)
         self._bundles.append(bundle)
-        self._listwidget_bundles.addItem(item)
+        self._listwidget.addItem(item)
 
         if not self.current_bundle():
             self.set_current_index(0)
@@ -66,10 +64,10 @@ class FnGroupPage(QWidget):
         return tuple(self._bundles)
 
     def bundles_count(self):
-        return self._listwidget_bundles.count()
+        return self._listwidget.count()
 
     def bundle_at(self, index: int) -> FnBundle | None:
-        item = self._listwidget_bundles.item(index)
+        item = self._listwidget.item(index)
         if item is None:
             return None
         bundle = item.data(Qt.UserRole)
@@ -78,8 +76,8 @@ class FnGroupPage(QWidget):
         return None
 
     def bundle_index(self, bundle: FnBundle) -> int:
-        for i in range(self._listwidget_bundles.count()):
-            item = self._listwidget_bundles.item(i)
+        for i in range(self._listwidget.count()):
+            item = self._listwidget.item(i)
             if item is None:
                 continue
             if item.data(Qt.UserRole) == bundle:
@@ -87,32 +85,43 @@ class FnGroupPage(QWidget):
         return -1
 
     def current_bundle(self) -> FnBundle | None:
-        current_item = self._listwidget_bundles.currentItem()
+        current_item = self._listwidget.currentItem()
         if current_item is None:
             return None
         return current_item.data(Qt.UserRole)
 
     def set_current_index(self, index: int):
-        self._listwidget_bundles.setCurrentRow(index)
+        self._listwidget.setCurrentRow(index)
 
     def remove_bundle(self, bundle: FnBundle):
         idx = self.bundle_index(bundle)
         if idx >= 0:
-            self._listwidget_bundles.takeItem(idx)
+            item = self._listwidget.takeItem(idx)
+            self._delete_item(item)
         if bundle in self._bundles:
             self._bundles.remove(bundle)
 
     def remove_bundle_at(self, index: int):
         bundle = self.bundle_at(index)
         if bundle is not None:
-            self._listwidget_bundles.takeItem(index)
+            item = self._listwidget.takeItem(index)
+            self._delete_item(item)
         if bundle in self._bundles:
             self._bundles.remove(bundle)
 
     def clear_bundles(self):
-        for i in range(self._listwidget_bundles.count()):
-            self._listwidget_bundles.takeItem(i)
+        for i in range(self._listwidget.count()):
+            item = self._listwidget.takeItem(i)
+            self._delete_item(item)
         self._bundles.clear()
+
+    @staticmethod
+    def _delete_item(item: QListWidgetItem | None):
+        if item is None:
+            return
+        item_widget = item.listWidget()
+        if item_widget is not None:
+            item_widget.deleteLater()
 
     def _on_current_item_change(self, current_item: QListWidgetItem):
         if current_item is None:
@@ -123,12 +132,12 @@ class FnGroupPage(QWidget):
         # noinspection PyUnresolvedReferences
         self.current_bundle_changed.emit(bundle, self)
 
-    def _on_double_click(self, index: QModelIndex):
-        item = self._listwidget_bundles.item(index.row())
+    def _on_double_clicked(self, index: QModelIndex):
+        item = self._listwidget.item(index.row())
         if item is None:
             return
         bundle = item.data(Qt.UserRole)
-        if bundle is None:
+        if not isinstance(bundle, FnBundle):
             return
         # noinspection PyUnresolvedReferences
         self.item_double_clicked.emit(bundle, self)
@@ -136,6 +145,6 @@ class FnGroupPage(QWidget):
     def _create_bundle_item(self, bundle: FnBundle) -> QListWidgetItem:
         fn = bundle.fn_info
         icon = utils.get_icon(fn.icon) or qta.icon(DEFAULT_FN_ICON)
-        item = QListWidgetItem(icon, fn.display_name, self._listwidget_bundles)
+        item = QListWidgetItem(icon, fn.display_name, self._listwidget)
         item.setData(Qt.UserRole, bundle)
         return item

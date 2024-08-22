@@ -5,7 +5,7 @@ from datetime import datetime
 from qtpy.QtWidgets import QMessageBox
 from pyguiadapter.adapter import ulogging
 from pyguiadapter.adapter.adapter import GUIAdapter
-from pyguiadapter.adapter.ucontext import uprint
+from pyguiadapter.adapter.ucontext import uprint, is_function_cancelled
 from pyguiadapter.adapter.upopup import *
 from pyguiadapter.windows import (
     FnSelectWindowConfig,
@@ -74,7 +74,14 @@ def f2():
     Function 2
     :return:
     """
-    pass
+    i = 0
+    while True:
+        uprint("No: ", i)
+        i += 1
+        time.sleep(1)
+        if is_function_cancelled():
+            break
+    uprint("f2 finished: ", i)
 
 
 def f3():
@@ -107,6 +114,6 @@ adapter.add(
     f1,
     window_config=exec_win_config,
 )
-adapter.add(f2)
+adapter.add(f2, cancelable=True)
 adapter.add(f3, group="Other Functions")
 adapter.run()

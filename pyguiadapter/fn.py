@@ -25,12 +25,4 @@ class FnInfo(object):
     group: str | None = None
     parameters: Dict[str, ParameterInfo] = dataclasses.field(default_factory=dict)
     cancelable: bool = False
-    cancel_event_parameter_name: str = "cancel_event"
     executor: Type[executor.BaseFunctionExecutor] | None = None
-
-    def is_cancelable(self) -> bool:
-        if not self.cancelable:
-            return False
-        if not isinstance(self.cancel_event_parameter_name, str):
-            return False
-        return self.cancel_event_parameter_name.strip() != ""
