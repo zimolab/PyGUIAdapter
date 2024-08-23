@@ -10,12 +10,12 @@ from qtpy.QtCore import QObject, Signal, Qt, QMutex
 from qtpy.QtGui import QPixmap
 from qtpy.QtWidgets import QMessageBox, QWidget
 
-from .custom_dialog import CustomDialogFactory, BaseCustomDialog
+from ._dialog import CustomDialogFactory, BaseCustomDialog
 from ..windows.fnexec import FnExecuteWindow
 
 
 @dataclasses.dataclass
-class DialogConfig(object):
+class MessageBoxConfig(object):
     text: str
     title: str | None = None
     icon: int | QPixmap | None = None
@@ -27,6 +27,7 @@ class DialogConfig(object):
     escape_button: int | QMessageBox.StandardButtons | None = None
 
     def create_messagebox(self, parent: QWidget | None) -> QMessageBox:
+        # noinspection SpellCheckingInspection,PyArgumentList
         msgbox = QMessageBox(parent)
         msgbox.setText(self.text)
 
@@ -75,7 +76,7 @@ class _Context(QObject):
     # noinspection SpellCheckingInspection
     uprint = Signal(str, bool)
 
-    show_dialog = Signal(Future, DialogConfig)
+    show_messagebox = Signal(Future, MessageBoxConfig)
     show_custom_dialog = Signal(Future, object, dict)
 
     def __init__(self, parent):
@@ -96,7 +97,7 @@ class _Context(QObject):
         self.uprint.connect(self._on_uprint)
 
         # noinspection PyUnresolvedReferences
-        self.show_dialog.connect(self._on_show_dialog)
+        self.show_messagebox.connect(self._on_show_messagebox)
         # noinspection PyUnresolvedReferences
         self.show_custom_dialog.connect(self._on_show_custom_dialog)
 
@@ -151,13 +152,13 @@ class _Context(QObject):
             return
         win.append_log(msg, html)
 
-    def _on_show_dialog(self, future: Future, config: DialogConfig):
+    def _on_show_messagebox(self, future: Future, config: MessageBoxConfig):
         win = self.current_window
         if not isinstance(win, FnExecuteWindow):
             warnings.warn("current_window is None")
             win = None
-        dialog = config.create_messagebox(win)
-        ret = dialog.exec_()
+        msgbox = config.create_messagebox(win)
+        ret = msgbox.exec_()
         future.set_result(ret)
 
     def _on_show_custom_dialog(
@@ -216,11 +217,11 @@ def uprint(*args, sep=" ", end="\n", html: bool = False):
     _context.uprint.emit(text, html)
 
 
-def show_dialog(config: DialogConfig) -> Any:
+def show_messagebox(config: MessageBoxConfig) -> Any:
     global _context
     result_future = Future()
     # noinspection PyUnresolvedReferences
-    _context.show_dialog.emit(result_future, config)
+    _context.show_messagebox.emit(result_future, config)
     return result_future.result()
 
 

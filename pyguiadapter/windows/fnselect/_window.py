@@ -23,8 +23,6 @@ from ...window import BaseWindow, BaseWindowConfig
 
 DEFAULT_FN_ICON_SIZE = (48, 48)
 WARNING_MSG_NO_FN_SELECTED = "No Selected Function!"
-LEFT_AREA_RATIO = 0.4
-RIGHT_AREA_RATIO = 1.0 - LEFT_AREA_RATIO
 
 
 @dataclasses.dataclass
@@ -32,17 +30,19 @@ class FnSelectWindowConfig(BaseWindowConfig):
     title: str = "Select Function"
     select_button_text: str = "Select"
     icon_mode: bool = False
-    fn_icon_size: Tuple[int, int] | QSize | None = None
+    icon_size: Tuple[int, int] | QSize | None = DEFAULT_FN_ICON_SIZE
     default_fn_group_name: str = "Main Function"
     default_fn_group_icon: utils.IconType = None
     fn_group_icons: Dict[str, utils.IconType] = dataclasses.field(default_factory=dict)
-    document_browser_config: DocumentBrowserConfig | None = dataclasses.field(
+    document_browser: DocumentBrowserConfig | None = dataclasses.field(
         default_factory=DocumentBrowserConfig
     )
+    document_browser_ratio: float = 0.35
     always_show_select_window: bool = True
 
 
 class FnSelectWindow(BaseWindow):
+    # noinspection SpellCheckingInspection
     def __init__(
         self,
         parent: QWidget | None,
@@ -54,55 +54,64 @@ class FnSelectWindow(BaseWindow):
         self._group_pages: Dict[str, FnGroupPage] = {}
         self._current_exec_window: FnSelectWindow | None = None
 
+        self._function_group_toolbox: QToolBox | None = None
+        self._document_textbrowser: QTextBrowser | None = None
+        self._select_button: QPushButton | None = None
+
         super().__init__(parent, config)
 
     def _update_ui(self):
         super()._update_ui()
 
-        # Central widget
-        self._central_widget: QWidget = QWidget(self)
-        self.setCentralWidget(self._central_widget)
-
+        # central widget
+        _central_widget: QWidget = QWidget(self)
         # main layout
-        self._vlayout_main = QVBoxLayout(self._central_widget)
+        # noinspection PyArgumentList
+        self._layout_main = QVBoxLayout(_central_widget)
+        self.setCentralWidget(_central_widget)
 
         # Splitter
-        self._spliter = QSplitter(self._central_widget)
-        self._spliter.setOrientation(Qt.Horizontal)
-        self._vlayout_main.addWidget(self._spliter)
+        # noinspection PyArgumentList
+        _splitter = QSplitter(_central_widget)
+        _splitter.setOrientation(Qt.Horizontal)
+        self._layout_main.addWidget(_splitter)
 
         # left area
         # toolbox
-        self._toolbox_fn_groups: QToolBox = QToolBox(self._spliter)
+        self._function_group_toolbox: QToolBox = QToolBox(_splitter)
         # noinspection PyUnresolvedReferences
-        self._toolbox_fn_groups.currentChanged.connect(self._on_current_group_change)
-        self._spliter.addWidget(self._toolbox_fn_groups)
+        self._function_group_toolbox.currentChanged.connect(
+            self._on_current_group_change
+        )
+        _splitter.addWidget(self._function_group_toolbox)
 
         # right area
         # right layout
-        widget_right = QWidget(self._spliter)
-        self._vlayout_right = QVBoxLayout(widget_right)
-        self._vlayout_right.setContentsMargins(0, 0, 0, 0)
-        # fn document display widget
-        self._textbrowser_fn_document: QTextBrowser = QTextBrowser(widget_right)
+        right_area = QWidget(_splitter)
+        # noinspection PyArgumentList
+        _layout_right_area = QVBoxLayout(right_area)
+        _layout_right_area.setContentsMargins(0, 0, 0, 0)
+        # fn document browser
+        # noinspection SpellCheckingInspection
+        self._document_textbrowser: QTextBrowser = QTextBrowser(right_area)
         document_browser_config = (
-            self._config.document_browser_config or DocumentBrowserConfig()
+            self._config.document_browser or DocumentBrowserConfig()
         )
-        document_browser_config.apply_to(self._textbrowser_fn_document)
-        self._vlayout_right.addWidget(self._textbrowser_fn_document)
-
+        document_browser_config.apply_to(self._document_textbrowser)
+        _layout_right_area.addWidget(self._document_textbrowser)
         # select button
-        self._button_select = QPushButton(widget_right)
-        self._button_select.setText(self._config.select_button_text)
-        self._vlayout_right.addWidget(self._button_select)
+        self._select_button = QPushButton(right_area)
+        self._select_button.setText(self._config.select_button_text)
+        _layout_right_area.addWidget(self._select_button)
 
-        left_area_width = int(self.width() * LEFT_AREA_RATIO)
-        right_area_width = int(self.width() * RIGHT_AREA_RATIO)
-
-        self._spliter.setSizes([left_area_width, right_area_width])
+        left_area_ratio = self._config.document_browser_ratio
+        right_area_ratio = 1.0 - left_area_ratio
+        left_area_width = int(self.width() * left_area_ratio)
+        right_area_width = int(self.width() * right_area_ratio)
+        _splitter.setSizes([left_area_width, right_area_width])
 
         # noinspection PyUnresolvedReferences
-        self._button_select.clicked.connect(self._on_button_select_click)
+        self._select_button.clicked.connect(self._on_button_select_click)
 
     def add_bundle(self, bundle: FnBundle):
         fn = bundle.fn_info
@@ -131,10 +140,10 @@ class FnSelectWindow(BaseWindow):
         if group_page is None:
             raise ValueError(f"function group not found: {group_name}")
         group_page.clear_bundles()
-        group_page_index = self._toolbox_fn_groups.indexOf(group_page)
+        group_page_index = self._function_group_toolbox.indexOf(group_page)
         if group_page_index < 0:
             return
-        self._toolbox_fn_groups.removeItem(group_page_index)
+        self._function_group_toolbox.removeItem(group_page_index)
         group_page.deleteLater()
 
     def remove_bundle(self, bundle: FnBundle):
@@ -147,7 +156,7 @@ class FnSelectWindow(BaseWindow):
         for bundle in self._initial_bundles:
             self.add_bundle(bundle)
         del self._initial_bundles
-        self._toolbox_fn_groups.setCurrentIndex(0)
+        self._function_group_toolbox.setCurrentIndex(0)
         self.show()
 
     def _start_exec_window(self, bundle: FnBundle):
@@ -155,6 +164,7 @@ class FnSelectWindow(BaseWindow):
         self._current_exec_window = FnExecuteWindow(self, bundle)
         self._current_exec_window.setWindowModality(Qt.ApplicationModal)
         self._current_exec_window.setAttribute(Qt.WA_DeleteOnClose, True)
+        # noinspection PyUnresolvedReferences
         self._current_exec_window.destroyed.connect(
             self._on_current_exec_window_destroyed
         )
@@ -185,7 +195,7 @@ class FnSelectWindow(BaseWindow):
         self._start_exec_window(bundle)
 
     def _on_current_group_change(self, index: int):
-        current_page = self._toolbox_fn_groups.widget(index)
+        current_page = self._function_group_toolbox.widget(index)
         if not isinstance(current_page, FnGroupPage):
             return
         bundle = current_page.current_bundle()
@@ -199,18 +209,20 @@ class FnSelectWindow(BaseWindow):
         # return existing page
         if group_name in self._group_pages:
             page = self._group_pages[group_name]
-            self._toolbox_fn_groups.setCurrentWidget(page)
+            self._function_group_toolbox.setCurrentWidget(page)
             return page
         # if no existing page, create a new one
-        icon_size = self._config.fn_icon_size or DEFAULT_FN_ICON_SIZE
-        page = FnGroupPage(self._toolbox_fn_groups, self._config.icon_mode, icon_size)
+        icon_size = self._config.icon_size or DEFAULT_FN_ICON_SIZE
+        page = FnGroupPage(
+            self._function_group_toolbox, self._config.icon_mode, icon_size
+        )
         # noinspection PyUnresolvedReferences
         page.current_bundle_changed.connect(self._on_current_bundle_change)
         # noinspection PyUnresolvedReferences
         page.item_double_clicked.connect(self._on_item_double_click)
         group_icon = self._group_icon(group_name)
-        self._toolbox_fn_groups.addItem(page, group_icon, group_name)
-        self._toolbox_fn_groups.setCurrentWidget(page)
+        self._function_group_toolbox.addItem(page, group_icon, group_name)
+        self._function_group_toolbox.setCurrentWidget(page)
         self._group_pages[group_name] = page
         return page
 
@@ -226,11 +238,11 @@ class FnSelectWindow(BaseWindow):
         self, document: str, document_format: Literal["markdown", "html", "plaintext"]
     ):
         utils.set_textbrowser_content(
-            self._textbrowser_fn_document, document, document_format
+            self._document_textbrowser, document, document_format
         )
 
     def _current_bundle(self) -> FnBundle | None:
-        current_page = self._toolbox_fn_groups.currentWidget()
+        current_page = self._function_group_toolbox.currentWidget()
         if not isinstance(current_page, FnGroupPage):
             return None
         return current_page.current_bundle()

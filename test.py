@@ -2,11 +2,10 @@ import threading
 import time
 from datetime import datetime
 
-from qtpy.QtWidgets import QMessageBox
 from pyguiadapter.adapter import ulogging
 from pyguiadapter.adapter.adapter import GUIAdapter
 from pyguiadapter.adapter.ucontext import uprint, is_function_cancelled
-from pyguiadapter.adapter.upopup import *
+from pyguiadapter.adapter.udialog import show_text_file
 from pyguiadapter.windows import (
     FnSelectWindowConfig,
     FnExecuteWindowConfig,
@@ -62,10 +61,11 @@ def f1(arg1: str, arg2: str):
     #     detailed_text="hello world!",
     # )
     # uprint(ret)
-    with open("./License", "r") as f:
-        c = f.read()
-    ret = show_text_content(c)
-    print(ret)
+    # with open("./License", "r") as f:
+    #     c = f.read()
+    # ret = show_text_content(c)
+    # print(ret)
+    show_text_file("./License")
     return f"{arg1} + {arg2}"
 
 
@@ -98,6 +98,7 @@ select_window_config = FnSelectWindowConfig(
     title="My ToolBox",
     default_fn_group_name="Main Functions",
     default_fn_group_icon="mdi6.cog-box",
+    always_show_select_window=False,
 )
 
 
@@ -110,10 +111,7 @@ exec_win_config = FnExecuteWindowConfig(
 )
 
 adapter = GUIAdapter(select_window_config=select_window_config)
-adapter.add(
-    f1,
-    window_config=exec_win_config,
-)
+adapter.add(f1, window_config=exec_win_config)
 adapter.add(f2, cancelable=True)
 adapter.add(f3, group="Other Functions")
 adapter.run()

@@ -18,34 +18,32 @@ from qtpy.QtWidgets import (
 )
 
 from . import _window
-from ._common import (
-    ParameterAlreadyExistError,
-    ParameterNotFoundError,
-)
+from ...exceptions import ParameterAlreadyExistError, ParameterNotFoundError
 from ... import utils
 from ...paramwidget import BaseParameterWidget, BaseParameterWidgetConfig
 
 
 class FnParameterGroupPage(QWidget):
+    # noinspection SpellCheckingInspection
     def __init__(self, parent: QWidget, group_name: str):
+
         super().__init__(parent)
 
         self._group_name = group_name
         self._parameters: Dict[str, BaseParameterWidget] = OrderedDict()
 
-        self._vlayout_main = QVBoxLayout(self)
-        self._vlayout_main.setContentsMargins(0, 0, 0, 0)
+        # noinspection PyArgumentList
+        self._layout_main = QVBoxLayout(self)
+        self._layout_main.setContentsMargins(0, 0, 0, 0)
 
-        self._scrollarea_parameters = QScrollArea(self)
-        self._scrollarea_parameters.setWidgetResizable(True)
-
-        self._scrollarea_content = QWidget(self._scrollarea_parameters)
-        self._scrollarea_content.setObjectName("widget_scrollarea_content")
-        self._vlayout_content = QVBoxLayout(self._scrollarea_content)
-        self._scrollarea_content.setLayout(self._vlayout_content)
-
-        self._scrollarea_parameters.setWidget(self._scrollarea_content)
-        self._vlayout_main.addWidget(self._scrollarea_parameters)
+        self._param_scrollarea = QScrollArea(self)
+        self._param_scrollarea.setWidgetResizable(True)
+        self._scrollarea_content = QWidget(self._param_scrollarea)
+        # noinspection PyArgumentList
+        self._layout_scrollerea_content = QVBoxLayout(self._scrollarea_content)
+        self._scrollarea_content.setLayout(self._layout_scrollerea_content)
+        self._param_scrollarea.setWidget(self._scrollarea_content)
+        self._layout_main.addWidget(self._param_scrollarea)
 
         self._bottom_spacer = QSpacerItem(
             0, 0, QSizePolicy.Minimum, QSizePolicy.Expanding
@@ -59,7 +57,7 @@ class FnParameterGroupPage(QWidget):
         widget = self.get_parameter_widget(parameter_name)
         if widget is None:
             return
-        self._scrollarea_parameters.ensureWidgetVisible(widget, x, y)
+        self._param_scrollarea.ensureWidgetVisible(widget, x, y)
 
     def upsert_parameter_widget(
         self,
@@ -74,9 +72,9 @@ class FnParameterGroupPage(QWidget):
         # and then release it
         if parameter_name in self._parameters:
             old_widget = self._parameters[parameter_name]
-            old_index = self._vlayout_content.indexOf(old_widget)
+            old_index = self._layout_scrollerea_content.indexOf(old_widget)
             if old_index >= 0:
-                self._vlayout_content.takeAt(index)
+                self._layout_scrollerea_content.takeAt(index)
             old_widget.deleteLater()
             del self._parameters[parameter_name]
             if index is None:
@@ -133,8 +131,8 @@ class FnParameterGroupPage(QWidget):
         if parameter_name not in self._parameters:
             return
         widget = self._parameters[parameter_name]
-        index = self._vlayout_content.indexOf(widget)
-        self._vlayout_content.takeAt(index)
+        index = self._layout_scrollerea_content.indexOf(widget)
+        self._layout_scrollerea_content.takeAt(index)
         widget.deleteLater()
         del self._parameters[parameter_name]
 
@@ -193,17 +191,17 @@ class FnParameterGroupPage(QWidget):
                     ret.append(param_name)
         return ret
 
+    # noinspection SpellCheckingInspection
     def _add_to_scrollarea(self, widget: BaseParameterWidget, index: int):
-        self._vlayout_content.removeItem(self._bottom_spacer)
-        self._vlayout_content.insertWidget(index, widget)
-        self._vlayout_content.addSpacerItem(self._bottom_spacer)
+        self._layout_scrollerea_content.removeItem(self._bottom_spacer)
+        self._layout_scrollerea_content.insertWidget(index, widget)
+        self._layout_scrollerea_content.addSpacerItem(self._bottom_spacer)
 
 
 class FnParameterGroupBox(QToolBox):
     def __init__(self, parent: QWidget, config: _window.FnExecuteWindowConfig):
         self._config = config
         self._groups: Dict[str, FnParameterGroupPage] = OrderedDict()
-
         super().__init__(parent)
 
     def upsert_parameter_group(self, group_name: str | None) -> FnParameterGroupPage:
@@ -398,83 +396,90 @@ class FnParameterArea(QWidget):
     clear_button_clicked = Signal()
 
     def __init__(self, parent: QWidget, config: _window.FnExecuteWindowConfig):
+        self._param_groupbox: FnParameterGroupBox | None = None
+        self._auto_clear_checkbox: QCheckBox | None = None
+        self._clear_button: QPushButton | None = None
+        self._execute_button: QPushButton | None = None
+        self._cancel_button: QPushButton | None = None
+
         super().__init__(parent)
         self._config: _window.FnExecuteWindowConfig = config
-        self._vlayout_main = QVBoxLayout(self)
+        # noinspection PyArgumentList
+        self._layout_main = QVBoxLayout(self)
         self._setup_top_zone()
         self._setup_bottom_zone()
 
     def _setup_top_zone(self):
-        self._groupbox_parameters = FnParameterGroupBox(self, self._config)
-        self._groupbox_parameters.add_default_group()
-        self._groupbox_parameters.setObjectName("_group_box_parameters")
-        self._vlayout_main.addWidget(self._groupbox_parameters)
+        self._param_groupbox = FnParameterGroupBox(self, self._config)
+        self._param_groupbox.add_default_group()
+        self._layout_main.addWidget(self._param_groupbox)
 
     def _setup_bottom_zone(self):
 
         widget_texts = self._config.widget_texts
 
-        self._widget_op_area = QWidget(self)
-        self._vlayout_op_widgets = QVBoxLayout(self._widget_op_area)
-        self._vlayout_op_widgets.setContentsMargins(0, 0, 0, 0)
+        _op_area = QWidget(self)
+        # noinspection PyArgumentList
+        _layout_op_area = QVBoxLayout(_op_area)
+        _layout_op_area.setContentsMargins(0, 0, 0, 0)
 
-        self._vlayout_op_widgets.addWidget(utils.hline(self._widget_op_area))
+        _layout_op_area.addWidget(utils.hline(_op_area))
 
-        self._checkbox_clear_log_output = QCheckBox(self._widget_op_area)
-        self._checkbox_clear_log_output.setText(widget_texts.clear_checkbox_text)
-        self._vlayout_op_widgets.addWidget(self._checkbox_clear_log_output)
-
-        self._hlayout_buttons = QHBoxLayout(self._widget_op_area)
-
+        self._auto_clear_checkbox = QCheckBox(_op_area)
+        self._auto_clear_checkbox.setText(widget_texts.clear_checkbox_text)
+        _layout_op_area.addWidget(self._auto_clear_checkbox)
+        # noinspection PyArgumentList
+        _layout_buttons = QHBoxLayout(_op_area)
         # Execute button
-        self._button_execute = QPushButton(self)
-        self._button_execute.setText(widget_texts.execute_button_text)
+        self._execute_button = QPushButton(self)
+        self._execute_button.setText(widget_texts.execute_button_text)
         # noinspection PyUnresolvedReferences
-        self._button_execute.clicked.connect(self.execute_button_clicked)
-        self._hlayout_buttons.addWidget(self._button_execute)
-
+        self._execute_button.clicked.connect(self.execute_button_clicked)
+        _layout_buttons.addWidget(self._execute_button)
         # Clear button
-        self._button_clear = QPushButton(self)
-        self._button_clear.setText(widget_texts.clear_button_text)
+        self._clear_button = QPushButton(self)
+        self._clear_button.setText(widget_texts.clear_button_text)
         # noinspection PyUnresolvedReferences
-        self._button_clear.clicked.connect(self.clear_button_clicked)
-        self._hlayout_buttons.addWidget(self._button_clear)
-
+        self._clear_button.clicked.connect(self.clear_button_clicked)
+        _layout_buttons.addWidget(self._clear_button)
         # Cancel button
-        self._button_cancel = QPushButton(self)
-        self._button_cancel.setText(widget_texts.cancel_button_text)
+        self._cancel_button = QPushButton(self)
+        self._cancel_button.setText(widget_texts.cancel_button_text)
         # noinspection PyUnresolvedReferences
-        self._button_cancel.clicked.connect(self.cancel_button_clicked)
-        self._hlayout_buttons.addWidget(self._button_cancel)
+        self._cancel_button.clicked.connect(self.cancel_button_clicked)
+        _layout_buttons.addWidget(self._cancel_button)
+        _layout_op_area.addLayout(_layout_buttons)
 
-        self._vlayout_op_widgets.addLayout(self._hlayout_buttons)
-        self._vlayout_main.addWidget(self._widget_op_area)
+        self._layout_main.addWidget(_op_area)
 
     @property
-    def parameter_group_box(self) -> FnParameterGroupBox:
-        return self._groupbox_parameters
+    def parameter_groupbox(self) -> FnParameterGroupBox:
+        return self._param_groupbox
 
     @property
     def is_auto_clear_enabled(self) -> bool:
-        return self._checkbox_clear_log_output.isChecked()
+        return self._auto_clear_checkbox.isChecked()
 
     def hide_cancel_button(self):
-        self._button_cancel.hide()
+        self._cancel_button.hide()
 
     def show_cancel_button(self):
-        self._button_cancel.show()
+        self._cancel_button.show()
 
     def hide_clear_button(self):
-        self._button_clear.hide()
+        self._clear_button.hide()
 
     def show_clear_button(self):
-        self._button_clear.show()
+        self._clear_button.show()
 
     def enable_auto_clear(self, enable: bool):
-        self._checkbox_clear_log_output.setChecked(enable)
+        self._auto_clear_checkbox.setChecked(enable)
 
     def enable_execute_button(self, enable: bool):
-        self._button_execute.setEnabled(enable)
+        self._execute_button.setEnabled(enable)
 
     def enable_cancel_button(self, enable: bool):
-        self._button_cancel.setEnabled(enable)
+        self._cancel_button.setEnabled(enable)
+
+    def enable_clear_button(self, enable: bool):
+        self._clear_button.setEnabled(enable)

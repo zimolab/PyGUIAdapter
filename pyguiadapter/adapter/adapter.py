@@ -8,7 +8,7 @@ from typing import Literal, Dict, Any, Type, Tuple, List
 
 from qtpy.QtCore import Qt
 from qtpy.QtGui import QIcon, QPixmap
-from qtpy.QtWidgets import QApplication, QStyleFactory, QWidget
+from qtpy.QtWidgets import QApplication, QStyleFactory
 
 from . import ucontext
 from ..bundle import FnBundle, WidgetConfigTypes
@@ -20,7 +20,7 @@ from ..paramwidget import (
 )
 from ..parser import FnParser
 from ..widgets import ParameterWidgetFactory
-from ..windows import FnExecuteWindowConfig, FnSelectWindow, FnSelectWindowConfig
+from ..windows import FnExecuteWindowConfig, FnSelectWindow, FnSelectWindowConfig, FnExecuteWindow
 
 
 class GUIAdapter(object):
@@ -42,8 +42,8 @@ class GUIAdapter(object):
         self._fn_parser = FnParser()
 
         self._application: QApplication | None = None
-        self._root_window: QWidget | None = None
         self._select_window: FnSelectWindow | None = None
+        self._execute_window: FnExecuteWindow | None = None
 
     def add(
         self,
@@ -115,6 +115,7 @@ class GUIAdapter(object):
             else:
                 window_config = self._select_window_config or FnExecuteWindowConfig()
                 self._show_select_window(list(self._bundles.values()), window_config)
+
             self._application.exec()
         except Exception as e:
             raise e
@@ -159,24 +160,38 @@ class GUIAdapter(object):
             self._on_app_shutdown()
 
     def _show_select_window(
-        self, fn_bundles: List[FnBundle], select_window_config: FnSelectWindowConfig
+        self, bundles: List[FnBundle], select_window_config: FnSelectWindowConfig
     ):
         if self._select_window is not None:
             return
         self._select_window = FnSelectWindow(
             parent=None,
-            bundles=fn_bundles,
+            bundles=bundles,
             config=select_window_config,
         )
         self._select_window.setAttribute(Qt.WA_DeleteOnClose, True)
+        # noinspection PyUnresolvedReferences
         self._select_window.destroyed.connect(self._on_select_window_destroyed)
         self._select_window.start()
 
     def _on_select_window_destroyed(self):
         self._select_window = None
 
-    def _show_execute_window(self, fn_bundle: FnBundle):
-        pass
+    # noinspection PyUnresolvedReferences
+    def _show_execute_window(self, bundle: FnBundle):
+        if self._execute_window is not None:
+            return
+        self._execute_window = FnExecuteWindow(
+            None, bundle=bundle
+        )
+        self._execute_window.setAttribute(Qt.WA_DeleteOnClose, True)
+        self._execute_window.setWindowModality(Qt.ApplicationModal)
+        self._execute_window.destroyed.connect(self._on_execute_window_destroyed)
+        self._execute_window.show()
+
+
+    def _on_execute_window_destroyed(self):
+        self._execute_window = None
 
     def _merge_widget_configs(
         self,

@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import dataclasses
-from dbm.dumb import error
 from typing import Tuple, Literal, Dict, Union, Type, Any, List
 
 from qtpy.QtCore import QSize, Qt
@@ -20,7 +19,7 @@ from ._logarea import (
 )
 from ._paramarea import FnParameterArea
 from .._docbrowser import DocumentBrowserConfig
-from ... import bundle as b
+from ... import bundle as bd
 from ... import utils, fn
 from ...adapter import ucontext
 from ...exceptions import FunctionAlreadyExecutingError
@@ -84,8 +83,16 @@ class FnExecuteWindowConfig(BaseWindowConfig):
 
 # noinspection SpellCheckingInspection
 class FnExecuteWindow(BaseWindow, ExecuteStateListener):
-    def __init__(self, parent: QWidget | None, bundle: b.FnBundle):
+    def __init__(self, parent: QWidget | None, bundle: bd.FnBundle):
         self._bundle = bundle
+
+        self._center_widget: QWidget | None = None
+        self._parameters_area: FnParameterArea | None = None
+        self._document_area: FnDocumentArea | None = None
+        self._log_output_area: FnExecuteLogOutputArea | None = None
+        self._document_dock: QDockWidget | None = None
+        self._log_output_dock: QDockWidget | None = None
+
         super().__init__(parent, bundle.window_config)
 
         executor_class = self._bundle.fn_info.executor or DEFAULT_EXECUTOR_CLASS
@@ -114,27 +121,27 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
         return self._executor
 
     def update_progressbar_config(self, config: ProgressBarConfig | None):
-        self._area_log.update_progressbar_config(config)
+        self._log_output_area.update_progressbar_config(config)
 
     def show_progressbar(self):
-        self._area_log.show_progressbar()
+        self._log_output_area.show_progressbar()
 
     def hide_progressbar(self):
-        self._area_log.hide_progressbar()
+        self._log_output_area.hide_progressbar()
 
     def update_progress(self, current_value: int, message: str | None = None):
-        self._area_log.update_progress(current_value, message)
+        self._log_output_area.update_progress(current_value, message)
 
     def append_log(self, log_text: str, html: bool = False):
-        self._area_log.append_log_output(log_text, html)
+        self._log_output_area.append_log_output(log_text, html)
 
     def clear_log(self):
-        self._area_log.clear_log_output()
+        self._log_output_area.clear_log_output()
 
     def update_document(
         self, document: str, document_format: Literal["markdown", "html", "plaintext"]
     ):
-        self._area_document.set_fn_document(document, document_format)
+        self._document_area.update_document(document, document_format)
 
     def add_parameter(self, parameter_name: str, config: ParameterWidgetType):
         if isinstance(config, tuple):
@@ -146,41 +153,41 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
             widget_class = config.target_widget_class()
             widget_config = config
         else:
-            raise TypeError(f"Invalid type for widget_config: {type(config)}")
+            raise TypeError(f"Invalid type of widget_config: {type(config)}")
 
         if isinstance(widget_config, dict):
             widget_config = widget_class.ConfigClass.new(**widget_config)
 
-        groupbox = self._area_parameters.parameter_group_box
+        groupbox = self._parameters_area.parameter_groupbox
         groupbox.add_parameter(parameter_name, widget_class, widget_config)
 
     def remove_parameter(self, parameter_name: str, safe_remove: bool = True):
-        groupbox = self._area_parameters.parameter_group_box
+        groupbox = self._parameters_area.parameter_groupbox
         groupbox.remove_parameter(parameter_name, safe_remove=safe_remove)
 
     def clear_parameters(self):
-        groupbox = self._area_parameters.parameter_group_box
+        groupbox = self._parameters_area.parameter_groupbox
         groupbox.clear_parameters()
         groupbox.add_default_group()
 
     def get_parameter_value(self, parameter_name: str) -> Any:
-        groupbox = self._area_parameters.parameter_group_box
+        groupbox = self._parameters_area.parameter_groupbox
         return groupbox.get_parameter_value(parameter_name)
 
     def get_parameter_values(self) -> Dict[str, Any]:
-        groupbox = self._area_parameters.parameter_group_box
+        groupbox = self._parameters_area.parameter_groupbox
         return groupbox.get_parameter_values()
 
     def set_parameter_value(
         self, parameter_name: str, value: Any, ignore_unknown_parameter: bool = True
     ):
-        groupbox = self._area_parameters.parameter_group_box
+        groupbox = self._parameters_area.parameter_groupbox
         groupbox.set_parameter_value(
             parameter_name, value, ignore_unknown_parameter=ignore_unknown_parameter
         )
 
     def set_parameter_values(self, values: Dict[str, Any]) -> List[str]:
-        groupbox = self._area_parameters.parameter_group_box
+        groupbox = self._parameters_area.parameter_groupbox
         return groupbox.set_parameter_values(values)
 
     def add_parameters(self, configs: Dict[str, ParameterWidgetType]):
@@ -204,52 +211,53 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
 
         # central widget and layout
         self._center_widget = QWidget(self)
-        self._vlayout_main = QVBoxLayout(self._center_widget)
+        # noinspection PyArgumentList
+        _layout_main = QVBoxLayout(self._center_widget)
         self.setCentralWidget(self._center_widget)
 
         # create the area for parameter widgets
-        self._area_parameters = FnParameterArea(self._center_widget, window_config)
-        self._vlayout_main.addWidget(self._area_parameters)
+        self._parameters_area = FnParameterArea(self._center_widget, window_config)
+        _layout_main.addWidget(self._parameters_area)
         if fn_info.cancelable:
-            self._area_parameters.show_cancel_button()
+            self._parameters_area.show_cancel_button()
         else:
-            self._area_parameters.hide_cancel_button()
+            self._parameters_area.hide_cancel_button()
         if window_config.show_clear_button:
-            self._area_parameters.show_clear_button()
+            self._parameters_area.show_clear_button()
         else:
-            self._area_parameters.hide_clear_button()
-        self._area_parameters.enable_auto_clear(window_config.enable_auto_clear)
-        self._area_parameters.execute_button_clicked.connect(
+            self._parameters_area.hide_clear_button()
+        self._parameters_area.enable_auto_clear(window_config.enable_auto_clear)
+        self._parameters_area.execute_button_clicked.connect(
             self._on_execute_button_clicked
         )
-        self._area_parameters.clear_button_clicked.connect(
+        self._parameters_area.clear_button_clicked.connect(
             self._on_clear_button_clicked
         )
-        self._area_parameters.cancel_button_clicked.connect(
+        self._parameters_area.cancel_button_clicked.connect(
             self._on_cancel_button_clicked
         )
 
         # create the dock widget and document area
-        self._dockwidget_document = QDockWidget(self)
-        self._dockwidget_document.setWindowTitle(widget_texts.document_dock_title)
-        self._area_document = FnDocumentArea(
-            self._dockwidget_document, window_config.document_browser
+        self._document_dock = QDockWidget(self)
+        self._document_dock.setWindowTitle(widget_texts.document_dock_title)
+        self._document_area = FnDocumentArea(
+            self._document_dock, window_config.document_browser
         )
-        self._dockwidget_document.setWidget(self._area_document)
-        self.addDockWidget(Qt.RightDockWidgetArea, self._dockwidget_document)
+        self._document_dock.setWidget(self._document_area)
+        self.addDockWidget(Qt.RightDockWidgetArea, self._document_dock)
         # display the document content
         self.update_document(fn_info.document, fn_info.document_format)
 
         # create the dock widget and log output area
-        self._dockwidget_log_output = QDockWidget(self)
-        self._dockwidget_log_output.setWindowTitle(widget_texts.log_output_dock_title)
-        self._area_log = FnExecuteLogOutputArea(
-            self._dockwidget_log_output,
+        self._log_output_dock = QDockWidget(self)
+        self._log_output_dock.setWindowTitle(widget_texts.log_output_dock_title)
+        self._log_output_area = FnExecuteLogOutputArea(
+            self._log_output_dock,
             progressbar_config=window_config.progressbar,
             log_output_config=window_config.log_output,
         )
-        self._dockwidget_log_output.setWidget(self._area_log)
-        self.addDockWidget(Qt.BottomDockWidgetArea, self._dockwidget_log_output)
+        self._log_output_dock.setWidget(self._log_output_area)
+        self.addDockWidget(Qt.BottomDockWidgetArea, self._log_output_dock)
         if window_config.progressbar is None:
             self.hide_progressbar()
         else:
@@ -263,44 +271,39 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
         dock_height = int(current_height * log_output_dock_ratio)
         document_dock_ratio = min(max(window_config.document_dock_ratio, 0.1), 1.0)
         dock_width = int(current_width * document_dock_ratio)
-        self.resizeDocks([self._dockwidget_log_output], [dock_height], Qt.Vertical)
+        self.resizeDocks([self._log_output_dock], [dock_height], Qt.Vertical)
         self.resizeDocks(
-            [self._dockwidget_document],
+            [self._document_dock],
             [dock_width],
             Qt.Horizontal,
         )
 
     def before_execute(self, fn_info: fn.FnInfo, arguments: Dict[str, Any]) -> None:
         super().before_execute(fn_info, arguments)
-        print("before_execute", ucontext.is_function_cancelled())
-        print()
-
-        self._area_parameters.enable_execute_button(False)
+        if self._parameters_area.is_auto_clear_enabled:
+            self.clear_log()
+        self._parameters_area.enable_clear_button(False)
+        self._parameters_area.enable_execute_button(False)
 
     def on_execute_start(self, fn_info: fn.FnInfo, arguments: Dict[str, Any]) -> None:
         super().on_execute_start(fn_info, arguments)
-        print("on_execute_start", ucontext.is_function_cancelled())
-        print()
-        self._area_parameters.enable_cancel_button(True)
+        self._parameters_area.enable_cancel_button(True)
 
     def on_execute_finish(self, fn_info: fn.FnInfo, arguments: Dict[str, Any]) -> None:
         super().on_execute_finish(fn_info, arguments)
-        print("on_execute_finish", ucontext.is_function_cancelled())
-        print()
-        self._area_parameters.enable_execute_button(True)
-        self._area_parameters.enable_cancel_button(False)
+        self._parameters_area.enable_clear_button(True)
+        self._parameters_area.enable_execute_button(True)
+        self._parameters_area.enable_cancel_button(False)
 
     def on_execute_result(
         self, fn_info: fn.FnInfo, arguments: Dict[str, Any], result: Any
     ) -> None:
-        print("on_execute_result", ucontext.is_function_cancelled())
-        print()
+        pass
 
     def on_execute_error(
         self, fn_info: fn.FnInfo, arguments: Dict[str, Any], exception: Exception
     ) -> None:
-        print("on_execute_error", error, ucontext.is_function_cancelled())
-        print()
+        pass
 
     def _on_close(self) -> bool:
         if self._executor.is_executing:
@@ -337,5 +340,7 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
 
     # noinspection PyMethodMayBeStatic
     def _on_clear_button_clicked(self):
-        print("_on_clear_button_clicked")
-        pass
+        if self._executor.is_executing:
+            utils.show_warning_message(self, self.message_texts.function_is_executing)
+            pass
+        self.clear_log()
