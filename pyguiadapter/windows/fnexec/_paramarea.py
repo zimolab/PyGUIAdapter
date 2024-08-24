@@ -87,7 +87,9 @@ class FnParameterGroupPage(QWidget):
         new_widget = widget_class.new(
             self._scrollarea_content, parameter_name, widget_config
         )
+        # noinspection PyUnresolvedReferences
         self._parent.validation_failed.connect(new_widget.on_validation_failed)
+        # noinspection PyUnresolvedReferences
         self._parent.validation_error_cleared.connect(
             new_widget.on_clear_validation_error
         )
@@ -137,7 +139,9 @@ class FnParameterGroupPage(QWidget):
         widget = self._parameters[parameter_name]
         index = self._layout_scrollerea_content.indexOf(widget)
         self._layout_scrollerea_content.takeAt(index)
+        # noinspection PyUnresolvedReferences
         self._parent.validation_failed.disconnect(widget.on_validation_failed)
+        # noinspection PyUnresolvedReferences
         self._parent.validation_error_cleared.disconnect(
             widget.on_clear_validation_error
         )
@@ -363,9 +367,11 @@ class FnParameterGroupBox(QToolBox):
         group.scroll_to(parameter_name, x, y)
 
     def notify_validation_error(self, parameter_name: str, error: Any):
+        # noinspection PyUnresolvedReferences
         self.validation_failed.emit(parameter_name, error)
 
     def clear_validation_error(self, parameter_name: str | None):
+        # noinspection PyUnresolvedReferences
         self.validation_error_cleared.emit(parameter_name)
 
     def _get_group_and_widget(
@@ -470,7 +476,7 @@ class FnParameterArea(QWidget):
         self._layout_main.addWidget(_op_area)
 
     @property
-    def parameter_groupbox(self) -> FnParameterGroupBox:
+    def parameter_groups(self) -> FnParameterGroupBox:
         return self._param_groupbox
 
     @property

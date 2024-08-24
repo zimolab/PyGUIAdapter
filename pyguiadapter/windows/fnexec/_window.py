@@ -108,10 +108,10 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
         # noinspection PyTypeChecker
         self._executor = executor_class(self, self)
 
+        self.add_parameters(self._bundle.param_widget_configs)
+
         # noinspection PyProtectedMember
         ucontext._current_window_created(self)
-
-        self.add_parameters(self._bundle.param_widget_configs)
 
     @property
     def window_config(self) -> FnExecuteWindowConfig:
@@ -167,36 +167,36 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
         if isinstance(widget_config, dict):
             widget_config = widget_class.ConfigClass.new(**widget_config)
 
-        groupbox = self._parameters_area.parameter_groupbox
+        groupbox = self._parameters_area.parameter_groups
         groupbox.add_parameter(parameter_name, widget_class, widget_config)
 
     def remove_parameter(self, parameter_name: str, safe_remove: bool = True):
-        groupbox = self._parameters_area.parameter_groupbox
+        groupbox = self._parameters_area.parameter_groups
         groupbox.remove_parameter(parameter_name, safe_remove=safe_remove)
 
     def clear_parameters(self):
-        groupbox = self._parameters_area.parameter_groupbox
+        groupbox = self._parameters_area.parameter_groups
         groupbox.clear_parameters()
         groupbox.add_default_group()
 
     def get_parameter_value(self, parameter_name: str) -> Any:
-        groupbox = self._parameters_area.parameter_groupbox
+        groupbox = self._parameters_area.parameter_groups
         return groupbox.get_parameter_value(parameter_name)
 
     def get_parameter_values(self) -> Dict[str, Any]:
-        groupbox = self._parameters_area.parameter_groupbox
+        groupbox = self._parameters_area.parameter_groups
         return groupbox.get_parameter_values()
 
     def set_parameter_value(
         self, parameter_name: str, value: Any, ignore_unknown_parameter: bool = True
     ):
-        groupbox = self._parameters_area.parameter_groupbox
+        groupbox = self._parameters_area.parameter_groups
         groupbox.set_parameter_value(
             parameter_name, value, ignore_unknown_parameter=ignore_unknown_parameter
         )
 
     def set_parameter_values(self, values: Dict[str, Any]) -> List[str]:
-        groupbox = self._parameters_area.parameter_groupbox
+        groupbox = self._parameters_area.parameter_groups
         return groupbox.set_parameter_values(values)
 
     def add_parameters(self, configs: Dict[str, ParameterWidgetType]):
@@ -294,7 +294,7 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
         self._parameters_area.enable_clear_button(False)
         self._parameters_area.enable_execute_button(False)
 
-        self._parameters_area.parameter_groupbox.clear_validation_error(None)
+        self._parameters_area.parameter_groups.clear_validation_error(None)
 
     def on_execute_start(self, fn_info: fn.FnInfo, arguments: Dict[str, Any]) -> None:
         super().on_execute_start(fn_info, arguments)
@@ -332,7 +332,8 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
         ):
             parameter_name = error.parameter_name
             message = error.message
-            self._parameters_area.parameter_groupbox.notify_validation_error(
+            self._parameters_area.parameter_groups.scroll_to_parameter(parameter_name)
+            self._parameters_area.parameter_groups.notify_validation_error(
                 parameter_name, message
             )
 
@@ -357,6 +358,7 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
 
     def _on_cleanup(self):
         super()._on_cleanup()
+        self._parameters_area.parameter_groups.clear_parameters()
 
     def _on_destroy(self):
         super()._on_destroy()

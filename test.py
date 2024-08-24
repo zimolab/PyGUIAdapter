@@ -46,10 +46,16 @@ def f2():
     uprint("f2 finished: ", i)
 
 
-def f3(a: str):
+def f3(a: str, b: str):
     """
     # Function 3
     :return:
+
+    @params
+    [b]
+    group="Misc"
+    @end
+
     """
     # text = get_text(label="Input some text")
     # uprint(text)
@@ -71,7 +77,7 @@ def f3(a: str):
     # uprint(color)
     if a == "e":
         raise ParameterValidationError(
-            parameter_name="a", message=f"invalid argument: {a}"
+            parameter_name="b", message=f"invalid argument: {a}"
         )
     return f"{a}"
 
