@@ -223,9 +223,8 @@ class CommonParameterWidget(BaseParameterWidget):
         self.show_validation_error(error_message)
 
     def on_clear_validation_error(self, parameter_name: str | None):
-        if parameter_name is not None and parameter_name != self.parameter_name:
-            return
-        self.clear_validation_error()
+        if parameter_name is None or parameter_name == self.parameter_name:
+            self.clear_validation_error()
 
     def _default_value_used(self) -> bool:
         if self.default_value_checkbox.isHidden():
@@ -237,6 +236,7 @@ class CommonParameterWidget(BaseParameterWidget):
             return
         self.default_value_checkbox.setChecked(True)
 
+    # noinspection SpellCheckingInspection
     def _unuse_default_value(self):
         if self.hide_default_value_checkbox or self.default_value_checkbox.isHidden():
             return

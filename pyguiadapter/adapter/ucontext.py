@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import dataclasses
 import warnings
-from collections.abc import Sequence
+from collections.abc import Sequence, Callable
 from concurrent.futures import Future
 from typing import Any, Tuple, Type
 
@@ -79,6 +79,8 @@ class _Context(QObject):
     show_messagebox = Signal(Future, MessageBoxConfig)
     show_custom_dialog = Signal(Future, object, dict)
 
+    get_input_requested = Signal(Future, object)
+
     def __init__(self, parent):
         super().__init__(parent)
 
@@ -100,6 +102,8 @@ class _Context(QObject):
         self.show_messagebox.connect(self._on_show_messagebox)
         # noinspection PyUnresolvedReferences
         self.show_custom_dialog.connect(self._on_show_custom_dialog)
+
+        self.get_input_requested.connect(self._on_get_input_requested)
 
     @property
     def custom_dialog_factory(self) -> CustomDialogFactory:
@@ -173,6 +177,16 @@ class _Context(QObject):
         result = dialog.get_result()
         future.set_result((ret_code, result))
 
+    def _on_get_input_requested(
+        self, future: Future, get_input_impl: Callable[[FnExecuteWindow], Any]
+    ):
+        win = self.current_window
+        if not isinstance(win, FnExecuteWindow):
+            warnings.warn("current_window is None")
+            win = None
+        result = get_input_impl(win)
+        future.set_result(result)
+
 
 _context = _Context(None)
 
@@ -232,4 +246,12 @@ def show_custom_dialog(
     result_future = Future()
     # noinspection PyUnresolvedReferences
     _context.show_custom_dialog.emit(result_future, dialog_class, kwargs)
+    return result_future.result()
+
+
+def _request_get_input(get_input_impl: Callable[[FnExecuteWindow], Any]) -> Any:
+    global _context
+    result_future = Future()
+    # noinspection PyUnresolvedReferences
+    _context.get_input_requested.emit(result_future, get_input_impl)
     return result_future.result()

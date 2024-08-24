@@ -22,7 +22,7 @@ from .._docbrowser import DocumentBrowserConfig
 from ... import bundle as bd
 from ... import utils, fn
 from ...adapter import ucontext
-from ...exceptions import FunctionAlreadyExecutingError
+from ...exceptions import FunctionAlreadyExecutingError, ParameterValidationError
 from ...executor import ExecuteStateListener, BaseFunctionExecutor
 from ...executors import ThreadFunctionExecutor
 from ...paramwidget import (
@@ -49,6 +49,8 @@ class WidgetTexts(object):
     clear_button_text: str = "Clear"
     cancel_button_text: str = "Cancel"
     clear_checkbox_text: str = "Clear log output"
+    function_result_dialog_title: str = "Function Result"
+    function_error_dialog_title: str = "Function Error"
 
 
 @dataclasses.dataclass
@@ -56,6 +58,8 @@ class MessageTexts(object):
     function_is_executing: str = "function is executing now"
     function_not_executing: str = "function is not executing now"
     function_not_cancelable: str = "function is not cancelable"
+    function_result_template: str = "function result: {}"
+    function_error_template: str = "function error: {}"
 
 
 @dataclasses.dataclass
@@ -76,6 +80,11 @@ class FnExecuteWindowConfig(BaseWindowConfig):
     )
     show_clear_button: bool = True
     enable_auto_clear: bool = True
+    print_function_result: bool = True
+    show_function_result: bool = False
+    print_function_error: bool = True
+    show_function_error: bool = True
+    highlight_invalid_parameter: bool = True
 
     widget_texts: WidgetTexts = dataclasses.field(default_factory=WidgetTexts)
     message_texts: MessageTexts = dataclasses.field(default_factory=MessageTexts)
@@ -102,7 +111,7 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
         # noinspection PyProtectedMember
         ucontext._current_window_created(self)
 
-        self.add_parameters(self._bundle.parameter_widget_configs)
+        self.add_parameters(self._bundle.param_widget_configs)
 
     @property
     def window_config(self) -> FnExecuteWindowConfig:
@@ -285,6 +294,8 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
         self._parameters_area.enable_clear_button(False)
         self._parameters_area.enable_execute_button(False)
 
+        self._parameters_area.parameter_groupbox.clear_validation_error(None)
+
     def on_execute_start(self, fn_info: fn.FnInfo, arguments: Dict[str, Any]) -> None:
         super().on_execute_start(fn_info, arguments)
         self._parameters_area.enable_cancel_button(True)
@@ -298,12 +309,45 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
     def on_execute_result(
         self, fn_info: fn.FnInfo, arguments: Dict[str, Any], result: Any
     ) -> None:
-        pass
+        if callable(self._bundle.on_execute_result):
+            self._bundle.on_execute_result(result, arguments.copy())
+            return
+
+        result_str = self.message_texts.function_result_template.format(result)
+
+        if self.window_config.print_function_result:
+            self.append_log(result_str)
+
+        if self.window_config.show_function_result:
+            utils.show_info_message(
+                self, result_str, title=self.widget_texts.function_result_dialog_title
+            )
 
     def on_execute_error(
-        self, fn_info: fn.FnInfo, arguments: Dict[str, Any], exception: Exception
+        self, fn_info: fn.FnInfo, arguments: Dict[str, Any], error: Exception
     ) -> None:
-        pass
+
+        if self.window_config.highlight_invalid_parameter and isinstance(
+            error, ParameterValidationError
+        ):
+            parameter_name = error.parameter_name
+            message = error.message
+            self._parameters_area.parameter_groupbox.notify_validation_error(
+                parameter_name, message
+            )
+
+        if callable(self._bundle.on_execute_error):
+            self._bundle.on_execute_error(error, arguments.copy())
+            return
+        error_msg = self.message_texts.function_error_template.format(error)
+
+        if self.window_config.print_function_error:
+            self.append_log(error_msg)
+
+        if self.window_config.show_function_error:
+            utils.show_critical_message(
+                self, error_msg, title=self.widget_texts.function_error_dialog_title
+            )
 
     def _on_close(self) -> bool:
         if self._executor.is_executing:

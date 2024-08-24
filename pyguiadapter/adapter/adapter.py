@@ -20,7 +20,12 @@ from ..paramwidget import (
 )
 from ..parser import FnParser
 from ..widgets import ParameterWidgetFactory
-from ..windows import FnExecuteWindowConfig, FnSelectWindow, FnSelectWindowConfig, FnExecuteWindow
+from ..windows import (
+    FnExecuteWindowConfig,
+    FnSelectWindow,
+    FnSelectWindowConfig,
+    FnExecuteWindow,
+)
 
 
 class GUIAdapter(object):
@@ -54,6 +59,8 @@ class GUIAdapter(object):
         document: str | None = None,
         document_format: Literal["markdown", "html", "plaintext"] = "markdown",
         cancelable: bool = False,
+        on_execute_result: Callable[[Any], None] = None,
+        on_execute_error: Callable[[Exception], None] = None,
         *,
         window_config: FnExecuteWindowConfig | None = None,
         widget_configs: Dict[str, WidgetConfigTypes] | None = None,
@@ -81,7 +88,13 @@ class GUIAdapter(object):
         )
 
         window_config = window_config or FnExecuteWindowConfig()
-        bundle = FnBundle(fn_info, window_config, widget_configs)
+        bundle = FnBundle(
+            fn_info,
+            window_config=window_config,
+            param_widget_configs=widget_configs,
+            on_execute_result=on_execute_result,
+            on_execute_error=on_execute_error,
+        )
         self._bundles[fn] = bundle
 
     def remove(self, fn: Callable):
@@ -181,14 +194,11 @@ class GUIAdapter(object):
     def _show_execute_window(self, bundle: FnBundle):
         if self._execute_window is not None:
             return
-        self._execute_window = FnExecuteWindow(
-            None, bundle=bundle
-        )
+        self._execute_window = FnExecuteWindow(None, bundle=bundle)
         self._execute_window.setAttribute(Qt.WA_DeleteOnClose, True)
         self._execute_window.setWindowModality(Qt.ApplicationModal)
         self._execute_window.destroyed.connect(self._on_execute_window_destroyed)
         self._execute_window.show()
-
 
     def _on_execute_window_destroyed(self):
         self._execute_window = None

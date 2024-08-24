@@ -1,16 +1,12 @@
-import threading
 import time
-from datetime import datetime
 
 from pyguiadapter.adapter import ulogging
 from pyguiadapter.adapter.adapter import GUIAdapter
 from pyguiadapter.adapter.ucontext import uprint, is_function_cancelled
 from pyguiadapter.adapter.udialog import show_text_file
-from pyguiadapter.windows import (
-    FnSelectWindowConfig,
-    FnExecuteWindowConfig,
-    FnExecuteWindow,
-)
+from pyguiadapter.adapter.uinput import *
+from pyguiadapter.windows import FnSelectWindowConfig, FnExecuteWindowConfig
+from pyguiadapter.exceptions import ParameterValidationError
 
 
 def f1(arg1: str, arg2: str):
@@ -31,40 +27,6 @@ def f1(arg1: str, arg2: str):
     ulogging.warning("hello world!")
     ulogging.critical("hello world!")
     ulogging.fatal("hello world!")
-    # show_info_dialog(
-    #     "hello world!",
-    #     "Hello",
-    #     buttons=QMessageBox.Yes | QMessageBox.No,
-    #     detailed_text="hello world!",
-    #     informative_text="hello world!",
-    #     escape_button=QMessageBox.Yes,
-    # )
-    # show_warning_dialog(
-    #     "hello world!",
-    #     "Hello",
-    #     buttons=QMessageBox.Yes | QMessageBox.No,
-    #     detailed_text="hello world!",
-    #     informative_text="hello world!",
-    #     escape_button=QMessageBox.Yes,
-    # )
-    # show_critical_dialog(
-    #     "hello world!",
-    #     "Hello",
-    #     buttons=QMessageBox.Yes | QMessageBox.No,
-    #     detailed_text="hello world!",
-    #     informative_text="hello world!",
-    #     escape_button=QMessageBox.Yes,
-    # )
-    # ret = show_question_dialog(
-    #     "hello world!",
-    #     "Hello",
-    #     detailed_text="hello world!",
-    # )
-    # uprint(ret)
-    # with open("./License", "r") as f:
-    #     c = f.read()
-    # ret = show_text_content(c)
-    # print(ret)
     show_text_file("./License")
     return f"{arg1} + {arg2}"
 
@@ -84,14 +46,34 @@ def f2():
     uprint("f2 finished: ", i)
 
 
-def f3():
+def f3(a: str):
     """
     # Function 3
     :return:
     """
-    print("thread", threading.current_thread())
-    time.sleep(10)
-    return datetime.now()
+    # text = get_text(label="Input some text")
+    # uprint(text)
+    # i = get_int(label="Input some int", min_value=0, max_value=100)
+    # uprint(i)
+    # f = get_float(label="Input some float", min_value=0, max_value=100)
+    # uprint(f)
+    # it = get_selected_item(["a", "b", "c"], current=1, editable=True)
+    # uprint(it)
+    # color = get_color()
+    # uprint(color)
+    # color = get_color(show_alpha_channel=False)
+    # uprint(color)
+    # color = get_color_name()
+    # uprint(color)
+    # color = get_color_rgb()
+    # uprint(color)
+    # color = get_color_rgba()
+    # uprint(color)
+    if a == "e":
+        raise ParameterValidationError(
+            parameter_name="a", message=f"invalid argument: {a}"
+        )
+    return f"{a}"
 
 
 select_window_config = FnSelectWindowConfig(

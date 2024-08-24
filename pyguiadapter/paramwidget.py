@@ -7,7 +7,6 @@ from typing import Any, Type, TypeVar
 
 from qtpy.QtWidgets import QWidget
 
-
 DEFAULT_VALUE_DESCRIPTION = "use default value({})"
 
 
@@ -98,6 +97,12 @@ class BaseParameterWidget(QWidget):
 
     @abstractmethod
     def build(self):
+        pass
+
+    def on_validation_failed(self, parameter_name: str, error: Any):
+        pass
+
+    def on_clear_validation_error(self, parameter_name: str | None):
         pass
 
     @classmethod

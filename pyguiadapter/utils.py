@@ -10,6 +10,10 @@ from qtpy.QtGui import QIcon, QPixmap, QTextCursor, QTextOption
 
 import qtawesome as qta
 
+StandardButton = QMessageBox.StandardButton
+StandardButtons = QMessageBox.StandardButtons
+
+# noinspection SpellCheckingInspection
 TEXTBROWSER_CSS = """
 QTextEdit{
     background-color: ${bg_color};
@@ -47,6 +51,7 @@ QScrollBar::add-page:vertical{
 IconType = Union[str, Tuple[str, Union[list, dict]], QIcon, QPixmap, type(None)]
 
 
+# noinspection PyArgumentList
 def get_icon(src: IconType, *args, **kwargs) -> QIcon | None:
     if src is None:
         return None
@@ -69,6 +74,7 @@ def get_icon(src: IconType, *args, **kwargs) -> QIcon | None:
         raise ValueError(f"invalid icon type: {type(src)}")
 
 
+# noinspection SpellCheckingInspection
 def set_textbrowser_content(
     textbrowser: QTextBrowser,
     content: str,
@@ -92,6 +98,7 @@ def set_textbrowser_content(
     textbrowser.setTextCursor(cursor)
 
 
+# noinspection SpellCheckingInspection
 def get_textbrowser_stylesheet(
     bg_color: str, text_color: str, font_size: int, font_family: str
 ):
@@ -104,6 +111,7 @@ def get_textbrowser_stylesheet(
     return css.strip()
 
 
+# noinspection SpellCheckingInspection
 def set_textbrowser_wrap_mode(
     textbrowser: QTextBrowser,
     line_wrap_mode: Literal[
@@ -149,10 +157,38 @@ def show_warning_message(
     parent: QWidget,
     message: str,
     title: str = "Warning",
-) -> int:
+) -> int | StandardButton:
     return QMessageBox.warning(parent, title, message)
 
 
+def show_critical_message(
+    parent: QWidget,
+    message: str,
+    title: str = "Critical",
+) -> int | StandardButton:
+    return QMessageBox.critical(parent, title, message)
+
+
+def show_info_message(
+    parent: QWidget,
+    message: str,
+    title: str = "Information",
+) -> int | StandardButton:
+    return QMessageBox.information(parent, title, message)
+
+
+def show_question_message(
+    parent: QWidget,
+    message: str,
+    title: str = "Question",
+    buttons: int | StandardButton | StandardButtons | None = None,
+) -> int | StandardButton:
+    if buttons is None:
+        return QMessageBox.question(parent, title, message)
+    return QMessageBox.question(parent, title, message, buttons)
+
+
+# noinspection SpellCheckingInspection
 def hline(parent: QWidget) -> QFrame:
     line = QFrame(parent)
     line.setFrameShape(QFrame.Shape.HLine)

@@ -25,8 +25,8 @@ from ...paramwidget import BaseParameterWidget, BaseParameterWidgetConfig
 
 class FnParameterGroupPage(QWidget):
     # noinspection SpellCheckingInspection
-    def __init__(self, parent: QWidget, group_name: str):
-
+    def __init__(self, parent: "FnParameterGroupBox", group_name: str):
+        self._parent: FnParameterGroupBox = parent
         super().__init__(parent)
 
         self._group_name = group_name
@@ -87,6 +87,10 @@ class FnParameterGroupPage(QWidget):
         new_widget = widget_class.new(
             self._scrollarea_content, parameter_name, widget_config
         )
+        self._parent.validation_failed.connect(new_widget.on_validation_failed)
+        self._parent.validation_error_cleared.connect(
+            new_widget.on_clear_validation_error
+        )
         self._add_to_scrollarea(new_widget, index)
         self._parameters[parameter_name] = new_widget
 
@@ -133,6 +137,10 @@ class FnParameterGroupPage(QWidget):
         widget = self._parameters[parameter_name]
         index = self._layout_scrollerea_content.indexOf(widget)
         self._layout_scrollerea_content.takeAt(index)
+        self._parent.validation_failed.disconnect(widget.on_validation_failed)
+        self._parent.validation_error_cleared.disconnect(
+            widget.on_clear_validation_error
+        )
         widget.deleteLater()
         del self._parameters[parameter_name]
 
@@ -199,6 +207,10 @@ class FnParameterGroupPage(QWidget):
 
 
 class FnParameterGroupBox(QToolBox):
+
+    validation_failed = Signal(str, object)
+    validation_error_cleared = Signal(object)
+
     def __init__(self, parent: QWidget, config: _window.FnExecuteWindowConfig):
         self._config = config
         self._groups: Dict[str, FnParameterGroupPage] = OrderedDict()
@@ -346,10 +358,15 @@ class FnParameterGroupBox(QToolBox):
         group, widget = self._get_group_and_widget(parameter_name)
         if group is None or widget is None:
             return
-
         if not self.active_parameter_group(group_name=group.group_name):
             return
         group.scroll_to(parameter_name, x, y)
+
+    def notify_validation_error(self, parameter_name: str, error: Any):
+        self.validation_failed.emit(parameter_name, error)
+
+    def clear_validation_error(self, parameter_name: str | None):
+        self.validation_error_cleared.emit(parameter_name)
 
     def _get_group_and_widget(
         self, parameter_name: str
