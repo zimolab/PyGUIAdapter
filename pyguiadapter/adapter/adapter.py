@@ -203,6 +203,7 @@ class GUIAdapter(object):
     def _on_execute_window_destroyed(self):
         self._execute_window = None
 
+    # noinspection GrazieInspection
     def _merge_widget_configs(
         self,
         parameters: Dict[str, ParameterInfo],

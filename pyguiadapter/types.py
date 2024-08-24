@@ -1,5 +1,5 @@
 # noinspection PyPep8Naming
-class str_t(str):
+class text_t(str):
     pass
 
 
@@ -11,6 +11,3 @@ class int_t(int):
 # noinspection PyPep8Naming
 class float_t(float):
     pass
-
-
-text_t = str_t

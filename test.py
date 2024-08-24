@@ -7,9 +7,10 @@ from pyguiadapter.adapter.udialog import show_text_file
 from pyguiadapter.adapter.uinput import *
 from pyguiadapter.windows import FnSelectWindowConfig, FnExecuteWindowConfig
 from pyguiadapter.exceptions import ParameterValidationError
+from pyguiadapter.types import text_t
 
 
-def f1(arg1: str, arg2: str):
+def f1(arg1: str, arg2: text_t):
     """
 
     :param arg1:
