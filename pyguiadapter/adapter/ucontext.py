@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import dataclasses
 import warnings
-from collections.abc import Sequence, Callable
+from collections.abc import Callable
 from concurrent.futures import Future
 from typing import Any, Tuple, Type
 
@@ -13,6 +13,10 @@ from qtpy.QtWidgets import QMessageBox, QWidget
 from ._dialog import CustomDialogFactory, BaseCustomDialog
 from ..windows.fnexec import FnExecuteWindow
 
+StandardButton = QMessageBox.StandardButton
+StandardButtons = QMessageBox.StandardButtons
+TextFormat = Qt.TextFormat
+
 
 @dataclasses.dataclass
 class MessageBoxConfig(object):
@@ -21,10 +25,10 @@ class MessageBoxConfig(object):
     icon: int | QPixmap | None = None
     detailed_text: str | None = None
     informative_text: str | None = None
-    text_format: int | Qt.TextFormat | None = None
-    buttons: int | QMessageBox.StandardButtons | Sequence[int] | None = None
-    default_button: int | QMessageBox.StandardButtons | None = None
-    escape_button: int | QMessageBox.StandardButtons | None = None
+    text_format: TextFormat | None = None
+    buttons: StandardButton | StandardButtons | None = None
+    default_button: StandardButton | None = None
+    escape_button: StandardButton | None = None
 
     def create_messagebox(self, parent: QWidget | None) -> QMessageBox:
         # noinspection SpellCheckingInspection,PyArgumentList
@@ -50,13 +54,7 @@ class MessageBoxConfig(object):
             msgbox.setTextFormat(self.text_format)
 
         if self.buttons is not None:
-            if isinstance(self.buttons, (int, QMessageBox.StandardButtons)):
-                msgbox.setStandardButtons(self.buttons)
-            else:
-                buttons = 0
-                for button in self.buttons:
-                    buttons |= button
-                msgbox.setDefaultButton(buttons)
+            msgbox.setDefaultButton(self.buttons)
 
         if self.default_button is not None:
             msgbox.setDefaultButton(self.default_button)
@@ -103,6 +101,7 @@ class _Context(QObject):
         # noinspection PyUnresolvedReferences
         self.show_custom_dialog.connect(self._on_show_custom_dialog)
 
+        # noinspection PyUnresolvedReferences
         self.get_input_requested.connect(self._on_get_input_requested)
 
     @property
@@ -163,6 +162,7 @@ class _Context(QObject):
             win = None
         msgbox = config.create_messagebox(win)
         ret = msgbox.exec_()
+        msgbox.deleteLater()
         future.set_result(ret)
 
     def _on_show_custom_dialog(
@@ -175,6 +175,7 @@ class _Context(QObject):
         dialog = _context.custom_dialog_factory.create(win, dialog_class, **kwargs)
         ret_code = dialog.exec_()
         result = dialog.get_result()
+        dialog.deleteLater()
         future.set_result((ret_code, result))
 
     def _on_get_input_requested(

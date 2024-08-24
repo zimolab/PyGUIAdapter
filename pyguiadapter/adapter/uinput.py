@@ -3,11 +3,12 @@ from __future__ import annotations
 import warnings
 from typing import List, Tuple
 
-from qtpy.QtCore import Qt
+from qtpy.QtCore import Qt, QUrl
 from qtpy.QtGui import QColor
 from qtpy.QtWidgets import QLineEdit, QInputDialog, QColorDialog
 
 from .ucontext import _request_get_input
+from .. import utils
 from ..windows import FnExecuteWindow
 
 EchoMode = QLineEdit.EchoMode
@@ -195,13 +196,57 @@ def get_color_rgba(
     return color.red(), color.green(), color.blue(), color.alpha()
 
 
-def get_directory() -> str | None:
-    pass
+def get_existing_directory(
+    title: str = "Open Directory",
+    start_dir: str = "",
+) -> str | None:
+    def _impl(wind: FnExecuteWindow | None) -> str | None:
+        return utils.get_existing_directory(wind, title, start_dir) or None
+
+    return _request_get_input(_impl)
 
 
-def get_open_filepath() -> str | None:
-    pass
+def get_existing_directory_url(
+    title: str = "Open Directory URL",
+    start_dir: QUrl | None = None,
+    supported_schemes: List[str] | None = None,
+) -> QUrl:
+    def _impl(wind: FnExecuteWindow | None) -> QUrl:
+        return utils.get_existing_directory_url(
+            wind, title, start_dir, supported_schemes
+        )
+
+    return _request_get_input(_impl)
 
 
-def get_save_filepath() -> str | None:
-    pass
+def get_open_file(
+    title: str = "Open File",
+    start_dir: str = "",
+    filters: str = "",
+) -> str | None:
+    def _impl(wind: FnExecuteWindow | None) -> str | None:
+        return utils.get_open_file(wind, title, start_dir, filters)
+
+    return _request_get_input(_impl)
+
+
+def get_open_files(
+    title: str = "Open Files",
+    start_dir: str = "",
+    filters: str = "",
+) -> List[str] | None:
+    def _impl(wind: FnExecuteWindow | None) -> List[str] | None:
+        return utils.get_open_files(wind, title, start_dir, filters)
+
+    return _request_get_input(_impl)
+
+
+def get_save_file(
+    title: str = "Save File",
+    start_dir: str = "",
+    filters: str = "",
+) -> str | None:
+    def _impl(wind: FnExecuteWindow | None) -> str | None:
+        return utils.get_save_file(wind, title, start_dir, filters)
+
+    return _request_get_input(_impl)

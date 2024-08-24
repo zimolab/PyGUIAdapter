@@ -1,21 +1,19 @@
 from __future__ import annotations
 
-from typing import Sequence
-
 from qtpy.QtGui import QPixmap
 from qtpy.QtWidgets import QMessageBox
 
-from .ucontext import show_messagebox, MessageBoxConfig
+from .ucontext import show_messagebox, MessageBoxConfig, StandardButton, StandardButtons
 
 
 def _show_messagebox(
     text: str,
     icon: int | QPixmap,
     title: str = "Information",
-    buttons: int | QMessageBox.StandardButtons | Sequence[int] = QMessageBox.Ok,
-    default_button: int = QMessageBox.NoButton,
+    buttons: StandardButton | StandardButtons = QMessageBox.Ok,
+    default_button: StandardButton = QMessageBox.NoButton,
     **kwargs,
-) -> int | QMessageBox.StandardButton:
+) -> int | StandardButton:
     config = MessageBoxConfig(
         text=text,
         title=title,
@@ -30,10 +28,10 @@ def _show_messagebox(
 def show_info_dialog(
     text: str,
     title: str = "Information",
-    buttons: int | QMessageBox.StandardButtons | Sequence[int] = QMessageBox.Ok,
-    default_button: int = QMessageBox.NoButton,
+    buttons: StandardButton | StandardButtons = QMessageBox.Ok,
+    default_button: StandardButton = QMessageBox.NoButton,
     **kwargs,
-) -> int | QMessageBox.StandardButton:
+) -> int | StandardButton:
     return _show_messagebox(
         text=text,
         icon=QMessageBox.Information,
@@ -47,10 +45,10 @@ def show_info_dialog(
 def show_warning_dialog(
     text: str,
     title: str = "Warning",
-    buttons: int | QMessageBox.StandardButtons | Sequence[int] = QMessageBox.Ok,
-    default_button: int = QMessageBox.NoButton,
+    buttons: StandardButton | StandardButtons = QMessageBox.Ok,
+    default_button: StandardButton = QMessageBox.NoButton,
     **kwargs,
-) -> int | QMessageBox.StandardButton:
+) -> int | StandardButton:
     return _show_messagebox(
         text=text,
         icon=QMessageBox.Warning,
@@ -64,10 +62,10 @@ def show_warning_dialog(
 def show_critical_dialog(
     text: str,
     title: str = "Critical",
-    buttons: int | QMessageBox.StandardButtons | Sequence[int] = QMessageBox.Ok,
-    default_button: int = QMessageBox.NoButton,
+    buttons: StandardButton | StandardButtons = QMessageBox.Ok,
+    default_button: StandardButton = QMessageBox.NoButton,
     **kwargs,
-) -> int | QMessageBox.StandardButton:
+) -> int | StandardButton:
     return _show_messagebox(
         text=text,
         icon=QMessageBox.Critical,
@@ -81,11 +79,10 @@ def show_critical_dialog(
 def show_question_dialog(
     text: str,
     title: str = "Question",
-    buttons: int | QMessageBox.StandardButtons | Sequence[int] = QMessageBox.Yes
-    | QMessageBox.No,
-    default_button: int = QMessageBox.NoButton,
+    buttons: StandardButton | StandardButtons = QMessageBox.Yes | QMessageBox.No,
+    default_button: StandardButton = QMessageBox.NoButton,
     **kwargs,
-) -> int | QMessageBox.StandardButton:
+) -> int | StandardButton:
     return _show_messagebox(
         text=text,
         icon=QMessageBox.Question,

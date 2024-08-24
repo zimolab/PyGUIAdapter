@@ -75,11 +75,22 @@ def f3(a: str, b: str):
     # uprint(color)
     # color = get_color_rgba()
     # uprint(color)
-    if a == "e":
-        raise ParameterValidationError(
-            parameter_name="b", message=f"invalid argument: {a}"
-        )
-    return f"{a}"
+
+    # if a == "e":
+    #     raise ParameterValidationError(
+    #         parameter_name="b", message=f"invalid argument: {a}"
+    #     )
+    # return f"{a}"
+    dir_ = get_existing_directory()
+    uprint(dir_)
+    url = get_existing_directory_url()
+    uprint(url)
+    filename = get_open_file()
+    uprint(filename)
+    files = get_open_files()
+    uprint(files)
+    save_file = get_save_file()
+    uprint(save_file)
 
 
 select_window_config = FnSelectWindowConfig(

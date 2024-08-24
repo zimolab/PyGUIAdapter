@@ -5,7 +5,8 @@ import re
 import string
 from typing import Literal, List, Set, Tuple, Any, Union
 
-from qtpy.QtWidgets import QTextBrowser, QWidget, QMessageBox, QFrame
+from qtpy.QtCore import QUrl
+from qtpy.QtWidgets import QTextBrowser, QWidget, QMessageBox, QFrame, QFileDialog
 from qtpy.QtGui import QIcon, QPixmap, QTextCursor, QTextOption
 
 import qtawesome as qta
@@ -269,3 +270,67 @@ def hashable(obj: Any) -> bool:
 def read_text_file(text_file: str, encoding: str = "utf-8") -> str:
     with open(text_file, "r", encoding=encoding) as f:
         return f.read()
+
+
+def get_existing_directory(
+    parent: QWidget | None = None,
+    title: str = "Open Directory",
+    start_dir: str = "",
+) -> str:
+    return QFileDialog.getExistingDirectory(parent, title, start_dir)
+
+
+def get_existing_directory_url(
+    parent: QWidget | None = None,
+    title: str = "Open Directory URL",
+    start_dir: QUrl | None = None,
+    supported_schemes: List[str] | None = None,
+) -> QUrl | None:
+    if start_dir is None:
+        start_dir = QUrl()
+    if not supported_schemes:
+        url = QFileDialog.getExistingDirectoryUrl(
+            parent,
+            title,
+            start_dir,
+            QFileDialog.ShowDirsOnly,
+        )
+    else:
+        url = QFileDialog.getExistingDirectoryUrl(
+            parent,
+            title,
+            start_dir,
+            QFileDialog.ShowDirsOnly,
+            supportedSchemes=supported_schemes,
+        )
+    return url
+
+
+def get_open_file(
+    parent: QWidget | None = None,
+    title: str = "Open File",
+    start_dir: str = "",
+    filters: str = "",
+) -> str | None:
+    filename, _ = QFileDialog.getOpenFileName(parent, title, start_dir, filters)
+    return filename or None
+
+
+def get_open_files(
+    parent: QWidget | None = None,
+    title: str = "Open Files",
+    start_dir: str = "",
+    filters: str = "",
+) -> List[str] | None:
+    filenames, _ = QFileDialog.getOpenFileNames(parent, title, start_dir, filters)
+    return filenames or None
+
+
+def get_save_file(
+    parent: QWidget | None = None,
+    title: str = "Save File",
+    start_dir: str = "",
+    filters: str = "",
+) -> List[str] | None:
+    filename, _ = QFileDialog.getSaveFileName(parent, title, start_dir, filters)
+    return filename or None
