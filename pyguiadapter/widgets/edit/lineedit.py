@@ -19,7 +19,7 @@ class LineEditConfig(CommonParameterWidgetConfig):
     echo_mode: EchoMode | None = None
     input_mask: str | None = None
     max_length: int | None = None
-    validator: QValidator | str | None = "\\d\\d \\w+"
+    validator: QValidator | str | None = None
 
     @classmethod
     def target_widget_class(cls) -> Type["LineEdit"]:
@@ -35,16 +35,13 @@ class LineEdit(CommonParameterWidget):
     ):
 
         self._config: LineEditConfig = config
-        self._value_widget: QLineEdit | None = None
-
         super().__init__(parent, parameter_name, config)
+
+        self._value_widget = QLineEdit(self)
+        self._setup_value_widget()
 
     @property
     def value_widget(self) -> QLineEdit:
-        if self._value_widget is None:
-            self._value_widget = QLineEdit(self)
-            self._value_widget.setObjectName(self.parameter_name)
-        self._setup_value_widget()
         return self._value_widget
 
     def set_value_to_widget(self, value: Any):

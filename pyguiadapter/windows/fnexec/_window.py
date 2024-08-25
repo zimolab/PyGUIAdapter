@@ -51,6 +51,7 @@ class WidgetTexts(object):
     clear_checkbox_text: str = "Clear log output"
     function_result_dialog_title: str = "Function Result"
     function_error_dialog_title: str = "Function Error"
+    parameter_validation_dialog_title: str = "Parameter Validation Error"
 
 
 @dataclasses.dataclass
@@ -60,6 +61,7 @@ class MessageTexts(object):
     function_not_cancelable: str = "function is not cancelable"
     function_result_template: str = "function result: {}"
     function_error_template: str = "function error: {}"
+    parameter_validation_failed: str = "{}:\n{}"
 
 
 @dataclasses.dataclass
@@ -84,7 +86,6 @@ class FnExecuteWindowConfig(BaseWindowConfig):
     show_function_result: bool = False
     print_function_error: bool = True
     show_function_error: bool = True
-    highlight_invalid_parameter: bool = True
 
     widget_texts: WidgetTexts = dataclasses.field(default_factory=WidgetTexts)
     message_texts: MessageTexts = dataclasses.field(default_factory=MessageTexts)
@@ -327,16 +328,8 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
         self, fn_info: fn.FnInfo, arguments: Dict[str, Any], error: Exception
     ) -> None:
 
-        if self.window_config.highlight_invalid_parameter and isinstance(
-            error, ParameterValidationError
-        ):
-            parameter_name = error.parameter_name
-            message = error.message
-            self._parameters_area.parameter_groups.scroll_to_parameter(parameter_name)
-            self._parameters_area.parameter_groups.notify_validation_error(
-                parameter_name, message
-            )
-
+        if isinstance(error, ParameterValidationError):
+            self._param_validation_failed(error)
         if callable(self._bundle.on_execute_error):
             self._bundle.on_execute_error(error, arguments.copy())
             return
@@ -380,9 +373,12 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
             return
         try:
             arguments = self.get_parameter_values()
-            self._executor.execute(self._bundle.fn_info, arguments)
         except FunctionAlreadyExecutingError:
             utils.show_warning_message(self, self.message_texts.function_is_executing)
+        except ParameterValidationError as e:
+            self._param_validation_failed(e)
+        else:
+            self._executor.execute(self._bundle.fn_info, arguments)
 
     # noinspection PyMethodMayBeStatic
     def _on_clear_button_clicked(self):
@@ -390,3 +386,15 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
             utils.show_warning_message(self, self.message_texts.function_is_executing)
             pass
         self.clear_log()
+
+    def _param_validation_failed(self, e: ParameterValidationError):
+        self._parameters_area.parameter_groups.scroll_to_parameter(e.parameter_name)
+        self._parameters_area.parameter_groups.notify_validation_error(
+            e.parameter_name, e.message
+        )
+        msg = self.message_texts.parameter_validation_failed.format(
+            e.parameter_name, e.message
+        )
+        utils.show_critical_message(
+            self, msg, title=self.widget_texts.parameter_validation_dialog_title
+        )

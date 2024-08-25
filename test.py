@@ -7,10 +7,10 @@ from pyguiadapter.adapter.udialog import show_text_file
 from pyguiadapter.adapter.uinput import *
 from pyguiadapter.windows import FnSelectWindowConfig, FnExecuteWindowConfig
 from pyguiadapter.exceptions import ParameterValidationError
-from pyguiadapter.types import text_t
+from pyguiadapter.types import text_t, int_t, float_t
 
 
-def f1(arg1: str, arg2: text_t):
+def f1(arg1: str, arg2: text_t, arg3: int, arg4: int_t, arg5: float, arg6: float_t):
     """
 
     :param arg1:
@@ -18,7 +18,7 @@ def f1(arg1: str, arg2: text_t):
 
     @params
     [arg1]
-    default_value="1234"
+
 
     @end
     """
@@ -30,8 +30,8 @@ def f1(arg1: str, arg2: text_t):
     ulogging.fatal("hello world!")
     # show_text_file("./License", title="View License")
     # return f"{arg1} + {arg2}"
-    c = utils.read_text_file("./License")
-    uprint(c)
+    # c = utils.read_text_file("./License")
+    # uprint(c)
 
 
 def f2():

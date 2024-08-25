@@ -26,7 +26,7 @@ class CommonParameterWidgetConfig(BaseParameterWidgetConfig):
     hide_default_value_checkbox: bool = True
 
     @classmethod
-    def target_widget_class(cls) -> Type[BaseParameterWidget]:
+    def target_widget_class(cls) -> Type["CommonParameterWidget"]:
         return CommonParameterWidget
 
 
