@@ -28,8 +28,10 @@ def f1(arg1: str, arg2: text_t):
     ulogging.warning("hello world!")
     ulogging.critical("hello world!")
     ulogging.fatal("hello world!")
-    show_text_file("./License", title="View License")
-    return f"{arg1} + {arg2}"
+    # show_text_file("./License", title="View License")
+    # return f"{arg1} + {arg2}"
+    c = utils.read_text_file("./License")
+    uprint(c)
 
 
 def f2():

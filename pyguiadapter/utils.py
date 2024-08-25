@@ -124,7 +124,7 @@ def set_textbrowser_wrap_mode(
         "manual_wrap",
         "wrap_anywhere",
         "wrap_at_word_boundary_or_anywhere",
-    ] = "word_wrap",
+    ] = "no_wrap",
     fixed_line_wrap_width: int = 80,
 ):
     if line_wrap_mode == "no_wrap":

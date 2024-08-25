@@ -31,7 +31,7 @@ class LogBrowserConfig(object):
         "manual_wrap",
         "wrap_anywhere",
         "wrap_at_word_boundary_or_anywhere",
-    ] = "word_wrap"
+    ] = "no_wrap"
     fixed_line_wrap_width: int = 80
 
 

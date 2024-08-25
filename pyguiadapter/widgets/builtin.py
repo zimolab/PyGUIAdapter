@@ -1,7 +1,6 @@
-from ..types import text_t
 from ..parser.typenames import TYPE_STR
-from .edit.lineedit import LineEdit
-from .edit.textedit import TextEdit
+from ..types import text_t
+from .edit import LineEdit, TextEdit
 
 
 TYPE_TEXT = text_t.__name__
