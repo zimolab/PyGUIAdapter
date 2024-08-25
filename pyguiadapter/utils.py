@@ -331,6 +331,6 @@ def get_save_file(
     title: str = "Save File",
     start_dir: str = "",
     filters: str = "",
-) -> List[str] | None:
+) -> str | None:
     filename, _ = QFileDialog.getSaveFileName(parent, title, start_dir, filters)
     return filename or None

@@ -7,10 +7,20 @@ from pyguiadapter.adapter.udialog import show_text_file
 from pyguiadapter.adapter.uinput import *
 from pyguiadapter.windows import FnSelectWindowConfig, FnExecuteWindowConfig
 from pyguiadapter.exceptions import ParameterValidationError
-from pyguiadapter.types import text_t, int_t, float_t
+from pyguiadapter.types import text_t, int_t, float_t, directory_t, file_t, file_list_t
 
 
-def f1(arg1: str, arg2: text_t, arg3: int, arg4: int_t, arg5: float, arg6: float_t):
+def f1(
+    arg1: str,
+    arg2: text_t,
+    arg3: int,
+    arg4: int_t,
+    arg5: float,
+    arg6: float_t,
+    arg7: directory_t,
+    arg8: file_t,
+    arg9: file_list_t,
+):
     """
 
     :param arg1:
@@ -32,6 +42,7 @@ def f1(arg1: str, arg2: text_t, arg3: int, arg4: int_t, arg5: float, arg6: float
     # return f"{arg1} + {arg2}"
     # c = utils.read_text_file("./License")
     # uprint(c)
+    uprint(arg9)
 
 
 def f2():
