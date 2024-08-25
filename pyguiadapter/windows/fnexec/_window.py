@@ -14,7 +14,7 @@ from qtpy.QtWidgets import (
 from ._docarea import FnDocumentArea
 from ._logarea import (
     ProgressBarConfig,
-    LogOutputConfig,
+    LogBrowserConfig,
     FnExecuteLogOutputArea,
 )
 from ._paramarea import FnParameterArea
@@ -69,7 +69,7 @@ class FnExecuteWindowConfig(BaseWindowConfig):
     log_output_dock_ratio: float = 0.3
     document_dock_ratio: float = 0.65
     progressbar: ProgressBarConfig | None = None
-    log_output: LogOutputConfig = dataclasses.field(default_factory=LogOutputConfig)
+    log_output: LogBrowserConfig = dataclasses.field(default_factory=LogBrowserConfig)
     document_browser: DocumentBrowserConfig | None = dataclasses.field(
         default_factory=DocumentBrowserConfig
     )
@@ -263,7 +263,7 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
         self._log_output_area = FnExecuteLogOutputArea(
             self._log_output_dock,
             progressbar_config=window_config.progressbar,
-            log_output_config=window_config.log_output,
+            log_browser_config=window_config.log_output,
         )
         self._log_output_dock.setWidget(self._log_output_area)
         self.addDockWidget(Qt.BottomDockWidgetArea, self._log_output_dock)

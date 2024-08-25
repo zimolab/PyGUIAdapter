@@ -2,7 +2,7 @@ from ._window import (
     FnExecuteWindow,
     FnExecuteWindowConfig,
     ProgressBarConfig,
-    LogOutputConfig,
+    LogBrowserConfig,
     DocumentBrowserConfig,
 )
 
@@ -10,6 +10,6 @@ __all__ = [
     "FnExecuteWindow",
     "FnExecuteWindowConfig",
     "ProgressBarConfig",
-    "LogOutputConfig",
+    "LogBrowserConfig",
     "DocumentBrowserConfig",
 ]

@@ -28,7 +28,7 @@ def f1(arg1: str, arg2: text_t):
     ulogging.warning("hello world!")
     ulogging.critical("hello world!")
     ulogging.fatal("hello world!")
-    show_text_file("./License")
+    show_text_file("./License", title="View License")
     return f"{arg1} + {arg2}"
 
 
