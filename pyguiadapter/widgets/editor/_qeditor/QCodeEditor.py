@@ -457,8 +457,8 @@ class QCodeEditor(QTextEdit):
 
             if first == currentSymbol:
                 direction = 1
-                counterSymbol = second
-                activeSymbol = counterSymbol
+                counterSymbol = second[0]
+                activeSymbol = currentSymbol
             elif second == prevSymbol:
                 direction = -1
                 counterSymbol = first
@@ -469,8 +469,7 @@ class QCodeEditor(QTextEdit):
             counter = 1
 
             _charCount = self.document().characterCount() - 1
-
-            while counter != 0 and (0 < position < _charCount):
+            while counter != 0 and position > 0 and position < _charCount:
                 position += direction
                 character = self.document().characterAt(position)
                 if character == activeSymbol:
@@ -489,7 +488,7 @@ class QCodeEditor(QTextEdit):
                     else QTextCursor.MoveOperation.Right
                 )
                 selection.format = format_
-                selection.cursor = self.textCursor()
+                selection.cursor = QTextCursor(self.textCursor())
                 selection.cursor.clearSelection()
                 _foundPos = abs(self.textCursor().position() - position)
                 selection.cursor.movePosition(
@@ -500,12 +499,15 @@ class QCodeEditor(QTextEdit):
                 )
 
                 extraSelection.append(selection)
-                selection.cursor = self.textCursor()
-                selection.cursor.clearSelection()
-                selection.cursor.movePosition(
+
+                selection2 = QTextEdit.ExtraSelection()
+                selection2.format = format_
+                selection2.cursor = QTextCursor(self.textCursor())
+                selection2.cursor.clearSelection()
+                selection2.cursor.movePosition(
                     directionEnum, QTextCursor.MoveMode.KeepAnchor, 1
                 )
-                extraSelection.append(selection)
+                extraSelection.append(selection2)
 
     def getIndentationSpaces(self) -> int:
         blockText = self.textCursor().block().text()
