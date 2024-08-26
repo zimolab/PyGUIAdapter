@@ -1,10 +1,11 @@
 from __future__ import annotations
 
 import json
+import traceback
 from typing import Dict, Any
 
-from qtpy.QtCore import QObject, Qt
-from qtpy.QtGui import QTextCharFormat, QColor
+from qtpy.QtCore import QObject
+from qtpy.QtGui import QTextCharFormat, QColor, QFont
 from . import _utils
 
 
@@ -32,16 +33,14 @@ class QSyntaxStyle(QObject):
         self.m_loaded: bool = False
         self.m_data: Dict[str, QTextCharFormat] = {}
 
-    def load(self, f1: str) -> bool:
+    def load_str(self, f1: str) -> bool:
         self.m_loaded = False
         try:
             data = json.loads(f1)
             if isinstance(data, dict):
-                style_schema = data.get("style-schema", None)
-                if isinstance(style_schema, dict):
-                    self._processStyleSchema(style_schema)
+                self._processStyleSchema(data)
         except Exception as e:
-            print(e)
+            traceback.print_exc()
         return self.m_loaded
 
     def name(self) -> str:
@@ -80,14 +79,16 @@ class QSyntaxStyle(QObject):
 
             bold = style.get("bold", "")
             if bold == "true":
-                style_format.setFontWeight(Qt.Weight.Bold)
+                style_format.setFontWeight(QFont.Weight.Bold)
 
             italic = style.get("italic", "")
             if italic == "true":
                 style_format.setFontItalic(True)
 
             underlineStyle = style.get("underlineStyle", "")
-            underlineStyle = _UnderlineStyles.get(underlineStyle, "NoUnderline")
+            underlineStyle = _UnderlineStyles.get(
+                underlineStyle, QTextCharFormat.UnderlineStyle.NoUnderline
+            )
             style_format.setUnderlineStyle(underlineStyle)
             self.m_data[style_name] = style_format
 
@@ -95,10 +96,10 @@ class QSyntaxStyle(QObject):
     def defaultStyle(cls) -> "QSyntaxStyle":
         if not isinstance(cls._defaultStyle, QSyntaxStyle):
             cls._defaultStyle = QSyntaxStyle()
-        if not cls._defaultStyle.isLoaded():
+        if cls._defaultStyle.isLoaded():
             return cls._defaultStyle
         c = _utils.read_resource_text("default_style.json")
-        ret = cls._defaultStyle.load(c)
+        ret = cls._defaultStyle.load_str(c)
         if not ret:
             print("Can't load default style.")
         return cls._defaultStyle

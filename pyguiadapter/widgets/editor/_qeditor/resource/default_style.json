@@ -1,287 +1,285 @@
 {
-  "style-scheme": {
-    "name": "Default",
-    "style": [
-      {
-        "name": "Text",
-        "foreground": "#000000",
-        "background": "#ffffff"
-      },
-      {
-        "name": "Link",
-        "foreground": "#0000ff"
-      },
-      {
-        "name": "Selection",
-        "foreground": "#eff0f1",
-        "background": "#3daee9"
-      },
-      {
-        "name": "LineNumber",
-        "foreground": "#6272a4"
-      },
-      {
-        "name": "SearchResult",
-        "background": "#ffef0b"
-      },
-      {
-        "name": "SearchScope",
-        "background": "#2d5c76"
-      },
-      {
-        "name": "Parentheses",
-        "foreground": "#ff0000",
-        "background": "#b4eeb4"
-      },
-      {
-        "name": "ParenthesesMismatch",
-        "background": "#ff00ff"
-      },
-      {
-        "name": "AutoComplete",
-        "foreground": "#000080",
-        "background": "#c0c0ff"
-      },
-      {
-        "name": "CurrentLine",
-        "background": "#eeeeee"
-      },
-      {
-        "name": "CurrentLineNumber",
-        "foreground": "#808080",
-        "bold": "true"
-      },
-      {
-        "name": "Occurrences",
-        "background": "#b4b4b4"
-      },
-      {
-        "name": "Occurrences.Unused",
-        "underlineColor": "#808000",
-        "underlineStyle": "SingleUnderline"
-      },
-      {
-        "name": "Occurrences.Rename",
-        "background": "#ff6464"
-      },
-      {
-        "name": "Number",
-        "foreground": "#000080"
-      },
-      {
-        "name": "String",
-        "foreground": "#008000"
-      },
-      {
-        "name": "Type",
-        "foreground": "#800080"
-      },
-      {
-        "name": "Local",
-        "foreground": "#092e64"
-      },
-      {
-        "name": "Global",
-        "foreground": "#ce5c00"
-      },
-      {
-        "name": "Field",
-        "foreground": "#800000"
-      },
-      {
-        "name": "Static",
-        "foreground": "#800080"
-      },
-      {
-        "name": "VirtualMethod",
-        "foreground": "#00677c",
-        "background": "#ffffff",
-        "italic": "true"
-      },
-      {
-        "name": "Function",
-        "foreground": "#00677c",
-        "background": "#ffffff"
-      },
-      {
-        "name": "Keyword",
-        "foreground": "#808000"
-      },
-      {
-        "name": "PrimitiveType",
-        "foreground": "#808000"
-      },
-      {
-        "name": "Operator"
-      },
-      {
-        "name": "Overloaded Operator"
-      },
-      {
-        "name": "Preprocessor",
-        "foreground": "#000080"
-      },
-      {
-        "name": "Label",
-        "foreground": "#800000"
-      },
-      {
-        "name": "Comment",
-        "foreground": "#008000"
-      },
-      {
-        "name": "Doxygen.Comment",
-        "foreground": "#000080"
-      },
-      {
-        "name": "Doxygen.Tag",
-        "foreground": "#0000ff"
-      },
-      {
-        "name": "VisualWhitespace",
-        "foreground": "#c0c0c0"
-      },
-      {
-        "name": "QmlLocalId",
-        "foreground": "#000000",
-        "background": "#ffffff",
-        "italic": "true"
-      },
-      {
-        "name": "QmlExternalId",
-        "foreground": "#000080",
-        "background": "#ffffff",
-        "italic": "true"
-      },
-      {
-        "name": "QmlTypeId",
-        "foreground": "#800080"
-      },
-      {
-        "name": "QmlRootObjectProperty",
-        "foreground": "#000000",
-        "background": "#ffffff",
-        "italic": "true"
-      },
-      {
-        "name": "QmlScopeObjectProperty",
-        "foreground": "#000000",
-        "background": "#ffffff",
-        "italic": "true"
-      },
-      {
-        "name": "QmlExternalObjectProperty",
-        "foreground": "#000080",
-        "background": "#ffffff",
-        "italic": "true"
-      },
-      {
-        "name": "JsScopeVar",
-        "foreground": "#2985c7",
-        "background": "#ffffff",
-        "italic": "true"
-      },
-      {
-        "name": "JsImportVar",
-        "foreground": "#0055af",
-        "background": "#ffffff",
-        "italic": "true"
-      },
-      {
-        "name": "JsGlobalVar",
-        "foreground": "#0055af",
-        "background": "#ffffff",
-        "italic": "true"
-      },
-      {
-        "name": "QmlStateName",
-        "foreground": "#000000",
-        "background": "#ffffff",
-        "italic": "true"
-      },
-      {
-        "name": "Binding",
-        "foreground": "#800000"
-      },
-      {
-        "name": "DisabledCode",
-        "background": "#efefef"
-      },
-      {
-        "name": "AddedLine",
-        "foreground": "#00aa00"
-      },
-      {
-        "name": "RemovedLine",
-        "foreground": "#ff0000"
-      },
-      {
-        "name": "DiffFile",
-        "foreground": "#000080"
-      },
-      {
-        "name": "DiffLocation",
-        "foreground": "#0000ff"
-      },
-      {
-        "name": "DiffFileLine",
-        "background": "#ffff00"
-      },
-      {
-        "name": "DiffContextLine",
-        "background": "#afd7e7"
-      },
-      {
-        "name": "DiffSourceLine",
-        "background": "#ffdfdf"
-      },
-      {
-        "name": "DiffSourceChar",
-        "background": "#ffafaf"
-      },
-      {
-        "name": "DiffDestLine",
-        "background": "#dfffdf"
-      },
-      {
-        "name": "DiffDestChar",
-        "background": "#afffaf"
-      },
-      {
-        "name": "LogChangeLine",
-        "foreground": "#c00000"
-      },
-      {
-        "name": "Warning",
-        "underlineColor": "#ffbe00",
-        "underlineStyle": "SingleUnderline"
-      },
-      {
-        "name": "WarningContext",
-        "underlineColor": "#ffbe00",
-        "underlineStyle": "DotLine"
-      },
-      {
-        "name": "Error",
-        "underlineColor": "#ff0000",
-        "underlineStyle": "SingleUnderline"
-      },
-      {
-        "name": "ErrorContext",
-        "underlineColor": "#ff0000",
-        "underlineStyle": "DotLine"
-      },
-      {
-        "name": "Declaration",
-        "bold": "true"
-      },
-      {
-        "name": "FunctionDefinition"
-      },
-      {
-        "name": "OutputArgument",
-        "italic": "true"
-      }
-    ]
-  }
+  "name": "Default",
+  "style": [
+    {
+      "name": "Text",
+      "foreground": "#000000",
+      "background": "#ffffff"
+    },
+    {
+      "name": "Link",
+      "foreground": "#0000ff"
+    },
+    {
+      "name": "Selection",
+      "foreground": "#eff0f1",
+      "background": "#3daee9"
+    },
+    {
+      "name": "LineNumber",
+      "foreground": "#6272a4"
+    },
+    {
+      "name": "SearchResult",
+      "background": "#ffef0b"
+    },
+    {
+      "name": "SearchScope",
+      "background": "#2d5c76"
+    },
+    {
+      "name": "Parentheses",
+      "foreground": "#ff0000",
+      "background": "#b4eeb4"
+    },
+    {
+      "name": "ParenthesesMismatch",
+      "background": "#ff00ff"
+    },
+    {
+      "name": "AutoComplete",
+      "foreground": "#000080",
+      "background": "#c0c0ff"
+    },
+    {
+      "name": "CurrentLine",
+      "background": "#eeeeee"
+    },
+    {
+      "name": "CurrentLineNumber",
+      "foreground": "#808080",
+      "bold": "true"
+    },
+    {
+      "name": "Occurrences",
+      "background": "#b4b4b4"
+    },
+    {
+      "name": "Occurrences.Unused",
+      "underlineColor": "#808000",
+      "underlineStyle": "SingleUnderline"
+    },
+    {
+      "name": "Occurrences.Rename",
+      "background": "#ff6464"
+    },
+    {
+      "name": "Number",
+      "foreground": "#000080"
+    },
+    {
+      "name": "String",
+      "foreground": "#008000"
+    },
+    {
+      "name": "Type",
+      "foreground": "#800080"
+    },
+    {
+      "name": "Local",
+      "foreground": "#092e64"
+    },
+    {
+      "name": "Global",
+      "foreground": "#ce5c00"
+    },
+    {
+      "name": "Field",
+      "foreground": "#800000"
+    },
+    {
+      "name": "Static",
+      "foreground": "#800080"
+    },
+    {
+      "name": "VirtualMethod",
+      "foreground": "#00677c",
+      "background": "#ffffff",
+      "italic": "true"
+    },
+    {
+      "name": "Function",
+      "foreground": "#00677c",
+      "background": "#ffffff"
+    },
+    {
+      "name": "Keyword",
+      "foreground": "#808000"
+    },
+    {
+      "name": "PrimitiveType",
+      "foreground": "#808000"
+    },
+    {
+      "name": "Operator"
+    },
+    {
+      "name": "Overloaded Operator"
+    },
+    {
+      "name": "Preprocessor",
+      "foreground": "#000080"
+    },
+    {
+      "name": "Label",
+      "foreground": "#800000"
+    },
+    {
+      "name": "Comment",
+      "foreground": "#008000"
+    },
+    {
+      "name": "Doxygen.Comment",
+      "foreground": "#000080"
+    },
+    {
+      "name": "Doxygen.Tag",
+      "foreground": "#0000ff"
+    },
+    {
+      "name": "VisualWhitespace",
+      "foreground": "#c0c0c0"
+    },
+    {
+      "name": "QmlLocalId",
+      "foreground": "#000000",
+      "background": "#ffffff",
+      "italic": "true"
+    },
+    {
+      "name": "QmlExternalId",
+      "foreground": "#000080",
+      "background": "#ffffff",
+      "italic": "true"
+    },
+    {
+      "name": "QmlTypeId",
+      "foreground": "#800080"
+    },
+    {
+      "name": "QmlRootObjectProperty",
+      "foreground": "#000000",
+      "background": "#ffffff",
+      "italic": "true"
+    },
+    {
+      "name": "QmlScopeObjectProperty",
+      "foreground": "#000000",
+      "background": "#ffffff",
+      "italic": "true"
+    },
+    {
+      "name": "QmlExternalObjectProperty",
+      "foreground": "#000080",
+      "background": "#ffffff",
+      "italic": "true"
+    },
+    {
+      "name": "JsScopeVar",
+      "foreground": "#2985c7",
+      "background": "#ffffff",
+      "italic": "true"
+    },
+    {
+      "name": "JsImportVar",
+      "foreground": "#0055af",
+      "background": "#ffffff",
+      "italic": "true"
+    },
+    {
+      "name": "JsGlobalVar",
+      "foreground": "#0055af",
+      "background": "#ffffff",
+      "italic": "true"
+    },
+    {
+      "name": "QmlStateName",
+      "foreground": "#000000",
+      "background": "#ffffff",
+      "italic": "true"
+    },
+    {
+      "name": "Binding",
+      "foreground": "#800000"
+    },
+    {
+      "name": "DisabledCode",
+      "background": "#efefef"
+    },
+    {
+      "name": "AddedLine",
+      "foreground": "#00aa00"
+    },
+    {
+      "name": "RemovedLine",
+      "foreground": "#ff0000"
+    },
+    {
+      "name": "DiffFile",
+      "foreground": "#000080"
+    },
+    {
+      "name": "DiffLocation",
+      "foreground": "#0000ff"
+    },
+    {
+      "name": "DiffFileLine",
+      "background": "#ffff00"
+    },
+    {
+      "name": "DiffContextLine",
+      "background": "#afd7e7"
+    },
+    {
+      "name": "DiffSourceLine",
+      "background": "#ffdfdf"
+    },
+    {
+      "name": "DiffSourceChar",
+      "background": "#ffafaf"
+    },
+    {
+      "name": "DiffDestLine",
+      "background": "#dfffdf"
+    },
+    {
+      "name": "DiffDestChar",
+      "background": "#afffaf"
+    },
+    {
+      "name": "LogChangeLine",
+      "foreground": "#c00000"
+    },
+    {
+      "name": "Warning",
+      "underlineColor": "#ffbe00",
+      "underlineStyle": "SingleUnderline"
+    },
+    {
+      "name": "WarningContext",
+      "underlineColor": "#ffbe00",
+      "underlineStyle": "DotLine"
+    },
+    {
+      "name": "Error",
+      "underlineColor": "#ff0000",
+      "underlineStyle": "SingleUnderline"
+    },
+    {
+      "name": "ErrorContext",
+      "underlineColor": "#ff0000",
+      "underlineStyle": "DotLine"
+    },
+    {
+      "name": "Declaration",
+      "bold": "true"
+    },
+    {
+      "name": "FunctionDefinition"
+    },
+    {
+      "name": "OutputArgument",
+      "italic": "true"
+    }
+  ]
 }

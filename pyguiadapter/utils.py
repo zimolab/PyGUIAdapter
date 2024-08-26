@@ -5,6 +5,7 @@ import re
 import string
 from typing import Literal, List, Set, Tuple, Any, Union
 
+from qtpy import QT_VERSION
 from qtpy.QtCore import QUrl
 from qtpy.QtWidgets import QTextBrowser, QWidget, QMessageBox, QFrame, QFileDialog
 from qtpy.QtGui import QIcon, QPixmap, QTextCursor, QTextOption
@@ -334,3 +335,13 @@ def get_save_file(
 ) -> str | None:
     filename, _ = QFileDialog.getSaveFileName(parent, title, start_dir, filters)
     return filename or None
+
+
+def compare_qt_version(ver: str | None) -> int:
+    if not ver:
+        return 1
+    if not QT_VERSION:
+        return -1
+    cur_ver = tuple(map(int, QT_VERSION.split(".")))
+    cmp_ver = tuple(map(int, ver.split(".")))
+    return (cur_ver > cmp_ver) - (cur_ver < cmp_ver)

@@ -1,0 +1,38 @@
+{
+  "Keyword": [
+    "break",
+    "continue",
+    "do",
+    "for",
+    "while",
+    "if",
+    "else",
+    "def",
+    "import",
+    "return",
+    "class",
+    "in",
+    "is",
+    "not",
+    "or",
+    "and",
+    "enumerate"
+  ],
+  "Function": [
+    "min",
+    "max",
+    "len"
+  ],
+  "PrimitiveType": [
+    "float",
+    "int",
+    "bool",
+    "True",
+    "False",
+    "str",
+    "unicode",
+    "byte",
+    "set",
+    "dict"
+  ]
+}
