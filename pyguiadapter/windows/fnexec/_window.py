@@ -1,14 +1,17 @@
 from __future__ import annotations
 
 import dataclasses
+import traceback
 from typing import Tuple, Literal, Dict, Union, Type, Any, List
 
+from pyexpat.errors import messages
 from qtpy.QtCore import QSize, Qt
 from qtpy.QtGui import QIcon
 from qtpy.QtWidgets import (
     QWidget,
     QVBoxLayout,
     QDockWidget,
+    QMessageBox,
 )
 
 from ._docarea import FnDocumentArea
@@ -30,6 +33,7 @@ from ...paramwidget import (
     BaseParameterWidgetConfig,
     is_parameter_widget_class,
 )
+from ...widgets.common import CommonParameterWidgetConfig
 from ...window import BaseWindow, BaseWindowConfig
 
 DEFAULT_WINDOW_SIZE = (1024, 768)
@@ -153,7 +157,9 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
     ):
         self._document_area.update_document(document, document_format)
 
-    def add_parameter(self, parameter_name: str, config: ParameterWidgetType):
+    def add_parameter(
+        self, parameter_name: str, config: ParameterWidgetType
+    ) -> BaseParameterWidget:
         if isinstance(config, tuple):
             assert len(config) == 2
             assert is_parameter_widget_class(config[0])
@@ -167,9 +173,9 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
 
         if isinstance(widget_config, dict):
             widget_config = widget_class.ConfigClass.new(**widget_config)
-
-        groupbox = self._parameters_area.parameter_groups
-        groupbox.add_parameter(parameter_name, widget_class, widget_config)
+        return self._parameters_area.parameter_groups.add_parameter(
+            parameter_name, widget_class, widget_config
+        )
 
     def remove_parameter(self, parameter_name: str, safe_remove: bool = True):
         groupbox = self._parameters_area.parameter_groups
@@ -202,7 +208,27 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
 
     def add_parameters(self, configs: Dict[str, ParameterWidgetType]):
         for parameter_name, config in configs.items():
-            self.add_parameter(parameter_name, config)
+            try:
+                widget = self.add_parameter(parameter_name, config)
+                widget_config = widget.config
+                if isinstance(widget_config, CommonParameterWidgetConfig):
+                    if widget_config.set_default_value_on_init:
+                        widget.set_value(widget_config.default_value)
+            except ParameterValidationError as e:
+                self._process_param_validation_failed(e)
+            except Exception as e:
+                traceback.print_exc()
+                short_msg = str(e)
+                detail_msg = traceback.format_exc()
+                msgbox = utils.MessageBoxConfig(
+                    title="Fatal Error",
+                    text="An fatal error raised when creating widget for parameter '{parameter_name}:"
+                    f" {short_msg}",
+                    detailed_text=detail_msg,
+                    icon=QMessageBox.Critical,
+                ).create_messagebox(self)
+                msgbox.exec_()
+                exit(-1)
 
     # noinspection PyUnresolvedReferences
     def _update_ui(self):
@@ -329,7 +355,7 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
     ) -> None:
 
         if isinstance(error, ParameterValidationError):
-            self._param_validation_failed(error)
+            self._process_param_validation_failed(error)
         if callable(self._bundle.on_execute_error):
             self._bundle.on_execute_error(error, arguments.copy())
             return
@@ -376,7 +402,7 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
         except FunctionAlreadyExecutingError:
             utils.show_warning_message(self, self.message_texts.function_is_executing)
         except ParameterValidationError as e:
-            self._param_validation_failed(e)
+            self._process_param_validation_failed(e)
         else:
             self._executor.execute(self._bundle.fn_info, arguments)
 
@@ -387,7 +413,7 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
             pass
         self.clear_log()
 
-    def _param_validation_failed(self, e: ParameterValidationError):
+    def _process_param_validation_failed(self, e: ParameterValidationError):
         self._parameters_area.parameter_groups.scroll_to_parameter(e.parameter_name)
         self._parameters_area.parameter_groups.notify_validation_error(
             e.parameter_name, e.message

@@ -70,8 +70,8 @@ class CommonParameterWidget(BaseParameterWidget):
             0, 0, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding
         )
         self._layout_container.addSpacerItem(spacer)
-        if self.set_default_value_on_init:
-            self.set_value(self.default_value)
+        # if self.set_default_value_on_init:
+        #     self.set_value(self.default_value)
         self.__build_flag = True
         return self
 

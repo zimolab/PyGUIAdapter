@@ -18,8 +18,8 @@ from qtpy.QtWidgets import (
 )
 
 from . import _window
-from ...exceptions import ParameterAlreadyExistError, ParameterNotFoundError
 from ... import utils
+from ...exceptions import ParameterAlreadyExistError, ParameterNotFoundError
 from ...paramwidget import BaseParameterWidget, BaseParameterWidgetConfig
 
 
@@ -65,7 +65,7 @@ class FnParameterGroupPage(QWidget):
         widget_class: Type[BaseParameterWidget],
         widget_config: BaseParameterWidgetConfig,
         index: int | None = None,
-    ):
+    ) -> BaseParameterWidget:
         if parameter_name.strip() == "":
             raise ValueError("parameter_name is an empty-string")
         # if there is an old widget for the parameter, remove it from the layout
@@ -95,6 +95,7 @@ class FnParameterGroupPage(QWidget):
         )
         self._add_to_scrollarea(new_widget, index)
         self._parameters[parameter_name] = new_widget
+        return new_widget
 
     def insert_parameter_widget(
         self,
@@ -102,26 +103,30 @@ class FnParameterGroupPage(QWidget):
         widget_class: Type[BaseParameterWidget],
         widget_config: BaseParameterWidgetConfig,
         index: int = -1,
-    ):
+    ) -> BaseParameterWidget:
         if parameter_name.strip() == "":
             raise ValueError("parameter_name is an empty-string")
 
         if parameter_name in self._parameters:
             raise ParameterAlreadyExistError(parameter_name)
 
-        self.upsert_parameter_widget(parameter_name, widget_class, widget_config, index)
+        return self.upsert_parameter_widget(
+            parameter_name, widget_class, widget_config, index
+        )
 
     def update_parameter_widget(
         self,
         parameter_name: str,
         widget_class: Type[BaseParameterWidget],
         widget_config: BaseParameterWidgetConfig,
-    ):
+    ) -> BaseParameterWidget:
         if parameter_name.strip() == "":
             raise ValueError("parameter_name is an empty-string")
         if parameter_name not in self._parameters:
             raise ParameterNotFoundError(parameter_name)
-        self.upsert_parameter_widget(parameter_name, widget_class, widget_config, None)
+        return self.upsert_parameter_widget(
+            parameter_name, widget_class, widget_config, None
+        )
 
     def get_parameter_widget(self, parameter_name: str) -> BaseParameterWidget | None:
         return self._parameters.get(parameter_name, None)
@@ -272,11 +277,13 @@ class FnParameterGroupBox(QToolBox):
         parameter_name: str,
         widget_class: Type[BaseParameterWidget],
         widget_config: BaseParameterWidgetConfig,
-    ):
+    ) -> BaseParameterWidget:
         if self.has_parameter(parameter_name):
             raise ParameterAlreadyExistError(parameter_name)
         group_page = self.upsert_parameter_group(widget_config.group)
-        group_page.insert_parameter_widget(parameter_name, widget_class, widget_config)
+        return group_page.insert_parameter_widget(
+            parameter_name, widget_class, widget_config
+        )
 
     def remove_parameter(self, parameter_name: str, safe_remove: bool = True):
         group, widget = self._get_group_and_widget(parameter_name)

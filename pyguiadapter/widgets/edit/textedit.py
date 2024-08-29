@@ -39,13 +39,15 @@ class TextEdit(CommonParameterWidget):
         config: TextEditConfig,
     ):
         self._config: TextEditConfig = config
+        self._value_widget: QTextEdit | None = None
         super().__init__(parent, parameter_name, config)
-
-        self._value_widget: QTextEdit = QTextEdit(self)
-        self._setup_value_widget()
 
     @property
     def value_widget(self) -> QTextEdit:
+        if self._value_widget is None:
+            self._value_widget = QTextEdit(self)
+            self._setup_value_widget()
+
         return self._value_widget
 
     def set_value_to_widget(self, value: Any):

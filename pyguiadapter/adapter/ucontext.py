@@ -1,68 +1,15 @@
 from __future__ import annotations
 
-import dataclasses
 import warnings
 from collections.abc import Callable
 from concurrent.futures import Future
 from typing import Any, Tuple, Type
 
-from qtpy.QtCore import QObject, Signal, Qt, QMutex
-from qtpy.QtGui import QPixmap
-from qtpy.QtWidgets import QMessageBox, QWidget
+from qtpy.QtCore import QObject, Signal, QMutex
 
 from ._dialog import CustomDialogFactory, BaseCustomDialog
+from ..utils import MessageBoxConfig
 from ..windows.fnexec import FnExecuteWindow
-
-StandardButton = QMessageBox.StandardButton
-StandardButtons = QMessageBox.StandardButtons
-TextFormat = Qt.TextFormat
-
-
-@dataclasses.dataclass
-class MessageBoxConfig(object):
-    text: str
-    title: str | None = None
-    icon: int | QPixmap | None = None
-    detailed_text: str | None = None
-    informative_text: str | None = None
-    text_format: TextFormat | None = None
-    buttons: StandardButton | StandardButtons | None = None
-    default_button: StandardButton | None = None
-    escape_button: StandardButton | None = None
-
-    def create_messagebox(self, parent: QWidget | None) -> QMessageBox:
-        # noinspection SpellCheckingInspection,PyArgumentList
-        msgbox = QMessageBox(parent)
-        msgbox.setText(self.text)
-
-        if self.title:
-            msgbox.setWindowTitle(self.title)
-
-        if self.icon is not None:
-            msgbox.setIcon(self.icon)
-
-        if isinstance(self.icon, QPixmap):
-            msgbox.setIconPixmap(self.icon)
-
-        if self.informative_text:
-            msgbox.setInformativeText(self.informative_text)
-
-        if self.detailed_text:
-            msgbox.setDetailedText(self.detailed_text)
-
-        if self.text_format is not None:
-            msgbox.setTextFormat(self.text_format)
-
-        if self.buttons is not None:
-            msgbox.setDefaultButton(self.buttons)
-
-        if self.default_button is not None:
-            msgbox.setDefaultButton(self.default_button)
-
-        if self.escape_button is not None:
-            msgbox.setEscapeButton(self.escape_button)
-
-        return msgbox
 
 
 # noinspection PyMethodMayBeStatic,SpellCheckingInspection
