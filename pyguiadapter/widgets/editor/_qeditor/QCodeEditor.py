@@ -15,7 +15,7 @@ from qtpy.QtGui import (
 )
 from qtpy.QtWidgets import QCompleter, QTextEdit, QWidget
 
-from .QFramedTextAttribute import QFramedTextAttribute
+# from .QFramedTextAttribute import QFramedTextAttribute
 from .QLineNumberArea import QLineNumberArea
 from .QStyleSyntaxHighlighter import QStyleSyntaxHighlighter
 from .QSyntaxStyle import QSyntaxStyle
@@ -42,13 +42,13 @@ class QCodeEditor(QTextEdit):
         self.m_syntaxStyle: QSyntaxStyle | None = None
         self.m_lineNumberArea: QLineNumberArea = QLineNumberArea(self)
         self.m_completer: QCompleter | None = None
-        self.m_framedAttribute: QFramedTextAttribute = QFramedTextAttribute(self)
+        # self.m_framedAttribute: QFramedTextAttribute = QFramedTextAttribute(self)
         self.m_autoIndentation: bool = True
         self.m_autoParentheses: bool = True
         self.m_replaceTab: bool = True
-        self.m_tabReplace: str = " " * DEFAULT_TAB_WIDTH
 
-        self.m_defaultIndent: int = DEFAULT_TAB_WIDTH
+        self.m_defaultIndent: int = 2
+        self.m_tabReplace: str = " " * self.m_defaultIndent
 
         self.m_tabWidth = self._tabWidth()
 
@@ -106,7 +106,7 @@ class QCodeEditor(QTextEdit):
 
         self.m_syntaxStyle = syntaxStyle
 
-        self.m_framedAttribute.setSyntaxStyle(syntaxStyle)
+        # self.m_framedAttribute.setSyntaxStyle(syntaxStyle)
         self.m_lineNumberArea.setSyntaxStyle(syntaxStyle)
 
         if self.m_highlighter:
@@ -148,7 +148,7 @@ class QCodeEditor(QTextEdit):
         if not self.m_completer:
             return
         self.m_completer.setWidget(self)
-        self.m_completer.setCompletionMode(QCompleter.PopupCompletion)
+        self.m_completer.setCompletionMode(QCompleter.CompletionMode.PopupCompletion)
         # noinspection PyUnresolvedReferences
         self.m_completer.activated.connect(self.insertCompletion)
 
@@ -204,7 +204,6 @@ class QCodeEditor(QTextEdit):
         self.updateExtraSelection()
 
     def onSelectionChanged(self):
-        selected = self.textCursor().selectedText()
         cursor = self.textCursor()
 
         if cursor.isNull():
@@ -212,8 +211,9 @@ class QCodeEditor(QTextEdit):
         cursor.movePosition(QTextCursor.MoveOperation.Left)
         cursor.select(QTextCursor.SelectionType.WordUnderCursor)
 
-        blocker = QSignalBlocker(self)
-        self.m_framedAttribute.clear(cursor)
+        # blocker = QSignalBlocker(self)
+        # selected = self.textCursor().selectedText()
+        # self.m_framedAttribute.clear(cursor)
 
         # FIXME: Sometimes below code will case a infinite loop(in function _handleSelectionQuery)
         #  and i dont know exactly why and how to fix it.
@@ -318,9 +318,10 @@ class QCodeEditor(QTextEdit):
         super().focusInEvent(e)
 
     def _initDocumentLayoutHandlers(self):
-        self.document().documentLayout().registerHandler(
-            QFramedTextAttribute.type(), self.m_framedAttribute
-        )
+        # self.document().documentLayout().registerHandler(
+        #     QFramedTextAttribute.type(), self.m_framedAttribute
+        # )
+        pass
 
     def _initFont(self):
         # noinspection PyArgumentList
@@ -331,12 +332,14 @@ class QCodeEditor(QTextEdit):
 
     def _performConnections(self):
         doc = self.document()
+        # noinspection PyUnresolvedReferences
         doc.blockCountChanged.connect(self.updateLineNumberAreaWidth)
 
         def _vbar_changed(_):
             self.m_lineNumberArea.update()
 
         vbar = self.verticalScrollBar()
+        # noinspection PyUnresolvedReferences
         vbar.valueChanged.connect(_vbar_changed)
 
         # noinspection PyUnresolvedReferences
@@ -344,24 +347,22 @@ class QCodeEditor(QTextEdit):
         # noinspection PyUnresolvedReferences
         self.selectionChanged.connect(self.onSelectionChanged)
 
-    def _handleSelectionQuery(self, cursor: QTextCursor):
-        searchIterator = cursor
-        searchIterator.movePosition(QTextCursor.Start)
-        searchIterator = self.document().find(cursor.selectedText(), searchIterator)
-        while searchIterator.hasSelection():
-            self.m_framedAttribute.frame(searchIterator)
-            searchIterator = self.document().find(cursor.selectedText(), searchIterator)
+    # FIXME
+    # def _handleSelectionQuery(self, cursor: QTextCursor):
+    #     searchIterator = cursor
+    #     searchIterator.movePosition(QTextCursor.Start)
+    #     searchIterator = self.document().find(cursor.selectedText(), searchIterator)
+    #     while searchIterator.hasSelection():
+    #         self.m_framedAttribute.frame(searchIterator)
+    #         searchIterator = self.document().find(cursor.selectedText(), searchIterator)
 
     def _updateLineGeometry(self):
         cr = self.contentsRect()
-        self.m_lineNumberArea.setGeometry(
-            QRect(
-                cr.left(),
-                cr.top(),
-                self.m_lineNumberArea.sizeHint().width(),
-                cr.height(),
-            )
-        )
+        x = cr.left()
+        y = cr.top()
+        w = self.m_lineNumberArea.sizeHint().width()
+        h = cr.height()
+        self.m_lineNumberArea.setGeometry(QRect(x, y, w, h))
 
     def _proceedCompleterBegin(self, e: QKeyEvent) -> bool:
         if self.m_completer and self.m_completer.popup().isVisible():
@@ -469,7 +470,7 @@ class QCodeEditor(QTextEdit):
             counter = 1
 
             _charCount = self.document().characterCount() - 1
-            while counter != 0 and position > 0 and position < _charCount:
+            while counter != 0 and 0 <= position < _charCount:
                 position += direction
                 character = self.document().characterAt(position)
                 if character == activeSymbol:
