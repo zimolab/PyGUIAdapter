@@ -4,7 +4,6 @@ import dataclasses
 import traceback
 from typing import Tuple, Literal, Dict, Union, Type, Any, List
 
-from pyexpat.errors import messages
 from qtpy.QtCore import QSize, Qt
 from qtpy.QtGui import QIcon
 from qtpy.QtWidgets import (
