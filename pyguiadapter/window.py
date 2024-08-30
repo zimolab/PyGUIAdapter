@@ -14,7 +14,9 @@ from .menu import MenuConfig, ToolbarConfig
 DEFAULT_WINDOW_SIZE = (800, 600)
 
 
-GLOBAL_STYLESHEET = "*{font-size: 10pt}"
+# GLOBAL_STYLESHEET = "*{font-size: 12pt}"
+GLOBAL_STYLESHEET = ""
+DEFAULT_FONT_SIZE = 12
 
 
 @dataclasses.dataclass
@@ -30,6 +32,7 @@ class BaseWindowConfig(object):
     on_hide: Callable[["BaseWindow"], None] | None = None
     on_show: Callable[["BaseWindow"], None] | None = None
     stylesheet: str | None = GLOBAL_STYLESHEET
+    font_size: int = DEFAULT_FONT_SIZE
 
 
 class BaseWindow(QMainWindow):
@@ -94,6 +97,12 @@ class BaseWindow(QMainWindow):
         # apply stylesheet
         if self._config.stylesheet:
             self.setStyleSheet(self._config.stylesheet)
+
+        font_size = self._config.font_size
+        if font_size and font_size > 0:
+            font = self.font()
+            font.setPointSize(font_size)
+            self.setFont(font)
 
     def _create_toolbar(self, toolbar_config: ToolbarConfig):
         toolbar = QToolBar(self)

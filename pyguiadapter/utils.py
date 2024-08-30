@@ -1,12 +1,13 @@
 from __future__ import annotations
 
+import dataclasses
 import os.path
 import re
 import string
 from typing import Literal, List, Set, Tuple, Any, Union
 
 from qtpy import QT_VERSION
-from qtpy.QtCore import QUrl
+from qtpy.QtCore import QUrl, Qt
 from qtpy.QtWidgets import QTextBrowser, QWidget, QMessageBox, QFrame, QFileDialog
 from qtpy.QtGui import QIcon, QPixmap, QTextCursor, QTextOption
 
@@ -14,6 +15,7 @@ import qtawesome as qta
 
 StandardButton = QMessageBox.StandardButton
 StandardButtons = QMessageBox.StandardButtons
+TextFormat = Qt.TextFormat
 
 # noinspection SpellCheckingInspection
 TEXTBROWSER_CSS = """
@@ -51,6 +53,53 @@ QScrollBar::add-page:vertical{
 """
 
 IconType = Union[str, Tuple[str, Union[list, dict]], QIcon, QPixmap, type(None)]
+
+
+@dataclasses.dataclass
+class MessageBoxConfig(object):
+    text: str
+    title: str | None = None
+    icon: int | QPixmap | None = None
+    detailed_text: str | None = None
+    informative_text: str | None = None
+    text_format: TextFormat | None = None
+    buttons: StandardButton | StandardButtons | None = None
+    default_button: StandardButton | None = None
+    escape_button: StandardButton | None = None
+
+    def create_messagebox(self, parent: QWidget | None) -> QMessageBox:
+        # noinspection SpellCheckingInspection,PyArgumentList
+        msgbox = QMessageBox(parent)
+        msgbox.setText(self.text)
+
+        if self.title:
+            msgbox.setWindowTitle(self.title)
+
+        if self.icon is not None:
+            msgbox.setIcon(self.icon)
+
+        if isinstance(self.icon, QPixmap):
+            msgbox.setIconPixmap(self.icon)
+
+        if self.informative_text:
+            msgbox.setInformativeText(self.informative_text)
+
+        if self.detailed_text:
+            msgbox.setDetailedText(self.detailed_text)
+
+        if self.text_format is not None:
+            msgbox.setTextFormat(self.text_format)
+
+        if self.buttons is not None:
+            msgbox.setDefaultButton(self.buttons)
+
+        if self.default_button is not None:
+            msgbox.setDefaultButton(self.default_button)
+
+        if self.escape_button is not None:
+            msgbox.setEscapeButton(self.escape_button)
+
+        return msgbox
 
 
 # noinspection PyArgumentList

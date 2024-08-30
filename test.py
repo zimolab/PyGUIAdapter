@@ -1,13 +1,12 @@
 import time
+from typing import Any
 
 from pyguiadapter.adapter import ulogging
 from pyguiadapter.adapter.adapter import GUIAdapter
 from pyguiadapter.adapter.ucontext import uprint, is_function_cancelled
-from pyguiadapter.adapter.udialog import show_text_file
 from pyguiadapter.adapter.uinput import *
-from pyguiadapter.windows import FnSelectWindowConfig, FnExecuteWindowConfig
-from pyguiadapter.exceptions import ParameterValidationError
 from pyguiadapter.types import text_t, int_t, float_t, directory_t, file_t, file_list_t
+from pyguiadapter.windows import FnSelectWindowConfig, FnExecuteWindowConfig
 
 
 def f1(
@@ -20,6 +19,7 @@ def f1(
     arg7: directory_t,
     arg8: file_t,
     arg9: file_list_t,
+    arg10: Any,
 ):
     """
 

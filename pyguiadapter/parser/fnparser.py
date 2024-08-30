@@ -119,6 +119,10 @@ class FnParser(object):
                     # "stylesheet": None,
                 }
             )
+
+            if widget_config["default_value"] is UNSET:
+                widget_config.pop("default_value")
+
             widget_class = None
             meta = metas.get(param_name, None)
             if meta is not None:
@@ -223,10 +227,7 @@ class FnParser(object):
             if ignore_self_param and param_name == "self":
                 continue
 
-            if param.default is not inspect.Parameter.empty:
-                default_value = param.default
-            else:
-                default_value = fn_docstring.get_parameter_default_value(param.name)
+            default_value = self._get_param_default_value(param, fn_docstring)
 
             typename, type_args = self._get_param_type_info(
                 param, default_value, fn_docstring
@@ -278,8 +279,23 @@ class FnParser(object):
         return param_typename, param_type_args
 
     @staticmethod
+    def _get_param_default_value(
+        param: inspect.Parameter, fn_docstring: FnDocstring
+    ) -> Any:
+        if param.default is UNSET:
+            return UNSET
+
+        if param.default is not inspect.Parameter.empty:
+            return param.default
+
+        default_value = fn_docstring.get_parameter_default_value(param.name)
+        if default_value is not None:
+            return default_value
+        return UNSET
+
+    @staticmethod
     def _guess_param_type(default_value: Any) -> Type:
-        if default_value is None:
+        if default_value is None or default_value is UNSET:
             return Any
         if isinstance(default_value, type):
             return default_value
