@@ -1,5 +1,5 @@
 from qtpy.QtWidgets import QApplication
-from pyguiadapter.widgets.editor.standalone import (
+from pyguiadapter.widgets.editor.codeeditor import (
     CodeEditorConfig,
     CodeEditorWindow,
     PythonCodeFormatter,
@@ -10,12 +10,11 @@ from pyqcodeeditor.completers import QPythonCompleter
 
 if __name__ == "__main__":
     app = QApplication([])
-    highlighter = QPythonHighlighter()
     completer = QPythonCompleter()
     formatter = PythonCodeFormatter()
     config = CodeEditorConfig(
         title="Code Editor",
-        highlighter=highlighter,
+        highlighter=QPythonHighlighter,
         completer=completer,
         code_formatter=formatter,
     )

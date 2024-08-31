@@ -1,12 +1,27 @@
 import time
-from typing import Any
+from typing import Any, Dict, Set
 
 from pyguiadapter.adapter import ulogging
 from pyguiadapter.adapter.adapter import GUIAdapter
 from pyguiadapter.adapter.ucontext import uprint, is_function_cancelled
 from pyguiadapter.adapter.uinput import *
-from pyguiadapter.types import text_t, int_t, float_t, directory_t, file_t, file_list_t
+from pyguiadapter.types import (
+    text_t,
+    int_t,
+    float_t,
+    directory_t,
+    file_t,
+    file_list_t,
+    literal_t,
+)
 from pyguiadapter.windows import FnSelectWindowConfig, FnExecuteWindowConfig
+
+a11 = """
+a = 19
+'a',
+"xxxx"
+
+"xxxx" """
 
 
 def f1(
@@ -20,6 +35,15 @@ def f1(
     arg8: file_t,
     arg9: file_list_t,
     arg10: Any,
+    arg11: literal_t,
+    arg12: dict,
+    arg13: Dict[str, int],
+    arg14: list,
+    arg15: List[Dict],
+    arg16: Tuple[str],
+    arg17: tuple,
+    arg18: set,
+    arg19: Set[int],
 ):
     """
 
@@ -32,17 +56,11 @@ def f1(
 
     @end
     """
-    uprint("hello world!")
-    ulogging.info("hello world!\nhaha")
-    ulogging.debug("hello world!")
-    ulogging.warning("hello world!")
-    ulogging.critical("hello world!")
-    ulogging.fatal("hello world!")
-    # show_text_file("./License", title="View License")
-    # return f"{arg1} + {arg2}"
-    # c = utils.read_text_file("./License")
-    # uprint(c)
-    uprint(arg9)
+    print(arg14)
+    if arg14 is not None:
+        arg14.append("1234")
+    print(arg14)
+    uprint(arg11, type(arg11))
 
 
 def f2():

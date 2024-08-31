@@ -11,14 +11,14 @@ from ..paramwidget import (
     BaseParameterWidgetConfig,
 )
 from ..exceptions import AlreadyRegisteredError
-from .builtin import BUILTIN_WIDGETS
+from .builtin import BUILTIN_WIDGETS_MAP
 
 
 class ParameterWidgetRegistry(object):
     def __init__(self):
         self._registry: Dict[str, Type[BaseParameterWidget]] = {}
 
-        self.register_all(BUILTIN_WIDGETS)
+        self.register_all(BUILTIN_WIDGETS_MAP)
 
     def register(
         self,

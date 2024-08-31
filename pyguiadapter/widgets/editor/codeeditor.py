@@ -2,15 +2,16 @@ from __future__ import annotations
 
 import dataclasses
 import hashlib
+import inspect
 import json
 import os.path
 import warnings
 from abc import abstractmethod
-from typing import Callable, List
+from typing import Callable, List, Type
 
 from yapf.yapflib.yapf_api import FormatCode
 from pyqcodeeditor.QCodeEditor import QCodeEditor
-from pyqcodeeditor.QStyleSyntaxHighlighter import QSyntaxHighlighter
+from pyqcodeeditor.QStyleSyntaxHighlighter import QStyleSyntaxHighlighter
 from qtpy.QtGui import QAction, QTextOption
 from qtpy.QtWidgets import QWidget, QCompleter, QVBoxLayout, QTextEdit
 
@@ -257,7 +258,8 @@ class CodeEditorConfig(BaseWindowConfig):
     title: str = "Editor"
     enable_default_menus: bool = True
     enable_default_toolbar: bool = True
-    highlighter: QSyntaxHighlighter | None = None
+    highlighter: Type[QStyleSyntaxHighlighter] | None = None
+    highlighter_args: dict | list | tuple | None = None
     completer: QCompleter | None = None
     auto_indent: bool = True
     auto_parentheses: bool = True
@@ -290,14 +292,18 @@ class CodeEditorWindow(BaseWindow):
         self._current_file: str | None = None
         self._initial_fingerprint: str | None = self._fingerprint(config.initial_text)
 
+        self._highlighter: QStyleSyntaxHighlighter | None = None
+
         super().__init__(parent, config=config)
 
     def _update_ui(self):
         super()._update_ui()
 
         center_widget = QWidget(self)
+
         self._editor = QCodeEditor(center_widget)
-        self._editor.setHighlighter(self._config.highlighter)
+
+        self.set_highlighter(self._config.highlighter, self._config.highlighter_args)
         self._editor.setCompleter(self._config.completer)
         self._editor.setAutoIndentation(self._config.auto_indent)
         self._editor.setAutoParentheses(self._config.auto_parentheses)
@@ -349,12 +355,25 @@ class CodeEditorWindow(BaseWindow):
         text = text or ""
         self._editor.setPlainText(text)
 
-    def set_highlighter(self, highlighter: QSyntaxHighlighter | None):
+    def set_highlighter(
+        self,
+        highlighter: Type[QStyleSyntaxHighlighter] | None,
+        args: list | tuple | dict | None = None,
+    ):
         # noinspection PyTypeChecker
         self._config.highlighter = highlighter
-        self._editor.setHighlighter(self._config.highlighter)
+        self._config.highlighter_args = args
+        if self._highlighter is not None:
+            self._highlighter.setDocument(None)
+            self._highlighter.deleteLater()
+            self._highlighter = None
+        self._highlighter = self.new_highlighter_instance(
+            self._config.highlighter, self._config.highlighter_args
+        )
+        self._highlighter.setParent(self)
+        self._editor.setHighlighter(self._highlighter)
 
-    def get_highlighter(self) -> QSyntaxHighlighter | None:
+    def get_highlighter(self) -> Type[QStyleSyntaxHighlighter] | None:
         return self._config.highlighter
 
     def set_completer(self, completer: QCompleter | None):
@@ -592,6 +611,30 @@ class CodeEditorWindow(BaseWindow):
                 filename = os.path.basename(self._current_file)
             win_title = f"{win_title} - {filename}".strip()
         self.setWindowTitle(win_title)
+
+    @staticmethod
+    def new_highlighter_instance(
+        highlighter_class: Type[QStyleSyntaxHighlighter] | None,
+        args: dict | list | tuple | None,
+    ) -> QStyleSyntaxHighlighter | None:
+        assert highlighter_class is None or (
+            inspect.isclass(highlighter_class)
+            and issubclass(highlighter_class, QStyleSyntaxHighlighter)
+        )
+        assert args is None or isinstance(args, (dict, list, tuple))
+        if highlighter_class is None:
+            return None
+
+        if not args:
+            instance = highlighter_class(None)
+        elif isinstance(args, dict):
+            instance = highlighter_class(**args)
+        elif isinstance(args, (list, tuple)):
+            instance = highlighter_class(*args)
+        else:
+            raise TypeError(f"invalid type of args: {type(args)}")
+
+        return instance
 
     @staticmethod
     def _fingerprint(text: str | None) -> str | None:

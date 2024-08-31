@@ -26,3 +26,8 @@ class file_list_t(list):
 # noinspection PyPep8Naming
 class directory_t(str):
     pass
+
+
+# noinspection PyPep8Naming
+class literal_t(object):
+    pass
