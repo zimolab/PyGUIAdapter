@@ -56,9 +56,7 @@ class CodeEditor(QMainWindow):
         self._editor: QCodeEditor | None = None
 
         self._current_file: str | None = None
-        self._initial_fingerprint: str | None = self._text_fingerprint(
-            config.initial_text
-        )
+        self._initial_fingerprint: str | None = self._fingerprint(config.initial_text)
 
         self._action_open = QAction(self)
         self._action_open.setIcon(icon("fa.folder-open-o"))
@@ -105,7 +103,7 @@ class CodeEditor(QMainWindow):
 
     def set_text(self, text: str | None):
         text = text or ""
-        self._initial_fingerprint = self._text_fingerprint(text)
+        self._initial_fingerprint = self._fingerprint(text)
         self._editor.setPlainText(text)
 
     def set_highlighter(self, highlighter: QSyntaxHighlighter | None):
@@ -197,7 +195,7 @@ class CodeEditor(QMainWindow):
 
     def is_modified(self) -> bool:
         text = self.get_text()
-        fingerprint = self._text_fingerprint(text)
+        fingerprint = self._fingerprint(text)
         return fingerprint != self._initial_fingerprint
 
     def update_title(self):
@@ -211,7 +209,7 @@ class CodeEditor(QMainWindow):
         self.setWindowTitle(win_title)
 
     @staticmethod
-    def _text_fingerprint(text: str | None) -> str | None:
+    def _fingerprint(text: str | None) -> str | None:
         if not text:
             return None
         md5 = hashlib.md5()
