@@ -352,6 +352,11 @@ def read_text_file(text_file: str, encoding: str = "utf-8") -> str:
         return f.read()
 
 
+def write_text_file(text_file: str, content: str, encoding: str = "utf-8"):
+    with open(text_file, "w", encoding=encoding) as f:
+        f.write(content)
+
+
 def get_existing_directory(
     parent: QWidget | None = None,
     title: str = "Open Directory",

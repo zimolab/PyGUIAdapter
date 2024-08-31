@@ -61,16 +61,26 @@ class CodeEditor(QMainWindow):
         self._action_open = QAction(self)
         self._action_open.setIcon(icon("fa.folder-open-o"))
         self._action_open.setText("Open")
+        self._action_open.setShortcut("Ctrl+O")
         self._action_open.triggered.connect(self.open_file)
 
         self._action_save = QAction(self)
-        self._action_save.setIcon(icon("fa.save"))
+        self._action_save.setIcon(icon("msc.save"))
         self._action_save.setText("Save")
+        self._action_save.setShortcut("Ctrl+S")
+        self._action_save.triggered.connect(self.save_file)
+
+        self._action_save_as = QAction(self)
+        self._action_save_as.setIcon(icon("msc.save-as"))
+        self._action_save_as.setText("Save As")
+        self._action_save_as.setShortcut("Ctrl+Shift+S")
+        self._action_save_as.triggered.connect(self.save_as_file)
 
         menu_file = QMenu(self)
         menu_file.setTitle("File")
         menu_file.addAction(self._action_open)
         menu_file.addAction(self._action_save)
+        menu_file.addAction(self._action_save_as)
 
         menu_edit = QMenu(self)
         menu_edit.setTitle("Edit")
@@ -98,13 +108,16 @@ class CodeEditor(QMainWindow):
         for menu in self._builtin_menus:
             self.menuBar().addMenu(menu)
 
+    def closeEvent(self, event):
+        super().closeEvent(event)
+
     def get_text(self) -> str:
         return self._editor.toPlainText()
 
     def set_text(self, text: str | None):
         text = text or ""
-        self._initial_fingerprint = self._fingerprint(text)
         self._editor.setPlainText(text)
+        self.update_fingerprint()
 
     def set_highlighter(self, highlighter: QSyntaxHighlighter | None):
         # noinspection PyTypeChecker
@@ -124,7 +137,7 @@ class CodeEditor(QMainWindow):
         self._file_filters = filters
 
     def open_file(self):
-        if self._check_unsaved_changes and self.is_modified():
+        if self.check_modification():
             ret = utils.show_question_message(
                 self,
                 message="There are unsaved changes, are you sure to continue",
@@ -158,7 +171,47 @@ class CodeEditor(QMainWindow):
         self.update_title()
 
     def save_file(self):
-        pass
+        if not self._current_file:
+            self.save_as_file()
+            return
+
+        if not self.check_modification():
+            return
+
+        try:
+            utils.write_text_file(self._current_file, self.get_text(), encoding="utf-8")
+        except Exception as e:
+            utils.show_exception_message(
+                self,
+                exception=e,
+                title="Error",
+                message=f"Failed to save file '{os.path.abspath(self._current_file)}'",
+            )
+        else:
+            self.update_fingerprint()
+
+    def save_as_file(self):
+        filepath = utils.get_save_file(
+            self,
+            title="Save File",
+            start_dir=self._start_dir,
+            filters=self._file_filters,
+        )
+        if not filepath:
+            return
+        try:
+            utils.write_text_file(filepath, self.get_text(), encoding="utf-8")
+        except Exception as e:
+            utils.show_exception_message(
+                self,
+                exception=e,
+                title="Error",
+                message=f"Failed to save file '{os.path.abspath(self._current_file)}'",
+            )
+        else:
+            self._current_file = os.path.abspath(filepath)
+            self.update_fingerprint()
+            self.update_title()
 
     def new_file(self):
         pass
@@ -198,6 +251,9 @@ class CodeEditor(QMainWindow):
         fingerprint = self._fingerprint(text)
         return fingerprint != self._initial_fingerprint
 
+    def update_fingerprint(self):
+        self._initial_fingerprint = self._fingerprint(self.get_text())
+
     def update_title(self):
         win_title = self._title.strip()
         if self._show_filename_on_title:
@@ -207,6 +263,11 @@ class CodeEditor(QMainWindow):
                 filename = os.path.basename(self._current_file)
             win_title = f"{win_title} - {filename}".strip()
         self.setWindowTitle(win_title)
+
+    def check_modification(self) -> bool:
+        if not self._check_unsaved_changes:
+            return False
+        return self.is_modified()
 
     @staticmethod
     def _fingerprint(text: str | None) -> str | None:
