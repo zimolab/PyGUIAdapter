@@ -3,20 +3,19 @@ from __future__ import annotations
 import dataclasses
 import json
 import warnings
-from datetime import datetime
 from typing import Type, TypeVar, Any
 
-from qtpy.QtWidgets import QWidget, QVBoxLayout, QPushButton
 from pyqcodeeditor.QCodeEditor import QCodeEditor
 from pyqcodeeditor.highlighters import QJSONHighlighter
+from qtpy.QtWidgets import QWidget, QVBoxLayout, QPushButton
 
 from ..common import CommonParameterWidget, CommonParameterWidgetConfig
 from ...exceptions import ParameterValidationError
 
 
 @dataclasses.dataclass(frozen=True)
-class AnyEditorConfig(CommonParameterWidgetConfig):
-    default_value: Any = dataclasses.field(default_factory=datetime.now)
+class JsonEditorConfig(CommonParameterWidgetConfig):
+    default_value: Any = dataclasses.field(default_factory=dict)
     font_size: int = 14
     indent_size: int = 2
     editor_min_height: int = 245
@@ -25,22 +24,22 @@ class AnyEditorConfig(CommonParameterWidgetConfig):
     standalone_editor_title = "Any Editor"
 
     @classmethod
-    def target_widget_class(cls) -> Type["AnyEditor"]:
-        return AnyEditor
+    def target_widget_class(cls) -> Type["JsonEditor"]:
+        return JsonEditor
 
 
-class AnyEditor(CommonParameterWidget):
+class JsonEditor(CommonParameterWidget):
 
     Self = TypeVar("Self", bound="AnyEditor")
-    ConfigClass = AnyEditorConfig
+    ConfigClass = JsonEditorConfig
 
     def __init__(
         self,
         parent: QWidget | None,
         parameter_name: str,
-        config: AnyEditorConfig,
+        config: JsonEditorConfig,
     ):
-        self._config: AnyEditorConfig = config
+        self._config: JsonEditorConfig = config
         self._value_widget: QWidget | None = None
         self._inline_editor: QCodeEditor | None = None
         self._standalone_editor_button: QPushButton | None = None

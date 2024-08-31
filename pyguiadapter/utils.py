@@ -4,14 +4,14 @@ import dataclasses
 import os.path
 import re
 import string
+import traceback
 from typing import Literal, List, Set, Tuple, Any, Union
 
+import qtawesome as qta
 from qtpy import QT_VERSION
 from qtpy.QtCore import QUrl, Qt
-from qtpy.QtWidgets import QTextBrowser, QWidget, QMessageBox, QFrame, QFileDialog
 from qtpy.QtGui import QIcon, QPixmap, QTextCursor, QTextOption
-
-import qtawesome as qta
+from qtpy.QtWidgets import QTextBrowser, QWidget, QMessageBox, QFrame, QFileDialog
 
 StandardButton = QMessageBox.StandardButton
 StandardButtons = QMessageBox.StandardButtons
@@ -237,6 +237,36 @@ def show_question_message(
     if buttons is None:
         return QMessageBox.question(parent, title, message)
     return QMessageBox.question(parent, title, message, buttons)
+
+
+def show_exception_message(
+    parent: QWidget | None,
+    exception: Exception,
+    message: str = "",
+    title: str = "Error",
+    detail: bool = True,
+    **kwargs,
+) -> int | StandardButton:
+    if not detail:
+        detail_msg = None
+    else:
+        detail_msg = traceback.format_tb(exception.__traceback__)
+        if detail_msg:
+            detail_msg = "".join(detail_msg)
+        else:
+            detail_msg = None
+    if message:
+        err_msg = f"{message}{exception}"
+    else:
+        err_msg = str(exception)
+    msgbox = MessageBoxConfig(
+        title=title,
+        text=err_msg,
+        icon=QMessageBox.Icon.Critical,
+        detailed_text=detail_msg,
+        **kwargs,
+    ).create_messagebox(parent)
+    return msgbox.exec_()
 
 
 # noinspection SpellCheckingInspection

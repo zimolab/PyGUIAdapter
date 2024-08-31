@@ -7,7 +7,7 @@ from ._logbrowser import LogBrowserConfig, LogBrowser
 from ._progressbar import ProgressBarConfig, ProgressBar
 
 
-class FnExecuteLogOutputArea(QWidget):
+class FnExecuteLoggingArea(QWidget):
     def __init__(
         self,
         parent: QWidget,

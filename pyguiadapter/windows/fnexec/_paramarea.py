@@ -105,7 +105,7 @@ class FnParameterGroupPage(QWidget):
         index: int = -1,
     ) -> BaseParameterWidget:
         if parameter_name.strip() == "":
-            raise ValueError("parameter_name is an empty-string")
+            raise ValueError("invalid parameter_name: empty-string")
 
         if parameter_name in self._parameters:
             raise ParameterAlreadyExistError(parameter_name)
@@ -138,7 +138,7 @@ class FnParameterGroupPage(QWidget):
 
     def remove_parameter_widget(self, parameter_name: str):
         if parameter_name.strip() == "":
-            raise ValueError("parameter_name is an empty-string")
+            raise ValueError("invalid parameter_name: empty parameter_name")
         if parameter_name not in self._parameters:
             return
         widget = self._parameters[parameter_name]

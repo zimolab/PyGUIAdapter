@@ -1,1 +1,1 @@
-from .anyeditor import AnyEditor, AnyEditorConfig
+from .jsoneditor import JsonEditor, JsonEditorConfig

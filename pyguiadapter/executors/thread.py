@@ -8,7 +8,7 @@ from typing import Any, Dict
 
 from qtpy.QtCore import QObject, QThread, Signal
 
-from ..exceptions import FunctionAlreadyExecutingError
+from ..exceptions import FunctionExecutingError
 from ..executor import BaseFunctionExecutor, ExecuteStateListener
 from ..fn import FnInfo
 
@@ -79,7 +79,7 @@ class ThreadFunctionExecutor(BaseFunctionExecutor):
     # noinspection PyUnresolvedReferences
     def execute(self, fn_info: FnInfo, arguments: Dict[str, Any]):
         if self.is_executing:
-            raise FunctionAlreadyExecutingError("function is already executing")
+            raise FunctionExecutingError("function is already executing")
 
         def _callback_on_execute_start():
             self._on_execute_start(fn_info, arguments)

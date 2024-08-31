@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import dataclasses
-import traceback
 from typing import Tuple, Literal, Dict, Union, Type, Any, List
 
 from qtpy.QtCore import QSize, Qt
@@ -10,21 +9,20 @@ from qtpy.QtWidgets import (
     QWidget,
     QVBoxLayout,
     QDockWidget,
-    QMessageBox,
 )
 
 from ._docarea import FnDocumentArea
 from ._logarea import (
     ProgressBarConfig,
     LogBrowserConfig,
-    FnExecuteLogOutputArea,
+    FnExecuteLoggingArea,
 )
-from ._paramarea import FnParameterArea
+from ._paramarea import FnParameterArea, FnParameterGroupBox
 from .._docbrowser import DocumentBrowserConfig
 from ... import bundle as bd
 from ... import utils, fn
 from ...adapter import ucontext
-from ...exceptions import FunctionAlreadyExecutingError, ParameterValidationError
+from ...exceptions import FunctionExecutingError, ParameterValidationError
 from ...executor import ExecuteStateListener, BaseFunctionExecutor
 from ...executors import ThreadFunctionExecutor
 from ...paramwidget import (
@@ -102,9 +100,9 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
         self._center_widget: QWidget | None = None
         self._parameters_area: FnParameterArea | None = None
         self._document_area: FnDocumentArea | None = None
-        self._log_output_area: FnExecuteLogOutputArea | None = None
+        self._logging_area: FnExecuteLoggingArea | None = None
         self._document_dock: QDockWidget | None = None
-        self._log_output_dock: QDockWidget | None = None
+        self._logging_dock: QDockWidget | None = None
 
         super().__init__(parent, bundle.window_config)
 
@@ -134,22 +132,22 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
         return self._executor
 
     def update_progressbar_config(self, config: ProgressBarConfig | None):
-        self._log_output_area.update_progressbar_config(config)
+        self._logging_area.update_progressbar_config(config)
 
     def show_progressbar(self):
-        self._log_output_area.show_progressbar()
+        self._logging_area.show_progressbar()
 
     def hide_progressbar(self):
-        self._log_output_area.hide_progressbar()
+        self._logging_area.hide_progressbar()
 
     def update_progress(self, current_value: int, message: str | None = None):
-        self._log_output_area.update_progress(current_value, message)
+        self._logging_area.update_progress(current_value, message)
 
     def append_log(self, log_text: str, html: bool = False):
-        self._log_output_area.append_log_output(log_text, html)
+        self._logging_area.append_log_output(log_text, html)
 
     def clear_log(self):
-        self._log_output_area.clear_log_output()
+        self._logging_area.clear_log_output()
 
     def update_document(
         self, document: str, document_format: Literal["markdown", "html", "plaintext"]
@@ -159,6 +157,64 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
     def add_parameter(
         self, parameter_name: str, config: ParameterWidgetType
     ) -> BaseParameterWidget:
+        widget_class, widget_config = self._get_widget_class_and_config(config)
+
+        try:
+            widget = self._param_groups.add_parameter(
+                parameter_name, widget_class, widget_config
+            )
+            if isinstance(widget_config, CommonParameterWidgetConfig):
+                # apply set_default_value_on_init
+                # set_value() may raise exceptions, we need to catch ParameterValidationError of them
+                # typically, this kind of exception is not fatal, it unnessessary to exit the whole program
+                # when this kind of exception raised
+                if widget_config.set_default_value_on_init:
+                    widget.set_value(widget_config.default_value)
+        except ParameterValidationError as e:
+            self._process_param_validation_error(e)
+        except Exception as e:
+            # any other exceptions are seen as fatal and will cause the whole program to exit
+            utils.show_exception_message(
+                self,
+                exception=e,
+                message=f"An fatal error occurred when creating widget for parameter '{parameter_name}':",
+                title="Fatal",
+            )
+            exit(-1)
+        else:
+            return widget
+
+    def add_parameters(self, configs: Dict[str, ParameterWidgetType]):
+        for parameter_name, config in configs.items():
+            self.add_parameter(parameter_name, config)
+
+    def remove_parameter(self, parameter_name: str, safe_remove: bool = True):
+        self._param_groups.remove_parameter(parameter_name, safe_remove=safe_remove)
+
+    def clear_parameters(self):
+        self._param_groups.clear_parameters()
+        self._param_groups.add_default_group()
+
+    def get_parameter_value(self, parameter_name: str) -> Any:
+        return self._param_groups.get_parameter_value(parameter_name)
+
+    def get_parameter_values(self) -> Dict[str, Any]:
+        return self._param_groups.get_parameter_values()
+
+    def set_parameter_value(
+        self, parameter_name: str, value: Any, ignore_unknown_parameter: bool = True
+    ):
+        self._param_groups.set_parameter_value(
+            parameter_name, value, ignore_unknown_parameter=ignore_unknown_parameter
+        )
+
+    def set_parameter_values(self, values: Dict[str, Any]) -> List[str]:
+        return self._param_groups.set_parameter_values(values)
+
+    @staticmethod
+    def _get_widget_class_and_config(
+        config: ParameterWidgetType,
+    ) -> Tuple[Type[BaseParameterWidget], BaseParameterWidgetConfig]:
         if isinstance(config, tuple):
             assert len(config) == 2
             assert is_parameter_widget_class(config[0])
@@ -168,66 +224,14 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
             widget_class = config.target_widget_class()
             widget_config = config
         else:
-            raise TypeError(f"Invalid type of widget_config: {type(config)}")
+            raise ValueError(f"invalid type of config: {type(config)}")
+
+        if not isinstance(widget_config, (dict, BaseParameterWidgetConfig)):
+            raise ValueError(f"invalid type of config: {type(config)}")
 
         if isinstance(widget_config, dict):
             widget_config = widget_class.ConfigClass.new(**widget_config)
-        return self._parameters_area.parameter_groups.add_parameter(
-            parameter_name, widget_class, widget_config
-        )
-
-    def remove_parameter(self, parameter_name: str, safe_remove: bool = True):
-        groupbox = self._parameters_area.parameter_groups
-        groupbox.remove_parameter(parameter_name, safe_remove=safe_remove)
-
-    def clear_parameters(self):
-        groupbox = self._parameters_area.parameter_groups
-        groupbox.clear_parameters()
-        groupbox.add_default_group()
-
-    def get_parameter_value(self, parameter_name: str) -> Any:
-        groupbox = self._parameters_area.parameter_groups
-        return groupbox.get_parameter_value(parameter_name)
-
-    def get_parameter_values(self) -> Dict[str, Any]:
-        groupbox = self._parameters_area.parameter_groups
-        return groupbox.get_parameter_values()
-
-    def set_parameter_value(
-        self, parameter_name: str, value: Any, ignore_unknown_parameter: bool = True
-    ):
-        groupbox = self._parameters_area.parameter_groups
-        groupbox.set_parameter_value(
-            parameter_name, value, ignore_unknown_parameter=ignore_unknown_parameter
-        )
-
-    def set_parameter_values(self, values: Dict[str, Any]) -> List[str]:
-        groupbox = self._parameters_area.parameter_groups
-        return groupbox.set_parameter_values(values)
-
-    def add_parameters(self, configs: Dict[str, ParameterWidgetType]):
-        for parameter_name, config in configs.items():
-            try:
-                widget = self.add_parameter(parameter_name, config)
-                widget_config = widget.config
-                if isinstance(widget_config, CommonParameterWidgetConfig):
-                    if widget_config.set_default_value_on_init:
-                        widget.set_value(widget_config.default_value)
-            except ParameterValidationError as e:
-                self._process_param_validation_failed(e)
-            except Exception as e:
-                traceback.print_exc()
-                short_msg = str(e)
-                detail_msg = traceback.format_exc()
-                msgbox = utils.MessageBoxConfig(
-                    title="Fatal Error",
-                    text="An fatal error raised when creating widget for parameter '{parameter_name}:"
-                    f" {short_msg}",
-                    detailed_text=detail_msg,
-                    icon=QMessageBox.Critical,
-                ).create_messagebox(self)
-                msgbox.exec_()
-                exit(-1)
+        return widget_class, widget_config
 
     # noinspection PyUnresolvedReferences
     def _update_ui(self):
@@ -284,15 +288,15 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
         self.update_document(fn_info.document, fn_info.document_format)
 
         # create the dock widget and log output area
-        self._log_output_dock = QDockWidget(self)
-        self._log_output_dock.setWindowTitle(widget_texts.log_output_dock_title)
-        self._log_output_area = FnExecuteLogOutputArea(
-            self._log_output_dock,
+        self._logging_dock = QDockWidget(self)
+        self._logging_dock.setWindowTitle(widget_texts.log_output_dock_title)
+        self._logging_area = FnExecuteLoggingArea(
+            self._logging_dock,
             progressbar_config=window_config.progressbar,
             log_browser_config=window_config.log_output,
         )
-        self._log_output_dock.setWidget(self._log_output_area)
-        self.addDockWidget(Qt.BottomDockWidgetArea, self._log_output_dock)
+        self._logging_dock.setWidget(self._logging_area)
+        self.addDockWidget(Qt.BottomDockWidgetArea, self._logging_dock)
         if window_config.progressbar is None:
             self.hide_progressbar()
         else:
@@ -306,7 +310,7 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
         dock_height = int(current_height * log_output_dock_ratio)
         document_dock_ratio = min(max(window_config.document_dock_ratio, 0.1), 1.0)
         dock_width = int(current_width * document_dock_ratio)
-        self.resizeDocks([self._log_output_dock], [dock_height], Qt.Vertical)
+        self.resizeDocks([self._logging_dock], [dock_height], Qt.Vertical)
         self.resizeDocks(
             [self._document_dock],
             [dock_width],
@@ -354,7 +358,7 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
     ) -> None:
 
         if isinstance(error, ParameterValidationError):
-            self._process_param_validation_failed(error)
+            self._process_param_validation_error(error)
         if callable(self._bundle.on_execute_error):
             self._bundle.on_execute_error(error, arguments.copy())
             return
@@ -398,10 +402,10 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
             return
         try:
             arguments = self.get_parameter_values()
-        except FunctionAlreadyExecutingError:
+        except FunctionExecutingError:
             utils.show_warning_message(self, self.message_texts.function_is_executing)
         except ParameterValidationError as e:
-            self._process_param_validation_failed(e)
+            self._process_param_validation_error(e)
         else:
             self._executor.execute(self._bundle.fn_info, arguments)
 
@@ -412,14 +416,16 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
             pass
         self.clear_log()
 
-    def _process_param_validation_failed(self, e: ParameterValidationError):
-        self._parameters_area.parameter_groups.scroll_to_parameter(e.parameter_name)
-        self._parameters_area.parameter_groups.notify_validation_error(
-            e.parameter_name, e.message
-        )
+    def _process_param_validation_error(self, e: ParameterValidationError):
+        self._param_groups.notify_validation_error(e.parameter_name, e.message)
         msg = self.message_texts.parameter_validation_failed.format(
             e.parameter_name, e.message
         )
         utils.show_critical_message(
             self, msg, title=self.widget_texts.parameter_validation_dialog_title
         )
+        self._param_groups.scroll_to_parameter(e.parameter_name)
+
+    @property
+    def _param_groups(self) -> FnParameterGroupBox:
+        return self._parameters_area.parameter_groups

@@ -16,6 +16,10 @@ class ParameterValidationError(Exception):
         return self._message
 
 
+class ParameterWidgetConfigError(Exception):
+    pass
+
+
 class AlreadyRegisteredError(Exception):
     pass
 
@@ -24,11 +28,7 @@ class NotRegisteredError(Exception):
     pass
 
 
-class FunctionAlreadyExecutingError(RuntimeError):
-    pass
-
-
-class FunctionNotExecutingError(RuntimeError):
+class FunctionExecutingError(RuntimeError):
     pass
 
 
