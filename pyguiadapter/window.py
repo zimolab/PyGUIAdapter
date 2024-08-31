@@ -4,19 +4,61 @@ import dataclasses
 from typing import Callable, Tuple, Dict, List
 
 from qtpy.QtCore import QSize, Qt
-from qtpy.QtGui import QAction
+from qtpy.QtGui import QIcon, QPixmap, QAction
 from qtpy.QtWidgets import QMainWindow, QWidget, QToolBar, QMenu
 
 from . import utils
-from .action import ActionConfig, Separator
-from .menu import MenuConfig, ToolbarConfig
 
 DEFAULT_WINDOW_SIZE = (800, 600)
-
-
-# GLOBAL_STYLESHEET = "*{font-size: 12pt}"
-GLOBAL_STYLESHEET = ""
 DEFAULT_FONT_SIZE = 12
+
+
+# noinspection SpellCheckingInspection
+@dataclasses.dataclass
+class ActionConfig(object):
+    text: str
+    on_triggered: Callable[["BaseWindow", QAction], None] | None = None
+    on_toggled: Callable[["BaseWindow", QAction], None] | None = None
+    icon: utils.IconType = None
+    icon_text: str | None = None
+    auto_repeat: bool = False
+    enabled: bool = True
+    checkable: bool = False
+    checked: bool = False
+    shortcut: str | None = None
+    shortcut_context: QAction.ShortcutContext | None = None
+    tooltip: str | None = None
+    whats_this: str | None = None
+    status_tip: str | None = None
+    priority: QAction.Priority | None = None
+    menu_role: QAction.MenuRole | None = None
+
+
+@dataclasses.dataclass
+class Separator(object):
+    pass
+
+
+@dataclasses.dataclass
+class MenuConfig(object):
+    title: str
+    actions: List[ActionConfig | Separator | MenuConfig]
+    icon: str | QIcon | QPixmap | None = None
+    separators_collapsible: bool = True
+    tear_off_enabled: bool = True
+
+
+# noinspection SpellCheckingInspection
+@dataclasses.dataclass
+class ToolbarConfig(object):
+    actions: List[ActionConfig | Separator]
+    moveable: bool = True
+    floatable: bool = True
+    horizontal: bool = True
+    icon_size: Tuple[int, int] | QSize | None = None
+    initial_area: Qt.ToolBarArea | None = None
+    allowed_areas: Qt.ToolBarAreas | None = None
+    button_style: Qt.ToolButtonStyle | None = None
 
 
 @dataclasses.dataclass
@@ -31,7 +73,7 @@ class BaseWindowConfig(object):
     on_destroy: Callable[["BaseWindow"], None] | None = None
     on_hide: Callable[["BaseWindow"], None] | None = None
     on_show: Callable[["BaseWindow"], None] | None = None
-    stylesheet: str | None = GLOBAL_STYLESHEET
+    stylesheet: str | None = None
     font_size: int = DEFAULT_FONT_SIZE
 
 
@@ -154,6 +196,7 @@ class BaseWindow(QMainWindow):
             menu = self._create_menu(menu_config)
             menubar.addMenu(menu)
 
+    # noinspection PyArgumentList
     def _create_menu(self, menu_config: MenuConfig) -> QMenu:
         menu = QMenu(self)
         menu.setTitle(menu_config.title)
@@ -172,7 +215,6 @@ class BaseWindow(QMainWindow):
         return menu
 
     def _create_action(self, action_config: ActionConfig) -> QAction:
-
         action_config_id = id(action_config)
         # reuse action if already created
         if action_config_id in self._actions:
@@ -203,18 +245,18 @@ class BaseWindow(QMainWindow):
         if action_config.menu_role is not None:
             action.setMenuRole(action_config.menu_role)
 
-        def _on_action_trigger():
-            if action_config.on_trigger is not None:
-                action_config.on_trigger(self, action)
+        def _on_triggered():
+            if action_config.on_triggered is not None:
+                action_config.on_triggered(self, action)
 
-        def _on_action_toggle():
-            if action_config.on_toggle is not None:
-                action_config.on_toggle(self, action)
+        def _toggled():
+            if action_config.on_toggled is not None:
+                action_config.on_toggled(self, action)
 
         # noinspection PyUnresolvedReferences
-        action.triggered.connect(_on_action_trigger)
+        action.triggered.connect(_on_triggered)
         # noinspection PyUnresolvedReferences
-        action.toggled.connect(_on_action_toggle)
+        action.toggled.connect(_toggled)
 
         self._actions[action_config_id] = action
         return action

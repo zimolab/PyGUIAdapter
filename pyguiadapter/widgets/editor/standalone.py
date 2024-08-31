@@ -2,114 +2,345 @@ from __future__ import annotations
 
 import dataclasses
 import hashlib
+import json
 import os.path
-from typing import Callable
+import warnings
+from abc import abstractmethod
+from typing import Callable, List
 
-from qtpy.QtGui import QIcon, QAction
-from qtpy.QtWidgets import (
-    QMainWindow,
-    QWidget,
-    QCompleter,
-    QVBoxLayout,
-    QMenu,
-    QToolBar,
-    QMessageBox,
-)
+from yapf.yapflib.yapf_api import FormatCode
 from pyqcodeeditor.QCodeEditor import QCodeEditor
 from pyqcodeeditor.QStyleSyntaxHighlighter import QSyntaxHighlighter
-from qtawesome import icon
+from qtpy.QtGui import QAction, QTextOption
+from qtpy.QtWidgets import QWidget, QCompleter, QVBoxLayout, QTextEdit
 
 from ... import utils
+from ...window import (
+    BaseWindow,
+    BaseWindowConfig,
+    MenuConfig,
+    Separator,
+    ToolbarConfig,
+    ActionConfig,
+)
 
-CodeFormatter = Callable[[str], str]
+
+LineWrapMode = QTextEdit.LineWrapMode
+WordWrapMode = QTextOption.WrapMode
+
+
+class BaseCodeFormatter(object):
+
+    @abstractmethod
+    def format_code(self, text: str) -> str | None:
+        pass
+
+
+class JsonFormatter(BaseCodeFormatter):
+
+    def __init__(self, indent: int = 4):
+        self._indent = indent
+
+    @property
+    def indent(self) -> int:
+        return self._indent
+
+    @indent.setter
+    def indent(self, value: int):
+        if value < 0:
+            warnings.warn(f"indent must be greater than or equals to 0, got: {value}")
+            return
+        self._indent = value
+
+    def format_code(self, text: str) -> str | None:
+        try:
+            return json.dumps(json.loads(text), indent=self._indent, ensure_ascii=False)
+        except Exception as e:
+            warnings.warn(f"failed to format code: {e}")
+            return None
+
+
+class PythonCodeFormatter(BaseCodeFormatter):
+
+    def __init__(self):
+        pass
+
+    def format_code(self, text: str) -> str | None:
+        try:
+            formatted, changed = FormatCode(text)
+        except Exception as e:
+            warnings.warn(f"failed to format code: {e}")
+            return None
+        else:
+            if changed:
+                return formatted
+            return None
+
+
+def _on_open_file(ctx: "CodeEditorWindow", _: QAction):
+    ctx.open_file()
+
+
+def _on_save_file(ctx: "CodeEditorWindow", _: QAction):
+    ctx.save_file()
+
+
+def _on_save_file_as(ctx: "CodeEditorWindow", _: QAction):
+    ctx.save_as_file()
+
+
+def _on_quit(ctx: "CodeEditorWindow", _: QAction):
+    ctx.close()
+
+
+def _on_undo(ctx: "CodeEditorWindow", _: QAction):
+    ctx.undo()
+
+
+def _on_redo(ctx: "CodeEditorWindow", _: QAction):
+    ctx.redo()
+
+
+def _on_cut(ctx: "CodeEditorWindow", _: QAction):
+    ctx.cut()
+
+
+def _on_copy(ctx: "CodeEditorWindow", _: QAction):
+    ctx.copy()
+
+
+def _on_paste(ctx: "CodeEditorWindow", _: QAction):
+    ctx.paste()
+
+
+def _on_format_code(ctx: "CodeEditorWindow", _: QAction):
+    ctx.format_code()
+
+
+def _on_select_all(ctx: "CodeEditorWindow", _: QAction):
+    ctx.select_all()
+
+
+DEFAULT_ACTION_OPEN = ActionConfig(
+    text="Open",
+    icon="fa.folder-open-o",
+    shortcut="Ctrl+O",
+    on_triggered=_on_open_file,
+)
+
+DEFAULT_ACTION_SAVE = ActionConfig(
+    text="Save",
+    icon="fa.save",
+    shortcut="Ctrl+S",
+    on_triggered=_on_save_file,
+)
+
+DEFAULT_ACTION_SAVE_AS = ActionConfig(
+    text="Save as",
+    icon="mdi.content-save-edit-outline",
+    shortcut="Ctrl+Shift+S",
+    on_triggered=_on_save_file_as,
+)
+
+DEFAULT_ACTION_QUIT = ActionConfig(
+    text="Quit",
+    icon="fa.window-close-o",
+    shortcut="Ctrl+Q",
+    on_triggered=_on_quit,
+)
+
+DEFAULT_ACTION_UNDO = ActionConfig(
+    text="Undo",
+    icon="fa.undo",
+    shortcut="Ctrl+Z",
+    on_triggered=_on_undo,
+)
+
+DEFAULT_ACTION_REDO = ActionConfig(
+    text="Redo",
+    icon="fa.repeat",
+    shortcut="Ctrl+Y",
+    on_triggered=_on_redo,
+)
+
+DEFAULT_ACTION_CUT = ActionConfig(
+    text="Cut",
+    icon="fa.cut",
+    shortcut="Ctrl+X",
+    on_triggered=_on_cut,
+)
+
+DEFAULT_ACTION_COPY = ActionConfig(
+    text="Copy",
+    icon="fa.copy",
+    shortcut="Ctrl+C",
+    on_triggered=_on_copy,
+)
+
+DEFAULT_ACTION_PASTE = ActionConfig(
+    text="Paste",
+    icon="fa.paste",
+    shortcut="Ctrl+V",
+    on_triggered=_on_paste,
+)
+
+DEFAULT_ACTION_FORMAT_CODE = ActionConfig(
+    text="Format code",
+    icon="fa.indent",
+    shortcut="Ctrl+Alt+L",
+    on_triggered=_on_format_code,
+)
+
+
+DEFAULT_ACTION_SELECT_ALL = ActionConfig(
+    text="Select all",
+    icon="fa.object-group",
+    shortcut="Ctrl+A",
+    on_triggered=_on_select_all,
+)
+
+DEFAULT_FILE_MENU = MenuConfig(
+    title="File",
+    actions=[
+        DEFAULT_ACTION_OPEN,
+        DEFAULT_ACTION_SAVE,
+        DEFAULT_ACTION_SAVE_AS,
+        Separator(),
+        DEFAULT_ACTION_QUIT,
+    ],
+)
+
+DEFAULT_EDIT_MENU = MenuConfig(
+    title="Edit",
+    actions=[
+        DEFAULT_ACTION_UNDO,
+        DEFAULT_ACTION_REDO,
+        Separator(),
+        DEFAULT_ACTION_CUT,
+        DEFAULT_ACTION_COPY,
+        DEFAULT_ACTION_PASTE,
+        Separator(),
+        DEFAULT_ACTION_FORMAT_CODE,
+        Separator(),
+        DEFAULT_ACTION_SELECT_ALL,
+    ],
+)
+
+
+DEFAULT_MENUS: List[MenuConfig] = [DEFAULT_FILE_MENU, DEFAULT_EDIT_MENU]
+DEFAULT_TOOLBARS = ToolbarConfig(
+    actions=[
+        DEFAULT_ACTION_OPEN,
+        DEFAULT_ACTION_SAVE,
+        Separator(),
+        DEFAULT_ACTION_UNDO,
+        DEFAULT_ACTION_REDO,
+        Separator(),
+        DEFAULT_ACTION_CUT,
+        DEFAULT_ACTION_COPY,
+        DEFAULT_ACTION_PASTE,
+        Separator(),
+        DEFAULT_ACTION_FORMAT_CODE,
+        Separator(),
+        DEFAULT_ACTION_SELECT_ALL,
+    ],
+    moveable=True,
+    icon_size=(24, 24),
+)
+
+DEFAULT_TEXT_FONT_SIZE = 14
+DEFAULT_TAB_SIZE = 4
 
 
 @dataclasses.dataclass
-class CodeEditorConfig(object):
+class CodeEditorConfig(BaseWindowConfig):
     title: str = "Editor"
-    icon: utils.IconType = None
+    enable_default_menus: bool = True
+    enable_default_toolbar: bool = True
     highlighter: QSyntaxHighlighter | None = None
     completer: QCompleter | None = None
-    tab_size: int = 4
+    auto_indent: bool = True
+    auto_parentheses: bool = True
+    text_font_size: int = DEFAULT_TEXT_FONT_SIZE
+    tab_size: int = DEFAULT_TAB_SIZE
     tab_replace: bool = True
     initial_text: str = ""
-    code_formatter: CodeFormatter | None = None
+    code_formatter: BaseCodeFormatter | Callable[[str], str] | None = None
     file_filters: str | None = None
     start_dir: str | None = None
     check_unsaved_changes: bool = True
-    show_filename_on_title: bool = True
+    show_filename_in_title: bool = True
+    line_wrap_mode: LineWrapMode = LineWrapMode.NoWrap
+    line_wrap_width: int = 88
+    word_wrap_mode: WordWrapMode = WordWrapMode.NoWrap
 
 
-class CodeEditor(QMainWindow):
+class CodeEditorWindow(BaseWindow):
     def __init__(self, parent: QWidget | None, config: CodeEditorConfig | None = None):
-        super().__init__(parent)
-
         config = config or CodeEditorConfig()
 
-        self._title: str = config.title or ""
-        self._code_formatter = config.code_formatter
-        self._file_filters = config.file_filters
-        self._start_dir = config.start_dir
-        self._check_unsaved_changes = config.check_unsaved_changes
-        self._show_filename_on_title = config.show_filename_on_title
+        if config.enable_default_menus and config.menus is None:
+            config.menus = DEFAULT_MENUS
 
+        if config.enable_default_toolbar and config.toolbar is None:
+            config.toolbar = DEFAULT_TOOLBARS
+
+        self._config: CodeEditorConfig = config
         self._editor: QCodeEditor | None = None
-
         self._current_file: str | None = None
         self._initial_fingerprint: str | None = self._fingerprint(config.initial_text)
 
-        self._action_open = QAction(self)
-        self._action_open.setIcon(icon("fa.folder-open-o"))
-        self._action_open.setText("Open")
-        self._action_open.setShortcut("Ctrl+O")
-        self._action_open.triggered.connect(self.open_file)
+        super().__init__(parent, config=config)
 
-        self._action_save = QAction(self)
-        self._action_save.setIcon(icon("msc.save"))
-        self._action_save.setText("Save")
-        self._action_save.setShortcut("Ctrl+S")
-        self._action_save.triggered.connect(self.save_file)
+    def _update_ui(self):
+        super()._update_ui()
 
-        self._action_save_as = QAction(self)
-        self._action_save_as.setIcon(icon("msc.save-as"))
-        self._action_save_as.setText("Save As")
-        self._action_save_as.setShortcut("Ctrl+Shift+S")
-        self._action_save_as.triggered.connect(self.save_as_file)
-
-        menu_file = QMenu(self)
-        menu_file.setTitle("File")
-        menu_file.addAction(self._action_open)
-        menu_file.addAction(self._action_save)
-        menu_file.addAction(self._action_save_as)
-
-        menu_edit = QMenu(self)
-        menu_edit.setTitle("Edit")
-
-        self._builtin_menus = (menu_file, menu_edit)
-
-        self._setup_ui(config)
-
-    def _setup_ui(self, config: CodeEditorConfig):
         center_widget = QWidget(self)
         self._editor = QCodeEditor(center_widget)
+        self._editor.setHighlighter(self._config.highlighter)
+        self._editor.setCompleter(self._config.completer)
+        self._editor.setAutoIndentation(self._config.auto_indent)
+        self._editor.setAutoParentheses(self._config.auto_parentheses)
+        self._editor.setTabReplace(self._config.tab_replace)
+        self._editor.setTabReplaceSize(self._config.tab_size)
+        self._editor.setFontSize(self._config.text_font_size)
+        self._editor.setLineWrapMode(self._config.line_wrap_mode)
+        if (
+            self._config.line_wrap_mode == LineWrapMode.FixedPixelWidth
+            or self._config.line_wrap_mode == LineWrapMode.FixedColumnWidth
+        ):
+            assert (
+                self._config.line_wrap_width is not None
+                and self._config.line_wrap_width > 0
+            )
+            self._editor.setLineWrapColumnOrWidth(self._config.line_wrap_width)
+
+        self._editor.setWordWrapMode(self._config.word_wrap_mode)
+
+        # noinspection PyArgumentList
         main_layout = QVBoxLayout(center_widget)
         main_layout.setContentsMargins(0, 0, 0, 0)
         main_layout.addWidget(self._editor)
         self.setCentralWidget(center_widget)
 
-        self.update_title()
-        win_icon = utils.get_icon(config.icon) or QIcon()
-        self.setWindowIcon(win_icon)
-        self.set_highlighter(config.highlighter)
-        self.set_completer(config.completer)
-        self.set_tab(config.tab_size, config.tab_replace)
-        self.set_text(config.initial_text)
+        self.set_text(self._config.initial_text)
+        self._update_fingerprint()
+        self._update_title()
 
-        for menu in self._builtin_menus:
-            self.menuBar().addMenu(menu)
+    def _on_close(self) -> bool:
+        if not self.check_modification():
+            return super()._on_close()
 
-    def closeEvent(self, event):
-        super().closeEvent(event)
+        # noinspection PyUnresolvedReferences
+        msgbox = utils.MessageBoxConfig(
+            title="Quit",
+            text="There are unsaved changes, if you quit, all changes will be lost. Are you sure to quit?",
+            buttons=utils.StandardButton.Yes | utils.StandardButton.No,
+        ).create_messagebox(self)
+        if msgbox.exec_() == utils.StandardButton.Yes:
+            return super()._on_close()
+        else:
+            return False
 
     def get_text(self) -> str:
         return self._editor.toPlainText()
@@ -117,27 +348,124 @@ class CodeEditor(QMainWindow):
     def set_text(self, text: str | None):
         text = text or ""
         self._editor.setPlainText(text)
-        self.update_fingerprint()
 
     def set_highlighter(self, highlighter: QSyntaxHighlighter | None):
         # noinspection PyTypeChecker
-        self._editor.setHighlighter(highlighter)
+        self._config.highlighter = highlighter
+        self._editor.setHighlighter(self._config.highlighter)
+
+    def get_highlighter(self) -> QSyntaxHighlighter | None:
+        return self._config.highlighter
 
     def set_completer(self, completer: QCompleter | None):
-        self._editor.setCompleter(completer)
+        self._config.completer = completer
+        self._editor.setCompleter(self._config.completer)
+
+    def get_completer(self) -> QCompleter | None:
+        return self._config.completer
+
+    def enable_auto_indent(self, enable: bool = True):
+        self._config.auto_indent = enable
+        self._editor.setAutoIndentation(self._config.auto_indent)
+
+    def is_auto_indent_enabled(self) -> bool:
+        return self._config.auto_indent
+
+    def enable_auto_parentheses(self, enable: bool):
+        self._config.auto_parentheses = enable
+        self._editor.setAutoParentheses(self._config.auto_parentheses)
+
+    def is_auto_parentheses_enabled(self) -> bool:
+        return self._config.auto_parentheses
+
+    def set_text_font_size(self, size: int):
+        assert isinstance(size, int) and size > 0
+        self._config.text_font_size = size
+        self._editor.setFontSize(self._config.text_font_size)
 
     def set_tab(self, size: int = 4, tab_replace: bool = True):
-        self._editor.setTabReplace(tab_replace)
-        self._editor.setTabReplaceSize(size)
+        self._config.tab_size = size
+        self._config.tab_replace = tab_replace
+        self._editor.setTabReplace(self._config.tab_replace)
+        self._editor.setTabReplaceSize(self._config.tab_size)
 
-    def set_code_formatter(self, formatter: CodeFormatter | None):
-        self._code_formatter = formatter
+    def is_tab_replace_enabled(self) -> bool:
+        return self._config.tab_replace
+
+    def get_tab_size(self) -> int:
+        return self._config.tab_size
+
+    def set_wrap_mode(
+        self,
+        line_wrap: LineWrapMode | None = None,
+        line_wrap_width: int | None = None,
+        word_wrap_mode: WordWrapMode | None = None,
+    ):
+        if line_wrap is not None:
+            self._config.line_wrap_mode = line_wrap
+            self._editor.setLineWrapMode(self._config.line_wrap_mode)
+        if line_wrap_width is not None and line_wrap_width > 0:
+            self._config.line_wrap_width = line_wrap_width
+            self._editor.setLineWrapColumnOrWidth(self._config.line_wrap_width)
+        if word_wrap_mode is not None:
+            self._config.word_wrap_mode = word_wrap_mode
+            self._editor.setWordWrapMode(self._config.word_wrap_mode)
+
+    def get_line_wrap_mode(self) -> LineWrapMode:
+        return self._config.line_wrap_mode
+
+    def get_line_wrap_width(self) -> int:
+        return self._config.line_wrap_width
+
+    def get_word_wrap_mode(self) -> WordWrapMode:
+        return self._config.word_wrap_mode
+
+    def set_code_formatter(
+        self, formatter: BaseCodeFormatter | Callable[[str], str] | None
+    ):
+        assert (
+            formatter is None
+            or callable(formatter)
+            or isinstance(formatter, BaseCodeFormatter)
+        )
+        self._config.code_formatter = formatter
+
+    def get_code_formatter(self) -> BaseCodeFormatter | Callable[[str], str] | None:
+        return self._config.code_formatter
 
     def set_file_filters(self, filters: str | None):
-        self._file_filters = filters
+        assert filters is None or isinstance(filters, str)
+        self._config.file_filters = filters
+
+    def get_file_filters(self) -> str | None:
+        return self._config.file_filters
+
+    def set_start_dir(self, directory: str | None):
+        assert directory is None or isinstance(directory, str)
+        self._config.start_dir = directory
+
+    def get_start_dir(self) -> str | None:
+        return self._config.start_dir
+
+    def set_show_filename_in_title(self, show: bool):
+        self._config.show_filename_in_title = show
+
+    def is_show_filename_in_title(self) -> bool:
+        return self._config.show_filename_in_title
+
+    def is_modified(self) -> bool:
+        text = self.get_text()
+        fingerprint = self._fingerprint(text)
+        return fingerprint != self._initial_fingerprint
+
+    def check_modification(self) -> bool:
+        if not self._config.check_unsaved_changes:
+            return False
+        return self.is_modified()
 
     def open_file(self):
         if self.check_modification():
+            # noinspection PyUnresolvedReferences
             ret = utils.show_question_message(
                 self,
                 message="There are unsaved changes, are you sure to continue",
@@ -149,8 +477,8 @@ class CodeEditor(QMainWindow):
         filepath = utils.get_open_file(
             self,
             title="Open File",
-            start_dir=self._start_dir,
-            filters=self._file_filters,
+            start_dir=self._config.start_dir,
+            filters=self._config.file_filters,
         )
         if not filepath:
             return
@@ -168,7 +496,8 @@ class CodeEditor(QMainWindow):
             return
         self._current_file = os.path.abspath(filepath)
         self.set_text(new_text)
-        self.update_title()
+        self._update_fingerprint()
+        self._update_title()
 
     def save_file(self):
         if not self._current_file:
@@ -188,14 +517,14 @@ class CodeEditor(QMainWindow):
                 message=f"Failed to save file '{os.path.abspath(self._current_file)}'",
             )
         else:
-            self.update_fingerprint()
+            self._update_fingerprint()
 
     def save_as_file(self):
         filepath = utils.get_save_file(
             self,
-            title="Save File",
-            start_dir=self._start_dir,
-            filters=self._file_filters,
+            title="Save File as",
+            start_dir=self._config.start_dir,
+            filters=self._config.file_filters,
         )
         if not filepath:
             return
@@ -210,17 +539,28 @@ class CodeEditor(QMainWindow):
             )
         else:
             self._current_file = os.path.abspath(filepath)
-            self.update_fingerprint()
-            self.update_title()
-
-    def new_file(self):
-        pass
+            self._update_fingerprint()
+            self._update_title()
 
     def format_code(self):
-        if not self._code_formatter:
+        if not self._config.code_formatter:
             return
-        formatted = self._code_formatter(self.get_text())
-        self.set_text(formatted)
+
+        try:
+            if isinstance(self._config.code_formatter, BaseCodeFormatter):
+                formatted = self._config.code_formatter.format_code(self.get_text())
+            else:
+                formatted = self._config.code_formatter(self.get_text())
+        except Exception as e:
+            utils.show_exception_message(
+                self,
+                exception=e,
+                title="Error",
+                message="Failed to format current code: ",
+            )
+            return
+        if isinstance(formatted, str):
+            self.set_text(formatted)
 
     def redo(self):
         self._editor.redo()
@@ -237,37 +577,21 @@ class CodeEditor(QMainWindow):
     def paste(self):
         self._editor.paste()
 
-    def delete(self):
-        self._editor.delete()
-
     def select_all(self):
         self._editor.selectAll()
 
-    def quit(self):
-        pass
-
-    def is_modified(self) -> bool:
-        text = self.get_text()
-        fingerprint = self._fingerprint(text)
-        return fingerprint != self._initial_fingerprint
-
-    def update_fingerprint(self):
+    def _update_fingerprint(self):
         self._initial_fingerprint = self._fingerprint(self.get_text())
 
-    def update_title(self):
-        win_title = self._title.strip()
-        if self._show_filename_on_title:
+    def _update_title(self):
+        win_title = (self._config.title or "").strip()
+        if self._config.show_filename_in_title:
             if not self._current_file:
                 filename = "Untitled"
             else:
                 filename = os.path.basename(self._current_file)
             win_title = f"{win_title} - {filename}".strip()
         self.setWindowTitle(win_title)
-
-    def check_modification(self) -> bool:
-        if not self._check_unsaved_changes:
-            return False
-        return self.is_modified()
 
     @staticmethod
     def _fingerprint(text: str | None) -> str | None:

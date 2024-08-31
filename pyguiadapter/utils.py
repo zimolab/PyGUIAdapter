@@ -5,7 +5,7 @@ import os.path
 import re
 import string
 import traceback
-from typing import Literal, List, Set, Tuple, Any, Union
+from typing import Literal, List, Set, Tuple, Any, Union, Type
 
 import qtawesome as qta
 from qtpy import QT_VERSION
@@ -13,8 +13,8 @@ from qtpy.QtCore import QUrl, Qt
 from qtpy.QtGui import QIcon, QPixmap, QTextCursor, QTextOption
 from qtpy.QtWidgets import QTextBrowser, QWidget, QMessageBox, QFrame, QFileDialog
 
-StandardButton = QMessageBox.StandardButton
-StandardButtons = QMessageBox.StandardButtons
+StandardButton: Type[QMessageBox.StandardButton] = QMessageBox.StandardButton
+StandardButtons: Type[QMessageBox.StandardButtons] = QMessageBox.StandardButtons
 TextFormat = Qt.TextFormat
 
 # noinspection SpellCheckingInspection
@@ -91,7 +91,7 @@ class MessageBoxConfig(object):
             msgbox.setTextFormat(self.text_format)
 
         if self.buttons is not None:
-            msgbox.setDefaultButton(self.buttons)
+            msgbox.setStandardButtons(self.buttons)
 
         if self.default_button is not None:
             msgbox.setDefaultButton(self.default_button)
@@ -107,7 +107,7 @@ def get_icon(src: IconType, *args, **kwargs) -> QIcon | None:
     if src is None:
         return None
     if isinstance(src, QIcon):
-        return QIcon(src)
+        return src
     if isinstance(src, QPixmap):
         return QIcon(src)
     if isinstance(src, str):
@@ -262,7 +262,7 @@ def show_exception_message(
     msgbox = MessageBoxConfig(
         title=title,
         text=err_msg,
-        icon=QMessageBox.Icon.Critical,
+        icon=QMessageBox.Critical,
         detailed_text=detail_msg,
         **kwargs,
     ).create_messagebox(parent)
