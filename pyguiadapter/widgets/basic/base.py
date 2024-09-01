@@ -10,14 +10,17 @@ from pyqcodeeditor.QStyleSyntaxHighlighter import QStyleSyntaxHighlighter
 from qtpy.QtCore import Qt
 from qtpy.QtWidgets import QWidget, QVBoxLayout, QPushButton
 
-from .codeeditor import (
+from ..codeeditor import (
     BaseCodeFormatter,
     LineWrapMode,
     WordWrapMode,
     CodeEditorWindow,
     CodeEditorConfig,
 )
-from ..common import CommonParameterWidget, CommonParameterWidgetConfig
+from ..common import (
+    CommonParameterWidget,
+    CommonParameterWidgetConfig,
+)
 from ...exceptions import ParameterValidationError
 from ... import utils
 
@@ -25,7 +28,7 @@ T = TypeVar("T")
 
 
 @dataclasses.dataclass(frozen=True)
-class BaseDataEditorConfig(CommonParameterWidgetConfig):
+class BaseDataEditConfig(CommonParameterWidgetConfig):
     font_size: int = 14
     indent_size: int = 4
     min_height: int = 245
@@ -46,22 +49,22 @@ class BaseDataEditorConfig(CommonParameterWidgetConfig):
 
     @classmethod
     @abstractmethod
-    def target_widget_class(cls) -> Type["BaseDataEditor"]:
+    def target_widget_class(cls) -> Type["BaseDataEdit"]:
         pass
 
 
-class BaseDataEditor(CommonParameterWidget):
-    Self = TypeVar("Self", bound="BaseEditor")
-    ConfigClass = BaseDataEditorConfig
+class BaseDataEdit(CommonParameterWidget):
+    Self = TypeVar("Self", bound="BaseDataEdit")
+    ConfigClass = BaseDataEditConfig
 
     def __init__(
         self,
         parent: QWidget | None,
         parameter_name: str,
-        config: BaseDataEditorConfig,
+        config: BaseDataEditConfig,
     ):
 
-        self._config: BaseDataEditorConfig = config
+        self._config: BaseDataEditConfig = config
         self._value_widget: QWidget | None = None
         self._editor_button: QPushButton | None = None
         super().__init__(parent, parameter_name, config)

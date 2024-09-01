@@ -1,2 +1,2 @@
-from .edit import *
+from .basic import *
 from .factory import ParameterWidgetFactory

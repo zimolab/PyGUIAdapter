@@ -33,19 +33,22 @@ class IntSpinBox(CommonParameterWidget):
         self, parent: QWidget | None, parameter_name: str, config: IntSpinBoxConfig
     ):
         self._config: IntSpinBoxConfig = config
+        self._value_widget: QSpinBox | None = None
         super().__init__(parent, parameter_name, config)
-
-        self._value_widget: QSpinBox = QSpinBox(self)
-        self._value_widget.setMinimum(self._config.min_value)
-        self._value_widget.setMaximum(self._config.max_value)
-        self._value_widget.setSingleStep(self._config.step)
-        self._value_widget.setPrefix(self._config.prefix or "")
-        self._value_widget.setSuffix(self._config.suffix or "")
-        if self._config.display_integer_base > 0:
-            self._value_widget.setDisplayIntegerBase(self._config.display_integer_base)
 
     @property
     def value_widget(self) -> QSpinBox:
+        if self._value_widget is None:
+            self._value_widget = QSpinBox(self)
+            self._value_widget.setMinimum(self._config.min_value)
+            self._value_widget.setMaximum(self._config.max_value)
+            self._value_widget.setSingleStep(self._config.step)
+            self._value_widget.setPrefix(self._config.prefix or "")
+            self._value_widget.setSuffix(self._config.suffix or "")
+            if self._config.display_integer_base > 0:
+                self._value_widget.setDisplayIntegerBase(
+                    self._config.display_integer_base
+                )
         return self._value_widget
 
     def set_value_to_widget(self, value: Any):
@@ -79,17 +82,19 @@ class IntLineEdit(CommonParameterWidget):
         self, parent: QWidget | None, parameter_name: str, config: IntLineEditConfig
     ):
         self._config: IntLineEditConfig = config
+        self._validator: QIntValidator | None = None
+        self._value_widget: QLineEdit | None = None
         super().__init__(parent, parameter_name, config)
-
-        self._value_widget: QLineEdit = QLineEdit(self)
-        self._validator = QIntValidator(
-            self._config.min_value, self._config.max_value, self._value_widget
-        )
-        self._value_widget.setValidator(self._validator)
-        self._value_widget.setText(str(self._config.fallback_value))
 
     @property
     def value_widget(self) -> QLineEdit:
+        if self._value_widget is None:
+            self._value_widget = QLineEdit(self)
+            self._validator = QIntValidator(
+                self._config.min_value, self._config.max_value, self._value_widget
+            )
+            self._value_widget.setValidator(self._validator)
+            self._value_widget.setText(str(self._config.fallback_value))
         return self._value_widget
 
     def set_value_to_widget(self, value: Any):

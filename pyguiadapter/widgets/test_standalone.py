@@ -1,5 +1,5 @@
 from qtpy.QtWidgets import QApplication
-from pyguiadapter.widgets.editor.codeeditor import (
+from pyguiadapter.widgets.codeeditor import (
     CodeEditorConfig,
     CodeEditorWindow,
     PythonCodeFormatter,

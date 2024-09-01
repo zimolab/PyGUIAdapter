@@ -12,7 +12,9 @@ from pyguiadapter.types import (
     directory_t,
     file_t,
     file_list_t,
-    literal_t,
+    py_literal_t,
+    bin_state_t,
+    choices_t,
 )
 from pyguiadapter.windows import FnSelectWindowConfig, FnExecuteWindowConfig
 
@@ -35,7 +37,7 @@ def f1(
     arg8: file_t,
     arg9: file_list_t,
     arg10: Any,
-    arg11: literal_t,
+    arg11: py_literal_t,
     arg12: dict,
     arg13: Dict[str, int],
     arg14: list,
@@ -44,6 +46,9 @@ def f1(
     arg17: tuple,
     arg18: set,
     arg19: Set[int],
+    arg20: bool,
+    arg21: bin_state_t,
+    arg23: choices_t[1, 3, 4],
 ):
     """
 
@@ -56,11 +61,7 @@ def f1(
 
     @end
     """
-    print(arg14)
-    if arg14 is not None:
-        arg14.append("1234")
-    print(arg14)
-    uprint(arg11, type(arg11))
+    uprint(arg21)
 
 
 def f2():

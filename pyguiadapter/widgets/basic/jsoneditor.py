@@ -7,31 +7,31 @@ from typing import Type, TypeVar, Any
 from pyqcodeeditor.highlighters import QJSONHighlighter
 from qtpy.QtWidgets import QWidget
 
-from .base import BaseDataEditor, BaseDataEditorConfig
-from .codeeditor import JsonFormatter
+from .base import BaseDataEdit, BaseDataEditConfig
+from ..codeeditor import JsonFormatter
 
 
 @dataclasses.dataclass(frozen=True)
-class JsonEditorConfig(BaseDataEditorConfig):
+class JsonEditConfig(BaseDataEditConfig):
     default_value: Any = dataclasses.field(default_factory=dict)
     highlighter: Type[QJSONHighlighter] = QJSONHighlighter
     code_formatter: JsonFormatter = dataclasses.field(default_factory=JsonFormatter)
 
     @classmethod
-    def target_widget_class(cls) -> Type["JsonEditor"]:
-        return JsonEditor
+    def target_widget_class(cls) -> Type["JsonEdit"]:
+        return JsonEdit
 
 
-class JsonEditor(BaseDataEditor):
+class JsonEdit(BaseDataEdit):
 
-    Self = TypeVar("Self", bound="JsonEditor")
-    ConfigClass = JsonEditorConfig
+    Self = TypeVar("Self", bound="JsonEdit")
+    ConfigClass = JsonEditConfig
 
     def __init__(
         self,
         parent: QWidget | None,
         parameter_name: str,
-        config: JsonEditorConfig,
+        config: JsonEditConfig,
     ):
         super().__init__(parent, parameter_name, config)
 

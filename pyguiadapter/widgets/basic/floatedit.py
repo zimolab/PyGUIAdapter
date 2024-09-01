@@ -33,21 +33,21 @@ class FloatSpinBox(CommonParameterWidget):
         self, parent: QWidget | None, parameter_name: str, config: FloatSpinBoxConfig
     ):
         self._config: FloatSpinBoxConfig = config
+        self._value_widget: QDoubleSpinBox | None = None
         super().__init__(parent, parameter_name, config)
-
-        self._value_widget: QDoubleSpinBox = QDoubleSpinBox(self)
-        self._value_widget.setMinimum(self._config.min_value)
-        self._value_widget.setMaximum(self._config.max_value)
-        if self._config.step is not None and self._config.step > 0:
-            self._value_widget.setSingleStep(self._config.step)
-        if self._config.decimals is not None and self._config.decimals > 0:
-            self._value_widget.setDecimals(self._config.decimals)
-
-        self._value_widget.setPrefix(self._config.prefix or "")
-        self._value_widget.setSuffix(self._config.suffix or "")
 
     @property
     def value_widget(self) -> QDoubleSpinBox:
+        if self._value_widget is None:
+            self._value_widget = QDoubleSpinBox(self)
+            self._value_widget.setMinimum(self._config.min_value)
+            self._value_widget.setMaximum(self._config.max_value)
+            if self._config.step is not None and self._config.step > 0:
+                self._value_widget.setSingleStep(self._config.step)
+            if self._config.decimals is not None and self._config.decimals > 0:
+                self._value_widget.setDecimals(self._config.decimals)
+            self._value_widget.setPrefix(self._config.prefix or "")
+            self._value_widget.setSuffix(self._config.suffix or "")
         return self._value_widget
 
     def set_value_to_widget(self, value: Any):
@@ -83,26 +83,27 @@ class FloatLineEdit(CommonParameterWidget):
         self, parent: QWidget | None, parameter_name: str, config: FloatLineEditConfig
     ):
         self._config: FloatLineEditConfig = config
+        self._value_widget: QLineEdit | None = None
+        self._validator: QDoubleValidator | None = None
         super().__init__(parent, parameter_name, config)
-
-        self._value_widget: QLineEdit = QLineEdit(self)
-
-        self._validator = QDoubleValidator(
-            self._config.min_value,
-            self._config.max_value,
-            self._config.decimals,
-            self._value_widget,
-        )
-        if self._config.scientific_notation:
-            notation = QDoubleValidator.ScientificNotation
-        else:
-            notation = QDoubleValidator.StandardNotation
-        self._validator.setNotation(notation)
-        self._value_widget.setValidator(self._validator)
-        self._value_widget.setText(str(self._config.fallback_value))
 
     @property
     def value_widget(self) -> QLineEdit:
+        if self._value_widget is None:
+            self._value_widget = QLineEdit(self)
+            self._validator = QDoubleValidator(
+                self._config.min_value,
+                self._config.max_value,
+                self._config.decimals,
+                self._value_widget,
+            )
+            if self._config.scientific_notation:
+                notation = QDoubleValidator.ScientificNotation
+            else:
+                notation = QDoubleValidator.StandardNotation
+            self._validator.setNotation(notation)
+            self._value_widget.setValidator(self._validator)
+            self._value_widget.setText(str(self._config.fallback_value))
         return self._value_widget
 
     def set_value_to_widget(self, value: Any):

@@ -35,13 +35,14 @@ class LineEdit(CommonParameterWidget):
     ):
 
         self._config: LineEditConfig = config
+        self._value_widget: QLineEdit | None = None
         super().__init__(parent, parameter_name, config)
-
-        self._value_widget = QLineEdit(self)
-        self._setup_value_widget()
 
     @property
     def value_widget(self) -> QLineEdit:
+        if self._value_widget is None:
+            self._value_widget = QLineEdit(self)
+            self._setup_value_widget()
         return self._value_widget
 
     def set_value_to_widget(self, value: Any):

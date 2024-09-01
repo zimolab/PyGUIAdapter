@@ -7,33 +7,33 @@ from typing import Type, Union, TypeVar, Any
 from pyqcodeeditor.highlighters import QPythonHighlighter
 from qtpy.QtWidgets import QWidget
 
-from .base import BaseDataEditor, BaseDataEditorConfig
-from .codeeditor import PythonCodeFormatter
+from .base import BaseDataEdit, BaseDataEditConfig
+from ..codeeditor import PythonCodeFormatter
 
 PyLiteralType = Union[bool, int, float, bytes, str, list, tuple, dict, set]
 
 
 @dataclasses.dataclass(frozen=True)
-class PyLiteralEditorConfig(BaseDataEditorConfig):
+class PyLiteralEditConfig(BaseDataEditConfig):
     default_value: Any = None
     highlighter: Type[QPythonHighlighter] = QPythonHighlighter
     code_formatter: QPythonHighlighter = PythonCodeFormatter()
     initial_text: str = "None"
 
     @classmethod
-    def target_widget_class(cls) -> Type["PyLiteralEditor"]:
-        return PyLiteralEditor
+    def target_widget_class(cls) -> Type["PyLiteralEdit"]:
+        return PyLiteralEdit
 
 
-class PyLiteralEditor(BaseDataEditor):
-    Self = TypeVar("Self", bound="PythonLiteralEditor")
-    ConfigClass = PyLiteralEditorConfig
+class PyLiteralEdit(BaseDataEdit):
+    Self = TypeVar("Self", bound="PyLiteralEdit")
+    ConfigClass = PyLiteralEditConfig
 
     def __init__(
         self,
         parent: QWidget | None,
         parameter_name: str,
-        config: PyLiteralEditorConfig,
+        config: PyLiteralEditConfig,
     ):
         super().__init__(parent, parameter_name, config)
 

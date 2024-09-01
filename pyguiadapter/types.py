@@ -9,6 +9,11 @@ class int_t(int):
 
 
 # noinspection PyPep8Naming
+class bin_state_t(int):
+    pass
+
+
+# noinspection PyPep8Naming
 class float_t(float):
     pass
 
@@ -29,5 +34,10 @@ class directory_t(str):
 
 
 # noinspection PyPep8Naming
-class literal_t(object):
+class py_literal_t(object):
+    pass
+
+
+# noinspection PyPep8Naming
+class choices_t(list):
     pass

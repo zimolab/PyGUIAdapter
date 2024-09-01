@@ -15,8 +15,8 @@ from pyqcodeeditor.QStyleSyntaxHighlighter import QStyleSyntaxHighlighter
 from qtpy.QtGui import QAction, QTextOption
 from qtpy.QtWidgets import QWidget, QCompleter, QVBoxLayout, QTextEdit
 
-from ... import utils
-from ...window import (
+from .. import utils
+from ..window import (
     BaseWindow,
     BaseWindowConfig,
     MenuConfig,
@@ -364,6 +364,7 @@ class CodeEditorWindow(BaseWindow):
         self._config.highlighter = highlighter
         self._config.highlighter_args = args
         if self._highlighter is not None:
+            # noinspection PyTypeChecker
             self._highlighter.setDocument(None)
             self._highlighter.deleteLater()
             self._highlighter = None

@@ -1,31 +1,29 @@
 from __future__ import annotations
 
-import copy
 import dataclasses
 from typing import Type, TypeVar
 
 from qtpy.QtWidgets import QWidget
 
-from . import PyLiteralType
-from .literaleditor import PyLiteralEditor, PyLiteralEditorConfig
+from .literaledit import PyLiteralEdit, PyLiteralEditConfig, PyLiteralType
 
 
 @dataclasses.dataclass(frozen=True)
-class DictEditorConfig(PyLiteralEditorConfig):
+class DictEditConfig(PyLiteralEditConfig):
     default_value: dict | None = None
     initial_text: str = "{}"
 
     @classmethod
-    def target_widget_class(cls) -> Type["DictEditor"]:
-        return DictEditor
+    def target_widget_class(cls) -> Type["DictEdit"]:
+        return DictEdit
 
 
-class DictEditor(PyLiteralEditor):
-    Self = TypeVar("Self", bound="DictEditor")
-    ConfigClass = DictEditorConfig
+class DictEdit(PyLiteralEdit):
+    Self = TypeVar("Self", bound="DictEdit")
+    ConfigClass = DictEditConfig
 
     def __init__(
-        self, parent: QWidget | None, parameter_name: str, config: DictEditorConfig
+        self, parent: QWidget | None, parameter_name: str, config: DictEditConfig
     ):
         super().__init__(parent, parameter_name, config)
 
