@@ -4,47 +4,47 @@ import dataclasses
 from typing import Type, TypeVar
 
 from qtpy.QtCore import Qt
-from qtpy.QtWidgets import QWidget, QSlider, QLabel, QVBoxLayout
+from qtpy.QtWidgets import QWidget, QDial, QLabel, QVBoxLayout
 
 from ..common import CommonParameterWidgetConfig, CommonParameterWidget
 
-TickPosition = QSlider.TickPosition
-
 
 @dataclasses.dataclass(frozen=True)
-class SliderConfig(CommonParameterWidgetConfig):
+class DialConfig(CommonParameterWidgetConfig):
     default_value: int | None = None
     min_value: int = 0
     max_value: int = 100
+    notch_target: float | None = None
+    notches_visible: bool = True
+    wrapping: bool = False
     single_step: int = 1
     page_step: int | None = None
-    tick_interval: int | None = None
-    tick_position: TickPosition = TickPosition.TicksBothSides
     tracking: bool = True
     inverted_controls: bool = False
     inverted_appearance: bool = False
     enable_value_label: bool = True
     prefix: str = ""
     suffix: str = ""
+    min_height: int = 120
 
     @classmethod
-    def target_widget_class(cls) -> Type["Slider"]:
-        return Slider
+    def target_widget_class(cls) -> Type["Dial"]:
+        return Dial
 
 
-class Slider(CommonParameterWidget):
-    Self = TypeVar("Self", bound="Slider")
-    ConfigClass = SliderConfig
+class Dial(CommonParameterWidget):
+    Self = TypeVar("Self", bound="Dial")
+    ConfigClass = DialConfig
 
     def __init__(
         self,
         parent: QWidget | None,
         parameter_name: str,
-        config: SliderConfig,
+        config: DialConfig,
     ):
-        self._config: SliderConfig = config
+        self._config: DialConfig = config
         self._value_widget: QWidget | None = None
-        self._slider: QSlider | None = None
+        self._dial: QDial | None = None
         self._label: QLabel | None = None
         super().__init__(parent, parameter_name, config)
 
@@ -52,16 +52,18 @@ class Slider(CommonParameterWidget):
     def value_widget(self) -> QWidget:
         if self._value_widget is None:
             self._value_widget = QWidget(self)
-            self._slider = QSlider(self._value_widget)
+            self._dial = QDial(self._value_widget)
+            if self._config.min_height:
+                self._value_widget.setMinimumHeight(self._config.min_height)
 
             layout = QVBoxLayout(self._value_widget)
             self._value_widget.setLayout(layout)
 
-            layout.addWidget(self._slider)
+            layout.addWidget(self._dial, 9)
             if self._config.enable_value_label:
                 self._label = QLabel(self._value_widget)
-                layout.addWidget(self._label)
-                self._slider.valueChanged.connect(self._on_value_changed)
+                layout.addWidget(self._label, 1)
+                self._dial.valueChanged.connect(self._on_value_changed)
 
             self._setup_widgets()
 
@@ -69,28 +71,32 @@ class Slider(CommonParameterWidget):
 
     def set_value_to_widget(self, value: int):
         value = int(value)
-        self._slider.setValue(value)
+        self._dial.setValue(value)
 
     def get_value_from_widget(self) -> int:
-        return self._slider.value()
+        return self._dial.value()
 
     def _setup_widgets(self):
-        self._slider.setOrientation(Qt.Horizontal)
-        self._slider.setMinimum(self._config.min_value)
-        self._slider.setMaximum(self._config.max_value)
-        self._slider.setSingleStep(self._config.single_step)
+        self._dial.setOrientation(Qt.Horizontal)
+        self._dial.setMinimum(self._config.min_value)
+        self._dial.setMaximum(self._config.max_value)
+        self._dial.setSingleStep(self._config.single_step)
         if self._config.page_step is not None:
-            self._slider.setPageStep(self._config.page_step)
-        if self._config.tick_interval is not None:
-            self._slider.setTickInterval(self._config.tick_interval)
-        self._slider.setTickPosition(self._config.tick_position)
-        self._slider.setTracking(self._config.tracking)
-        self._slider.setInvertedControls(self._config.inverted_controls)
-        self._slider.setInvertedAppearance(self._config.inverted_appearance)
+            self._dial.setPageStep(self._config.page_step)
+
+        self._dial.setTracking(self._config.tracking)
+        self._dial.setInvertedControls(self._config.inverted_controls)
+        self._dial.setInvertedAppearance(self._config.inverted_appearance)
+
+        if self._config.notch_target is not None:
+            self._dial.setNotchTarget(self._config.notch_target)
+
+        self._dial.setNotchesVisible(self._config.notches_visible)
+        self._dial.setWrapping(self._config.wrapping)
 
         if self._label is not None:
             self._label.setAlignment(Qt.AlignVCenter | Qt.AlignHCenter)
-            self._on_value_changed(self._slider.value())
+            self._on_value_changed(self._dial.value())
 
     def _on_value_changed(self, value: int):
         if self._label is None:

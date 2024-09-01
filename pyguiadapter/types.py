@@ -46,3 +46,13 @@ class choice_t(object):
 # noinspection PyPep8Naming
 class choices_t(list):
     pass
+
+
+# noinspection PyPep8Naming
+class int_slider_t(int):
+    pass
+
+
+# noinspection PyPep8Naming
+class int_dial_t(int):
+    pass

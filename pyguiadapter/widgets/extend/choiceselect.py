@@ -9,28 +9,34 @@ from qtpy.QtWidgets import QWidget, QComboBox
 from ..common import CommonParameterWidgetConfig, CommonParameterWidget
 
 
+@dataclasses.dataclass
+class _DataWrap(object):
+    value: Any
+
+
 @dataclasses.dataclass(frozen=True)
-class ExclusiveChoiceSelectConfig(CommonParameterWidgetConfig):
+class ChoiceSelectConfig(CommonParameterWidgetConfig):
     default_value: Any | None = None
     choices: Dict[str, Any] | List[Any] = dataclasses.field(default_factory=list)
+    editable: bool = True
 
     @classmethod
-    def target_widget_class(cls) -> Type["ExclusiveChoiceSelect"]:
-        return ExclusiveChoiceSelect
+    def target_widget_class(cls) -> Type["ChoiceSelect"]:
+        return ChoiceSelect
 
 
-class ExclusiveChoiceSelect(CommonParameterWidget):
+class ChoiceSelect(CommonParameterWidget):
 
-    Self = TypeVar("Self", bound="ExclusiveChoiceSelect")
-    ConfigClass = ExclusiveChoiceSelectConfig
+    Self = TypeVar("Self", bound="ChoiceSelect")
+    ConfigClass = ChoiceSelectConfig
 
     def __init__(
         self,
         parent: QWidget | None,
         parameter_name: str,
-        config: ExclusiveChoiceSelectConfig,
+        config: ChoiceSelectConfig,
     ):
-        self._config: ExclusiveChoiceSelectConfig = config
+        self._config: ChoiceSelectConfig = config
         self._value_widget: QComboBox | None = None
         super().__init__(parent, parameter_name, config)
 
@@ -38,27 +44,37 @@ class ExclusiveChoiceSelect(CommonParameterWidget):
     def value_widget(self) -> QWidget:
         if self._value_widget is None:
             self._value_widget = QComboBox(self)
+            if self._config.editable:
+                self._value_widget.setEditable(True)
             self._add_choices()
         return self._value_widget
 
     def set_value_to_widget(self, value: Any):
         for index in range(self._value_widget.count()):
-            if self._value_widget.itemData(index, Qt.UserRole) == value:
+            data = self._value_widget.itemData(index, Qt.UserRole)
+            if isinstance(data, _DataWrap):
+                data = data.value
+            if data == value:
                 self._value_widget.setCurrentIndex(index)
                 break
 
     def get_value_from_widget(self) -> Any:
-        return self._value_widget.currentData(Qt.UserRole)
+        data = self._value_widget.currentData(Qt.UserRole)
+        if isinstance(data, _DataWrap):
+            return data.value
+        if data is not None:
+            return data
+        return self._value_widget.currentText()
 
     def _add_choices(self):
         choices = self._config.choices
         assert isinstance(choices, list) or isinstance(choices, dict)
         if isinstance(choices, list):
             for choice in choices:
-                self._value_widget.addItem(str(choice), choice)
+                self._value_widget.addItem(str(choice), _DataWrap(choice))
             return
 
         if isinstance(choices, dict):
             for key, value in choices.items():
-                self._value_widget.addItem(key, value)
+                self._value_widget.addItem(key, _DataWrap(value))
             return

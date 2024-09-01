@@ -18,7 +18,7 @@ from .basic import (
     SetEdit,
 )
 from .path import DirSelect, FileSelect, MultiFileSelect
-from .extend import ExclusiveChoiceBox, ExclusiveChoiceSelect, MultiChoiceBox
+from .extend import ExclusiveChoiceBox, ChoiceSelect, MultiChoiceBox, Slider, Dial
 from ..parser.typenames import (
     TYPE_STR,
     TYPE_INT,
@@ -42,6 +42,8 @@ from ..types import (
     bin_state_t,
     choice_t,
     choices_t,
+    int_slider_t,
+    int_dial_t,
 )
 
 TYPE_TEXT = text_t.__name__
@@ -55,6 +57,8 @@ TYPE_PY_LITERAL_T_2 = str(PyLiteralType)
 TYPE_BIN_T = bin_state_t.__name__
 TYPE_CHOICE_T = choice_t.__name__
 TYPE_CHOICES_T = choices_t.__name__
+TYPE_SLIDER_INT_T = int_slider_t.__name__
+TYPE_DIAL_INT_T = int_dial_t.__name__
 
 BUILTIN_WIDGETS_MAP = {
     TYPE_STR: LineEdit,
@@ -76,6 +80,8 @@ BUILTIN_WIDGETS_MAP = {
     TYPE_TUPLE: TupleEdit,
     TYPE_SET: SetEdit,
     TYPE_LITERAL: ExclusiveChoiceBox,
-    TYPE_CHOICE_T: ExclusiveChoiceSelect,
+    TYPE_CHOICE_T: ChoiceSelect,
     TYPE_CHOICES_T: MultiChoiceBox,
+    TYPE_SLIDER_INT_T: Slider,
+    TYPE_DIAL_INT_T: Dial,
 }

@@ -16,6 +16,8 @@ from pyguiadapter.types import (
     bin_state_t,
     choices_t,
     choice_t,
+    int_slider_t,
+    int_dial_t,
 )
 from pyguiadapter.windows import FnSelectWindowConfig, FnExecuteWindowConfig
 
@@ -52,7 +54,9 @@ def f1(
     arg22: Literal["a", "b", "c"],
     arg23: Literal["a", "b", "c", 1, 2, 3, 2, True, "a", False, "c", "True"],
     arg24: choice_t,
-    arg25: choices_t = [1, 3, 4],
+    arg25: choices_t,
+    arg26: int_slider_t,
+    arg27: int_dial_t,
 ):
     """
 
@@ -76,6 +80,8 @@ def f1(
     uprint(arg23)
     uprint(arg24)
     uprint(arg25)
+    uprint(arg26)
+    uprint(arg27)
 
 
 def f2():

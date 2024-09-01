@@ -1,12 +1,18 @@
 from .exclusivechoice import ExclusiveChoiceBox, ExclusiveChoiceBoxConfig
-from .exclusiveselect import ExclusiveChoiceSelect, ExclusiveChoiceSelectConfig
+from .choiceselect import ChoiceSelect, ChoiceSelectConfig
 from .multichoice import MultiChoiceBox, MultiChoiceBoxConfig
+from .slider import Slider, SliderConfig
+from .dial import Dial, DialConfig
 
 __all__ = [
     "ExclusiveChoiceBox",
     "ExclusiveChoiceBoxConfig",
     "MultiChoiceBoxConfig",
     "MultiChoiceBox",
-    "ExclusiveChoiceSelect",
-    "ExclusiveChoiceSelectConfig",
+    "ChoiceSelect",
+    "ChoiceSelectConfig",
+    "Slider",
+    "SliderConfig",
+    "Dial",
+    "DialConfig",
 ]
