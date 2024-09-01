@@ -1,8 +1,7 @@
 import time
-from datetime import datetime
+from datetime import datetime, date, time
 from typing import Any, Dict, Set, Literal
 
-from pyguiadapter.adapter import ulogging
 from pyguiadapter.adapter.adapter import GUIAdapter
 from pyguiadapter.adapter.ucontext import uprint, is_function_cancelled
 from pyguiadapter.adapter.uinput import *
@@ -58,7 +57,9 @@ def f1(
     arg25: choices_t,
     arg26: int_slider_t,
     arg27: int_dial_t,
-    arg28: datetime = datetime.now(),
+    arg28: datetime,
+    arg29: date,
+    arg30: time = time(),
 ):
     """
 
@@ -85,6 +86,8 @@ def f1(
     uprint(arg26)
     uprint(arg27)
     uprint(arg28)
+    uprint(arg29)
+    uprint(arg30)
 
 
 def f2():

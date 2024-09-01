@@ -25,6 +25,8 @@ from .extend import (
     Slider,
     Dial,
     DateTimeEdit,
+    DateEdit,
+    TimeEdit,
 )
 from ..parser.typenames import (
     TYPE_STR,
@@ -52,7 +54,7 @@ from ..types import (
     int_slider_t,
     int_dial_t,
 )
-from datetime import datetime
+from datetime import datetime, date, time
 
 TYPE_TEXT = text_t.__name__
 TYPE_INT_T = int_t.__name__
@@ -68,6 +70,8 @@ TYPE_CHOICES_T = choices_t.__name__
 TYPE_SLIDER_INT_T = int_slider_t.__name__
 TYPE_DIAL_INT_T = int_dial_t.__name__
 TYPE_DATETIME = datetime.__name__
+TYPE_DATE = date.__name__
+TYPE_TIME = time.__name__
 
 BUILTIN_WIDGETS_MAP = {
     TYPE_STR: LineEdit,
@@ -94,4 +98,6 @@ BUILTIN_WIDGETS_MAP = {
     TYPE_SLIDER_INT_T: Slider,
     TYPE_DIAL_INT_T: Dial,
     TYPE_DATETIME: DateTimeEdit,
+    TYPE_DATE: DateEdit,
+    TYPE_TIME: TimeEdit,
 }
