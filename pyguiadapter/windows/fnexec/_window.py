@@ -25,6 +25,7 @@ from ...adapter import ucontext
 from ...exceptions import FunctionExecutingError, ParameterValidationError
 from ...executor import ExecuteStateListener, BaseFunctionExecutor
 from ...executors import ThreadFunctionExecutor
+from ...fn import ParameterInfo
 from ...paramwidget import (
     BaseParameterWidget,
     BaseParameterWidgetConfig,
@@ -157,7 +158,10 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
     def add_parameter(
         self, parameter_name: str, config: ParameterWidgetType
     ) -> BaseParameterWidget:
-        widget_class, widget_config = self._get_widget_class_and_config(config)
+        param_info = self._bundle.fn_info.parameters.get(parameter_name)
+        widget_class, widget_config = self._get_widget_class_and_config(
+            parameter_name, param_info, config
+        )
 
         try:
             widget = self._param_groups.add_parameter(
@@ -213,7 +217,7 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
 
     @staticmethod
     def _get_widget_class_and_config(
-        config: ParameterWidgetType,
+        param_name: str, param_info: ParameterInfo, config: ParameterWidgetType
     ) -> Tuple[Type[BaseParameterWidget], BaseParameterWidgetConfig]:
         if isinstance(config, tuple):
             assert len(config) == 2
@@ -231,6 +235,9 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
 
         if isinstance(widget_config, dict):
             widget_config = widget_class.ConfigClass.new(**widget_config)
+        widget_config = widget_class.after_process_config(
+            widget_config, param_name, param_info
+        )
         return widget_class, widget_config
 
     # noinspection PyUnresolvedReferences

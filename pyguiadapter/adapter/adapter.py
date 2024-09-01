@@ -213,10 +213,12 @@ class GUIAdapter(object):
         user_configs = user_configs.copy()
         normalized_configs = OrderedDict()
 
-        for param_name, config_item in parsed_configs.items():
+        for param_name, parsed_config_item in parsed_configs.items():
+
             param_info = parameters.get(param_name, None)
             assert param_info is not None
-            widget_class, widget_config = config_item
+
+            widget_class, widget_config = parsed_config_item
             user_config_item = user_configs.pop(param_name, None)
 
             # if user config not provided
@@ -265,12 +267,12 @@ class GUIAdapter(object):
 
         # process remaining user widget configs (if any)
         # if user_configs:
-        #     for param_name, config_item in user_configs.items():
-        #         if not isinstance(config_item, tuple) or len(config_item) != 2:
+        #     for param_name, parsed_config_item in user_configs.items():
+        #         if not isinstance(parsed_config_item, tuple) or len(parsed_config_item) != 2:
         #             raise ValueError(
         #                 f"widget class and widget configs must be provided as a tuple for parameter '{param_name}"
         #             )
-        #         _widget_class_2, _widget_config_2 = config_item
+        #         _widget_class_2, _widget_config_2 = parsed_config_item
         #         if not self._is_widget_class_type(_widget_class_2):
         #             raise ValueError(
         #                 f"invalid widget class for parameter '{param_name}': {_widget_class_2}"

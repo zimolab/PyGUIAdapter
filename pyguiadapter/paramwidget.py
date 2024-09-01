@@ -7,6 +7,8 @@ from typing import Any, Type, TypeVar
 
 from qtpy.QtWidgets import QWidget
 
+from .fn import ParameterInfo
+
 DEFAULT_VALUE_DESCRIPTION = "use default value: {}"
 
 
@@ -117,6 +119,16 @@ class BaseParameterWidget(QWidget):
         config: BaseParameterWidgetConfig,
     ) -> Self:
         return cls(parent, parameter_name, config).build()
+
+    # noinspection PyUnusedLocal
+    @classmethod
+    def after_process_config(
+        cls,
+        config: BaseParameterWidgetConfig,
+        parameter_name: str,
+        parameter_info: ParameterInfo,
+    ) -> BaseParameterWidgetConfig:
+        return config
 
 
 def is_parameter_widget_class(o: Any) -> bool:

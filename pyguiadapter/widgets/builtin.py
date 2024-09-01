@@ -18,6 +18,7 @@ from .basic import (
     SetEdit,
 )
 from .path import DirSelect, FileSelect, MultiFileSelect
+from .extend import ExclusiveChoiceBox, ExclusiveChoiceSelect, MultiChoiceBox
 from ..parser.typenames import (
     TYPE_STR,
     TYPE_INT,
@@ -28,6 +29,7 @@ from ..parser.typenames import (
     TYPE_TUPLE,
     TYPE_SET,
     TYPE_BOOL,
+    TYPE_LITERAL,
 )
 from ..types import (
     text_t,
@@ -38,6 +40,8 @@ from ..types import (
     file_list_t,
     py_literal_t,
     bin_state_t,
+    choice_t,
+    choices_t,
 )
 
 TYPE_TEXT = text_t.__name__
@@ -49,6 +53,8 @@ TYPE_FILE_LIST_T = file_list_t.__name__
 TYPE_PY_LITERAL_T = py_literal_t.__name__
 TYPE_PY_LITERAL_T_2 = str(PyLiteralType)
 TYPE_BIN_T = bin_state_t.__name__
+TYPE_CHOICE_T = choice_t.__name__
+TYPE_CHOICES_T = choices_t.__name__
 
 BUILTIN_WIDGETS_MAP = {
     TYPE_STR: LineEdit,
@@ -69,4 +75,7 @@ BUILTIN_WIDGETS_MAP = {
     TYPE_LIST: ListEdit,
     TYPE_TUPLE: TupleEdit,
     TYPE_SET: SetEdit,
+    TYPE_LITERAL: ExclusiveChoiceBox,
+    TYPE_CHOICE_T: ExclusiveChoiceSelect,
+    TYPE_CHOICES_T: MultiChoiceBox,
 }

@@ -1,5 +1,5 @@
 import time
-from typing import Any, Dict, Set
+from typing import Any, Dict, Set, Literal
 
 from pyguiadapter.adapter import ulogging
 from pyguiadapter.adapter.adapter import GUIAdapter
@@ -15,6 +15,7 @@ from pyguiadapter.types import (
     py_literal_t,
     bin_state_t,
     choices_t,
+    choice_t,
 )
 from pyguiadapter.windows import FnSelectWindowConfig, FnExecuteWindowConfig
 
@@ -48,7 +49,10 @@ def f1(
     arg19: Set[int],
     arg20: bool,
     arg21: bin_state_t,
-    arg23: choices_t[1, 3, 4],
+    arg22: Literal["a", "b", "c"],
+    arg23: Literal["a", "b", "c", 1, 2, 3, 2, True, "a", False, "c", "True"],
+    arg24: choice_t,
+    arg25: choices_t = [1, 3, 4],
 ):
     """
 
@@ -58,10 +62,20 @@ def f1(
     @params
     [arg1]
 
+    [arg24]
+    choices = ["a", "b", 1,2,3.0,true,false]
+
+    [arg25]
+    choices = ["a", "b", 1,2,3.0,true,false]
+    columns = 3
+
 
     @end
     """
     uprint(arg21)
+    uprint(arg23)
+    uprint(arg24)
+    uprint(arg25)
 
 
 def f2():
@@ -77,6 +91,9 @@ def f2():
         if is_function_cancelled():
             break
     uprint("f2 finished: ", i)
+
+
+a: Literal[1, 3, 2, 4] = 1
 
 
 def f3(a: str, b: str):

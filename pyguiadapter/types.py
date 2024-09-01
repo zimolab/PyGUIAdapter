@@ -39,5 +39,10 @@ class py_literal_t(object):
 
 
 # noinspection PyPep8Naming
+class choice_t(object):
+    pass
+
+
+# noinspection PyPep8Naming
 class choices_t(list):
     pass

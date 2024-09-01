@@ -5,7 +5,7 @@ import os.path
 import re
 import string
 import traceback
-from typing import Literal, List, Set, Tuple, Any, Union, Type
+from typing import Literal, List, Set, Tuple, Any, Union, Type, OrderedDict
 
 import qtawesome as qta
 from qtpy import QT_VERSION
@@ -429,3 +429,24 @@ def compare_qt_version(ver: str | None) -> int:
     cur_ver = tuple(map(int, QT_VERSION.split(".")))
     cmp_ver = tuple(map(int, ver.split(".")))
     return (cur_ver > cmp_ver) - (cur_ver < cmp_ver)
+
+
+def unique_list(origin: List[Any]) -> List[Any]:
+    added = set()
+    bool_true_added = False
+    bool_false_added = False
+    ret = []
+    for item in origin:
+        if item is True:
+            if not bool_true_added:
+                ret.append(item)
+                bool_true_added = True
+        elif item is False:
+            if not bool_false_added:
+                ret.append(item)
+                bool_false_added = True
+        else:
+            if item not in added:
+                added.add(item)
+                ret.append(item)
+    return ret
