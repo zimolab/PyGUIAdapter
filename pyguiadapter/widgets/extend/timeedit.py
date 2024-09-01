@@ -29,6 +29,7 @@ class TimeEditConfig(CommonParameterWidgetConfig):
     correction_mode: CorrectionMode | None = None
     keyboard_tracking: bool = True
     accelerated: bool = False
+    calendar_popup: bool = False
 
     @classmethod
     def target_widget_class(cls) -> Type["TimeEdit"]:
@@ -90,3 +91,4 @@ class TimeEdit(CommonParameterWidget):
             self._value_widget.setCorrectionMode(self._config.correction_mode)
         self._value_widget.setKeyboardTracking(self._config.keyboard_tracking)
         self._value_widget.setAccelerated(self._config.accelerated)
+        self._value_widget.setCalendarPopup(self._config.calendar_popup)
