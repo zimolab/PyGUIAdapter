@@ -3,6 +3,7 @@ from .choiceselect import ChoiceSelect, ChoiceSelectConfig
 from .multichoice import MultiChoiceBox, MultiChoiceBoxConfig
 from .slider import Slider, SliderConfig
 from .dial import Dial, DialConfig
+from .datetimeedit import DateTimeEdit, DateTimeEditConfig
 
 __all__ = [
     "ExclusiveChoiceBox",
@@ -15,4 +16,6 @@ __all__ = [
     "SliderConfig",
     "Dial",
     "DialConfig",
+    "DateTimeEdit",
+    "DateTimeEditConfig",
 ]
