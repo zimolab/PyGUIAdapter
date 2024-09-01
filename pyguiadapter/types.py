@@ -56,3 +56,13 @@ class int_slider_t(int):
 # noinspection PyPep8Naming
 class int_dial_t(int):
     pass
+
+
+# noinspection PyPep8Naming
+class color_tuple_t(tuple):
+    pass
+
+
+# noinspection PyPep8Naming
+class color_hex_t(str):
+    pass

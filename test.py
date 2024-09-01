@@ -2,6 +2,7 @@ import time
 from datetime import datetime, date, time
 from typing import Any, Dict, Set, Literal
 
+from qtpy.QtGui import QColor
 from pyguiadapter.adapter.adapter import GUIAdapter
 from pyguiadapter.adapter.ucontext import uprint, is_function_cancelled
 from pyguiadapter.adapter.uinput import *
@@ -18,6 +19,8 @@ from pyguiadapter.types import (
     choice_t,
     int_slider_t,
     int_dial_t,
+    color_tuple_t,
+    color_hex_t,
 )
 from pyguiadapter.windows import FnSelectWindowConfig, FnExecuteWindowConfig
 
@@ -59,7 +62,10 @@ def f1(
     arg27: int_dial_t,
     arg28: datetime,
     arg29: date,
-    arg30: time = time(),
+    arg30: time,
+    arg31: QColor,
+    arg32: color_tuple_t = (255, 0, 0),
+    arg33: color_hex_t = "#ff0000",
 ):
     """
 
@@ -88,6 +94,9 @@ def f1(
     uprint(arg28)
     uprint(arg29)
     uprint(arg30)
+    uprint(arg31)
+    uprint(arg32)
+    uprint(arg33)
 
 
 def f2():

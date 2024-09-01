@@ -1,3 +1,5 @@
+from qtpy.QtGui import QColor
+
 from .basic import (
     LineEdit,
     TextEdit,
@@ -27,6 +29,9 @@ from .extend import (
     DateTimeEdit,
     DateEdit,
     TimeEdit,
+    ColorTuplePicker,
+    ColorHexPicker,
+    ColorPicker,
 )
 from ..parser.typenames import (
     TYPE_STR,
@@ -53,6 +58,8 @@ from ..types import (
     choices_t,
     int_slider_t,
     int_dial_t,
+    color_tuple_t,
+    color_hex_t,
 )
 from datetime import datetime, date, time
 
@@ -72,6 +79,10 @@ TYPE_DIAL_INT_T = int_dial_t.__name__
 TYPE_DATETIME = datetime.__name__
 TYPE_DATE = date.__name__
 TYPE_TIME = time.__name__
+TYPE_COLOR_TUPLE = color_tuple_t.__name__
+TYPE_COLOR_HEX = color_hex_t.__name__
+# noinspection SpellCheckingInspection
+TYPE_QCOLOR = QColor.__name__
 
 BUILTIN_WIDGETS_MAP = {
     TYPE_STR: LineEdit,
@@ -100,4 +111,7 @@ BUILTIN_WIDGETS_MAP = {
     TYPE_DATETIME: DateTimeEdit,
     TYPE_DATE: DateEdit,
     TYPE_TIME: TimeEdit,
+    TYPE_COLOR_TUPLE: ColorTuplePicker,
+    TYPE_COLOR_HEX: ColorHexPicker,
+    TYPE_QCOLOR: ColorPicker,
 }

@@ -6,6 +6,13 @@ from .dial import Dial, DialConfig
 from .datetimeedit import DateTimeEdit, DateTimeEditConfig
 from .dateedit import DateEdit, DateEditConfig
 from .timeedit import TimeEdit, TimeEditConfig
+from .colorpicker import (
+    ColorType,
+    ColorPicker,
+    ColorPickerConfig,
+    ColorTuplePicker,
+    ColorHexPicker,
+)
 
 __all__ = [
     "ExclusiveChoiceBox",
@@ -24,4 +31,9 @@ __all__ = [
     "DateEditConfig",
     "TimeEdit",
     "TimeEditConfig",
+    "ColorPicker",
+    "ColorTuplePicker",
+    "ColorHexPicker",
+    "ColorPickerConfig",
+    "ColorType",
 ]
