@@ -4,10 +4,11 @@ import dataclasses
 from typing import Type, TypeVar, Tuple, Union, Literal
 
 from qtpy.QtCore import Qt
-from qtpy.QtGui import QColor
-from qtpy.QtWidgets import QWidget, QLabel, QColorDialog
+from qtpy.QtGui import QColor, QFont
+from qtpy.QtWidgets import QWidget, QLabel, QColorDialog, QFrame
 
 from ..common import CommonParameterWidgetConfig, CommonParameterWidget
+from ... import utils
 
 ColorType = Union[
     Tuple[int, int, int, int],  # RGB
@@ -23,11 +24,21 @@ class ColorLabel(QLabel):
         parent: QWidget | None,
         show_alpha: bool = True,
         initial_color: ColorType = Qt.white,
+        show_color_name: bool = True,
     ):
         super().__init__(parent)
 
+        self.setAlignment(Qt.AlignCenter)
+        self.setFrameShape(QFrame.Box)
+        self.setFrameShadow(QFrame.Raised)
+
+        font: QFont = self.font()
+        font.setBold(True)
+        self.setFont(font)
+
         self._color = initial_color
         self._show_alpha = show_alpha
+        self._show_color_name = show_color_name
 
         self.set_color(initial_color)
 
@@ -56,12 +67,14 @@ class ColorLabel(QLabel):
             self.set_color(color)
 
     def _update_ui(self):
-        css = """ColorLabel{
-            background-color: #color
-        }""".replace(
-            "#color", self._color.name()
-        )
-        self.setStyleSheet(css)
+        css = "ColorLabel{\n#props\n}"
+        props = f"background-color: {self._color.name()};\n"
+        if self._show_color_name:
+            text_color = utils.get_inverted_color(self._color)
+            text_color.setAlpha(255)
+            props += f"color: {text_color.name()};"
+        self.setStyleSheet(css.replace("#props", props))
+        self.setText(self._color.name())
 
     @classmethod
     def normalize_color(cls, color: ColorType) -> QColor:
@@ -84,6 +97,7 @@ class ColorPickerConfig(CommonParameterWidgetConfig):
     default_value: ColorType | None = None
     initial_color: ColorType = "white"
     show_alpha: bool = True
+    show_color_name: bool = True
     min_height: int = 45
     max_height: int = 45
     return_type: Literal["tuple", "QColor", "str"] = "tuple"
@@ -111,7 +125,10 @@ class ColorPicker(CommonParameterWidget):
     def value_widget(self) -> QLabel:
         if self._value_widget is None:
             self._value_widget = ColorLabel(
-                self, self._config.show_alpha, self._config.initial_color
+                self,
+                self._config.show_alpha,
+                self._config.initial_color,
+                self._config.show_color_name,
             )
             self._value_widget.setMinimumHeight(self._config.min_height)
             self._value_widget.setMaximumHeight(self._config.max_height)

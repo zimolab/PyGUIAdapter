@@ -5,12 +5,12 @@ import os.path
 import re
 import string
 import traceback
-from typing import Literal, List, Set, Tuple, Any, Union, Type, OrderedDict
+from typing import Literal, List, Set, Tuple, Any, Union, Type
 
 import qtawesome as qta
 from qtpy import QT_VERSION
 from qtpy.QtCore import QUrl, Qt
-from qtpy.QtGui import QIcon, QPixmap, QTextCursor, QTextOption
+from qtpy.QtGui import QIcon, QPixmap, QTextCursor, QTextOption, QColor
 from qtpy.QtWidgets import QTextBrowser, QWidget, QMessageBox, QFrame, QFileDialog
 
 StandardButton: Type[QMessageBox.StandardButton] = QMessageBox.StandardButton
@@ -450,3 +450,7 @@ def unique_list(origin: List[Any]) -> List[Any]:
                 added.add(item)
                 ret.append(item)
     return ret
+
+
+def get_inverted_color(color: QColor) -> QColor:
+    return QColor(255 - color.red(), 255 - color.green(), 255 - color.blue())

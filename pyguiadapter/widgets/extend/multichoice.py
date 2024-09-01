@@ -79,7 +79,6 @@ class MultiChoiceBox(CommonParameterWidget):
             self._config.choices, dict
         )
         cols = max(self._config.columns, 1)
-        print(cols)
         if isinstance(self._config.choices, list):
             for idx, choice in enumerate(self._config.choices):
                 button = _CheckBox(self, choice)
