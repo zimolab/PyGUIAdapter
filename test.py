@@ -22,6 +22,7 @@ from pyguiadapter.types import (
     color_tuple_t,
     color_hex_t,
     key_sequence_t,
+    string_list_t,
 )
 from pyguiadapter.windows import FnSelectWindowConfig, FnExecuteWindowConfig
 
@@ -68,6 +69,7 @@ def f1(
     arg32: color_tuple_t,
     arg33: color_hex_t,
     arg34: key_sequence_t,
+    arg35: string_list_t = ["a", "b", "c"],
 ):
     """
 
@@ -100,6 +102,7 @@ def f1(
     uprint(arg32)
     uprint(arg33)
     uprint(arg34)
+    uprint(arg35)
 
 
 def f2():

@@ -14,6 +14,7 @@ from .colorpicker import (
     ColorHexPicker,
 )
 from .keysequenceedit import KeySequenceEdit, KeySequenceEditConfig, KeySequenceFormat
+from .stringlist import StringListEdit, StringListEditConfig
 
 __all__ = [
     "ExclusiveChoiceBox",
@@ -40,4 +41,6 @@ __all__ = [
     "KeySequenceEditConfig",
     "KeySequenceEdit",
     "KeySequenceFormat",
+    "StringListEdit",
+    "StringListEditConfig",
 ]

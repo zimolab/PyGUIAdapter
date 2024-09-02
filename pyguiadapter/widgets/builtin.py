@@ -33,6 +33,7 @@ from .extend import (
     ColorHexPicker,
     ColorPicker,
     KeySequenceEdit,
+    StringListEdit,
 )
 from ..parser.typenames import (
     TYPE_STR,
@@ -62,6 +63,7 @@ from ..types import (
     color_tuple_t,
     color_hex_t,
     key_sequence_t,
+    string_list_t,
 )
 from datetime import datetime, date, time
 
@@ -86,6 +88,7 @@ TYPE_COLOR_HEX = color_hex_t.__name__
 # noinspection SpellCheckingInspection
 TYPE_QCOLOR = QColor.__name__
 TYPE_KEY_SEQUENCE_T = key_sequence_t.__name__
+TYPE_STRING_LIST_T = string_list_t.__name__
 
 BUILTIN_WIDGETS_MAP = {
     TYPE_STR: LineEdit,
@@ -118,4 +121,5 @@ BUILTIN_WIDGETS_MAP = {
     TYPE_COLOR_HEX: ColorHexPicker,
     TYPE_QCOLOR: ColorPicker,
     TYPE_KEY_SEQUENCE_T: KeySequenceEdit,
+    TYPE_STRING_LIST_T: StringListEdit,
 }

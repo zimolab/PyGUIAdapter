@@ -71,3 +71,8 @@ class color_hex_t(str):
 # noinspection PyPep8Naming
 class key_sequence_t(str):
     pass
+
+
+# noinspection PyPep8Naming
+class string_list_t(list):
+    pass
