@@ -13,6 +13,7 @@ from .colorpicker import (
     ColorTuplePicker,
     ColorHexPicker,
 )
+from .keysequenceedit import KeySequenceEdit, KeySequenceEditConfig, KeySequenceFormat
 
 __all__ = [
     "ExclusiveChoiceBox",
@@ -36,4 +37,7 @@ __all__ = [
     "ColorHexPicker",
     "ColorPickerConfig",
     "ColorType",
+    "KeySequenceEditConfig",
+    "KeySequenceEdit",
+    "KeySequenceFormat",
 ]

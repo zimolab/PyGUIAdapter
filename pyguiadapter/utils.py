@@ -247,6 +247,7 @@ def show_exception_message(
     detail: bool = True,
     **kwargs,
 ) -> int | StandardButton:
+    traceback.print_exc()
     if not detail:
         detail_msg = None
     else:

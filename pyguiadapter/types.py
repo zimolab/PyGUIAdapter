@@ -66,3 +66,8 @@ class color_tuple_t(tuple):
 # noinspection PyPep8Naming
 class color_hex_t(str):
     pass
+
+
+# noinspection PyPep8Naming
+class key_sequence_t(str):
+    pass

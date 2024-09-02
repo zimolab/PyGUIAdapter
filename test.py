@@ -21,6 +21,7 @@ from pyguiadapter.types import (
     int_dial_t,
     color_tuple_t,
     color_hex_t,
+    key_sequence_t,
 )
 from pyguiadapter.windows import FnSelectWindowConfig, FnExecuteWindowConfig
 
@@ -64,8 +65,9 @@ def f1(
     arg29: date,
     arg30: time,
     arg31: QColor,
-    arg32: color_tuple_t = (255, 0, 0),
-    arg33: color_hex_t = "#ff0000",
+    arg32: color_tuple_t,
+    arg33: color_hex_t,
+    arg34: key_sequence_t,
 ):
     """
 
@@ -97,6 +99,7 @@ def f1(
     uprint(arg31)
     uprint(arg32)
     uprint(arg33)
+    uprint(arg34)
 
 
 def f2():
