@@ -29,7 +29,7 @@ T = TypeVar("T")
 
 @dataclasses.dataclass(frozen=True)
 class BaseDataEditConfig(CommonParameterWidgetConfig):
-    font_size: int = 14
+    font_size: int | None = None
     indent_size: int = 4
     min_height: int = 245
     highlighter: Type[QStyleSyntaxHighlighter] | None = None
@@ -113,7 +113,7 @@ class BaseDataEdit(CommonParameterWidget):
             if self._config.line_wrap_width > 0:
                 self._editor.setLineWrapWidth(self._config.line_wrap_width)
         self._editor.setWordWrapMode(self._config.word_wrap_mode)
-        if self._config.font_size > 0:
+        if self._config.font_size and self._config.font_size > 0:
             self._editor.setFontSize(self._config.font_size)
 
     def _on_open_code_editor(self):

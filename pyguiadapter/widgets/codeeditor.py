@@ -263,7 +263,7 @@ class CodeEditorConfig(BaseWindowConfig):
     completer: QCompleter | None = None
     auto_indent: bool = True
     auto_parentheses: bool = True
-    text_font_size: int = DEFAULT_TEXT_FONT_SIZE
+    text_font_size: int | None = None
     tab_size: int = DEFAULT_TAB_SIZE
     tab_replace: bool = True
     initial_text: str = ""
@@ -309,7 +309,8 @@ class CodeEditorWindow(BaseWindow):
         self._editor.setAutoParentheses(self._config.auto_parentheses)
         self._editor.setTabReplace(self._config.tab_replace)
         self._editor.setTabReplaceSize(self._config.tab_size)
-        self._editor.setFontSize(self._config.text_font_size)
+        if self._config.text_font_size and self._config.text_font_size > 0:
+            self._editor.setFontSize(self._config.text_font_size)
         self._editor.setLineWrapMode(self._config.line_wrap_mode)
         if (
             self._config.line_wrap_mode == LineWrapMode.FixedPixelWidth
@@ -398,10 +399,10 @@ class CodeEditorWindow(BaseWindow):
     def is_auto_parentheses_enabled(self) -> bool:
         return self._config.auto_parentheses
 
-    def set_text_font_size(self, size: int):
-        assert isinstance(size, int) and size > 0
+    def set_text_font_size(self, size: int | None):
         self._config.text_font_size = size
-        self._editor.setFontSize(self._config.text_font_size)
+        if self._config.text_font_size and self._config.font_size > 0:
+            self._editor.setFontSize(self._config.font_size)
 
     def set_tab(self, size: int = 4, tab_replace: bool = True):
         self._config.tab_size = size

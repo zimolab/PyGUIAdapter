@@ -10,7 +10,6 @@ from qtpy.QtWidgets import QMainWindow, QWidget, QToolBar, QMenu
 from . import utils
 
 DEFAULT_WINDOW_SIZE = (800, 600)
-DEFAULT_FONT_SIZE = 12
 
 
 # noinspection SpellCheckingInspection
@@ -74,7 +73,7 @@ class BaseWindowConfig(object):
     on_hide: Callable[["BaseWindow"], None] | None = None
     on_show: Callable[["BaseWindow"], None] | None = None
     stylesheet: str | None = None
-    font_size: int = DEFAULT_FONT_SIZE
+    font_size: int | None = None
 
 
 class BaseWindow(QMainWindow):
