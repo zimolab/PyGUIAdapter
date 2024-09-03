@@ -76,3 +76,8 @@ class key_sequence_t(str):
 # noinspection PyPep8Naming
 class string_list_t(list):
     pass
+
+
+# noinspection PyPep8Naming
+class plain_dict_t(dict):
+    pass

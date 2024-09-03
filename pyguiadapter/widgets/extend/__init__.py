@@ -15,6 +15,7 @@ from .colorpicker import (
 )
 from .keysequenceedit import KeySequenceEdit, KeySequenceEditConfig, KeySequenceFormat
 from .stringlist import StringListEdit, StringListEditConfig
+from .plaindict import PlainDictEdit, PlainDictEditConfig
 
 __all__ = [
     "ExclusiveChoiceBox",
@@ -43,4 +44,6 @@ __all__ = [
     "KeySequenceFormat",
     "StringListEdit",
     "StringListEditConfig",
+    "PlainDictEdit",
+    "PlainDictEditConfig",
 ]

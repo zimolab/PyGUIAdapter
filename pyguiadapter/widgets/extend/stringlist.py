@@ -22,14 +22,14 @@ class StringListEditConfig(CommonParameterWidgetConfig):
     file_filters: str = ""
     start_dir: str = ""
     normalize_path: bool = True
-    add_button_text: str = "New"
+    add_button_text: str = "Add"
     remove_button_text: str = "Remove"
     select_file_button_text: str = "File"
     select_directory_button_text: str = "Directory"
     file_dialog_title: str = "Select File"
     directory_dialog_title: str = "Select Directory"
     min_height: int = 300
-    dragging_enabled: bool = True
+    drag_enabled: bool = True
     wrapping: bool = False
     text_elide_mode: TextElideMode = TextElideMode.ElideLeft
     alternating_row_colors: bool = True
@@ -73,7 +73,7 @@ class StringListEdit(CommonParameterWidget):
             self._list_view = QListView(self._value_widget)
             if self._config.min_height > 0:
                 self._list_view.setMinimumHeight(self._config.min_height)
-            if self._config.dragging_enabled:
+            if self._config.drag_enabled:
                 self._list_view.setDragDropMode(QListView.InternalMove)
                 self._list_view.setDefaultDropAction(Qt.DropAction.TargetMoveAction)
                 self._list_view.setMovement(QListView.Snap)

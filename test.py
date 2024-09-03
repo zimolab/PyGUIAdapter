@@ -2,7 +2,6 @@ import time
 from datetime import datetime, date, time
 from typing import Any, Dict, Set, Literal
 
-from qtpy.QtGui import QColor
 from pyguiadapter.adapter.adapter import GUIAdapter
 from pyguiadapter.adapter.ucontext import uprint, is_function_cancelled
 from pyguiadapter.adapter.uinput import *
@@ -23,6 +22,7 @@ from pyguiadapter.types import (
     color_hex_t,
     key_sequence_t,
     string_list_t,
+    plain_dict_t,
 )
 from pyguiadapter.windows import FnSelectWindowConfig, FnExecuteWindowConfig
 
@@ -69,7 +69,15 @@ def f1(
     arg32: color_tuple_t,
     arg33: color_hex_t,
     arg34: key_sequence_t,
-    arg35: string_list_t = ["a", "b", "c"],
+    arg35: string_list_t,
+    arg36: plain_dict_t = {
+        "a": 1,
+        "b": 1.0,
+        "c": "string",
+        "d": True,
+        "e": [1, 2, 3],
+        "f": {"a": 1, "b": 2},
+    },
 ):
     """
 
