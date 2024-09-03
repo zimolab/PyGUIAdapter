@@ -2,10 +2,11 @@ from __future__ import annotations
 
 import dataclasses
 import json
-import warnings
+from collections import OrderedDict
 from typing import Type, TypeVar, Dict, Any, List
-from xml.sax.saxutils import escape
 
+from pyqcodeeditor.QCodeEditor import QCodeEditor
+from pyqcodeeditor.highlighters import QJSONHighlighter
 from qtpy.QtCore import Qt, QModelIndex
 from qtpy.QtGui import QStandardItemModel, QStandardItem
 from qtpy.QtWidgets import (
@@ -20,13 +21,10 @@ from qtpy.QtWidgets import (
     QLineEdit,
     QLabel,
 )
-from pyqcodeeditor.QCodeEditor import QCodeEditor
-from pyqcodeeditor.highlighters import QJSONHighlighter
 
-from . import StringListEdit
+from ..codeeditor import JsonFormatter
 from ..common import CommonParameterWidgetConfig, CommonParameterWidget
 from ... import utils
-from ..codeeditor import JsonFormatter
 
 TextElideMode = Qt.TextElideMode
 GridStyle = Qt.PenStyle
@@ -122,6 +120,7 @@ class PlainDictEdit(CommonParameterWidget):
             self._table_view.setEditTriggers(QTableView.NoEditTriggers)
             self._table_view.setSelectionBehavior(QTableView.SelectRows)
             self._table_view.setSelectionMode(QTableView.SingleSelection)
+            # noinspection PyUnresolvedReferences
             self._table_view.doubleClicked.connect(self._on_start_editing)
 
             self._model = QStandardItemModel(0, 2)
@@ -136,6 +135,7 @@ class PlainDictEdit(CommonParameterWidget):
             self._edit_button = QPushButton(
                 self._config.edit_button_text, self._value_widget
             )
+            # noinspection PyUnresolvedReferences
             self._edit_button.clicked.connect(self._on_edit_item)
             layout_buttons.addWidget(self._edit_button, 1, 1)
 
@@ -156,6 +156,7 @@ class PlainDictEdit(CommonParameterWidget):
             self._clear_button = QPushButton(
                 self._config.clear_button_text, self._value_widget
             )
+            # noinspection PyUnresolvedReferences
             self._clear_button.clicked.connect(self._on_clear_items)
             layout_buttons.addWidget(self._clear_button, 2, 1)
 
@@ -168,7 +169,12 @@ class PlainDictEdit(CommonParameterWidget):
             self._insert_item(key, value, -1)
 
     def get_value_from_widget(self) -> Dict[str, Any]:
-        pass
+        value = OrderedDict()
+        for row in range(self._model.rowCount()):
+            key_item = self._model.item(row, 0)
+            value_item = self._model.item(row, 1)
+            value[key_item.text()] = json.loads(value_item.text())
+        return value
 
     def _on_add_item(self):
         keys = self._get_keys()
@@ -354,7 +360,9 @@ class _KeyValueEditor(QDialog):
             QDialogButtonBox.Yes | QDialogButtonBox.Cancel
         )
         self._button_box.setOrientation(Qt.Horizontal)
+        # noinspection PyUnresolvedReferences
         self._button_box.accepted.connect(self._on_confirm)
+        # noinspection PyUnresolvedReferences
         self._button_box.rejected.connect(self._on_cancel)
         layout.addWidget(self._button_box)
 
@@ -386,23 +394,22 @@ class _KeyValueEditor(QDialog):
 
         if current_value == "":
             self._current_value = "null"
-        else:
-            try:
-                current_value = json.dumps(
-                    json.loads(current_value), ensure_ascii=False
-                )
-            except Exception as e:
-                utils.show_info_message(
-                    self,
-                    title="Invalid JSON",
-                    message=f"The current value text is not valid JSON type: {e}",
-                )
-                return
-            else:
-                self._current_value = current_value
+            self._current_key = current_key
+            self.accept()
+            return
 
-        self._current_key = current_key
-        self.accept()
+        try:
+            current_value = json.dumps(json.loads(current_value), ensure_ascii=False)
+        except Exception as e:
+            utils.show_info_message(
+                self,
+                title="Invalid JSON",
+                message=f"The current value text is not valid JSON type: {e}",
+            )
+        else:
+            self._current_value = current_value
+            self._current_key = current_key
+            self.accept()
 
     def _on_cancel(self):
         self.reject()

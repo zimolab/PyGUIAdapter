@@ -77,6 +77,7 @@ def f1(
         "d": True,
         "e": [1, 2, 3],
         "f": {"a": 1, "b": 2},
+        "": "string",
     },
 ):
     """
@@ -111,6 +112,7 @@ def f1(
     uprint(arg33)
     uprint(arg34)
     uprint(arg35)
+    uprint(arg36)
 
 
 def f2():
