@@ -12,6 +12,7 @@ from ...exceptions import ParameterValidationError
 
 @dataclasses.dataclass(frozen=True)
 class FloatSpinBoxConfig(CommonParameterWidgetConfig):
+    default_value: float = 0.0
     min_value: float = -2147483648.0
     max_value: float = 2147483647.0
     step: int = 0.01
@@ -63,6 +64,7 @@ class FloatSpinBox(CommonParameterWidget):
 
 @dataclasses.dataclass(frozen=True)
 class FloatLineEditConfig(CommonParameterWidgetConfig):
+    default_value: float = 0.0
     min_value: int = -2147483648.0
     max_value: int = 2147483647.0
     decimals: int = 2
