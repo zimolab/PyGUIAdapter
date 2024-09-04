@@ -3,14 +3,14 @@ from __future__ import annotations
 from typing import List, Tuple, Set
 
 from qtpy.QtGui import QIcon
-from qtpy.QtWidgets import QLineEdit, QPushButton, QWidget, QHBoxLayout
+from qtpy.QtWidgets import QLineEdit, QToolButton, QWidget, QHBoxLayout
 
 from ... import utils
 
 
 class PathSelectWidget(QWidget):
 
-    DEFAULT_SELECT_BUTTON_TEXT = "Select"
+    DEFAULT_SELECT_BUTTON_TEXT = "..."
     DEFAULT_FILE_SEPARATOR = ";;"
 
     def __init__(
@@ -48,13 +48,15 @@ class PathSelectWidget(QWidget):
             self._path_edit.setPlaceholderText(placeholder)
         self._path_edit.setClearButtonEnabled(clear_button)
 
-        select_button_icon = utils.get_icon(select_button_icon) or QIcon()
+        self._select_button: QToolButton = QToolButton(self)
+
         if not select_button_text:
             select_button_text = self.DEFAULT_SELECT_BUTTON_TEXT
+        self._select_button.setText(select_button_text)
 
-        self._select_button: QPushButton = QPushButton(
-            select_button_icon, select_button_text, self
-        )
+        select_button_icon = utils.get_icon(select_button_icon)
+        if select_button_icon:
+            self._select_button.setIcon(select_button_icon)
 
         self._select_button.clicked.connect(self._on_select_path)
 

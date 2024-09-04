@@ -7,20 +7,19 @@ from qtpy.QtWidgets import QWidget
 
 from ._widget import PathSelectWidget
 from ..common import CommonParameterWidgetConfig, CommonParameterWidget
-from ... import utils
 from ...exceptions import ParameterValidationError
+from ... import utils
 
 
 @dataclasses.dataclass(frozen=True)
 class FileSelectConfig(CommonParameterWidgetConfig):
-
+    default_value: str = ""
     placeholder: str = ""
-    dialog_title: str = ""
+    dialog_title: str = "Select File"
     start_dir: str = ""
     filters: str = ""
     save_file: bool = False
-    select_button_text: str = "Select"
-    select_button_icon: utils.IconType = None
+    select_button_text: str = "..."
     clear_button: bool = False
 
     @classmethod
@@ -46,7 +45,6 @@ class FileSelect(CommonParameterWidget):
             save_file=self._config.save_file,
             multiple_files=False,
             select_button_text=self._config.select_button_text,
-            select_button_icon=self._config.select_button_icon,
             dialog_title=self._config.dialog_title,
             start_dir=self._config.start_dir,
             filters=self._config.filters,
@@ -68,6 +66,7 @@ class FileSelect(CommonParameterWidget):
 
 @dataclasses.dataclass(frozen=True)
 class MultiFileSelectConfig(CommonParameterWidgetConfig):
+    default_value: str = ""
     placeholder: str = ""
     dialog_title: str = "Open Files"
     start_dir: str = ""
@@ -100,7 +99,6 @@ class MultiFileSelect(CommonParameterWidget):
             save_file=False,
             multiple_files=True,
             select_button_text=self._config.select_button_text,
-            select_button_icon=self._config.select_button_icon,
             dialog_title=self._config.dialog_title,
             start_dir=self._config.start_dir,
             filters=self._config.filters,
