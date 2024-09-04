@@ -46,11 +46,11 @@ ParameterWidgetType = Union[
 @dataclasses.dataclass
 class WidgetTexts(object):
     document_dock_title: str = "Document"
-    log_output_dock_title: str = "Log Output"
+    log_output_dock_title: str = "Output"
     execute_button_text: str = "Execute"
     clear_button_text: str = "Clear"
     cancel_button_text: str = "Cancel"
-    clear_checkbox_text: str = "Clear log output"
+    clear_checkbox_text: str = "Clear output"
     function_result_dialog_title: str = "Function Result"
     function_error_dialog_title: str = "Function Error"
     parameter_validation_dialog_title: str = "Parameter Validation Error"
@@ -70,11 +70,13 @@ class MessageTexts(object):
 class FnExecuteWindowConfig(BaseWindowConfig):
     title: str = ""
     size: Tuple[int, int] | QSize = DEFAULT_WINDOW_SIZE
-    log_output_dock_ratio: float = 0.3
+    logging_dock_ratio: float = 0.3
     document_dock_ratio: float = 0.65
     progressbar: ProgressBarConfig | None = None
-    log_output: LogBrowserConfig = dataclasses.field(default_factory=LogBrowserConfig)
-    document_browser: DocumentBrowserConfig | None = dataclasses.field(
+    logging_config: LogBrowserConfig = dataclasses.field(
+        default_factory=LogBrowserConfig
+    )
+    document_config: DocumentBrowserConfig | None = dataclasses.field(
         default_factory=DocumentBrowserConfig
     )
     default_parameter_group_name: str = "Main Parameters"
@@ -287,7 +289,7 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
         self._document_dock = QDockWidget(self)
         self._document_dock.setWindowTitle(widget_texts.document_dock_title)
         self._document_area = FnDocumentArea(
-            self._document_dock, window_config.document_browser
+            self._document_dock, window_config.document_config
         )
         self._document_dock.setWidget(self._document_area)
         self.addDockWidget(Qt.RightDockWidgetArea, self._document_dock)
@@ -300,7 +302,7 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
         self._logging_area = FnExecuteLoggingArea(
             self._logging_dock,
             progressbar_config=window_config.progressbar,
-            log_browser_config=window_config.log_output,
+            log_browser_config=window_config.logging_config,
         )
         self._logging_dock.setWidget(self._logging_area)
         self.addDockWidget(Qt.BottomDockWidgetArea, self._logging_dock)
@@ -312,7 +314,7 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
         # resize the docks
         current_width = self.width()
         current_height = self.height()
-        log_output_dock_ratio = window_config.log_output_dock_ratio
+        log_output_dock_ratio = window_config.logging_dock_ratio
         log_output_dock_ratio = min(max(log_output_dock_ratio, 0.1), 1.0)
         dock_height = int(current_height * log_output_dock_ratio)
         document_dock_ratio = min(max(window_config.document_dock_ratio, 0.1), 1.0)
