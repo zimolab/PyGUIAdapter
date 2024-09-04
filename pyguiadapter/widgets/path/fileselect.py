@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import dataclasses
+from email.policy import default
 from typing import Type, Any, TypeVar, List, Tuple, Set
 
 from qtpy.QtWidgets import QWidget
@@ -66,7 +67,7 @@ class FileSelect(CommonParameterWidget):
 
 @dataclasses.dataclass(frozen=True)
 class MultiFileSelectConfig(CommonParameterWidgetConfig):
-    default_value: str = ""
+    default_value: List[str] = dataclasses.field(default_factory=list)
     placeholder: str = ""
     dialog_title: str = "Select Files"
     start_dir: str = ""
