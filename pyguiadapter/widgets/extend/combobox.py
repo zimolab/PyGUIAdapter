@@ -15,28 +15,28 @@ class _DataWrap(object):
 
 
 @dataclasses.dataclass(frozen=True)
-class ChoiceSelectConfig(CommonParameterWidgetConfig):
+class ComboBoxConfig(CommonParameterWidgetConfig):
     default_value: Any | None = None
     choices: Dict[str, Any] | List[Any] = dataclasses.field(default_factory=list)
-    editable: bool = True
+    editable: bool = False
 
     @classmethod
-    def target_widget_class(cls) -> Type["ChoiceSelect"]:
-        return ChoiceSelect
+    def target_widget_class(cls) -> Type["ComboBox"]:
+        return ComboBox
 
 
-class ChoiceSelect(CommonParameterWidget):
+class ComboBox(CommonParameterWidget):
 
-    Self = TypeVar("Self", bound="ChoiceSelect")
-    ConfigClass = ChoiceSelectConfig
+    Self = TypeVar("Self", bound="ComboBox")
+    ConfigClass = ComboBoxConfig
 
     def __init__(
         self,
         parent: QWidget | None,
         parameter_name: str,
-        config: ChoiceSelectConfig,
+        config: ComboBoxConfig,
     ):
-        self._config: ChoiceSelectConfig = config
+        self._config: ComboBoxConfig = config
         self._value_widget: QComboBox | None = None
         super().__init__(parent, parameter_name, config)
 

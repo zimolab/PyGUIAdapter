@@ -22,7 +22,7 @@ from .basic import (
 from .path import DirSelect, FileSelect, MultiFileSelect
 from .extend import (
     ExclusiveChoiceBox,
-    ChoiceSelect,
+    ComboBox,
     MultiChoiceBox,
     Slider,
     Dial,
@@ -113,7 +113,7 @@ BUILTIN_WIDGETS_MAP = {
     TYPE_TUPLE: TupleEdit,
     TYPE_SET: SetEdit,
     TYPE_LITERAL: ExclusiveChoiceBox,
-    TYPE_CHOICE_T: ChoiceSelect,
+    TYPE_CHOICE_T: ComboBox,
     TYPE_CHOICES_T: MultiChoiceBox,
     TYPE_SLIDER_INT_T: Slider,
     TYPE_DIAL_INT_T: Dial,
