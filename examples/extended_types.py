@@ -10,12 +10,17 @@ def extended_types_showcase(
     float_lineedit: float_t,
     file_list: file_list_t,
     choice: choice_t,
+    multi_choices: choices_t,
 ):
     """
 
     @params
     [choice]
     default_value = ""
+    choices = ["Python", "C++", "C", "Java", "Rust", "Others"]
+
+    [multi_choices]
+    default_value = "Python"
     choices = ["Python", "C++", "C", "Java", "Rust", "Others"]
 
     @end
