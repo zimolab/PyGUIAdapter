@@ -8,7 +8,6 @@ from qtpy.QtWidgets import QWidget
 from ._widget import PathSelectWidget
 from ..common import CommonParameterWidgetConfig, CommonParameterWidget
 from ...exceptions import ParameterValidationError
-from ... import utils
 
 
 @dataclasses.dataclass(frozen=True)
@@ -36,24 +35,25 @@ class FileSelect(CommonParameterWidget):
         self, parent: QWidget | None, parameter_name: str, config: FileSelectConfig
     ):
         self._config: FileSelectConfig = config
+        self._value_widget: PathSelectWidget | None = None
         super().__init__(parent, parameter_name, config)
 
-        self._value_widget: PathSelectWidget = PathSelectWidget(
-            self,
-            select_directory=False,
-            open_file=not self._config.save_file,
-            save_file=self._config.save_file,
-            multiple_files=False,
-            select_button_text=self._config.select_button_text,
-            dialog_title=self._config.dialog_title,
-            start_dir=self._config.start_dir,
-            filters=self._config.filters,
-            placeholder=self._config.placeholder,
-            clear_button=self._config.clear_button,
-        )
-
     @property
-    def value_widget(self) -> QWidget:
+    def value_widget(self) -> PathSelectWidget:
+        if self._value_widget is None:
+            self._value_widget = PathSelectWidget(
+                self,
+                select_directory=False,
+                open_file=not self._config.save_file,
+                save_file=self._config.save_file,
+                multiple_files=False,
+                select_button_text=self._config.select_button_text,
+                dialog_title=self._config.dialog_title,
+                start_dir=self._config.start_dir,
+                filters=self._config.filters,
+                placeholder=self._config.placeholder,
+                clear_button=self._config.clear_button,
+            )
         return self._value_widget
 
     def set_value_to_widget(self, value: Any):
@@ -68,12 +68,11 @@ class FileSelect(CommonParameterWidget):
 class MultiFileSelectConfig(CommonParameterWidgetConfig):
     default_value: str = ""
     placeholder: str = ""
-    dialog_title: str = "Open Files"
+    dialog_title: str = "Select Files"
     start_dir: str = ""
     filters: str = ""
     file_separator: str = ";;"
-    select_button_text: str = "Select"
-    select_button_icon: utils.IconType = None
+    select_button_text: str = "..."
     clear_button: bool = False
 
     @classmethod
@@ -90,25 +89,26 @@ class MultiFileSelect(CommonParameterWidget):
         self, parent: QWidget | None, parameter_name: str, config: MultiFileSelectConfig
     ):
         self._config: MultiFileSelectConfig = config
+        self._value_widget: PathSelectWidget | None = None
         super().__init__(parent, parameter_name, config)
 
-        self._value_widget: PathSelectWidget = PathSelectWidget(
-            self,
-            select_directory=False,
-            open_file=True,
-            save_file=False,
-            multiple_files=True,
-            select_button_text=self._config.select_button_text,
-            dialog_title=self._config.dialog_title,
-            start_dir=self._config.start_dir,
-            filters=self._config.filters,
-            placeholder=self._config.placeholder,
-            clear_button=self._config.clear_button,
-            file_separator=self._config.file_separator,
-        )
-
     @property
-    def value_widget(self) -> QWidget:
+    def value_widget(self) -> PathSelectWidget:
+        if self._value_widget is None:
+            self._value_widget = PathSelectWidget(
+                self,
+                select_directory=False,
+                open_file=True,
+                save_file=False,
+                multiple_files=True,
+                select_button_text=self._config.select_button_text,
+                dialog_title=self._config.dialog_title,
+                start_dir=self._config.start_dir,
+                filters=self._config.filters,
+                placeholder=self._config.placeholder,
+                clear_button=self._config.clear_button,
+                file_separator=self._config.file_separator,
+            )
         return self._value_widget
 
     def set_value_to_widget(self, value: str | List[str] | Tuple[str, ...] | Set[str]):

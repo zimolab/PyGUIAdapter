@@ -5,11 +5,10 @@ from .intspin import IntSpinBoxConfig, IntSpinBox
 from .boolcheckbox import BoolCheckBoxConfig, BoolCheckBox
 from .binstateselect import BinStateSelectConfig, BinStateSelect
 from .floatedit import (
-    FloatSpinBoxConfig,
-    FloatSpinBox,
     FloatLineEditConfig,
     FloatLineEdit,
 )
+from .floatspin import FloatSpinBoxConfig, FloatSpinBox
 from .literaledit import (
     PyLiteralEdit,
     PyLiteralEditConfig,

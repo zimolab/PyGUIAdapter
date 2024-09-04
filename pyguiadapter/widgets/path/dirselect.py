@@ -36,9 +36,9 @@ class DirSelect(CommonParameterWidget):
         super().__init__(parent, parameter_name, config)
 
     @property
-    def value_widget(self) -> QWidget:
+    def value_widget(self) -> PathSelectWidget:
         if self._value_widget is None:
-            self._value_widget: PathSelectWidget = PathSelectWidget(
+            self._value_widget = PathSelectWidget(
                 self,
                 select_directory=True,
                 open_file=False,

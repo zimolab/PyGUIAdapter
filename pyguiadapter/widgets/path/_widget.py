@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from typing import List, Tuple, Set
 
-from qtpy.QtGui import QIcon
 from qtpy.QtWidgets import QLineEdit, QToolButton, QWidget, QHBoxLayout
 
 from ... import utils
@@ -33,6 +32,8 @@ class PathSelectWidget(QWidget):
         super().__init__(parent)
 
         self._layout = QHBoxLayout(self)
+        self._layout.setContentsMargins(0, 0, 0, 0)
+        # self._layout.setSpacing(0)
 
         self._select_directory = select_directory
         self._open_file = open_file
@@ -58,6 +59,7 @@ class PathSelectWidget(QWidget):
         if select_button_icon:
             self._select_button.setIcon(select_button_icon)
 
+        # noinspection PyUnresolvedReferences
         self._select_button.clicked.connect(self._on_select_path)
 
         self._layout.addWidget(self._path_edit)
