@@ -38,9 +38,9 @@ class GUIAdapter(object):
         on_app_start: Callable[[QApplication], None] | None = None,
         on_app_shutdown: Callable | None = None,
     ):
-        self._select_window_config = select_window_config
-        self._app_style = app_style
-        self._on_app_start = on_app_start
+        self._select_window_config = select_window_config or FnSelectWindowConfig()
+        self._app_style: str | None = app_style
+        self._on_app_start: Callable[[QApplication], None] | None = on_app_start
         self._on_app_shutdown: Callable | None = on_app_shutdown
 
         self._bundles: Dict[Callable, FnBundle] = OrderedDict()
@@ -110,7 +110,9 @@ class GUIAdapter(object):
     def clear_bundles(self):
         self._bundles.clear()
 
-    def run(self, argv: Sequence[str] | None = None):
+    def run(
+        self, argv: Sequence[str] | None = None, *, show_select_window: bool = False
+    ):
         if self._application is None:
             self._start_application(argv)
         # noinspection PyProtectedMember
@@ -122,7 +124,7 @@ class GUIAdapter(object):
 
         try:
 
-            if count == 1 and not self._select_window_config.always_show_select_window:
+            if count == 1 and not show_select_window:
                 fn_bundle = next(iter(self._bundles.values()))
                 self._show_execute_window(fn_bundle)
             else:
