@@ -3,7 +3,7 @@ from __future__ import annotations
 import dataclasses
 import json
 from collections import OrderedDict
-from typing import Type, TypeVar, Dict, Any, List
+from typing import Type, TypeVar, Dict, Any, List, Tuple
 
 from pyqcodeeditor.QCodeEditor import QCodeEditor
 from pyqcodeeditor.highlighters import QJSONHighlighter
@@ -58,8 +58,9 @@ class PlainDictEditConfig(CommonParameterWidgetConfig):
     )
     clear_items_dialog_title: str = "Confirm"
     clear_items_dialog_message: str = "Are you sure you want to clear all items?"
-    edit_item_title: str = "Edit"
-    add_item_title: str = "Add"
+    edit_item_editor_title: str = "Edit Item"
+    add_item_editor_title: str = "Add Item"
+    item_editor_size: Tuple[int, int] = (500, 400)
 
     @classmethod
     def target_widget_class(cls) -> Type["PlainDictEdit"]:
@@ -185,8 +186,9 @@ class PlainDictEdit(CommonParameterWidget):
             current_value=None,
             key_label=self._config.key_header,
             value_label=self._config.value_header,
+            window_size=self._config.item_editor_size,
         )
-        editor.setWindowTitle(self._config.add_item_title)
+        editor.setWindowTitle(self._config.add_item_editor_title)
         if editor.exec_() == QDialog.Rejected:
             return
         new_key = editor.get_current_key()
@@ -255,8 +257,9 @@ class PlainDictEdit(CommonParameterWidget):
             current_value,
             key_label=self._config.key_header,
             value_label=self._config.value_header,
+            window_size=self._config.item_editor_size,
         )
-        editor.setWindowTitle(self._config.edit_item_title)
+        editor.setWindowTitle(self._config.edit_item_editor_title)
         if editor.exec_() == QDialog.Rejected:
             return
         new_key = editor.get_current_key()
@@ -328,6 +331,7 @@ class _KeyValueEditor(QDialog):
         *,
         key_label: str = "Key",
         value_label: str = "Value",
+        window_size: Tuple[int, int] | None = None,
     ):
         super().__init__(parent)
         self._keys = added_keys
@@ -336,7 +340,8 @@ class _KeyValueEditor(QDialog):
 
         self._formater = JsonFormatter()
 
-        self.resize(400, 300)
+        if window_size:
+            self.resize(*window_size)
 
         layout = QVBoxLayout(self)
         self.setLayout(layout)
