@@ -14,6 +14,7 @@ EchoMode = QLineEdit.EchoMode
 
 @dataclasses.dataclass(frozen=True)
 class LineEditConfig(CommonParameterWidgetConfig):
+    default_value: str = ""
     placeholder: str = ""
     clear_button_enabled: bool = False
     echo_mode: EchoMode | None = None
