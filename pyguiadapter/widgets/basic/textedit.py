@@ -15,6 +15,7 @@ WrapMode = QTextOption.WrapMode
 
 @dataclasses.dataclass(frozen=True)
 class TextEditConfig(CommonParameterWidgetConfig):
+    default_value: str = ""
     placeholder: str = ""
     accept_rich_text: bool = False
     auto_formatting: AutoFormatting | None = None
