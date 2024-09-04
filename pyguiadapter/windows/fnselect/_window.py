@@ -38,7 +38,6 @@ class FnSelectWindowConfig(BaseWindowConfig):
         default_factory=DocumentBrowserConfig
     )
     document_browser_ratio: float = 0.35
-    always_show_select_window: bool = True
 
 
 class FnSelectWindow(BaseWindow):
