@@ -1,6 +1,7 @@
 from .lineedit import LineEditConfig, LineEdit
 from .textedit import TextEditConfig, TextEdit
-from .intedit import IntSpinBoxConfig, IntSpinBox, IntLineEditConfig, IntLineEdit
+from .intedit import IntLineEditConfig, IntLineEdit
+from .intspin import IntSpinBoxConfig, IntSpinBox
 from .boolcheckbox import BoolCheckBoxConfig, BoolCheckBox
 from .binstateselect import BinStateSelectConfig, BinStateSelect
 from .floatedit import (
@@ -25,11 +26,11 @@ __all__ = [
     "LineEditConfig",
     "TextEdit",
     "TextEditConfig",
-    "IntSpinBoxConfig",
-    "IntSpinBox",
     "BoolCheckBox",
     "BinStateSelect",
     "BinStateSelectConfig",
+    "IntSpinBoxConfig",
+    "IntSpinBox",
     "IntLineEditConfig",
     "IntLineEdit",
     "FloatSpinBoxConfig",
