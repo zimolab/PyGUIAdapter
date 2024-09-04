@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import dataclasses
-from email.policy import default
 from typing import Type, Any, TypeVar, List, Tuple, Set
 
 from qtpy.QtWidgets import QWidget
