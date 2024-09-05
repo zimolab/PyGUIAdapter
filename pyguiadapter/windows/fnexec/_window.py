@@ -72,6 +72,8 @@ class FnExecuteWindowConfig(BaseWindowConfig):
     size: Tuple[int, int] | QSize = DEFAULT_WINDOW_SIZE
     logging_dock_ratio: float = 0.3
     document_dock_ratio: float = 0.65
+    show_logging_dock: bool = False
+    show_document_dock: bool = True
     progressbar: ProgressBarConfig | None = None
     logging_config: LogBrowserConfig = dataclasses.field(
         default_factory=LogBrowserConfig
@@ -302,6 +304,10 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
         self.addDockWidget(Qt.RightDockWidgetArea, self._document_dock)
         # display the document content
         self.update_document(fn_info.document, fn_info.document_format)
+        if self.window_config.show_document_dock:
+            self._document_dock.show()
+        else:
+            self._document_dock.hide()
 
         # create the dock widget and log output area
         self._logging_dock = QDockWidget(self)
@@ -317,6 +323,10 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
             self.hide_progressbar()
         else:
             self.show_progressbar()
+        if self.window_config.show_logging_dock:
+            self._logging_dock.show()
+        else:
+            self._logging_dock.hide()
 
         # resize the docks
         current_width = self.width()
