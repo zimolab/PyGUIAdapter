@@ -237,6 +237,13 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
 
         if isinstance(widget_config, dict):
             widget_config = widget_class.ConfigClass.new(**widget_config)
+
+        if widget_config.description is None or widget_config.description == "":
+            if param_info.description is not None and param_info.description != "":
+                widget_config = dataclasses.replace(
+                    widget_config, description=param_info.description
+                )
+
         widget_config = widget_class.after_process_config(
             widget_config, param_name, param_info
         )
