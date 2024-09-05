@@ -87,11 +87,13 @@ class FnParser(object):
             display_name = fn.__name__
 
         if not document:
-            document = (
-                fn_docstring.get_long_description()
-                or fn_docstring.get_short_description()
-                or fn_docstring_text
-            )
+            # desc = fn_docstring.get_short_description() or ""
+            # desc += "\n\n" + (fn_docstring.get_long_description() or "")
+
+            short_desc = fn_docstring.get_short_description() or ""
+            long_desc = fn_docstring.get_long_description() or ""
+
+            document = (short_desc + "\n\n" + long_desc).strip() or fn_docstring_text
 
         return FnInfo(
             fn=fn,
