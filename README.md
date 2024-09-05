@@ -138,7 +138,7 @@ if __name__ == "__main__":
 
 当然，也可以查看[docs/semantic_types.md](docs/semantic_types.md)，其中，对一些常见的语义化类型做了说明。
 
-### 2. 调整控件属性
+### 2. 配置控件属性
 
 一般来说，PyGUIAdapter会根据参数类型自动选择合适的控件，但有时，我们可能希望对生成的控件进行一些配置，以更加精确的控制控件的外观和行为，
 比如，我们可能希望改变控件上的文字，添加一些提示信息，或者是限制输入的值的范围。考虑到这一点，PyGUIAdapter提供了一些机制，让我们可以在生成控件前
@@ -311,14 +311,186 @@ if __name__ == "__main__":
 
 （2）关于`default_value`属性
 
-`default_value`属性除了可以在@params...@end块中定义，PyGUIAdapter还支持直接将函数参数列表中`default_value`，比如：
+`default_value`属性除了可以在@params...@end块中定义，PyGUIAdapter还支持直接从函数的签名中获取参数的默认值，比如：
 
 ![](screenshots/get_started_4b.png)
 
-上面的代码中，参数`a`、`b`的默认值在@params...@end块中定义，而参数`c`的默认值则直接在函数参数列表中定义。
+在上面的代码中，参数`a`、`b`的默认值在@params...@end块中定义，而参数`c`的默认值则直接在函数参数列表中定义。
 
 
-### 3. 参数分组
+#### 2.2 通过add()函数配置控件属性
+
+除了在文档字符串中配置控件属性，我们还可以通过向`add()`函数传入`widget_configs`来对参数的控件进行配置，比如：
+
+```python
+from pyguiadapter.adapter import GUIAdapter
+from pyguiadapter.types import file_t, directory_t
+from pyguiadapter.widgets import (
+    FileSelectConfig,
+    DirSelectConfig,
+    LineEditConfig,
+    IntSpinBoxConfig,
+)
+
+
+def encode_mp3(
+    input_file: file_t, output_dir: directory_t, output_file: str, quality: int
+):
+    """
+    encode_mp3
+    @param input_file: select the path of the mp3 file you want to encode.
+    @param output_dir: select the directory of the output file
+    @param output_file: The filename of output file, <b>must endswith .ogg</b>
+    @param quality: from 10 to 100, <font color='red'>higher value, better quality, but requires more time to encode</font>
+    @return:
+    """
+    pass
+
+
+if __name__ == "__main__":
+
+    adapter = GUIAdapter()
+    adapter.add(
+        encode_mp3,
+        widget_configs={
+            "input_file": FileSelectConfig(
+                label="Input MP3 File",
+                placeholder="No input file",
+                dialog_title="Select MP3 File",
+                filters="MP3 Files(*.mp3)",
+            ),
+            "output_dir": DirSelectConfig(
+                label="Output File Directory",
+                placeholder="Output directory not specified",
+                dialog_title="Select Output Directory",
+            ),
+            "output_file": LineEditConfig(
+                label="Output Filename", placeholder="No output filename"
+            ),
+            "quality": IntSpinBoxConfig(
+                label="Encoding Quality",
+                default_value=80,
+                min_value=10,
+                max_value=100,
+                step=1,
+                suffix=" %",
+            ),
+        },
+    )
+    adapter.run()
+```
+
+在上面这个例子中，除了参数的`description`，其他属性都是通过`add()`函数的`widget_configs`，它的效果与之前的示例一样：
+
+![](screenshots/get_started_6.png)
+
+> 有了@params...@end，为什么还要实现另外一种配置参数控件属性的机制？这个问题大概基于以下几点考虑：
+> 1. @params...@end之间的文本块本质上是一个TOML格式的字符串，因此其允许的属性的值的类型是受限制的，而PyGUIAdapter并不要求控件配置类中定义的属性
+>的值是简单类型，开发者完全可以使用复杂的自定义类型作为控件的配置属性，在这种情况下，就无法在@params...@end块中配置这些属性了，因此，我们需要一种
+>更加灵活的方式。当然，@params...@end适用绝大多数情形。
+> 2. @params...@end中配置的属性是静态的，无法在运行时针对不同的情形进行调整，而在某些情况下，开发者可能需要根据不同的情况，动态配置控件的属性，
+>其中一个最常见的例子就是实现i18n。
+> 3. 防止文档字符串过度膨胀的需要。比如，当一个函数的参数比较多时， @params...@end的内容可能会非常长，而有些开发者可能希望保持函数代码的简洁，
+>不希望文档字符串的部分占据太多空间。
+
+### 3. 配置窗口属性
+
+除了可以对参数的控件的属性进行配置，PyGUIAdapter还允许开发者对窗口本身进行调整，包括调整窗口的标题、图标、大小、字体尺寸、界面上的文字等等。
+
+具体的方法是向`add()`函数传入一个[FnExecuteWindowConfig](pyguiadapter/windows/fnexec/_window.py)对象。
+
+> 在[FnExecuteWindowConfig](pyguiadapter/windows/fnexec/_window.py)中，有非常多的配置选项，可以尝试调整这些选项，并观察其所产生的效果。
+
+#### 3.1 调整窗口标题
+
+函数执行界面的窗口标题默认为函数的名称，可以通过以下配置项进行调整：
+
+![](screenshots/get_started_7.png)
+
+效果如下：
+
+![](screenshots/get_started_7a.png)
+
+#### 3.2 调整窗口图标
+
+> PyGUIAdapter引入了[qtawesome](https://github.com/spyder-ide/qtawesome)作为内置的图标库，因此，
+> 在绝大多数需要传入一个图标对象的地方，都可以直接传入qtawesome支持的图标名称。
+
+![](screenshots/get_started_7b.png)
+
+#### 3.3 调整窗口大小
+
+
+
+#### 3.4 调整Document区域
+
+Document区域通常用于显示函数的说明文档，该区域显示的内容默认来自于函数的文档字符串（@params...@end块会被忽略）,且格式默认为Markdown。
+
+```python
+from pyguiadapter.adapter import GUIAdapter
+from pyguiadapter.types import file_t, directory_t
+from pyguiadapter.windows import FnExecuteWindowConfig
+
+
+def encode_mp3(
+    input_file: file_t, output_dir: directory_t, output_file: str, quality: int
+):
+    """
+    This function is used to encode a mp3 file into ogg format.
+
+    Note: **The quality parameter will affect the output file size.**
+
+    @params
+    [input_file]
+    label = "Input MP3 File"
+    description = "select the path of the mp3 file you want to encode."
+    placeholder = "No input file"
+    dialog_title = "Select MP3 File"
+    filters = "MP3 Files(*.mp3)"
+
+    [output_dir]
+    label = "Output File Directory"
+    description = "select the directory of the output file"
+    placeholder = "Output directory not specified"
+    dialog_title = "Select Output Directory"
+
+    [output_file]
+    label = "Output Filename"
+    description = "The filename of output file, <b>must endswith .ogg</b>"
+    placeholder = "No output filename"
+
+    [quality]
+    label = "Encoding Quality"
+    default_value = 80
+    description = "from 10 to 100, <font color='red'>higher value, better quality, but requires more time to encode</font>"
+    min_value = 10
+    max_value = 100
+    step = 1
+    suffix = " %"
+    @end
+    """
+    pass
+
+
+if __name__ == "__main__":
+
+    adapter = GUIAdapter()
+    adapter.add(
+        encode_mp3,
+        window_config=FnExecuteWindowConfig(
+            title="MP3 Encoder",
+            icon="mdi.file-music",
+        ),
+    )
+    adapter.run()
+```
+
+![](screenshots/get_started_7e.png)
+
+
+#### 3.4 调整界面上的文字
+
+#### 3.5 显示/隐藏Dock区域
 
 ## 五、自定义控件类型
 
