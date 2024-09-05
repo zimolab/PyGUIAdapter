@@ -420,11 +420,15 @@ if __name__ == "__main__":
 
 #### 3.3 调整窗口大小
 
+#### 3.4 调整界面上的文字
 
+#### 3.5 显示/隐藏Dock区域
 
-#### 3.4 调整Document区域
+#### 3.6 自定义Document区域内容
 
-Document区域通常用于显示函数的说明文档，该区域显示的内容默认来自于函数的文档字符串（@params...@end块会被忽略）,且格式默认为Markdown。
+##### (1) Document区域默认显示的内容
+
+Document区域通常用于显示函数的说明文档，该区域显示的内容默认来自于函数的文档字符串（@params...@end块会被忽略），格式默认为Markdown。
 
 ```python
 from pyguiadapter.adapter import GUIAdapter
@@ -487,10 +491,36 @@ if __name__ == "__main__":
 
 ![](screenshots/get_started_7e.png)
 
+##### （2）调整Document区域显示的内容
+可以通过`add()`函数的`document`参数来调整Document区域显示的内容，同时，可以通过`document_format`参数指定`document`的格式，支持以下格式：
+"markdown"、"html"、 "plaintext"。
 
-#### 3.4 调整界面上的文字
+下面的示例演示如何读取html文件内容，并将其显示在Document区域（完整代码见[examples/get_started_7f.py](examples/get_started_7f.py)）:
 
-#### 3.5 显示/隐藏Dock区域
+```python
+if __name__ == "__main__":
+
+    fn_doc_path = os.path.join(os.path.dirname(__file__), "fn_doc.html")
+
+    with open(fn_doc_path, "r") as f:
+        fn_doc = f.read()
+
+    adapter = GUIAdapter()
+    adapter.add(
+        encode_mp3,
+        document=fn_doc,
+        document_format="html",
+        window_config=FnExecuteWindowConfig(
+            title="Audio Encoder",
+            icon="mdi.file-music",
+        ),
+    )
+    adapter.run()
+```
+
+![](screenshots/get_started_7f.png)
+
+#### 3.7 其他可以调整的属性
 
 ## 五、自定义控件类型
 
