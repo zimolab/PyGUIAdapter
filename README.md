@@ -401,26 +401,82 @@ if __name__ == "__main__":
 
 > 在[FnExecuteWindowConfig](pyguiadapter/windows/fnexec/_window.py)中，有非常多的配置选项，可以尝试调整这些选项，并观察其所产生的效果。
 
-#### 3.1 调整窗口标题
+#### 3.1 调整窗口标题和图标
 
+##### （1）设置窗口标题
 函数执行界面的窗口标题默认为函数的名称，可以通过以下配置项进行调整：
 
 ![](screenshots/get_started_7.png)
 
-效果如下：
-
 ![](screenshots/get_started_7a.png)
 
-#### 3.2 调整窗口图标
+##### （2）设置窗口图标
+
+![](screenshots/get_started_7b.png)
 
 > PyGUIAdapter引入了[qtawesome](https://github.com/spyder-ide/qtawesome)作为内置的图标库，因此，
 > 在绝大多数需要传入一个图标对象的地方，都可以直接传入qtawesome支持的图标名称。
 
-![](screenshots/get_started_7b.png)
 
 #### 3.3 调整窗口大小
 
+将窗口大小调整为`400x300`:
+
+```python
+if __name__ == "__main__":
+    adapter = GUIAdapter()
+    adapter.add(
+        resize_window_demo,
+        window_config=FnExecuteWindowConfig(
+            size=(300, 400),
+        ),
+    )
+    adapter.run()
+```
+![](screenshots/get_started_7g.png)
+
+
 #### 3.4 调整界面上的文字
+
+窗口上的文字以及提示信息基本上都是可以自定义的，在[`FnExecuteWindowConfig`](pyguiadapter/windows/fnexec/_window.py)类中, 
+`widget_texts`和`message_texts`负责管理这些文字。
+
+
+```python
+@dataclasses.dataclass
+class FnExecuteWindowConfig(BaseWindowConfig):
+    ...
+    widget_texts: WidgetTexts = dataclasses.field(default_factory=WidgetTexts)
+    message_texts: MessageTexts = dataclasses.field(default_factory=MessageTexts)
+
+
+@dataclasses.dataclass
+class WidgetTexts(object):
+    document_dock_title: str = "Document"
+    output_dock_title: str = "Output"
+    execute_button_text: str = "Execute"
+    clear_button_text: str = "Clear"
+    cancel_button_text: str = "Cancel"
+    clear_checkbox_text: str = "Clear output"
+    result_dialog_title: str = "Function Result"
+    error_dialog_title: str = "Function Error"
+    validation_dialog_title: str = "Parameter Validation Error"
+
+
+@dataclasses.dataclass
+class MessageTexts(object):
+    function_executing: str = "function is executing now"
+    function_not_executing: str = "function is not executing now"
+    function_not_cancelable: str = "function is not cancelable"
+    function_result: str = "function result: {}"
+    function_error: str = "function error: {}"
+    parameter_validation: str = "{}:\n{}"
+```
+
+![](screenshots/get_started_8.png)
+
+
+
 
 #### 3.5 显示/隐藏Dock区域
 
