@@ -82,7 +82,7 @@ class BaseWindow(QMainWindow):
 
         self._config: BaseWindowConfig = config
         self._actions: Dict[int, QAction] = {}
-        self._update_ui()
+        self._setup_ui()
 
         self._on_create()
 
@@ -105,7 +105,7 @@ class BaseWindow(QMainWindow):
         self._on_hide()
         super().hideEvent(event)
 
-    def _update_ui(self):
+    def _setup_ui(self):
         if self._config is None:
             return
 

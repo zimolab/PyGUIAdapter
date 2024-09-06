@@ -7,18 +7,18 @@ from qtpy.QtWidgets import QTextBrowser, QWidget
 
 from ... import utils
 
-DEFAULT_LOG_OUTPUT_BACKGROUND = "#380C2A"
-DEFAULT_LOG_OUTPUT_TEXT_COLOR = "#FFFFFF"
-DEFAULT_LOG_OUTPUT_FONT_SIZE = 14
-DEFAULT_LOG_OUTPUT_FONT_FAMILY = "Consolas, Arial, sans-serif"
+DEFAULT_OUTPUT_BACKGROUND = "#380C2A"
+DEFAULT_OUTPUT_TEXT_COLOR = "#FFFFFF"
+DEFAULT_OUTPUT_FONT_SIZE = 14
+DEFAULT_OUTPUT_FONT_FAMILY = "Consolas, Arial, sans-serif"
 
 
 @dataclasses.dataclass
-class LogBrowserConfig(object):
-    background: str = DEFAULT_LOG_OUTPUT_BACKGROUND
-    text_color: str = DEFAULT_LOG_OUTPUT_TEXT_COLOR
-    font_size: int = DEFAULT_LOG_OUTPUT_FONT_SIZE
-    font_family: str = DEFAULT_LOG_OUTPUT_FONT_FAMILY
+class OutputBrowserConfig(object):
+    background: str = DEFAULT_OUTPUT_BACKGROUND
+    text_color: str = DEFAULT_OUTPUT_TEXT_COLOR
+    font_size: int = DEFAULT_OUTPUT_FONT_SIZE
+    font_family: str = DEFAULT_OUTPUT_FONT_FAMILY
     line_wrap_mode: Literal[
         "no_wrap",
         "widget_width",
@@ -35,10 +35,10 @@ class LogBrowserConfig(object):
     fixed_line_wrap_width: int = 80
 
 
-class LogBrowser(QTextBrowser):
-    def __init__(self, parent: QWidget | None, config: LogBrowserConfig | None):
+class OutputBrowser(QTextBrowser):
+    def __init__(self, parent: QWidget | None, config: OutputBrowserConfig | None):
         super().__init__(parent)
-        self._config = config or LogBrowserConfig()
+        self._config = config or OutputBrowserConfig()
 
         self._setup()
 

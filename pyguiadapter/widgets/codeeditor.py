@@ -296,8 +296,8 @@ class CodeEditorWindow(BaseWindow):
 
         super().__init__(parent, config=config)
 
-    def _update_ui(self):
-        super()._update_ui()
+    def _setup_ui(self):
+        super()._setup_ui()
 
         center_widget = QWidget(self)
 

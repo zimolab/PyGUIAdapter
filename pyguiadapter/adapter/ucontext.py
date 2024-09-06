@@ -100,7 +100,7 @@ class _Context(QObject):
             warnings.warn("current_window is None")
             print(msg)
             return
-        win.append_log(msg, html)
+        win.append_output(msg, html)
 
     def _on_show_messagebox(self, future: Future, config: MessageBoxConfig):
         win = self.current_window

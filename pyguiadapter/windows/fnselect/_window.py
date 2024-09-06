@@ -59,8 +59,8 @@ class FnSelectWindow(BaseWindow):
 
         super().__init__(parent, config)
 
-    def _update_ui(self):
-        super()._update_ui()
+    def _setup_ui(self):
+        super()._setup_ui()
 
         # central widget
         _central_widget: QWidget = QWidget(self)

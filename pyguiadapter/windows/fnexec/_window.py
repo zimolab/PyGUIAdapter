@@ -12,10 +12,10 @@ from qtpy.QtWidgets import (
 )
 
 from ._docarea import FnDocumentArea
-from ._logarea import (
+from ._outputarea import (
     ProgressBarConfig,
-    LogBrowserConfig,
-    FnExecuteLoggingArea,
+    OutputBrowserConfig,
+    FnExecuteOutputArea,
 )
 from ._paramarea import FnParameterArea, FnParameterGroupBox
 from .._docbrowser import DocumentBrowserConfig
@@ -42,11 +42,13 @@ ParameterWidgetType = Union[
     BaseParameterWidgetConfig,
 ]
 
+DockWidgetArea = Qt.DockWidgetArea
+
 
 @dataclasses.dataclass
 class WidgetTexts(object):
     document_dock_title: str = "Document"
-    log_output_dock_title: str = "Output"
+    output_dock_title: str = "Output"
     execute_button_text: str = "Execute"
     clear_button_text: str = "Clear"
     cancel_button_text: str = "Cancel"
@@ -70,13 +72,19 @@ class MessageTexts(object):
 class FnExecuteWindowConfig(BaseWindowConfig):
     title: str = ""
     size: Tuple[int, int] | QSize = DEFAULT_WINDOW_SIZE
-    logging_dock_ratio: float = 0.3
+    output_dock_ratio: float = 0.3
     document_dock_ratio: float = 0.65
-    show_logging_dock: bool = False
+    show_output_dock: bool = True
+    output_dock_floating: bool = False
+    output_dock_position: DockWidgetArea = Qt.RightDockWidgetArea
     show_document_dock: bool = True
+    document_dock_floating: bool = False
+    document_dock_position: DockWidgetArea = Qt.RightDockWidgetArea
+    tabify_docks: bool = True
+
     progressbar: ProgressBarConfig | None = None
-    logging_config: LogBrowserConfig = dataclasses.field(
-        default_factory=LogBrowserConfig
+    output_config: OutputBrowserConfig = dataclasses.field(
+        default_factory=OutputBrowserConfig
     )
     document_config: DocumentBrowserConfig | None = dataclasses.field(
         default_factory=DocumentBrowserConfig
@@ -105,9 +113,9 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
         self._center_widget: QWidget | None = None
         self._parameters_area: FnParameterArea | None = None
         self._document_area: FnDocumentArea | None = None
-        self._logging_area: FnExecuteLoggingArea | None = None
+        self._output_area: FnExecuteOutputArea | None = None
         self._document_dock: QDockWidget | None = None
-        self._logging_dock: QDockWidget | None = None
+        self._output_dock: QDockWidget | None = None
 
         super().__init__(parent, bundle.window_config)
 
@@ -137,22 +145,22 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
         return self._executor
 
     def update_progressbar_config(self, config: ProgressBarConfig | None):
-        self._logging_area.update_progressbar_config(config)
+        self._output_area.update_progressbar_config(config)
 
     def show_progressbar(self):
-        self._logging_area.show_progressbar()
+        self._output_area.show_progressbar()
 
     def hide_progressbar(self):
-        self._logging_area.hide_progressbar()
+        self._output_area.hide_progressbar()
 
     def update_progress(self, current_value: int, message: str | None = None):
-        self._logging_area.update_progress(current_value, message)
+        self._output_area.update_progress(current_value, message)
 
-    def append_log(self, log_text: str, html: bool = False):
-        self._logging_area.append_log_output(log_text, html)
+    def append_output(self, text: str, html: bool = False):
+        self._output_area.append_output(text, html)
 
-    def clear_log(self):
-        self._logging_area.clear_log_output()
+    def clear_output(self):
+        self._output_area.clear_output()
 
     def update_document(
         self, document: str, document_format: Literal["markdown", "html", "plaintext"]
@@ -252,8 +260,8 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
         return widget_class, widget_config
 
     # noinspection PyUnresolvedReferences
-    def _update_ui(self):
-        super()._update_ui()
+    def _setup_ui(self):
+        super()._setup_ui()
 
         fn_info = self._bundle.fn_info
         window_config = self.window_config
@@ -301,7 +309,10 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
             self._document_dock, window_config.document_config
         )
         self._document_dock.setWidget(self._document_area)
-        self.addDockWidget(Qt.RightDockWidgetArea, self._document_dock)
+        self.addDockWidget(
+            self.window_config.document_dock_position, self._document_dock
+        )
+        self._document_dock.setFloating(self.window_config.document_dock_floating)
         # display the document content
         self.update_document(fn_info.document, fn_info.document_format)
         if self.window_config.show_document_dock:
@@ -309,44 +320,50 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
         else:
             self._document_dock.hide()
 
-        # create the dock widget and log output area
-        self._logging_dock = QDockWidget(self)
-        self._logging_dock.setWindowTitle(widget_texts.log_output_dock_title)
-        self._logging_area = FnExecuteLoggingArea(
-            self._logging_dock,
+        # create the dock widget and output area
+        self._output_dock = QDockWidget(self)
+        self._output_dock.setWindowTitle(widget_texts.output_dock_title)
+        self._output_area = FnExecuteOutputArea(
+            self._output_dock,
             progressbar_config=window_config.progressbar,
-            log_browser_config=window_config.logging_config,
+            output_browser_config=window_config.output_config,
         )
-        self._logging_dock.setWidget(self._logging_area)
-        self.addDockWidget(Qt.BottomDockWidgetArea, self._logging_dock)
+        self._output_dock.setWidget(self._output_area)
+        self.addDockWidget(self.window_config.output_dock_position, self._output_dock)
+
+        if self.window_config.tabify_docks:
+            self.tabifyDockWidget(self._document_dock, self._output_dock)
+
         if window_config.progressbar is None:
             self.hide_progressbar()
         else:
             self.show_progressbar()
-        if self.window_config.show_logging_dock:
-            self._logging_dock.show()
+        if self.window_config.show_output_dock:
+            self._output_dock.show()
         else:
-            self._logging_dock.hide()
+            self._output_dock.hide()
 
         # resize the docks
         current_width = self.width()
         current_height = self.height()
-        log_output_dock_ratio = window_config.logging_dock_ratio
-        log_output_dock_ratio = min(max(log_output_dock_ratio, 0.1), 1.0)
-        dock_height = int(current_height * log_output_dock_ratio)
+        output_dock_ratio = window_config.output_dock_ratio
+        output_dock_ratio = min(max(output_dock_ratio, 0.1), 1.0)
+        dock_height = int(current_height * output_dock_ratio)
         document_dock_ratio = min(max(window_config.document_dock_ratio, 0.1), 1.0)
         dock_width = int(current_width * document_dock_ratio)
-        self.resizeDocks([self._logging_dock], [dock_height], Qt.Vertical)
+        self.resizeDocks([self._output_dock], [dock_height], Qt.Vertical)
         self.resizeDocks(
             [self._document_dock],
             [dock_width],
             Qt.Horizontal,
         )
 
+        self._output_dock.setFloating(self.window_config.output_dock_floating)
+
     def before_execute(self, fn_info: fn.FnInfo, arguments: Dict[str, Any]) -> None:
         super().before_execute(fn_info, arguments)
         if self._parameters_area.is_auto_clear_enabled:
-            self.clear_log()
+            self.clear_output()
         self._parameters_area.enable_clear_button(False)
         self._parameters_area.enable_execute_button(False)
 
@@ -372,7 +389,7 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
         result_str = self.message_texts.function_result_template.format(result)
 
         if self.window_config.print_function_result:
-            self.append_log(result_str)
+            self.append_output(result_str)
 
         if self.window_config.show_function_result:
             utils.show_info_message(
@@ -391,7 +408,7 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
         error_msg = self.message_texts.function_error_template.format(error)
 
         if self.window_config.print_function_error:
-            self.append_log(error_msg)
+            self.append_output(error_msg)
 
         if self.window_config.show_function_error:
             utils.show_critical_message(
@@ -440,7 +457,7 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
         if self._executor.is_executing:
             utils.show_warning_message(self, self.message_texts.function_is_executing)
             pass
-        self.clear_log()
+        self.clear_output()
 
     def _process_param_validation_error(self, e: ParameterValidationError):
         self._param_groups.notify_validation_error(e.parameter_name, e.message)
