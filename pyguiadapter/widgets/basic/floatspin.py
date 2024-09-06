@@ -5,7 +5,7 @@ from typing import Type, TypeVar, Any
 
 from qtpy.QtWidgets import QWidget, QDoubleSpinBox
 
-from ...exceptions import ParameterValidationError
+from ...exceptions import ParameterError
 from ...widgets.common import (
     CommonParameterWidgetConfig,
     CommonParameterWidget,
@@ -57,7 +57,7 @@ class FloatSpinBox(CommonParameterWidget):
         try:
             value = float(value)
         except ValueError as e:
-            raise ParameterValidationError(self.parameter_name, str(e))
+            raise ParameterError(self.parameter_name, str(e))
         self._value_widget.setValue(value)
 
     def get_value_from_widget(self) -> float:

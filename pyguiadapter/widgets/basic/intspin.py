@@ -5,7 +5,7 @@ from typing import Type, TypeVar, Any
 
 from qtpy.QtWidgets import QWidget, QSpinBox
 
-from ...exceptions import ParameterValidationError
+from ...exceptions import ParameterError
 from ...widgets.common import (
     CommonParameterWidgetConfig,
     CommonParameterWidget,
@@ -58,7 +58,7 @@ class IntSpinBox(CommonParameterWidget):
         try:
             value = int(value)
         except ValueError as e:
-            raise ParameterValidationError(self.parameter_name, str(e))
+            raise ParameterError(self.parameter_name, str(e))
         self._value_widget.setValue(value)
 
     def get_value_from_widget(self) -> int:

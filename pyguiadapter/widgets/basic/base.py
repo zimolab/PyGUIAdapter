@@ -21,7 +21,7 @@ from ..common import (
     CommonParameterWidget,
     CommonParameterWidgetConfig,
 )
-from ...exceptions import ParameterValidationError
+from ...exceptions import ParameterError
 from ... import utils
 
 T = TypeVar("T")
@@ -187,7 +187,7 @@ class BaseDataEdit(CommonParameterWidget):
         try:
             code_text = self.from_data(value)
         except Exception as e:
-            raise ParameterValidationError(
+            raise ParameterError(
                 parameter_name=self.parameter_name, message=str(e)
             ) from e
         else:
@@ -201,7 +201,7 @@ class BaseDataEdit(CommonParameterWidget):
         try:
             obj = self.to_data(self._editor.toPlainText())
         except Exception as e:
-            raise ParameterValidationError(
+            raise ParameterError(
                 parameter_name=self.parameter_name, message=str(e)
             ) from e
         return obj

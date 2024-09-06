@@ -7,7 +7,7 @@ from qtpy.QtWidgets import QWidget
 
 from ._widget import PathSelectWidget
 from ..common import CommonParameterWidgetConfig, CommonParameterWidget
-from ...exceptions import ParameterValidationError
+from ...exceptions import ParameterError
 
 
 @dataclasses.dataclass(frozen=True)
@@ -114,7 +114,7 @@ class MultiFileSelect(CommonParameterWidget):
     def set_value_to_widget(self, value: str | List[str] | Tuple[str, ...] | Set[str]):
         value = value or []
         if not isinstance(value, (str, list, tuple, set)):
-            raise ParameterValidationError(
+            raise ParameterError(
                 self.parameter_name,
                 f"invalid type of value, expect str or a sequence of str, got {type(value)}",
             )

@@ -7,7 +7,7 @@ from qtpy.QtGui import QIntValidator
 from qtpy.QtWidgets import QWidget, QLineEdit
 
 from ..common import CommonParameterWidgetConfig, CommonParameterWidget
-from ...exceptions import ParameterValidationError
+from ...exceptions import ParameterError
 
 
 @dataclasses.dataclass(frozen=True)
@@ -58,6 +58,6 @@ class IntLineEdit(CommonParameterWidget):
         try:
             value = int(value)
         except ValueError as e:
-            raise ParameterValidationError(self.parameter_name, str(e))
+            raise ParameterError(self.parameter_name, str(e))
         else:
             return value
