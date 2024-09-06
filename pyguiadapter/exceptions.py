@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 
-class ParameterValidationError(Exception):
+class ParameterError(Exception):
     def __init__(self, parameter_name: str, message: str):
         self._parameter_name: str = parameter_name
         self._message: str = message
