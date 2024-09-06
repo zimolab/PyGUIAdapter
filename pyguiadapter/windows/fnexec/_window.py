@@ -22,7 +22,7 @@ from .._docbrowser import DocumentBrowserConfig
 from ... import bundle as bd
 from ... import utils, fn
 from ...adapter import ucontext
-from ...exceptions import FunctionExecutingError, ParameterValidationError
+from ...exceptions import FunctionExecutingError, ParameterError
 from ...executor import ExecuteStateListener, BaseFunctionExecutor
 from ...executors import ThreadFunctionExecutor
 from ...fn import ParameterInfo
@@ -53,19 +53,19 @@ class WidgetTexts(object):
     clear_button_text: str = "Clear"
     cancel_button_text: str = "Cancel"
     clear_checkbox_text: str = "Clear output"
-    function_result_dialog_title: str = "Function Result"
-    function_error_dialog_title: str = "Function Error"
-    parameter_validation_dialog_title: str = "Parameter Validation Error"
+    result_dialog_title: str = "Result"
+    universal_error_dialog_title: str = "Error"
+    parameter_error_dialog_title: str = "Parameter Error"
 
 
 @dataclasses.dataclass
 class MessageTexts(object):
-    function_is_executing: str = "function is executing now"
+    function_executing: str = "function is executing now"
     function_not_executing: str = "function is not executing now"
     function_not_cancelable: str = "function is not cancelable"
-    function_result_template: str = "function result: {}"
-    function_error_template: str = "function error: {}"
-    parameter_validation_failed: str = "{}:\n{}"
+    function_result: str = "function result: {}"
+    function_error: str = "{}"
+    parameter_error: str = "{}: {}"
 
 
 @dataclasses.dataclass
@@ -76,11 +76,11 @@ class FnExecuteWindowConfig(BaseWindowConfig):
     document_dock_ratio: float = 0.65
     show_output_dock: bool = True
     output_dock_floating: bool = False
-    output_dock_position: DockWidgetArea = Qt.RightDockWidgetArea
+    output_dock_position: DockWidgetArea = Qt.BottomDockWidgetArea
     show_document_dock: bool = True
     document_dock_floating: bool = False
     document_dock_position: DockWidgetArea = Qt.RightDockWidgetArea
-    tabify_docks: bool = True
+    tabify_docks: bool = False
 
     progressbar: ProgressBarConfig | None = None
     output_config: OutputBrowserConfig = dataclasses.field(
@@ -100,6 +100,7 @@ class FnExecuteWindowConfig(BaseWindowConfig):
     show_function_result: bool = False
     print_function_error: bool = True
     show_function_error: bool = True
+    show_error_traceback: bool = True
 
     widget_texts: WidgetTexts = dataclasses.field(default_factory=WidgetTexts)
     message_texts: MessageTexts = dataclasses.field(default_factory=MessageTexts)
@@ -186,8 +187,8 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
                 # when this kind of exception raised
                 if widget_config.set_default_value_on_init:
                     widget.set_value(widget_config.default_value)
-        except ParameterValidationError as e:
-            self._process_param_validation_error(e)
+        except ParameterError as e:
+            self._process_param_error(e)
         except Exception as e:
             # any other exceptions are seen as fatal and will cause the whole program to exit
             utils.show_exception_message(
@@ -386,38 +387,50 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
             self._bundle.on_execute_result(result, arguments.copy())
             return
 
-        result_str = self.message_texts.function_result_template.format(result)
+        result_str = self.message_texts.function_result.format(result)
 
         if self.window_config.print_function_result:
             self.append_output(result_str)
 
         if self.window_config.show_function_result:
             utils.show_info_message(
-                self, result_str, title=self.widget_texts.function_result_dialog_title
+                self, result_str, title=self.widget_texts.result_dialog_title
             )
 
     def on_execute_error(
         self, fn_info: fn.FnInfo, arguments: Dict[str, Any], error: Exception
     ) -> None:
 
-        if isinstance(error, ParameterValidationError):
-            self._process_param_validation_error(error)
+        if isinstance(error, ParameterError):
+            self._process_param_error(error)
+            return
+
         if callable(self._bundle.on_execute_error):
             self._bundle.on_execute_error(error, arguments.copy())
             return
-        error_msg = self.message_texts.function_error_template.format(error)
+
+        error_msg = self.message_texts.function_error.format(error)
 
         if self.window_config.print_function_error:
             self.append_output(error_msg)
 
         if self.window_config.show_function_error:
-            utils.show_critical_message(
-                self, error_msg, title=self.widget_texts.function_error_dialog_title
-            )
+            if not self.window_config.show_error_traceback:
+                utils.show_critical_message(
+                    self,
+                    error_msg,
+                    title=self.widget_texts.universal_error_dialog_title,
+                )
+            else:
+                utils.show_exception_message(
+                    self,
+                    exception=error,
+                    title=self.widget_texts.universal_error_dialog_title,
+                )
 
     def _on_close(self) -> bool:
         if self._executor.is_executing:
-            utils.show_warning_message(self, self.message_texts.function_is_executing)
+            utils.show_warning_message(self, self.message_texts.function_executing)
             return False
         return super()._on_close()
 
@@ -441,31 +454,29 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
 
     def _on_execute_button_clicked(self):
         if self._executor.is_executing:
-            utils.show_warning_message(self, self.message_texts.function_is_executing)
+            utils.show_warning_message(self, self.message_texts.function_executing)
             return
         try:
             arguments = self.get_parameter_values()
         except FunctionExecutingError:
-            utils.show_warning_message(self, self.message_texts.function_is_executing)
-        except ParameterValidationError as e:
-            self._process_param_validation_error(e)
+            utils.show_warning_message(self, self.message_texts.function_executing)
+        except ParameterError as e:
+            self._process_param_error(e)
         else:
             self._executor.execute(self._bundle.fn_info, arguments)
 
     # noinspection PyMethodMayBeStatic
     def _on_clear_button_clicked(self):
         if self._executor.is_executing:
-            utils.show_warning_message(self, self.message_texts.function_is_executing)
+            utils.show_warning_message(self, self.message_texts.function_executing)
             pass
         self.clear_output()
 
-    def _process_param_validation_error(self, e: ParameterValidationError):
+    def _process_param_error(self, e: ParameterError):
         self._param_groups.notify_validation_error(e.parameter_name, e.message)
-        msg = self.message_texts.parameter_validation_failed.format(
-            e.parameter_name, e.message
-        )
+        msg = self.message_texts.parameter_error.format(e.parameter_name, e.message)
         utils.show_critical_message(
-            self, msg, title=self.widget_texts.parameter_validation_dialog_title
+            self, msg, title=self.widget_texts.parameter_error_dialog_title
         )
         self._param_groups.scroll_to_parameter(e.parameter_name)
 
