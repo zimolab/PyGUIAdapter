@@ -4,6 +4,8 @@ from ._window import (
     ProgressBarConfig,
     OutputBrowserConfig,
     DocumentBrowserConfig,
+    WidgetTexts,
+    MessageTexts,
 )
 
 __all__ = [
@@ -12,4 +14,6 @@ __all__ = [
     "ProgressBarConfig",
     "OutputBrowserConfig",
     "DocumentBrowserConfig",
+    "WidgetTexts",
+    "MessageTexts",
 ]
