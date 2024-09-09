@@ -10,7 +10,7 @@ from .literaledit import PyLiteralEdit, PyLiteralEditConfig, PyLiteralType
 
 @dataclasses.dataclass(frozen=True)
 class DictEditConfig(PyLiteralEditConfig):
-    default_value: dict | None = None
+    default_value: dict | None = dataclasses.field(default_factory=dict)
     initial_text: str = "{}"
 
     @classmethod

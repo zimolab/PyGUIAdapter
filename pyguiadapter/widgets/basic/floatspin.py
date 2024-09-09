@@ -14,7 +14,7 @@ from ...widgets.common import (
 
 @dataclasses.dataclass(frozen=True)
 class FloatSpinBoxConfig(CommonParameterWidgetConfig):
-    default_value: float = 0.0
+    default_value: float | None = 0.0
     min_value: float = -2147483648.0
     max_value: float = 2147483647.0
     step: int = 0.01

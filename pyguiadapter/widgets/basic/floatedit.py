@@ -12,7 +12,7 @@ from ...exceptions import ParameterError
 
 @dataclasses.dataclass(frozen=True)
 class FloatLineEditConfig(CommonParameterWidgetConfig):
-    default_value: float = 0.0
+    default_value: float | None = 0.0
     min_value: int = -2147483648.0
     max_value: int = 2147483647.0
     decimals: int = 2

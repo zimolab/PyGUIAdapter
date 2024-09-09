@@ -59,6 +59,8 @@ class IntSpinBox(CommonParameterWidget):
             value = int(value)
         except ValueError as e:
             raise ParameterError(self.parameter_name, str(e))
+        except TypeError as e:
+            raise ParameterError(self.parameter_name, str(e))
         self._value_widget.setValue(value)
 
     def get_value_from_widget(self) -> int:

@@ -12,7 +12,7 @@ from ...exceptions import ParameterError
 
 @dataclasses.dataclass(frozen=True)
 class IntLineEditConfig(CommonParameterWidgetConfig):
-    default_value: int = 0
+    default_value: int | None = 0
     min_value: int = -2147483648
     max_value: int = 2147483647
     fallback_value: int = 0

@@ -13,7 +13,7 @@ from ... import utils
 
 @dataclasses.dataclass(frozen=True)
 class BinStateSelectConfig(CommonParameterWidgetConfig):
-    default_value: int | None = None
+    default_value: int | None = 0
 
     state_on_text: str = "On"
     state_on_value: int = 1
