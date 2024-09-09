@@ -8,7 +8,7 @@
 
 `PyGUIAdapter`使图形用户界面程序的开发变得轻松写意，甚至允许开发者在不编写一行GUI代码（或CLI代码）的情况下，构建简洁高效的图形用户界面，大大降低了开发者的学习成本和心智负担。
 
-![hello_world](/images/hello_world.png)
+![hello_world](images/hello_world.png)
 
 借助`PyGUIAdapter`，从`CLI程序`切换到`GUI程序`将变得十分顺滑。
 
@@ -52,14 +52,14 @@ if __name__ == "__main__":
 
 ```
 
-![process_integers.png](/images/process_integers.png)
+![process_integers.png](images/process_integers.png)
 
 
 ## 二、特性
 
 * 使用简单，开发快速，可以用极少的代码创建图形用户界面，学习成本低，心智负担小。
 * 丰富的内置控件类型，可以实现开箱即用。为python基本数据类型实现了对应输入控件。同时，对基本类型进行了扩展，提供了丰富的语义类型，使用用户在输入日期、时间、颜色、文件路径等特殊对象时，能够更加方便、精准。
-* 高度的可扩展性，提供了自定义控件接口。开发者可以很方便地为复杂的自定义数据类型，实现特定的输入控件。
+* 高度可扩展性，提供了自定义控件接口。开发者可以很方便地为复杂的自定义数据类型，实现特定的输入控件。
 * 高度的灵活性。提供了大量可配置属性，开发者可以灵活地调整界面的外观、样式，或者是更加精细地控制控件的行为，提升用户体验。
 * 支持自定义窗口菜单栏、工具栏，为构建复杂应用提供了可能。
 * 基于[`qtpy`](https://github.com/spyder-ide/qtpy)抽象层，不依赖特定Qt的Python绑定库，用户可自由选择`PyQt5`、`PyQt6`、`PySide2`、`PySide2`。
