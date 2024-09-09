@@ -31,7 +31,7 @@ T = TypeVar("T")
 class BaseDataEditConfig(CommonParameterWidgetConfig):
     font_size: int | None = None
     indent_size: int = 4
-    min_height: int = 245
+    min_height: int = 180
     highlighter: Type[QStyleSyntaxHighlighter] | None = None
     highlighter_args: dict | list | tuple | None = None
     enable_code_editor: bool = True
