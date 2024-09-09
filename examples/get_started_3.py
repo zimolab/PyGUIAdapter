@@ -3,7 +3,10 @@ from pyguiadapter.types import file_t, directory_t
 
 
 def encode_mp3(
-    input_file: file_t, output_dir: directory_t, output_file: str, quality: int
+    input_file: file_t,
+    output_dir: directory_t,
+    output_file: str,
+    quality: int,
 ):
     """
     @params
