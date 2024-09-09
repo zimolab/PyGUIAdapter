@@ -64,7 +64,7 @@ class MessageTexts(object):
     function_not_executing: str = "function is not executing now"
     function_not_cancelable: str = "function is not cancelable"
     function_result: str = "function result: {}"
-    function_error: str = "{}"
+    function_error: str = "{}: {}"
     parameter_error: str = "{}: {}"
 
 
@@ -399,20 +399,25 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
 
     def on_execute_error(
         self, fn_info: fn.FnInfo, arguments: Dict[str, Any], error: Exception
-    ) -> None:
+    ):
 
         if isinstance(error, ParameterError):
             self._process_param_error(error)
+            del error
             return
 
         if callable(self._bundle.on_execute_error):
             self._bundle.on_execute_error(error, arguments.copy())
+            del error
             return
 
-        error_msg = self.message_texts.function_error.format(error)
-
+        error_type = type(error).__name__
+        error_msg = self.message_texts.function_error.format(error_type, str(error))
         if self.window_config.print_function_error:
-            self.append_output(error_msg)
+            if not self.window_config.show_error_traceback:
+                self.append_output(error_msg)
+            else:
+                self.append_output(utils.get_traceback(error))
 
         if self.window_config.show_function_error:
             if not self.window_config.show_error_traceback:
@@ -427,6 +432,7 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
                     exception=error,
                     title=self.widget_texts.universal_error_dialog_title,
                 )
+        del error
 
     def _on_close(self) -> bool:
         if self._executor.is_executing:
@@ -479,6 +485,7 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
             self, msg, title=self.widget_texts.parameter_error_dialog_title
         )
         self._param_groups.scroll_to_parameter(e.parameter_name)
+        del e
 
     @property
     def _param_groups(self) -> FnParameterGroupBox:
