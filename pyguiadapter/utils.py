@@ -5,6 +5,7 @@ import os.path
 import re
 import string
 import traceback
+from io import StringIO
 from typing import Literal, List, Set, Tuple, Any, Union, Type
 
 import qtawesome as qta
@@ -245,24 +246,25 @@ def show_exception_message(
     message: str = "",
     title: str = "Error",
     detail: bool = True,
+    show_error_type: bool = True,
     **kwargs,
 ) -> int | StandardButton:
     traceback.print_exc()
     if not detail:
         detail_msg = None
     else:
-        detail_msg = traceback.format_tb(exception.__traceback__)
-        if detail_msg:
-            detail_msg = "".join(detail_msg)
-        else:
-            detail_msg = None
-    if message:
-        err_msg = f"{message}{exception}"
+        detail_msg = get_traceback(exception)
+
+    if show_error_type:
+        error_msg = f"{type(exception).__name__}: {exception}"
     else:
-        err_msg = str(exception)
+        error_msg = str(exception)
+
+    if message:
+        error_msg = f"{message}{error_msg}"
     msgbox = MessageBoxConfig(
         title=title,
-        text=err_msg,
+        text=error_msg,
         icon=QMessageBox.Critical,
         detailed_text=detail_msg,
         **kwargs,
@@ -455,3 +457,18 @@ def unique_list(origin: List[Any]) -> List[Any]:
 
 def get_inverted_color(color: QColor) -> QColor:
     return QColor(255 - color.red(), 255 - color.green(), 255 - color.blue())
+
+
+def get_traceback(
+    error: Exception, limit: int | None = None, complete_msg: bool = True
+) -> str:
+    assert isinstance(error, Exception)
+    buffer = StringIO()
+    if complete_msg:
+        buffer.write("Traceback (most recent call last):\n")
+    traceback.print_tb(error.__traceback__, limit=limit, file=buffer)
+    if complete_msg:
+        buffer.write(f"{type(error).__name__}: {error}")
+    msg = buffer.getvalue()
+    buffer.close()
+    return msg
