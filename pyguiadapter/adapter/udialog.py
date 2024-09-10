@@ -41,7 +41,8 @@ class TextBrowserDialog(BaseCustomDialog):
         # noinspection SpellCheckingInspection
         self._textbrowser = QTextBrowser(self)
         # noinspection PyArgumentList
-        self._layout = QVBoxLayout(self)
+        self._layout = QVBoxLayout()
+        self.setLayout(self._layout)
 
         self._setup_ui()
 
