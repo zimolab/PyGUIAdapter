@@ -436,7 +436,8 @@ class FnParameterArea(QWidget):
         super().__init__(parent)
         self._config: _window.FnExecuteWindowConfig = config
         # noinspection PyArgumentList
-        self._layout_main = QVBoxLayout(self)
+        self._layout_main = QVBoxLayout()
+        self.setLayout(self._layout_main)
         self._setup_top_zone()
         self._setup_bottom_zone()
 
@@ -449,39 +450,42 @@ class FnParameterArea(QWidget):
 
         widget_texts = self._config.widget_texts
 
-        _op_area = QWidget(self)
+        op_area = QWidget(self)
         # noinspection PyArgumentList
-        _layout_op_area = QVBoxLayout(_op_area)
-        _layout_op_area.setContentsMargins(0, 0, 0, 0)
+        layout_op_area = QVBoxLayout()
+        op_area.setLayout(layout_op_area)
+        layout_op_area.setContentsMargins(0, 0, 0, 0)
 
-        _layout_op_area.addWidget(utils.hline(_op_area))
+        layout_op_area.addWidget(utils.hline(op_area))
 
-        self._auto_clear_checkbox = QCheckBox(_op_area)
+        self._auto_clear_checkbox = QCheckBox(op_area)
         self._auto_clear_checkbox.setText(widget_texts.clear_checkbox_text)
-        _layout_op_area.addWidget(self._auto_clear_checkbox)
+        layout_op_area.addWidget(self._auto_clear_checkbox)
+
         # noinspection PyArgumentList
-        _layout_buttons = QHBoxLayout(_op_area)
+        layout_buttons = QHBoxLayout()
+        layout_op_area.addLayout(layout_buttons)
+
         # Execute button
         self._execute_button = QPushButton(self)
         self._execute_button.setText(widget_texts.execute_button_text)
         # noinspection PyUnresolvedReferences
         self._execute_button.clicked.connect(self.execute_button_clicked)
-        _layout_buttons.addWidget(self._execute_button)
+        layout_buttons.addWidget(self._execute_button)
         # Clear button
         self._clear_button = QPushButton(self)
         self._clear_button.setText(widget_texts.clear_button_text)
         # noinspection PyUnresolvedReferences
         self._clear_button.clicked.connect(self.clear_button_clicked)
-        _layout_buttons.addWidget(self._clear_button)
+        layout_buttons.addWidget(self._clear_button)
         # Cancel button
         self._cancel_button = QPushButton(self)
         self._cancel_button.setText(widget_texts.cancel_button_text)
         # noinspection PyUnresolvedReferences
         self._cancel_button.clicked.connect(self.cancel_button_clicked)
-        _layout_buttons.addWidget(self._cancel_button)
-        _layout_op_area.addLayout(_layout_buttons)
+        layout_buttons.addWidget(self._cancel_button)
 
-        self._layout_main.addWidget(_op_area)
+        self._layout_main.addWidget(op_area)
 
     @property
     def parameter_groups(self) -> FnParameterGroupBox:
