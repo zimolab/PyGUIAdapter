@@ -40,7 +40,7 @@ class FnParameterGroupPage(QWidget):
         self._param_scrollarea.setWidgetResizable(True)
         self._scrollarea_content = QWidget(self._param_scrollarea)
         # noinspection PyArgumentList
-        self._layout_scrollerea_content = QVBoxLayout(self._scrollarea_content)
+        self._layout_scrollerea_content = QVBoxLayout()
         self._scrollarea_content.setLayout(self._layout_scrollerea_content)
         self._param_scrollarea.setWidget(self._scrollarea_content)
         self._layout_main.addWidget(self._param_scrollarea)

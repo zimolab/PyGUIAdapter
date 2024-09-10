@@ -54,7 +54,7 @@ class Slider(CommonParameterWidget):
             self._value_widget = QWidget(self)
             self._slider = QSlider(self._value_widget)
 
-            layout = QVBoxLayout(self._value_widget)
+            layout = QVBoxLayout()
             self._value_widget.setLayout(layout)
 
             layout.addWidget(self._slider)

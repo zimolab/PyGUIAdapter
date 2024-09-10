@@ -54,7 +54,7 @@ class ExclusiveChoiceBox(CommonParameterWidget):
     def value_widget(self) -> QWidget:
         if self._value_widget is None:
             self._value_widget = QWidget(self)
-            self._button_layout = QGridLayout(self._value_widget)
+            self._button_layout = QGridLayout()
             self._value_widget.setLayout(self._button_layout)
             self._button_group = QButtonGroup(self._value_widget)
             self._button_group.setExclusive(True)

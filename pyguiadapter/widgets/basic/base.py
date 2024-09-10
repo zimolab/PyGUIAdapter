@@ -76,7 +76,7 @@ class BaseDataEdit(CommonParameterWidget):
     def value_widget(self) -> QWidget:
         if self._value_widget is None:
             self._value_widget = QWidget(self)
-            layout = QVBoxLayout(self._value_widget)
+            layout = QVBoxLayout()
             layout.setContentsMargins(0, 0, 0, 0)
             self._value_widget.setLayout(layout)
 

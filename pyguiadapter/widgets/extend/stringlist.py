@@ -65,7 +65,7 @@ class StringListEdit(CommonParameterWidget):
     def value_widget(self) -> QWidget:
         if self._value_widget is None:
             self._value_widget = QWidget(self)
-            layout_main = QVBoxLayout(self._value_widget)
+            layout_main = QVBoxLayout()
             layout_main.setContentsMargins(0, 0, 0, 0)
             layout_main.setSpacing(0)
             self._value_widget.setLayout(layout_main)

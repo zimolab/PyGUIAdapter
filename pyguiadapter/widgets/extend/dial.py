@@ -56,7 +56,7 @@ class Dial(CommonParameterWidget):
             if self._config.min_height:
                 self._value_widget.setMinimumHeight(self._config.min_height)
 
-            layout = QVBoxLayout(self._value_widget)
+            layout = QVBoxLayout()
             self._value_widget.setLayout(layout)
 
             layout.addWidget(self._dial, 9)
