@@ -136,7 +136,7 @@ if __name__ == "__main__":
 除了`file_t`、`directory_t`，PyGUIAdapter还提供了其他语义化类型，可以查看[`pyguiadapter.types`](pyguiadapter/types.py)模块，获取
 这些类型的信息。你也可以自行尝试用这些类型对参数进行标注，然后运行程序，观察不同类型所对应的控件有何不同。 
 
-当然，也可以查看[docs/semantic_types.md](docs/semantic_types.md)，其中，对一些常见的语义化类型做了说明。
+当然，也可以查看[docs/semantic_types.md](docs/widgets/semantic_types.md)，其中，对一些常见的语义化类型做了说明。
 
 ### 2. 配置控件属性
 
@@ -189,7 +189,7 @@ class CommonParameterWidgetConfig(BaseParameterWidgetConfig):
 ```
 
 除了上述公共的属性，不同控件类型还在其配置类中定义了一些独有的属性，对于内置控件配置类定义的属性及其作用，可以查看这篇文档：
-[控件及其配置类](docs/widget_config_classes.md)。
+[控件及其配置类](docs/widgets/widget_config_classes.md)。
 
 现在，我们不必了解每一个属性的作用，我们先来学习一下如何配置这些属性，以及它们是如何影响控件的外观及行为的。
 
