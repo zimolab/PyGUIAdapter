@@ -43,13 +43,15 @@ class CommonParameterWidget(BaseParameterWidget):
         self._config: CommonParameterWidgetConfig = config
         super().__init__(parent, parameter_name, config)
 
-        self._layout_main = QVBoxLayout(self)
+        self._layout_main = QVBoxLayout()
         self._layout_main.setContentsMargins(0, 0, 0, 0)
         self._layout_main.setSpacing(0)
+        self.setLayout(self._layout_main)
 
         self._groupbox_container = QGroupBox(self)
         self._groupbox_container.setTitle(self.label)
-        self._layout_container = QVBoxLayout(self._groupbox_container)
+        self._layout_container = QVBoxLayout()
+        self._groupbox_container.setLayout(self._layout_container)
         self._layout_main.addWidget(self._groupbox_container)
 
         self._label_description = None

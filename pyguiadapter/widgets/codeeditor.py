@@ -325,7 +325,8 @@ class CodeEditorWindow(BaseWindow):
         self._editor.setWordWrapMode(self._config.word_wrap_mode)
 
         # noinspection PyArgumentList
-        main_layout = QVBoxLayout(center_widget)
+        main_layout = QVBoxLayout()
+        center_widget.setLayout(main_layout)
         main_layout.setContentsMargins(0, 0, 0, 0)
         main_layout.addWidget(self._editor)
         self.setCentralWidget(center_widget)

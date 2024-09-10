@@ -31,7 +31,8 @@ class PathSelectWidget(QWidget):
     ):
         super().__init__(parent)
 
-        self._layout = QHBoxLayout(self)
+        self._layout = QHBoxLayout()
+        self.setLayout(self._layout)
         self._layout.setContentsMargins(0, 0, 0, 0)
         # self._layout.setSpacing(0)
 

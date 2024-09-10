@@ -33,7 +33,8 @@ class FnParameterGroupPage(QWidget):
         self._parameters: Dict[str, BaseParameterWidget] = OrderedDict()
 
         # noinspection PyArgumentList
-        self._layout_main = QVBoxLayout(self)
+        self._layout_main = QVBoxLayout()
+        self.setLayout(self._layout_main)
         self._layout_main.setContentsMargins(0, 0, 0, 0)
 
         self._param_scrollarea = QScrollArea(self)

@@ -14,7 +14,8 @@ class FnDocumentArea(QWidget):
         self._config = document_browser_config
 
         # noinspection PyArgumentList
-        self._layout_main = QVBoxLayout(self)
+        self._layout_main = QVBoxLayout()
+        self.setLayout(self._layout_main)
         self._layout_main.setContentsMargins(0, 0, 0, 0)
         self._document_textbrowser = QTextBrowser(self)
         self._config.apply_to(self._document_textbrowser)

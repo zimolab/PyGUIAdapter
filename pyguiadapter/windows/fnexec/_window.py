@@ -278,7 +278,8 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
         # central widget and layout
         self._center_widget = QWidget(self)
         # noinspection PyArgumentList
-        _layout_main = QVBoxLayout(self._center_widget)
+        _layout_main = QVBoxLayout()
+        self._center_widget.setLayout(_layout_main)
         self.setCentralWidget(self._center_widget)
 
         # create the area for parameter widgets

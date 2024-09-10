@@ -21,7 +21,8 @@ class FnExecuteOutputArea(QWidget):
         super().__init__(parent)
 
         # noinspection PyArgumentList
-        self._layout_main = QVBoxLayout(self)
+        self._layout_main = QVBoxLayout()
+        self.setLayout(self._layout_main)
         self._layout_main.setContentsMargins(1, 2, 1, 2)
         self._setup_doc_browser(output_browser_config)
         self._setup_progressbar(progressbar_config)
