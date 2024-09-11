@@ -48,10 +48,9 @@ ExtendTypeMap = {
 
 
 def _get_extend_typename(typ: typing.Any) -> str:
-    if isinstance(typ, type):
+    if isinstance(typ, type) or getattr(typ, "__name__", None) is not None:
         return typ.__name__
-    typ = type(typ)
-    return typ.__name__
+    return type(typ).__name__
 
 
 def get_typename(typ: typing.Any) -> str:

@@ -122,7 +122,7 @@ class BaseParameterWidget(QWidget):
 
     # noinspection PyUnusedLocal
     @classmethod
-    def after_process_config(
+    def on_post_process_config(
         cls,
         config: BaseParameterWidgetConfig,
         parameter_name: str,
@@ -132,4 +132,4 @@ class BaseParameterWidget(QWidget):
 
 
 def is_parameter_widget_class(o: Any) -> bool:
-    return isclass(o) and issubclass(o, BaseParameterWidget)
+    return o is not None and isclass(o) and issubclass(o, BaseParameterWidget)

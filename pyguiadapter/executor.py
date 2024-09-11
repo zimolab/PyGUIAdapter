@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from abc import abstractmethod
 from typing import Any, Dict
-from xml.sax import parse
 
 from qtpy.QtCore import QObject
 

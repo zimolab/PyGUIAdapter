@@ -1,3 +1,5 @@
+from typing import List
+
 from qtpy.QtGui import QColor
 
 from .basic import (
@@ -9,6 +11,7 @@ from .basic import (
     FloatLineEdit,
     BoolCheckBox,
     BinStateSelect,
+    EnumSelect,
 )
 from .basic import (
     JsonEdit,
@@ -127,3 +130,8 @@ BUILTIN_WIDGETS_MAP = {
     TYPE_STRING_LIST_T: StringListEdit,
     TYPE_PLAIN_DICT_T: PlainDictEdit,
 }
+
+# noinspection PyProtectedMember
+BUILTIN_WIDGETS_MAPPING_RULES = [
+    EnumSelect._rule_map_enum_type,
+]

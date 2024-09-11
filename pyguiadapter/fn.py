@@ -10,6 +10,7 @@ from . import utils
 @dataclasses.dataclass
 class ParameterInfo(object):
     default_value: Any
+    type: Type
     typename: str
     type_args: List[Any] = dataclasses.field(default_factory=list)
     description: str | None = None

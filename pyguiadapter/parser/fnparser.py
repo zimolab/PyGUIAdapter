@@ -108,6 +108,7 @@ class FnParser(object):
     def parse_widget_configs(
         self, fn_info: FnInfo
     ) -> Dict[str, Tuple[str | None, dict]]:
+        # this method returns a dict of "parameter_name" -> (widget_class_name| None, widget_config)
         configs = OrderedDict()
         metas = self._parse_widget_meta(fn_info)
         for param_name, param_info in fn_info.parameters.items():
@@ -231,12 +232,13 @@ class FnParser(object):
 
             default_value = self._get_param_default_value(param, fn_docstring)
 
-            typename, type_args = self._get_param_type_info(
+            typ, typename, type_args = self._get_param_type_info(
                 param, default_value, fn_docstring
             )
             description = fn_docstring.get_parameter_description(param.name) or ""
 
             params[param_name] = ParameterInfo(
+                type=typ,
                 typename=typename,
                 type_args=type_args,
                 default_value=default_value,
@@ -247,7 +249,7 @@ class FnParser(object):
 
     def _get_param_type_info(
         self, param: inspect.Parameter, default_value: Any, fn_docstring: FnDocstring
-    ) -> (str, List[Any]):
+    ) -> (Type, str, List[Any]):
         param_typename = None
         param_type_args = None
 
@@ -278,7 +280,7 @@ class FnParser(object):
         if param_type_args is None:
             param_type_args = get_type_args(param_type)
 
-        return param_typename, param_type_args
+        return param_type, param_typename, param_type_args
 
     @staticmethod
     def _get_param_default_value(

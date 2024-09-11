@@ -98,7 +98,7 @@ class ExclusiveChoiceBox(CommonParameterWidget):
                 self._button_layout.addWidget(btn, idx // cols, idx % cols)
 
     @classmethod
-    def after_process_config(
+    def on_post_process_config(
         cls,
         config: ExclusiveChoiceBoxConfig,
         parameter_name: str,

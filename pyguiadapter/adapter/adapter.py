@@ -11,7 +11,8 @@ from qtpy.QtGui import QIcon, QPixmap
 from qtpy.QtWidgets import QApplication, QStyleFactory
 
 from . import ucontext
-from ..bundle import FnBundle, WidgetConfigTypes
+from ..bundle import FnBundle
+from ..exceptions import NotRegisteredError
 from ..fn import ParameterInfo
 from ..paramwidget import (
     BaseParameterWidget,
@@ -33,12 +34,10 @@ class GUIAdapter(object):
     def __init__(
         self,
         *,
-        select_window_config: FnSelectWindowConfig | None = None,
         app_style: str | None = None,
         on_app_start: Callable[[QApplication], None] | None = None,
         on_app_shutdown: Callable | None = None,
     ):
-        self._select_window_config = select_window_config or FnSelectWindowConfig()
         self._app_style: str | None = app_style
         self._on_app_start: Callable[[QApplication], None] | None = on_app_start
         self._on_app_shutdown: Callable | None = on_app_shutdown
@@ -63,7 +62,7 @@ class GUIAdapter(object):
         on_execute_error: Callable[[Exception], None] = None,
         *,
         window_config: FnExecuteWindowConfig | None = None,
-        widget_configs: Dict[str, WidgetConfigTypes] | None = None,
+        widget_configs: Dict[str, BaseParameterWidgetConfig | dict] | None = None,
     ):
         # create the FnInfo from the function and given arguments
         fn_info = self._fn_parser.parse_fn_info(
@@ -81,7 +80,9 @@ class GUIAdapter(object):
         # That means the user's 'widget_configs' has a higher priority than the auto-parsed widget configs
         user_widget_configs = widget_configs or {}
         parsed_widget_configs = self._fn_parser.parse_widget_configs(fn_info)
-        widget_configs = self._merge_widget_configs(
+        widget_configs: Dict[
+            str, Tuple[Type[BaseParameterWidget], BaseParameterWidgetConfig]
+        ] = self._merge_widget_configs(
             parameters=fn_info.parameters,
             parsed_configs=parsed_widget_configs,
             user_configs=user_widget_configs,
@@ -91,7 +92,7 @@ class GUIAdapter(object):
         bundle = FnBundle(
             fn_info,
             window_config=window_config,
-            param_widget_configs=widget_configs,
+            widget_configs=widget_configs,
             on_execute_result=on_execute_result,
             on_execute_error=on_execute_error,
         )
@@ -111,7 +112,11 @@ class GUIAdapter(object):
         self._bundles.clear()
 
     def run(
-        self, argv: Sequence[str] | None = None, *, show_select_window: bool = False
+        self,
+        argv: Sequence[str] | None = None,
+        *,
+        show_select_window: bool = False,
+        select_window_config: FnSelectWindowConfig | None = None,
     ):
         if self._application is None:
             self._start_application(argv)
@@ -128,8 +133,10 @@ class GUIAdapter(object):
                 fn_bundle = next(iter(self._bundles.values()))
                 self._show_execute_window(fn_bundle)
             else:
-                window_config = self._select_window_config or FnExecuteWindowConfig()
-                self._show_select_window(list(self._bundles.values()), window_config)
+                self._show_select_window(
+                    list(self._bundles.values()),
+                    select_window_config or FnSelectWindowConfig(),
+                )
 
             self._application.exec()
         except Exception as e:
@@ -205,126 +212,67 @@ class GUIAdapter(object):
     def _on_execute_window_destroyed(self):
         self._execute_window = None
 
-    # noinspection GrazieInspection
     def _merge_widget_configs(
         self,
         parameters: Dict[str, ParameterInfo],
         parsed_configs: Dict[str, Tuple[str | None, dict]],
-        user_configs: Dict[str, WidgetConfigTypes],
-    ) -> Dict[str, Tuple[Type[BaseParameterWidget], BaseParameterWidgetConfig | dict]]:
-        user_configs = user_configs.copy()
-        normalized_configs = OrderedDict()
+        user_configs: Dict[str, BaseParameterWidgetConfig | dict],
+    ) -> Dict[str, Tuple[Type[BaseParameterWidget], BaseParameterWidgetConfig]]:
+        final_configs: Dict[
+            str, Tuple[Type[BaseParameterWidget], BaseParameterWidgetConfig]
+        ] = OrderedDict()
 
-        for param_name, parsed_config_item in parsed_configs.items():
+        for param_name, (
+            p_widget_class_name,
+            p_widget_config,
+        ) in parsed_configs.items():
+            assert isinstance(p_widget_class_name, (str, type(None)))
+            assert isinstance(p_widget_config, dict)
 
             param_info = parameters.get(param_name, None)
             assert param_info is not None
 
-            widget_class, widget_config = parsed_config_item
-            user_config_item = user_configs.pop(param_name, None)
+            p_widget_class = self._get_widget_class(p_widget_class_name, param_info)
 
-            # if user config not provided
-            if not user_config_item:
-                if widget_class is None:
-                    widget_class = self._find_widget_class_by_type(param_info.typename)
-                else:
-                    widget_class = self._find_widget_class_by_name(widget_class)
-                normalized_configs[param_name] = (widget_class, widget_config)
+            user_config = user_configs.get(param_name, None)
+            if user_config is None:
+                widget_class = p_widget_class
+                if not is_parameter_widget_class(widget_class):
+                    raise NotRegisteredError(
+                        f"unknown widget class name: {p_widget_class_name}"
+                    )
+                widget_config = widget_class.ConfigClass.new(**p_widget_config)
+                final_configs[param_name] = (widget_class, widget_config)
                 continue
 
-            if not self._check_user_widget_config(user_config_item):
-                raise ValueError(
-                    f"invalid widget configs for parameter '{param_name}': {user_config_item}"
-                )
+            assert isinstance(user_config, (dict, BaseParameterWidgetConfig))
+            if isinstance(user_config, dict):
+                widget_class = p_widget_class
+                if not is_parameter_widget_class(widget_class):
+                    raise NotRegisteredError(
+                        f"unknown widget class name: {p_widget_class_name}"
+                    )
+                # override parsed config with user config
+                tmp = {**p_widget_config, **user_config}
+                widget_config = widget_class.ConfigClass.new(**tmp)
+                final_configs[param_name] = (widget_class, widget_config)
+                continue
 
-            user_widget_class: Type[BaseParameterWidget] | str | None = None
-            user_widget_config: dict | BaseParameterWidgetConfig | None = None
-            if is_parameter_widget_class(user_config_item):
-                user_widget_class = user_config_item
-            elif isinstance(user_config_item, str):
-                user_widget_class = user_config_item
-            elif isinstance(user_config_item, dict):
-                user_widget_config = user_config_item
-            elif isinstance(user_config_item, BaseParameterWidgetConfig):
-                user_widget_class = user_config_item.target_widget_class()
-                user_widget_config = user_config_item
-            elif isinstance(user_config_item, tuple) and len(user_config_item) == 2:
-                user_widget_class = user_config_item[0]
-                user_widget_config = user_config_item[1]
-            else:
-                raise ValueError(
-                    f"invalid widget configs for parameter '{param_name}': {user_config_item}"
-                )
-
-            _widget_class = user_widget_class or widget_class
-            _widget_config = user_widget_config or widget_config
-
-            if _widget_class is None:
-                _widget_class = self._find_widget_class_by_type(param_info.typename)
-
-            if isinstance(_widget_class, str):
-                _widget_class = self._find_widget_class_by_name(_widget_class)
-
-            normalized_configs[param_name] = (_widget_class, _widget_config)
-
-        # process remaining user widget configs (if any)
-        # if user_configs:
-        #     for param_name, parsed_config_item in user_configs.items():
-        #         if not isinstance(parsed_config_item, tuple) or len(parsed_config_item) != 2:
-        #             raise ValueError(
-        #                 f"widget class and widget configs must be provided as a tuple for parameter '{param_name}"
-        #             )
-        #         _widget_class_2, _widget_config_2 = parsed_config_item
-        #         if not self._is_widget_class_type(_widget_class_2):
-        #             raise ValueError(
-        #                 f"invalid widget class for parameter '{param_name}': {_widget_class_2}"
-        #             )
-        #         if not self._is_widget_config_type(_widget_config_2):
-        #             raise ValueError(
-        #                 f"invalid widget configs for parameter '{param_name}': {_widget_config_2}"
-        #             )
-        #         if not is_parameter_widget_class(_widget_class_2):
-        #             _widget_class_2 = self._find_widget_class_by_name(_widget_class_2)
-        #
-        #         normalized_configs[param_name] = (_widget_class_2, _widget_config_2)
-
-        return normalized_configs
+            # when user_config is a BaseParameterWidgetConfig instance
+            widget_class = user_config.target_widget_class()
+            widget_config = user_config
+            final_configs[param_name] = (widget_class, widget_config)
+        return final_configs
 
     @staticmethod
-    def _find_widget_class_by_type(typ: str | Type) -> Type[BaseParameterWidget]:
-        widget_class = ParameterWidgetFactory.get(typ)
-        if not is_parameter_widget_class(widget_class):
-            raise ValueError(f"no registered widget class found for type: {typ}")
-        return widget_class
-
-    @staticmethod
-    def _find_widget_class_by_name(widget_class_name: str) -> Type[BaseParameterWidget]:
-        widget_class = ParameterWidgetFactory.find_by_widget_class_name(
-            widget_class_name
-        )
-        if not is_parameter_widget_class(widget_class):
-            raise ValueError(f"no registered widget class found: {widget_class_name}")
-        return widget_class
-
-    @staticmethod
-    def _is_widget_config_type(item: Any) -> bool:
-        return isinstance(item, (BaseParameterWidgetConfig, dict))
-
-    @staticmethod
-    def _is_widget_class_type(item: Any) -> bool:
-        if is_parameter_widget_class(item):
-            return True
-        if isinstance(item, str) and item.strip() != "":
-            return True
-        return False
-
-    def _check_user_widget_config(self, item: Any) -> bool:
-        if self._is_widget_class_type(item):
-            return True
-        if self._is_widget_config_type(item):
-            return True
-        if isinstance(item, tuple) and len(item) == 2:
-            return self._is_widget_class_type(item[0]) and self._is_widget_config_type(
-                item[1]
-            )
-        return False
+    def _get_widget_class(
+        widget_class_name: str | None, param_info: ParameterInfo
+    ) -> Type[BaseParameterWidget] | None:
+        if widget_class_name is not None:
+            widget_class_name = widget_class_name.strip()
+        if widget_class_name:
+            return ParameterWidgetFactory.find_by_widget_class_name(widget_class_name)
+        widget_class = ParameterWidgetFactory.find_by_typename(param_info.typename)
+        if is_parameter_widget_class(widget_class):
+            return widget_class
+        return ParameterWidgetFactory.find_by_rule(param_info)

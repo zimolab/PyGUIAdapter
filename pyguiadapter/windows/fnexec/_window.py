@@ -109,7 +109,7 @@ class FnExecuteWindowConfig(BaseWindowConfig):
 # noinspection SpellCheckingInspection
 class FnExecuteWindow(BaseWindow, ExecuteStateListener):
     def __init__(self, parent: QWidget | None, bundle: bd.FnBundle):
-        self._bundle = bundle
+        self._bundle: bd.FnBundle = bundle
 
         self._center_widget: QWidget | None = None
         self._parameters_area: FnParameterArea | None = None
@@ -124,7 +124,7 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
         # noinspection PyTypeChecker
         self._executor = executor_class(self, self)
 
-        self.add_parameters(self._bundle.param_widget_configs)
+        self.add_parameters(self._bundle.widget_configs)
 
         # noinspection PyProtectedMember
         ucontext._current_window_created(self)
@@ -169,10 +169,13 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
         self._document_area.update_document(document, document_format)
 
     def add_parameter(
-        self, parameter_name: str, config: ParameterWidgetType
+        self,
+        parameter_name: str,
+        config: Tuple[Type[BaseParameterWidget], BaseParameterWidgetConfig],
     ) -> BaseParameterWidget:
+        assert parameter_name.strip() != ""
         param_info = self._bundle.fn_info.parameters.get(parameter_name)
-        widget_class, widget_config = self._get_widget_class_and_config(
+        widget_class, widget_config = self._process_widget_config(
             parameter_name, param_info, config
         )
 
@@ -201,7 +204,10 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
         else:
             return widget
 
-    def add_parameters(self, configs: Dict[str, ParameterWidgetType]):
+    def add_parameters(
+        self,
+        configs: Dict[str, Tuple[Type[BaseParameterWidget], BaseParameterWidgetConfig]],
+    ):
         for parameter_name, config in configs.items():
             self.add_parameter(parameter_name, config)
 
@@ -229,33 +235,22 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
         return self._param_groups.set_parameter_values(values)
 
     @staticmethod
-    def _get_widget_class_and_config(
-        param_name: str, param_info: ParameterInfo, config: ParameterWidgetType
+    def _process_widget_config(
+        param_name: str,
+        param_info: ParameterInfo,
+        config: Tuple[Type[BaseParameterWidget], BaseParameterWidgetConfig],
     ) -> Tuple[Type[BaseParameterWidget], BaseParameterWidgetConfig]:
-        if isinstance(config, tuple):
-            assert len(config) == 2
-            assert is_parameter_widget_class(config[0])
-            assert isinstance(config[1], (BaseParameterWidgetConfig, dict))
-            widget_class, widget_config = config
-        elif isinstance(config, BaseParameterWidgetConfig):
-            widget_class = config.target_widget_class()
-            widget_config = config
-        else:
-            raise ValueError(f"invalid type of config: {type(config)}")
-
-        if not isinstance(widget_config, (dict, BaseParameterWidgetConfig)):
-            raise ValueError(f"invalid type of config: {type(config)}")
-
-        if isinstance(widget_config, dict):
-            widget_config = widget_class.ConfigClass.new(**widget_config)
-
+        assert isinstance(config, tuple) and len(config) == 2
+        assert is_parameter_widget_class(config[0])
+        assert isinstance(config[1], BaseParameterWidgetConfig)
+        widget_class, widget_config = config
+        # try to get description from parameter info if it is empty in widget_config
         if widget_config.description is None or widget_config.description == "":
             if param_info.description is not None and param_info.description != "":
                 widget_config = dataclasses.replace(
                     widget_config, description=param_info.description
                 )
-
-        widget_config = widget_class.after_process_config(
+        widget_config = widget_class.on_post_process_config(
             widget_config, param_name, param_info
         )
         return widget_class, widget_config
