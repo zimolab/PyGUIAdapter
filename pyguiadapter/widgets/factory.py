@@ -1,17 +1,16 @@
 from __future__ import annotations
 
-from typing import Dict, Type, List, Tuple
+import warnings
+from typing import Dict, Type, List, Optional, Callable
 
-from qtpy.QtWidgets import QWidget
-
+from .builtin import BUILTIN_WIDGETS_MAP, BUILTIN_WIDGETS_MAPPING_RULES
+from ..exceptions import AlreadyRegisteredError
 from ..fn import ParameterInfo
 from ..paramwidget import (
     BaseParameterWidget,
     is_parameter_widget_class,
-    BaseParameterWidgetConfig,
 )
-from ..exceptions import AlreadyRegisteredError
-from .builtin import BUILTIN_WIDGETS_MAP
+from ..parser import typenames
 
 
 class ParameterWidgetRegistry(object):
@@ -56,7 +55,7 @@ class ParameterWidgetRegistry(object):
     def is_registered(self, typ: str | Type) -> bool:
         return self._to_typename(typ) in self._registry
 
-    def get(self, typ: str | Type) -> Type[BaseParameterWidget] | None:
+    def find_by_typename(self, typ: str | Type) -> Type[BaseParameterWidget] | None:
         return self._registry.get(self._to_typename(typ), None)
 
     def find_by_widget_class_name(
@@ -75,20 +74,64 @@ class ParameterWidgetRegistry(object):
     def _to_typename(typ: str | Type) -> str:
         if isinstance(typ, str):
             if typ.strip() == "":
-                raise ValueError(f"empty string")
+                raise ValueError(f"typename cannot be a empty string")
             return typ
-        elif isinstance(typ, type) or getattr(typ, "__name__", None) is not None:
-            typename = typ.__name__
-            if typename.strip() == "":
-                raise ValueError(f"empty string")
-            return typename
-        else:
-            raise TypeError(f"typ must be a type or typename: {typ}")
+        # elif isinstance(typ, type) or getattr(typ, "__name__", None) is not None:
+        #     typename = typ.__name__
+        #     if typename.strip() == "":
+        #         raise ValueError(f"empty string")
+        #     return typename
+        # else:
+        #     raise TypeError(f"typ must be a type or typename: {typ}")
+        typename = typenames.get_typename(typ)
+        if typename is None or typename.strip():
+            raise ValueError(f"unable to get typename form: {typ}")
+
+
+MappingRule = Callable[[ParameterInfo], Optional[Type[BaseParameterWidget]]]
 
 
 class _ParameterWidgetFactory(ParameterWidgetRegistry):
     def __init__(self):
         super().__init__()
+
+        self._rules: List[MappingRule] = []
+
+        for rule in BUILTIN_WIDGETS_MAPPING_RULES:
+            self.add_mapping_rule(rule)
+
+    def find_by_rule(
+        self, parameter_info: ParameterInfo
+    ) -> Type[BaseParameterWidget] | None:
+        for rule in self._rules:
+            widget_class = self._do_mapping(rule, parameter_info)
+            if is_parameter_widget_class(widget_class):
+                return widget_class
+        return None
+
+    def has_mapping_rule(self, rule: MappingRule) -> bool:
+        return rule in self._rules
+
+    def add_mapping_rule(self, rule: MappingRule):
+        if rule not in self._rules:
+            self._rules.append(rule)
+
+    def remove_mapping_rule(self, rule: MappingRule):
+        if rule in self._rules:
+            self._rules.remove(rule)
+
+    def clear_mapping_rules(self):
+        self._rules.clear()
+
+    @staticmethod
+    def _do_mapping(
+        rule: MappingRule, parameter_info: ParameterInfo
+    ) -> Type[BaseParameterWidget] | None:
+        try:
+            return rule(parameter_info)
+        except Exception as e:
+            warnings.warn(f"failed to apply mapping rule '{rule.__name__}': {e}")
+            return None
 
 
 ParameterWidgetFactory = _ParameterWidgetFactory()

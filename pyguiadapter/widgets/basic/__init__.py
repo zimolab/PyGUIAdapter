@@ -19,6 +19,7 @@ from .listedit import ListEdit, ListEditConfig
 from .tupleedit import TupleEdit, TupleEditConfig
 from .setedit import SetEdit, SetEditConfig
 from .jsoneditor import JsonEdit, JsonEditConfig
+from .enumselect import EnumSelect, EnumSelectConfig
 
 __all__ = [
     "LineEdit",
@@ -49,4 +50,6 @@ __all__ = [
     "TupleEditConfig",
     "SetEdit",
     "SetEditConfig",
+    "EnumSelect",
+    "EnumSelectConfig",
 ]
