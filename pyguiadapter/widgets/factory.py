@@ -90,15 +90,5 @@ class _ParameterWidgetFactory(ParameterWidgetRegistry):
     def __init__(self):
         super().__init__()
 
-    def create_widget(
-        self,
-        param_info: ParameterInfo,
-        widget_config: Tuple[
-            str | Type[BaseParameterWidget], dict | BaseParameterWidgetConfig
-        ],
-        parent: QWidget | None = None,
-    ) -> BaseParameterWidget:
-        pass
-
 
 ParameterWidgetFactory = _ParameterWidgetFactory()
