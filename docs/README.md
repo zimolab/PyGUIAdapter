@@ -319,7 +319,7 @@ if __name__ == "__main__":
 7. 如何在函数运行过程中与用户交互
 8. ......
 
-[参考所有教程](tutorials/overview.md)
+[所有教程](tutorials/overview.md)
 
 ## 五、参考
 
@@ -330,7 +330,7 @@ if __name__ == "__main__":
 5. [自定义控件](widgets/custom_widget.md)
 6. [适配器对象](adapter/overview.md)
 
-## 六、开源许可
+## 六、开源协议
 
 得益于`qtpy`的抽象能力，`PyGUIAdapter`本身并不依赖特定的qt绑定库，因此`PyGUIAdapter`使用`MIT`许可协议。
 开发者在使用`PyGUIAdapter`开发应用程序时，若依赖特定的Qt绑定库，则其在遵守本项目的许可协议的同时，还必须遵守其所选择的绑定库的许可协议。
