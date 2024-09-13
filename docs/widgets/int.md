@@ -1,4 +1,4 @@
-# int类型及其控件
+# `int`类型及`IntSpinBox`控件
 
 ## 一、控件类型：IntSpinBox
 
@@ -6,11 +6,7 @@
 
 用于`int`类型数据的输入，是`int`类型参数的默认控件。
 
-
-
 ![](../images/intspin.png)
-
-
 
 ## 二、配置类型：IntSpinBoxConfig
 
@@ -26,6 +22,7 @@ class IntSpinBoxConfig(CommonParameterWidgetConfig):
     prefix: str = ""
     suffix: str = ""
     display_integer_base: int = 10
+    
 ```
 
 |        属性名称        |     类型      |    默认值     |                          说明                           |
