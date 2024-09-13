@@ -18,7 +18,7 @@ from .basic import (
     IntLineEdit,
     FloatSpinBox,
     FloatLineEdit,
-    BoolCheckBox,
+    BoolBox,
     BinStateSelect,
     EnumSelect,
 )
@@ -99,7 +99,7 @@ BUILTIN_WIDGETS_MAP = {
     TYPE_STR: LineEdit,
     TYPE_TEXT: TextEdit,
     TYPE_INT: IntSpinBox,
-    TYPE_BOOL: BoolCheckBox,
+    TYPE_BOOL: BoolBox,
     TYPE_BIN_T: BinStateSelect,
     TYPE_INT_T: IntLineEdit,
     TYPE_FLOAT: FloatSpinBox,
