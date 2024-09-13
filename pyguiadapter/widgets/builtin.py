@@ -1,7 +1,16 @@
-from typing import List
+from datetime import datetime, date, time
 
 from qtpy.QtGui import QColor
 
+from .basic import (
+    JsonEdit,
+    PyLiteralEdit,
+    PyLiteralType,
+    DictEdit,
+    ListEdit,
+    TupleEdit,
+    SetEdit,
+)
 from .basic import (
     LineEdit,
     TextEdit,
@@ -13,16 +22,6 @@ from .basic import (
     BinStateSelect,
     EnumSelect,
 )
-from .basic import (
-    JsonEdit,
-    PyLiteralEdit,
-    PyLiteralType,
-    DictEdit,
-    ListEdit,
-    TupleEdit,
-    SetEdit,
-)
-from .path import DirSelect, FileSelect, MultiFileSelect
 from .extend import (
     ExclusiveChoiceBox,
     ComboBox,
@@ -39,6 +38,7 @@ from .extend import (
     StringListEdit,
     PlainDictEdit,
 )
+from .path import DirSelect, FileSelect, MultiFileSelect
 from ..parser.typenames import (
     TYPE_STR,
     TYPE_INT,
@@ -70,7 +70,6 @@ from ..types import (
     string_list_t,
     plain_dict_t,
 )
-from datetime import datetime, date, time
 
 TYPE_TEXT = text_t.__name__
 TYPE_INT_T = int_t.__name__
