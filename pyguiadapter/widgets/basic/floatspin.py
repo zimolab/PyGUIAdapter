@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import dataclasses
-from typing import Type, TypeVar, Any
+from typing import Type
 
 from qtpy.QtWidgets import QWidget, QDoubleSpinBox
 
@@ -17,8 +17,8 @@ class FloatSpinBoxConfig(CommonParameterWidgetConfig):
     default_value: float | None = 0.0
     min_value: float = -2147483648.0
     max_value: float = 2147483647.0
-    step: int = 0.01
-    decimals: int = 2
+    step: float | None = None
+    decimals: int | None = None
     prefix: str = ""
     suffix: str = ""
 
@@ -28,32 +28,34 @@ class FloatSpinBoxConfig(CommonParameterWidgetConfig):
 
 
 class FloatSpinBox(CommonParameterWidget):
-
-    Self = TypeVar("Self", bound="FloatSpinBox")
-    ConfigClass = FloatSpinBoxConfig
+    ConfigClass: Type[FloatSpinBoxConfig] = FloatSpinBoxConfig
 
     def __init__(
         self, parent: QWidget | None, parameter_name: str, config: FloatSpinBoxConfig
     ):
-        self._config: FloatSpinBoxConfig = config
         self._value_widget: QDoubleSpinBox | None = None
         super().__init__(parent, parameter_name, config)
 
     @property
     def value_widget(self) -> QDoubleSpinBox:
         if self._value_widget is None:
+            config: FloatSpinBoxConfig = self.config
             self._value_widget = QDoubleSpinBox(self)
-            self._value_widget.setMinimum(self._config.min_value)
-            self._value_widget.setMaximum(self._config.max_value)
-            if self._config.step is not None and self._config.step > 0:
-                self._value_widget.setSingleStep(self._config.step)
-            if self._config.decimals is not None and self._config.decimals > 0:
-                self._value_widget.setDecimals(self._config.decimals)
-            self._value_widget.setPrefix(self._config.prefix or "")
-            self._value_widget.setSuffix(self._config.suffix or "")
+            self._value_widget.setMinimum(config.min_value)
+            self._value_widget.setMaximum(config.max_value)
+            step = config.step
+            if step is not None and step > 0:
+                self._value_widget.setSingleStep(step)
+
+            decimals = config.decimals
+            if decimals is not None and decimals > 0:
+                self._value_widget.setDecimals(decimals)
+
+            self._value_widget.setPrefix(config.prefix or "")
+            self._value_widget.setSuffix(config.suffix or "")
         return self._value_widget
 
-    def set_value_to_widget(self, value: Any):
+    def set_value_to_widget(self, value: float | int | str):
         try:
             value = float(value)
         except ValueError as e:
