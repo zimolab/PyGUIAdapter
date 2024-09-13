@@ -1,11 +1,11 @@
 from pyguiadapter.adapter import GUIAdapter
 
 
-def intspin_example(int_arg1: int, int_arg2: int, int_arg3: int):
+def float_example(float_arg1: float, float_arg2: float, float_arg3: float):
     pass
 
 
 if __name__ == "__main__":
     adapter = GUIAdapter()
-    adapter.add(intspin_example)
+    adapter.add(float_example)
     adapter.run()

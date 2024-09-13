@@ -19,12 +19,12 @@ class Color(Enum):
     BLUE = 3
 
 
-def show_enums(day_enums: Weekday, color_enums: Color = Color.GREEN):
+def enums_example(day_enums: Weekday, color_enums: Color = Color.GREEN):
     uprint(day_enums)
     uprint(color_enums)
 
 
 if __name__ == "__main__":
     adapter = GUIAdapter()
-    adapter.add(show_enums)
+    adapter.add(enums_example)
     adapter.run()
