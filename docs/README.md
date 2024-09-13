@@ -308,7 +308,7 @@ if __name__ == "__main__":
 
 上面的示例演示了`PyGUIAdapter`的基本用法。 除此之外，`PyGUIAdapter`为构建更加大型、复杂的应用程序，提供了更多的功能。
 
-开发者可以通过以下教程掌握`PyGUIAdapter`的进阶用法，包括：
+通过这些以下教程，开发者将一步步掌握`PyGUIAdapter`的进阶用法，包括：
 
 1. 如何选择合适的控件类型
 2. 如何配置控件属性
@@ -319,16 +319,22 @@ if __name__ == "__main__":
 7. 如何在函数运行过程中与用户交互
 8. ......
 
-[所有教程](tutorials/overview.md)
+**[点击此处查看教程](tutorials/overview.md)**
 
 ## 五、参考
 
-1. [参数数据类型](types/overview.md)
-2. [内置控件及其配置](widgets/overview.md)
-3. [窗口及其配置](windows/overview.md)
-4. [菜单和工具栏](windows/menu.md)
-5. [自定义控件](widgets/custom_widget.md)
-6. [适配器对象](adapter/overview.md)
+### 1、数据类型与控件
+
+**参见[此处](widgets/overview.md)**
+
+### 2、窗口及其配置
+
+**参见[此处](windows/overview.md)**
+
+### 3、适配器对象（GUIAdapter）及其他
+
+**参见[此处](adapter/overview
+.md)**
 
 ## 六、开源协议
 
