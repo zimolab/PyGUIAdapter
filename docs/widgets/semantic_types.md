@@ -6,7 +6,7 @@
 
 该类型本质上是`str`类型的“别名”，但与`str`不同，`text_t`会为用户生成一个多行文本输入框，以支持输入长文本。
 
-![](../../screenshots/widget_text_t.png)
+![](../images/widget_text_t.png)
 
 ## 二、int_t
 
@@ -15,11 +15,11 @@
 
 `int`:
 
-![](../../screenshots/widget_int.png)
+![](../images/widget_int.png)
 
 `int_t`:
 
-![](../../screenshots/widget_int_t.png)
+![](../images/widget_int_t.png)
 
 
 ## 三、float_t
@@ -28,16 +28,16 @@
 
 `float`:
 
-![](../../screenshots/widget_float.png)
+![](../images/widget_float.png)
 
 `float_t`:
 
-![](../../screenshots/widget_float_t.png)
+![](../images/widget_float_t.png)
 
 ## 四、file_list_t
 该类型本质上是一个list[str]，允许用户选择一个或多个文件，并将这些文件的路径添加到一个列表中
 
-![](../../screenshots/widget_file_list_t.png)
+![](../images/widget_file_list_t.png)
 
 ## 五、choice_t
 该类型代表一组特定选项中的一个，该类型是对`object`的扩展，或者说对任意类型（Any）的扩展，因此，选项的类型可以是字符串、整数、浮点数或者是任何
@@ -46,9 +46,9 @@
 PyGUIAdapter会为`choice_t`类型生成一个下拉列表控件，用户需要额外提供一个列表（list[Any]）作为可供选择的选项， 其中各个选项所显示的名称
 由str()方法得到。
 
-![](../../screenshots/widget_choice_t.png)
+![](../images/widget_choice_t.png)
 
-![](../../screenshots/widget_choice_t_2.png)
+![](../images/widget_choice_t_2.png)
 
 
 ### Tip: ExclusiveChoiceBox for typing.Literal
@@ -57,11 +57,11 @@ PyGUIAdapter会为`choice_t`类型生成一个下拉列表控件，用户需要�
 不过，它所对应的是python中的`typing.Literal`，它巧妙地利用`Literal`中包含的选项信息，从而实现了无需用户额外提供选项列表。它的使用方式及效果
 如下：
 
-![](../../screenshots/code_choices_from_literal.png)
+![](../images/code_choices_from_literal.png)
 
 ## 六、choices_t
 
 是对`List[Any]`扩展，语义上表示从一组选项中选择多个已选项列表，当然，已选择的选项数量可以为0或者1，但无论选项数量如何，该控件最终都会返回一个`list`。
 与`choice_t`类似，选项的类型可以是字符串、整数、浮点数或者是任何实现了`__str__`方法的类型。
 
-![](../../screenshots/widget_choices_t.png)
+![](../images/widget_choices_t.png)

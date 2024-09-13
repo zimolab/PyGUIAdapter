@@ -16,8 +16,8 @@
  
 ## 目录
 
-### [一、建立应用基本结构](/tutorials/qrcode-maker/1.basic_structural.md)
-### [二、选择合适的控件类型](/tutorials/qrcode-maker/2.widget_types.md)
+### [一、创建项目](/tutorials/qrcode-maker/1.basic_structural.md)
+### [二、配置控件](/tutorials/qrcode-maker/2.widget_types.md)
 ### [三、配置控件](/tutorials/qrcode-maker/3.widget_configs.md)
 ### [四、添加新功能：生成micro qrcode](/tutorials/qrcode-maker/4.micro_qrcode.md)
 ### [五、添加新功能：批量生成二维码](/tutorials/qrcode-maker/5.batch_make.md)
