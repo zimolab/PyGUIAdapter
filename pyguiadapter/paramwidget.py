@@ -31,9 +31,11 @@ class BaseParameterWidgetConfig(object):
         return cls(**kwargs)
 
 
+_T = TypeVar("_T", bound=BaseParameterWidgetConfig)
+
+
 class BaseParameterWidget(QWidget):
-    Self = TypeVar("Self", bound="BaseParameterWidget")
-    ConfigClass: Type[BaseParameterWidgetConfig]
+    ConfigClass: Type[_T] = NotImplemented
 
     def __init__(
         self,
@@ -90,7 +92,7 @@ class BaseParameterWidget(QWidget):
         self.__default_value_description = value
 
     @property
-    def config(self) -> BaseParameterWidgetConfig:
+    def config(self) -> _T:
         return self._config
 
     @abstractmethod
@@ -117,7 +119,7 @@ class BaseParameterWidget(QWidget):
         parent: QWidget | None,
         parameter_name: str,
         config: BaseParameterWidgetConfig,
-    ) -> Self:
+    ):
         return cls(parent, parameter_name, config).build()
 
     # noinspection PyUnusedLocal

@@ -3,7 +3,7 @@ from __future__ import annotations
 import copy
 import dataclasses
 from abc import abstractmethod
-from typing import Any, TypeVar, Type
+from typing import Any, Type
 
 from qtpy.QtCore import Qt
 from qtpy.QtWidgets import (
@@ -31,8 +31,7 @@ class CommonParameterWidgetConfig(BaseParameterWidgetConfig):
 
 
 class CommonParameterWidget(BaseParameterWidget):
-    Self = TypeVar("Self", bound="CommonParameterWidget")
-    ConfigClass = CommonParameterWidgetConfig
+    ConfigClass: Type[CommonParameterWidgetConfig] = NotImplemented
 
     def __init__(
         self,
@@ -60,7 +59,7 @@ class CommonParameterWidget(BaseParameterWidget):
 
         self.__build_flag: bool = False
 
-    def build(self) -> Self:
+    def build(self):
         if self.__build_flag:
             return self
         if self.description:
