@@ -27,6 +27,7 @@ __all__ = [
     "TextEdit",
     "TextEditConfig",
     "BoolBox",
+    "BoolBoxConfig",
     "BinStateSelect",
     "BinStateSelectConfig",
     "IntSpinBoxConfig",
