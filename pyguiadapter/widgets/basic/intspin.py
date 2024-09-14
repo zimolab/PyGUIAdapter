@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import dataclasses
 import warnings
-from typing import Type, Any
+from typing import Type
 
 from qtpy.QtWidgets import QWidget, QSpinBox
 
