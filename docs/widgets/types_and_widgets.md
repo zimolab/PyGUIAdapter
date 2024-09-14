@@ -9,7 +9,7 @@
 |   [`IntSpinBox`](widgets/int.md)   |  `IntSpinBoxConfig`  |       `int`        |  用于输入`int`类型数据  |   ![intspin.png](../images/intspin.png)   |
 | [`FloatSpinBox`](widgets/float.md) | `FloatSpinBoxConfig` |      `float`       | 用于输入`float`类型数据 | ![floatspin.png](../images/floatspin.png) |
 |    [`BoolBox`](widgets/bool.md)    |   `BoolBoxConfig`    |       `bool`       | 用于输入`bool`类型数据  |   ![boolbox.png](../images/boolbox.png)   |
-|                                    |                      |       `str`        |                         |  ![lineedit.png](../images/lineedit.png)  |
+|    [`LineEdit`](widgets/str.md)    |   `LineEditConfig`   |       `str`        |  用于输入`str`类型数据  |  ![lineedit.png](../images/lineedit.png)  |
 |                                    |                      |       `dict`       |                         |                                           |
 |                                    |                      |       `list`       |                         |                                           |
 |                                    |                      |      `tuple`       |                         |                                           |
