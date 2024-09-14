@@ -1,11 +1,12 @@
 from __future__ import annotations
 
 import dataclasses
-from typing import Type, TypeVar
+from typing import Type
 
 from qtpy.QtWidgets import QWidget, QButtonGroup, QRadioButton, QVBoxLayout, QHBoxLayout
 
 from ..common import CommonParameterWidgetConfig, CommonParameterWidget
+from ... import utils
 
 
 @dataclasses.dataclass(frozen=True)
@@ -13,6 +14,8 @@ class BoolBoxConfig(CommonParameterWidgetConfig):
     default_value: bool | None = False
     true_text: str = "True"
     false_text: str = "False"
+    true_icon: utils.IconType | None = None
+    false_icon: utils.IconType | None = None
     vertical: bool = True
 
     @classmethod
@@ -21,9 +24,7 @@ class BoolBoxConfig(CommonParameterWidgetConfig):
 
 
 class BoolBox(CommonParameterWidget):
-
-    Self = TypeVar("Self", bound="BoolBox")
-    ConfigClass = BoolBoxConfig
+    ConfigClass: Type[BoolBoxConfig] = BoolBoxConfig
 
     def __init__(
         self,
@@ -36,25 +37,32 @@ class BoolBox(CommonParameterWidget):
         self._false_radio_button: QRadioButton | None = None
         self._button_group: QButtonGroup | None = None
 
-        self._config: BoolBoxConfig = config
         super().__init__(parent, parameter_name, config)
 
     @property
     def value_widget(self) -> QWidget:
         if self._value_widget is None:
+            config: BoolBoxConfig = self.config
+
             self._value_widget = QWidget(self)
-            if self._config.vertical:
+            if config.vertical:
                 layout = QVBoxLayout()
             else:
                 layout = QHBoxLayout()
             self._value_widget.setLayout(layout)
 
-            self._true_radio_button = QRadioButton(
-                self._config.true_text, self._value_widget
-            )
-            self._false_radio_button = QRadioButton(
-                self._config.false_text, self._value_widget
-            )
+            self._true_radio_button = QRadioButton(self._value_widget)
+            self._true_radio_button.setText(config.true_text)
+            true_icon = utils.get_icon(config.true_icon)
+            if true_icon is not None:
+                self._true_radio_button.setIcon(true_icon)
+
+            self._false_radio_button = QRadioButton(self._value_widget)
+            self._false_radio_button.setText(config.false_text)
+            false_icon = utils.get_icon(config.false_icon)
+            if false_icon is not None:
+                self._false_radio_button.setIcon(false_icon)
+
             self._button_group = QButtonGroup(self._value_widget)
             self._button_group.addButton(self._true_radio_button)
             self._button_group.addButton(self._false_radio_button)
