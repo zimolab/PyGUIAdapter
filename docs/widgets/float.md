@@ -100,7 +100,7 @@ if __name__ == "__main__":
 
 ```
 
-<img src="../images/Float_example.png" />
+<img src="../images/float_example.png" />
 
 
 

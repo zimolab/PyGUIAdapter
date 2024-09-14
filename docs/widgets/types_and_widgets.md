@@ -1,4 +1,4 @@
-# 参数数据类型及其对应控件
+#  参数数据类型及其对应控件
 
 ### （一）Python内置类型的默认控件
 
@@ -8,7 +8,7 @@
 | :--------------------------------: | :------------------: | :----------------: | :---------------------: | :---------------------------------------: |
 |   [`IntSpinBox`](widgets/int.md)   |  `IntSpinBoxConfig`  |       `int`        |  用于输入`int`类型数据  |   ![intspin.png](../images/intspin.png)   |
 | [`FloatSpinBox`](widgets/float.md) | `FloatSpinBoxConfig` |      `float`       | 用于输入`float`类型数据 | ![floatspin.png](../images/floatspin.png) |
-|             `BoolBox`              |   `BoolBoxConfig`    |       `bool`       | 用于输入`bool`类型数据  |   ![boolbox.png](../images/boolbox.png)   |
+|    [`BoolBox`](widgets/bool.md)    |   `BoolBoxConfig`    |       `bool`       | 用于输入`bool`类型数据  |   ![boolbox.png](../images/boolbox.png)   |
 |                                    |                      |       `str`        |                         |  ![lineedit.png](../images/lineedit.png)  |
 |                                    |                      |       `dict`       |                         |                                           |
 |                                    |                      |       `list`       |                         |                                           |
