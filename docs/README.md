@@ -323,18 +323,19 @@ if __name__ == "__main__":
 
 ## 五、参考
 
-### 1、数据类型与控件
+### （一）数据类型与控件
 
-**参见[此处](widgets/overview.md)**
+#### [0、如何配置函数参数的控件](widgets/how_to_configure_widget.md)
+#### [1、参数数据类型及其对应控件](widgets/types_and_widgets.md)
+#### [2、自定义控件](widgets/custom_widget.md)
 
-### 2、窗口及其配置
+### （二）窗口及其配置
 
 **参见[此处](windows/overview.md)**
 
-### 3、适配器对象（GUIAdapter）及其他
+### （三适）配器对象（GUIAdapter）及其他
 
-**参见[此处](adapter/overview
-.md)**
+**参见[此处](adapter/overview.md)**
 
 ## 六、开源协议
 
