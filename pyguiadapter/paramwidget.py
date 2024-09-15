@@ -15,10 +15,10 @@ DEFAULT_VALUE_DESCRIPTION = "use default value: {}"
 @dataclasses.dataclass(frozen=True)
 class BaseParameterWidgetConfig(object):
     default_value: Any = None
-    group: str | None = None
     label: str | None = None
     description: str | None = None
     default_value_description: str | None = DEFAULT_VALUE_DESCRIPTION
+    group: str | None = None
     stylesheet: str | None = None
 
     @classmethod
