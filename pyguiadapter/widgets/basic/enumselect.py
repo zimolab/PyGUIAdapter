@@ -3,18 +3,22 @@ from __future__ import annotations
 import dataclasses
 import inspect
 from enum import Enum
-from typing import TypeVar, Type
+from typing import Type, Tuple
 
+from qtpy.QtCore import QSize
 from qtpy.QtWidgets import QWidget, QComboBox
 
 from ..common import CommonParameterWidgetConfig, CommonParameterWidget
 from ...fn import ParameterInfo
+from ... import utils
 
 
 @dataclasses.dataclass(frozen=True)
 class EnumSelectConfig(CommonParameterWidgetConfig):
-    default_value: Enum | None = None
+    default_value: Enum | str | int | None = 0
     enum_class: Type[Enum] | None = None
+    icons: dict[Enum | str, utils.IconType] | None = None
+    icon_size: Tuple[int, int] | QSize | None = None
 
     @classmethod
     def target_widget_class(cls) -> Type["EnumSelect"]:
@@ -22,7 +26,6 @@ class EnumSelectConfig(CommonParameterWidgetConfig):
 
 
 class EnumSelect(CommonParameterWidget):
-    Self = TypeVar("Self", bound="EnumSelect")
     ConfigClass = EnumSelectConfig
 
     def __init__(
@@ -32,19 +35,47 @@ class EnumSelect(CommonParameterWidget):
         config: EnumSelectConfig,
     ):
         self._value_widget: QComboBox | None = None
-        self._config: EnumSelectConfig = config
         super().__init__(parent, parameter_name, config)
 
     @property
     def value_widget(self) -> QComboBox:
         if self._value_widget is None:
+            config: EnumSelectConfig = self.config
             self._value_widget = QComboBox(self)
-            all_enums = self._config.enum_class.__members__
+            if config.icon_size:
+                icon_size = config.icon_size
+                if isinstance(icon_size, Tuple):
+                    assert len(icon_size) == 2
+                    icon_size = QSize(config.icon_size[0], config.icon_size[1])
+                self._value_widget.setIconSize(icon_size)
+            all_enums = config.enum_class.__members__
             for enum_name, enum_value in all_enums.items():
-                self._value_widget.addItem(enum_name, enum_value)
+                self._add_item(enum_name, enum_value, config.icons)
         return self._value_widget
 
-    def set_value_to_widget(self, value: Enum | str):
+    def _add_item(
+        self, name: str, value: Enum, icons: dict[Enum | str, utils.IconType] | None
+    ):
+        if not icons:
+            self._value_widget.addItem(name, value)
+            return
+
+        icon = icons.get(name, None)
+        if not icon:
+            self._value_widget.addItem(name, value)
+            return
+
+        icon = utils.get_icon(icon)
+        if not icon:
+            self._value_widget.addItem(name, value)
+            return
+
+        self._value_widget.addItem(icon, name, value)
+
+    def set_value_to_widget(self, value: Enum | str | int):
+        if isinstance(value, int):
+            self._value_widget.setCurrentIndex(value)
+            return
         if isinstance(value, Enum):
             value = value.name
         self._value_widget.setCurrentText(value)
