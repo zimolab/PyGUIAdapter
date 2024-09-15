@@ -35,68 +35,8 @@ class BoolBoxConfig(CommonParameterWidgetConfig):
 
 
 
-> `utils.IconType`是以下类型的别名：`str | tuple[str, list | dict] | QIcon | QPixmap | None`
->
-> 当取值为`str`类型时，应当传入[`qtawesome`](https://github.com/spyder-ide/qtawesome)支持的图标名称。
->
-> 当取值为`tuple[str, list|tuple]`类型时，应当传入一个二元元组，其中第一个元素为[`qtawesome`](https://github.com/spyder-ide/qtawesome)支持的图标名称，第二个元素为[`qtawesome.icon()`](https://qtawesome.readthedocs.io/en/latest/_generate/qtawesome.icon.html#qtawesome.icon)函数第一个参数之后的剩余参数。
->
-> 例如：
->
-> ```python
-> icon_options = {
-> 	"color": "blue",
-> 	"color_active": "orange"
-> }
-> my_icon = ("fa5s.music", icon_options)
-> ```
->
-> `utils.get_icon()`将按照如下方式利用该参数：
->
-> ```python
-> import qtawesome as qta
-> 
-> def get_icon(src: IconType, *args, **kwargs) -> QIcon | None:
->     ...
->     if isinstance(src, tuple):
->         assert len(src) >= 2
->         assert isinstance(src[0], str) and isinstance(src[1], (dict, list))
->         if isinstance(src[1], dict):
->             return qta.icon(src[0], **src[1])
->         else:
->             return qta.icon(src[0], *src[1])
->     else:
->         raise ValueError(f"invalid icon type: {type(src)}")
-> ```
->
-> `utils.get_icon()`的完整代码如下：
->
-> ```python
-> import qtawesome as qta
-> 
-> def get_icon(src: IconType, *args, **kwargs) -> QIcon | None:
->     if src is None:
->         return None
->     if isinstance(src, QIcon):
->         return src
->     if isinstance(src, QPixmap):
->         return QIcon(src)
->     if isinstance(src, str):
->         if os.path.isfile(src) or src.startswith(":/"):
->             return QIcon(src)
->         return qta.icon(src, *args, **kwargs)
->     if isinstance(src, tuple):
->         assert len(src) >= 2
->         assert isinstance(src[0], str) and isinstance(src[1], (dict, list))
->         if isinstance(src[1], dict):
->             return qta.icon(src[0], **src[1])
->         else:
->             return qta.icon(src[0], *src[1])
->     else:
->         raise ValueError(f"invalid icon type: {type(src)}")
-> ```
->
-> 
+> 关于图标，请参考[这篇文章](widgets/types_and_widgets.md)
+
 
 
 
