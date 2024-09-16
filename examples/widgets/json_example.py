@@ -1,7 +1,9 @@
+from typing import Any
+
 from pyguiadapter.adapter import GUIAdapter
 
 
-def json_example(arg1: object):
+def json_example(arg1: object, arg2: Any):
     pass
 
 
