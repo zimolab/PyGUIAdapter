@@ -3,7 +3,7 @@ import os.path
 import qrcode
 
 from pyguiadapter.exceptions import ParameterError
-from pyguiadapter.adapter import ulogging, GUIAdapter
+from pyguiadapter.adapter import uoutput, GUIAdapter
 
 
 def make_qrcode(
@@ -28,7 +28,7 @@ def make_qrcode(
         )
 
     if not allow_overwrite and os.path.isfile(save_path):
-        ulogging.critical(
+        uoutput.critical(
             "[Critical] Output file exists, while overwriting it is not allowed!"
         )
         raise ParameterError(
@@ -44,25 +44,25 @@ def make_qrcode(
 
     if box_size <= 0:
         box_size = 10
-        ulogging.warning(
+        uoutput.warning(
             f"[Warning] box size must be > 0, using default value: {box_size}"
         )
 
     if border < 0:
         border = 1
-        ulogging.warning(
+        uoutput.warning(
             f"[Warning] border size must be >= 0, using default value: {border}"
         )
 
     if not color or color.strip() == "":
         color = "#000000"
-        ulogging.warning(
+        uoutput.warning(
             f"[Warning] foreground color cannot be empty, using default value: {color}"
         )
 
     if not background or background.strip() == "":
         background = "#FFFFFF"
-        ulogging.warning(
+        uoutput.warning(
             f"[Warning] background color cannot be empty, using default value: {background}"
         )
 

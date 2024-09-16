@@ -1,8 +1,9 @@
+import re
 from collections.abc import Mapping, MutableMapping, MutableSet, Set
 from collections import OrderedDict
 import typing
 
-from ..utils import hashable
+from .. import utils
 
 TYPE_INT = "int"
 TYPE_FLOAT = "float"
@@ -16,6 +17,7 @@ TYPE_ANY = "any"
 TYPE_ORDERED_DICT = "OrderedDict"
 TYPE_LITERAL = "literal"
 
+_TYPE_ANN_PATTERN = r"(\w+)\[\s*([\w\W]+)\s*\]"
 
 BasicTypeMap = {
     int: TYPE_INT,
@@ -47,6 +49,21 @@ ExtendTypeMap = {
 }
 
 
+def _get_typename_from_str_annotation(typ: str) -> str:
+    match = re.match(_TYPE_ANN_PATTERN, typ)
+    if match is not None:
+        return match.group(1)
+    return typ
+
+
+def _get_type_args_from_str_annotation(typ: str) -> typing.List[str]:
+    match = re.match(_TYPE_ANN_PATTERN, typ)
+    if match is not None:
+        type_arg_str = match.group(2)
+        return utils.get_type_args(type_arg_str.strip())
+    return []
+
+
 def _get_extend_typename(typ: typing.Any) -> str:
     if isinstance(typ, type) or getattr(typ, "__name__", None) is not None:
         return typ.__name__
@@ -54,7 +71,11 @@ def _get_extend_typename(typ: typing.Any) -> str:
 
 
 def get_typename(typ: typing.Any) -> str:
-    if not hashable(typ):
+    if isinstance(typ, str):
+        typ = typ.strip()
+        return _get_typename_from_str_annotation(typ)
+
+    if not utils.hashable(typ):
         return _get_extend_typename(typ)
 
     typename = BasicTypeMap.get(typ, None)
@@ -74,6 +95,9 @@ def get_typename(typ: typing.Any) -> str:
 
 
 def get_type_args(typ: typing.Any) -> typing.List[typing.Any]:
+    if isinstance(typ, str):
+        typ = typ.strip()
+        return _get_type_args_from_str_annotation(typ)
     args = []
     for arg in typing.get_args(typ):
         if isinstance(arg, (int, float, str, bool, dict, list, set, tuple)):

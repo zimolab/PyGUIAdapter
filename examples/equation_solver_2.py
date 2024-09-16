@@ -1,6 +1,6 @@
 import math
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.adapter.ulogging import uprint
+from pyguiadapter.adapter.uoutput import uprint
 
 
 def solve(a: float, b: float, c: float) -> list:

@@ -102,6 +102,6 @@ class EnumSelect(CommonParameterWidget):
         cls, parameter_info: ParameterInfo
     ) -> Type[EnumSelect] | None:
         param_type = parameter_info.type
-        if issubclass(param_type, Enum):
+        if inspect.isclass(param_type) and issubclass(param_type, Enum):
             return cls
         return None

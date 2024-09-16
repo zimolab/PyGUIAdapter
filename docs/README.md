@@ -188,7 +188,7 @@ if __name__ == "__main__":
 ```python
 import math
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.adapter.ulogging import uprint
+from pyguiadapter.adapter.uoutput import uprint
 
 
 def solve(a: float, b: float, c: float) -> list:
@@ -226,7 +226,7 @@ if __name__ == "__main__":
 除了`uprint()`函数，`pyguiadapter.adapter.ulogging`模块中还有许多输出信息的方法，借助这些方法，开发者可以输出格式更加丰富的的信息。
 
 ```python
-from pyguiadapter.adapter import GUIAdapter, ulogging
+from pyguiadapter.adapter import GUIAdapter, uoutput
 
 def output_log_msg(
     info_msg: str = "info message",
@@ -235,11 +235,11 @@ def output_log_msg(
     critical_msg: str = "critical message",
     fatal_msg: str = "fatal message",
 ):
-    ulogging.info(info_msg)
-    ulogging.debug(debug_msg)
-    ulogging.warning(warning_msg)
-    ulogging.critical(critical_msg)
-    ulogging.fatal(fatal_msg)
+    uoutput.info(info_msg)
+    uoutput.debug(debug_msg)
+    uoutput.warning(warning_msg)
+    uoutput.critical(critical_msg)
+    uoutput.fatal(fatal_msg)
 
 
 if __name__ == "__main__":
@@ -263,7 +263,7 @@ if __name__ == "__main__":
 ```python
 import math
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.adapter.ulogging import uprint
+from pyguiadapter.adapter.uoutput import uprint
 from pyguiadapter.exceptions import ParameterError
 
 

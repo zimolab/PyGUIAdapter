@@ -72,8 +72,8 @@ class MessageTexts(object):
 class FnExecuteWindowConfig(BaseWindowConfig):
     title: str = ""
     size: Tuple[int, int] | QSize = DEFAULT_WINDOW_SIZE
-    output_dock_ratio: float = 0.3
-    document_dock_ratio: float = 0.65
+    output_dock_ratio: float = 0.30
+    document_dock_ratio: float = 0.60
     show_output_dock: bool = True
     output_dock_floating: bool = False
     output_dock_position: DockWidgetArea = Qt.BottomDockWidgetArea

@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+import ast
 import dataclasses
 import hashlib
+import inspect
 import os.path
 import re
 import string
@@ -11,7 +13,7 @@ from io import StringIO
 from typing import Literal, List, Set, Tuple, Any, Union, Type
 
 import qtawesome as qta
-from qtpy import QT_VERSION
+from qtpy import QT_VERSION, compat
 from qtpy.QtCore import QUrl, Qt, QSize
 from qtpy.QtGui import QIcon, QPixmap, QTextCursor, QTextOption, QColor
 from qtpy.QtWidgets import QTextBrowser, QWidget, QMessageBox, QFrame, QFileDialog
@@ -367,7 +369,8 @@ def get_existing_directory(
     title: str = "Open Directory",
     start_dir: str = "",
 ) -> str:
-    return QFileDialog.getExistingDirectory(parent, title, start_dir)
+    return compat.getexistingdirectory(parent, title, start_dir)
+    # return QFileDialog.getExistingDirectory(parent, title, start_dir)
 
 
 def get_existing_directory_url(
@@ -402,7 +405,8 @@ def get_open_file(
     start_dir: str = "",
     filters: str = "",
 ) -> str | None:
-    filename, _ = QFileDialog.getOpenFileName(parent, title, start_dir, filters)
+    # filename, _ = QFileDialog.getOpenFileName(parent, title, start_dir, filters)
+    filename, _ = compat.getopenfilename(parent, title, start_dir, filters)
     return filename or None
 
 
@@ -412,7 +416,8 @@ def get_open_files(
     start_dir: str = "",
     filters: str = "",
 ) -> List[str] | None:
-    filenames, _ = QFileDialog.getOpenFileNames(parent, title, start_dir, filters)
+    # filenames, _ = QFileDialog.getOpenFileNames(parent, title, start_dir, filters)
+    filenames, _ = compat.getopenfilenames(parent, title, start_dir, filters)
     return filenames or None
 
 
@@ -422,7 +427,8 @@ def get_save_file(
     start_dir: str = "",
     filters: str = "",
 ) -> str | None:
-    filename, _ = QFileDialog.getSaveFileName(parent, title, start_dir, filters)
+    # filename, _ = QFileDialog.getSaveFileName(parent, title, start_dir, filters)
+    filename, _ = compat.getsavefilename(parent, title, start_dir, filters)
     return filename or None
 
 
@@ -496,3 +502,32 @@ def get_size(size: int | Tuple[int, int] | QSize) -> QSize | None:
         return size
     warnings.warn(f"invalid size type: {type(size)}")
     return None
+
+
+def get_object_filename(obj: Any) -> str | None:
+    return inspect.getsourcefile(obj)
+
+
+def get_object_sourcecode(obj: Any) -> str | None:
+    return inspect.getsource(obj)
+
+
+def get_type_args(raw: str) -> list:
+    raw = raw.strip()
+    if raw.startswith("[") and raw.endswith("]"):
+        content = raw[1:-1].strip()
+    elif raw.startswith("(") and raw.endswith(")"):
+        content = raw[1:-1].strip()
+    else:
+        content = None
+
+    if content is None:
+        return raw.split(",")
+
+    content = "[" + content + "]"
+    try:
+        args = ast.literal_eval(content)
+    except Exception as e:
+        warnings.warn(f"unable to parse type args '{raw}': {e}")
+        return []
+    return args

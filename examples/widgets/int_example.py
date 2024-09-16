@@ -1,5 +1,5 @@
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.adapter.ulogging import uprint
+from pyguiadapter.adapter.uoutput import uprint
 
 
 def int_example(int_arg1: int, int_arg2: int, int_arg3: int = 100) -> int:

@@ -2,12 +2,21 @@ from __future__ import annotations
 
 from typing import Any, Literal, Tuple
 
-from qtpy.QtGui import QIcon
-from qtpy.QtWidgets import QWidget, QDialogButtonBox, QTextBrowser, QVBoxLayout
+from qtpy.QtGui import QIcon, QPixmap
+from qtpy.QtWidgets import (
+    QWidget,
+    QDialogButtonBox,
+    QTextBrowser,
+    QVBoxLayout,
+    QMessageBox,
+)
 
 from .. import utils
 from ._dialog import BaseCustomDialog
-from .ucontext import show_custom_dialog
+from .ucontext import show_messagebox, MessageBoxConfig, show_custom_dialog
+
+StandardButton = utils.StandardButton
+StandardButtons = utils.StandardButtons
 
 
 class TextBrowserDialog(BaseCustomDialog):
@@ -131,3 +140,90 @@ def show_text_file(
 def show_about_info():
     """TODO impl show about dialog"""
     pass
+
+
+def _show_messagebox(
+    text: str,
+    icon: int | QPixmap,
+    title: str = "Information",
+    buttons: StandardButton | StandardButtons = QMessageBox.Ok,
+    default_button: StandardButton = QMessageBox.NoButton,
+    **kwargs,
+) -> int | StandardButton:
+    config = MessageBoxConfig(
+        text=text,
+        title=title,
+        icon=icon,
+        buttons=buttons,
+        default_button=default_button,
+        **kwargs,
+    )
+    return show_messagebox(config)
+
+
+def show_info_dialog(
+    text: str,
+    title: str = "Information",
+    buttons: StandardButton | StandardButtons = QMessageBox.Ok,
+    default_button: StandardButton = QMessageBox.NoButton,
+    **kwargs,
+) -> int | StandardButton:
+    return _show_messagebox(
+        text=text,
+        icon=QMessageBox.Information,
+        title=title,
+        buttons=buttons,
+        default_button=default_button,
+        **kwargs,
+    )
+
+
+def show_warning_dialog(
+    text: str,
+    title: str = "Warning",
+    buttons: StandardButton | StandardButtons = QMessageBox.Ok,
+    default_button: StandardButton = QMessageBox.NoButton,
+    **kwargs,
+) -> int | StandardButton:
+    return _show_messagebox(
+        text=text,
+        icon=QMessageBox.Warning,
+        title=title,
+        buttons=buttons,
+        default_button=default_button,
+        **kwargs,
+    )
+
+
+def show_critical_dialog(
+    text: str,
+    title: str = "Critical",
+    buttons: StandardButton | StandardButtons = QMessageBox.Ok,
+    default_button: StandardButton = QMessageBox.NoButton,
+    **kwargs,
+) -> int | StandardButton:
+    return _show_messagebox(
+        text=text,
+        icon=QMessageBox.Critical,
+        title=title,
+        buttons=buttons,
+        default_button=default_button,
+        **kwargs,
+    )
+
+
+def show_question_dialog(
+    text: str,
+    title: str = "Question",
+    buttons: StandardButton | StandardButtons = QMessageBox.Yes | QMessageBox.No,
+    default_button: StandardButton = QMessageBox.NoButton,
+    **kwargs,
+) -> int | StandardButton:
+    return _show_messagebox(
+        text=text,
+        icon=QMessageBox.Question,
+        title=title,
+        buttons=buttons,
+        default_button=default_button,
+        **kwargs,
+    )

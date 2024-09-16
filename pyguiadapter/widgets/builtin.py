@@ -94,6 +94,13 @@ TYPE_KEY_SEQUENCE_T = key_sequence_t.__name__
 TYPE_STRING_LIST_T = string_list_t.__name__
 TYPE_PLAIN_DICT_T = plain_dict_t.__name__
 
+TYPING_TUPLE = "Tuple"
+TYPING_LIST = "List"
+TYPING_SET = "Set"
+TYPING_DICT = "Dict"
+TYPING_ANY = "Any"
+TYPING_LITERAL = "Literal"
+
 BUILTIN_WIDGETS_MAP = {
     TYPE_STR: LineEdit,
     TYPE_TEXT: TextEdit,
@@ -106,14 +113,20 @@ BUILTIN_WIDGETS_MAP = {
     TYPE_FILE_T: FileSelect,
     TYPE_FILE_LIST_T: MultiFileSelect,
     TYPE_ANY: PyLiteralEdit,
+    TYPING_ANY: PyLiteralEdit,
     TYPE_JSON_OBJ_T: JsonEdit,
     TYPE_PY_LITERAL_T: PyLiteralEdit,
     TYPE_PY_LITERAL_T_2: PyLiteralEdit,
     TYPE_DICT: DictEdit,
+    TYPING_DICT: DictEdit,
     TYPE_LIST: ListEdit,
+    TYPING_LIST: ListEdit,
     TYPE_TUPLE: TupleEdit,
+    TYPING_TUPLE: TupleEdit,
     TYPE_SET: SetEdit,
+    TYPING_SET: SetEdit,
     TYPE_LITERAL: ExclusiveChoiceBox,
+    TYPING_LITERAL: ExclusiveChoiceBox,
     TYPE_CHOICE_T: ComboBox,
     TYPE_CHOICES_T: MultiChoiceBox,
     TYPE_SLIDER_INT_T: Slider,

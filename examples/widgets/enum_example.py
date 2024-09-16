@@ -1,6 +1,6 @@
 from enum import Enum
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.adapter.ulogging import uprint
+from pyguiadapter.adapter.uoutput import uprint
 from pyguiadapter.widgets import EnumSelectConfig
 
 

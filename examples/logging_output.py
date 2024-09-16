@@ -1,4 +1,4 @@
-from pyguiadapter.adapter import GUIAdapter, ulogging
+from pyguiadapter.adapter import GUIAdapter, uoutput
 
 
 def output_log_msg(
@@ -8,11 +8,11 @@ def output_log_msg(
     critical_msg: str = "critical message",
     fatal_msg: str = "fatal message",
 ):
-    ulogging.info(info_msg)
-    ulogging.debug(debug_msg)
-    ulogging.warning(warning_msg)
-    ulogging.critical(critical_msg)
-    ulogging.fatal(fatal_msg)
+    uoutput.info(info_msg)
+    uoutput.debug(debug_msg)
+    uoutput.warning(warning_msg)
+    uoutput.critical(critical_msg)
+    uoutput.fatal(fatal_msg)
 
 
 if __name__ == "__main__":

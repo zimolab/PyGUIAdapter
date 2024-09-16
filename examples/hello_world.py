@@ -1,5 +1,5 @@
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.adapter.ulogging import uprint
+from pyguiadapter.adapter.uoutput import uprint
 
 
 def greeting(name: str):

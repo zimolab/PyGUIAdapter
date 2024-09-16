@@ -17,7 +17,9 @@ TimeSpec = Qt.TimeSpec
 
 @dataclasses.dataclass(frozen=True)
 class DateTimeEditConfig(CommonParameterWidgetConfig):
-    default_value: datetime | QDateTime | None = datetime.now()
+    default_value: datetime | QDateTime | None = dataclasses.field(
+        default_factory=datetime.now
+    )
     min_datetime: datetime | QDateTime | None = None
     max_datetime: datetime | QDateTime | None = None
     display_format: str | None = None
