@@ -11,7 +11,7 @@ from ..common import CommonParameterWidgetConfig, CommonParameterWidget
 
 @dataclasses.dataclass(frozen=True)
 class DialConfig(CommonParameterWidgetConfig):
-    default_value: int | None = None
+    default_value: int | None = 0
     min_value: int = 0
     max_value: int = 100
     notch_target: float | None = None

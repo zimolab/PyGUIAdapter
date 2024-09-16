@@ -13,7 +13,7 @@ TickPosition = QSlider.TickPosition
 
 @dataclasses.dataclass(frozen=True)
 class SliderConfig(CommonParameterWidgetConfig):
-    default_value: int | None = None
+    default_value: int | None = 0
     min_value: int = 0
     max_value: int = 100
     single_step: int = 1

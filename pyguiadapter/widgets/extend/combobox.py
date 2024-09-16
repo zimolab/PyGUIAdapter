@@ -8,6 +8,8 @@ from qtpy.QtWidgets import QWidget, QComboBox
 
 from ..common import CommonParameterWidgetConfig, CommonParameterWidget
 
+_FIRST_ITEM = object()
+
 
 @dataclasses.dataclass
 class _DataWrap(object):
@@ -16,7 +18,7 @@ class _DataWrap(object):
 
 @dataclasses.dataclass(frozen=True)
 class ComboBoxConfig(CommonParameterWidgetConfig):
-    default_value: Any | None = None
+    default_value: Any | None = _FIRST_ITEM
     choices: Dict[str, Any] | List[Any] = dataclasses.field(default_factory=list)
     editable: bool = False
 
@@ -48,6 +50,9 @@ class ComboBox(CommonParameterWidget):
         return self._value_widget
 
     def set_value_to_widget(self, value: Any):
+        if value is _FIRST_ITEM:
+            self._value_widget.setCurrentIndex(0)
+            return
         for index in range(self._value_widget.count()):
             data = self._value_widget.itemData(index, Qt.UserRole)
             if isinstance(data, _DataWrap):

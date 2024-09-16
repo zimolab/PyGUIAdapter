@@ -20,7 +20,7 @@ class _CheckBox(QCheckBox):
 
 @dataclasses.dataclass(frozen=True)
 class MultiChoiceBoxConfig(CommonParameterWidgetConfig):
-    default_value: List[Any] | None = None
+    default_value: List[Any] | None = dataclasses.field(default_factory=list)
     choices: List[Any] | Dict[str, Any] = dataclasses.field(default_factory=list)
     columns: int = 1
 

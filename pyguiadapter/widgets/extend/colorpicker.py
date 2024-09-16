@@ -94,7 +94,7 @@ class ColorLabel(QLabel):
 
 @dataclasses.dataclass(frozen=True)
 class ColorPickerConfig(CommonParameterWidgetConfig):
-    default_value: ColorType | None = None
+    default_value: ColorType | None = "white"
     initial_color: ColorType = "white"
     show_alpha: bool = True
     show_color_name: bool = True

@@ -15,7 +15,7 @@ TextElideMode = Qt.TextElideMode
 
 @dataclasses.dataclass(frozen=True)
 class StringListEditConfig(CommonParameterWidgetConfig):
-    default_value: List[str] | None = None
+    default_value: List[str] | None = dataclasses.field(default_factory=list)
     empty_string_strategy: Literal["keep_all", "keep_one", "remove_all"] = "remove_all"
     select_file: bool = True
     select_directory: bool = True

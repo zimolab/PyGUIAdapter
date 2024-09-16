@@ -32,7 +32,7 @@ GridStyle = Qt.PenStyle
 
 @dataclasses.dataclass(frozen=True)
 class PlainDictEditConfig(CommonParameterWidgetConfig):
-    default_value: Dict[str] | None = None
+    default_value: Dict[str, Any] | None = dataclasses.field(default_factory=dict)
     edit_button_text: str = "Edit"
     add_button_text: str = "Add"
     remove_button_text: str = "Remove"

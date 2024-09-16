@@ -13,7 +13,7 @@ KeySequenceFormat = QKeySequence.SequenceFormat
 
 @dataclasses.dataclass(frozen=True)
 class KeySequenceEditConfig(CommonParameterWidgetConfig):
-    default_value: str | QKeySequence | None = None
+    default_value: str | QKeySequence | None = ""
     key_sequence_format: KeySequenceFormat = QKeySequence.PortableText
 
     @classmethod
