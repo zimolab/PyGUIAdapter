@@ -6,12 +6,13 @@ import os.path
 import re
 import string
 import traceback
+import warnings
 from io import StringIO
 from typing import Literal, List, Set, Tuple, Any, Union, Type
 
 import qtawesome as qta
 from qtpy import QT_VERSION
-from qtpy.QtCore import QUrl, Qt
+from qtpy.QtCore import QUrl, Qt, QSize
 from qtpy.QtGui import QIcon, QPixmap, QTextCursor, QTextOption, QColor
 from qtpy.QtWidgets import QTextBrowser, QWidget, QMessageBox, QFrame, QFileDialog
 
@@ -481,3 +482,17 @@ def fingerprint(text: str) -> str | None:
     md5 = hashlib.md5()
     md5.update(text.encode("utf-8"))
     return md5.hexdigest()
+
+
+def get_size(size: int | Tuple[int, int] | QSize) -> QSize | None:
+    if size is None:
+        return None
+    if isinstance(size, int):
+        return QSize(size, size)
+    if isinstance(size, tuple):
+        assert len(size) == 2
+        return QSize(*size)
+    if isinstance(size, QSize):
+        return size
+    warnings.warn(f"invalid size type: {type(size)}")
+    return None
