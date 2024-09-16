@@ -30,7 +30,7 @@ class EnumSelectConfig(CommonParameterWidgetConfig):
 
 
 
-> 关于图标，请参考[这篇文章](widgets/types_and_widgets.md)
+> 关于图标，请参考[这篇文章](widgets/types_and_widgets.md)。
 
 
 
