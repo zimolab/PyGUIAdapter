@@ -10,7 +10,7 @@ from .literaledit import PyLiteralEdit, PyLiteralEditConfig, PyLiteralType
 
 @dataclasses.dataclass(frozen=True)
 class ListEditConfig(PyLiteralEditConfig):
-    default_value: dict | None = dataclasses.field(default_factory=list)
+    default_value: list | None = dataclasses.field(default_factory=list)
     initial_text: str = "[]"
 
     @classmethod

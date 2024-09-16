@@ -10,7 +10,7 @@ from .literaledit import PyLiteralEdit, PyLiteralEditConfig, PyLiteralType
 
 @dataclasses.dataclass(frozen=True)
 class TupleEditConfig(PyLiteralEditConfig):
-    default_value: dict | None = dataclasses.field(default_factory=tuple)
+    default_value: tuple | None = dataclasses.field(default_factory=tuple)
     initial_text: str = "()"
 
     @classmethod
