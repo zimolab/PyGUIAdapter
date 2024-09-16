@@ -3,43 +3,45 @@ from __future__ import annotations
 import dataclasses
 import warnings
 from abc import abstractmethod
-from typing import Type, TypeVar, Callable
+from typing import Type, TypeVar, Callable, Tuple
 
 from pyqcodeeditor.QCodeEditor import QCodeEditor
 from pyqcodeeditor.QStyleSyntaxHighlighter import QStyleSyntaxHighlighter
 from qtpy.QtCore import Qt
 from qtpy.QtWidgets import QWidget, QVBoxLayout, QPushButton
 
-from ..codeeditor import (
-    BaseCodeFormatter,
-    LineWrapMode,
-    WordWrapMode,
-    CodeEditorWindow,
-    CodeEditorConfig,
-)
 from ..common import (
     CommonParameterWidget,
     CommonParameterWidgetConfig,
 )
-from ...exceptions import ParameterError
 from ... import utils
+from ...codeeditor import (
+    BaseCodeFormatter,
+    CodeEditorWindow,
+    CodeEditorConfig,
+    LineWrapMode,
+    WordWrapMode,
+    create_highlighter,
+)
+from ...codeeditor.constants import MENU_FILE, ACTION_SAVE, ACTION_SAVE_AS
+from ...exceptions import ParameterError
 
 T = TypeVar("T")
 
 
 @dataclasses.dataclass(frozen=True)
-class BaseDataEditConfig(CommonParameterWidgetConfig):
+class BaseCodeEditConfig(CommonParameterWidgetConfig):
     font_size: int | None = None
     indent_size: int = 4
     min_height: int = 180
     highlighter: Type[QStyleSyntaxHighlighter] | None = None
     highlighter_args: dict | list | tuple | None = None
-    enable_code_editor: bool = True
+    editor_window: bool = True
     editor_button_text: str = "Edit"
     editor_title: str = "Edit - {}"
     auto_indent: bool = True
     auto_parentheses: bool = True
-    code_formatter: BaseCodeFormatter | Callable[[str], str] | None = None
+    formatter: BaseCodeFormatter | Callable[[str], str] | None = None
     file_filters: str | None = None
     start_dir: str | None = None
     line_wrap_mode: LineWrapMode = LineWrapMode.NoWrap
@@ -47,24 +49,34 @@ class BaseDataEditConfig(CommonParameterWidgetConfig):
     word_wrap_mode: WordWrapMode = WordWrapMode.NoWrap
     initial_text: str | None = None
 
+    use_default_menus: bool = True
+    use_default_toolbar: bool = True
+    exclude_default_menus: Tuple[str] = ()
+    exclude_default_menu_actions: Tuple[Tuple[str, str]] = (
+        (MENU_FILE, ACTION_SAVE),
+        (MENU_FILE, ACTION_SAVE_AS),
+    )
+    exclude_default_toolbar_actions: Tuple[str] = (
+        ACTION_SAVE,
+        ACTION_SAVE_AS,
+    )
+
     @classmethod
     @abstractmethod
-    def target_widget_class(cls) -> Type["BaseDataEdit"]:
+    def target_widget_class(cls) -> Type["BaseCodeEdit"]:
         pass
 
 
-class BaseDataEdit(CommonParameterWidget):
-    Self = TypeVar("Self", bound="BaseDataEdit")
-    ConfigClass = BaseDataEditConfig
+class BaseCodeEdit(CommonParameterWidget):
+    ConfigClass = BaseCodeEditConfig
 
     def __init__(
         self,
         parent: QWidget | None,
         parameter_name: str,
-        config: BaseDataEditConfig,
+        config: BaseCodeEditConfig,
     ):
 
-        self._config: BaseDataEditConfig = config
         self._value_widget: QWidget | None = None
         self._editor_button: QPushButton | None = None
         super().__init__(parent, parameter_name, config)
@@ -75,6 +87,7 @@ class BaseDataEdit(CommonParameterWidget):
     @property
     def value_widget(self) -> QWidget:
         if self._value_widget is None:
+            config: BaseCodeEditConfig = self.config
             self._value_widget = QWidget(self)
             layout = QVBoxLayout()
             layout.setContentsMargins(0, 0, 0, 0)
@@ -83,38 +96,36 @@ class BaseDataEdit(CommonParameterWidget):
             self._editor = QCodeEditor(self._value_widget)
             layout.addWidget(self._editor)
 
-            if self._config.enable_code_editor:
+            if config.editor_window:
                 self._editor_button = QPushButton(self._value_widget)
-                self._editor_button.setText(self._config.editor_button_text)
+                self._editor_button.setText(config.editor_button_text)
+                # noinspection PyUnresolvedReferences
                 self._editor_button.clicked.connect(self._on_open_code_editor)
                 layout.addWidget(self._editor_button)
 
-            self._setup_value_widget()
+            if config.min_height and config.min_height > 0:
+                self._editor.setMinimumHeight(config.min_height)
+
+            if config.initial_text is not None:
+                self._editor.setPlainText(config.initial_text)
+
+            highlighter = self._inplace_editor_highlighter()
+            highlighter.setParent(self)
+            self._editor.setHighlighter(highlighter)
+            self._editor.setTabReplace(True)
+            self._editor.setTabReplaceSize(config.indent_size)
+            self._editor.setLineWrapMode(config.line_wrap_mode)
+            if (
+                config.line_wrap_mode == LineWrapMode.FixedPixelWidth
+                or config.line_wrap_mode == LineWrapMode.FixedColumnWidth
+            ):
+                if config.line_wrap_width > 0:
+                    self._editor.setLineWrapWidth(config.line_wrap_width)
+            self._editor.setWordWrapMode(config.word_wrap_mode)
+            if config.font_size and config.font_size > 0:
+                self._editor.setFontSize(config.font_size)
 
         return self._value_widget
-
-    def _setup_value_widget(self):
-        if self._config.min_height and self._config.min_height > 0:
-            self._editor.setMinimumHeight(self._config.min_height)
-
-        if self._config.initial_text is not None:
-            self._editor.setPlainText(self._config.initial_text)
-
-        highlighter = self._inplace_editor_highlighter()
-        highlighter.setParent(self)
-        self._editor.setHighlighter(highlighter)
-        self._editor.setTabReplace(True)
-        self._editor.setTabReplaceSize(self._config.indent_size)
-        self._editor.setLineWrapMode(self._config.line_wrap_mode)
-        if (
-            self._config.line_wrap_mode == LineWrapMode.FixedPixelWidth
-            or self._config.line_wrap_mode == LineWrapMode.FixedColumnWidth
-        ):
-            if self._config.line_wrap_width > 0:
-                self._editor.setLineWrapWidth(self._config.line_wrap_width)
-        self._editor.setWordWrapMode(self._config.word_wrap_mode)
-        if self._config.font_size and self._config.font_size > 0:
-            self._editor.setFontSize(self._config.font_size)
 
     def _on_open_code_editor(self):
         if self._code_editor is not None:
@@ -122,26 +133,32 @@ class BaseDataEdit(CommonParameterWidget):
             self._code_editor.destroyed.disconnect(self._on_code_editor_destroyed)
             self._code_editor.deleteLater()
             self._code_editor = None
-
+        config: BaseCodeEditConfig = self.config
         code_editor_config = CodeEditorConfig(
             initial_text=self._editor.toPlainText(),
-            code_formatter=self._config.code_formatter,
-            highlighter=self._config.highlighter,
-            highlighter_args=self._config.highlighter_args,
+            formatter=config.formatter,
+            highlighter=config.highlighter,
+            highlighter_args=config.highlighter_args,
             check_unsaved_changes=False,
             show_filename_in_title=False,
-            title=self._config.editor_title.format(self.parameter_name),
-            auto_indent=self._config.auto_indent,
-            auto_parentheses=self._config.auto_parentheses,
-            file_filters=self._config.file_filters,
-            start_dir=self._config.start_dir,
-            line_wrap_mode=self._config.line_wrap_mode,
-            line_wrap_width=self._config.line_wrap_width,
-            word_wrap_mode=self._config.word_wrap_mode,
-            font_size=self._config.font_size,
+            title=config.editor_title.format(self.parameter_name),
+            auto_indent=config.auto_indent,
+            auto_parentheses=config.auto_parentheses,
+            file_filters=config.file_filters,
+            start_dir=config.start_dir,
+            line_wrap_mode=config.line_wrap_mode,
+            line_wrap_width=config.line_wrap_width,
+            word_wrap_mode=config.word_wrap_mode,
+            font_size=config.font_size,
             tab_replace=True,
-            tab_size=self._config.indent_size,
+            tab_size=config.indent_size,
+            no_file_mode=True,
             on_close=self._on_code_editor_close,
+            use_default_menus=config.use_default_menus,
+            use_default_toolbar=config.use_default_toolbar,
+            exclude_default_menus=config.exclude_default_menus,
+            exclude_default_menu_actions=config.exclude_default_menu_actions,
+            exclude_default_toolbar_actions=config.exclude_default_toolbar_actions,
         )
         self._code_editor = CodeEditorWindow(self, code_editor_config)
         self._code_editor.setWindowModality(Qt.WindowModal)
@@ -167,9 +184,10 @@ class BaseDataEdit(CommonParameterWidget):
         self._code_editor = None
 
     def _do_format(self, code: str) -> str | None:
-        if self._config.code_formatter:
+        config: BaseCodeEditConfig = self.config
+        if config.formatter:
             try:
-                return self._config.code_formatter.format_code(code)
+                return config.formatter.format_code(code)
             except Exception as e:
                 warnings.warn(f"Failed to format code: {e}")
             return None
@@ -207,6 +225,5 @@ class BaseDataEdit(CommonParameterWidget):
         return obj
 
     def _inplace_editor_highlighter(self) -> QStyleSyntaxHighlighter | None:
-        return CodeEditorWindow.new_highlighter_instance(
-            self._config.highlighter, self._config.highlighter_args
-        )
+        config: BaseCodeEditConfig = self.config
+        return create_highlighter(config.highlighter, config.highlighter_args)

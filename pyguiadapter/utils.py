@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import dataclasses
+import hashlib
 import os.path
 import re
 import string
@@ -472,3 +473,11 @@ def get_traceback(
     msg = buffer.getvalue()
     buffer.close()
     return msg
+
+
+def fingerprint(text: str) -> str | None:
+    if not text:
+        return None
+    md5 = hashlib.md5()
+    md5.update(text.encode("utf-8"))
+    return md5.hexdigest()

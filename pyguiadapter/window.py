@@ -4,7 +4,7 @@ import dataclasses
 from typing import Callable, Tuple, Dict, List
 
 from qtpy.QtCore import QSize, Qt
-from qtpy.QtGui import QIcon, QPixmap, QAction
+from qtpy.QtGui import QAction
 from qtpy.QtWidgets import QMainWindow, QWidget, QToolBar, QMenu
 
 from . import utils
@@ -42,9 +42,26 @@ class Separator(object):
 class MenuConfig(object):
     title: str
     actions: List[ActionConfig | Separator | MenuConfig]
-    icon: str | QIcon | QPixmap | None = None
     separators_collapsible: bool = True
     tear_off_enabled: bool = True
+
+    def remove_action(self, action: str | ActionConfig | Separator | MenuConfig):
+        if isinstance(action, str):
+            for action_ in self.actions:
+                if isinstance(action_, ActionConfig):
+                    if action_.text == action:
+                        action = action_
+                        break
+                if isinstance(action_, MenuConfig):
+                    if action_.title == action:
+                        action = action_
+                        break
+            if action in self.actions:
+                self.actions.remove(action)
+            return
+        if action in self.actions:
+            self.actions.remove(action)
+            return
 
 
 # noinspection SpellCheckingInspection
@@ -58,6 +75,20 @@ class ToolbarConfig(object):
     initial_area: Qt.ToolBarArea | None = None
     allowed_areas: Qt.ToolBarAreas | None = None
     button_style: Qt.ToolButtonStyle | None = None
+
+    def remove_action(self, action: str | ActionConfig | Separator):
+        if isinstance(action, str):
+            for action_ in self.actions:
+                if isinstance(action_, ActionConfig):
+                    if action_.text == action:
+                        action = action_
+                        break
+            if action in self.actions:
+                self.actions.remove(action)
+            return
+        if action in self.actions:
+            self.actions.remove(action)
+            return
 
 
 @dataclasses.dataclass

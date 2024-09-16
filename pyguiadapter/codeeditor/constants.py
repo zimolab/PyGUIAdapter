@@ -1,0 +1,32 @@
+DEFAULT_WINDOW_TITLE = "Code Editor"
+DEFAULT_UNTITLED_FILENAME = "Untitled"
+DEFAULT_TEXT_FONT_SIZE = 14
+DEFAULT_TAB_SIZE = 4
+DEFAULT_ICON_SIZE = (24, 24)
+DEFAULT_LINE_WRAP_WIDTH = 88
+
+QUIT_DIALOG_TITLE = "Quit"
+CONFIRM_DIALOG_TITLE = "Confirm"
+ERROR_DIALOG_TITLE = "Error"
+UNSAVED_WARNING_MSG = "Unsaved changes will be lost. Continue?"
+OPEN_FILE_DIALOG_TITLE = "Open"
+SAVE_FILE_DIALOG_TITLE = "Save"
+SAVE_AS_DIALOG_TITLE = "Save As"
+SAVE_FAILED_MSG = "Failed to save file {}"
+OPEN_FAILED_MSG = "Failed to open file {}"
+FORMAT_FAILED_MSG = "Failed to format code"
+
+MENU_FILE = "File"
+MENU_EDIT = "Edit"
+
+ACTION_OPEN = "Open"
+ACTION_SAVE = "Save"
+ACTION_SAVE_AS = "Save as"
+ACTION_QUIT = "Quit"
+ACTION_UNDO = "Undo"
+ACTION_REDO = "Redo"
+ACTION_CUT = "Cut"
+ACTION_COPY = "Copy"
+ACTION_PASTE = "Paste"
+ACTION_SELECT_ALL = "Select all"
+ACTION_FORMAT_CODE = "Format code"

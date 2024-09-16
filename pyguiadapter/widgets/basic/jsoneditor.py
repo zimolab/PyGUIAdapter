@@ -2,29 +2,28 @@ from __future__ import annotations
 
 import dataclasses
 import json
-from typing import Type, TypeVar, Any
+from typing import Type, Any
 
 from pyqcodeeditor.highlighters import QJSONHighlighter
 from qtpy.QtWidgets import QWidget
 
-from .base import BaseDataEdit, BaseDataEditConfig
-from ..codeeditor import JsonFormatter
+from .base import BaseCodeEdit, BaseCodeEditConfig
+from ...codeeditor import JsonFormatter
 
 
 @dataclasses.dataclass(frozen=True)
-class JsonEditConfig(BaseDataEditConfig):
+class JsonEditConfig(BaseCodeEditConfig):
     default_value: Any = dataclasses.field(default_factory=dict)
     highlighter: Type[QJSONHighlighter] = QJSONHighlighter
-    code_formatter: JsonFormatter = dataclasses.field(default_factory=JsonFormatter)
+    formatter: JsonFormatter = dataclasses.field(default_factory=JsonFormatter)
+    file_filters: str = "JSON (*.json);;Text (*.txt);;Text (*.text);;All Files(*.*)"
 
     @classmethod
     def target_widget_class(cls) -> Type["JsonEdit"]:
         return JsonEdit
 
 
-class JsonEdit(BaseDataEdit):
-
-    Self = TypeVar("Self", bound="JsonEdit")
+class JsonEdit(BaseCodeEdit):
     ConfigClass = JsonEditConfig
 
     def __init__(
@@ -39,4 +38,5 @@ class JsonEdit(BaseDataEdit):
         return json.loads(text)
 
     def from_data(self, data: Any) -> str:
-        return json.dumps(data, ensure_ascii=False, indent=self._config.indent_size)
+        config: JsonEditConfig = self.config
+        return json.dumps(data, ensure_ascii=False, indent=config.indent_size)

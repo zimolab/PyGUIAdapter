@@ -22,9 +22,9 @@ from qtpy.QtWidgets import (
     QLabel,
 )
 
-from ..codeeditor import JsonFormatter
 from ..common import CommonParameterWidgetConfig, CommonParameterWidget
 from ... import utils
+from ...codeeditor import JsonFormatter
 
 TextElideMode = Qt.TextElideMode
 GridStyle = Qt.PenStyle

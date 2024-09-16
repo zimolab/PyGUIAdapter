@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import dataclasses
-from typing import Type, TypeVar
+from typing import Type
 
 from qtpy.QtWidgets import QWidget
 
@@ -19,7 +19,6 @@ class ListEditConfig(PyLiteralEditConfig):
 
 
 class ListEdit(PyLiteralEdit):
-    Self = TypeVar("Self", bound="ListEdit")
     ConfigClass = ListEditConfig
 
     def __init__(
