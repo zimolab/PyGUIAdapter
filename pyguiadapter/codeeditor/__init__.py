@@ -6,7 +6,7 @@ from .base import (
     create_highlighter,
 )
 from .editor import CodeEditorWindow, CodeEditorConfig
-from .formatters import JsonFormatter, PythonCodeFormatter
+from .formatters import JsonFormatter, PythonFormatter
 
 __all__ = [
     "LineWrapMode",
@@ -16,6 +16,6 @@ __all__ = [
     "CodeEditorConfig",
     "BaseCodeFormatter",
     "JsonFormatter",
-    "PythonCodeFormatter",
+    "PythonFormatter",
     "create_highlighter",
 ]

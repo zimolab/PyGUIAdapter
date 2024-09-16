@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import dataclasses
-from typing import Type, Any, TypeVar
+from typing import Type, Any
 
 from qtpy.QtGui import QTextOption
 from qtpy.QtWidgets import QWidget, QTextEdit
@@ -29,8 +29,6 @@ class TextEditConfig(CommonParameterWidgetConfig):
 
 
 class TextEdit(CommonParameterWidget):
-
-    Self = TypeVar("Self", bound="TextEdit")
     ConfigClass = TextEditConfig
 
     def __init__(
@@ -39,15 +37,35 @@ class TextEdit(CommonParameterWidget):
         parameter_name: str,
         config: TextEditConfig,
     ):
-        self._config: TextEditConfig = config
         self._value_widget: QTextEdit | None = None
         super().__init__(parent, parameter_name, config)
 
     @property
     def value_widget(self) -> QTextEdit:
+        self._config: TextEditConfig
         if self._value_widget is None:
             self._value_widget = QTextEdit(self)
-            self._setup_value_widget()
+            self._value_widget.setPlaceholderText(self._config.placeholder)
+            self._value_widget.setAcceptRichText(self._config.accept_rich_text)
+            auto_formatting = self._config.auto_formatting
+            if auto_formatting is not None:
+                self._value_widget.setAutoFormatting(auto_formatting)
+
+            line_wrap = self._config.line_wrap
+            if line_wrap is not None:
+                self._value_widget.setLineWrapMode(line_wrap)
+
+            if (
+                line_wrap == LineWrapMode.FixedColumnWidth
+                or line_wrap == LineWrapMode.WidgetWidth
+            ) and self._config.line_wrap_column_or_width > 0:
+                self._value_widget.setLineWrapColumnOrWidth(
+                    self._config.line_wrap_column_or_width
+                )
+
+            word_wrap = self._config.word_wrap
+            if word_wrap is not None:
+                self._value_widget.setWordWrapMode(word_wrap)
 
         return self._value_widget
 
@@ -56,26 +74,3 @@ class TextEdit(CommonParameterWidget):
 
     def get_value_from_widget(self) -> str:
         return self._value_widget.toPlainText()
-
-    def _setup_value_widget(self):
-        self._value_widget.setPlaceholderText(self._config.placeholder)
-        self._value_widget.setAcceptRichText(self._config.accept_rich_text)
-        auto_formatting = self._config.auto_formatting
-        if auto_formatting is not None:
-            self._value_widget.setAutoFormatting(auto_formatting)
-
-        line_wrap = self._config.line_wrap
-        if line_wrap is not None:
-            self._value_widget.setLineWrapMode(line_wrap)
-
-        if (
-            line_wrap == LineWrapMode.FixedColumnWidth
-            or line_wrap == LineWrapMode.WidgetWidth
-        ) and self._config.line_wrap_column_or_width > 0:
-            self._value_widget.setLineWrapColumnOrWidth(
-                self._config.line_wrap_column_or_width
-            )
-
-        word_wrap = self._config.word_wrap
-        if word_wrap is not None:
-            self._value_widget.setWordWrapMode(word_wrap)

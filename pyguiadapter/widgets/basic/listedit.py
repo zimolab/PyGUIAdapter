@@ -26,21 +26,21 @@ class ListEdit(PyLiteralEdit):
     ):
         super().__init__(parent, parameter_name, config)
 
-    def to_data(self, text: str) -> list | None:
+    def _get_data(self, text: str) -> list | None:
         if text is None or text.strip() == "":
             return None
-        data = super().to_data(text)
+        data = super()._get_data(text)
         if data is None:
             return None
         if not isinstance(data, list):
             raise ValueError(f"cannot convert to a list: {text}")
         return data
 
-    def from_data(self, data: PyLiteralType) -> str:
+    def _set_data(self, data: PyLiteralType) -> str:
         if data is None:
             return "None"
         if isinstance(data, str) and data.strip() == "":
             return "None"
         if not isinstance(data, list):
             raise ValueError(f"not a list: {data}")
-        return super().from_data(data)
+        return super()._set_data(data)

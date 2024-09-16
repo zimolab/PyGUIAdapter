@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import dataclasses
-from typing import Type, Any, TypeVar
+from typing import Type, Any
 
 from qtpy.QtGui import QDoubleValidator
 from qtpy.QtWidgets import QWidget, QLineEdit
@@ -25,14 +25,11 @@ class FloatLineEditConfig(CommonParameterWidgetConfig):
 
 
 class FloatLineEdit(CommonParameterWidget):
-
-    Self = TypeVar("Self", bound="FloatLineEdit")
     ConfigClass = FloatLineEditConfig
 
     def __init__(
         self, parent: QWidget | None, parameter_name: str, config: FloatLineEditConfig
     ):
-        self._config: FloatLineEditConfig = config
         self._value_widget: QLineEdit | None = None
         self._validator: QDoubleValidator | None = None
         super().__init__(parent, parameter_name, config)
@@ -40,28 +37,31 @@ class FloatLineEdit(CommonParameterWidget):
     @property
     def value_widget(self) -> QLineEdit:
         if self._value_widget is None:
+            config: FloatLineEditConfig = self.config
             self._value_widget = QLineEdit(self)
             self._validator = QDoubleValidator(
-                self._config.min_value,
-                self._config.max_value,
-                self._config.decimals,
+                config.min_value,
+                config.max_value,
+                config.decimals,
                 self._value_widget,
             )
-            if self._config.scientific_notation:
+            if config.scientific_notation:
                 notation = QDoubleValidator.ScientificNotation
             else:
                 notation = QDoubleValidator.StandardNotation
             self._validator.setNotation(notation)
             self._value_widget.setValidator(self._validator)
-            self._value_widget.setText(str(self._config.fallback_value))
+            self._value_widget.setText(str(config.fallback_value))
         return self._value_widget
 
     def set_value_to_widget(self, value: Any):
+        self._config: FloatLineEditConfig
         if value == "":
             value = self._config.fallback_value
         self._value_widget.setText(str(value))
 
     def get_value_from_widget(self) -> float:
+        self._config: FloatLineEditConfig
         value = self._value_widget.text()
         if not value:
             return self._config.fallback_value

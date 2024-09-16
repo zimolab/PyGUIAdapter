@@ -10,13 +10,17 @@ from qtpy.QtWidgets import QWidget
 from .base import BaseCodeEdit, BaseCodeEditConfig
 from ...codeeditor import JsonFormatter
 
+JSON_FILE_FILTERS = (
+    "JSON files (*.json);;Text files(*.txt);;Text files(*.text);;All files (*.*)"
+)
+
 
 @dataclasses.dataclass(frozen=True)
 class JsonEditConfig(BaseCodeEditConfig):
     default_value: Any = dataclasses.field(default_factory=dict)
     highlighter: Type[QJSONHighlighter] = QJSONHighlighter
     formatter: JsonFormatter = dataclasses.field(default_factory=JsonFormatter)
-    file_filters: str = "JSON (*.json);;Text (*.txt);;Text (*.text);;All Files(*.*)"
+    file_filters: str = JSON_FILE_FILTERS
 
     @classmethod
     def target_widget_class(cls) -> Type["JsonEdit"]:
@@ -34,9 +38,9 @@ class JsonEdit(BaseCodeEdit):
     ):
         super().__init__(parent, parameter_name, config)
 
-    def to_data(self, text: str) -> Any:
+    def _get_data(self, text: str) -> Any:
         return json.loads(text)
 
-    def from_data(self, data: Any) -> str:
+    def _set_data(self, data: Any) -> str:
         config: JsonEditConfig = self.config
         return json.dumps(data, ensure_ascii=False, indent=config.indent_size)

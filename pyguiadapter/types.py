@@ -9,11 +9,6 @@ class int_t(int):
 
 
 # noinspection PyPep8Naming
-class bin_state_t(int):
-    pass
-
-
-# noinspection PyPep8Naming
 class float_t(float):
     pass
 
@@ -80,4 +75,9 @@ class string_list_t(list):
 
 # noinspection PyPep8Naming
 class plain_dict_t(dict):
+    pass
+
+
+# noinspection PyPep8Naming
+class json_obj_t(object):
     pass

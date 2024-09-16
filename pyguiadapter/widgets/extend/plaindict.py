@@ -77,7 +77,6 @@ class PlainDictEdit(CommonParameterWidget):
         parameter_name: str,
         config: PlainDictEditConfig,
     ):
-        self._config: PlainDictEditConfig = config
         self._value_widget: QWidget | None = None
         self._table_view: QTableView | None = None
         self._add_button: QPushButton | None = None
@@ -90,6 +89,7 @@ class PlainDictEdit(CommonParameterWidget):
 
     @property
     def value_widget(self) -> QWidget:
+        self._config: PlainDictEditConfig
         if self._value_widget is None:
             self._value_widget = QWidget(self)
             layout_main = QVBoxLayout()
@@ -178,6 +178,7 @@ class PlainDictEdit(CommonParameterWidget):
         return value
 
     def _on_add_item(self):
+        self._config: PlainDictEditConfig
         keys = self._get_keys()
         editor = _KeyValueEditor(
             self,
@@ -210,6 +211,7 @@ class PlainDictEdit(CommonParameterWidget):
         self._model.setItem(selected_row, 1, QStandardItem(new_value))
 
     def _on_remove_item(self):
+        self._config: PlainDictEditConfig
         selected_rows = self._table_view.selectionModel().selectedRows()
         if not selected_rows:
             utils.show_info_message(
@@ -230,6 +232,7 @@ class PlainDictEdit(CommonParameterWidget):
         self._remove_rows(selected_rows)
 
     def _on_edit_item(self):
+        self._config: PlainDictEditConfig
         selected_index = self._table_view.selectionModel().selectedIndexes()
         if not selected_index:
             utils.show_info_message(
@@ -242,6 +245,7 @@ class PlainDictEdit(CommonParameterWidget):
         self._on_start_editing(first_idx)
 
     def _on_start_editing(self, idx: QModelIndex):
+        self._config: PlainDictEditConfig
         if not idx.isValid():
             return
         current_key_item = self._model.item(idx.row(), 0)
@@ -270,6 +274,7 @@ class PlainDictEdit(CommonParameterWidget):
         self._model.setItem(idx.row(), 1, QStandardItem(new_value))
 
     def _on_clear_items(self):
+        self._config: PlainDictEditConfig
         if self._item_count() <= 0:
             utils.show_info_message(
                 self,

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import dataclasses
-from typing import Type, TypeVar, Tuple, Union, Literal
+from typing import Type, Tuple, Union, Literal
 
 from qtpy.QtCore import Qt
 from qtpy.QtGui import QColor, QFont
@@ -108,7 +108,6 @@ class ColorPickerConfig(CommonParameterWidgetConfig):
 
 
 class ColorPicker(CommonParameterWidget):
-    Self = TypeVar("Self", bound="ColorPicker")
     ConfigClass = ColorPickerConfig
 
     def __init__(
@@ -117,12 +116,12 @@ class ColorPicker(CommonParameterWidget):
         parameter_name: str,
         config: ColorPickerConfig,
     ):
-        self._config: ColorPickerConfig = config
         self._value_widget: ColorLabel | None = None
         super().__init__(parent, parameter_name, config)
 
     @property
     def value_widget(self) -> QLabel:
+        self._config: ColorPickerConfig
         if self._value_widget is None:
             self._value_widget = ColorLabel(
                 self,
@@ -138,6 +137,7 @@ class ColorPicker(CommonParameterWidget):
         self._value_widget.set_color(value)
 
     def get_value_from_widget(self) -> ColorType:
+        self._config: ColorPickerConfig
         color = self._value_widget.get_color()
         if self._config.return_type == "tuple":
             color_tuple = color.getRgb()
@@ -150,7 +150,6 @@ class ColorPicker(CommonParameterWidget):
 
 
 class ColorTuplePicker(ColorPicker):
-    Self = TypeVar("Self", bound="ColorTuplePicker")
     ConfigClass = ColorPickerConfig
 
     def __init__(
@@ -164,7 +163,6 @@ class ColorTuplePicker(ColorPicker):
 
 
 class ColorHexPicker(ColorPicker):
-    Self = TypeVar("Self", bound="ColorHexPicker")
     ConfigClass = ColorPickerConfig
 
     def __init__(

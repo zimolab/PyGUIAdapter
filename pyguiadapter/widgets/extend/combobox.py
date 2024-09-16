@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import dataclasses
-from typing import Type, TypeVar, List, Any, Dict
+from typing import Type, List, Any, Dict
 
 from qtpy.QtCore import Qt
 from qtpy.QtWidgets import QWidget, QComboBox
@@ -26,8 +26,6 @@ class ComboBoxConfig(CommonParameterWidgetConfig):
 
 
 class ComboBox(CommonParameterWidget):
-
-    Self = TypeVar("Self", bound="ComboBox")
     ConfigClass = ComboBoxConfig
 
     def __init__(
@@ -36,12 +34,12 @@ class ComboBox(CommonParameterWidget):
         parameter_name: str,
         config: ComboBoxConfig,
     ):
-        self._config: ComboBoxConfig = config
         self._value_widget: QComboBox | None = None
         super().__init__(parent, parameter_name, config)
 
     @property
     def value_widget(self) -> QWidget:
+        self._config: ComboBoxConfig
         if self._value_widget is None:
             self._value_widget = QComboBox(self)
             if self._config.editable:
@@ -67,6 +65,7 @@ class ComboBox(CommonParameterWidget):
         return self._value_widget.currentText()
 
     def _add_choices(self):
+        self._config: ComboBoxConfig
         choices = self._config.choices
         assert isinstance(choices, list) or isinstance(choices, dict)
         if isinstance(choices, list):

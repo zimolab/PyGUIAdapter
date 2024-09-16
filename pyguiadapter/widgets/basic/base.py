@@ -23,22 +23,33 @@ from ...codeeditor import (
     WordWrapMode,
     create_highlighter,
 )
-from ...codeeditor.constants import MENU_FILE, ACTION_SAVE, ACTION_SAVE_AS
+from ...codeeditor.constants import (
+    MENU_FILE,
+    ACTION_SAVE,
+    ACTION_SAVE_AS,
+    CONFIRM_DIALOG_TITLE,
+)
 from ...exceptions import ParameterError
 
 T = TypeVar("T")
+
+ACCEPT_CHANGES_MSG = "Do you want to keep the changes?"
+EDITOR_BUTTON_TEXT = "Edit"
+EDITOR_TITLE = "Edit - {}"
+INDENT_SIZE = 4
+MIN_HEIGHT = 180
 
 
 @dataclasses.dataclass(frozen=True)
 class BaseCodeEditConfig(CommonParameterWidgetConfig):
     font_size: int | None = None
-    indent_size: int = 4
-    min_height: int = 180
+    indent_size: int = INDENT_SIZE
+    min_height: int = MIN_HEIGHT
     highlighter: Type[QStyleSyntaxHighlighter] | None = None
     highlighter_args: dict | list | tuple | None = None
     editor_window: bool = True
-    editor_button_text: str = "Edit"
-    editor_title: str = "Edit - {}"
+    editor_button_text: str = EDITOR_BUTTON_TEXT
+    editor_title: str = EDITOR_TITLE
     auto_indent: bool = True
     auto_parentheses: bool = True
     formatter: BaseCodeFormatter | Callable[[str], str] | None = None
@@ -48,7 +59,6 @@ class BaseCodeEditConfig(CommonParameterWidgetConfig):
     line_wrap_width: int = 88
     word_wrap_mode: WordWrapMode = WordWrapMode.NoWrap
     initial_text: str | None = None
-
     use_default_menus: bool = True
     use_default_toolbar: bool = True
     exclude_default_menus: Tuple[str] = ()
@@ -60,6 +70,9 @@ class BaseCodeEditConfig(CommonParameterWidgetConfig):
         ACTION_SAVE,
         ACTION_SAVE_AS,
     )
+    confirm_dialog: bool = True
+    confirm_dialog_title: str = CONFIRM_DIALOG_TITLE
+    accept_changes_message: str = ACCEPT_CHANGES_MSG
 
     @classmethod
     @abstractmethod
@@ -98,7 +111,9 @@ class BaseCodeEdit(CommonParameterWidget):
 
             if config.editor_window:
                 self._editor_button = QPushButton(self._value_widget)
-                self._editor_button.setText(config.editor_button_text)
+                self._editor_button.setText(
+                    config.editor_button_text or EDITOR_BUTTON_TEXT
+                )
                 # noinspection PyUnresolvedReferences
                 self._editor_button.clicked.connect(self._on_open_code_editor)
                 layout.addWidget(self._editor_button)
@@ -109,7 +124,9 @@ class BaseCodeEdit(CommonParameterWidget):
             if config.initial_text is not None:
                 self._editor.setPlainText(config.initial_text)
 
-            highlighter = self._inplace_editor_highlighter()
+            highlighter = create_highlighter(
+                config.highlighter, config.highlighter_args
+            )
             highlighter.setParent(self)
             self._editor.setHighlighter(highlighter)
             self._editor.setTabReplace(True)
@@ -134,6 +151,7 @@ class BaseCodeEdit(CommonParameterWidget):
             self._code_editor.deleteLater()
             self._code_editor = None
         config: BaseCodeEditConfig = self.config
+        editor_title = config.editor_title or EDITOR_TITLE
         code_editor_config = CodeEditorConfig(
             initial_text=self._editor.toPlainText(),
             formatter=config.formatter,
@@ -141,7 +159,7 @@ class BaseCodeEdit(CommonParameterWidget):
             highlighter_args=config.highlighter_args,
             check_unsaved_changes=False,
             show_filename_in_title=False,
-            title=config.editor_title.format(self.parameter_name),
+            title=editor_title.format(self.parameter_name),
             auto_indent=config.auto_indent,
             auto_parentheses=config.auto_parentheses,
             file_filters=config.file_filters,
@@ -167,12 +185,17 @@ class BaseCodeEdit(CommonParameterWidget):
         self._code_editor.show()
 
     def _on_code_editor_close(self, code_editor: CodeEditorWindow) -> bool:
+        config: BaseCodeEditConfig = self.config
         if code_editor.is_modified():
+            if not config.confirm_dialog:
+                new_text = code_editor.get_text()
+                self._editor.setPlainText(new_text)
+                return True
             # noinspection PyUnresolvedReferences
             ret = utils.show_question_message(
                 self,
-                title="Confirm",
-                message="Do you want to accept the changes?",
+                title=config.confirm_dialog_title or CONFIRM_DIALOG_TITLE,
+                message=config.accept_changes_message or ACCEPT_CHANGES_MSG,
                 buttons=utils.StandardButton.Yes | utils.StandardButton.No,
             )
             if ret == utils.StandardButton.Yes:
@@ -194,16 +217,16 @@ class BaseCodeEdit(CommonParameterWidget):
         return None
 
     @abstractmethod
-    def to_data(self, text: str) -> T:
+    def _get_data(self, text: str) -> T:
         pass
 
     @abstractmethod
-    def from_data(self, data: T) -> str:
+    def _set_data(self, data: T) -> str:
         pass
 
     def set_value_to_widget(self, value: T):
         try:
-            code_text = self.from_data(value)
+            code_text = self._set_data(value)
         except Exception as e:
             raise ParameterError(
                 parameter_name=self.parameter_name, message=str(e)
@@ -217,13 +240,9 @@ class BaseCodeEdit(CommonParameterWidget):
 
     def get_value_from_widget(self) -> T:
         try:
-            obj = self.to_data(self._editor.toPlainText())
+            obj = self._get_data(self._editor.toPlainText())
         except Exception as e:
             raise ParameterError(
                 parameter_name=self.parameter_name, message=str(e)
             ) from e
         return obj
-
-    def _inplace_editor_highlighter(self) -> QStyleSyntaxHighlighter | None:
-        config: BaseCodeEditConfig = self.config
-        return create_highlighter(config.highlighter, config.highlighter_args)

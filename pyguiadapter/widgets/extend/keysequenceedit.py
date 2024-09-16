@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import dataclasses
-from typing import Type, TypeVar
+from typing import Type
 
 from qtpy.QtGui import QKeySequence
 from qtpy.QtWidgets import QWidget, QKeySequenceEdit
@@ -22,7 +22,6 @@ class KeySequenceEditConfig(CommonParameterWidgetConfig):
 
 
 class KeySequenceEdit(CommonParameterWidget):
-    Self = TypeVar("Self", bound="KeySequenceEdit")
     ConfigClass = KeySequenceEditConfig
 
     def __init__(
@@ -31,7 +30,6 @@ class KeySequenceEdit(CommonParameterWidget):
         parameter_name: str,
         config: KeySequenceEditConfig,
     ):
-        self._config: KeySequenceEditConfig = config
         self._value_widget: QKeySequenceEdit | None = None
         super().__init__(parent, parameter_name, config)
 
@@ -42,10 +40,12 @@ class KeySequenceEdit(CommonParameterWidget):
         return self._value_widget
 
     def set_value_to_widget(self, value: str | QKeySequence):
+        self._config: KeySequenceEditConfig
         if isinstance(value, str):
             value = QKeySequence(value, self._config.key_sequence_format)
         self._value_widget.setKeySequence(value)
 
     def get_value_from_widget(self) -> str:
+        self._config: KeySequenceEditConfig
         key_sequence = self._value_widget.keySequence()
         return key_sequence.toString(self._config.key_sequence_format)

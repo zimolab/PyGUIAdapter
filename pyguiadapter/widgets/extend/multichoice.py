@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import dataclasses
-from typing import Type, TypeVar, List, Any, Dict
+from typing import Type, List, Any, Dict
 
 from qtpy.QtWidgets import QWidget, QGridLayout, QCheckBox, QButtonGroup
 
@@ -30,8 +30,6 @@ class MultiChoiceBoxConfig(CommonParameterWidgetConfig):
 
 
 class MultiChoiceBox(CommonParameterWidget):
-
-    Self = TypeVar("Self", bound="MultiChoiceBox")
     ConfigClass = MultiChoiceBoxConfig
 
     def __init__(
@@ -43,7 +41,6 @@ class MultiChoiceBox(CommonParameterWidget):
         self._value_widget: QWidget | None = None
         self._button_layout: QGridLayout | None = None
         self._button_group: QButtonGroup | None = None
-        self._config: MultiChoiceBoxConfig = config
         super().__init__(parent, parameter_name, config)
 
     @property
@@ -75,6 +72,7 @@ class MultiChoiceBox(CommonParameterWidget):
         return ret
 
     def _add_choices(self):
+        self._config: MultiChoiceBoxConfig
         assert isinstance(self._config.choices, list) or isinstance(
             self._config.choices, dict
         )

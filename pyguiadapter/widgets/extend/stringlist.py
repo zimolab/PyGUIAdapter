@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import dataclasses
 import os.path
-from typing import Type, TypeVar, List, Literal
+from typing import Type, List, Literal
 
 from qtpy.QtCore import QStringListModel, Qt
 from qtpy.QtWidgets import QWidget, QListView, QGridLayout, QVBoxLayout, QPushButton
@@ -41,7 +41,6 @@ class StringListEditConfig(CommonParameterWidgetConfig):
 
 
 class StringListEdit(CommonParameterWidget):
-    Self = TypeVar("Self", bound="StringListEdit")
     ConfigClass = StringListEditConfig
 
     def __init__(
@@ -50,7 +49,6 @@ class StringListEdit(CommonParameterWidget):
         parameter_name: str,
         config: StringListEditConfig,
     ):
-        self._config: StringListEditConfig = config
         self._value_widget: QWidget | None = None
         self._list_view: QListView | None = None
         self._add_button: QPushButton | None = None
@@ -63,6 +61,7 @@ class StringListEdit(CommonParameterWidget):
 
     @property
     def value_widget(self) -> QWidget:
+        self._config: StringListEditConfig
         if self._value_widget is None:
             self._value_widget = QWidget(self)
             layout_main = QVBoxLayout()
@@ -125,6 +124,7 @@ class StringListEdit(CommonParameterWidget):
         self._append_items(value)
 
     def get_value_from_widget(self) -> List[str]:
+        self._config: StringListEditConfig
         string_list = self._model.stringList()
         if self._config.empty_string_strategy == "keep_all":
             return string_list.copy()
@@ -137,6 +137,7 @@ class StringListEdit(CommonParameterWidget):
         self._append_item("", edit=True, set_current=True)
 
     def _on_remove_item(self):
+        self._config: StringListEditConfig
         selected = self._list_view.selectedIndexes()
         if not selected:
             utils.show_warning_message(self, "No item selected!", title="Warning")
@@ -154,6 +155,7 @@ class StringListEdit(CommonParameterWidget):
             self._model.removeRow(index.row())
 
     def _on_select_file(self):
+        self._config: StringListEditConfig
         current_idx = self._list_view.currentIndex()
         path = utils.get_open_file(
             self,
@@ -171,6 +173,7 @@ class StringListEdit(CommonParameterWidget):
             self._model.setData(current_idx, path)
 
     def _on_select_directory(self):
+        self._config: StringListEditConfig
         current_idx = self._list_view.currentIndex()
         path = utils.get_existing_directory(
             self,

@@ -35,7 +35,6 @@ class LineEditConfig(CommonParameterWidgetConfig):
 
 class LineEdit(CommonParameterWidget):
     ConfigClass = LineEditConfig
-
     EchoMode = EchoMode
     Alignment = Alignment
 

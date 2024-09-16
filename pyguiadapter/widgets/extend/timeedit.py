@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import dataclasses
 from datetime import time
-from typing import Type, TypeVar
+from typing import Type
 
 from qtpy.QtCore import Qt, QTime
 from qtpy.QtWidgets import QWidget, QTimeEdit
@@ -36,7 +36,6 @@ class TimeEditConfig(CommonParameterWidgetConfig):
 
 
 class TimeEdit(CommonParameterWidget):
-    Self = TypeVar("Self", bound="TimeEdit")
     ConfigClass = TimeEditConfig
 
     def __init__(
@@ -45,15 +44,35 @@ class TimeEdit(CommonParameterWidget):
         parameter_name: str,
         config: TimeEditConfig,
     ):
-        self._config: TimeEditConfig = config
         self._value_widget: QTimeEdit | None = None
         super().__init__(parent, parameter_name, config)
 
     @property
     def value_widget(self) -> QWidget:
+        self._config: TimeEditConfig
         if self._value_widget is None:
             self._value_widget = QTimeEdit(self)
-            self._setup_widgets()
+            if self._config.min_time is not None:
+                self._value_widget.setMinimumTime(QTime(self._config.min_time))
+
+            if self._config.max_time is not None:
+                self._value_widget.setMaximumTime(QTime(self._config.max_time))
+
+            if self._config.display_format is not None:
+                self._value_widget.setDisplayFormat(self._config.display_format)
+
+            if self._config.time_spec is not None:
+                self._value_widget.setTimeSpec(self._config.time_spec)
+
+            self._value_widget.setWrapping(self._config.wrapping)
+            self._value_widget.setFrame(self._config.frame)
+            self._value_widget.setAlignment(self._config.alignment)
+            if self._config.button_symbols is not None:
+                self._value_widget.setButtonSymbols(self._config.button_symbols)
+            if self._config.correction_mode is not None:
+                self._value_widget.setCorrectionMode(self._config.correction_mode)
+            self._value_widget.setKeyboardTracking(self._config.keyboard_tracking)
+            self._value_widget.setAccelerated(self._config.accelerated)
 
         return self._value_widget
 
@@ -67,26 +86,3 @@ class TimeEdit(CommonParameterWidget):
     def get_value_from_widget(self) -> time:
         value = self._value_widget.time()
         return value.toPython()
-
-    def _setup_widgets(self):
-        if self._config.min_time is not None:
-            self._value_widget.setMinimumTime(QTime(self._config.min_time))
-
-        if self._config.max_time is not None:
-            self._value_widget.setMaximumTime(QTime(self._config.max_time))
-
-        if self._config.display_format is not None:
-            self._value_widget.setDisplayFormat(self._config.display_format)
-
-        if self._config.time_spec is not None:
-            self._value_widget.setTimeSpec(self._config.time_spec)
-
-        self._value_widget.setWrapping(self._config.wrapping)
-        self._value_widget.setFrame(self._config.frame)
-        self._value_widget.setAlignment(self._config.alignment)
-        if self._config.button_symbols is not None:
-            self._value_widget.setButtonSymbols(self._config.button_symbols)
-        if self._config.correction_mode is not None:
-            self._value_widget.setCorrectionMode(self._config.correction_mode)
-        self._value_widget.setKeyboardTracking(self._config.keyboard_tracking)
-        self._value_widget.setAccelerated(self._config.accelerated)

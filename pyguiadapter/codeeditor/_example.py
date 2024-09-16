@@ -4,13 +4,13 @@ from qtpy.QtWidgets import QApplication
 from pyguiadapter.codeeditor import (
     CodeEditorWindow,
     CodeEditorConfig,
-    PythonCodeFormatter,
+    PythonFormatter,
 )
 
 app = QApplication([])
 config = CodeEditorConfig(
     highlighter=QPythonHighlighter,
-    formatter=PythonCodeFormatter(),
+    formatter=PythonFormatter(),
     file_filters="python(*.py)",
     use_default_menus=False,
     # exclude_default_menus=["Edit", "File"],

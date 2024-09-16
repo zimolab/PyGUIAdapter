@@ -7,11 +7,7 @@ from yapf.yapflib.yapf_api import FormatCode
 from ..base import BaseCodeFormatter
 
 
-class PythonCodeFormatter(BaseCodeFormatter):
-
-    def __init__(self):
-        pass
-
+class PythonFormatter(BaseCodeFormatter):
     def format_code(self, text: str) -> str | None:
         try:
             formatted, changed = FormatCode(text)

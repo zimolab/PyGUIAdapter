@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import dataclasses
-from typing import Type, Any, TypeVar
+from typing import Type, Any
 
 from qtpy.QtGui import QIntValidator
 from qtpy.QtWidgets import QWidget, QLineEdit
@@ -23,20 +23,18 @@ class IntLineEditConfig(CommonParameterWidgetConfig):
 
 
 class IntLineEdit(CommonParameterWidget):
-
-    Self = TypeVar("Self", bound="IntLineEdit")
     ConfigClass = IntLineEditConfig
 
     def __init__(
         self, parent: QWidget | None, parameter_name: str, config: IntLineEditConfig
     ):
-        self._config: IntLineEditConfig = config
         self._validator: QIntValidator | None = None
         self._value_widget: QLineEdit | None = None
         super().__init__(parent, parameter_name, config)
 
     @property
     def value_widget(self) -> QLineEdit:
+        self._config: IntLineEditConfig
         if self._value_widget is None:
             self._value_widget = QLineEdit(self)
             self._validator = QIntValidator(
@@ -47,11 +45,13 @@ class IntLineEdit(CommonParameterWidget):
         return self._value_widget
 
     def set_value_to_widget(self, value: Any):
+        self._config: IntLineEditConfig
         if value == "":
             value = self._config.fallback_value
         self._value_widget.setText(str(value))
 
     def get_value_from_widget(self) -> int:
+        self._config: IntLineEditConfig
         value = self._value_widget.text()
         if not value:
             return self._config.fallback_value

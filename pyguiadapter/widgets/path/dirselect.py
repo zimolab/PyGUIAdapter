@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import dataclasses
-from typing import Type, Any, TypeVar
+from typing import Type, Any
 
 from qtpy.QtWidgets import QWidget
 
@@ -24,19 +24,17 @@ class DirSelectConfig(CommonParameterWidgetConfig):
 
 
 class DirSelect(CommonParameterWidget):
-
-    Self = TypeVar("Self", bound="DirSelect")
     ConfigClass = DirSelectConfig
 
     def __init__(
         self, parent: QWidget | None, parameter_name: str, config: DirSelectConfig
     ):
-        self._config: DirSelectConfig = config
         self._value_widget: PathSelectWidget | None = None
         super().__init__(parent, parameter_name, config)
 
     @property
     def value_widget(self) -> PathSelectWidget:
+        self._config: DirSelectConfig
         if self._value_widget is None:
             self._value_widget = PathSelectWidget(
                 self,

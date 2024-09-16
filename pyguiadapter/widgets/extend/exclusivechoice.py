@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import dataclasses
-from typing import Type, TypeVar, List, Any
+from typing import Type, List, Any
 
 import qtawesome
 from qtpy.QtWidgets import QWidget, QGridLayout, QRadioButton, QButtonGroup
@@ -34,8 +34,6 @@ class ExclusiveChoiceBoxConfig(CommonParameterWidgetConfig):
 
 
 class ExclusiveChoiceBox(CommonParameterWidget):
-
-    Self = TypeVar("Self", bound="ExclusiveChoiceBox")
     ConfigClass = ExclusiveChoiceBoxConfig
 
     def __init__(
@@ -44,7 +42,6 @@ class ExclusiveChoiceBox(CommonParameterWidget):
         parameter_name: str,
         config: ExclusiveChoiceBoxConfig,
     ):
-        self._config: ExclusiveChoiceBoxConfig = config
         self._value_widget: QWidget | None = None
         self._button_group: QButtonGroup | None = None
         self._button_layout: QGridLayout | None = None
@@ -52,6 +49,7 @@ class ExclusiveChoiceBox(CommonParameterWidget):
 
     @property
     def value_widget(self) -> QWidget:
+        self._config: ExclusiveChoiceBoxConfig
         if self._value_widget is None:
             self._value_widget = QWidget(self)
             self._button_layout = QGridLayout()
@@ -76,6 +74,7 @@ class ExclusiveChoiceBox(CommonParameterWidget):
         return None
 
     def _add_choices(self):
+        self._config: ExclusiveChoiceBoxConfig
         choices = utils.unique_list(self._config.choices)
         str_icon = qtawesome.icon("mdi6.code-string")
         int_icon = qtawesome.icon("msc.symbol-string")

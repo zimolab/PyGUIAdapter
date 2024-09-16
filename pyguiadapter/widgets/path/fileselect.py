@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import dataclasses
-from typing import Type, Any, TypeVar, List, Tuple, Set
+from typing import Type, Any, List, Tuple, Set
 
 from qtpy.QtWidgets import QWidget
 
@@ -27,19 +27,17 @@ class FileSelectConfig(CommonParameterWidgetConfig):
 
 
 class FileSelect(CommonParameterWidget):
-
-    Self = TypeVar("Self", bound="FileSelect")
     ConfigClass = FileSelectConfig
 
     def __init__(
         self, parent: QWidget | None, parameter_name: str, config: FileSelectConfig
     ):
-        self._config: FileSelectConfig = config
         self._value_widget: PathSelectWidget | None = None
         super().__init__(parent, parameter_name, config)
 
     @property
     def value_widget(self) -> PathSelectWidget:
+        self._config: FileSelectConfig
         if self._value_widget is None:
             self._value_widget = PathSelectWidget(
                 self,
@@ -82,18 +80,17 @@ class MultiFileSelectConfig(CommonParameterWidgetConfig):
 
 class MultiFileSelect(CommonParameterWidget):
 
-    Self = TypeVar("Self", bound="MultiFileSelect")
     ConfigClass = MultiFileSelectConfig
 
     def __init__(
         self, parent: QWidget | None, parameter_name: str, config: MultiFileSelectConfig
     ):
-        self._config: MultiFileSelectConfig = config
         self._value_widget: PathSelectWidget | None = None
         super().__init__(parent, parameter_name, config)
 
     @property
     def value_widget(self) -> PathSelectWidget:
+        self._config: MultiFileSelectConfig
         if self._value_widget is None:
             self._value_widget = PathSelectWidget(
                 self,
