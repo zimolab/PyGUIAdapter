@@ -10,7 +10,7 @@
 
 ![](../images/exclusive_choice_box.png)
 
-## 二、配置类型：ExclusiveChoiceBox
+## 二、配置类型：ExclusiveChoiceBoxConfig
 
 > 源码：[pyguiadapter/widgets/extend/exclusivechoice.py]() 
 
