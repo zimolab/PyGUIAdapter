@@ -17,7 +17,7 @@ TimeSpec = Qt.TimeSpec
 
 @dataclasses.dataclass(frozen=True)
 class DateEditConfig(CommonParameterWidgetConfig):
-    default_value: date | QDate | None = None
+    default_value: date | QDate | None = date.today()
     min_date: date | QDate | None = None
     max_date: date | QDate | None = None
     display_format: str | None = None

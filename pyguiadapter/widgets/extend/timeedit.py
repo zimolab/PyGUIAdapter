@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import dataclasses
-from datetime import time
+from datetime import time, datetime
 from typing import Type
 
 from qtpy.QtCore import Qt, QTime
@@ -17,7 +17,7 @@ TimeSpec = Qt.TimeSpec
 
 @dataclasses.dataclass(frozen=True)
 class TimeEditConfig(CommonParameterWidgetConfig):
-    default_value: time | QTime | None = None
+    default_value: time | QTime | None = datetime.now().time()
     min_time: time | QTime | None = None
     max_time: time | QTime | None = None
     display_format: str | None = None
