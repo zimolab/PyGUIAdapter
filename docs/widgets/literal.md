@@ -1,6 +1,6 @@
 # `typing.Literal`类型及`ExclusiveChoiceBox`控件
 
-## 一、控件类型：typing.Literal
+## 一、控件类型：ExclusiveChoiceBox
 
 > 源码：[pyguiadapter/widgets/extend/exclusivechoice.py]()
 
