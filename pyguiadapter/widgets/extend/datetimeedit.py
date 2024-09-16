@@ -2,13 +2,12 @@ from __future__ import annotations
 
 import dataclasses
 from datetime import datetime
-from typing import Type, TypeVar
+from typing import Type
 
 from qtpy.QtCore import Qt, QDateTime
 from qtpy.QtWidgets import QWidget, QDateTimeEdit
 
 from ..common import CommonParameterWidgetConfig, CommonParameterWidget
-
 
 Alignment = Qt.Alignment
 ButtonSymbols = QDateTimeEdit.ButtonSymbols
@@ -18,7 +17,7 @@ TimeSpec = Qt.TimeSpec
 
 @dataclasses.dataclass(frozen=True)
 class DateTimeEditConfig(CommonParameterWidgetConfig):
-    default_value: datetime | QDateTime | None = None
+    default_value: datetime | QDateTime | None = datetime.now()
     min_datetime: datetime | QDateTime | None = None
     max_datetime: datetime | QDateTime | None = None
     display_format: str | None = None
@@ -85,7 +84,7 @@ class DateTimeEdit(CommonParameterWidget):
 
     def set_value_to_widget(self, value: datetime | QDateTime):
         if not isinstance(value, (datetime, QDateTime)):
-            raise ValueError("value must be datetime or QDateTime")
+            raise ValueError("value must be a datetime or QDateTime object")
         if isinstance(value, datetime):
             value = QDateTime(value)
         self._value_widget.setDateTime(value)
