@@ -4,7 +4,7 @@
 
 > 源码: [`pyguiadapter/widgets/extend/datetimeedit.py`]()
 
-该控件用于输入日期时间，即python内置`datetime.datetime`类型对象。
+该控件用于输入日期时间，是python内置`datetime.datetime`类型参数的默认输入控件。
 
 <img src="../images/datetime_edit.png" />
 
@@ -48,8 +48,7 @@ class DateTimeEditConfig(CommonParameterWidgetConfig):
 |   `time_spec`    |       `TimeSpec \| None`        |              `None`               | 设置当前`时区`。如果正在使用的日期时间格式包括时区指示符（即 t、tt、ttt 或 tttt 等格式说明符），则在解析输入时，用户的输入都会以该时区重新表示，从而覆盖用户可能已指定的任何时区。（详见[官方文档](https://doc.qt.io/qtforpython-6/PySide6/QtWidgets/QDateTimeEdit.html#PySide6.QtWidgets.QDateTimeEdit.timeZone)） |
 |    `wrapping`    |             `bool`              |              `False`              |   设置是否允许循环（即到达最大值后继续增加将回到最小值）。   |
 |     `frame`      |             `bool`              |              `True`               |                        是否显示边框。                        |
-|   `alignment`    |           `Alignment`           | ` Qt.AlignLeft \|Qt.AlignVCenter` |          设置对其方式，默认`水平居左`+`垂直居中`。           |
-|  `accelerated`   |             `bool`              |              `False`              |         设置按上调/下调按钮时，是否加快步进的频率。          |
+|   `alignment`    |           `Alignment`           | ` Qt.AlignLeft \|Qt.AlignVCenter` |          设置对齐方式，默认`水平居左`+`垂直居中`。           |
 | `calendar_popup` |             `bool`              |              `False`              |                  设置是否弹出日期选择窗口。                  |
 
 
