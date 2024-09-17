@@ -12,7 +12,7 @@
 |               [`ListEdit`]()               |      `ListEditConfig`      |                 `list`                 |                                                    |                                           |
 |              [`TupleEdit`]()               |     `TupleEditConfig`      |                `tuple`                 |                                                    |                                           |
 |               [`SetEdit`]()                |      `SetEditConfig`       |                 `set`                  |                                                    |                                           |
-|               [`DateEdit`]()               |      `DateEditConfig`      |                 `date`                 |                                                    |       ![](../images/date_edit.png)        |
+|       [`DateEdit`](widgets/date.md)        |      `DateEditConfig`      |                 `date`                 |                                                    |       ![](../images/date_edit.png)        |
 |               [`TimeEdit`]()               |      `TimeEditConfig`      |                 `time`                 |                                                    |       ![](../images/time_edit.png)        |
 |   [`DateTimeEdit`](widgets/datetime.md)    |    `DateTimeEditConfig`    |               `datetime`               |                                                    |     ![](../images/datetime_edit.png)      |
 | [`ExclusiveChoiceBox`](widgets/literal.md) | `ExclusiveChoiceBoxConfig` |            `typing.Literal`            | 用于从`typing.Literal`提供的一组选项中选择一个选项 |  ![](../images/exclusive_choice_box.png)  |
