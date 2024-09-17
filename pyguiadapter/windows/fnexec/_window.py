@@ -145,7 +145,9 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
     def current_executor(self) -> BaseFunctionExecutor:
         return self._executor
 
-    def update_progressbar_config(self, config: ProgressBarConfig | None):
+    def update_progressbar_config(self, config: ProgressBarConfig | dict | None):
+        if isinstance(config, dict):
+            config = ProgressBarConfig(**config)
         self._output_area.update_progressbar_config(config)
 
     def show_progressbar(self):
@@ -153,12 +155,17 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
 
     def hide_progressbar(self):
         self._output_area.hide_progressbar()
+        self._output_area.scroll_to_bottom()
 
     def update_progress(self, current_value: int, message: str | None = None):
         self._output_area.update_progress(current_value, message)
 
-    def append_output(self, text: str, html: bool = False):
+    def append_output(
+        self, text: str, html: bool = False, scroll_to_bottom: bool = True
+    ):
         self._output_area.append_output(text, html)
+        if scroll_to_bottom:
+            self._output_area.scroll_to_bottom()
 
     def clear_output(self):
         self._output_area.clear_output()
@@ -386,7 +393,7 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
         result_str = self.message_texts.function_result.format(result)
 
         if self.window_config.print_function_result:
-            self.append_output(result_str)
+            self.append_output(result_str, scroll_to_bottom=True)
 
         if self.window_config.show_function_result:
             utils.show_info_message(
@@ -411,9 +418,9 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
         error_msg = self.message_texts.function_error.format(error_type, str(error))
         if self.window_config.print_function_error:
             if not self.window_config.show_error_traceback:
-                self.append_output(error_msg)
+                self.append_output(error_msg, scroll_to_bottom=True)
             else:
-                self.append_output(utils.get_traceback(error))
+                self.append_output(utils.get_traceback(error), scroll_to_bottom=True)
 
         if self.window_config.show_function_error:
             if not self.window_config.show_error_traceback:

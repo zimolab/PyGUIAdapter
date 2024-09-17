@@ -17,39 +17,40 @@ class _Context(QObject):
 
     current_window_created = Signal(FnExecuteWindow)
     current_window_destroyed = Signal()
-
     # noinspection SpellCheckingInspection
-    uprint = Signal(str, bool)
-
+    uprint = Signal(str, bool, bool)
     show_messagebox = Signal(Future, MessageBoxConfig)
     show_custom_dialog = Signal(Future, object, dict)
-
     get_input_requested = Signal(Future, object)
+    show_progressbar = Signal(dict)
+    hide_progressbar = Signal()
+    update_progress = Signal(int, str)
 
     def __init__(self, parent):
         super().__init__(parent)
 
         self._lock = QMutex()
-
         self._current_window: FnExecuteWindow | None = None
-
         self._custom_dialog_factory = CustomDialogFactory()
 
         # noinspection PyUnresolvedReferences
         self.current_window_created.connect(self._on_current_window_created)
         # noinspection PyUnresolvedReferences
         self.current_window_destroyed.connect(self._on_current_window_destroyed)
-
         # noinspection PyUnresolvedReferences
         self.uprint.connect(self._on_uprint)
-
         # noinspection PyUnresolvedReferences
         self.show_messagebox.connect(self._on_show_messagebox)
         # noinspection PyUnresolvedReferences
         self.show_custom_dialog.connect(self._on_show_custom_dialog)
-
         # noinspection PyUnresolvedReferences
         self.get_input_requested.connect(self._on_get_input_requested)
+        # noinspection PyUnresolvedReferences
+        self.show_progressbar.connect(self._on_show_progressbar)
+        # noinspection PyUnresolvedReferences
+        self.hide_progressbar.connect(self._on_hide_progressbar)
+        # noinspection PyUnresolvedReferences
+        self.update_progress.connect(self._on_update_progress)
 
     @property
     def custom_dialog_factory(self) -> CustomDialogFactory:
@@ -94,13 +95,13 @@ class _Context(QObject):
         self._current_window.deleteLater()
         self._current_window = None
 
-    def _on_uprint(self, msg: str, html: bool):
+    def _on_uprint(self, msg: str, html: bool, scroll_to_bottom: bool):
         win = self.current_window
         if not isinstance(win, FnExecuteWindow):
             warnings.warn("current_window is None")
             print(msg)
             return
-        win.append_output(msg, html)
+        win.append_output(msg, html, scroll_to_bottom)
 
     def _on_show_messagebox(self, future: Future, config: MessageBoxConfig):
         win = self.current_window
@@ -117,7 +118,7 @@ class _Context(QObject):
     ):
         win = self.current_window
         if not isinstance(win, FnExecuteWindow):
-            warnings.warn("current_window is None0")
+            warnings.warn("current_window is None")
             win = None
         dialog = _context.custom_dialog_factory.create(win, dialog_class, **kwargs)
         ret_code = dialog.exec_()
@@ -134,6 +135,29 @@ class _Context(QObject):
             win = None
         result = get_input_impl(win)
         future.set_result(result)
+
+    def _on_show_progressbar(self, config: dict):
+        win = self.current_window
+        if not isinstance(win, FnExecuteWindow):
+            warnings.warn("current_window is None")
+            win = None
+        win.update_progressbar_config(config)
+        win.show_progressbar()
+
+    def _on_hide_progressbar(self):
+        win = self.current_window
+        if not isinstance(win, FnExecuteWindow):
+            warnings.warn("current_window is None")
+            win = None
+        win.update_progressbar_config({})
+        win.hide_progressbar()
+
+    def _on_update_progress(self, progress: int, msg: str):
+        win = self.current_window
+        if not isinstance(win, FnExecuteWindow):
+            warnings.warn("current_window is None")
+            win = None
+        win.update_progress(progress, msg)
 
 
 _context = _Context(None)
@@ -172,11 +196,11 @@ def is_function_cancelled() -> bool:
 
 
 # noinspection SpellCheckingInspection
-def uprint(*args, sep=" ", end="\n", html: bool = False):
+def uprint(*args, sep=" ", end="\n", html: bool = False, scroll_to_bottom: bool = True):
     global _context
     text = sep.join([str(arg) for arg in args]) + end
     # noinspection PyUnresolvedReferences
-    _context.uprint.emit(text, html)
+    _context.uprint.emit(text, html, scroll_to_bottom)
 
 
 def show_messagebox(config: MessageBoxConfig) -> Any:

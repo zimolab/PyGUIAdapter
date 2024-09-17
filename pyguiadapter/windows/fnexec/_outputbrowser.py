@@ -39,10 +39,9 @@ class OutputBrowser(QTextBrowser):
     def __init__(self, parent: QWidget | None, config: OutputBrowserConfig | None):
         super().__init__(parent)
         self._config = config or OutputBrowserConfig()
+        self._setup_ui()
 
-        self._setup()
-
-    def _setup(self):
+    def _setup_ui(self):
         utils.set_textbrowser_wrap_mode(
             self,
             word_wrap_mode=self._config.word_wrap_mode,

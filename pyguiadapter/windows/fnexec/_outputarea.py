@@ -50,8 +50,13 @@ class FnExecuteOutputArea(QWidget):
         if text:
             cursor.insertHtml(f"<div>{text}</div>")
         cursor.insertHtml("<br>")
+        self._doc_browser.moveCursor(QTextCursor.End)
         self._doc_browser.ensureCursorVisible()
-        self._doc_browser.moveCursor(QTextCursor.MoveOperation.End)
+
+    def scroll_to_bottom(self):
+        scroll_bar = self._doc_browser.verticalScrollBar()
+        if scroll_bar:
+            scroll_bar.setValue(scroll_bar.maximum())
 
     # noinspection SpellCheckingInspection
     def _setup_doc_browser(self, config: OutputBrowserConfig | None):
