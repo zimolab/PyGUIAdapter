@@ -11,3 +11,4 @@ __pycache__
 poetry.lock
 .python-version
 *.whl
+/tools/tmp/*
