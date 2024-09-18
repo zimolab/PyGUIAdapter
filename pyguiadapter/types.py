@@ -29,11 +29,6 @@ class directory_t(str):
 
 
 # noinspection PyPep8Naming
-class py_literal_t(object):
-    pass
-
-
-# noinspection PyPep8Naming
 class choice_t(object):
     pass
 
