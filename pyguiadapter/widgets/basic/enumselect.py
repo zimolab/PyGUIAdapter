@@ -98,10 +98,9 @@ class EnumSelect(CommonParameterWidget):
         return dataclasses.replace(config, enum_class=parameter_info.type)
 
     @classmethod
-    def _rule_map_enum_type(
+    def _enum_type_mapping_rule(
         cls, parameter_info: ParameterInfo
     ) -> Type[EnumSelect] | None:
-        param_type = parameter_info.type
-        if inspect.isclass(param_type) and issubclass(param_type, Enum):
+        if utils.is_subclass_of(parameter_info.type, Enum):
             return cls
         return None
