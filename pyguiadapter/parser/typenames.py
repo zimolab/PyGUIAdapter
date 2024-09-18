@@ -26,6 +26,7 @@ TYPING_TUPLE = "Tuple"
 TYPING_LIST = "List"
 TYPING_DICT = "Dict"
 TYPING_UNION = "Union"
+TYPING_TYPED_DICT = "TypedDict"
 
 _TYPE_ANN_PATTERN = r"(\w+)\[\s*([\w\W]+)\s*\]"
 
@@ -48,12 +49,17 @@ BasicTypeMap = {
     typing.Union: TYPING_UNION,
     typing.Literal: TYPING_LITERAL,
     typing.Dict: TYPING_DICT,
+    typing.Mapping: TYPE_MAPPING,
+    typing.MutableMapping: TYPE_MUTABLE_MAPPING,
     typing.Set: TYPING_SET,
+    typing.MutableSet: TYPE_MUTABLE_SET,
     typing.Tuple: TYPING_TUPLE,
     typing.List: TYPING_LIST,
+    typing.TypedDict: TYPING_TYPED_DICT,
 }
 
 ExtendTypeMap = {
+    typing.TypedDict: TYPING_TYPED_DICT,
     typing.Union: TYPING_UNION,
 }
 
