@@ -531,3 +531,9 @@ def get_type_args(raw: str) -> list:
         warnings.warn(f"unable to parse type args '{raw}': {e}")
         return []
     return args
+
+
+def is_subclass_of(cls: Any, base_cls: Any):
+    if not inspect.isclass(cls) or not inspect.isclass(base_cls):
+        return False
+    return issubclass(cls, base_cls)
