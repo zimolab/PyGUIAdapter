@@ -2,7 +2,7 @@
 
 ## 一、控件类型：`PyLiteralEdit`
 
-> 源码: [`pyguiadapter/widgets/extend/literaledit.py`]()
+> 源码: [`pyguiadapter/widgets/basic/literaledit.py`]()
 
 
 
@@ -30,7 +30,7 @@
 
 ## 二、配置类型：`PyLiteralEditConfig`
 
-> 源码: [`pyguiadapter/widgets/extend/literaledit.py`]()
+> 源码: [`pyguiadapter/widgets/basic/literaledit.py`]()
 
 ```python
 @dataclasses.dataclass(frozen=True)
