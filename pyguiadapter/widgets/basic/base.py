@@ -50,6 +50,9 @@ class BaseCodeEditConfig(CommonParameterWidgetConfig):
     editor_window: bool = True
     editor_button_text: str = EDITOR_BUTTON_TEXT
     editor_title: str = EDITOR_TITLE
+    editor_line_wrap_mode: LineWrapMode = LineWrapMode.NoWrap
+    editor_line_wrap_width: int = 88
+    editor_word_wrap_mode: WordWrapMode = WordWrapMode.NoWrap
     auto_indent: bool = True
     auto_parentheses: bool = True
     formatter: BaseCodeFormatter | Callable[[str], str] | None = None
@@ -164,9 +167,9 @@ class BaseCodeEdit(CommonParameterWidget):
             auto_parentheses=config.auto_parentheses,
             file_filters=config.file_filters,
             start_dir=config.start_dir,
-            line_wrap_mode=LineWrapMode.NoWrap,
-            line_wrap_width=88,
-            word_wrap_mode=WordWrapMode.NoWrap,
+            line_wrap_mode=config.editor_line_wrap_mode,
+            line_wrap_width=config.editor_line_wrap_width,
+            word_wrap_mode=config.editor_word_wrap_mode,
             font_size=config.font_size,
             tab_replace=True,
             tab_size=config.indent_size,
