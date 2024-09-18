@@ -6,6 +6,8 @@ from typing import Type
 from qtpy.QtWidgets import QWidget
 
 from .literaledit import PyLiteralEdit, PyLiteralEditConfig, PyLiteralType
+from ... import utils
+from ...fn import ParameterInfo
 
 
 @dataclasses.dataclass(frozen=True)
@@ -44,3 +46,7 @@ class DictEdit(PyLiteralEdit):
         if not isinstance(data, dict):
             raise ValueError(f"not a dict: {data}")
         return super()._set_data(data)
+
+    @classmethod
+    def _dict_mapping_rule(cls, parameter_info: ParameterInfo) -> Type[DictEdit] | None:
+        return DictEdit if utils.is_subclass_of(parameter_info.type, dict) else None

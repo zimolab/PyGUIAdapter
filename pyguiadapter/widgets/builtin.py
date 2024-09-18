@@ -59,6 +59,7 @@ from ..parser.typenames import (
     TYPE_MAPPING,
     TYPE_MUTABLE_MAPPING,
     TYPE_MUTABLE_SET,
+    TYPING_TYPED_DICT,
 )
 from ..types import (
     text_t,
@@ -124,6 +125,7 @@ BUILTIN_WIDGETS_MAP = {
     TYPING_DICT: DictEdit,
     TYPE_MAPPING: DictEdit,
     TYPE_MUTABLE_MAPPING: DictEdit,
+    TYPING_TYPED_DICT: DictEdit,
     TYPE_LIST: ListEdit,
     TYPING_LIST: ListEdit,
     TYPE_TUPLE: TupleEdit,
@@ -149,5 +151,6 @@ BUILTIN_WIDGETS_MAP = {
 
 # noinspection PyProtectedMember
 BUILTIN_WIDGETS_MAPPING_RULES = [
-    EnumSelect._rule_map_enum_type,
+    EnumSelect._enum_type_mapping_rule,
+    DictEdit._dict_mapping_rule,
 ]
