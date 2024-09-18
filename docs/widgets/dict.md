@@ -28,7 +28,7 @@ class DictEditConfig(PyLiteralEditConfig):
 
 | 配置项名称      | 类型           | 默认值 |
 | --------------- | -------------- | ------ |
-| `default_value` | `dict \| None` | `""    |
+| `default_value` | `dict \| None` | `{}`   |
 
 `DictEditConfig`继承自[`PyLiteralEditConfig`](widgets/any.md)，其可配置项，可以参考：
 
