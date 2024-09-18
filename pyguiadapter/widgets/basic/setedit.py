@@ -10,7 +10,7 @@ from .literaledit import PyLiteralEdit, PyLiteralEditConfig, PyLiteralType
 
 @dataclasses.dataclass(frozen=True)
 class SetEditConfig(PyLiteralEditConfig):
-    default_value: set | None = None
+    default_value: set | None = dataclasses.field(default_factory=set)
     initial_text: str = "None"
 
     @classmethod
@@ -43,4 +43,7 @@ class SetEdit(PyLiteralEdit):
             return "None"
         if not isinstance(data, set):
             raise ValueError(f"not a set: {data}")
-        return super()._set_data(data)
+        set_str = str(data)
+        if set_str.strip() == "set()":
+            return "{}"
+        return set_str
