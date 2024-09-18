@@ -41,6 +41,6 @@ class SetEdit(PyLiteralEdit):
             return "None"
         if isinstance(data, str) and data.strip() == "":
             return "None"
-        if not isinstance(data, list):
+        if not isinstance(data, set):
             raise ValueError(f"not a set: {data}")
         return super()._set_data(data)
