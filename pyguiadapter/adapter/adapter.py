@@ -239,7 +239,7 @@ class GUIAdapter(object):
                 widget_class = p_widget_class
                 if not is_parameter_widget_class(widget_class):
                     raise NotRegisteredError(
-                        f"unknown widget class name: {p_widget_class_name}"
+                        f"unknown widget class name for: {param_info.type}"
                     )
                 widget_config = widget_class.ConfigClass.new(**p_widget_config)
                 final_configs[param_name] = (widget_class, widget_config)
