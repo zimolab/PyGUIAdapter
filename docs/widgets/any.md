@@ -10,23 +10,21 @@
 
 > `Python字面量`是指`ast.eval_literal()`函数支持任意Python字面量结构，包括：
 >
-> - 字符串(str)，如：```"this is a string"``
-> - 字节对象(bytes)，如：```b"\011\012"``
-> - 数值(int、float)，如：```1```、```2.0```
-> - 元组(tuple)，如：```(1, 2, 3)```
-> - 列表(list)，如：```[1, "2", 3, (1 ,2, 3)]```
-> - 字典(dict)，如：```{"a": 1, "b": 2}```
-> - 集合(set)，如：```{"a", "b", "c"}```
-> - 布尔值(bool)，如：```True```、```False```
+> - 字符串(str)，如：`"this is a string"`
+> - 字节对象(bytes)，如：`b"\011\012"`
+> - 数值(int、float)，如：`1`、`2.0`
+> - 元组(tuple)，如：`(1, 2, 3)`
+> - 列表(list)，如：`[1, "2", 3, (1 ,2, 3)]`
+> - 字典(dict)，如：`{"a": 1, "b": 2}`
+> - 集合(set)，如：`{"a", "b", "c"}`
+> - 布尔值(bool)，如：`True`、`False`
 > -  `None`
 >
 > 关于`ast.eval_literal()`的更多细节请参见[`官方文档`](https://docs.python.org/3.8/library/ast.html#ast.literal_eval)。
 
 
 
-<img src="../images/any.png" />  
-
-<img src="../images/any_editor.png" />
+<img src="../images/any.png" />  <img src="../images/any_editor.png" />
 
 ## 二、配置类型：`PyLiteralEditConfig`
 
@@ -54,11 +52,13 @@ class PyLiteralEditConfig(BaseCodeEditConfig):
 | `formatter`     | `QPythonHighlighter`       | `PythonFormatter()`                                          |
 | `file_filters`  | `str`                      | `Python files (*.py);;Text files(*.txt);;Text files(*.text);;All files (*.*)` |
 
-``PyLiteralEditConfig`继承自[`BaseCodeEditConfig`](widgets/base_code_edit.md)，并针对`输入Python字面量`这一特定需求，对以上配置项（属性）进行了覆盖。比如将代码着色器指定为`QPythonHighlighter`、将`formatter`设置为`PythonFormatter`，如无必要，开发者不应对这些属性进行调整。 
+> `PyLiteralType`是以下类型的别名：`Union[bool, int, float, bytes, str, list, tuple, dict, set]`
 
-关于其他可以调整的配置项，请参考其父类[`BaseCodeEditConfig`](widgets/base_code_edit.md)，父类中定义的配置项一般情况下也适用于子类。
 
-> `PyLiteralType`是以下类型的别名：
+
+`PyLiteralEditConfig`继承自[`BaseCodeEditConfig`](widgets/base_code_edit.md)，并针对`“输入Python字面量”`这一特定需求，对以上配置项（属性）进行了覆盖。比如将代码着色器指定为`QPythonHighlighter`、将`formatter`设置为`PythonFormatter`，如无必要，开发者不应对这些属性进行调整。 
+
+关于其他可以调整的配置项，请参考其父类[`BaseCodeEditConfig`](widgets/base_code_edit.md)，父类中的配置项一般情况下也适用于子类。
 
 
 
@@ -129,7 +129,7 @@ if __name__ == "__main__":
 
 
 
-**`PyLiteralEdit`是一个强大的控件，对其善加利用，开发者几乎可以让用户输入任意复杂的对象。**
+**`PyLiteralEdit`是一个强大的控件，对其善加利用，开发者可以让用户输入几乎所有复杂对象。**
 
 
 
