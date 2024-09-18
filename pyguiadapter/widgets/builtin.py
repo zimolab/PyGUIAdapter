@@ -43,12 +43,22 @@ from ..parser.typenames import (
     TYPE_INT,
     TYPE_FLOAT,
     TYPE_ANY,
+    TYPE_OBJECT,
     TYPE_DICT,
     TYPE_LIST,
     TYPE_TUPLE,
     TYPE_SET,
     TYPE_BOOL,
-    TYPE_LITERAL,
+    TYPING_ANY,
+    TYPING_LITERAL,
+    TYPING_UNION,
+    TYPING_DICT,
+    TYPING_LIST,
+    TYPING_TUPLE,
+    TYPING_SET,
+    TYPE_MAPPING,
+    TYPE_MUTABLE_MAPPING,
+    TYPE_MUTABLE_SET,
 )
 from ..types import (
     text_t,
@@ -57,7 +67,6 @@ from ..types import (
     directory_t,
     file_t,
     file_list_t,
-    py_literal_t,
     json_obj_t,
     choice_t,
     choices_t,
@@ -77,8 +86,7 @@ TYPE_DIR_T = directory_t.__name__
 TYPE_FILE_T = file_t.__name__
 TYPE_FILE_LIST_T = file_list_t.__name__
 TYPE_JSON_OBJ_T = json_obj_t.__name__
-TYPE_PY_LITERAL_T = py_literal_t.__name__
-TYPE_PY_LITERAL_T_2 = str(PyLiteralType)
+TYPE_PY_LITERAL = str(PyLiteralType)
 TYPE_CHOICE_T = choice_t.__name__
 TYPE_CHOICES_T = choices_t.__name__
 TYPE_SLIDER_INT_T = int_slider_t.__name__
@@ -94,12 +102,6 @@ TYPE_KEY_SEQUENCE_T = key_sequence_t.__name__
 TYPE_STRING_LIST_T = string_list_t.__name__
 TYPE_PLAIN_DICT_T = plain_dict_t.__name__
 
-TYPING_TUPLE = "Tuple"
-TYPING_LIST = "List"
-TYPING_SET = "Set"
-TYPING_DICT = "Dict"
-TYPING_ANY = "Any"
-TYPING_LITERAL = "Literal"
 
 BUILTIN_WIDGETS_MAP = {
     TYPE_STR: LineEdit,
@@ -112,20 +114,23 @@ BUILTIN_WIDGETS_MAP = {
     TYPE_DIR_T: DirSelect,
     TYPE_FILE_T: FileSelect,
     TYPE_FILE_LIST_T: MultiFileSelect,
+    TYPE_JSON_OBJ_T: JsonEdit,
     TYPE_ANY: PyLiteralEdit,
     TYPING_ANY: PyLiteralEdit,
-    TYPE_JSON_OBJ_T: JsonEdit,
-    TYPE_PY_LITERAL_T: PyLiteralEdit,
-    TYPE_PY_LITERAL_T_2: PyLiteralEdit,
+    TYPE_PY_LITERAL: PyLiteralEdit,
+    TYPING_UNION: PyLiteralEdit,
+    TYPE_OBJECT: PyLiteralEdit,
     TYPE_DICT: DictEdit,
     TYPING_DICT: DictEdit,
+    TYPE_MAPPING: DictEdit,
+    TYPE_MUTABLE_MAPPING: DictEdit,
     TYPE_LIST: ListEdit,
     TYPING_LIST: ListEdit,
     TYPE_TUPLE: TupleEdit,
     TYPING_TUPLE: TupleEdit,
     TYPE_SET: SetEdit,
     TYPING_SET: SetEdit,
-    TYPE_LITERAL: ExclusiveChoiceBox,
+    TYPE_MUTABLE_SET: SetEdit,
     TYPING_LITERAL: ExclusiveChoiceBox,
     TYPE_CHOICE_T: ComboBox,
     TYPE_CHOICES_T: MultiChoiceBox,

@@ -1,7 +1,6 @@
 import re
-from collections.abc import Mapping, MutableMapping, MutableSet, Set
-from collections import OrderedDict
 import typing
+from collections.abc import Mapping, MutableMapping, MutableSet, Set
 
 from .. import utils
 
@@ -14,8 +13,19 @@ TYPE_LIST = "list"
 TYPE_SET = "set"
 TYPE_TUPLE = "tuple"
 TYPE_ANY = "any"
-TYPE_ORDERED_DICT = "OrderedDict"
-TYPE_LITERAL = "literal"
+TYPE_OBJECT = "object"
+
+TYPE_MAPPING = "Mapping"
+TYPE_MUTABLE_MAPPING = "MutableMapping"
+TYPE_MUTABLE_SET = "MutableSet"
+
+TYPING_ANY = "Any"
+TYPING_LITERAL = "Literal"
+TYPING_SET = "Set"
+TYPING_TUPLE = "Tuple"
+TYPING_LIST = "List"
+TYPING_DICT = "Dict"
+TYPING_UNION = "Union"
 
 _TYPE_ANN_PATTERN = r"(\w+)\[\s*([\w\W]+)\s*\]"
 
@@ -28,24 +38,23 @@ BasicTypeMap = {
     list: TYPE_LIST,
     set: TYPE_SET,
     tuple: TYPE_TUPLE,
-    object: TYPE_ANY,
+    object: TYPE_OBJECT,
     any: TYPE_ANY,
-    Mapping: TYPE_DICT,
-    MutableMapping: TYPE_DICT,
-    MutableSet: TYPE_SET,
+    Mapping: TYPE_MAPPING,
+    MutableMapping: TYPE_MUTABLE_MAPPING,
+    MutableSet: TYPE_MUTABLE_SET,
     Set: TYPE_SET,
-    OrderedDict: TYPE_ORDERED_DICT,
-    typing.Any: TYPE_ANY,
-    typing.TypedDict: TYPE_DICT,
-    typing.Literal: TYPE_LITERAL,
-    typing.Union: TYPE_ANY,
-    typing.Optional: TYPE_ANY,
+    typing.Any: TYPING_ANY,
+    typing.Union: TYPING_UNION,
+    typing.Literal: TYPING_LITERAL,
+    typing.Dict: TYPING_DICT,
+    typing.Set: TYPING_SET,
+    typing.Tuple: TYPING_TUPLE,
+    typing.List: TYPING_LIST,
 }
 
 ExtendTypeMap = {
-    typing.TypedDict: TYPE_DICT,
-    typing.Union: TYPE_ANY,
-    typing.Optional: TYPE_ANY,
+    typing.Union: TYPING_UNION,
 }
 
 
