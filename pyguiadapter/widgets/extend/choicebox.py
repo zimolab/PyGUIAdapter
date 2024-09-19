@@ -17,31 +17,31 @@ class _DataWrap(object):
 
 
 @dataclasses.dataclass(frozen=True)
-class ComboBoxConfig(CommonParameterWidgetConfig):
+class ChoiceBoxConfig(CommonParameterWidgetConfig):
     default_value: Any | None = _FIRST_ITEM
     choices: Dict[str, Any] | List[Any] = dataclasses.field(default_factory=list)
     editable: bool = False
 
     @classmethod
-    def target_widget_class(cls) -> Type["ComboBox"]:
-        return ComboBox
+    def target_widget_class(cls) -> Type["ChoiceBox"]:
+        return ChoiceBox
 
 
-class ComboBox(CommonParameterWidget):
-    ConfigClass = ComboBoxConfig
+class ChoiceBox(CommonParameterWidget):
+    ConfigClass = ChoiceBoxConfig
 
     def __init__(
         self,
         parent: QWidget | None,
         parameter_name: str,
-        config: ComboBoxConfig,
+        config: ChoiceBoxConfig,
     ):
         self._value_widget: QComboBox | None = None
         super().__init__(parent, parameter_name, config)
 
     @property
     def value_widget(self) -> QWidget:
-        self._config: ComboBoxConfig
+        self._config: ChoiceBoxConfig
         if self._value_widget is None:
             self._value_widget = QComboBox(self)
             if self._config.editable:
@@ -70,7 +70,7 @@ class ComboBox(CommonParameterWidget):
         return self._value_widget.currentText()
 
     def _add_choices(self):
-        self._config: ComboBoxConfig
+        self._config: ChoiceBoxConfig
         choices = self._config.choices
         assert isinstance(choices, list) or isinstance(choices, dict)
         if isinstance(choices, list):

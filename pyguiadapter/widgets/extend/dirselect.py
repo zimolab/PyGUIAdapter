@@ -5,7 +5,7 @@ from typing import Type, Any
 
 from qtpy.QtWidgets import QWidget
 
-from ._widget import PathSelectWidget
+from ._path import PathSelectWidget
 from ..common import CommonParameterWidgetConfig, CommonParameterWidget
 
 

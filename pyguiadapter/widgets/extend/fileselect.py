@@ -5,9 +5,9 @@ from typing import Type, Any, List, Tuple, Set
 
 from qtpy.QtWidgets import QWidget
 
-from ._widget import PathSelectWidget
+from ._path import PathSelectWidget
 from ..common import CommonParameterWidgetConfig, CommonParameterWidget
-from ...exceptions import ParameterError
+from pyguiadapter.exceptions import ParameterError
 
 
 @dataclasses.dataclass(frozen=True)
