@@ -1,27 +1,28 @@
 from __future__ import annotations
 
 import dataclasses
-from datetime import datetime
+from datetime import date
 from typing import Type
 
-from qtpy.QtCore import Qt, QDateTime
-from qtpy.QtWidgets import QWidget, QDateTimeEdit
+from qtpy.QtCore import Qt, QDate
+from qtpy.QtWidgets import QWidget, QDateEdit
 
-from ..common import CommonParameterWidgetConfig, CommonParameterWidget
+from ..common import (
+    CommonParameterWidgetConfig,
+    CommonParameterWidget,
+)
 
 Alignment = Qt.Alignment
-ButtonSymbols = QDateTimeEdit.ButtonSymbols
-CorrectionMode = QDateTimeEdit.CorrectionMode
+ButtonSymbols = QDateEdit.ButtonSymbols
+CorrectionMode = QDateEdit.CorrectionMode
 TimeSpec = Qt.TimeSpec
 
 
 @dataclasses.dataclass(frozen=True)
-class DateTimeEditConfig(CommonParameterWidgetConfig):
-    default_value: datetime | QDateTime | None = dataclasses.field(
-        default_factory=datetime.now
-    )
-    min_datetime: datetime | QDateTime | None = None
-    max_datetime: datetime | QDateTime | None = None
+class DateEditConfig(CommonParameterWidgetConfig):
+    default_value: date | QDate | None = date.today()
+    min_date: date | QDate | None = None
+    max_date: date | QDate | None = None
     display_format: str | None = None
     time_spec: TimeSpec | None = None
     wrapping: bool = False
@@ -34,36 +35,32 @@ class DateTimeEditConfig(CommonParameterWidgetConfig):
     calendar_popup: bool = False
 
     @classmethod
-    def target_widget_class(cls) -> Type["DateTimeEdit"]:
-        return DateTimeEdit
+    def target_widget_class(cls) -> Type["DateEdit"]:
+        return DateEdit
 
 
-class DateTimeEdit(CommonParameterWidget):
-    ConfigClass = DateTimeEditConfig
+class DateEdit(CommonParameterWidget):
+    ConfigClass = DateEditConfig
 
     def __init__(
         self,
         parent: QWidget | None,
         parameter_name: str,
-        config: DateTimeEditConfig,
+        config: DateEditConfig,
     ):
-        self._value_widget: QDateTimeEdit | None = None
+        self._value_widget: QDateEdit | None = None
         super().__init__(parent, parameter_name, config)
 
     @property
-    def value_widget(self) -> QWidget:
-        self._config: DateTimeEditConfig
+    def value_widget(self) -> QDateEdit:
+        self._config: DateEditConfig
         if self._value_widget is None:
-            self._value_widget = QDateTimeEdit(self)
-            if self._config.min_datetime is not None:
-                self._value_widget.setMinimumDateTime(
-                    QDateTime(self._config.min_datetime)
-                )
+            self._value_widget = QDateEdit(self)
+            if self._config.min_date is not None:
+                self._value_widget.setMinimumDate(QDate(self._config.min_date))
 
-            if self._config.max_datetime is not None:
-                self._value_widget.setMaximumDateTime(
-                    QDateTime(self._config.max_datetime)
-                )
+            if self._config.max_date is not None:
+                self._value_widget.setMaximumDate(QDate(self._config.max_date))
 
             if self._config.display_format is not None:
                 self._value_widget.setDisplayFormat(self._config.display_format)
@@ -81,16 +78,15 @@ class DateTimeEdit(CommonParameterWidget):
             self._value_widget.setKeyboardTracking(self._config.keyboard_tracking)
             self._value_widget.setAccelerated(self._config.accelerated)
             self._value_widget.setCalendarPopup(self._config.calendar_popup)
-
         return self._value_widget
 
-    def set_value_to_widget(self, value: datetime | QDateTime):
-        if not isinstance(value, (datetime, QDateTime)):
-            raise ValueError("value must be a datetime or QDateTime object")
-        if isinstance(value, datetime):
-            value = QDateTime(value)
-        self._value_widget.setDateTime(value)
+    def set_value_to_widget(self, value: date | QDate):
+        if not isinstance(value, (date, QDate)):
+            raise ValueError("value must be date or QDate")
+        if isinstance(value, date):
+            value = QDate(value)
+        self._value_widget.setDate(value)
 
-    def get_value_from_widget(self) -> datetime:
-        value = self._value_widget.dateTime()
+    def get_value_from_widget(self) -> date:
+        value = self._value_widget.date()
         return value.toPython()

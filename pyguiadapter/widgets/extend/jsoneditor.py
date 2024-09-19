@@ -7,7 +7,7 @@ from typing import Type, Any
 from pyqcodeeditor.highlighters import QJSONHighlighter
 from qtpy.QtWidgets import QWidget
 
-from .base import BaseCodeEdit, BaseCodeEditConfig
+from ..basic.base import BaseCodeEdit, BaseCodeEditConfig
 from ...codeeditor import JsonFormatter
 
 JSON_FILE_FILTERS = (

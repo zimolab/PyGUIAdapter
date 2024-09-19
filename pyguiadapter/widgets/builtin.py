@@ -3,33 +3,31 @@ from datetime import datetime, date, time
 from qtpy.QtGui import QColor
 
 from .basic import (
-    JsonEdit,
     PyLiteralEdit,
     PyLiteralType,
     DictEdit,
     ListEdit,
     TupleEdit,
     SetEdit,
-)
-from .basic import (
     LineEdit,
-    TextEdit,
     IntSpinBox,
-    IntLineEdit,
     FloatSpinBox,
-    FloatLineEdit,
     BoolBox,
     EnumSelect,
+    ExclusiveChoiceBox,
+    DateTimeEdit,
+    DateEdit,
+    TimeEdit,
 )
 from .extend import (
-    ExclusiveChoiceBox,
+    IntLineEdit,
+    FloatLineEdit,
+    JsonEdit,
+    TextEdit,
     ChoiceBox,
     MultiChoiceBox,
     Slider,
     Dial,
-    DateTimeEdit,
-    DateEdit,
-    TimeEdit,
     ColorTuplePicker,
     ColorHexPicker,
     ColorPicker,
