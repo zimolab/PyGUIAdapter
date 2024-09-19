@@ -1,5 +1,5 @@
 from .exclusivechoice import ExclusiveChoiceBox, ExclusiveChoiceBoxConfig
-from .combobox import ComboBox, ComboBoxConfig
+from .choicebox import ChoiceBox, ChoiceBoxConfig
 from .multichoice import MultiChoiceBox, MultiChoiceBoxConfig
 from .slider import Slider, SliderConfig
 from .dial import Dial, DialConfig
@@ -16,14 +16,21 @@ from .colorpicker import (
 from .keysequenceedit import KeySequenceEdit, KeySequenceEditConfig, KeySequenceFormat
 from .stringlist import StringListEdit, StringListEditConfig
 from .plaindict import PlainDictEdit, PlainDictEditConfig
+from .fileselect import (
+    FileSelectConfig,
+    FileSelect,
+    MultiFileSelectConfig,
+    MultiFileSelect,
+)
+from .dirselect import DirSelectConfig, DirSelect
 
 __all__ = [
     "ExclusiveChoiceBox",
     "ExclusiveChoiceBoxConfig",
     "MultiChoiceBoxConfig",
     "MultiChoiceBox",
-    "ComboBox",
-    "ComboBoxConfig",
+    "ChoiceBox",
+    "ChoiceBoxConfig",
     "Slider",
     "SliderConfig",
     "Dial",
@@ -46,4 +53,10 @@ __all__ = [
     "StringListEditConfig",
     "PlainDictEdit",
     "PlainDictEditConfig",
+    "FileSelect",
+    "FileSelectConfig",
+    "DirSelect",
+    "DirSelectConfig",
+    "MultiFileSelect",
+    "MultiFileSelectConfig",
 ]

@@ -23,7 +23,7 @@ from .basic import (
 )
 from .extend import (
     ExclusiveChoiceBox,
-    ComboBox,
+    ChoiceBox,
     MultiChoiceBox,
     Slider,
     Dial,
@@ -36,8 +36,10 @@ from .extend import (
     KeySequenceEdit,
     StringListEdit,
     PlainDictEdit,
+    DirSelect,
+    FileSelect,
+    MultiFileSelect,
 )
-from .path import DirSelect, FileSelect, MultiFileSelect
 from ..parser.typenames import (
     TYPE_STR,
     TYPE_INT,
@@ -67,7 +69,7 @@ from ..types import (
     float_t,
     directory_t,
     file_t,
-    file_list_t,
+    files_t,
     json_obj_t,
     choice_t,
     choices_t,
@@ -85,7 +87,7 @@ TYPE_INT_T = int_t.__name__
 TYPE_FLOAT_T = float_t.__name__
 TYPE_DIR_T = directory_t.__name__
 TYPE_FILE_T = file_t.__name__
-TYPE_FILE_LIST_T = file_list_t.__name__
+TYPE_FILES_T = files_t.__name__
 TYPE_JSON_OBJ_T = json_obj_t.__name__
 TYPE_PY_LITERAL = str(PyLiteralType)
 TYPE_CHOICE_T = choice_t.__name__
@@ -114,7 +116,7 @@ BUILTIN_WIDGETS_MAP = {
     TYPE_FLOAT_T: FloatLineEdit,
     TYPE_DIR_T: DirSelect,
     TYPE_FILE_T: FileSelect,
-    TYPE_FILE_LIST_T: MultiFileSelect,
+    TYPE_FILES_T: MultiFileSelect,
     TYPE_JSON_OBJ_T: JsonEdit,
     TYPE_ANY: PyLiteralEdit,
     TYPING_ANY: PyLiteralEdit,
@@ -134,7 +136,7 @@ BUILTIN_WIDGETS_MAP = {
     TYPING_SET: SetEdit,
     TYPE_MUTABLE_SET: SetEdit,
     TYPING_LITERAL: ExclusiveChoiceBox,
-    TYPE_CHOICE_T: ComboBox,
+    TYPE_CHOICE_T: ChoiceBox,
     TYPE_CHOICES_T: MultiChoiceBox,
     TYPE_SLIDER_INT_T: Slider,
     TYPE_DIAL_INT_T: Dial,

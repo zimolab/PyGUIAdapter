@@ -8,7 +8,7 @@ def extended_types_showcase(
     int_lineedit: int_t,
     float_spinbox: float,
     float_lineedit: float_t,
-    file_list: file_list_t,
+    file_list: files_t,
     choice: choice_t,
     multi_choices: choices_t,
 ):

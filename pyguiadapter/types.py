@@ -19,13 +19,16 @@ class file_t(str):
 
 
 # noinspection PyPep8Naming
-class file_list_t(list):
+class files_t(list):
     pass
 
 
 # noinspection PyPep8Naming
 class directory_t(str):
     pass
+
+
+dir_t = directory_t
 
 
 # noinspection PyPep8Naming
