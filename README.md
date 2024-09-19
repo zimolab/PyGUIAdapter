@@ -125,8 +125,8 @@ if __name__ == "__main__":
 
 ![](screenshots/get_started_2a.png)
 
-可以看到，参数`input_file`和`output_dir`的控件已经从单行文本输入框变成了文件选择控件（[FileSelect](pyguiadapter/widgets/path/fileselect.py)）
-和目录选择控件([DirSelect](pyguiadapter/widgets/path/dirselect.py))。
+可以看到，参数`input_file`和`output_dir`的控件已经从单行文本输入框变成了文件选择控件（[FileSelect](pyguiadapter/widgets/extend/fileselect.py)）
+和目录选择控件([DirSelect](pyguiadapter/widgets/extend/dirselect.py))。
 
 现在，用户可以通过点击右侧按钮来选择文件和目录，仅仅是改变了参数的类型标注，用户体验就得到了很大的提升。
 
@@ -160,8 +160,8 @@ class IntSpinBoxConfig(CommonParameterWidgetConfig):
 ```
 
 其他控件也类似，例如，对于[`FloatSpinBox`](pyguiadapter/widgets/basic/floatspin.py)， 其配置类为
-[`FloatSpinBoxConfig`](pyguiadapter/widgets/basic/floatspin.py)；[`IntLineEdit`](pyguiadapter/widgets/basic/intedit.py)
-的配置类为[`IntLineEditConfig`](pyguiadapter/widgets/basic/intedit.py)......凡此种种，不一一而足。
+[`FloatSpinBoxConfig`](pyguiadapter/widgets/basic/floatspin.py)；[`IntLineEdit`](pyguiadapter/widgets/extend/intedit.py)
+的配置类为[`IntLineEditConfig`](pyguiadapter/widgets/extend/intedit.py)......凡此种种，不一一而足。
 
 所有的配置类都应继承自[`BaseParameterWidgetConfig`](pyguiadapter/paramwidget.py)基类，因此所有控件都有以下可配置属性：
 
@@ -222,8 +222,8 @@ def encode_mp3(
 > 特别地，如果不显式地指定`label`属性的值，那么，PyGUIAdapter会自动将参数名称作为控件的标签。
 > 
 
-`input_file`控件的类型为[`FileSelect`](pyguiadapter/widgets/path/fileselect.py)，我们可以查看其配置类
-[`FileSelectConfihg`](pyguiadapter/widgets/path/fileselect.py)获取其他可定义的属性，
+`input_file`控件的类型为[`FileSelect`](pyguiadapter/widgets/extend/fileselect.py)，我们可以查看其配置类
+[`FileSelectConfihg`](pyguiadapter/widgets/extend/fileselect.py)获取其他可定义的属性，
 比如，让我们将文件对话框的标题（`dialog_title`）修改为“Select MP3 File”，并将可选的文件类型限制为MP3文件（通过`filters`属性）：
 
 ```python
