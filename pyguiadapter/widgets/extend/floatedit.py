@@ -13,11 +13,11 @@ from ...exceptions import ParameterError
 @dataclasses.dataclass(frozen=True)
 class FloatLineEditConfig(CommonParameterWidgetConfig):
     default_value: float | None = 0.0
-    min_value: int = -2147483648.0
-    max_value: int = 2147483647.0
+    min_value: float = -2147483648.0
+    max_value: float = 2147483647.0
     decimals: int = 2
     scientific_notation: bool = False
-    fallback_value: int = 0.0
+    empty_value: float = 0.0
 
     @classmethod
     def target_widget_class(cls) -> Type["FloatLineEdit"]:
@@ -51,20 +51,20 @@ class FloatLineEdit(CommonParameterWidget):
                 notation = QDoubleValidator.StandardNotation
             self._validator.setNotation(notation)
             self._value_widget.setValidator(self._validator)
-            self._value_widget.setText(str(config.fallback_value))
+            self._value_widget.setText(str(config.empty_value))
         return self._value_widget
 
     def set_value_to_widget(self, value: Any):
         self._config: FloatLineEditConfig
         if value == "":
-            value = self._config.fallback_value
+            value = self._config.empty_value
         self._value_widget.setText(str(value))
 
     def get_value_from_widget(self) -> float:
         self._config: FloatLineEditConfig
         value = self._value_widget.text()
         if not value:
-            return self._config.fallback_value
+            return self._config.empty_value
         try:
             value = float(value)
         except ValueError as e:

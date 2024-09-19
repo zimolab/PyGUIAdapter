@@ -15,7 +15,7 @@ class IntLineEditConfig(CommonParameterWidgetConfig):
     default_value: int | None = 0
     min_value: int = -2147483648
     max_value: int = 2147483647
-    fallback_value: int = 0
+    empty_value: int = 0
 
     @classmethod
     def target_widget_class(cls) -> Type["IntLineEdit"]:
@@ -41,20 +41,20 @@ class IntLineEdit(CommonParameterWidget):
                 self._config.min_value, self._config.max_value, self._value_widget
             )
             self._value_widget.setValidator(self._validator)
-            self._value_widget.setText(str(self._config.fallback_value))
+            self._value_widget.setText(str(self._config.empty_value))
         return self._value_widget
 
     def set_value_to_widget(self, value: Any):
         self._config: IntLineEditConfig
         if value == "":
-            value = self._config.fallback_value
+            value = self._config.empty_value
         self._value_widget.setText(str(value))
 
     def get_value_from_widget(self) -> int:
         self._config: IntLineEditConfig
         value = self._value_widget.text()
         if not value:
-            return self._config.fallback_value
+            return self._config.empty_value
         try:
             value = int(value)
         except ValueError as e:
