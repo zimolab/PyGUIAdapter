@@ -72,7 +72,7 @@ def _config2table(
 
 def generate_widget_class_doc(
     widget_type: str,
-    widget_category: Literal["basic", "extend", "path"] = "basic",
+    widget_category: Literal["basic", "extend"] = "basic",
     template_file: file_t = "",
     output_file: file_t = "",
     headers: Tuple[str, str, str, str] = CONFIG_CLASS_TABLE_HEADER_CN,
@@ -221,7 +221,7 @@ if __name__ == "__main__":
         save_file=True,
     )
 
-    widget_type_conf = widgets.ComboBoxConfig(choices=_all_widget_classes())
+    widget_type_conf = widgets.ChoiceBoxConfig(choices=_all_widget_classes())
     ########################## parameter configs ################################################
 
     ########################## window configs ################################################
