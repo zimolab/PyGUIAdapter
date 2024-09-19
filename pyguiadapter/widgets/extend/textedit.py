@@ -20,7 +20,7 @@ class TextEditConfig(CommonParameterWidgetConfig):
     accept_rich_text: bool = False
     auto_formatting: AutoFormatting | None = None
     line_wrap: LineWrapMode = LineWrapMode.WidgetWidth
-    line_wrap_column_or_width: int = 0
+    line_wrap_column_or_width: int = 88
     word_wrap: WrapMode | None = None
 
     @classmethod
