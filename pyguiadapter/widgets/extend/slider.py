@@ -23,7 +23,7 @@ class SliderConfig(CommonParameterWidgetConfig):
     tracking: bool = True
     inverted_controls: bool = False
     inverted_appearance: bool = False
-    enable_value_label: bool = True
+    show_value_label: bool = True
     prefix: str = ""
     suffix: str = ""
 
@@ -57,7 +57,7 @@ class Slider(CommonParameterWidget):
             self._value_widget.setLayout(layout)
 
             layout.addWidget(self._slider)
-            if self._config.enable_value_label:
+            if self._config.show_value_label:
                 self._label = QLabel(self._value_widget)
                 layout.addWidget(self._label)
                 # noinspection PyUnresolvedReferences
