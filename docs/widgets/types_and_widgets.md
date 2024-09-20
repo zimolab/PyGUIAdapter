@@ -31,22 +31,22 @@
 
 
 
-|                    控件类型                    |      控件配置类型       |      对应数据类型      |                             说明                             |            外观            |
-| :--------------------------------------------: | :---------------------: | :--------------------: | :----------------------------------------------------------: | :------------------------: |
-|       [`IntLineEdit`](widgets/int_t.md)        |   `IntLineEditConfig`   |        `int_t`         | `int_t`扩展自`int`，可以看作是`int`类型的别名。`PyGUIAdapter`为该类型提供了一个单行文本输入框样式的输入组件，但于与一般单行文本输入框标题，该类型的输入组件只允许用户输入整数文本。 |  ![](../images/int_t.png)  |
-|     [`FloatLineEdit`](widgets/float_t.md)      |  `FloatLineEditConfig`  |       `float_t`        | `float_t`扩展自`float`，可以看作是`float`类型的别名。`PyGUIAdapter`为该类型提供了一个单行文本输入框样式的输入组件，但于与一般单行文本输入框标题，该类型的输入组件只允许用户输入浮点数文本。 | ![](../images/float_t.png) |
-|        [`TextEdit`](widgets/text_t.md)         |    `TextEditConfig`     |        `text_t`        | `text_t`扩展自`str`，可以看作是`str`类型的别名。`PyGUIAdapter`为该类型提供了一个多行文本输入框，允许用户输入多行文本。 | ![](../images/text_t.png)  |
-|      [`Slider`](widgets/int_slider_t.md)       |     `SliderConfig`      |     `int_slider_t`     |                                                              |                            |
-|        [`Dial`](widgets/int_dial_t.md)         |      `DialConfig`       |      `int_dial_t`      |                                                              |                            |
-| [`ColorTuplePicker`](widgets/color_tuple_t.md) |   `ColorPickerConfig`   |    `color_tuple_t`     |                                                              |                            |
-|   [`ColorHexPicker`](widgets/color_hex_t.md)   |   `ColorPickerConfig`   |     `color_hex_t`      |                                                              |                            |
-|       [`ChoiceBox`](widgets/choice_t.md)       |    `ComboBoxConfig`     |       `choice_t`       |                                                              |                            |
-| [`KeySequenceEdit`](widgets/key_sequence_t.md) | `KeySequenceEditConfig` |    `key_sequence_t`    |                                                              |                            |
-|    [`MultiChoiceBox`](widgets/choices_t.md)    | `MultiChoiceBoxConfig`  |      `choices_t`       |                                                              |                            |
-|   [`PlainDictEdit`](widgets/plain_dict_t.md)   |  `PlainDictEditConfig`  |     `plain_dict_t`     |                                                              |                            |
-|  [`StringListEdit`](widgets/string_list_t.md)  | `StringListEditConfig`  |    `string_list_t`     |                                                              |                            |
-|        [`JsonEdit`](widgets/json_obj_t)        |    `JsonEditConfig`     |      `json_obj_t`      |                                                              |                            |
-|        [`DirSelect`](widgets/dir_t.md)         |    `DirSelectConfig`    | `directory_t`、`dir_t` |                                                              |                            |
-|       [`FileSelect`](widgets/file_t.md)        |   `FileSelectConfig`    |        `file_t`        |                                                              |                            |
-|    [`MultiFileSelect`](widgets/files_t.md)     | `MultiFileSelectConfig` |       `files_t`        |                                                              |                            |
+|                    控件类型                    |      控件配置类型       |      对应数据类型      |                             说明                             |              外观               |
+| :--------------------------------------------: | :---------------------: | :--------------------: | :----------------------------------------------------------: | :-----------------------------: |
+|       [`IntLineEdit`](widgets/int_t.md)        |   `IntLineEditConfig`   |        `int_t`         | `int_t`扩展自`int`，可以看作是`int`类型的别名。`PyGUIAdapter`为该类型提供了一个单行文本输入框样式的输入组件，但于与一般单行文本输入框标题，该类型的输入组件只允许用户输入整数文本。 |    ![](../images/int_t.png)     |
+|     [`FloatLineEdit`](widgets/float_t.md)      |  `FloatLineEditConfig`  |       `float_t`        | `float_t`扩展自`float`，可以看作是`float`类型的别名。`PyGUIAdapter`为该类型提供了一个单行文本输入框样式的输入组件，但于与一般单行文本输入框标题，该类型的输入组件只允许用户输入浮点数文本。 |   ![](../images/float_t.png)    |
+|        [`TextEdit`](widgets/text_t.md)         |    `TextEditConfig`     |        `text_t`        | `text_t`扩展自`str`，可以看作是`str`类型的别名。`PyGUIAdapter`为该类型提供了一个多行文本输入框，允许用户输入多行文本。 |    ![](../images/text_t.png)    |
+|      [`Slider`](widgets/int_slider_t.md)       |     `SliderConfig`      |     `int_slider_t`     | `int_slider_t`扩展自`int`，可以看作是`int`类型的别名。与其他`int`不同，`PyGUIAdapter`为该类型提供了滑动块形式的输入控件。 | ![](../images/int_slider_t.png) |
+|        [`Dial`](widgets/int_dial_t.md)         |      `DialConfig`       |      `int_dial_t`      | `int_dial_t`扩展自`int`，可以看作是`int`类型的别名。与其他`int`不同，`PyGUIAdapter`为该类型提供了刻度盘形式的输入控件。 |  ![](../images/int_dial_t.png)  |
+| [`ColorTuplePicker`](widgets/color_tuple_t.md) |   `ColorPickerConfig`   |    `color_tuple_t`     |                                                              |                                 |
+|   [`ColorHexPicker`](widgets/color_hex_t.md)   |   `ColorPickerConfig`   |     `color_hex_t`      |                                                              |                                 |
+|       [`ChoiceBox`](widgets/choice_t.md)       |    `ChoiceBoxConfig`    |       `choice_t`       |                                                              |                                 |
+| [`KeySequenceEdit`](widgets/key_sequence_t.md) | `KeySequenceEditConfig` |    `key_sequence_t`    |                                                              |                                 |
+|    [`MultiChoiceBox`](widgets/choices_t.md)    | `MultiChoiceBoxConfig`  |      `choices_t`       |                                                              |                                 |
+|   [`PlainDictEdit`](widgets/plain_dict_t.md)   |  `PlainDictEditConfig`  |     `plain_dict_t`     |                                                              |                                 |
+|  [`StringListEdit`](widgets/string_list_t.md)  | `StringListEditConfig`  |    `string_list_t`     |                                                              |                                 |
+|        [`JsonEdit`](widgets/json_obj_t)        |    `JsonEditConfig`     |      `json_obj_t`      |                                                              |                                 |
+|        [`DirSelect`](widgets/dir_t.md)         |    `DirSelectConfig`    | `directory_t`、`dir_t` |                                                              |                                 |
+|       [`FileSelect`](widgets/file_t.md)        |   `FileSelectConfig`    |        `file_t`        |                                                              |                                 |
+|    [`MultiFileSelect`](widgets/files_t.md)     | `MultiFileSelectConfig` |       `files_t`        |                                                              |                                 |
 
