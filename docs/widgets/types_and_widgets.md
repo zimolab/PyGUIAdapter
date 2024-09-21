@@ -38,7 +38,7 @@
 |        [`TextEdit`](widgets/text_t.md)         |    `TextEditConfig`     |        `text_t`        | `text_t`扩展自`str`，可以看作是`str`类型的别名。`PyGUIAdapter`为该类型提供了一个多行文本输入框，允许用户输入多行文本。 |     ![](../images/text_t.png)     |
 |      [`Slider`](widgets/int_slider_t.md)       |     `SliderConfig`      |     `int_slider_t`     | `int_slider_t`扩展自`int`，可以看作是`int`类型的别名。与其他`int`不同，`PyGUIAdapter`为该类型提供了滑动块形式的输入控件。 |  ![](../images/int_slider_t.png)  |
 |        [`Dial`](widgets/int_dial_t.md)         |      `DialConfig`       |      `int_dial_t`      | `int_dial_t`扩展自`int`，可以看作是`int`类型的别名。与其他`int`不同，`PyGUIAdapter`为该类型提供了刻度盘形式的输入控件。 |   ![](../images/int_dial_t.png)   |
-|      [`ColorPicker`](widgets/color_t.md)       |   `ColorPickerConfig`   |       `color_t`        |                                                              |    ![](../images/color_t.png)     |
+|      [`ColorPicker`](widgets/color_t.md)       |   `ColorPickerConfig`   |       `color_t`        |            `color_t`扩展自`object`，实际上支持``             |    ![](../images/color_t.png)     |
 |       [`ChoiceBox`](widgets/choice_t.md)       |    `ChoiceBoxConfig`    |       `choice_t`       |     该类型扩展自`object`，用于通过下拉选项选择任意对象。     |    ![](../images/choice_t.png)    |
 |    [`MultiChoiceBox`](widgets/choices_t.md)    | `MultiChoiceBoxConfig`  |      `choices_t`       |    该类型扩展自`list`，用于从一组任意对象中选择多个对象。    |   ![](../images/choices_t.png)    |
 | [`KeySequenceEdit`](widgets/key_sequence_t.md) | `KeySequenceEditConfig` |    `key_sequence_t`    |                                                              | ![](../images/key_sequence_t.png) |
