@@ -38,14 +38,14 @@
 |        [`TextEdit`](widgets/text_t.md)         |    `TextEditConfig`     |        `text_t`        | `text_t`扩展自`str`，可以看作是`str`类型的别名。`PyGUIAdapter`为该类型提供了一个多行文本输入框，允许用户输入多行文本。 |     ![](../images/text_t.png)     |
 |      [`Slider`](widgets/int_slider_t.md)       |     `SliderConfig`      |     `int_slider_t`     | `int_slider_t`扩展自`int`，可以看作是`int`类型的别名。与其他`int`不同，`PyGUIAdapter`为该类型提供了滑动块形式的输入控件。 |  ![](../images/int_slider_t.png)  |
 |        [`Dial`](widgets/int_dial_t.md)         |      `DialConfig`       |      `int_dial_t`      | `int_dial_t`扩展自`int`，可以看作是`int`类型的别名。与其他`int`不同，`PyGUIAdapter`为该类型提供了刻度盘形式的输入控件。 |   ![](../images/int_dial_t.png)   |
-|      [`ColorPicker`](widgets/color_t.md)       |   `ColorPickerConfig`   |       `color_t`        |            `color_t`扩展自`object`，实际上支持``             |    ![](../images/color_t.png)     |
+|      [`ColorPicker`](widgets/color_t.md)       |   `ColorPickerConfig`   |       `color_t`        | `color_t`扩展自`object`，代表颜色类型的数据，实际支持的类型包括`tuple`（3元素或4元素元组）、`str`、`QColor`，发者可以选择颜色的表示方式。`PyGUIAdapter`为该类型提供了一个颜色选择器。 |    ![](../images/color_t.png)     |
 |       [`ChoiceBox`](widgets/choice_t.md)       |    `ChoiceBoxConfig`    |       `choice_t`       |     该类型扩展自`object`，用于通过下拉选项选择任意对象。     |    ![](../images/choice_t.png)    |
 |    [`MultiChoiceBox`](widgets/choices_t.md)    | `MultiChoiceBoxConfig`  |      `choices_t`       |    该类型扩展自`list`，用于从一组任意对象中选择多个对象。    |   ![](../images/choices_t.png)    |
-| [`KeySequenceEdit`](widgets/key_sequence_t.md) | `KeySequenceEditConfig` |    `key_sequence_t`    |                                                              | ![](../images/key_sequence_t.png) |
-|   [`PlainDictEdit`](widgets/plain_dict_t.md)   |  `PlainDictEditConfig`  |     `plain_dict_t`     |                                                              |  ![](../images/plain_dict_t.png)  |
-|  [`StringListEdit`](widgets/string_list_t.md)  | `StringListEditConfig`  |    `string_list_t`     |                                                              | ![](../images/string_list_t.png)  |
-|        [`JsonEdit`](widgets/json_obj_t)        |    `JsonEditConfig`     |      `json_obj_t`      |                                                              |   ![](../images/json_obj_t.png)   |
-|        [`DirSelect`](widgets/dir_t.md)         |    `DirSelectConfig`    | `directory_t`、`dir_t` |                                                              |  ![](../images/directory_t.png)   |
-|       [`FileSelect`](widgets/file_t.md)        |   `FileSelectConfig`    |        `file_t`        |                                                              |     ![](../images/file_t.png)     |
-|    [`MultiFileSelect`](widgets/files_t.md)     | `MultiFileSelectConfig` |       `files_t`        |                                                              |    ![](../images/files_t.png)     |
+| [`KeySequenceEdit`](widgets/key_sequence_t.md) | `KeySequenceEditConfig` |    `key_sequence_t`    |        `key_sequence_t`扩展自`str`，代表一个快捷键。         | ![](../images/key_sequence_t.png) |
+|   [`PlainDictEdit`](widgets/plain_dict_t.md)   |  `PlainDictEditConfig`  |     `plain_dict_t`     | `plain_dict_t`类型扩展自`dict`，用于`Dict[key, int|bool|float|str|list|dict]`类型数据的输入。 |  ![](../images/plain_dict_t.png)  |
+|  [`StringListEdit`](widgets/string_list_t.md)  | `StringListEditConfig`  |    `string_list_t`     | `string_list_t`扩展自`list`，用于`List[str]`类型数据的输入。 | ![](../images/string_list_t.png)  |
+|        [`JsonEdit`](widgets/json_obj_t)        |    `JsonEditConfig`     |      `json_obj_t`      | `json_obj_t`扩展自`object`，用于json类型数据的输入。用户在控件上输入的文本将通过`json.loads`转换为对应的Python对象。 |   ![](../images/json_obj_t.png)   |
+|        [`DirSelect`](widgets/dir_t.md)         |    `DirSelectConfig`    | `directory_t`、`dir_t` | `directory_t`扩展自`str`，代表一个目录路径，`PyGUIAdapter`为该类型提供了一个文件选择对话框用于选择目录。 |  ![](../images/directory_t.png)   |
+|       [`FileSelect`](widgets/file_t.md)        |   `FileSelectConfig`    |        `file_t`        | `file`扩展自`str`，代表一个文件路径，`PyGUIAdapter`为该类型提供了一个文件选择对话框用于选择文件。 |     ![](../images/file_t.png)     |
+|    [`MultiFileSelect`](widgets/files_t.md)     | `MultiFileSelectConfig` |       `files_t`        | `files`扩展自`list`，代表一组文件路径，`PyGUIAdapter`为该类型提供了一个文件选择对话框用于选择多个文件。 |    ![](../images/files_t.png)     |
 
