@@ -304,7 +304,29 @@ if __name__ == "__main__":
 可以看到，**对于函数中抛出的`ParameterError`，`PyGUIAdapter`不仅进行了弹窗提示，而且在对应参数的输入控件下方，以醒目的方式提醒用户他刚刚输入
 了一个不合法的值。**
 
-## 四、教程：从零开始构建应用程序
+## 四、高级主题
+
+### （一）数据类型与控件
+
+#### [0、如何配置函数参数的控件](widgets/how_to_configure_widget.md)
+
+#### [1、参数类型与对应控件](widgets/types_and_widgets.md)
+
+#### [2、自定义控件类型](widgets/custom_widget.md)
+
+#### [3、使用图标](widgets/icons.md)
+
+### （二）窗口及其配置
+
+**参见[此处](windows/overview.md)**
+
+### （三适）配器对象（GUIAdapter）及其他
+
+**参见[此处](adapter/overview.md)**
+
+
+
+## 五、教程
 
 上面的示例演示了`PyGUIAdapter`的基本用法。 除此之外，`PyGUIAdapter`为构建更加大型、复杂的应用程序，提供了更多的功能。
 
@@ -321,25 +343,7 @@ if __name__ == "__main__":
 
 **[点击此处查看教程](tutorials/overview.md)**
 
-## 五、参考
 
-### （一）数据类型与控件
-
-#### [0、如何配置函数参数的控件](widgets/how_to_configure_widget.md)
-
-#### [1、参数数据类型及其对应控件](widgets/types_and_widgets.md)
-
-#### [2、自定义控件类型](widgets/custom_widget.md)
-
-#### [3、使用图标](widgets/icons.md)
-
-### （二）窗口及其配置
-
-**参见[此处](windows/overview.md)**
-
-### （三适）配器对象（GUIAdapter）及其他
-
-**参见[此处](adapter/overview.md)**
 
 ## 六、开源协议
 
