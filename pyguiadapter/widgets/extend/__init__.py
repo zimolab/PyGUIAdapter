@@ -7,7 +7,9 @@ from .colorpicker import (
     ColorPicker,
     ColorPickerConfig,
     ColorTuplePicker,
+    ColorTuplePickerConfig,
     ColorHexPicker,
+    ColorHexPickerConfig,
 )
 from .keysequenceedit import KeySequenceEdit, KeySequenceEditConfig, KeySequenceFormat
 from .stringlist import StringListEdit, StringListEditConfig
@@ -45,6 +47,8 @@ __all__ = [
     "ColorTuplePicker",
     "ColorHexPicker",
     "ColorPickerConfig",
+    "ColorTuplePickerConfig",
+    "ColorHexPickerConfig",
     "ColorType",
     "KeySequenceEditConfig",
     "KeySequenceEdit",
