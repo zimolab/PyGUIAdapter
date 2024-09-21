@@ -13,7 +13,7 @@ from ..common import CommonParameterWidgetConfig, CommonParameterWidget
 class DirSelectConfig(CommonParameterWidgetConfig):
     default_value: str = ""
     placeholder: str = ""
-    dialog_title: str = "Select Directory"
+    dialog_title: str = ""
     start_dir: str = ""
     select_button_text: str = "..."
     clear_button: bool = False

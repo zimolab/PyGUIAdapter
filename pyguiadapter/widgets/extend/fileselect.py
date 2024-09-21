@@ -14,7 +14,7 @@ from pyguiadapter.exceptions import ParameterError
 class FileSelectConfig(CommonParameterWidgetConfig):
     default_value: str = ""
     placeholder: str = ""
-    dialog_title: str = "Select File"
+    dialog_title: str = ""
     start_dir: str = ""
     filters: str = ""
     save_file: bool = False
@@ -66,7 +66,7 @@ class FileSelect(CommonParameterWidget):
 class MultiFileSelectConfig(CommonParameterWidgetConfig):
     default_value: List[str] = dataclasses.field(default_factory=list)
     placeholder: str = ""
-    dialog_title: str = "Select Files"
+    dialog_title: str = ""
     start_dir: str = ""
     filters: str = ""
     file_separator: str = ";;"

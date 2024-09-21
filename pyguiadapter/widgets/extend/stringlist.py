@@ -5,7 +5,7 @@ import os.path
 from typing import Type, List, Literal
 
 from qtpy.QtCore import QStringListModel, Qt
-from qtpy.QtWidgets import QWidget, QListView, QGridLayout, QVBoxLayout, QPushButton
+from qtpy.QtWidgets import QWidget, QListView, QVBoxLayout, QPushButton, QMenu, QAction
 
 from ..common import CommonParameterWidgetConfig, CommonParameterWidget
 from ... import utils
@@ -17,18 +17,25 @@ TextElideMode = Qt.TextElideMode
 class StringListEditConfig(CommonParameterWidgetConfig):
     default_value: List[str] | None = dataclasses.field(default_factory=list)
     empty_string_strategy: Literal["keep_all", "keep_one", "remove_all"] = "remove_all"
-    select_file: bool = True
-    select_directory: bool = True
+    add_file: bool = True
+    add_dir: bool = True
     file_filters: str = ""
     start_dir: str = ""
     normalize_path: bool = True
     add_button_text: str = "Add"
     remove_button_text: str = "Remove"
-    select_file_button_text: str = "File"
-    select_directory_button_text: str = "Directory"
+    clear_button_text: str = "Clear"
+    add_string_hint: str = "Add Text"
+    add_file_hint: str = "Add File"
+    add_dir_hint: str = "Add Directory"
     file_dialog_title: str = "Select File"
-    directory_dialog_title: str = "Select Directory"
-    min_height: int = 300
+    dir_dialog_title: str = "Select Directory"
+    confirm_dialog_title: str = "Confirm"
+    warning_dialog_title: str = "Warning"
+    remove_confirm_message: str = "Are you sure to remove the selected item(s)?"
+    clear_confirm_message: str = "Are you sure to clear all of the items?"
+    no_selection_message: str = "No items are selected!"
+    min_height: int = 230
     drag_enabled: bool = True
     wrapping: bool = False
     text_elide_mode: TextElideMode = TextElideMode.ElideLeft
@@ -53,8 +60,7 @@ class StringListEdit(CommonParameterWidget):
         self._list_view: QListView | None = None
         self._add_button: QPushButton | None = None
         self._remove_button: QPushButton | None = None
-        self._select_file_button: QPushButton | None = None
-        self._select_directory_button: QPushButton | None = None
+        self._clear_button: QPushButton | None = None
 
         self._model: QStringListModel | None = None
         super().__init__(parent, parameter_name, config)
@@ -85,39 +91,56 @@ class StringListEdit(CommonParameterWidget):
             self._list_view.setModel(self._model)
             layout_main.addWidget(self._list_view)
 
-            layout_buttons = QGridLayout(self._value_widget)
+            layout_buttons = QVBoxLayout(self._value_widget)
 
-            self._add_button = QPushButton(
-                self._config.add_button_text, self._value_widget
-            )
-            # noinspection PyUnresolvedReferences
-            self._add_button.clicked.connect(self._on_add_item)
-            layout_buttons.addWidget(self._add_button, 1, 0)
+            self._add_button = self._create_add_button(self._value_widget)
+            layout_buttons.addWidget(self._add_button)
 
-            self._remove_button = QPushButton(
-                self._config.remove_button_text, self._value_widget
-            )
+            self._remove_button = QPushButton(self._value_widget)
+            self._remove_button.setText(self._config.remove_button_text)
             # noinspection PyUnresolvedReferences
             self._remove_button.clicked.connect(self._on_remove_item)
-            layout_buttons.addWidget(self._remove_button, 1, 1)
+            layout_buttons.addWidget(self._remove_button)
 
-            if self._config.select_file:
-                self._select_file_button = QPushButton(
-                    self._config.select_file_button_text, self._value_widget
-                )
-                # noinspection PyUnresolvedReferences
-                self._select_file_button.clicked.connect(self._on_select_file)
-                layout_buttons.addWidget(self._select_file_button, 2, 0)
+            self._clear_button = QPushButton(self._value_widget)
+            # noinspection PyUnresolvedReferences
+            self._clear_button.clicked.connect(self._on_clear_items)
+            self._clear_button.setText(self._config.clear_button_text)
+            layout_buttons.addWidget(self._clear_button)
 
-            if self._config.select_directory:
-                self._select_directory_button = QPushButton(
-                    self._config.select_directory_button_text, self._value_widget
-                )
-                # noinspection PyUnresolvedReferences
-                self._select_directory_button.clicked.connect(self._on_select_directory)
-                layout_buttons.addWidget(self._select_directory_button, 2, 1)
             layout_main.addLayout(layout_buttons)
         return self._value_widget
+
+    def _create_add_button(self, parent: QWidget) -> QPushButton:
+        self._config: StringListEditConfig
+        add_button = QPushButton(parent)
+        add_button.setText(self._config.add_button_text)
+        if self._config.add_file or self._config.add_dir:
+            menu = QMenu(add_button)
+
+            action_add_string = QAction(menu)
+            action_add_string.setText(self._config.add_string_hint)
+            # noinspection PyUnresolvedReferences
+            action_add_string.triggered.connect(self._on_add_item)
+            menu.addAction(action_add_string)
+
+            if self._config.add_file:
+                action_add_file = QAction(menu)
+                action_add_file.setText(self._config.add_file_hint)
+                # noinspection PyUnresolvedReferences
+                action_add_file.triggered.connect(self._on_add_file)
+                menu.addAction(action_add_file)
+            if self._config.add_dir:
+                action_add_dir = QAction(menu)
+                action_add_dir.setText(self._config.add_dir_hint)
+                # noinspection PyUnresolvedReferences
+                action_add_dir.triggered.connect(self._on_add_dir)
+                menu.addAction(action_add_dir)
+            add_button.setMenu(menu)
+        else:
+            # noinspection PyUnresolvedReferences
+            add_button.clicked.connect(self._on_add_item)
+        return add_button
 
     def set_value_to_widget(self, value: List[str]):
         self._clear_items()
@@ -140,13 +163,17 @@ class StringListEdit(CommonParameterWidget):
         self._config: StringListEditConfig
         selected = self._list_view.selectedIndexes()
         if not selected:
-            utils.show_warning_message(self, "No item selected!", title="Warning")
+            utils.show_warning_message(
+                self,
+                self._config.no_selection_message,
+                title=self._config.warning_dialog_title,
+            )
             return
         if self._config.confirm_remove:
             ret = utils.show_question_message(
                 self,
-                message=f"{len(selected)} item(s) are selected. Are you sure to remove them?",
-                title="Confirm",
+                message=self._config.remove_confirm_message,
+                title=self._config.warning_dialog_title,
                 buttons=utils.StandardButton.Yes | utils.StandardButton.No,
             )
             if ret == utils.StandardButton.No:
@@ -154,9 +181,24 @@ class StringListEdit(CommonParameterWidget):
         for index in selected:
             self._model.removeRow(index.row())
 
-    def _on_select_file(self):
+    def _on_clear_items(self):
         self._config: StringListEditConfig
-        current_idx = self._list_view.currentIndex()
+        count = self._model.rowCount()
+        if count <= 0:
+            return
+        if self._config.confirm_remove:
+            ret = utils.show_question_message(
+                self,
+                message=self._config.clear_confirm_message,
+                title=self._config.warning_dialog_title,
+                buttons=utils.StandardButton.Yes | utils.StandardButton.No,
+            )
+            if ret == utils.StandardButton.No:
+                return
+        self._clear_items()
+
+    def _on_add_file(self):
+        self._config: StringListEditConfig
         path = utils.get_open_file(
             self,
             title=self._config.file_dialog_title,
@@ -167,14 +209,14 @@ class StringListEdit(CommonParameterWidget):
             return
         if self._config.normalize_path:
             path = os.path.normpath(path)
-        if not current_idx or not current_idx.isValid():
-            self._append_item(path, set_current=True)
+        current_idx = self._list_view.currentIndex()
+        if not current_idx or (not current_idx.isValid()):
+            self._append_item(path, set_current=False)
         else:
             self._model.setData(current_idx, path)
 
-    def _on_select_directory(self):
+    def _on_add_dir(self):
         self._config: StringListEditConfig
-        current_idx = self._list_view.currentIndex()
         path = utils.get_existing_directory(
             self,
             title=self._config.file_dialog_title,
@@ -184,27 +226,28 @@ class StringListEdit(CommonParameterWidget):
             return
         if self._config.normalize_path:
             path = os.path.normpath(path)
-        if not current_idx or not current_idx.isValid():
+        current_idx = self._list_view.currentIndex()
+        if not current_idx or (not current_idx.isValid()):
             self._append_item(path, set_current=True)
         else:
             self._model.setData(current_idx, path)
 
     def _clear_items(self):
         self._model.removeRows(0, self._model.rowCount())
+        self._model.setStringList([])
 
     def _append_item(self, item: str, edit: bool = False, set_current: bool = False):
-        self._model.insertRow(self._model.rowCount())
-        self._model.setData(self._model.index(self._model.rowCount() - 1), item)
+        row = self._model.rowCount()
+        self._model.insertRow(row)
+        self._model.setData(self._model.index(row), item)
         if edit:
-            self._list_view.edit(self._model.index(self._model.rowCount() - 1))
+            self._list_view.edit(self._model.index(row))
         if set_current:
-            self._list_view.setCurrentIndex(
-                self._model.index(self._model.rowCount() - 1)
-            )
+            self._list_view.setCurrentIndex(self._model.index(row))
 
     def _append_items(self, items: List[str]):
         for item in items:
-            self._append_item(item, set_current=False)
+            self._append_item(item)
 
     @staticmethod
     def _keep_one_empty_item(items: List[str]) -> List[str]:

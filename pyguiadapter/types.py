@@ -52,6 +52,11 @@ class int_dial_t(int):
 
 
 # noinspection PyPep8Naming
+class color_t(object):
+    pass
+
+
+# noinspection PyPep8Naming
 class color_tuple_t(tuple):
     pass
 

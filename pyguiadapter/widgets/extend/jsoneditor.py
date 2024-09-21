@@ -13,12 +13,14 @@ from ...codeeditor import JsonFormatter
 JSON_FILE_FILTERS = (
     "JSON files (*.json);;Text files(*.txt);;Text files(*.text);;All files (*.*)"
 )
+INDENT_SIZE = 4
 
 
 @dataclasses.dataclass(frozen=True)
 class JsonEditConfig(BaseCodeEditConfig):
     default_value: Any = dataclasses.field(default_factory=dict)
     highlighter: Type[QJSONHighlighter] = QJSONHighlighter
+    indent_size: int = INDENT_SIZE
     formatter: JsonFormatter = dataclasses.field(default_factory=JsonFormatter)
     file_filters: str = JSON_FILE_FILTERS
 

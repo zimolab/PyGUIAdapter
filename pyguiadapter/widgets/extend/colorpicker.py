@@ -15,6 +15,7 @@ ColorType = Union[
     Tuple[int, int, int],  # RGBA
     str,  # color name or hex
     QColor,
+    list,  # will be converted to a tuple
 ]
 
 
@@ -22,9 +23,9 @@ class ColorLabel(QLabel):
     def __init__(
         self,
         parent: QWidget | None,
-        show_alpha: bool = True,
+        alpha_channel: bool = True,
         initial_color: ColorType = Qt.white,
-        show_color_name: bool = True,
+        display_color_name: bool = True,
     ):
         super().__init__(parent)
 
@@ -37,12 +38,15 @@ class ColorLabel(QLabel):
         self.setFont(font)
 
         self._color = initial_color
-        self._show_alpha = show_alpha
-        self._show_color_name = show_color_name
+        self._alpha_channel = alpha_channel
+        self._display_color_name = display_color_name
 
         self.set_color(initial_color)
 
     def set_color(self, color: ColorType):
+        if isinstance(color, list):
+            color = tuple(color)
+
         if not isinstance(color, (tuple, QColor, str)):
             raise ValueError("color must be tuple, QColor or str")
         self._color = self.normalize_color(color)
@@ -56,7 +60,7 @@ class ColorLabel(QLabel):
         super().mouseReleaseEvent(ev)
 
     def _pick_color(self):
-        if self._show_alpha:
+        if self._alpha_channel:
             color = QColorDialog.getColor(
                 self._color, self, options=QColorDialog.ShowAlphaChannel
             )
@@ -69,12 +73,16 @@ class ColorLabel(QLabel):
     def _update_ui(self):
         css = "ColorLabel{\n#props\n}"
         props = f"background-color: {self._color.name()};\n"
-        if self._show_color_name:
+        if self._display_color_name:
             text_color = utils.get_inverted_color(self._color)
             text_color.setAlpha(255)
             props += f"color: {text_color.name()};"
+            display_text = self._color.name()
+            if self._alpha_channel:
+                display_text += f"\nalpha: {self._color.alpha()}"
+            self.setText(display_text)
+
         self.setStyleSheet(css.replace("#props", props))
-        self.setText(self._color.name())
 
     @classmethod
     def normalize_color(cls, color: ColorType) -> QColor:
@@ -96,8 +104,8 @@ class ColorLabel(QLabel):
 class ColorPickerConfig(CommonParameterWidgetConfig):
     default_value: ColorType | None = "white"
     initial_color: ColorType = "white"
-    show_alpha: bool = True
-    show_color_name: bool = True
+    alpha_channel: bool = True
+    display_color_name: bool = True
     min_height: int = 45
     max_height: int = 45
     return_type: Literal["tuple", "QColor", "str"] = "tuple"
@@ -125,9 +133,9 @@ class ColorPicker(CommonParameterWidget):
         if self._value_widget is None:
             self._value_widget = ColorLabel(
                 self,
-                self._config.show_alpha,
+                self._config.alpha_channel,
                 self._config.initial_color,
-                self._config.show_color_name,
+                self._config.display_color_name,
             )
             self._value_widget.setMinimumHeight(self._config.min_height)
             self._value_widget.setMaximumHeight(self._config.max_height)
@@ -141,7 +149,7 @@ class ColorPicker(CommonParameterWidget):
         color = self._value_widget.get_color()
         if self._config.return_type == "tuple":
             color_tuple = color.getRgb()
-            if self._config.show_alpha:
+            if self._config.alpha_channel:
                 return color_tuple
             return color_tuple[:3]
         if self._config.return_type == "QColor":
@@ -149,8 +157,17 @@ class ColorPicker(CommonParameterWidget):
         return color.name()
 
 
+@dataclasses.dataclass(frozen=True)
+class ColorTuplePickerConfig(ColorPickerConfig):
+    return_type = "tuple"
+
+    @classmethod
+    def target_widget_class(cls) -> Type["ColorTuplePicker"]:
+        return ColorTuplePicker
+
+
 class ColorTuplePicker(ColorPicker):
-    ConfigClass = ColorPickerConfig
+    ConfigClass = ColorTuplePickerConfig
 
     def __init__(
         self,
@@ -162,8 +179,17 @@ class ColorTuplePicker(ColorPicker):
         super().__init__(parent, parameter_name, config)
 
 
+@dataclasses.dataclass(frozen=True)
+class ColorHexPickerConfig(ColorPickerConfig):
+    return_type = "str"
+
+    @classmethod
+    def target_widget_class(cls) -> Type["ColorHexPicker"]:
+        return ColorHexPicker
+
+
 class ColorHexPicker(ColorPicker):
-    ConfigClass = ColorPickerConfig
+    ConfigClass = ColorHexPickerConfig
 
     def __init__(
         self,

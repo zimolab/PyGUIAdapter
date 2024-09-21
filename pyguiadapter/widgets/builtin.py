@@ -78,6 +78,7 @@ from ..types import (
     key_sequence_t,
     string_list_t,
     plain_dict_t,
+    color_t,
 )
 
 TYPE_TEXT = text_t.__name__
@@ -99,6 +100,7 @@ TYPE_COLOR_TUPLE = color_tuple_t.__name__
 TYPE_COLOR_HEX = color_hex_t.__name__
 # noinspection SpellCheckingInspection
 TYPE_QCOLOR = QColor.__name__
+TYPE_COLOR_T = color_t.__name__
 TYPE_KEY_SEQUENCE_T = key_sequence_t.__name__
 TYPE_STRING_LIST_T = string_list_t.__name__
 TYPE_PLAIN_DICT_T = plain_dict_t.__name__
@@ -144,6 +146,7 @@ BUILTIN_WIDGETS_MAP = {
     TYPE_COLOR_TUPLE: ColorTuplePicker,
     TYPE_COLOR_HEX: ColorHexPicker,
     TYPE_QCOLOR: ColorPicker,
+    TYPE_COLOR_T: ColorPicker,
     TYPE_KEY_SEQUENCE_T: KeySequenceEdit,
     TYPE_STRING_LIST_T: StringListEdit,
     TYPE_PLAIN_DICT_T: PlainDictEdit,

@@ -3,7 +3,7 @@ from __future__ import annotations
 import dataclasses
 import json
 from collections import OrderedDict
-from typing import Type, TypeVar, Dict, Any, List, Tuple
+from typing import Type, Dict, Any, List, Tuple
 
 from pyqcodeeditor.QCodeEditor import QCodeEditor
 from pyqcodeeditor.highlighters import QJSONHighlighter
@@ -46,21 +46,18 @@ class PlainDictEditConfig(CommonParameterWidgetConfig):
     corner_button_enabled: bool = True
     vertical_header_visible: bool = False
     horizontal_header_visible: bool = True
-    min_height: int = 300
+    min_height: int = 260
     confirm_remove: bool = True
-    no_item_dialog_title: str = "Info"
-    no_item_dialog_message: str = "No item has been added."
-    no_selected_items_dialog_title: str = "Info"
-    no_selected_items_dialog_message: str = "No item is selected."
-    remove_item_dialog_title: str = "Confirm"
-    remove_item_dialog_message: str = (
-        "Are you sure you want to remove selected item(s)?"
-    )
-    clear_items_dialog_title: str = "Confirm"
-    clear_items_dialog_message: str = "Are you sure you want to clear all items?"
-    edit_item_editor_title: str = "Edit Item"
-    add_item_editor_title: str = "Add Item"
-    item_editor_size: Tuple[int, int] = (500, 400)
+    warning_dialog_title: str = "Warning"
+    no_item_message: str = "No item has been added!"
+    no_selection_message: str = "No item selected!"
+    confirm_dialog_title: str = "Confirm"
+    remove_item_message: str = "Are you sure to remove the selected item(s)?"
+    clear_dialog_title: str = "Confirm"
+    clear_items_message: str = "Are you sure to clear all items?"
+    edit_item_title: str = "Edit - {}"
+    add_item_title: str = "Add Item"
+    editor_size: Tuple[int, int] = (500, 400)
 
     @classmethod
     def target_widget_class(cls) -> Type["PlainDictEdit"]:
@@ -68,7 +65,6 @@ class PlainDictEditConfig(CommonParameterWidgetConfig):
 
 
 class PlainDictEdit(CommonParameterWidget):
-    Self = TypeVar("Self", bound="PlainDictEdit")
     ConfigClass = PlainDictEditConfig
 
     def __init__(
@@ -187,9 +183,9 @@ class PlainDictEdit(CommonParameterWidget):
             current_value=None,
             key_label=self._config.key_header,
             value_label=self._config.value_header,
-            window_size=self._config.item_editor_size,
+            window_size=self._config.editor_size,
         )
-        editor.setWindowTitle(self._config.add_item_editor_title)
+        editor.setWindowTitle(self._config.add_item_title)
         if editor.exec_() == QDialog.Rejected:
             return
         new_key = editor.get_current_key()
@@ -214,17 +210,17 @@ class PlainDictEdit(CommonParameterWidget):
         self._config: PlainDictEditConfig
         selected_rows = self._table_view.selectionModel().selectedRows()
         if not selected_rows:
-            utils.show_info_message(
+            utils.show_warning_message(
                 self,
-                title=self._config.no_selected_items_dialog_title,
-                message=self._config.no_selected_items_dialog_message,
+                title=self._config.warning_dialog_title,
+                message=self._config.no_selection_message,
             )
             return
         if self._config.confirm_remove:
             ret = utils.show_question_message(
                 self,
-                title=self._config.remove_item_dialog_title,
-                message=self._config.remove_item_dialog_message,
+                title=self._config.confirm_dialog_title,
+                message=self._config.remove_item_message,
                 buttons=utils.StandardButton.Yes | utils.StandardButton.No,
             )
             if ret != utils.StandardButton.Yes:
@@ -235,10 +231,10 @@ class PlainDictEdit(CommonParameterWidget):
         self._config: PlainDictEditConfig
         selected_index = self._table_view.selectionModel().selectedIndexes()
         if not selected_index:
-            utils.show_info_message(
+            utils.show_warning_message(
                 self,
-                title=self._config.no_selected_items_dialog_title,
-                message=self._config.no_selected_items_dialog_message,
+                title=self._config.warning_dialog_title,
+                message=self._config.no_selection_message,
             )
             return
         first_idx = selected_index[0]
@@ -261,9 +257,9 @@ class PlainDictEdit(CommonParameterWidget):
             current_value,
             key_label=self._config.key_header,
             value_label=self._config.value_header,
-            window_size=self._config.item_editor_size,
+            window_size=self._config.editor_size,
         )
-        editor.setWindowTitle(self._config.edit_item_editor_title)
+        editor.setWindowTitle(self._config.edit_item_title.format(current_key))
         if editor.exec_() == QDialog.Rejected:
             return
         new_key = editor.get_current_key()
@@ -278,8 +274,8 @@ class PlainDictEdit(CommonParameterWidget):
         if self._item_count() <= 0:
             utils.show_info_message(
                 self,
-                title=self._config.no_item_dialog_title,
-                message=self._config.no_item_dialog_message,
+                title=self._config.warning_dialog_title,
+                message=self._config.no_item_message,
             )
             return
         if not self._config.confirm_remove:
@@ -287,8 +283,8 @@ class PlainDictEdit(CommonParameterWidget):
             return
         ret = utils.show_question_message(
             self,
-            title=self._config.clear_items_dialog_title,
-            message=self._config.clear_items_dialog_message,
+            title=self._config.clear_dialog_title,
+            message=self._config.clear_items_message,
             buttons=utils.StandardButton.Yes | utils.StandardButton.No,
         )
         if ret == utils.StandardButton.Yes:
@@ -312,8 +308,9 @@ class PlainDictEdit(CommonParameterWidget):
 
     def _remove_rows(self, rows: List[QModelIndex]):
         rows = list(set(row.row() for row in rows if row.isValid()))
+        if not rows:
+            return
         rows.sort(reverse=True)
-        print(rows)
         for row in rows:
             self._model.removeRow(row)
 
