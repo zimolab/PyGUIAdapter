@@ -53,7 +53,6 @@ class PlainDictEditConfig(CommonParameterWidgetConfig):
     no_selection_message: str = "No item selected!"
     confirm_dialog_title: str = "Confirm"
     remove_item_message: str = "Are you sure to remove the selected item(s)?"
-    clear_dialog_title: str = "Confirm"
     clear_items_message: str = "Are you sure to clear all items?"
     edit_item_title: str = "Edit - {}"
     add_item_title: str = "Add Item"
@@ -283,7 +282,7 @@ class PlainDictEdit(CommonParameterWidget):
             return
         ret = utils.show_question_message(
             self,
-            title=self._config.clear_dialog_title,
+            title=self._config.confirm_dialog_title,
             message=self._config.clear_items_message,
             buttons=utils.StandardButton.Yes | utils.StandardButton.No,
         )
