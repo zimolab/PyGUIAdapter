@@ -40,9 +40,9 @@
 |        [`Dial`](widgets/int_dial_t.md)         |      `DialConfig`       |      `int_dial_t`      | `int_dial_t`扩展自`int`，可以看作是`int`类型的别名。与其他`int`不同，`PyGUIAdapter`为该类型提供了刻度盘形式的输入控件。 |  ![](../images/int_dial_t.png)  |
 | [`ColorTuplePicker`](widgets/color_tuple_t.md) |   `ColorPickerConfig`   |    `color_tuple_t`     |                                                              |                                 |
 |   [`ColorHexPicker`](widgets/color_hex_t.md)   |   `ColorPickerConfig`   |     `color_hex_t`      |                                                              |                                 |
-|       [`ChoiceBox`](widgets/choice_t.md)       |    `ChoiceBoxConfig`    |       `choice_t`       |                                                              |                                 |
+|       [`ChoiceBox`](widgets/choice_t.md)       |    `ChoiceBoxConfig`    |       `choice_t`       |     该类型扩展自`object`，用于通过下拉选项选择任意对象。     |   ![](../images/choice_t.png)   |
+|    [`MultiChoiceBox`](widgets/choices_t.md)    | `MultiChoiceBoxConfig`  |      `choices_t`       |    该类型扩展自`list`，用于从一组任意对象中选择多个对象。    |  ![](../images/choices_t.png)   |
 | [`KeySequenceEdit`](widgets/key_sequence_t.md) | `KeySequenceEditConfig` |    `key_sequence_t`    |                                                              |                                 |
-|    [`MultiChoiceBox`](widgets/choices_t.md)    | `MultiChoiceBoxConfig`  |      `choices_t`       |                                                              |                                 |
 |   [`PlainDictEdit`](widgets/plain_dict_t.md)   |  `PlainDictEditConfig`  |     `plain_dict_t`     |                                                              |                                 |
 |  [`StringListEdit`](widgets/string_list_t.md)  | `StringListEditConfig`  |    `string_list_t`     |                                                              |                                 |
 |        [`JsonEdit`](widgets/json_obj_t)        |    `JsonEditConfig`     |      `json_obj_t`      |                                                              |                                 |
