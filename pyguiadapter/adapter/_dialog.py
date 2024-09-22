@@ -1,11 +1,11 @@
 from __future__ import annotations
 
-import inspect
 from abc import abstractmethod
 from typing import Type, Any
 
 from qtpy.QtWidgets import QWidget, QDialog
 
+from .. import utils
 from ..exceptions import AlreadyRegisteredError, NotRegisteredError
 
 
@@ -25,9 +25,7 @@ class CustomDialogFactory(object):
     def register(
         self, dialog_class: Type[BaseCustomDialog], name: str | None = None
     ) -> str:
-        if not (
-            inspect.isclass(dialog_class) and issubclass(dialog_class, BaseCustomDialog)
-        ):
+        if not utils.is_subclass_of(dialog_class, BaseCustomDialog):
             raise TypeError(
                 f"dialog_class must be a subclass of BaseCustomDialog: {dialog_class}"
             )
