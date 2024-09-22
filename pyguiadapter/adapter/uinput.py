@@ -1,19 +1,26 @@
 from __future__ import annotations
 
-import warnings
-from typing import List, Tuple, Literal
+from concurrent.futures import Future
+from typing import List, Tuple, Literal, Callable, Any
 
 from qtpy.QtCore import Qt, QUrl
 from qtpy.QtGui import QColor
 from qtpy.QtWidgets import QLineEdit, QInputDialog, QColorDialog
 
-from .ucontext import _request_get_input
+from .ucontext import _context
 from .. import utils
 from ..windows import FnExecuteWindow
 
 EchoMode = QLineEdit.EchoMode
 InputMethodHint = Qt.InputMethodHint
 InputMethodHints = Qt.InputMethodHints
+
+
+def _request_get_input(get_input_impl: Callable[[FnExecuteWindow], Any]) -> Any:
+    result_future = Future()
+    # noinspection PyUnresolvedReferences
+    _context.get_input_requested.emit(result_future, get_input_impl)
+    return result_future.result()
 
 
 def get_text(
@@ -121,26 +128,14 @@ def get_selected_item(
     return _request_get_input(_impl)
 
 
-def _to_color(c: str | tuple | QColor) -> QColor:
-    if isinstance(c, str):
-        if hasattr(QColor, "fromString"):
-            return QColor.fromString(c)
-        color = QColor()
-        color.setNamedColor(c)
-        return color
-    if isinstance(c, tuple):
-        return QColor.fromRgb(*c)
-    return c
-
-
 def get_color(
-    initial: QColor | str | tuple = Qt.white,
-    title: str = "Select Color",
+    initial: QColor | str | tuple = "white",
+    title: str = "",
     alpha_channel: bool = True,
     return_type: Literal["tuple", "str", "QColor"] = "str",
 ) -> Tuple[int, int, int] | Tuple[int, int, int] | str | QColor | None:
 
-    initial = _to_color(initial)
+    initial = utils.to_qcolor(initial)
 
     def _impl(wind: FnExecuteWindow | None) -> QColor | None:
         if alpha_channel:
@@ -157,7 +152,7 @@ def get_color(
 
 
 def get_existing_directory(
-    title: str = "Open Directory",
+    title: str = "",
     start_dir: str = "",
 ) -> str | None:
     def _impl(wind: FnExecuteWindow | None) -> str | None:
@@ -167,7 +162,7 @@ def get_existing_directory(
 
 
 def get_existing_directory_url(
-    title: str = "Open Directory URL",
+    title: str = "",
     start_dir: QUrl | None = None,
     supported_schemes: List[str] | None = None,
 ) -> QUrl:
@@ -180,7 +175,7 @@ def get_existing_directory_url(
 
 
 def get_open_file(
-    title: str = "Open File",
+    title: str = "",
     start_dir: str = "",
     filters: str = "",
 ) -> str | None:
@@ -191,7 +186,7 @@ def get_open_file(
 
 
 def get_open_files(
-    title: str = "Open Files",
+    title: str = "",
     start_dir: str = "",
     filters: str = "",
 ) -> List[str] | None:
@@ -202,7 +197,7 @@ def get_open_files(
 
 
 def get_save_file(
-    title: str = "Save File",
+    title: str = "",
     start_dir: str = "",
     filters: str = "",
 ) -> str | None:
