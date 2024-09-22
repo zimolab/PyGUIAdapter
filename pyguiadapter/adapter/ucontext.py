@@ -3,7 +3,7 @@ from __future__ import annotations
 import warnings
 from collections.abc import Callable
 from concurrent.futures import Future
-from typing import Any, Tuple, Type
+from typing import Any, Type
 
 from qtpy.QtCore import QObject, Signal, QMutex
 
@@ -201,29 +201,3 @@ def uprint(*args, sep=" ", end="\n", html: bool = False, scroll_to_bottom: bool 
     text = sep.join([str(arg) for arg in args]) + end
     # noinspection PyUnresolvedReferences
     _context.uprint.emit(text, html, scroll_to_bottom)
-
-
-def show_messagebox(config: MessageBoxConfig) -> Any:
-    global _context
-    result_future = Future()
-    # noinspection PyUnresolvedReferences
-    _context.show_messagebox.emit(result_future, config)
-    return result_future.result()
-
-
-def show_custom_dialog(
-    dialog_class: str | Type[BaseCustomDialog], **kwargs
-) -> Tuple[int, Any]:
-    global _context
-    result_future = Future()
-    # noinspection PyUnresolvedReferences
-    _context.show_custom_dialog.emit(result_future, dialog_class, kwargs)
-    return result_future.result()
-
-
-def _request_get_input(get_input_impl: Callable[[FnExecuteWindow], Any]) -> Any:
-    global _context
-    result_future = Future()
-    # noinspection PyUnresolvedReferences
-    _context.get_input_requested.emit(result_future, get_input_impl)
-    return result_future.result()
