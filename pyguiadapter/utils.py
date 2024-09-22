@@ -537,3 +537,42 @@ def is_subclass_of(cls: Any, base_cls: Any):
     if not inspect.isclass(cls) or not inspect.isclass(base_cls):
         return False
     return issubclass(cls, base_cls)
+
+
+def convert_color(
+    c: QColor,
+    return_type: Literal["tuple", "str", "QColor"],
+    alpha_channel: bool = True,
+) -> Tuple[int, int, int, int] | Tuple[int, int, int] | str | QColor:
+    assert isinstance(c, QColor)
+    if return_type == "QColor":
+        return c
+
+    if return_type == "tuple":
+        if alpha_channel:
+            return c.red(), c.green(), c.blue(), c.alpha()
+        else:
+            return c.red(), c.green(), c.blue()
+    if return_type == "str":
+        if alpha_channel:
+            return f"#{c.red():02x}{c.green():02x}{c.blue():02x}{c.alpha():02x}"
+        else:
+            return f"#{c.red():02x}{c.green():02x}{c.blue():02x}"
+
+    raise ValueError(f"invalid return_type: {return_type}")
+
+
+# noinspection SpellCheckingInspection
+def to_qcolor(color: str | tuple | list | QColor) -> QColor:
+    if isinstance(color, QColor):
+        return color
+    if isinstance(color, (list, tuple)):
+        if len(color) < 3:
+            raise ValueError(f"invalid color tuple: {color}")
+        c = QColor()
+        c.setRgb(*color)
+        return c
+    if isinstance(color, str):
+        return QColor(color)
+
+    raise ValueError(f"invalid color type: {type(color)}")

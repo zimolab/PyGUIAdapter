@@ -77,27 +77,29 @@ class ColorLabel(QLabel):
             text_color = utils.get_inverted_color(self._color)
             text_color.setAlpha(255)
             props += f"color: {text_color.name()};"
-            display_text = self._color.name()
-            if self._alpha_channel:
-                display_text += f"\nalpha: {self._color.alpha()}"
+            # display_text = self._color.name()
+            # if self._alpha_channel:
+            #     display_text += f"\nalpha: {self._color.alpha()}"
+            display_text = utils.convert_color(self._color, "str", self._alpha_channel)
             self.setText(display_text)
 
         self.setStyleSheet(css.replace("#props", props))
 
     @classmethod
     def normalize_color(cls, color: ColorType) -> QColor:
-        if not isinstance(color, (tuple, QColor, str)):
-            raise ValueError("color must be tuple, QColor or str")
-        if isinstance(color, QColor):
-            return color
-        if isinstance(color, str):
-            return QColor(color)
-        if isinstance(color, tuple) and 4 < len(color) < 3:
-            raise ValueError("color must be tuple of 3 or 4 ints")
-        c = QColor(color[0], color[1], color[2])
-        if len(color) == 4:
-            c.setAlpha(color[3])
-        return c
+        # if not isinstance(color, (tuple, QColor, str)):
+        #     raise ValueError("color must be tuple, QColor or str")
+        # if isinstance(color, QColor):
+        #     return color
+        # if isinstance(color, str):
+        #     return QColor(color)
+        # if isinstance(color, tuple) and 4 < len(color) < 3:
+        #     raise ValueError("color must be tuple of 3 or 4 ints")
+        # c = QColor(color[0], color[1], color[2])
+        # if len(color) == 4:
+        #     c.setAlpha(color[3])
+        # return c
+        return utils.to_qcolor(color)
 
 
 @dataclasses.dataclass(frozen=True)
@@ -147,14 +149,17 @@ class ColorPicker(CommonParameterWidget):
     def get_value_from_widget(self) -> ColorType:
         self._config: ColorPickerConfig
         color = self._value_widget.get_color()
-        if self._config.return_type == "tuple":
-            color_tuple = color.getRgb()
-            if self._config.alpha_channel:
-                return color_tuple
-            return color_tuple[:3]
-        if self._config.return_type == "QColor":
-            return color
-        return color.name()
+        return utils.convert_color(
+            color, self._config.return_type, self._config.alpha_channel
+        )
+        # if self._config.return_type == "tuple":
+        #     color_tuple = color.getRgb()
+        #     if self._config.alpha_channel:
+        #         return color_tuple
+        #     return color_tuple[:3]
+        # if self._config.return_type == "QColor":
+        #     return color
+        # return color.name()
 
 
 @dataclasses.dataclass(frozen=True)

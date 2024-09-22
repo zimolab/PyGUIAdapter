@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import warnings
-from typing import List, Tuple
+from typing import List, Tuple, Literal
 
 from qtpy.QtCore import Qt, QUrl
 from qtpy.QtGui import QColor
@@ -136,64 +136,24 @@ def _to_color(c: str | tuple | QColor) -> QColor:
 def get_color(
     initial: QColor | str | tuple = Qt.white,
     title: str = "Select Color",
-    show_alpha_channel: bool = True,
-) -> QColor | None:
+    alpha_channel: bool = True,
+    return_type: Literal["tuple", "str", "QColor"] = "str",
+) -> Tuple[int, int, int] | Tuple[int, int, int] | str | QColor | None:
 
     initial = _to_color(initial)
 
     def _impl(wind: FnExecuteWindow | None) -> QColor | None:
-        if show_alpha_channel:
+        if alpha_channel:
             color = QColorDialog.getColor(
                 initial, wind, title, options=QColorDialog.ShowAlphaChannel
             )
         else:
             color = QColorDialog.getColor(initial, wind, title)
         if color.isValid():
-            return color
+            return utils.convert_color(color, return_type, alpha_channel)
         return None
 
     return _request_get_input(_impl)
-
-
-def get_color_name(
-    initial: str | tuple | QColor = Qt.white,
-    title: str = "Select Color",
-    show_alpha_channel: bool = True,
-) -> str | None:
-    color = get_color(initial, title, show_alpha_channel)
-    if not show_alpha_channel:
-        color_format = QColor.HexRgb
-    else:
-        color_format = QColor.HexArgb
-    if color is None:
-        return None
-    try:
-        # noinspection PyArgumentList
-        return color.name(color_format)
-    except Exception as e:
-        warnings.warn(
-            f"failed to call QColor.name(color_format),"
-            f"use QColor.name() instead: {e}"
-        )
-        return color.name()
-
-
-def get_color_rgb(
-    initial: str | tuple | QColor = Qt.white, title: str = "Select Color"
-) -> Tuple[int, int, int] | None:
-    color = get_color(initial, title, show_alpha_channel=False)
-    if color is None:
-        return None
-    return color.red(), color.green(), color.blue()
-
-
-def get_color_rgba(
-    initial: str | tuple | QColor = Qt.white, title: str = "Select Color"
-) -> Tuple[int, int, int, int] | None:
-    color = get_color(initial, title, show_alpha_channel=True)
-    if color is None:
-        return None
-    return color.red(), color.green(), color.blue(), color.alpha()
 
 
 def get_existing_directory(
