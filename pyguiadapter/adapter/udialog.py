@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from typing import Any, Literal, Tuple
+from concurrent.futures import Future
+from typing import Any, Literal, Tuple, Type
 
 from qtpy.QtGui import QIcon, QPixmap
 from qtpy.QtWidgets import (
@@ -11,9 +12,10 @@ from qtpy.QtWidgets import (
     QMessageBox,
 )
 
-from .. import utils
+from .ucontext import _context
 from ._dialog import BaseCustomDialog
-from .ucontext import show_messagebox, MessageBoxConfig, show_custom_dialog
+from .. import utils
+from ..utils import MessageBoxConfig
 
 StandardButton = utils.StandardButton
 StandardButtons = utils.StandardButtons
@@ -137,11 +139,6 @@ def show_text_file(
     )
 
 
-def show_about_info():
-    """TODO impl show about dialog"""
-    pass
-
-
 def _show_messagebox(
     text: str,
     icon: int | QPixmap,
@@ -227,3 +224,19 @@ def show_question_dialog(
         default_button=default_button,
         **kwargs,
     )
+
+
+def show_messagebox(config: MessageBoxConfig) -> Any:
+    result_future = Future()
+    # noinspection PyUnresolvedReferences
+    _context.show_messagebox.emit(result_future, config)
+    return result_future.result()
+
+
+def show_custom_dialog(
+    dialog_class: str | Type[BaseCustomDialog], **kwargs
+) -> Tuple[int, Any]:
+    result_future = Future()
+    # noinspection PyUnresolvedReferences
+    _context.show_custom_dialog.emit(result_future, dialog_class, kwargs)
+    return result_future.result()
