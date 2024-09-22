@@ -318,9 +318,13 @@ if __name__ == "__main__":
 
 ### （二）`pyguiadapter.adapter.*`
 
-#### 1、[添加多个函数](adapter/multiple_functions.md)：函数名称、图标、文档以及分组
+#### 1、[添加多个函数：函数名称、图标、文档以及分组](adapter/multiple_functions.md)
 
 #### 2、[在函数中与用户进行交互](adapter/interact.md)
+
+#### 3、[取消函数执行](adapter/cancellable_function.md)
+
+
 
 
 
