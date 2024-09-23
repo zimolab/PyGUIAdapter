@@ -6,17 +6,17 @@
 
 <img src="../images/progressbar.png" />
 
-- **Progress Bar**：进度条本体
-- **Message**：进度条上显示的进度信息
-- **Info**：额外显示的信息
+- **Progress Bar**：进度条本体。
+- **Message**：进度条上显示的进度信息。
+- **Info**：额外显示的信息。
 
 
 
 进度条相关的API在[`pyguiadapter.adapter.uprogress`]()模块中，主要包括三个接口：
 
-- **`show_progressbar()`**：用于显示进度条
-- **`hide_progressbar()`**：用于隐藏进度条
-- **`update_progress()`**：用于更新进度信息
+- **`show_progressbar()`**：用于显示进度条。
+- **`hide_progressbar()`**：用于隐藏进度条。
+- **`update_progress()`**：用于更新进度信息。
 
 
 
@@ -45,16 +45,16 @@ def show_progressbar(
 
 此函数除了用于显示进度条，还可以对进度条进行配置，其各参数的含义如下：
 
-- **`min_value`**：用于设置最小进度值，默认为`0`
-- **`max_value`**：用于设置最大进度值，默认为`100`
-- **`inverted_appearance`**：这个参数改变进度条的显示方式，使其以反方向显示进度。
-- **`message_visible`**：这个参数用于控制是否显示message信息
-- **`message_format`** 这个参数用于控制message信息的格式，可以有三种显示格式：`%p%`（显示完成的百分比，这是默认显示方式）、`%v`（显示当前的进度值）和`%m`（显示总的步进值）。
-- **`message_centered`**：这个参数用于控制是否使message信息居中显示。
-- **`show_info`**：该参数用于控制是否显示info区域。
-- **`info_centered`**：该参数用于控制info信息是否居中显示。
-- **`info_text_format`**：该参数用于控制info信息的文本格式，支持`"richtext"` 、` "markdown"` 、`"plaintext"` 、`"autotext"`，默认为`"autotext"`。
-- **`initial_info`**：该参数用于指定初始info信息。
+- `min_value`：用于设置最小进度值，默认为`0`。
+- `max_value`：用于设置最大进度值，默认为`100`。
+- `inverted_appearance`：这个参数改变进度条的显示方式，使其以反方向显示进度。
+- `message_visible`：这个参数用于控制是否显示message信息。
+- `message_format`： 这个参数用于控制message信息的格式，可以有三种显示格式：`%p%`（显示完成的百分比，这是默认显示方式）、`%v`（显示当前的进度值）和`%m`（显示总的步进值）。
+- `message_centered`：这个参数用于控制是否使message信息居中显示。
+- `show_info`：该参数用于控制是否显示info区域。
+- `info_centered`：该参数用于控制info信息是否居中显示。
+- `info_text_format`：该参数用于控制info信息的文本格式，支持`"richtext"` 、` "markdown"` 、`"plaintext"` 、`"autotext"`，默认为`"autotext"`。
+- `initial_info`：该参数用于指定初始info信息。
 
 
 
