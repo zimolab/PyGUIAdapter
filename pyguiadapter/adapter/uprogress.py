@@ -13,8 +13,8 @@ def show_progressbar(
     message_visible: bool = False,
     message_format: str = "%p%",
     message_centered: str = True,
-    show_info_label: bool = True,
-    info_text_centered: bool = True,
+    show_info: bool = True,
+    info_centered: bool = True,
     info_text_format: Literal[
         "richtext", "markdown", "plaintext", "autotext"
     ] = "autotext",
@@ -27,8 +27,8 @@ def show_progressbar(
         "message_visible": message_visible,
         "message_format": message_format,
         "message_centered": message_centered,
-        "show_info_label": show_info_label,
-        "info_text_centered": info_text_centered,
+        "show_info_label": show_info,
+        "info_text_centered": info_centered,
         "info_text_format": info_text_format,
         "initial_info": initial_info,
     }
