@@ -34,11 +34,11 @@ class GUIAdapter(object):
     def __init__(
         self,
         *,
-        app_style: str | None = None,
+        global_style: str | Callable[[], str] | None = None,
         on_app_start: Callable[[QApplication], None] | None = None,
         on_app_shutdown: Callable | None = None,
     ):
-        self._app_style: str | None = app_style
+        self._global_style: str | None = global_style
         self._on_app_start: Callable[[QApplication], None] | None = on_app_start
         self._on_app_shutdown: Callable | None = on_app_shutdown
 
@@ -159,10 +159,12 @@ class GUIAdapter(object):
             warnings.warn("application already started")
             return
 
-        if self._app_style:
-            QApplication.setStyle(QStyleFactory.create(self._app_style))
-
         self._application = QApplication(argv)
+        if self._global_style:
+            if isinstance(self._global_style, str):
+                self._application.setStyleSheet(self._global_style)
+            if callable(self._global_style):
+                self._application.setStyleSheet(self._global_style())
 
         if self._on_app_start:
             self._on_app_start(self._application)
