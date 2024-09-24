@@ -3,11 +3,17 @@ from datetime import datetime
 from qtpy.QtWidgets import QApplication
 
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.types import text_t
+from pyguiadapter.types import text_t, json_obj_t
 
 
 def app_style_example(
-    arg1: str, arg2: int, arg3: float, arg4: bool, arg5: text_t, arg6: datetime
+    arg1: str,
+    arg2: int,
+    arg3: float,
+    arg4: bool,
+    arg5: text_t,
+    arg6: datetime,
+    arg7: json_obj_t,
 ):
     """
     This example requires [Qt-Material](https://github.com/UN-GCPDS/qt-material).
@@ -25,6 +31,7 @@ def app_style_example(
     @param arg4: arg4 description
     @param arg5: arg5 description
     @param arg6: arg6 description
+    @param arg7: arg7 description
     @return:
 
     @params
