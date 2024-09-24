@@ -8,7 +8,7 @@ from typing import Literal, Dict, Any, Type, Tuple, List
 
 from qtpy.QtCore import Qt
 from qtpy.QtGui import QIcon, QPixmap
-from qtpy.QtWidgets import QApplication, QStyleFactory
+from qtpy.QtWidgets import QApplication
 
 from . import ucontext
 from ..bundle import FnBundle
@@ -21,6 +21,7 @@ from ..paramwidget import (
 )
 from ..parser import FnParser
 from ..widgets import ParameterWidgetFactory
+from ..window import BaseWindow
 from ..windows import (
     FnExecuteWindowConfig,
     FnSelectWindow,
