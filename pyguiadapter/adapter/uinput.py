@@ -7,7 +7,7 @@ from qtpy.QtWidgets import QLineEdit, QInputDialog, QColorDialog
 
 from .ucontext import _context
 from .. import utils
-from ..windows import FnExecuteWindow
+from ..windows.fnexec import FnExecuteWindow
 
 EchoMode = QLineEdit.EchoMode
 InputMethodHint = Qt.InputMethodHint
