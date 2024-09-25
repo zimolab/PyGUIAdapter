@@ -1,10 +1,8 @@
-from __future__ import annotations
-
 import dataclasses
 import inspect
 import os
 from abc import abstractmethod
-from typing import Type, Callable, Tuple
+from typing import Type, Callable, Tuple, Optional, Union
 
 from pyqcodeeditor.QCodeEditor import QCodeEditor
 from pyqcodeeditor.QStyleSyntaxHighlighter import QStyleSyntaxHighlighter
@@ -32,7 +30,7 @@ from ..window import BaseWindow, BaseWindowConfig
 
 class BaseCodeFormatter(object):
     @abstractmethod
-    def format_code(self, text: str) -> str | None:
+    def format_code(self, text: str) -> Optional[str]:
         pass
 
 
@@ -42,22 +40,22 @@ WordWrapMode = QTextOption.WrapMode
 
 @dataclasses.dataclass
 class CodeEditorConfig(BaseWindowConfig):
-    title: str | None = None
-    untitled_filename: str | None = None
+    title: Optional[str] = None
+    untitled_filename: Optional[str] = None
     use_default_menus: bool = True
     use_default_toolbar: bool = True
-    highlighter: Type[QStyleSyntaxHighlighter] | None = None
-    highlighter_args: dict | list | tuple | None = None
-    completer: QCompleter | None = None
+    highlighter: Optional[Type[QStyleSyntaxHighlighter]] = None
+    highlighter_args: Union[dict, list, tuple, None] = None
+    completer: Optional[QCompleter] = None
     auto_indent: bool = True
     auto_parentheses: bool = True
-    text_font_size: int | None = None
+    text_font_size: Optional[int] = None
     tab_size: int = DEFAULT_TAB_SIZE
     tab_replace: bool = True
     initial_text: str = ""
-    formatter: BaseCodeFormatter | Callable[[str], str] | None = None
-    file_filters: str | None = None
-    start_dir: str | None = None
+    formatter: Union[BaseCodeFormatter, Callable[[str], str], None] = None
+    file_filters: Optional[str] = None
+    start_dir: Optional[str] = None
     check_unsaved_changes: bool = True
     show_filename_in_title: bool = True
     line_wrap_mode: LineWrapMode = LineWrapMode.NoWrap
@@ -65,16 +63,16 @@ class CodeEditorConfig(BaseWindowConfig):
     word_wrap_mode: WordWrapMode = WordWrapMode.NoWrap
     file_encoding: str = "utf-8"
 
-    quit_dialog_title: str | None = None
-    confirm_dialog_title: str | None = None
-    error_dialog_title: str | None = None
-    open_file_dialog_title: str | None = None
-    save_file_dialog_title: str | None = None
-    save_as_dialog_title: str | None = None
-    unsaved_warning_message: str | None = None
-    open_failed_message: str | None = None
-    save_failed_message: str | None = None
-    format_failed_message: str | None = None
+    quit_dialog_title: Optional[str] = None
+    confirm_dialog_title: Optional[str] = None
+    error_dialog_title: Optional[str] = None
+    open_file_dialog_title: Optional[str] = None
+    save_file_dialog_title: Optional[str] = None
+    save_as_dialog_title: Optional[str] = None
+    unsaved_warning_message: Optional[str] = None
+    open_failed_message: Optional[str] = None
+    save_failed_message: Optional[str] = None
+    format_failed_message: Optional[str] = None
 
     exclude_default_menus: Tuple[str] = ()
     exclude_default_menu_actions: Tuple[Tuple[str, str], ...] = ()
@@ -144,15 +142,17 @@ class BaseCodeEditorWindow(BaseWindow):
         pass
 
     @abstractmethod
-    def _current_highlighter(self) -> QStyleSyntaxHighlighter | None:
+    def _current_highlighter(self) -> Optional[QStyleSyntaxHighlighter]:
         pass
 
     @abstractmethod
-    def _update_current_highlighter(self, highlighter: QStyleSyntaxHighlighter | None):
+    def _update_current_highlighter(
+        self, highlighter: Optional[QStyleSyntaxHighlighter]
+    ):
         pass
 
     @abstractmethod
-    def _current_fingerprint(self) -> str | None:
+    def _current_fingerprint(self) -> Optional[str]:
         pass
 
     @abstractmethod
@@ -160,7 +160,7 @@ class BaseCodeEditorWindow(BaseWindow):
         pass
 
     @abstractmethod
-    def _current_file(self) -> str | None:
+    def _current_file(self) -> Optional[str]:
         pass
 
     @abstractmethod
@@ -189,14 +189,14 @@ class BaseCodeEditorWindow(BaseWindow):
     def get_text(self) -> str:
         return self._editor_instance().toPlainText()
 
-    def set_text(self, text: str | None):
+    def set_text(self, text: Optional[str]):
         text = text or ""
         self._editor_instance().setPlainText(text)
 
     def set_highlighter(
         self,
-        highlighter: Type[QStyleSyntaxHighlighter] | None,
-        args: list | tuple | dict | None = None,
+        highlighter: Optional[Type[QStyleSyntaxHighlighter]],
+        args: Union[list, tuple, dict, None] = None,
     ):
         config = self._config_instance()
         config.highlighter = highlighter
@@ -211,17 +211,19 @@ class BaseCodeEditorWindow(BaseWindow):
             current_highlighter.setParent(self)
         self._editor_instance().setHighlighter(current_highlighter)
 
-    def get_highlighter(self) -> Type[QStyleSyntaxHighlighter] | None:
+    def get_highlighter(self) -> Optional[Type[QStyleSyntaxHighlighter]]:
         return self._config_instance().highlighter
 
-    def set_completer(self, completer: QCompleter | None):
+    def set_completer(self, completer: Optional[QCompleter]):
         self._editor_instance().setCompleter(completer)
         self._config_instance().completer = completer
 
-    def get_completer(self) -> QCompleter | None:
+    def get_completer(self) -> Optional[QCompleter]:
         return self._config_instance().completer
 
-    def set_formatter(self, formatter: BaseCodeFormatter | Callable[[str], str] | None):
+    def set_formatter(
+        self, formatter: Union[BaseCodeFormatter, Callable[[str], str], None]
+    ):
         assert (
             formatter is None
             or callable(formatter)
@@ -229,7 +231,7 @@ class BaseCodeEditorWindow(BaseWindow):
         )
         self._config_instance().formatter = formatter
 
-    def get_formatter(self) -> BaseCodeFormatter | Callable[[str], str] | None:
+    def get_formatter(self) -> Union[BaseCodeFormatter, Callable[[str], str], None]:
         return self._config_instance().formatter
 
     def set_tab_replace(self, size: int = DEFAULT_TAB_SIZE, tab_replace: bool = True):
@@ -259,12 +261,12 @@ class BaseCodeEditorWindow(BaseWindow):
     def is_auto_parentheses_enabled(self) -> bool:
         return self._config_instance().auto_parentheses
 
-    def set_text_font_size(self, size: int | None):
+    def set_text_font_size(self, size: Optional[int]):
         self._config_instance().text_font_size = size
         if size and size > 0:
             self._editor_instance().setFontSize(size)
 
-    def get_text_font_size(self) -> int | None:
+    def get_text_font_size(self) -> Optional[int]:
         return self._config_instance().text_font_size
 
     def set_word_wrap_mode(self, mode: WordWrapMode):
@@ -291,16 +293,16 @@ class BaseCodeEditorWindow(BaseWindow):
     def get_line_wrap_width(self) -> int:
         return self._config_instance().line_wrap_width
 
-    def set_file_filters(self, filters: str | None):
+    def set_file_filters(self, filters: Optional[str]):
         self._config_instance().file_filters = filters
 
-    def get_file_filters(self) -> str | None:
+    def get_file_filters(self) -> Optional[str]:
         return self._config_instance().file_filters
 
-    def set_start_dir(self, directory: str | None):
+    def set_start_dir(self, directory: Optional[str]):
         self._config_instance().start_dir = directory
 
-    def get_start_dir(self) -> str | None:
+    def get_start_dir(self) -> Optional[str]:
         return self._config_instance().start_dir
 
     def set_show_filename_in_title(self, show: bool):
@@ -457,9 +459,9 @@ class BaseCodeEditorWindow(BaseWindow):
 
 
 def create_highlighter(
-    highlighter_class: Type[QStyleSyntaxHighlighter] | None,
-    args: dict | list | tuple | None,
-) -> QStyleSyntaxHighlighter | None:
+    highlighter_class: Optional[Type[QStyleSyntaxHighlighter]],
+    args: Union[dict, list, tuple, None],
+) -> Optional[QStyleSyntaxHighlighter]:
     assert highlighter_class is None or (
         inspect.isclass(highlighter_class)
         and issubclass(highlighter_class, QStyleSyntaxHighlighter)

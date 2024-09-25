@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 import dataclasses
-from typing import Type, List, Any, Dict
+from typing import Type, List, Any, Dict, Optional, Union
 
 from qtpy.QtCore import Qt
 from qtpy.QtWidgets import QWidget, QComboBox
@@ -18,8 +16,8 @@ class _DataWrap(object):
 
 @dataclasses.dataclass(frozen=True)
 class ChoiceBoxConfig(CommonParameterWidgetConfig):
-    default_value: Any | None = _FIRST_ITEM
-    choices: Dict[str, Any] | List[Any] = dataclasses.field(default_factory=list)
+    default_value: Optional[Any] = _FIRST_ITEM
+    choices: Union[Dict[str, Any], List[Any]] = dataclasses.field(default_factory=list)
     editable: bool = False
 
     @classmethod
@@ -32,11 +30,11 @@ class ChoiceBox(CommonParameterWidget):
 
     def __init__(
         self,
-        parent: QWidget | None,
+        parent: Optional[QWidget],
         parameter_name: str,
         config: ChoiceBoxConfig,
     ):
-        self._value_widget: QComboBox | None = None
+        self._value_widget: Optional[QComboBox] = None
         super().__init__(parent, parameter_name, config)
 
     @property

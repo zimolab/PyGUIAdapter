@@ -1,10 +1,8 @@
-from __future__ import annotations
-
 import dataclasses
 import inspect
 import warnings
 from collections import OrderedDict
-from typing import Callable, Literal, List, Tuple, Set, Dict, Any, Type
+from typing import Callable, Literal, List, Tuple, Set, Dict, Any, Type, Union, Optional
 
 import tomli
 from qtpy.QtGui import QIcon, QPixmap
@@ -28,13 +26,13 @@ UNSET = _Unset
 
 @dataclasses.dataclass
 class WidgetMeta(object):
-    widget_class: str | None | UNSET = UNSET
-    default_value: Any | UNSET = UNSET
-    label: str | None | UNSET = UNSET
-    description: str | None | UNSET = UNSET
-    default_value_description: str | None | UNSET = UNSET
-    stylesheet: str | None | UNSET = UNSET
-    custom_configs: Dict[str, Any] | UNSET = UNSET
+    widget_class: Union[str, None, UNSET] = UNSET
+    default_value: Union[Any, UNSET] = UNSET
+    label: Union[str, None, UNSET] = UNSET
+    description: Union[str, None, UNSET] = UNSET
+    default_value_description: Union[str, None, UNSET] = UNSET
+    stylesheet: Union[str, None, UNSET] = UNSET
+    custom_configs: Union[Dict[str, Any], UNSET] = UNSET
 
     def to_config_dict(self) -> Dict[str, Any]:
         config_dict = dataclasses.asdict(self)
@@ -49,28 +47,28 @@ class WidgetMeta(object):
 class FnParser(object):
     def __init__(
         self,
-        widget_metadata_start: (
-            str | List[str] | Tuple[str] | Set[str]
-        ) = PARAM_WIDGET_METADATA_START,
-        widget_metadata_end: (
-            str | List[str] | Tuple[str] | Set[str]
-        ) = PARAM_WIDGET_METADATA_END,
+        widget_metadata_start: Union[
+            str, List[str], Tuple[str], Set[str]
+        ] = PARAM_WIDGET_METADATA_START,
+        widget_metadata_end: Union[
+            str, List[str], Tuple[str], Set[str]
+        ] = PARAM_WIDGET_METADATA_END,
     ):
-        self._widget_metadata_start: str | List[str] | Tuple[str] | Set[str] = (
+        self._widget_metadata_start: Union[str, List[str], Tuple[str], Set[str]] = (
             widget_metadata_start
         )
-        self._widget_metadata_end: str | List[str] | Tuple[str] | Set[str] = (
+        self._widget_metadata_end: Union[str, List[str], Tuple[str], Set[str]] = (
             widget_metadata_end
         )
 
     def parse_fn_info(
         self,
         fn: Callable,
-        display_name: str | None = None,
-        document: str | None = None,
+        display_name: Optional[str] = None,
+        document: Optional[str] = None,
         document_format: Literal["markdown", "html", "plaintext"] = "markdown",
-        icon: str | QIcon | QPixmap | None = None,
-        group: str | None = None,
+        icon: Union[str, QIcon, QPixmap, None] = None,
+        group: Optional[str] = None,
         ignore_self_param: bool = True,
     ) -> FnInfo:
         if not inspect.ismethod(fn) and not inspect.isfunction(fn):
@@ -107,7 +105,7 @@ class FnParser(object):
 
     def parse_widget_configs(
         self, fn_info: FnInfo
-    ) -> Dict[str, Tuple[str | None, dict]]:
+    ) -> Dict[str, Tuple[Optional[str], dict]]:
         # this method returns a dict of "parameter_name" -> (widget_class_name| None, widget_config)
         configs = OrderedDict()
         metas = self._parse_widget_meta(fn_info)
@@ -157,7 +155,9 @@ class FnParser(object):
             if not isinstance(widget_configs, dict):
                 continue
 
-            param_info: ParameterInfo | None = fn_info.parameters.get(param_name, None)
+            param_info: Optional[ParameterInfo] = fn_info.parameters.get(
+                param_name, None
+            )
             widget_config_meta = WidgetMeta()
 
             key_widget_class = "widget_class"

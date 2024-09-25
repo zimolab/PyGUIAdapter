@@ -29,12 +29,15 @@ from ..paramwidget import (
 )
 from ..parser import FnParser
 from ..widgets import ParameterWidgetFactory
-from ..windows import (
-    FnExecuteWindowConfig,
-    FnSelectWindow,
-    FnSelectWindowConfig,
-    FnExecuteWindow,
-)
+
+# from ..windows import (
+#     FnExecuteWindowConfig,
+#     FnSelectWindow,
+#     FnSelectWindowConfig,
+#     FnExecuteWindow,
+# )
+from ..windows.fnexec import FnExecuteWindow, FnExecuteWindowConfig
+from ..windows.fnselect import FnSelectWindow, FnSelectWindowConfig
 
 
 class GUIAdapter(object):

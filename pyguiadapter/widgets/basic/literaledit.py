@@ -1,8 +1,6 @@
-from __future__ import annotations
-
 import ast
 import dataclasses
-from typing import Type, Union
+from typing import Type, Union, Optional
 
 from pyqcodeeditor.highlighters import QPythonHighlighter
 from qtpy.QtWidgets import QWidget
@@ -35,7 +33,7 @@ class PyLiteralEdit(BaseCodeEdit):
 
     def __init__(
         self,
-        parent: QWidget | None,
+        parent: Optional[QWidget],
         parameter_name: str,
         config: PyLiteralEditConfig,
     ):

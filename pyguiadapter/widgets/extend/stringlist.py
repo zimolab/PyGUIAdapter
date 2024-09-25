@@ -1,8 +1,6 @@
-from __future__ import annotations
-
 import dataclasses
 import os.path
-from typing import Type, List, Literal
+from typing import Type, List, Literal, Optional
 
 from qtpy.QtCore import QStringListModel, Qt
 from qtpy.QtWidgets import QWidget, QListView, QVBoxLayout, QPushButton, QMenu, QAction
@@ -15,7 +13,7 @@ TextElideMode = Qt.TextElideMode
 
 @dataclasses.dataclass(frozen=True)
 class StringListEditConfig(CommonParameterWidgetConfig):
-    default_value: List[str] | None = dataclasses.field(default_factory=list)
+    default_value: Optional[List[str]] = dataclasses.field(default_factory=list)
     empty_string_strategy: Literal["keep_all", "keep_one", "remove_all"] = "remove_all"
     add_file: bool = True
     add_dir: bool = True
@@ -52,17 +50,17 @@ class StringListEdit(CommonParameterWidget):
 
     def __init__(
         self,
-        parent: QWidget | None,
+        parent: Optional[QWidget],
         parameter_name: str,
         config: StringListEditConfig,
     ):
-        self._value_widget: QWidget | None = None
-        self._list_view: QListView | None = None
-        self._add_button: QPushButton | None = None
-        self._remove_button: QPushButton | None = None
-        self._clear_button: QPushButton | None = None
+        self._value_widget: Optional[QWidget] = None
+        self._list_view: Optional[QListView] = None
+        self._add_button: Optional[QPushButton] = None
+        self._remove_button: Optional[QPushButton] = None
+        self._clear_button: Optional[QPushButton] = None
 
-        self._model: QStringListModel | None = None
+        self._model: Optional[QStringListModel] = None
         super().__init__(parent, parameter_name, config)
 
     @property

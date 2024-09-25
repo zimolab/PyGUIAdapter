@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 import dataclasses
-from typing import Literal
+from typing import Literal, Optional
 
 from qtpy.QtCore import Qt
 from qtpy.QtWidgets import QWidget, QVBoxLayout, QProgressBar, QLabel
@@ -31,7 +29,7 @@ class ProgressBarConfig(object):
 
 
 class ProgressBar(QWidget):
-    def __init__(self, parent: QWidget, config: ProgressBarConfig | None = None):
+    def __init__(self, parent: QWidget, config: Optional[ProgressBarConfig] = None):
         super().__init__(parent)
 
         self._config = None
@@ -66,11 +64,11 @@ class ProgressBar(QWidget):
         self._info_label.setTextFormat(text_format)
         self._update_info(self._config.initial_info)
 
-    def update_progress(self, current_value: int, info: str | None = None):
+    def update_progress(self, current_value: int, info: Optional[str] = None):
         self._progressbar.setValue(current_value)
         self._update_info(info)
 
-    def _update_info(self, info: str | None):
+    def _update_info(self, info: Optional[str]):
         if info is None:
             return
         if not self._info_label.isVisible():

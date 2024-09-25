@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 import dataclasses
-from typing import Type
+from typing import Type, Optional
 
 from qtpy.QtWidgets import QWidget
 
@@ -12,7 +10,7 @@ from ...fn import ParameterInfo
 
 @dataclasses.dataclass(frozen=True)
 class DictEditConfig(PyLiteralEditConfig):
-    default_value: dict | None = dataclasses.field(default_factory=dict)
+    default_value: Optional[dict] = dataclasses.field(default_factory=dict)
     initial_text: str = "{}"
 
     @classmethod
@@ -24,11 +22,11 @@ class DictEdit(PyLiteralEdit):
     ConfigClass = DictEditConfig
 
     def __init__(
-        self, parent: QWidget | None, parameter_name: str, config: DictEditConfig
+        self, parent: Optional[QWidget], parameter_name: str, config: DictEditConfig
     ):
         super().__init__(parent, parameter_name, config)
 
-    def _get_data(self, text: str) -> dict | None:
+    def _get_data(self, text: str) -> Optional[dict]:
         if text is None or text.strip() == "":
             return None
         data = super()._get_data(text)
@@ -48,5 +46,7 @@ class DictEdit(PyLiteralEdit):
         return super()._set_data(data)
 
     @classmethod
-    def _dict_mapping_rule(cls, parameter_info: ParameterInfo) -> Type[DictEdit] | None:
+    def _dict_mapping_rule(
+        cls, parameter_info: ParameterInfo
+    ) -> Optional[Type["DictEdit"]]:
         return DictEdit if utils.is_subclass_of(parameter_info.type, dict) else None

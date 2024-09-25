@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 import dataclasses
-from typing import Type, Any
+from typing import Type, Any, Optional
 
 from qtpy.QtWidgets import QWidget
 
@@ -27,9 +25,9 @@ class DirSelect(CommonParameterWidget):
     ConfigClass = DirSelectConfig
 
     def __init__(
-        self, parent: QWidget | None, parameter_name: str, config: DirSelectConfig
+        self, parent: Optional[QWidget], parameter_name: str, config: DirSelectConfig
     ):
-        self._value_widget: PathSelectWidget | None = None
+        self._value_widget: Optional[PathSelectWidget] = None
         super().__init__(parent, parameter_name, config)
 
     @property

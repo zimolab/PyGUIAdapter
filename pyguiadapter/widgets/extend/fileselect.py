@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 import dataclasses
-from typing import Type, Any, List, Tuple, Set
+from typing import Type, Any, List, Tuple, Set, Optional, Union
 
 from qtpy.QtWidgets import QWidget
 
@@ -30,9 +28,9 @@ class FileSelect(CommonParameterWidget):
     ConfigClass = FileSelectConfig
 
     def __init__(
-        self, parent: QWidget | None, parameter_name: str, config: FileSelectConfig
+        self, parent: Optional[QWidget], parameter_name: str, config: FileSelectConfig
     ):
-        self._value_widget: PathSelectWidget | None = None
+        self._value_widget: Optional[PathSelectWidget] = None
         super().__init__(parent, parameter_name, config)
 
     @property
@@ -83,9 +81,12 @@ class MultiFileSelect(CommonParameterWidget):
     ConfigClass = MultiFileSelectConfig
 
     def __init__(
-        self, parent: QWidget | None, parameter_name: str, config: MultiFileSelectConfig
+        self,
+        parent: Optional[QWidget],
+        parameter_name: str,
+        config: MultiFileSelectConfig,
     ):
-        self._value_widget: PathSelectWidget | None = None
+        self._value_widget: Optional[PathSelectWidget] = None
         super().__init__(parent, parameter_name, config)
 
     @property
@@ -108,7 +109,9 @@ class MultiFileSelect(CommonParameterWidget):
             )
         return self._value_widget
 
-    def set_value_to_widget(self, value: str | List[str] | Tuple[str, ...] | Set[str]):
+    def set_value_to_widget(
+        self, value: Union[str, List[str], Tuple[str, ...], Set[str]]
+    ):
         value = value or []
         if not isinstance(value, (str, list, tuple, set)):
             raise ParameterError(

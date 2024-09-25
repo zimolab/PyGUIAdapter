@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 import dataclasses
-from typing import Type, Any
+from typing import Type, Any, Optional
 
 from qtpy.QtGui import QDoubleValidator
 from qtpy.QtWidgets import QWidget, QLineEdit
@@ -12,7 +10,7 @@ from ...exceptions import ParameterError
 
 @dataclasses.dataclass(frozen=True)
 class FloatLineEditConfig(CommonParameterWidgetConfig):
-    default_value: float | None = 0.0
+    default_value: Optional[float] = 0.0
     min_value: float = -2147483648.0
     max_value: float = 2147483647.0
     decimals: int = 2
@@ -28,10 +26,13 @@ class FloatLineEdit(CommonParameterWidget):
     ConfigClass = FloatLineEditConfig
 
     def __init__(
-        self, parent: QWidget | None, parameter_name: str, config: FloatLineEditConfig
+        self,
+        parent: Optional[QWidget],
+        parameter_name: str,
+        config: FloatLineEditConfig,
     ):
-        self._value_widget: QLineEdit | None = None
-        self._validator: QDoubleValidator | None = None
+        self._value_widget: Optional[QLineEdit] = None
+        self._validator: Optional[QDoubleValidator] = None
         super().__init__(parent, parameter_name, config)
 
     @property

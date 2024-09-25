@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 from concurrent.futures import Future
-from typing import Any, Literal, Tuple, Type
+from typing import Any, Literal, Tuple, Type, Optional, Union
 
 from qtpy.QtGui import QIcon, QPixmap
 from qtpy.QtWidgets import (
@@ -27,13 +25,15 @@ class TextBrowserDialog(BaseCustomDialog):
 
     def __init__(
         self,
-        parent: QWidget | None,
+        parent: Optional[QWidget],
         text_content: str,
         text_format: Literal["markdown", "plaintext", "html"] = "markdown",
-        size: Tuple[int, int] | None = None,
-        title: str | None = None,
+        size: Optional[Tuple[int, int]] = None,
+        title: Optional[str] = None,
         icon: utils.IconType = None,
-        buttons: int | QDialogButtonBox.StandardButtons | None = QDialogButtonBox.Ok,
+        buttons: Union[
+            int, QDialogButtonBox.StandardButtons, None
+        ] = QDialogButtonBox.Ok,
         resizeable: bool = True,
         **kwargs,
     ):
@@ -101,9 +101,9 @@ def show_text_content(
     text_content: str,
     text_format: Literal["markdown", "plaintext", "html"] = "markdown",
     size: Tuple[int, int] = None,
-    title: str | None = "",
+    title: Optional[str] = "",
     icon: utils.IconType = None,
-    buttons: int | QDialogButtonBox.StandardButtons | None = QDialogButtonBox.Ok,
+    buttons: Union[int, QDialogButtonBox.StandardButtons, None] = QDialogButtonBox.Ok,
     resizeable: bool = True,
 ):
     return show_custom_dialog(
@@ -122,9 +122,9 @@ def show_text_file(
     text_file: str,
     text_format: Literal["markdown", "plaintext", "html"] = "markdown",
     size: Tuple[int, int] = None,
-    title: str | None = "",
+    title: Optional[str] = "",
     icon: utils.IconType = None,
-    buttons: int | QDialogButtonBox.StandardButtons | None = QDialogButtonBox.Ok,
+    buttons: Union[int, QDialogButtonBox.StandardButtons, None] = QDialogButtonBox.Ok,
     resizeable: bool = True,
 ):
     text_content = utils.read_text_file(text_file)
@@ -141,12 +141,12 @@ def show_text_file(
 
 def _show_messagebox(
     text: str,
-    icon: int | QPixmap,
+    icon: Union[int, QPixmap],
     title: str = "Information",
-    buttons: StandardButton | StandardButtons = QMessageBox.Ok,
+    buttons: Union[StandardButton, StandardButtons] = QMessageBox.Ok,
     default_button: StandardButton = QMessageBox.NoButton,
     **kwargs,
-) -> int | StandardButton:
+) -> Union[int, StandardButton]:
     config = MessageBoxConfig(
         text=text,
         title=title,
@@ -161,10 +161,10 @@ def _show_messagebox(
 def show_info_dialog(
     text: str,
     title: str = "Information",
-    buttons: StandardButton | StandardButtons = QMessageBox.Ok,
+    buttons: Union[StandardButton, StandardButtons] = QMessageBox.Ok,
     default_button: StandardButton = QMessageBox.NoButton,
     **kwargs,
-) -> int | StandardButton:
+) -> Union[int, StandardButton]:
     return _show_messagebox(
         text=text,
         icon=QMessageBox.Information,
@@ -178,10 +178,10 @@ def show_info_dialog(
 def show_warning_dialog(
     text: str,
     title: str = "Warning",
-    buttons: StandardButton | StandardButtons = QMessageBox.Ok,
+    buttons: Union[StandardButton, StandardButtons] = QMessageBox.Ok,
     default_button: StandardButton = QMessageBox.NoButton,
     **kwargs,
-) -> int | StandardButton:
+) -> Union[int, StandardButton]:
     return _show_messagebox(
         text=text,
         icon=QMessageBox.Warning,
@@ -195,10 +195,10 @@ def show_warning_dialog(
 def show_critical_dialog(
     text: str,
     title: str = "Critical",
-    buttons: StandardButton | StandardButtons = QMessageBox.Ok,
+    buttons: Union[StandardButton, StandardButtons] = QMessageBox.Ok,
     default_button: StandardButton = QMessageBox.NoButton,
     **kwargs,
-) -> int | StandardButton:
+) -> Union[int, StandardButton]:
     return _show_messagebox(
         text=text,
         icon=QMessageBox.Critical,
@@ -212,10 +212,10 @@ def show_critical_dialog(
 def show_question_dialog(
     text: str,
     title: str = "Question",
-    buttons: StandardButton | StandardButtons = QMessageBox.Yes | QMessageBox.No,
+    buttons: Union[StandardButton, StandardButtons] = QMessageBox.Yes | QMessageBox.No,
     default_button: StandardButton = QMessageBox.NoButton,
     **kwargs,
-) -> int | StandardButton:
+) -> Union[int, StandardButton]:
     return _show_messagebox(
         text=text,
         icon=QMessageBox.Question,
@@ -234,7 +234,7 @@ def show_messagebox(config: MessageBoxConfig) -> Any:
 
 
 def show_custom_dialog(
-    dialog_class: str | Type[BaseCustomDialog], **kwargs
+    dialog_class: Union[str, Type[BaseCustomDialog]], **kwargs
 ) -> Tuple[int, Any]:
     result_future = Future()
     # noinspection PyUnresolvedReferences

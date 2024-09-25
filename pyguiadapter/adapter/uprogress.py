@@ -1,6 +1,4 @@
-from __future__ import annotations
-
-from typing import Literal
+from typing import Literal, Optional
 
 from .ucontext import _context
 
@@ -39,5 +37,5 @@ def hide_progressbar():
     _context.hide_progressbar.emit()
 
 
-def update_progress(value: int, info: str | None = None):
+def update_progress(value: int, info: Optional[str] = None):
     _context.update_progress.emit(value, info)

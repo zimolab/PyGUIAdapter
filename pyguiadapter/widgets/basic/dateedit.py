@@ -1,8 +1,6 @@
-from __future__ import annotations
-
 import dataclasses
 from datetime import date
-from typing import Type
+from typing import Type, Union, Optional
 
 from qtpy.QtCore import Qt, QDate
 from qtpy.QtWidgets import QWidget, QDateEdit
@@ -20,16 +18,16 @@ TimeSpec = Qt.TimeSpec
 
 @dataclasses.dataclass(frozen=True)
 class DateEditConfig(CommonParameterWidgetConfig):
-    default_value: date | QDate | None = date.today()
-    min_date: date | QDate | None = None
-    max_date: date | QDate | None = None
-    display_format: str | None = None
-    time_spec: TimeSpec | None = None
+    default_value: Union[date, QDate, None] = date.today()
+    min_date: Union[date, QDate, None] = None
+    max_date: Union[date, QDate, None] = None
+    display_format: Optional[str] = None
+    time_spec: Optional[TimeSpec] = None
     wrapping: bool = False
     frame: bool = True
     alignment: Alignment = Qt.AlignLeft | Qt.AlignVCenter
-    button_symbols: ButtonSymbols | None = None
-    correction_mode: CorrectionMode | None = None
+    button_symbols: Optional[ButtonSymbols] = None
+    correction_mode: Optional[CorrectionMode] = None
     keyboard_tracking: bool = True
     accelerated: bool = False
     calendar_popup: bool = False
@@ -44,11 +42,11 @@ class DateEdit(CommonParameterWidget):
 
     def __init__(
         self,
-        parent: QWidget | None,
+        parent: Optional[QWidget],
         parameter_name: str,
         config: DateEditConfig,
     ):
-        self._value_widget: QDateEdit | None = None
+        self._value_widget: Optional[QDateEdit] = None
         super().__init__(parent, parameter_name, config)
 
     @property
@@ -80,7 +78,7 @@ class DateEdit(CommonParameterWidget):
             self._value_widget.setCalendarPopup(self._config.calendar_popup)
         return self._value_widget
 
-    def set_value_to_widget(self, value: date | QDate):
+    def set_value_to_widget(self, value: Union[date, QDate]):
         if not isinstance(value, (date, QDate)):
             raise ValueError("value must be date or QDate")
         if isinstance(value, date):

@@ -1,6 +1,5 @@
-from __future__ import annotations
-
 import warnings
+from typing import Optional
 
 from yapf.yapflib.yapf_api import FormatCode
 
@@ -8,7 +7,7 @@ from ..base import BaseCodeFormatter
 
 
 class PythonFormatter(BaseCodeFormatter):
-    def format_code(self, text: str) -> str | None:
+    def format_code(self, text: str) -> Optional[str]:
         try:
             formatted, changed = FormatCode(text)
         except Exception as e:

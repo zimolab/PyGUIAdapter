@@ -1,9 +1,7 @@
-from __future__ import annotations
-
 import dataclasses
 from abc import abstractmethod
 from inspect import isclass
-from typing import Any, Type, TypeVar
+from typing import Any, Type, TypeVar, Optional
 
 from qtpy.QtWidgets import QWidget
 
@@ -15,19 +13,19 @@ DEFAULT_VALUE_DESCRIPTION = "use default value: {}"
 @dataclasses.dataclass(frozen=True)
 class BaseParameterWidgetConfig(object):
     default_value: Any = None
-    label: str | None = None
-    description: str | None = None
-    default_value_description: str | None = DEFAULT_VALUE_DESCRIPTION
-    group: str | None = None
-    stylesheet: str | None = None
+    label: Optional[str] = None
+    description: Optional[str] = None
+    default_value_description: Optional[str] = DEFAULT_VALUE_DESCRIPTION
+    group: Optional[str] = None
+    stylesheet: Optional[str] = None
 
     @classmethod
     @abstractmethod
-    def target_widget_class(cls) -> Type[BaseParameterWidget]:
+    def target_widget_class(cls) -> Type["BaseParameterWidget"]:
         pass
 
     @classmethod
-    def new(cls, **kwargs) -> BaseParameterWidgetConfig:
+    def new(cls, **kwargs) -> "BaseParameterWidgetConfig":
         return cls(**kwargs)
 
 
@@ -39,7 +37,7 @@ class BaseParameterWidget(QWidget):
 
     def __init__(
         self,
-        parent: QWidget | None,
+        parent: Optional[QWidget],
         parameter_name: str,
         config: BaseParameterWidgetConfig,
     ):
@@ -110,13 +108,13 @@ class BaseParameterWidget(QWidget):
     def on_validation_failed(self, parameter_name: str, error: Any):
         pass
 
-    def on_clear_validation_error(self, parameter_name: str | None):
+    def on_clear_validation_error(self, parameter_name: Optional[str]):
         pass
 
     @classmethod
     def new(
         cls,
-        parent: QWidget | None,
+        parent: Optional[QWidget],
         parameter_name: str,
         config: BaseParameterWidgetConfig,
     ):

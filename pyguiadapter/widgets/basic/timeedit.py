@@ -1,8 +1,6 @@
-from __future__ import annotations
-
 import dataclasses
 from datetime import time, datetime
-from typing import Type
+from typing import Type, Union, Optional
 
 from qtpy.QtCore import Qt, QTime
 from qtpy.QtWidgets import QWidget, QTimeEdit
@@ -17,16 +15,16 @@ TimeSpec = Qt.TimeSpec
 
 @dataclasses.dataclass(frozen=True)
 class TimeEditConfig(CommonParameterWidgetConfig):
-    default_value: time | QTime | None = datetime.now().time()
-    min_time: time | QTime | None = None
-    max_time: time | QTime | None = None
-    display_format: str | None = None
-    time_spec: TimeSpec | None = None
+    default_value: Union[time, QTime, None] = datetime.now().time()
+    min_time: Union[time, QTime, None] = None
+    max_time: Union[time, QTime, None] = None
+    display_format: Optional[str] = None
+    time_spec: Optional[TimeSpec] = None
     wrapping: bool = False
     frame: bool = True
     alignment: Alignment = Qt.AlignLeft | Qt.AlignVCenter
-    button_symbols: ButtonSymbols | None = None
-    correction_mode: CorrectionMode | None = None
+    button_symbols: Optional[ButtonSymbols] = None
+    correction_mode: Optional[CorrectionMode] = None
     keyboard_tracking: bool = True
     accelerated: bool = False
 
@@ -40,11 +38,11 @@ class TimeEdit(CommonParameterWidget):
 
     def __init__(
         self,
-        parent: QWidget | None,
+        parent: Optional[QWidget],
         parameter_name: str,
         config: TimeEditConfig,
     ):
-        self._value_widget: QTimeEdit | None = None
+        self._value_widget: Optional[QTimeEdit] = None
         super().__init__(parent, parameter_name, config)
 
     @property
@@ -76,7 +74,7 @@ class TimeEdit(CommonParameterWidget):
 
         return self._value_widget
 
-    def set_value_to_widget(self, value: time | QTime):
+    def set_value_to_widget(self, value: Union[time, QTime]):
         if not isinstance(value, (time, QTime)):
             raise ValueError("value must be time or QTime")
         if isinstance(value, time):

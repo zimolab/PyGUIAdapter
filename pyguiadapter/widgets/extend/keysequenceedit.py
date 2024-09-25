@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 import dataclasses
-from typing import Type
+from typing import Type, Union, Optional
 
 from qtpy.QtGui import QKeySequence
 from qtpy.QtWidgets import QWidget, QKeySequenceEdit
@@ -13,7 +11,7 @@ KeySequenceFormat = QKeySequence.SequenceFormat
 
 @dataclasses.dataclass(frozen=True)
 class KeySequenceEditConfig(CommonParameterWidgetConfig):
-    default_value: str | QKeySequence | None = ""
+    default_value: Union[str, QKeySequence, None] = ""
     key_sequence_format: KeySequenceFormat = QKeySequence.PortableText
 
     @classmethod
@@ -26,11 +24,11 @@ class KeySequenceEdit(CommonParameterWidget):
 
     def __init__(
         self,
-        parent: QWidget | None,
+        parent: Optional[QWidget],
         parameter_name: str,
         config: KeySequenceEditConfig,
     ):
-        self._value_widget: QKeySequenceEdit | None = None
+        self._value_widget: Optional[QKeySequenceEdit] = None
         super().__init__(parent, parameter_name, config)
 
     @property
@@ -39,7 +37,7 @@ class KeySequenceEdit(CommonParameterWidget):
             self._value_widget = QKeySequenceEdit(self)
         return self._value_widget
 
-    def set_value_to_widget(self, value: str | QKeySequence):
+    def set_value_to_widget(self, value: Union[str, QKeySequence]):
         self._config: KeySequenceEditConfig
         if isinstance(value, str):
             value = QKeySequence(value, self._config.key_sequence_format)

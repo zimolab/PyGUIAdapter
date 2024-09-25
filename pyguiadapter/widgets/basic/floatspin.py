@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 import dataclasses
-from typing import Type
+from typing import Type, Optional, Union
 
 from qtpy.QtWidgets import QWidget, QDoubleSpinBox
 
@@ -14,11 +12,11 @@ from ...widgets.common import (
 
 @dataclasses.dataclass(frozen=True)
 class FloatSpinBoxConfig(CommonParameterWidgetConfig):
-    default_value: float | None = 0.0
+    default_value: Optional[float] = 0.0
     min_value: float = -2147483648.0
     max_value: float = 2147483647.0
-    step: float | None = None
-    decimals: int | None = None
+    step: Optional[float] = None
+    decimals: Optional[int] = None
     prefix: str = ""
     suffix: str = ""
 
@@ -31,9 +29,9 @@ class FloatSpinBox(CommonParameterWidget):
     ConfigClass: Type[FloatSpinBoxConfig] = FloatSpinBoxConfig
 
     def __init__(
-        self, parent: QWidget | None, parameter_name: str, config: FloatSpinBoxConfig
+        self, parent: Optional[QWidget], parameter_name: str, config: FloatSpinBoxConfig
     ):
-        self._value_widget: QDoubleSpinBox | None = None
+        self._value_widget: Optional[QDoubleSpinBox] = None
         super().__init__(parent, parameter_name, config)
 
     @property
@@ -55,7 +53,7 @@ class FloatSpinBox(CommonParameterWidget):
             self._value_widget.setSuffix(config.suffix or "")
         return self._value_widget
 
-    def set_value_to_widget(self, value: float | int | str):
+    def set_value_to_widget(self, value: Union[float, int, str]):
         try:
             value = float(value)
         except ValueError as e:

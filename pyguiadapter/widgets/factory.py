@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 import warnings
-from typing import Dict, Type, List, Optional, Callable
+from typing import Dict, Type, List, Optional, Callable, Union
 
 from .builtin import BUILTIN_WIDGETS_MAP, BUILTIN_WIDGETS_MAPPING_RULES
 from ..exceptions import AlreadyRegisteredError
@@ -21,7 +19,7 @@ class ParameterWidgetRegistry(object):
 
     def register(
         self,
-        typ: str | Type,
+        typ: Union[str, Type],
         widget_class: Type[BaseParameterWidget],
         replace: bool = False,
     ):
@@ -41,26 +39,28 @@ class ParameterWidgetRegistry(object):
             return
         self._registry[typ] = widget_class
 
-    def register_all(self, mapping: Dict[str | Type, Type[BaseParameterWidget]]):
+    def register_all(self, mapping: Dict[Union[str, Type], Type[BaseParameterWidget]]):
         for typename, widget_class in mapping.items():
             self.register(typename, widget_class)
 
-    def unregister(self, typ: str | Type) -> Type[BaseParameterWidget] | None:
+    def unregister(self, typ: Union[str, Type]) -> Optional[Type[BaseParameterWidget]]:
         return self._registry.pop(self._to_typename(typ), None)
 
-    def unregister_all(self, typs: List[str | Type]):
+    def unregister_all(self, typs: List[Union[str, Type]]):
         for typ in typs:
             self.unregister(typ)
 
-    def is_registered(self, typ: str | Type) -> bool:
+    def is_registered(self, typ: Union[str, Type]) -> bool:
         return self._to_typename(typ) in self._registry
 
-    def find_by_typename(self, typ: str | Type) -> Type[BaseParameterWidget] | None:
+    def find_by_typename(
+        self, typ: Union[str, Type]
+    ) -> Optional[Type[BaseParameterWidget]]:
         return self._registry.get(self._to_typename(typ), None)
 
     def find_by_widget_class_name(
         self, widget_class_name: str
-    ) -> Type[BaseParameterWidget] | None:
+    ) -> Optional[Type[BaseParameterWidget]]:
         return next(
             (
                 widget_class
@@ -71,7 +71,7 @@ class ParameterWidgetRegistry(object):
         )
 
     @staticmethod
-    def _to_typename(typ: str | Type) -> str:
+    def _to_typename(typ: Union[str, Type]) -> str:
         if isinstance(typ, str):
             if typ.strip() == "":
                 raise ValueError(f"typename cannot be a empty string")
@@ -102,7 +102,7 @@ class _ParameterWidgetFactory(ParameterWidgetRegistry):
 
     def find_by_rule(
         self, parameter_info: ParameterInfo
-    ) -> Type[BaseParameterWidget] | None:
+    ) -> Optional[Type[BaseParameterWidget]]:
         for rule in self._rules:
             widget_class = self._do_mapping(rule, parameter_info)
             if is_parameter_widget_class(widget_class):
@@ -126,7 +126,7 @@ class _ParameterWidgetFactory(ParameterWidgetRegistry):
     @staticmethod
     def _do_mapping(
         rule: MappingRule, parameter_info: ParameterInfo
-    ) -> Type[BaseParameterWidget] | None:
+    ) -> Optional[Type[BaseParameterWidget]]:
         try:
             return rule(parameter_info)
         except Exception as e:

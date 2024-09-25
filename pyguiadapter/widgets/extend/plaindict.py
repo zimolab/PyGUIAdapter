@@ -1,9 +1,7 @@
-from __future__ import annotations
-
 import dataclasses
 import json
 from collections import OrderedDict
-from typing import Type, Dict, Any, List, Tuple
+from typing import Type, Dict, Any, List, Tuple, Optional
 
 from pyqcodeeditor.QCodeEditor import QCodeEditor
 from pyqcodeeditor.highlighters import QJSONHighlighter
@@ -32,7 +30,7 @@ GridStyle = Qt.PenStyle
 
 @dataclasses.dataclass(frozen=True)
 class PlainDictEditConfig(CommonParameterWidgetConfig):
-    default_value: Dict[str, Any] | None = dataclasses.field(default_factory=dict)
+    default_value: Optional[Dict[str, Any]] = dataclasses.field(default_factory=dict)
     edit_button_text: str = "Edit"
     add_button_text: str = "Add"
     remove_button_text: str = "Remove"
@@ -68,18 +66,18 @@ class PlainDictEdit(CommonParameterWidget):
 
     def __init__(
         self,
-        parent: QWidget | None,
+        parent: Optional[QWidget],
         parameter_name: str,
         config: PlainDictEditConfig,
     ):
-        self._value_widget: QWidget | None = None
-        self._table_view: QTableView | None = None
-        self._add_button: QPushButton | None = None
-        self._remove_button: QPushButton | None = None
-        self._clear_button: QPushButton | None = None
-        self._edit_button: QPushButton | None = None
+        self._value_widget: Optional[QWidget] = None
+        self._table_view: Optional[QTableView] = None
+        self._add_button: Optional[QPushButton] = None
+        self._remove_button: Optional[QPushButton] = None
+        self._clear_button: Optional[QPushButton] = None
+        self._edit_button: Optional[QPushButton] = None
 
-        self._model: QStandardItemModel | None = None
+        self._model: Optional[QStandardItemModel] = None
         super().__init__(parent, parameter_name, config)
 
     @property
@@ -325,14 +323,14 @@ class PlainDictEdit(CommonParameterWidget):
 class _KeyValueEditor(QDialog):
     def __init__(
         self,
-        parent: QWidget | None,
+        parent: Optional[QWidget],
         added_keys: List[str],
-        current_key: str | None = None,
-        current_value: str | None = None,
+        current_key: Optional[str] = None,
+        current_value: Optional[str] = None,
         *,
         key_label: str = "Key",
         value_label: str = "Value",
-        window_size: Tuple[int, int] | None = None,
+        window_size: Optional[Tuple[int, int]] = None,
     ):
         super().__init__(parent)
         self._keys = added_keys
@@ -380,7 +378,7 @@ class _KeyValueEditor(QDialog):
                 self._formater.format_code(self._current_value)
             )
 
-    def get_current_key(self) -> str | None:
+    def get_current_key(self) -> Optional[str]:
         return self._current_key
 
     def get_current_value(self) -> str:

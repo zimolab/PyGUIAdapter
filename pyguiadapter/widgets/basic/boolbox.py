@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 import dataclasses
-from typing import Type
+from typing import Type, Optional
 
 from qtpy.QtWidgets import QWidget, QButtonGroup, QRadioButton, QVBoxLayout, QHBoxLayout
 
@@ -11,11 +9,11 @@ from ... import utils
 
 @dataclasses.dataclass(frozen=True)
 class BoolBoxConfig(CommonParameterWidgetConfig):
-    default_value: bool | None = False
+    default_value: Optional[bool] = False
     true_text: str = "True"
     false_text: str = "False"
-    true_icon: utils.IconType | None = None
-    false_icon: utils.IconType | None = None
+    true_icon: utils.IconType = None
+    false_icon: utils.IconType = None
     vertical: bool = True
 
     @classmethod
@@ -28,14 +26,14 @@ class BoolBox(CommonParameterWidget):
 
     def __init__(
         self,
-        parent: QWidget | None,
+        parent: Optional[QWidget],
         parameter_name: str,
         config: BoolBoxConfig,
     ):
-        self._value_widget: QWidget | None = None
-        self._true_radio_button: QRadioButton | None = None
-        self._false_radio_button: QRadioButton | None = None
-        self._button_group: QButtonGroup | None = None
+        self._value_widget: Optional[QWidget] = None
+        self._true_radio_button: Optional[QRadioButton] = None
+        self._false_radio_button: Optional[QRadioButton] = None
+        self._button_group: Optional[QButtonGroup] = None
 
         super().__init__(parent, parameter_name, config)
 

@@ -1,9 +1,7 @@
-from __future__ import annotations
-
 import copy
 import dataclasses
 from abc import abstractmethod
-from typing import Any, Type
+from typing import Any, Type, Optional
 
 from qtpy.QtCore import Qt
 from qtpy.QtWidgets import (
@@ -35,7 +33,7 @@ class CommonParameterWidget(BaseParameterWidget):
 
     def __init__(
         self,
-        parent: QWidget | None,
+        parent: Optional[QWidget],
         parameter_name: str,
         config: CommonParameterWidgetConfig,
     ):
@@ -223,7 +221,7 @@ class CommonParameterWidget(BaseParameterWidget):
         error_message = str(error)
         self.show_validation_error(error_message)
 
-    def on_clear_validation_error(self, parameter_name: str | None):
+    def on_clear_validation_error(self, parameter_name: Optional[str]):
         if parameter_name is None or parameter_name == self.parameter_name:
             self.clear_validation_error()
 

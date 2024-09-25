@@ -1,6 +1,5 @@
-from __future__ import annotations
-
 import dataclasses
+from typing import Optional
 
 from .ucontext import uprint
 
@@ -23,7 +22,7 @@ class LoggingConfig(object):
 
 
 class Logger(object):
-    def __init__(self, confing: LoggingConfig | None = None):
+    def __init__(self, confing: Optional[LoggingConfig] = None):
         self._config = confing or LoggingConfig()
 
     @property

@@ -1,8 +1,6 @@
-from __future__ import annotations
-
 import dataclasses
 import json
-from typing import Type, Any
+from typing import Type, Any, Optional
 
 from pyqcodeeditor.highlighters import QJSONHighlighter
 from qtpy.QtWidgets import QWidget
@@ -34,7 +32,7 @@ class JsonEdit(BaseCodeEdit):
 
     def __init__(
         self,
-        parent: QWidget | None,
+        parent: Optional[QWidget],
         parameter_name: str,
         config: JsonEditConfig,
     ):

@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 import dataclasses
-from typing import Type, Any
+from typing import Type, Any, Optional
 
 from qtpy.QtGui import QTextOption
 from qtpy.QtWidgets import QWidget, QTextEdit
@@ -15,13 +13,13 @@ WrapMode = QTextOption.WrapMode
 
 @dataclasses.dataclass(frozen=True)
 class TextEditConfig(CommonParameterWidgetConfig):
-    default_value: str | None = ""
+    default_value: Optional[str] = ""
     placeholder: str = ""
     accept_rich_text: bool = False
-    auto_formatting: AutoFormatting | None = None
+    auto_formatting: Optional[AutoFormatting] = None
     line_wrap: LineWrapMode = LineWrapMode.WidgetWidth
     line_wrap_column_or_width: int = 88
-    word_wrap: WrapMode | None = None
+    word_wrap: Optional[WrapMode] = None
 
     @classmethod
     def target_widget_class(cls) -> Type["TextEdit"]:
@@ -33,11 +31,11 @@ class TextEdit(CommonParameterWidget):
 
     def __init__(
         self,
-        parent: QWidget | None,
+        parent: Optional[QWidget],
         parameter_name: str,
         config: TextEditConfig,
     ):
-        self._value_widget: QTextEdit | None = None
+        self._value_widget: Optional[QTextEdit] = None
         super().__init__(parent, parameter_name, config)
 
     @property

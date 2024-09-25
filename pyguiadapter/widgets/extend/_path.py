@@ -1,6 +1,4 @@
-from __future__ import annotations
-
-from typing import List, Tuple, Set
+from typing import List, Tuple, Set, Optional, Union
 
 from qtpy.QtWidgets import QLineEdit, QToolButton, QWidget, QHBoxLayout
 
@@ -14,18 +12,18 @@ class PathSelectWidget(QWidget):
 
     def __init__(
         self,
-        parent: QWidget | None = None,
+        parent: Optional[QWidget] = None,
         *,
         select_directory: bool = False,
         open_file: bool = True,
         save_file: bool = False,
         multiple_files: bool = False,
         file_separator: str = DEFAULT_FILE_SEPARATOR,
-        select_button_text: str | None = None,
+        select_button_text: Optional[str] = None,
         select_button_icon: utils.IconType = None,
         dialog_title: str = "",
         start_dir: str = "",
-        filters: str | None = None,
+        filters: Optional[str] = None,
         placeholder: str = "",
         clear_button: bool = False,
     ):
@@ -114,7 +112,7 @@ class PathSelectWidget(QWidget):
     def get_path(self) -> str:
         return self._path_edit.text()
 
-    def set_paths(self, ps: str | List[str] | Tuple[str, ...] | Set[str]):
+    def set_paths(self, ps: Union[str, List[str], Tuple[str, ...], Set[str]]):
         assert self._file_separator is not None and self._file_separator.strip() != ""
         if not isinstance(ps, str):
             ps = self._file_separator.join(ps)

@@ -1,7 +1,6 @@
-from __future__ import annotations
-
 import json
 import warnings
+from typing import Optional
 
 from ..base import BaseCodeFormatter
 
@@ -22,7 +21,7 @@ class JsonFormatter(BaseCodeFormatter):
             return
         self._indent = value
 
-    def format_code(self, text: str) -> str | None:
+    def format_code(self, text: str) -> Optional[str]:
         try:
             return json.dumps(json.loads(text), indent=self._indent, ensure_ascii=False)
         except Exception as e:

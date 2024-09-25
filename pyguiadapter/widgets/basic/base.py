@@ -1,9 +1,7 @@
-from __future__ import annotations
-
 import dataclasses
 import warnings
 from abc import abstractmethod
-from typing import Type, TypeVar, Callable, Tuple
+from typing import Type, TypeVar, Callable, Tuple, Optional, Union
 
 from pyqcodeeditor.QCodeEditor import QCodeEditor
 from pyqcodeeditor.QStyleSyntaxHighlighter import QStyleSyntaxHighlighter
@@ -42,11 +40,11 @@ MIN_HEIGHT = 180
 
 @dataclasses.dataclass(frozen=True)
 class BaseCodeEditConfig(CommonParameterWidgetConfig):
-    font_size: int | None = None
+    font_size: Optional[int] = None
     indent_size: int = INDENT_SIZE
     min_height: int = MIN_HEIGHT
-    highlighter: Type[QStyleSyntaxHighlighter] | None = None
-    highlighter_args: dict | list | tuple | None = None
+    highlighter: Optional[Type[QStyleSyntaxHighlighter]] = None
+    highlighter_args: Union[dict, list, tuple, None] = None
     editor_window: bool = True
     editor_button_text: str = EDITOR_BUTTON_TEXT
     editor_title: str = EDITOR_TITLE
@@ -55,13 +53,13 @@ class BaseCodeEditConfig(CommonParameterWidgetConfig):
     editor_word_wrap_mode: WordWrapMode = WordWrapMode.NoWrap
     auto_indent: bool = True
     auto_parentheses: bool = True
-    formatter: BaseCodeFormatter | Callable[[str], str] | None = None
-    file_filters: str | None = None
-    start_dir: str | None = None
+    formatter: Union[BaseCodeFormatter, Callable[[str], str], None] = None
+    file_filters: Optional[str] = None
+    start_dir: Optional[str] = None
     line_wrap_mode: LineWrapMode = LineWrapMode.WidgetWidth
     line_wrap_width: int = 88
     word_wrap_mode: WordWrapMode = WordWrapMode.WordWrap
-    initial_text: str | None = None
+    initial_text: Optional[str] = None
     use_default_menus: bool = True
     use_default_toolbar: bool = True
     exclude_default_menus: Tuple[str] = ()
@@ -88,17 +86,17 @@ class BaseCodeEdit(CommonParameterWidget):
 
     def __init__(
         self,
-        parent: QWidget | None,
+        parent: Optional[QWidget],
         parameter_name: str,
         config: BaseCodeEditConfig,
     ):
 
-        self._value_widget: QWidget | None = None
-        self._editor_button: QPushButton | None = None
+        self._value_widget: Optional[QWidget] = None
+        self._editor_button: Optional[QPushButton] = None
         super().__init__(parent, parameter_name, config)
 
-        self._editor: QCodeEditor | None = None
-        self._code_editor: CodeEditorWindow | None = None
+        self._editor: Optional[QCodeEditor] = None
+        self._code_editor: Optional[CodeEditorWindow] = None
 
     @property
     def value_widget(self) -> QWidget:
@@ -209,7 +207,7 @@ class BaseCodeEdit(CommonParameterWidget):
     def _on_code_editor_destroyed(self):
         self._code_editor = None
 
-    def _do_format(self, code: str) -> str | None:
+    def _do_format(self, code: str) -> Optional[str]:
         config: BaseCodeEditConfig = self.config
         if config.formatter:
             try:

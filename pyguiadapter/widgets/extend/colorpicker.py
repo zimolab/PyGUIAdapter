@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 import dataclasses
-from typing import Type, Tuple, Union, Literal
+from typing import Type, Tuple, Union, Literal, Optional
 
 from qtpy.QtCore import Qt
 from qtpy.QtGui import QColor, QFont
@@ -22,7 +20,7 @@ ColorType = Union[
 class ColorLabel(QLabel):
     def __init__(
         self,
-        parent: QWidget | None,
+        parent: Optional[QWidget],
         alpha_channel: bool = True,
         initial_color: ColorType = Qt.white,
         display_color_name: bool = True,
@@ -104,7 +102,7 @@ class ColorLabel(QLabel):
 
 @dataclasses.dataclass(frozen=True)
 class ColorPickerConfig(CommonParameterWidgetConfig):
-    default_value: ColorType | None = "white"
+    default_value: Optional[ColorType] = "white"
     initial_color: ColorType = "white"
     alpha_channel: bool = True
     display_color_name: bool = True
@@ -122,11 +120,11 @@ class ColorPicker(CommonParameterWidget):
 
     def __init__(
         self,
-        parent: QWidget | None,
+        parent: Optional[QWidget],
         parameter_name: str,
         config: ColorPickerConfig,
     ):
-        self._value_widget: ColorLabel | None = None
+        self._value_widget: Optional[ColorLabel] = None
         super().__init__(parent, parameter_name, config)
 
     @property
@@ -176,7 +174,7 @@ class ColorTuplePicker(ColorPicker):
 
     def __init__(
         self,
-        parent: QWidget | None,
+        parent: Optional[QWidget],
         parameter_name: str,
         config: ColorPickerConfig,
     ):
@@ -198,7 +196,7 @@ class ColorHexPicker(ColorPicker):
 
     def __init__(
         self,
-        parent: QWidget | None,
+        parent: Optional[QWidget],
         parameter_name: str,
         config: ColorPickerConfig,
     ):

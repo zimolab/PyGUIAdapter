@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 import dataclasses
-from typing import Type
+from typing import Type, Optional
 
 from qtpy.QtWidgets import QWidget
 
@@ -10,7 +8,7 @@ from .literaledit import PyLiteralEdit, PyLiteralEditConfig, PyLiteralType
 
 @dataclasses.dataclass(frozen=True)
 class ListEditConfig(PyLiteralEditConfig):
-    default_value: list | None = dataclasses.field(default_factory=list)
+    default_value: Optional[list] = dataclasses.field(default_factory=list)
     initial_text: str = "[]"
 
     @classmethod
@@ -22,11 +20,11 @@ class ListEdit(PyLiteralEdit):
     ConfigClass = ListEditConfig
 
     def __init__(
-        self, parent: QWidget | None, parameter_name: str, config: ListEditConfig
+        self, parent: Optional[QWidget], parameter_name: str, config: ListEditConfig
     ):
         super().__init__(parent, parameter_name, config)
 
-    def _get_data(self, text: str) -> list | None:
+    def _get_data(self, text: str) -> Optional[list]:
         if text is None or text.strip() == "":
             return None
         data = super()._get_data(text)

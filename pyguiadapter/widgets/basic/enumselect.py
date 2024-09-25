@@ -1,9 +1,7 @@
-from __future__ import annotations
-
 import dataclasses
 import inspect
 from enum import Enum
-from typing import Type, Tuple
+from typing import Type, Tuple, Union, Optional, Dict
 
 from qtpy.QtCore import QSize
 from qtpy.QtWidgets import QWidget, QComboBox
@@ -15,10 +13,10 @@ from ... import utils
 
 @dataclasses.dataclass(frozen=True)
 class EnumSelectConfig(CommonParameterWidgetConfig):
-    default_value: Enum | str | int | None = 0
-    enum_class: Type[Enum] | None = None
-    icons: dict[Enum | str, utils.IconType] | None = None
-    icon_size: Tuple[int, int] | QSize | None = None
+    default_value: Union[Enum, str, int, None] = 0
+    enum_class: Optional[Type[Enum]] = None
+    icons: Optional[Dict[Union[Enum, str], utils.IconType]] = None
+    icon_size: Union[Tuple[int, int], QSize, None] = None
 
     @classmethod
     def target_widget_class(cls) -> Type["EnumSelect"]:
@@ -30,11 +28,11 @@ class EnumSelect(CommonParameterWidget):
 
     def __init__(
         self,
-        parent: QWidget | None,
+        parent: Optional[QWidget],
         parameter_name: str,
         config: EnumSelectConfig,
     ):
-        self._value_widget: QComboBox | None = None
+        self._value_widget: Optional[QComboBox] = None
         super().__init__(parent, parameter_name, config)
 
     @property
@@ -54,7 +52,10 @@ class EnumSelect(CommonParameterWidget):
         return self._value_widget
 
     def _add_item(
-        self, name: str, value: Enum, icons: dict[Enum | str, utils.IconType] | None
+        self,
+        name: str,
+        value: Enum,
+        icons: Optional[Dict[Union[Enum, str], utils.IconType]],
     ):
         if not icons:
             self._value_widget.addItem(name, value)
@@ -72,7 +73,7 @@ class EnumSelect(CommonParameterWidget):
 
         self._value_widget.addItem(icon, name, value)
 
-    def set_value_to_widget(self, value: Enum | str | int):
+    def set_value_to_widget(self, value: Union[Enum, str, int]):
         if isinstance(value, int):
             self._value_widget.setCurrentIndex(value)
             return
@@ -100,7 +101,7 @@ class EnumSelect(CommonParameterWidget):
     @classmethod
     def _enum_type_mapping_rule(
         cls, parameter_info: ParameterInfo
-    ) -> Type[EnumSelect] | None:
+    ) -> Optional[Type["EnumSelect"]]:
         if utils.is_subclass_of(parameter_info.type, Enum):
             return cls
         return None

@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 import ast
 import dataclasses
 import hashlib
@@ -10,7 +8,7 @@ import string
 import traceback
 import warnings
 from io import StringIO
-from typing import Literal, List, Set, Tuple, Any, Union, Type
+from typing import Literal, List, Set, Tuple, Any, Union, Type, Optional
 
 import qtawesome as qta
 from qtpy import QT_VERSION, compat
@@ -63,16 +61,16 @@ IconType = Union[str, Tuple[str, Union[list, dict]], QIcon, QPixmap, type(None)]
 @dataclasses.dataclass
 class MessageBoxConfig(object):
     text: str
-    title: str | None = None
-    icon: int | QPixmap | None = None
-    detailed_text: str | None = None
-    informative_text: str | None = None
-    text_format: TextFormat | None = None
-    buttons: StandardButton | StandardButtons | None = None
-    default_button: StandardButton | None = None
-    escape_button: StandardButton | None = None
+    title: Optional[str] = None
+    icon: Union[int, QPixmap, None] = None
+    detailed_text: Optional[str] = None
+    informative_text: Optional[str] = None
+    text_format: Optional[TextFormat] = None
+    buttons: Union[StandardButton, StandardButtons, int, None] = None
+    default_button: Optional[StandardButton] = None
+    escape_button: Optional[StandardButton] = None
 
-    def create_messagebox(self, parent: QWidget | None) -> QMessageBox:
+    def create_messagebox(self, parent: Optional[QWidget]) -> QMessageBox:
         # noinspection SpellCheckingInspection,PyArgumentList
         msgbox = QMessageBox(parent)
         msgbox.setText(self.text)
@@ -108,7 +106,7 @@ class MessageBoxConfig(object):
 
 
 # noinspection PyArgumentList
-def get_icon(src: IconType, *args, **kwargs) -> QIcon | None:
+def get_icon(src: IconType, *args, **kwargs) -> Optional[QIcon]:
     if src is None:
         return None
     if isinstance(src, QIcon):
@@ -213,7 +211,7 @@ def show_warning_message(
     parent: QWidget,
     message: str,
     title: str = "Warning",
-) -> int | StandardButton:
+) -> Union[int, StandardButton]:
     return QMessageBox.warning(parent, title, message)
 
 
@@ -221,7 +219,7 @@ def show_critical_message(
     parent: QWidget,
     message: str,
     title: str = "Critical",
-) -> int | StandardButton:
+) -> Union[int, StandardButton]:
     return QMessageBox.critical(parent, title, message)
 
 
@@ -229,7 +227,7 @@ def show_info_message(
     parent: QWidget,
     message: str,
     title: str = "Information",
-) -> int | StandardButton:
+) -> Union[int, StandardButton]:
     return QMessageBox.information(parent, title, message)
 
 
@@ -237,22 +235,22 @@ def show_question_message(
     parent: QWidget,
     message: str,
     title: str = "Question",
-    buttons: int | StandardButton | StandardButtons | None = None,
-) -> int | StandardButton:
+    buttons: Union[int, StandardButton, StandardButtons, None] = None,
+) -> Union[int, StandardButton]:
     if buttons is None:
         return QMessageBox.question(parent, title, message)
     return QMessageBox.question(parent, title, message, buttons)
 
 
 def show_exception_message(
-    parent: QWidget | None,
+    parent: Optional[QWidget],
     exception: Exception,
     message: str = "",
     title: str = "Error",
     detail: bool = True,
     show_error_type: bool = True,
     **kwargs,
-) -> int | StandardButton:
+) -> Union[int, StandardButton]:
     traceback.print_exc()
     if not detail:
         detail_msg = None
@@ -284,7 +282,7 @@ def hline(parent: QWidget) -> QFrame:
     return line
 
 
-def _marks(marks: str | List[str] | Tuple[str] | Set[str]) -> Set[str]:
+def _marks(marks: Union[str, List[str], Tuple[str], Set[str]]) -> Set[str]:
     if not isinstance(marks, (list, tuple, set, str)):
         raise TypeError(f"unsupported types for marks: {type(marks)}")
     if isinstance(marks, str):
@@ -306,8 +304,8 @@ def _marks(marks: str | List[str] | Tuple[str] | Set[str]) -> Set[str]:
 
 
 def _block_pattern(
-    start_marks: str | List[str] | Tuple[str] | Set[str],
-    end_marks: str | List[str] | Tuple[str] | Set[str],
+    start_marks: Union[str, List[str], Tuple[str], Set[str]],
+    end_marks: Union[str, List[str], Tuple[str], Set[str]],
 ) -> str:
     start_marks = _marks(start_marks)
     end_marks = _marks(end_marks)
@@ -322,9 +320,9 @@ def _block_pattern(
 
 def extract_text_block(
     text: str,
-    start_marks: str | List[str] | Tuple[str] | Set[str],
-    end_marks: str | List[str] | Tuple[str] | Set[str],
-) -> str | None:
+    start_marks: Union[str, List[str], Tuple[str], Set[str]],
+    end_marks: Union[str, List[str], Tuple[str], Set[str]],
+) -> Optional[str]:
     pattern = _block_pattern(start_marks, end_marks)
     result = re.search(pattern, text, re.MULTILINE | re.DOTALL | re.UNICODE)
     if result:
@@ -334,8 +332,8 @@ def extract_text_block(
 
 def remove_text_block(
     text: str,
-    start_marks: str | List[str] | Tuple[str] | Set[str],
-    end_marks: str | List[str] | Tuple[str] | Set[str],
+    start_marks: Union[str, List[str], Tuple[str], Set[str]],
+    end_marks: Union[str, List[str], Tuple[str], Set[str]],
 ) -> str:
     pattern = _block_pattern(start_marks, end_marks)
     result = re.search(pattern, text, re.MULTILINE | re.DOTALL | re.UNICODE)
@@ -365,7 +363,7 @@ def write_text_file(text_file: str, content: str, encoding: str = "utf-8"):
 
 
 def get_existing_directory(
-    parent: QWidget | None = None,
+    parent: Optional[QWidget] = None,
     title: str = "Open Directory",
     start_dir: str = "",
 ) -> str:
@@ -374,11 +372,11 @@ def get_existing_directory(
 
 
 def get_existing_directory_url(
-    parent: QWidget | None = None,
+    parent: Optional[QWidget] = None,
     title: str = "Open Directory URL",
-    start_dir: QUrl | None = None,
-    supported_schemes: List[str] | None = None,
-) -> QUrl | None:
+    start_dir: Optional[QUrl] = None,
+    supported_schemes: Optional[List[str]] = None,
+) -> Optional[QUrl]:
     if start_dir is None:
         start_dir = QUrl()
     if not supported_schemes:
@@ -400,39 +398,39 @@ def get_existing_directory_url(
 
 
 def get_open_file(
-    parent: QWidget | None = None,
+    parent: Optional[QWidget] = None,
     title: str = "Open File",
     start_dir: str = "",
     filters: str = "",
-) -> str | None:
+) -> Optional[str]:
     # filename, _ = QFileDialog.getOpenFileName(parent, title, start_dir, filters)
     filename, _ = compat.getopenfilename(parent, title, start_dir, filters)
     return filename or None
 
 
 def get_open_files(
-    parent: QWidget | None = None,
+    parent: Optional[QWidget] = None,
     title: str = "Open Files",
     start_dir: str = "",
     filters: str = "",
-) -> List[str] | None:
+) -> Optional[List[str]]:
     # filenames, _ = QFileDialog.getOpenFileNames(parent, title, start_dir, filters)
     filenames, _ = compat.getopenfilenames(parent, title, start_dir, filters)
     return filenames or None
 
 
 def get_save_file(
-    parent: QWidget | None = None,
+    parent: Optional[QWidget] = None,
     title: str = "Save File",
     start_dir: str = "",
     filters: str = "",
-) -> str | None:
+) -> Optional[str]:
     # filename, _ = QFileDialog.getSaveFileName(parent, title, start_dir, filters)
     filename, _ = compat.getsavefilename(parent, title, start_dir, filters)
     return filename or None
 
 
-def compare_qt_version(ver: str | None) -> int:
+def compare_qt_version(ver: Optional[str]) -> int:
     if not ver:
         return 1
     if not QT_VERSION:
@@ -468,7 +466,7 @@ def get_inverted_color(color: QColor) -> QColor:
 
 
 def get_traceback(
-    error: Exception, limit: int | None = None, complete_msg: bool = True
+    error: Exception, limit: Optional[int] = None, complete_msg: bool = True
 ) -> str:
     assert isinstance(error, Exception)
     buffer = StringIO()
@@ -482,7 +480,7 @@ def get_traceback(
     return msg
 
 
-def fingerprint(text: str) -> str | None:
+def fingerprint(text: str) -> Optional[str]:
     if not text:
         return None
     md5 = hashlib.md5()
@@ -490,7 +488,7 @@ def fingerprint(text: str) -> str | None:
     return md5.hexdigest()
 
 
-def get_size(size: int | Tuple[int, int] | QSize) -> QSize | None:
+def get_size(size: Union[int, Tuple[int, int], QSize]) -> Optional[QSize]:
     if size is None:
         return None
     if isinstance(size, int):
@@ -504,11 +502,11 @@ def get_size(size: int | Tuple[int, int] | QSize) -> QSize | None:
     return None
 
 
-def get_object_filename(obj: Any) -> str | None:
+def get_object_filename(obj: Any) -> Optional[str]:
     return inspect.getsourcefile(obj)
 
 
-def get_object_sourcecode(obj: Any) -> str | None:
+def get_object_sourcecode(obj: Any) -> Optional[str]:
     return inspect.getsource(obj)
 
 
@@ -543,7 +541,7 @@ def convert_color(
     c: QColor,
     return_type: Literal["tuple", "str", "QColor"],
     alpha_channel: bool = True,
-) -> Tuple[int, int, int, int] | Tuple[int, int, int] | str | QColor:
+) -> Union[Tuple[int, int, int, int], Tuple[int, int, int], str, QColor]:
     assert isinstance(c, QColor)
     if return_type == "QColor":
         return c
@@ -563,7 +561,7 @@ def convert_color(
 
 
 # noinspection SpellCheckingInspection
-def to_qcolor(color: str | tuple | list | QColor) -> QColor:
+def to_qcolor(color: Union[str, tuple, list, QColor]) -> QColor:
     if isinstance(color, QColor):
         return color
     if isinstance(color, (list, tuple)):

@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 import dataclasses
-from typing import Literal
+from typing import Literal, Optional
 
 from qtpy.QtWidgets import QTextBrowser, QWidget
 
@@ -36,7 +34,9 @@ class OutputBrowserConfig(object):
 
 
 class OutputBrowser(QTextBrowser):
-    def __init__(self, parent: QWidget | None, config: OutputBrowserConfig | None):
+    def __init__(
+        self, parent: Optional[QWidget], config: Optional[OutputBrowserConfig]
+    ):
         super().__init__(parent)
         self._config = config or OutputBrowserConfig()
         self._setup_ui()

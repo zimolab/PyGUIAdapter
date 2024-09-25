@@ -1,9 +1,6 @@
-from __future__ import annotations
-
 import warnings
-from collections.abc import Callable
 from concurrent.futures import Future
-from typing import Any, Type
+from typing import Any, Type, Optional, Union, Callable
 
 from qtpy.QtCore import QObject, Signal, QMutex
 
@@ -30,7 +27,7 @@ class _Context(QObject):
         super().__init__(parent)
 
         self._lock = QMutex()
-        self._current_window: FnExecuteWindow | None = None
+        self._current_window: Optional[FnExecuteWindow] = None
         self._custom_dialog_factory = CustomDialogFactory()
 
         # noinspection PyUnresolvedReferences
@@ -57,7 +54,7 @@ class _Context(QObject):
         return self._custom_dialog_factory
 
     @property
-    def current_window(self) -> FnExecuteWindow | None:
+    def current_window(self) -> Optional[FnExecuteWindow]:
         return self._current_window
 
     def is_function_cancelled(self) -> bool:
@@ -114,7 +111,10 @@ class _Context(QObject):
         future.set_result(ret)
 
     def _on_show_custom_dialog(
-        self, future: Future, dialog_class: str | Type[BaseCustomDialog], kwargs: dict
+        self,
+        future: Future,
+        dialog_class: Union[str, Type[BaseCustomDialog]],
+        kwargs: dict,
     ):
         win = self.current_window
         if not isinstance(win, FnExecuteWindow):
@@ -185,7 +185,7 @@ def _current_window_destroyed():
     _context.current_window_destroyed.emit()
 
 
-def get_current_window() -> FnExecuteWindow | None:
+def get_current_window() -> Optional[FnExecuteWindow]:
     global _context
     return _context.current_window
 

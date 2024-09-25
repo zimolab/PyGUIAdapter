@@ -1,8 +1,6 @@
-from __future__ import annotations
-
 import dataclasses
 import warnings
-from typing import Type
+from typing import Type, Optional, Union
 
 from qtpy.QtWidgets import QWidget, QSpinBox
 
@@ -15,7 +13,7 @@ from ...widgets.common import (
 
 @dataclasses.dataclass(frozen=True)
 class IntSpinBoxConfig(CommonParameterWidgetConfig):
-    default_value: int | None = 0
+    default_value: Optional[int] = 0
     min_value: int = -2147483648
     max_value: int = 2147483647
     step: int = 1
@@ -32,9 +30,9 @@ class IntSpinBox(CommonParameterWidget):
     ConfigClass: Type[IntSpinBoxConfig] = IntSpinBoxConfig
 
     def __init__(
-        self, parent: QWidget | None, parameter_name: str, config: IntSpinBoxConfig
+        self, parent: Optional[QWidget], parameter_name: str, config: IntSpinBoxConfig
     ):
-        self._value_widget: QSpinBox | None = None
+        self._value_widget: Optional[QSpinBox] = None
         super().__init__(parent, parameter_name, config)
 
         assert config.max_value >= config.min_value
@@ -57,7 +55,7 @@ class IntSpinBox(CommonParameterWidget):
                 )
         return self._value_widget
 
-    def set_value_to_widget(self, value: int | str):
+    def set_value_to_widget(self, value: Union[int, str]):
         try:
             value = int(value)
         except ValueError as e:

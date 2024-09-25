@@ -1,8 +1,6 @@
-from __future__ import annotations
-
 import dataclasses
 from datetime import datetime
-from typing import Type
+from typing import Type, Union, Optional
 
 from qtpy.QtCore import Qt, QDateTime
 from qtpy.QtWidgets import QWidget, QDateTimeEdit
@@ -20,18 +18,18 @@ TimeSpec = Qt.TimeSpec
 
 @dataclasses.dataclass(frozen=True)
 class DateTimeEditConfig(CommonParameterWidgetConfig):
-    default_value: datetime | QDateTime | None = dataclasses.field(
+    default_value: Union[datetime, QDateTime, None] = dataclasses.field(
         default_factory=datetime.now
     )
-    min_datetime: datetime | QDateTime | None = None
-    max_datetime: datetime | QDateTime | None = None
-    display_format: str | None = None
-    time_spec: TimeSpec | None = None
+    min_datetime: Union[datetime, QDateTime, None] = None
+    max_datetime: Union[datetime, QDateTime, None] = None
+    display_format: Optional[str] = None
+    time_spec: Optional[TimeSpec] = None
     wrapping: bool = False
     frame: bool = True
     alignment: Alignment = Qt.AlignLeft | Qt.AlignVCenter
-    button_symbols: ButtonSymbols | None = None
-    correction_mode: CorrectionMode | None = None
+    button_symbols: Optional[ButtonSymbols] = None
+    correction_mode: Optional[CorrectionMode] = None
     keyboard_tracking: bool = True
     accelerated: bool = False
     calendar_popup: bool = False
@@ -46,11 +44,11 @@ class DateTimeEdit(CommonParameterWidget):
 
     def __init__(
         self,
-        parent: QWidget | None,
+        parent: Optional[QWidget],
         parameter_name: str,
         config: DateTimeEditConfig,
     ):
-        self._value_widget: QDateTimeEdit | None = None
+        self._value_widget: Optional[QDateTimeEdit] = None
         super().__init__(parent, parameter_name, config)
 
     @property
@@ -87,7 +85,7 @@ class DateTimeEdit(CommonParameterWidget):
 
         return self._value_widget
 
-    def set_value_to_widget(self, value: datetime | QDateTime):
+    def set_value_to_widget(self, value: Union[datetime, QDateTime]):
         if not isinstance(value, (datetime, QDateTime)):
             raise ValueError("value must be a datetime or QDateTime object")
         if isinstance(value, datetime):

@@ -1,10 +1,8 @@
-from __future__ import annotations
-
 import threading
 import traceback
 import warnings
 from collections import OrderedDict
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
 from qtpy.QtCore import QObject, QThread, Signal
 
@@ -22,7 +20,7 @@ class _WorkerThread(QThread):
     # noinspection PyUnresolvedReferences
     def __init__(
         self,
-        parent: QObject | None,
+        parent: Optional[QObject],
         fn_info: FnInfo,
         arguments: Dict[str, Any],
     ):
@@ -61,10 +59,12 @@ class _WorkerThread(QThread):
 
 class ThreadFunctionExecutor(BaseFunctionExecutor):
 
-    def __init__(self, parent: QObject | None, listener: ExecuteStateListener | None):
+    def __init__(
+        self, parent: Optional[QObject], listener: Optional[ExecuteStateListener]
+    ):
         super().__init__(parent, listener)
 
-        self._worker_thread: _WorkerThread | None = None
+        self._worker_thread: Optional[_WorkerThread] = None
 
     @property
     def is_executing(self) -> bool:
@@ -108,6 +108,7 @@ class ThreadFunctionExecutor(BaseFunctionExecutor):
         if self.is_cancelled:
             warnings.warn("function is already cancelled")
             return
+        # noinspection PyUnresolvedReferences
         self._worker_thread.cancel_requested.emit()
 
     def _before_execute(self, fn_info: FnInfo, arguments: Dict[str, Any]):

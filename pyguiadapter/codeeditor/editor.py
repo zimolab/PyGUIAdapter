@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 import dataclasses
-from typing import cast
+from typing import cast, Optional
 
 from pyqcodeeditor.QCodeEditor import QCodeEditor
 from pyqcodeeditor.QStyleSyntaxHighlighter import QStyleSyntaxHighlighter
@@ -13,7 +11,9 @@ from .actions import DEFAULT_MENUS, DEFAULT_TOOLBAR
 
 
 class CodeEditorWindow(BaseCodeEditorWindow):
-    def __init__(self, parent: QWidget | None, config: CodeEditorConfig | None = None):
+    def __init__(
+        self, parent: Optional[QWidget], config: Optional[CodeEditorConfig] = None
+    ):
         if config is not None:
             config = dataclasses.replace(config)
         else:
@@ -41,10 +41,10 @@ class CodeEditorWindow(BaseCodeEditorWindow):
             for exclude_action in exclude_toolbar_actions:
                 config.toolbar.remove_action(exclude_action)
 
-        self.__editor: QCodeEditor | None = None
-        self.__current_file: str | None = None
-        self.__fingerprint: str | None = utils.fingerprint(config.initial_text)
-        self.__highlighter: QStyleSyntaxHighlighter | None = None
+        self.__editor: Optional[QCodeEditor] = None
+        self.__current_file: Optional[str] = None
+        self.__fingerprint: Optional[str] = utils.fingerprint(config.initial_text)
+        self.__highlighter: Optional[QStyleSyntaxHighlighter] = None
 
         super().__init__(parent, config)
 
@@ -58,19 +58,21 @@ class CodeEditorWindow(BaseCodeEditorWindow):
     def _config_instance(self) -> CodeEditorConfig:
         return cast(CodeEditorConfig, self._config)
 
-    def _current_highlighter(self) -> QStyleSyntaxHighlighter | None:
+    def _current_highlighter(self) -> Optional[QStyleSyntaxHighlighter]:
         return self.__highlighter
 
-    def _update_current_highlighter(self, highlighter: QStyleSyntaxHighlighter | None):
+    def _update_current_highlighter(
+        self, highlighter: Optional[QStyleSyntaxHighlighter]
+    ):
         self.__highlighter = highlighter
 
-    def _current_fingerprint(self) -> str | None:
+    def _current_fingerprint(self) -> Optional[str]:
         return self.__fingerprint
 
     def _update_fingerprint(self):
         self.__fingerprint = utils.fingerprint(self.get_text())
 
-    def _current_file(self) -> str | None:
+    def _current_file(self) -> Optional[str]:
         self._config: CodeEditorConfig
         if self._config.no_file_mode:
             return None

@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 import dataclasses
-from typing import Type, List, Any, Tuple
+from typing import Type, List, Any, Tuple, Optional, Union
 
 from qtpy.QtCore import QSize
 from qtpy.QtGui import QIcon
@@ -13,7 +11,7 @@ from ...fn import ParameterInfo
 
 
 class _ChoiceButton(QRadioButton):
-    def __init__(self, parent: QWidget | None, user_data: Any):
+    def __init__(self, parent: Optional[QWidget], user_data: Any):
         super().__init__(parent)
         self._user_data = user_data
 
@@ -28,14 +26,14 @@ _FIRST_OPTION = object()
 @dataclasses.dataclass(frozen=True)
 class ExclusiveChoiceBoxConfig(CommonParameterWidgetConfig):
     default_value: Any = _FIRST_OPTION
-    choices: List[Any] | None = None
+    choices: Optional[List[Any]] = None
     columns: int = 1
     show_type_icon: bool = True
     int_icon: utils.IconType = "mdi6.alpha-i-circle"
     bool_icon: str = "mdi6.alpha-b-circle"
     str_icon: str = "mdi6.alpha-s-box"
     object_icon: str_icon = "mdi6.alpha-o-box"
-    icon_size: Tuple[int, int] | int | QSize | None = None
+    icon_size: Union[Tuple[int, int], int, QSize, None] = None
 
     @classmethod
     def target_widget_class(cls) -> Type["ExclusiveChoiceBox"]:
@@ -47,13 +45,13 @@ class ExclusiveChoiceBox(CommonParameterWidget):
 
     def __init__(
         self,
-        parent: QWidget | None,
+        parent: Optional[QWidget],
         parameter_name: str,
         config: ExclusiveChoiceBoxConfig,
     ):
-        self._value_widget: QWidget | None = None
-        self._button_group: QButtonGroup | None = None
-        self._button_layout: QGridLayout | None = None
+        self._value_widget: Optional[QWidget] = None
+        self._button_group: Optional[QButtonGroup] = None
+        self._button_layout: Optional[QGridLayout] = None
         super().__init__(parent, parameter_name, config)
 
     @property

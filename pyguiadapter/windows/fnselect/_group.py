@@ -1,6 +1,4 @@
-from __future__ import annotations
-
-from typing import Tuple, List
+from typing import Tuple, List, Union, Optional
 
 import qtawesome as qta
 from qtpy.QtCore import QSize, Qt, Signal, QModelIndex
@@ -25,7 +23,7 @@ class FnGroupPage(QWidget):
         self,
         parent: QWidget,
         icon_mode: bool,
-        icon_size: Tuple[int, int] | QSize | None,
+        icon_size: Union[Tuple[int, int], QSize, None],
     ):
         super().__init__(parent)
         self._bundles: List[FnBundle] = []
@@ -68,7 +66,7 @@ class FnGroupPage(QWidget):
     def bundles_count(self):
         return self._function_list_widget.count()
 
-    def bundle_at(self, index: int) -> FnBundle | None:
+    def bundle_at(self, index: int) -> Optional[FnBundle]:
         item = self._function_list_widget.item(index)
         if item is None:
             return None
@@ -86,7 +84,7 @@ class FnGroupPage(QWidget):
                 return i
         return -1
 
-    def current_bundle(self) -> FnBundle | None:
+    def current_bundle(self) -> Optional[FnBundle]:
         current_item = self._function_list_widget.currentItem()
         if current_item is None:
             return None
@@ -118,7 +116,7 @@ class FnGroupPage(QWidget):
         self._bundles.clear()
 
     @staticmethod
-    def _delete_item(item: QListWidgetItem | None):
+    def _delete_item(item: Optional[QListWidgetItem]):
         if item is None:
             return
         item_widget = item.listWidget()

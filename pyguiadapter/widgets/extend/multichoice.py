@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 import dataclasses
-from typing import Type, List, Any, Dict
+from typing import Type, List, Any, Dict, Optional, Union
 
 from qtpy.QtWidgets import QWidget, QGridLayout, QCheckBox, QButtonGroup
 
@@ -9,7 +7,7 @@ from ..common import CommonParameterWidgetConfig, CommonParameterWidget
 
 
 class _CheckBox(QCheckBox):
-    def __init__(self, parent: QWidget | None, user_data: Any):
+    def __init__(self, parent: Optional[QWidget], user_data: Any):
         super().__init__(parent)
         self._user_data = user_data
 
@@ -20,8 +18,8 @@ class _CheckBox(QCheckBox):
 
 @dataclasses.dataclass(frozen=True)
 class MultiChoiceBoxConfig(CommonParameterWidgetConfig):
-    default_value: List[Any] | None = dataclasses.field(default_factory=list)
-    choices: List[Any] | Dict[str, Any] = dataclasses.field(default_factory=list)
+    default_value: Optional[List[Any]] = dataclasses.field(default_factory=list)
+    choices: Union[List[Any], Dict[str, Any]] = dataclasses.field(default_factory=list)
     columns: int = 1
 
     @classmethod
@@ -34,13 +32,13 @@ class MultiChoiceBox(CommonParameterWidget):
 
     def __init__(
         self,
-        parent: QWidget | None,
+        parent: Optional[QWidget],
         parameter_name: str,
         config: MultiChoiceBoxConfig,
     ):
-        self._value_widget: QWidget | None = None
-        self._button_layout: QGridLayout | None = None
-        self._button_group: QButtonGroup | None = None
+        self._value_widget: Optional[QWidget] = None
+        self._button_layout: Optional[QGridLayout] = None
+        self._button_group: Optional[QButtonGroup] = None
         super().__init__(parent, parameter_name, config)
 
     @property

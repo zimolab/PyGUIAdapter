@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 import dataclasses
-from typing import Type
+from typing import Type, Optional
 
 from qtpy.QtCore import Qt
 from qtpy.QtWidgets import QWidget, QSlider, QLabel, QVBoxLayout
@@ -13,12 +11,12 @@ TickPosition = QSlider.TickPosition
 
 @dataclasses.dataclass(frozen=True)
 class SliderConfig(CommonParameterWidgetConfig):
-    default_value: int | None = 0
+    default_value: Optional[int] = 0
     min_value: int = 0
     max_value: int = 100
     single_step: int = 1
-    page_step: int | None = None
-    tick_interval: int | None = None
+    page_step: Optional[int] = None
+    tick_interval: Optional[int] = None
     tick_position: TickPosition = TickPosition.TicksBothSides
     tracking: bool = True
     inverted_controls: bool = False
@@ -37,13 +35,13 @@ class Slider(CommonParameterWidget):
 
     def __init__(
         self,
-        parent: QWidget | None,
+        parent: Optional[QWidget],
         parameter_name: str,
         config: SliderConfig,
     ):
-        self._value_widget: QWidget | None = None
-        self._slider: QSlider | None = None
-        self._label: QLabel | None = None
+        self._value_widget: Optional[QWidget] = None
+        self._slider: Optional[QSlider] = None
+        self._label: Optional[QLabel] = None
         super().__init__(parent, parameter_name, config)
 
     @property

@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 import dataclasses
-from typing import Type, Any
+from typing import Type, Any, Optional
 
 from qtpy.QtGui import QIntValidator
 from qtpy.QtWidgets import QWidget, QLineEdit
@@ -12,7 +10,7 @@ from ...exceptions import ParameterError
 
 @dataclasses.dataclass(frozen=True)
 class IntLineEditConfig(CommonParameterWidgetConfig):
-    default_value: int | None = 0
+    default_value: Optional[int] = 0
     min_value: int = -2147483648
     max_value: int = 2147483647
     empty_value: int = 0
@@ -26,10 +24,10 @@ class IntLineEdit(CommonParameterWidget):
     ConfigClass = IntLineEditConfig
 
     def __init__(
-        self, parent: QWidget | None, parameter_name: str, config: IntLineEditConfig
+        self, parent: Optional[QWidget], parameter_name: str, config: IntLineEditConfig
     ):
-        self._validator: QIntValidator | None = None
-        self._value_widget: QLineEdit | None = None
+        self._validator: Optional[QIntValidator] = None
+        self._value_widget: Optional[QLineEdit] = None
         super().__init__(parent, parameter_name, config)
 
     @property

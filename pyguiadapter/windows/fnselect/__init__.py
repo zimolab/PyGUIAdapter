@@ -1,3 +1,6 @@
-from ._window import FnSelectWindow, FnSelectWindowConfig, DocumentBrowserConfig
+from ._window import FnSelectWindow, FnSelectWindowConfig
 
-__all__ = ["FnSelectWindow", "FnSelectWindowConfig", "DocumentBrowserConfig"]
+__all__ = [
+    "FnSelectWindow",
+    "FnSelectWindowConfig",
+]

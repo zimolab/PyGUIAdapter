@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 from collections import OrderedDict
-from typing import Dict, Any, List, Tuple, Type, Literal
+from typing import Dict, Any, List, Tuple, Type, Literal, Optional
 
 from qtpy.QtCore import Signal
 from qtpy.QtGui import QIcon
@@ -17,10 +15,10 @@ from qtpy.QtWidgets import (
     QSizePolicy,
 )
 
-from . import _window
 from ... import utils
 from ...exceptions import ParameterAlreadyExistError, ParameterNotFoundError
 from ...paramwidget import BaseParameterWidget, BaseParameterWidgetConfig
+from ._base import FnExecuteWindowConfig
 
 
 class FnParameterGroupPage(QWidget):
@@ -65,7 +63,7 @@ class FnParameterGroupPage(QWidget):
         parameter_name: str,
         widget_class: Type[BaseParameterWidget],
         widget_config: BaseParameterWidgetConfig,
-        index: int | None = None,
+        index: Optional[int] = None,
     ) -> BaseParameterWidget:
         if parameter_name.strip() == "":
             raise ValueError("parameter_name is an empty-string")
@@ -129,7 +127,9 @@ class FnParameterGroupPage(QWidget):
             parameter_name, widget_class, widget_config, None
         )
 
-    def get_parameter_widget(self, parameter_name: str) -> BaseParameterWidget | None:
+    def get_parameter_widget(
+        self, parameter_name: str
+    ) -> Optional[BaseParameterWidget]:
         return self._parameters.get(parameter_name, None)
 
     def has_parameter_widget(self, parameter_name: str) -> bool:
@@ -221,12 +221,12 @@ class FnParameterGroupBox(QToolBox):
     validation_failed = Signal(str, object)
     validation_error_cleared = Signal(object)
 
-    def __init__(self, parent: QWidget, config: _window.FnExecuteWindowConfig):
+    def __init__(self, parent: QWidget, config: FnExecuteWindowConfig):
         self._config = config
         self._groups: Dict[str, FnParameterGroupPage] = OrderedDict()
         super().__init__(parent)
 
-    def upsert_parameter_group(self, group_name: str | None) -> FnParameterGroupPage:
+    def upsert_parameter_group(self, group_name: Optional[str]) -> FnParameterGroupPage:
         group_name = self._group_name(group_name)
         if group_name in self._groups:
             return self._groups[group_name]
@@ -240,15 +240,15 @@ class FnParameterGroupBox(QToolBox):
     def add_default_group(self) -> FnParameterGroupPage:
         return self.upsert_parameter_group(None)
 
-    def has_parameter_group(self, group_name: str | None) -> bool:
+    def has_parameter_group(self, group_name: Optional[str]) -> bool:
         return self._group_name(group_name) in self._groups
 
     def _get_parameter_group(
-        self, group_name: str | None
-    ) -> FnParameterGroupPage | None:
+        self, group_name: Optional[str]
+    ) -> Optional[FnParameterGroupPage]:
         return self._groups.get(self._group_name(group_name), None)
 
-    def remove_parameter_group(self, group_name: str | None):
+    def remove_parameter_group(self, group_name: Optional[str]):
         group = self._groups.get(self._group_name(group_name), None)
         if group is None:
             return
@@ -259,7 +259,7 @@ class FnParameterGroupBox(QToolBox):
 
     def _get_parameter_group_of(
         self, parameter_name: str
-    ) -> FnParameterGroupPage | None:
+    ) -> Optional[FnParameterGroupPage]:
         for group_name, group in self._groups.items():
             if group.has_parameter_widget(parameter_name):
                 return group
@@ -313,7 +313,7 @@ class FnParameterGroupBox(QToolBox):
             params.update(group_page.get_parameter_values())
         return params
 
-    def get_parameter_values_of(self, group_name: str | None) -> Dict[str, Any]:
+    def get_parameter_values_of(self, group_name: Optional[str]) -> Dict[str, Any]:
         group_name = self._group_name(group_name)
         group = self._get_parameter_group(group_name)
         if group is None:
@@ -356,7 +356,7 @@ class FnParameterGroupBox(QToolBox):
                 del params[used_param]
         return list(params.keys())
 
-    def active_parameter_group(self, group_name: str | None) -> bool:
+    def active_parameter_group(self, group_name: Optional[str]) -> bool:
         group = self._get_parameter_group(group_name)
         if group is None:
             return False
@@ -378,13 +378,13 @@ class FnParameterGroupBox(QToolBox):
         # noinspection PyUnresolvedReferences
         self.validation_failed.emit(parameter_name, error)
 
-    def clear_validation_error(self, parameter_name: str | None):
+    def clear_validation_error(self, parameter_name: Optional[str]):
         # noinspection PyUnresolvedReferences
         self.validation_error_cleared.emit(parameter_name)
 
     def _get_group_and_widget(
         self, parameter_name: str
-    ) -> Tuple[FnParameterGroupPage | None, BaseParameterWidget | None]:
+    ) -> Tuple[Optional[FnParameterGroupPage], Optional[BaseParameterWidget]]:
         if not self._groups:
             return None, None
         for group_page in self._groups.values():
@@ -404,12 +404,12 @@ class FnParameterGroupBox(QToolBox):
         if group.group_name in self._groups:
             del self._groups[group.group_name]
 
-    def _group_name(self, name: str | None) -> str:
+    def _group_name(self, name: Optional[str]) -> str:
         if name is None:
             return self._config.default_parameter_group_name
         return name
 
-    def _group_icon(self, group_name: str | None) -> QIcon:
+    def _group_icon(self, group_name: Optional[str]) -> QIcon:
         group_name = self._group_name(group_name)
         if group_name == self._config.default_parameter_group_icon:
             icon = self._config.default_parameter_group_icon
@@ -426,15 +426,15 @@ class FnParameterArea(QWidget):
     cancel_button_clicked = Signal()
     clear_button_clicked = Signal()
 
-    def __init__(self, parent: QWidget, config: _window.FnExecuteWindowConfig):
-        self._param_groupbox: FnParameterGroupBox | None = None
-        self._auto_clear_checkbox: QCheckBox | None = None
-        self._clear_button: QPushButton | None = None
-        self._execute_button: QPushButton | None = None
-        self._cancel_button: QPushButton | None = None
+    def __init__(self, parent: QWidget, config: FnExecuteWindowConfig):
+        self._param_groupbox: Optional[FnParameterGroupBox] = None
+        self._auto_clear_checkbox: Optional[QCheckBox] = None
+        self._clear_button: Optional[QPushButton] = None
+        self._execute_button: Optional[QPushButton] = None
+        self._cancel_button: Optional[QPushButton] = None
 
         super().__init__(parent)
-        self._config: _window.FnExecuteWindowConfig = config
+        self._config: FnExecuteWindowConfig = config
         # noinspection PyArgumentList
         self._layout_main = QVBoxLayout()
         self.setLayout(self._layout_main)

@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 import dataclasses
-from typing import Tuple, Dict, Literal, List
+from typing import Tuple, Dict, Literal, List, Union, Optional
 
 from qtpy.QtCore import QSize, Qt
 from qtpy.QtGui import QIcon
@@ -30,11 +28,11 @@ class FnSelectWindowConfig(BaseWindowConfig):
     title: str = "Select Function"
     select_button_text: str = "Select"
     icon_mode: bool = False
-    icon_size: Tuple[int, int] | QSize | None = DEFAULT_FN_ICON_SIZE
+    icon_size: Union[Tuple[int, int], QSize, None] = DEFAULT_FN_ICON_SIZE
     default_fn_group_name: str = "Main Function"
     default_fn_group_icon: utils.IconType = None
     fn_group_icons: Dict[str, utils.IconType] = dataclasses.field(default_factory=dict)
-    document_browser: DocumentBrowserConfig | None = dataclasses.field(
+    document_browser: Optional[DocumentBrowserConfig] = dataclasses.field(
         default_factory=DocumentBrowserConfig
     )
     document_browser_ratio: float = 0.35
@@ -44,18 +42,18 @@ class FnSelectWindow(BaseWindow):
     # noinspection SpellCheckingInspection
     def __init__(
         self,
-        parent: QWidget | None,
+        parent: Optional[QWidget],
         bundles: List[FnBundle],
-        config: FnSelectWindowConfig | None,
+        config: Optional[FnSelectWindowConfig],
     ):
         self._config: FnSelectWindowConfig = config or FnSelectWindowConfig()
         self._initial_bundles = bundles.copy()
         self._group_pages: Dict[str, FnGroupPage] = {}
-        self._current_exec_window: FnSelectWindow | None = None
+        self._current_exec_window: Optional[FnSelectWindow] = None
 
-        self._function_group_toolbox: QToolBox | None = None
-        self._document_textbrowser: QTextBrowser | None = None
-        self._select_button: QPushButton | None = None
+        self._function_group_toolbox: Optional[QToolBox] = None
+        self._document_textbrowser: Optional[QTextBrowser] = None
+        self._select_button: Optional[QPushButton] = None
 
         super().__init__(parent, config)
 
@@ -117,7 +115,7 @@ class FnSelectWindow(BaseWindow):
         page = self._get_group_page(self._group_name(fn.group))
         page.add_bundle(bundle)
 
-    def get_bundles_of(self, group_name: str | None) -> Tuple[FnBundle, ...]:
+    def get_bundles_of(self, group_name: Optional[str]) -> Tuple[FnBundle, ...]:
         group_name = self._group_name(group_name)
         group_page = self._group_pages.get(group_name, None)
         return group_page.bundles() if group_page is not None else ()
@@ -133,7 +131,7 @@ class FnSelectWindow(BaseWindow):
                 bundles.extend(bs)
         return bundles
 
-    def remove_group(self, group_name: str | None):
+    def remove_group(self, group_name: Optional[str]):
         group_name = self._group_name(group_name)
         group_page = self._group_pages.get(group_name, None)
         if group_page is None:
@@ -203,7 +201,7 @@ class FnSelectWindow(BaseWindow):
             return
         self._on_current_bundle_change(bundle, current_page)
 
-    def _get_group_page(self, group_name: str | None) -> FnGroupPage:
+    def _get_group_page(self, group_name: Optional[str]) -> FnGroupPage:
         group_name = self._group_name(group_name)
         # return existing page
         if group_name in self._group_pages:
@@ -225,7 +223,7 @@ class FnSelectWindow(BaseWindow):
         self._group_pages[group_name] = page
         return page
 
-    def _group_icon(self, group_name: str | None):
+    def _group_icon(self, group_name: Optional[str]):
         if group_name is None or group_name == self._config.default_fn_group_name:
             return utils.get_icon(self._config.default_fn_group_icon) or QIcon()
         icon_src = self._config.fn_group_icons.get(group_name, None)
@@ -240,7 +238,7 @@ class FnSelectWindow(BaseWindow):
             self._document_textbrowser, document, document_format
         )
 
-    def _current_bundle(self) -> FnBundle | None:
+    def _current_bundle(self) -> Optional[FnBundle]:
         current_page = self._function_group_toolbox.currentWidget()
         if not isinstance(current_page, FnGroupPage):
             return None
@@ -253,7 +251,7 @@ class FnSelectWindow(BaseWindow):
             group_page.deleteLater()
         self._group_pages.clear()
 
-    def _group_name(self, group_name: str | None):
+    def _group_name(self, group_name: Optional[str]):
         if group_name is None:
             return self._config.default_fn_group_name
         return group_name

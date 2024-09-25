@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 import dataclasses
-from typing import Callable, Tuple, Dict, List
+from typing import Callable, Tuple, Dict, List, Optional, Union
 
 from qtpy.QtCore import QSize, Qt
 from qtpy.QtGui import QAction
@@ -16,21 +14,21 @@ DEFAULT_WINDOW_SIZE = (800, 600)
 @dataclasses.dataclass
 class ActionConfig(object):
     text: str
-    on_triggered: Callable[["BaseWindow", QAction], None] | None = None
-    on_toggled: Callable[["BaseWindow", QAction], None] | None = None
+    on_triggered: Optional[Callable[["BaseWindow", QAction], None]] = None
+    on_toggled: Optional[Callable[["BaseWindow", QAction], None]] = None
     icon: utils.IconType = None
-    icon_text: str | None = None
+    icon_text: Optional[str] = None
     auto_repeat: bool = False
     enabled: bool = True
     checkable: bool = False
     checked: bool = False
-    shortcut: str | None = None
-    shortcut_context: QAction.ShortcutContext | None = None
-    tooltip: str | None = None
-    whats_this: str | None = None
-    status_tip: str | None = None
-    priority: QAction.Priority | None = None
-    menu_role: QAction.MenuRole | None = None
+    shortcut: Optional[str] = None
+    shortcut_context: Optional[Qt.ShortcutContext] = None
+    tooltip: Optional[str] = None
+    whats_this: Optional[str] = None
+    status_tip: Optional[str] = None
+    priority: Optional[QAction.Priority] = None
+    menu_role: Optional[QAction.MenuRole] = None
 
 
 @dataclasses.dataclass
@@ -41,11 +39,11 @@ class Separator(object):
 @dataclasses.dataclass
 class MenuConfig(object):
     title: str
-    actions: List[ActionConfig | Separator | MenuConfig]
+    actions: List[Union[ActionConfig, Separator, "MenuConfig"]]
     separators_collapsible: bool = True
     tear_off_enabled: bool = True
 
-    def remove_action(self, action: str | ActionConfig | Separator | MenuConfig):
+    def remove_action(self, action: Union[str, ActionConfig, Separator, "MenuConfig"]):
         if isinstance(action, str):
             for action_ in self.actions:
                 if isinstance(action_, ActionConfig):
@@ -67,16 +65,16 @@ class MenuConfig(object):
 # noinspection SpellCheckingInspection
 @dataclasses.dataclass
 class ToolbarConfig(object):
-    actions: List[ActionConfig | Separator]
+    actions: List[Union[ActionConfig, Separator]]
     moveable: bool = True
     floatable: bool = True
     horizontal: bool = True
-    icon_size: Tuple[int, int] | QSize | None = None
-    initial_area: Qt.ToolBarArea | None = None
-    allowed_areas: Qt.ToolBarAreas | None = None
-    button_style: Qt.ToolButtonStyle | None = None
+    icon_size: Union[Tuple[int, int], QSize, None] = None
+    initial_area: Optional[Qt.ToolBarArea] = None
+    allowed_areas: Optional[Qt.ToolBarAreas] = None
+    button_style: Optional[Qt.ToolButtonStyle] = None
 
-    def remove_action(self, action: str | ActionConfig | Separator):
+    def remove_action(self, action: Union[str, ActionConfig, Separator]):
         if isinstance(action, str):
             for action_ in self.actions:
                 if isinstance(action_, ActionConfig):
@@ -95,20 +93,20 @@ class ToolbarConfig(object):
 class BaseWindowConfig(object):
     title: str = ""
     icon: utils.IconType = None
-    size: Tuple[int, int] | QSize = DEFAULT_WINDOW_SIZE
-    toolbar: ToolbarConfig | None = None
-    menus: List[MenuConfig | Separator] | None = None
-    on_create: Callable[["BaseWindow"], None] | None = None
-    on_close: Callable[["BaseWindow"], bool] | None = None
-    on_destroy: Callable[["BaseWindow"], None] | None = None
-    on_hide: Callable[["BaseWindow"], None] | None = None
-    on_show: Callable[["BaseWindow"], None] | None = None
-    stylesheet: str | None = None
-    font_size: int | None = None
+    size: Union[Tuple[int, int], QSize] = DEFAULT_WINDOW_SIZE
+    toolbar: Optional[ToolbarConfig] = None
+    menus: Optional[List[Union[MenuConfig, Separator]]] = None
+    on_create: Optional[Callable[["BaseWindow"], None]] = None
+    on_close: Optional[Callable[["BaseWindow"], bool]] = None
+    on_destroy: Optional[Callable[["BaseWindow"], None]] = None
+    on_hide: Optional[Callable[["BaseWindow"], None]] = None
+    on_show: Optional[Callable[["BaseWindow"], None]] = None
+    stylesheet: Optional[str] = None
+    font_size: Optional[int] = None
 
 
 class BaseWindow(QMainWindow):
-    def __init__(self, parent: QWidget | None, config: BaseWindowConfig):
+    def __init__(self, parent: Optional[QWidget], config: BaseWindowConfig):
         super().__init__(parent)
 
         self._config: BaseWindowConfig = config
@@ -207,7 +205,7 @@ class BaseWindow(QMainWindow):
         self.addToolBar(toolbar_area, toolbar)
 
     def _add_toolbar_actions(
-        self, toolbar: QToolBar, actions: List[ActionConfig | Separator]
+        self, toolbar: QToolBar, actions: List[Union[ActionConfig, Separator]]
     ):
         for action_config in actions:
             if isinstance(action_config, Separator):

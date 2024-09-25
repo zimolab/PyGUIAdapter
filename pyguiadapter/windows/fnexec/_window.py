@@ -1,9 +1,7 @@
-from __future__ import annotations
-
 import dataclasses
-from typing import Tuple, Literal, Dict, Union, Type, Any, List
+from typing import Tuple, Literal, Dict, Union, Type, Any, List, Optional
 
-from qtpy.QtCore import QSize, Qt
+from qtpy.QtCore import Qt
 from qtpy.QtGui import QIcon
 from qtpy.QtWidgets import (
     QWidget,
@@ -11,20 +9,24 @@ from qtpy.QtWidgets import (
     QDockWidget,
 )
 
+from ._base import (
+    BaseFnExecuteWindow,
+    DEFAULT_EXECUTOR_CLASS,
+    FnExecuteWindowConfig,
+    WidgetTexts,
+    MessageTexts,
+)
 from ._docarea import FnDocumentArea
 from ._outputarea import (
     ProgressBarConfig,
-    OutputBrowserConfig,
     FnExecuteOutputArea,
 )
 from ._paramarea import FnParameterArea, FnParameterGroupBox
-from .._docbrowser import DocumentBrowserConfig
-from ... import bundle as bd
+from ...bundle import FnBundle
 from ... import utils, fn
 from ...adapter import ucontext
 from ...exceptions import FunctionExecutingError, ParameterError
-from ...executor import ExecuteStateListener, BaseFunctionExecutor
-from ...executors import ThreadFunctionExecutor
+from ...executor import BaseFunctionExecutor
 from ...fn import ParameterInfo
 from ...paramwidget import (
     BaseParameterWidget,
@@ -32,91 +34,18 @@ from ...paramwidget import (
     is_parameter_widget_class,
 )
 from ...widgets.common import CommonParameterWidgetConfig
-from ...window import BaseWindow, BaseWindowConfig
-
-DEFAULT_WINDOW_SIZE = (1024, 768)
-DEFAULT_EXECUTOR_CLASS = ThreadFunctionExecutor
-
-ParameterWidgetType = Union[
-    Tuple[Type[BaseParameterWidget], Union[BaseParameterWidgetConfig, dict]],
-    BaseParameterWidgetConfig,
-]
-
-DockWidgetArea = Qt.DockWidgetArea
 
 
-@dataclasses.dataclass
-class WidgetTexts(object):
-    document_dock_title: str = "Document"
-    output_dock_title: str = "Output"
-    execute_button_text: str = "Execute"
-    clear_button_text: str = "Clear"
-    cancel_button_text: str = "Cancel"
-    clear_checkbox_text: str = "Clear output"
-    result_dialog_title: str = "Result"
-    universal_error_dialog_title: str = "Error"
-    parameter_error_dialog_title: str = "Parameter Error"
+class FnExecuteWindow(BaseFnExecuteWindow):
+    def __init__(self, parent: Optional[QWidget], bundle: FnBundle):
+        self._bundle: FnBundle = bundle
 
-
-@dataclasses.dataclass
-class MessageTexts(object):
-    function_executing: str = "function is executing now"
-    function_not_executing: str = "function is not executing now"
-    function_not_cancelable: str = "function is not cancelable"
-    function_result: str = "function result: {}"
-    function_error: str = "{}: {}"
-    parameter_error: str = "{}: {}"
-
-
-@dataclasses.dataclass
-class FnExecuteWindowConfig(BaseWindowConfig):
-    title: str = ""
-    size: Tuple[int, int] | QSize = DEFAULT_WINDOW_SIZE
-    output_dock_ratio: float = 0.30
-    document_dock_ratio: float = 0.60
-    show_output_dock: bool = True
-    output_dock_floating: bool = False
-    output_dock_position: DockWidgetArea = Qt.BottomDockWidgetArea
-    show_document_dock: bool = True
-    document_dock_floating: bool = False
-    document_dock_position: DockWidgetArea = Qt.RightDockWidgetArea
-    tabify_docks: bool = False
-
-    progressbar: ProgressBarConfig | None = None
-    output_config: OutputBrowserConfig = dataclasses.field(
-        default_factory=OutputBrowserConfig
-    )
-    document_config: DocumentBrowserConfig | None = dataclasses.field(
-        default_factory=DocumentBrowserConfig
-    )
-    default_parameter_group_name: str = "Main Parameters"
-    default_parameter_group_icon: utils.IconType = None
-    parameter_group_icons: Dict[str, utils.IconType] = dataclasses.field(
-        default_factory=dict
-    )
-    show_clear_button: bool = True
-    enable_auto_clear: bool = True
-    print_function_result: bool = True
-    show_function_result: bool = False
-    print_function_error: bool = True
-    show_function_error: bool = True
-    show_error_traceback: bool = True
-
-    widget_texts: WidgetTexts = dataclasses.field(default_factory=WidgetTexts)
-    message_texts: MessageTexts = dataclasses.field(default_factory=MessageTexts)
-
-
-# noinspection SpellCheckingInspection
-class FnExecuteWindow(BaseWindow, ExecuteStateListener):
-    def __init__(self, parent: QWidget | None, bundle: bd.FnBundle):
-        self._bundle: bd.FnBundle = bundle
-
-        self._center_widget: QWidget | None = None
-        self._parameters_area: FnParameterArea | None = None
-        self._document_area: FnDocumentArea | None = None
-        self._output_area: FnExecuteOutputArea | None = None
-        self._document_dock: QDockWidget | None = None
-        self._output_dock: QDockWidget | None = None
+        self._center_widget: Optional[QWidget] = None
+        self._parameters_area: Optional[FnParameterArea] = None
+        self._document_area: Optional[FnDocumentArea] = None
+        self._output_area: Optional[FnExecuteOutputArea] = None
+        self._document_dock: Optional[QDockWidget] = None
+        self._output_dock: Optional[QDockWidget] = None
 
         super().__init__(parent, bundle.window_config)
 
@@ -145,7 +74,7 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
     def current_executor(self) -> BaseFunctionExecutor:
         return self._executor
 
-    def update_progressbar_config(self, config: ProgressBarConfig | dict | None):
+    def update_progressbar_config(self, config: Union[ProgressBarConfig, dict, None]):
         if isinstance(config, dict):
             config = ProgressBarConfig(**config)
         self._output_area.update_progressbar_config(config)
@@ -157,7 +86,7 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
         self._output_area.hide_progressbar()
         self._output_area.scroll_to_bottom()
 
-    def update_progress(self, current_value: int, message: str | None = None):
+    def update_progress(self, current_value: int, message: Optional[str] = None):
         self._output_area.update_progress(current_value, message)
 
     def append_output(
@@ -193,7 +122,7 @@ class FnExecuteWindow(BaseWindow, ExecuteStateListener):
             if isinstance(widget_config, CommonParameterWidgetConfig):
                 # apply set_default_value_on_init
                 # set_value() may raise exceptions, we need to catch ParameterValidationError of them
-                # typically, this kind of exception is not fatal, it unnessessary to exit the whole program
+                # typically, this kind of exception is not fatal, it unnecessary to exit the whole program
                 # when this kind of exception raised
                 if widget_config.set_default_value_on_init:
                     widget.set_value(widget_config.default_value)

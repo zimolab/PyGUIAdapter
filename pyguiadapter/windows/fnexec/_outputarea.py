@@ -1,4 +1,4 @@
-from __future__ import annotations
+from typing import Optional
 
 from qtpy.QtGui import QTextCursor
 from qtpy.QtWidgets import QWidget, QVBoxLayout
@@ -11,12 +11,11 @@ class FnExecuteOutputArea(QWidget):
     def __init__(
         self,
         parent: QWidget,
-        progressbar_config: ProgressBarConfig | None,
+        progressbar_config: Optional[ProgressBarConfig],
         output_browser_config: OutputBrowserConfig,
     ):
-        self._progressbar: ProgressBar | None = None
-        # noinspection SpellCheckingInspection
-        self._doc_browser: OutputBrowser | None = None
+        self._progressbar: Optional[ProgressBar] = None
+        self._doc_browser: Optional[OutputBrowser] = None
 
         super().__init__(parent)
 
@@ -36,7 +35,7 @@ class FnExecuteOutputArea(QWidget):
     def update_progressbar_config(self, config: ProgressBarConfig):
         self._progressbar.update_config(config)
 
-    def update_progress(self, current_value: int, message: str | None = None):
+    def update_progress(self, current_value: int, message: Optional[str] = None):
         self._progressbar.update_progress(current_value, message)
 
     def clear_output(self):
@@ -59,10 +58,10 @@ class FnExecuteOutputArea(QWidget):
             scroll_bar.setValue(scroll_bar.maximum())
 
     # noinspection SpellCheckingInspection
-    def _setup_doc_browser(self, config: OutputBrowserConfig | None):
+    def _setup_doc_browser(self, config: Optional[OutputBrowserConfig]):
         self._doc_browser = OutputBrowser(self, config)
         self._layout_main.addWidget(self._doc_browser)
 
-    def _setup_progressbar(self, config: ProgressBarConfig | None):
+    def _setup_progressbar(self, config: Optional[ProgressBarConfig]):
         self._progressbar = ProgressBar(self, config=config)
         self._layout_main.addWidget(self._progressbar)

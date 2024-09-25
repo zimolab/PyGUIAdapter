@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 from abc import abstractmethod
-from typing import Type, Any
+from typing import Type, Any, Optional, Union
 
 from qtpy.QtWidgets import QWidget, QDialog
 
@@ -10,7 +8,7 @@ from ..exceptions import AlreadyRegisteredError, NotRegisteredError
 
 
 class BaseCustomDialog(QDialog):
-    def __init__(self, parent: QWidget | None, **kwargs):
+    def __init__(self, parent: Optional[QWidget], **kwargs):
         super().__init__(parent)
 
     @abstractmethod
@@ -23,7 +21,7 @@ class CustomDialogFactory(object):
         self._dialog_classes = {}
 
     def register(
-        self, dialog_class: Type[BaseCustomDialog], name: str | None = None
+        self, dialog_class: Type[BaseCustomDialog], name: Optional[str] = None
     ) -> str:
         if not utils.is_subclass_of(dialog_class, BaseCustomDialog):
             raise TypeError(
@@ -37,8 +35,8 @@ class CustomDialogFactory(object):
         return name
 
     def unregister(
-        self, class_or_name: str | Type[BaseCustomDialog]
-    ) -> Type[BaseCustomDialog] | None:
+        self, class_or_name: Union[str, Type[BaseCustomDialog]]
+    ) -> Optional[Type[BaseCustomDialog]]:
         if not isinstance(class_or_name, str):
             class_or_name = class_or_name.__name__
         if class_or_name not in self._dialog_classes:
@@ -48,11 +46,14 @@ class CustomDialogFactory(object):
     def clear(self):
         self._dialog_classes.clear()
 
-    def get(self, name: str) -> Type[BaseCustomDialog] | None:
+    def get(self, name: str) -> Optional[Type[BaseCustomDialog]]:
         return self._dialog_classes.get(name, None)
 
     def create(
-        self, parent: QWidget, dialog_class: str | Type[BaseCustomDialog], **kwargs
+        self,
+        parent: QWidget,
+        dialog_class: Union[str, Type[BaseCustomDialog]],
+        **kwargs,
     ) -> BaseCustomDialog:
         if isinstance(dialog_class, str):
             dialog_class = self.get(dialog_class)

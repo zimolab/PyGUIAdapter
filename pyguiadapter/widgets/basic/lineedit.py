@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 import dataclasses
-from typing import Type
+from typing import Type, Optional, Union
 
 from qtpy.QtCore import QRegularExpression, Qt
 from qtpy.QtGui import QValidator, QRegularExpressionValidator
@@ -16,14 +14,14 @@ Alignment = Qt.Alignment
 
 @dataclasses.dataclass(frozen=True)
 class LineEditConfig(CommonParameterWidgetConfig):
-    default_value: str | None = ""
+    default_value: Optional[str] = ""
     placeholder: str = ""
     clear_button_enabled: bool = False
-    echo_mode: EchoMode | None = None
-    alignment: Alignment | None = None
-    input_mask: str | None = None
-    max_length: int | None = None
-    validator: QValidator | str | None = None
+    echo_mode: Optional[EchoMode] = None
+    alignment: Optional[Alignment] = None
+    input_mask: Optional[str] = None
+    max_length: Optional[int] = None
+    validator: Union[QValidator, str, None] = None
     drag_enabled: bool = True
     frame: bool = True
     readonly: bool = False
@@ -39,10 +37,10 @@ class LineEdit(CommonParameterWidget):
     Alignment = Alignment
 
     def __init__(
-        self, parent: QWidget | None, parameter_name: str, config: LineEditConfig
+        self, parent: Optional[QWidget], parameter_name: str, config: LineEditConfig
     ):
 
-        self._value_widget: QLineEdit | None = None
+        self._value_widget: Optional[QLineEdit] = None
         super().__init__(parent, parameter_name, config)
 
     @property
