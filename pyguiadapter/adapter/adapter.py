@@ -1,10 +1,18 @@
-from __future__ import annotations
-
 import sys
 import warnings
 from collections import OrderedDict
-from collections.abc import Callable, Sequence
-from typing import Literal, Dict, Any, Type, Tuple, List
+from typing import (
+    Literal,
+    Dict,
+    Any,
+    Type,
+    Tuple,
+    List,
+    Union,
+    Optional,
+    Callable,
+    Sequence,
+)
 
 from qtpy.QtCore import Qt
 from qtpy.QtGui import QIcon, QPixmap
@@ -21,7 +29,6 @@ from ..paramwidget import (
 )
 from ..parser import FnParser
 from ..widgets import ParameterWidgetFactory
-from ..window import BaseWindow
 from ..windows import (
     FnExecuteWindowConfig,
     FnSelectWindow,
@@ -35,35 +42,37 @@ class GUIAdapter(object):
     def __init__(
         self,
         *,
-        global_style: str | Callable[[], str] | None = None,
-        on_app_start: Callable[[QApplication], None] | None = None,
-        on_app_shutdown: Callable | None = None,
+        global_style: Union[str, Callable[[], str], None] = None,
+        on_app_start: Optional[Callable[[QApplication], None]] = None,
+        on_app_shutdown: Optional[Callable] = None,
     ):
-        self._global_style: str | None = global_style
-        self._on_app_start: Callable[[QApplication], None] | None = on_app_start
-        self._on_app_shutdown: Callable | None = on_app_shutdown
+        self._global_style: Optional[str] = global_style
+        self._on_app_start: Optional[Callable[[QApplication], None]] = on_app_start
+        self._on_app_shutdown: Optional[Callable] = on_app_shutdown
 
         self._bundles: Dict[Callable, FnBundle] = OrderedDict()
         self._fn_parser = FnParser()
 
-        self._application: QApplication | None = None
-        self._select_window: FnSelectWindow | None = None
-        self._execute_window: FnExecuteWindow | None = None
+        self._application: Optional[QApplication] = None
+        self._select_window: Optional[FnSelectWindow] = None
+        self._execute_window: Optional[FnExecuteWindow] = None
 
     def add(
         self,
         fn: Callable,
-        display_name: str | None = None,
-        group: str | None = None,
-        icon: str | QIcon | QPixmap | None = None,
-        document: str | None = None,
+        display_name: Optional[str] = None,
+        group: Optional[str] = None,
+        icon: Union[str, QIcon, QPixmap, None] = None,
+        document: Optional[str] = None,
         document_format: Literal["markdown", "html", "plaintext"] = "markdown",
         cancelable: bool = False,
         on_execute_result: Callable[[Any], None] = None,
         on_execute_error: Callable[[Exception], None] = None,
         *,
-        window_config: FnExecuteWindowConfig | None = None,
-        widget_configs: Dict[str, BaseParameterWidgetConfig | dict] | None = None,
+        window_config: Optional[FnExecuteWindowConfig] = None,
+        widget_configs: Optional[
+            Dict[str, Union[BaseParameterWidgetConfig, dict]]
+        ] = None,
     ):
         # create the FnInfo from the function and given arguments
         fn_info = self._fn_parser.parse_fn_info(
@@ -106,7 +115,7 @@ class GUIAdapter(object):
     def exists(self, fn: Callable) -> bool:
         return fn in self._bundles
 
-    def get_bundle(self, fn: Callable) -> FnBundle | None:
+    def get_bundle(self, fn: Callable) -> Optional[FnBundle]:
         return self._bundles.get(fn, None)
 
     def clear_bundles(self):
@@ -114,10 +123,10 @@ class GUIAdapter(object):
 
     def run(
         self,
-        argv: Sequence[str] | None = None,
+        argv: Optional[Sequence[str]] = None,
         *,
         show_select_window: bool = False,
-        select_window_config: FnSelectWindowConfig | None = None,
+        select_window_config: Optional[FnSelectWindowConfig] = None,
     ):
         if self._application is None:
             self._start_application(argv)
@@ -149,10 +158,10 @@ class GUIAdapter(object):
         return self._application is not None
 
     @property
-    def application(self) -> QApplication | None:
+    def application(self) -> Optional[QApplication]:
         return self._application
 
-    def _start_application(self, argv: Sequence[str] | None):
+    def _start_application(self, argv: Optional[Sequence[str]]):
         if argv is None:
             argv = sys.argv
 
@@ -218,8 +227,8 @@ class GUIAdapter(object):
     def _merge_widget_configs(
         self,
         parameters: Dict[str, ParameterInfo],
-        parsed_configs: Dict[str, Tuple[str | None, dict]],
-        user_configs: Dict[str, BaseParameterWidgetConfig | dict],
+        parsed_configs: Dict[str, Tuple[Optional[str], dict]],
+        user_configs: Dict[str, Union[BaseParameterWidgetConfig, dict]],
     ) -> Dict[str, Tuple[Type[BaseParameterWidget], BaseParameterWidgetConfig]]:
         final_configs: Dict[
             str, Tuple[Type[BaseParameterWidget], BaseParameterWidgetConfig]
@@ -269,8 +278,8 @@ class GUIAdapter(object):
 
     @staticmethod
     def _get_widget_class(
-        widget_class_name: str | None, param_info: ParameterInfo
-    ) -> Type[BaseParameterWidget] | None:
+        widget_class_name: Optional[str], param_info: ParameterInfo
+    ) -> Optional[Type[BaseParameterWidget]]:
         if widget_class_name is not None:
             widget_class_name = widget_class_name.strip()
         if widget_class_name:
