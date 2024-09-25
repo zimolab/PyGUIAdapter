@@ -157,9 +157,9 @@ class CommonParameterWidget(BaseParameterWidget):
         )
         self._label_description.setIndent(-1)
         self._label_description.setOpenExternalLinks(True)
-        self._label_description.setStyleSheet(
-            """QLabel{ font-weight: 300; color: #424242; }"""
-        )
+        # self._label_description.setStyleSheet(
+        #     """QLabel{ font-weight: 300; color: #424242; }"""
+        # )
         if self.description:
             self._label_description.setText(self.description)
         return self._label_description
