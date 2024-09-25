@@ -23,7 +23,7 @@ def app_style_example(
 
     e.g. using `pip`:
 
-    > `pip install qtmodern`
+    > `pip install qt-material`
 
     @param arg1: arg1 description
     @param arg2: arg2 description
