@@ -46,8 +46,8 @@ class MessageTexts(object):
     function_executing: str = "function is executing now"
     function_not_executing: str = "function is not executing now"
     function_not_cancelable: str = "function is not cancelable"
-    function_result: str = "function result: {}"
-    function_error: str = "{}: {}"
+    function_result: str = "function result: {}\n"
+    function_error: str = "{}: {}\n"
     parameter_error: str = "{}: {}"
 
 
