@@ -7,13 +7,12 @@ from qtpy.QtWidgets import (
     QSplitter,
     QToolBox,
     QVBoxLayout,
-    QTextBrowser,
     QPushButton,
     QWidget,
 )
 
 from ._group import FnGroupPage
-from .._docbrowser import DocumentBrowserConfig
+from .._docbrowser import DocumentBrowserConfig, DocumentBrowser
 from ..fnexec import FnExecuteWindow
 from ... import utils
 from ...bundle import FnBundle
@@ -32,9 +31,7 @@ class FnSelectWindowConfig(BaseWindowConfig):
     default_fn_group_name: str = "Main Function"
     default_fn_group_icon: utils.IconType = None
     fn_group_icons: Dict[str, utils.IconType] = dataclasses.field(default_factory=dict)
-    document_browser: Optional[DocumentBrowserConfig] = dataclasses.field(
-        default_factory=DocumentBrowserConfig
-    )
+    document_browser_config: Optional[DocumentBrowserConfig] = None
     document_browser_ratio: float = 0.35
 
 
@@ -52,7 +49,7 @@ class FnSelectWindow(BaseWindow):
         self._current_exec_window: Optional[FnSelectWindow] = None
 
         self._function_group_toolbox: Optional[QToolBox] = None
-        self._document_textbrowser: Optional[QTextBrowser] = None
+        self._document_textbrowser: Optional[DocumentBrowser] = None
         self._select_button: Optional[QPushButton] = None
 
         super().__init__(parent, config)
@@ -89,12 +86,8 @@ class FnSelectWindow(BaseWindow):
         _layout_right_area = QVBoxLayout(right_area)
         _layout_right_area.setContentsMargins(0, 0, 0, 0)
         # fn document browser
-        # noinspection SpellCheckingInspection
-        self._document_textbrowser: QTextBrowser = QTextBrowser(right_area)
-        document_browser_config = (
-            self._config.document_browser or DocumentBrowserConfig()
-        )
-        document_browser_config.apply_to(self._document_textbrowser)
+        doc_config = self._config.document_browser_config or DocumentBrowserConfig()
+        self._document_textbrowser = DocumentBrowser(right_area, doc_config)
         _layout_right_area.addWidget(self._document_textbrowser)
         # select button
         self._select_button = QPushButton(right_area)

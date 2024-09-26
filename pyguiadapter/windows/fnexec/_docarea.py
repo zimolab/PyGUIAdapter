@@ -2,7 +2,7 @@ from typing import Literal
 
 from qtpy.QtWidgets import QWidget, QVBoxLayout, QTextBrowser
 
-from .._docbrowser import DocumentBrowserConfig
+from .._docbrowser import DocumentBrowserConfig, DocumentBrowser
 from ... import utils
 
 
@@ -17,8 +17,7 @@ class FnDocumentArea(QWidget):
         self._layout_main = QVBoxLayout()
         self.setLayout(self._layout_main)
         self._layout_main.setContentsMargins(0, 0, 0, 0)
-        self._document_textbrowser = QTextBrowser(self)
-        self._config.apply_to(self._document_textbrowser)
+        self._document_textbrowser = DocumentBrowser(self, document_browser_config)
 
         self._layout_main.addWidget(self._document_textbrowser)
 
