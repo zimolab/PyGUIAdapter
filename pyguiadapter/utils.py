@@ -4,56 +4,21 @@ import hashlib
 import inspect
 import os.path
 import re
-import string
 import traceback
 import warnings
 from io import StringIO
 from typing import Literal, List, Set, Tuple, Any, Union, Type, Optional
 
 import qtawesome as qta
-from qtpy import QT_VERSION, compat
+from qtpy import compat
 from qtpy.QtCore import QUrl, Qt, QSize
-from qtpy.QtGui import QIcon, QPixmap, QTextCursor, QTextOption, QColor
+from qtpy.QtGui import QIcon, QPixmap, QTextCursor, QColor
 from qtpy.QtWidgets import QTextBrowser, QWidget, QMessageBox, QFrame, QFileDialog
 
 StandardButton: Type[QMessageBox.StandardButton] = QMessageBox.StandardButton
 StandardButtons: Type[QMessageBox.StandardButtons] = QMessageBox.StandardButtons
 TextFormat = Qt.TextFormat
 
-# noinspection SpellCheckingInspection
-TEXTBROWSER_CSS = """
-QTextEdit{
-    background-color: ${bg_color};
-    color: ${text_color};
-    font-family: ${font_family};
-    font-size: ${font_size}pt;
-}
-QScrollBar::vertical{
-    background:transparent;
-    width: 6px;
-    margin: 0px;
- }
-QScrollBar::handle:vertical{
-    background-color:rgb(158,158,158);
-    border: none;
-    border-radius: 3px;
- }
-QScrollBar::handle:vertical:pressed{
-    background:#EC693C;
-}
-QScrollBar::sub-line:vertical{
-    border:none;
-}
-QScrollBar::add-line:vertical{
-    border:none;
-}
-QScrollBar::sub-page:vertical{
-    border:none;
-}
-QScrollBar::add-page:vertical{
-    border:none;
-}
-"""
 
 IconType = Union[str, Tuple[str, Union[list, dict]], QIcon, QPixmap, type(None)]
 
@@ -150,61 +115,6 @@ def set_textbrowser_content(
         QTextCursor.MoveOperation.Start, QTextCursor.MoveMode.MoveAnchor
     )
     textbrowser.setTextCursor(cursor)
-
-
-# noinspection SpellCheckingInspection
-def get_textbrowser_stylesheet(
-    bg_color: str, text_color: str, font_size: int, font_family: str
-):
-    css = string.Template(TEXTBROWSER_CSS).substitute(
-        bg_color=bg_color,
-        text_color=text_color,
-        font_size=font_size,
-        font_family=font_family,
-    )
-    return css.strip()
-
-
-# noinspection SpellCheckingInspection
-def set_textbrowser_wrap_mode(
-    textbrowser: QTextBrowser,
-    line_wrap_mode: Literal[
-        "no_wrap", "widget_width", "fixed_pixel_width", "fixed_column_width"
-    ] = "widget_width",
-    word_wrap_mode: Literal[
-        "no_wrap",
-        "word_wrap",
-        "manual_wrap",
-        "wrap_anywhere",
-        "wrap_at_word_boundary_or_anywhere",
-    ] = "no_wrap",
-    fixed_line_wrap_width: int = 80,
-):
-    if line_wrap_mode == "no_wrap":
-        textbrowser.setLineWrapMode(QTextBrowser.LineWrapMode.NoWrap)
-    elif line_wrap_mode == "widget_width":
-        textbrowser.setLineWrapMode(QTextBrowser.LineWrapMode.WidgetWidth)
-    elif line_wrap_mode == "fixed_pixel_width":
-        textbrowser.setLineWrapMode(QTextBrowser.LineWrapMode.FixedPixelWidth)
-        textbrowser.setLineWrapColumnOrWidth(fixed_line_wrap_width)
-    elif line_wrap_mode == "fixed_column_width":
-        textbrowser.setLineWrapMode(QTextBrowser.LineWrapMode.FixedColumnWidth)
-        textbrowser.setLineWrapColumnOrWidth(fixed_line_wrap_width)
-    else:
-        raise ValueError(f"invalid line wrap mode: {line_wrap_mode}")
-
-    if word_wrap_mode == "no_wrap":
-        textbrowser.setWordWrapMode(QTextOption.NoWrap)
-    elif word_wrap_mode == "word_wrap":
-        textbrowser.setWordWrapMode(QTextOption.WordWrap)
-    elif word_wrap_mode == "manual_wrap":
-        textbrowser.setWordWrapMode(QTextOption.ManualWrap)
-    elif word_wrap_mode == "wrap_anywhere":
-        textbrowser.setWordWrapMode(QTextOption.WrapAnywhere)
-    elif word_wrap_mode == "wrap_at_word_boundary_or_anywhere":
-        textbrowser.setWordWrapMode(QTextOption.WrapAtWordBoundaryOrAnywhere)
-    else:
-        raise ValueError(f"invalid word wrap mode: {word_wrap_mode}")
 
 
 def show_warning_message(
@@ -430,14 +340,14 @@ def get_save_file(
     return filename or None
 
 
-def compare_qt_version(ver: Optional[str]) -> int:
-    if not ver:
-        return 1
-    if not QT_VERSION:
-        return -1
-    cur_ver = tuple(map(int, QT_VERSION.split(".")))
-    cmp_ver = tuple(map(int, ver.split(".")))
-    return (cur_ver > cmp_ver) - (cur_ver < cmp_ver)
+# def compare_qt_version(ver: Optional[str]) -> int:
+#     if not ver:
+#         return 1
+#     if not QT_VERSION:
+#         return -1
+#     cur_ver = tuple(map(int, QT_VERSION.split(".")))
+#     cmp_ver = tuple(map(int, ver.split(".")))
+#     return (cur_ver > cmp_ver) - (cur_ver < cmp_ver)
 
 
 def unique_list(origin: List[Any]) -> List[Any]:
