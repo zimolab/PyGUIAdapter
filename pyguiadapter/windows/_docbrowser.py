@@ -4,8 +4,7 @@ import dataclasses
 
 from qtpy.QtWidgets import QWidget
 
-from ..textbrowser import TextBrowserConfig, TextBrowser
-
+from ..textbrowser import TextBrowserConfig, TextBrowser, LineWrapMode
 
 DEFAULT_BACKGROUND_COLOR = "#FFFFFF"
 DEFAULT_TEXT_COLOR = "#000000"
@@ -19,6 +18,7 @@ class DocumentBrowserConfig(TextBrowserConfig):
     font_family: Union[Sequence[str], str] = DEFAULT_FONT_FAMILY
     font_size: int = DEFAULT_FONT_SIZE
     background_color: str = DEFAULT_BACKGROUND_COLOR
+    line_wrap_mode: LineWrapMode = LineWrapMode.WidgetWidth
 
 
 class DocumentBrowser(TextBrowser):
