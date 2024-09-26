@@ -46,7 +46,7 @@ import os.path
 
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.adapter.ucontext import uprint
-from pyguiadapter.types import directory_t, dir_t
+from pyguiadapter.extend_types import directory_t, dir_t
 from pyguiadapter.widgets import DirSelectConfig
 
 

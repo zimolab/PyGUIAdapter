@@ -1,7 +1,7 @@
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.adapter import udialog
 from pyguiadapter.adapter.ucontext import uprint
-from pyguiadapter.types import text_t
+from pyguiadapter.extend_types import text_t
 
 
 def dialog_example(

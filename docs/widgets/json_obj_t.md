@@ -46,7 +46,7 @@ class JsonEditConfig(BaseCodeEditConfig):
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.adapter.ucontext import uprint
 from pyguiadapter.widgets import JsonEditConfig
-from pyguiadapter.types import json_obj_t
+from pyguiadapter.extend_types import json_obj_t
 
 
 def json_obj_t_example(arg1: json_obj_t, arg2: json_obj_t, arg3: json_obj_t):

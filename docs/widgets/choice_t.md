@@ -38,7 +38,7 @@ class ChoiceBoxConfig(CommonParameterWidgetConfig):
 ```python
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.adapter.ucontext import uprint
-from pyguiadapter.types import choice_t, choices_t
+from pyguiadapter.extend_types import choice_t, choices_t
 from pyguiadapter.widgets import ChoiceBoxConfig
 
 

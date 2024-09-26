@@ -4,7 +4,7 @@ from datetime import datetime
 from qtpy.QtWidgets import QApplication
 from pyguiadapter import utils
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.types import text_t
+from pyguiadapter.extend_types import text_t
 
 
 def app_style_example(

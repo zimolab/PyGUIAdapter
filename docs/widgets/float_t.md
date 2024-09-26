@@ -58,7 +58,7 @@ def foo(arg: float_t):
 ```python
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.adapter.uoutput import uprint
-from pyguiadapter.types import float_t
+from pyguiadapter.extend_types import float_t
 from pyguiadapter.widgets import FloatLineEditConfig
 
 
@@ -94,7 +94,6 @@ def float_t_example(arg1: float_t, arg2: float_t, arg3: float_t = 100) -> float:
 
 
 if __name__ == "__main__":
-
     arg3_conf = FloatLineEditConfig(
         # this will override the default_value defined in the function signature
         default_value=-0.00005,

@@ -94,10 +94,10 @@ if __name__ == "__main__":
 
 现在，让我们使用这些类型对上面的示例进行一些修改：
 
-首先，导入这些类型，一般而言，这些类型定义在[`pyguiadapter.types`](pyguiadapter/types.py)模块中：
+首先，导入这些类型，一般而言，这些类型定义在[`pyguiadapter.types`](pyguiadapter/extend_types.py)模块中：
 
 ```python
-from pyguiadapter.types import file_t, directory_t
+from pyguiadapter.extend_types import file_t, directory_t
 ```
 
 接着，修改函数签名，使用这些类型标注对应的参数：
@@ -107,13 +107,16 @@ def encode_mp3(input_file: file_t, output_dir: directory_t, output_file: str, qu
 ```
 
 完整的代码如下，也可以在[这里](examples/get_started_2.py)找到：
+
 ```python
 
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.types import file_t, directory_t
+from pyguiadapter.extend_types import file_t, directory_t
+
 
 def encode_mp3(input_file: file_t, output_dir: directory_t, output_file: str, quality: int):
     pass
+
 
 if __name__ == "__main__":
     adapter = GUIAdapter()
@@ -133,7 +136,7 @@ if __name__ == "__main__":
 ![](screenshots/get_started_2b.png)
 
 #### 扩展：更多语义化类型
-除了`file_t`、`directory_t`，PyGUIAdapter还提供了其他语义化类型，可以查看[`pyguiadapter.types`](pyguiadapter/types.py)模块，获取
+除了`file_t`、`directory_t`，PyGUIAdapter还提供了其他语义化类型，可以查看[`pyguiadapter.types`](pyguiadapter/extend_types.py)模块，获取
 这些类型的信息。你也可以自行尝试用这些类型对参数进行标注，然后运行程序，观察不同类型所对应的控件有何不同。 
 
 当然，也可以查看[docs/semantic_types.md](docs/widgets/semantic_types.md)，其中，对一些常见的语义化类型做了说明。
@@ -252,11 +255,11 @@ def encode_mp3(
 
 ```python
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.types import file_t, directory_t
+from pyguiadapter.extend_types import file_t, directory_t
 
 
 def encode_mp3(
-    input_file: file_t, output_dir: directory_t, output_file: str, quality: int
+        input_file: file_t, output_dir: directory_t, output_file: str, quality: int
 ):
     """
     @params
@@ -324,7 +327,7 @@ if __name__ == "__main__":
 
 ```python
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.types import file_t, directory_t
+from pyguiadapter.extend_types import file_t, directory_t
 from pyguiadapter.widgets import (
     FileSelectConfig,
     DirSelectConfig,
@@ -334,7 +337,7 @@ from pyguiadapter.widgets import (
 
 
 def encode_mp3(
-    input_file: file_t, output_dir: directory_t, output_file: str, quality: int
+        input_file: file_t, output_dir: directory_t, output_file: str, quality: int
 ):
     """
     encode_mp3
@@ -348,7 +351,6 @@ def encode_mp3(
 
 
 if __name__ == "__main__":
-
     adapter = GUIAdapter()
     adapter.add(
         encode_mp3,
@@ -488,12 +490,12 @@ Document区域通常用于显示函数的说明文档，该区域显示的内容
 
 ```python
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.types import file_t, directory_t
+from pyguiadapter.extend_types import file_t, directory_t
 from pyguiadapter.windows import FnExecuteWindowConfig
 
 
 def encode_mp3(
-    input_file: file_t, output_dir: directory_t, output_file: str, quality: int
+        input_file: file_t, output_dir: directory_t, output_file: str, quality: int
 ):
     """
     This function is used to encode a mp3 file into ogg format.
@@ -533,7 +535,6 @@ def encode_mp3(
 
 
 if __name__ == "__main__":
-
     adapter = GUIAdapter()
     adapter.add(
         encode_mp3,

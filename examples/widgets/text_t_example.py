@@ -1,6 +1,6 @@
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.adapter.uoutput import uprint
-from pyguiadapter.types import text_t
+from pyguiadapter.extend_types import text_t
 from pyguiadapter.widgets import TextEditConfig
 
 

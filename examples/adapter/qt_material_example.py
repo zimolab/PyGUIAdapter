@@ -3,7 +3,7 @@ from datetime import datetime
 from qtpy.QtWidgets import QApplication
 
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.types import text_t, json_obj_t
+from pyguiadapter.extend_types import text_t, json_obj_t
 
 
 def app_style_example(

@@ -55,7 +55,7 @@ def foo(arg: int_t):
 ```python
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.adapter.uoutput import uprint
-from pyguiadapter.types import int_t
+from pyguiadapter.extend_types import int_t
 from pyguiadapter.widgets import IntLineEditConfig
 
 
@@ -88,7 +88,6 @@ def int_t_example(arg1: int_t, arg2: int_t, arg3: int_t = 100) -> int:
 
 
 if __name__ == "__main__":
-
     arg3_conf = IntLineEditConfig(
         # this will override the default_value defined in the function signature
         default_value=-99,

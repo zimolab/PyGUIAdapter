@@ -17,11 +17,11 @@ from datetime import datetime
 
 from pyguiadapter import utils
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.types import text_t
+from pyguiadapter.extend_types import text_t
 
 
 def app_style_example(
-    arg1: str, arg2: int, arg3: float, arg4: bool, arg5: text_t, arg6: datetime
+        arg1: str, arg2: int, arg3: float, arg4: bool, arg5: text_t, arg6: datetime
 ):
     """
     This example shows how to apply a global stylesheet to the application.
@@ -36,7 +36,6 @@ def app_style_example(
 
 
 if __name__ == "__main__":
-
     QSS_FILE = os.path.join(os.path.dirname(__file__), "Ubuntu.qss")
     global_stylesheet = utils.read_text_file(QSS_FILE)
 
@@ -54,11 +53,11 @@ from datetime import datetime
 
 from pyguiadapter import utils
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.types import text_t
+from pyguiadapter.extend_types import text_t
 
 
 def app_style_example(
-    arg1: str, arg2: int, arg3: float, arg4: bool, arg5: text_t, arg6: datetime
+        arg1: str, arg2: int, arg3: float, arg4: bool, arg5: text_t, arg6: datetime
 ):
     """
     This example shows how to apply a global stylesheet to the application.
@@ -73,14 +72,15 @@ def app_style_example(
 
 
 if __name__ == "__main__":
-
     QSS_FILE = os.path.join(os.path.dirname(__file__), "Ubuntu.qss")
+
 
     def load_stylesheet() -> str:
         """
         This function will be called after the QApplication instance being created
         """
         return utils.read_text_file(QSS_FILE)
+
 
     adapter = GUIAdapter(global_style=load_stylesheet)
     adapter.add(app_style_example)
@@ -107,11 +107,11 @@ from datetime import datetime
 from qtpy.QtWidgets import QApplication
 from pyguiadapter import utils
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.types import text_t
+from pyguiadapter.extend_types import text_t
 
 
 def app_style_example(
-    arg1: str, arg2: int, arg3: float, arg4: bool, arg5: text_t, arg6: datetime
+        arg1: str, arg2: int, arg3: float, arg4: bool, arg5: text_t, arg6: datetime
 ):
     """
     This example shows how to apply a global stylesheet to the application.
@@ -125,8 +125,8 @@ def app_style_example(
 
 
 if __name__ == "__main__":
-
     QSS_FILE = os.path.join(os.path.dirname(__file__), "Ubuntu.qss")
+
 
     def on_app_start(app: QApplication):
         assert isinstance(app, QApplication)
@@ -134,6 +134,7 @@ if __name__ == "__main__":
         qss = utils.read_text_file(QSS_FILE)
         app.setStyleSheet(qss)
         print("app style applied")
+
 
     adapter = GUIAdapter(on_app_start=on_app_start)
     adapter.add(app_style_example)
@@ -159,8 +160,6 @@ if __name__ == "__main__":
 > pip install pyqtdarktheme
 > ```
 
-
-
 ```python
 """
 This example requires PyQtDarkTheme. Please install it before you run the example.
@@ -169,11 +168,11 @@ This example requires PyQtDarkTheme. Please install it before you run the exampl
 from datetime import datetime
 
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.types import text_t
+from pyguiadapter.extend_types import text_t
 
 
 def app_style_example(
-    arg1: str, arg2: int, arg3: float, arg4: bool, arg5: text_t, arg6: datetime
+        arg1: str, arg2: int, arg3: float, arg4: bool, arg5: text_t, arg6: datetime
 ):
     """
     This example requires [PyQtDarkTheme](https://github.com/5yutan5/PyQtDarkTheme).
@@ -199,10 +198,12 @@ def app_style_example(
 if __name__ == "__main__":
     import qdarktheme
 
+
     def on_app_start(app):
         # this will be called after the instantiation of QApplication.
         print("app started")
         qdarktheme.setup_theme("dark")
+
 
     # enable_hi_dpi() must be called before instantiation of QApplication.
     qdarktheme.enable_hi_dpi()
@@ -224,19 +225,17 @@ if __name__ == "__main__":
 > pip install qdarkstyle
 > ```
 
-
-
 ```python
 from datetime import datetime
 
 from qtpy.QtWidgets import QApplication
 
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.types import text_t
+from pyguiadapter.extend_types import text_t
 
 
 def app_style_example(
-    arg1: str, arg2: int, arg3: float, arg4: bool, arg5: text_t, arg6: datetime
+        arg1: str, arg2: int, arg3: float, arg4: bool, arg5: text_t, arg6: datetime
 ):
     """
     This example requires [QDarkStyleSheet](https://github.com/ColinDuquesnoy/QDarkStyleSheet).
@@ -269,10 +268,12 @@ def app_style_example(
 if __name__ == "__main__":
     import qdarkstyle
 
+
     def on_app_start(app: QApplication):
         # this will be called after the instantiation of QApplication.
         print("app started")
         app.setStyleSheet(qdarkstyle.load_stylesheet())
+
 
     adapter = GUIAdapter(on_app_start=on_app_start)
     adapter.add(app_style_example)
@@ -290,19 +291,17 @@ if __name__ == "__main__":
 > pip install qtmodern
 > ```
 
-
-
 ```python
 from datetime import datetime
 
 from qtpy.QtWidgets import QApplication
 
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.types import text_t
+from pyguiadapter.extend_types import text_t
 
 
 def app_style_example(
-    arg1: str, arg2: int, arg3: float, arg4: bool, arg5: text_t, arg6: datetime
+        arg1: str, arg2: int, arg3: float, arg4: bool, arg5: text_t, arg6: datetime
 ):
     """
     This example requires [qtmodern](https://github.com/gmarull/qtmodern).
@@ -335,10 +334,12 @@ def app_style_example(
 if __name__ == "__main__":
     import qtmodern.styles
 
+
     def on_app_start(app: QApplication):
         # this will be called after the instantiation of QApplication.
         print("app started")
         qtmodern.styles.light(app)
+
 
     adapter = GUIAdapter(on_app_start=on_app_start)
     adapter.add(app_style_example)
@@ -358,19 +359,17 @@ if __name__ == "__main__":
 > pip install qt-material
 > ```
 
-
-
 ```python
 from datetime import datetime
 
 from qtpy.QtWidgets import QApplication
 
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.types import text_t
+from pyguiadapter.extend_types import text_t
 
 
 def app_style_example(
-    arg1: str, arg2: int, arg3: float, arg4: bool, arg5: text_t, arg6: datetime
+        arg1: str, arg2: int, arg3: float, arg4: bool, arg5: text_t, arg6: datetime
 ):
     """
     This example requires [Qt-Material](https://github.com/UN-GCPDS/qt-material).
@@ -403,10 +402,12 @@ def app_style_example(
 if __name__ == "__main__":
     import qt_material
 
+
     def on_app_start(app: QApplication):
         # this will be called after the instantiation of QApplication.
         print("app started")
         qt_material.apply_stylesheet(app, theme="light_teal.xml")
+
 
     adapter = GUIAdapter(on_app_start=on_app_start)
     adapter.add(app_style_example)

@@ -46,7 +46,7 @@ class TextEditConfig(CommonParameterWidgetConfig):
 ```python
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.adapter.uoutput import uprint
-from pyguiadapter.types import text_t
+from pyguiadapter.extend_types import text_t
 from pyguiadapter.widgets import TextEditConfig
 
 
@@ -78,7 +78,6 @@ def text_t_example(arg1: text_t, arg2: text_t, arg3: text_t = "foo") -> str:
 
 
 if __name__ == "__main__":
-
     arg3_conf = TextEditConfig(
         # this will override the default_value defined in the function signature
         default_value="bar",

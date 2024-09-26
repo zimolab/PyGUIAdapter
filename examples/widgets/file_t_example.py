@@ -3,7 +3,7 @@ import os.path
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.adapter.ucontext import uprint
 from pyguiadapter.widgets import FileSelectConfig
-from pyguiadapter.types import file_t
+from pyguiadapter.extend_types import file_t
 
 
 def file_t_example(arg1: file_t, arg2: file_t, arg3: file_t):

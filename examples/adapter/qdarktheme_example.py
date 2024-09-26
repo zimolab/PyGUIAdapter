@@ -5,7 +5,7 @@ This example requires PyQtDarkTheme. Please install it before you run the exampl
 from datetime import datetime
 
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.types import text_t
+from pyguiadapter.extend_types import text_t
 
 
 def app_style_example(

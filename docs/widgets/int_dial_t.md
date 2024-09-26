@@ -62,12 +62,12 @@ class DialConfig(CommonParameterWidgetConfig):
 ```python
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.adapter.uoutput import uprint
-from pyguiadapter.types import int_dial_t
+from pyguiadapter.extend_types import int_dial_t
 from pyguiadapter.widgets import DialConfig
 
 
 def int_dial_t_example(
-    arg1: int_dial_t, arg2: int_dial_t, arg3: int_dial_t = 100
+        arg1: int_dial_t, arg2: int_dial_t, arg3: int_dial_t = 100
 ) -> int:
     """
     example for **int_dial_t** and **Dial** widget
@@ -101,7 +101,6 @@ def int_dial_t_example(
 
 
 if __name__ == "__main__":
-
     arg3_conf = DialConfig(
         # this will override the default_value defined in the function signature
         default_value=-99,

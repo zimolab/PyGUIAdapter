@@ -64,13 +64,13 @@ class SliderConfig(CommonParameterWidgetConfig):
 ```python
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.adapter.uoutput import uprint
-from pyguiadapter.types import int_slider_t
+from pyguiadapter.extend_types import int_slider_t
 from pyguiadapter.widgets import SliderConfig
 from pyguiadapter.widgets.extend.slider import TickPosition
 
 
 def int_slider_t_example(
-    arg1: int_slider_t, arg2: int_slider_t, arg3: int_slider_t = 100
+        arg1: int_slider_t, arg2: int_slider_t, arg3: int_slider_t = 100
 ) -> int:
     """
     example for **int_t** and **IntLineEdit**
@@ -105,7 +105,6 @@ def int_slider_t_example(
 
 
 if __name__ == "__main__":
-
     arg3_conf = SliderConfig(
         # this will override the default_value defined in the function signature
         default_value=-99,

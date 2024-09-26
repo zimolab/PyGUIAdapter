@@ -85,13 +85,13 @@ class StringListEditConfig(CommonParameterWidgetConfig):
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.adapter.ucontext import uprint
 from pyguiadapter.widgets import StringListEditConfig
-from pyguiadapter.types import string_list_t
+from pyguiadapter.extend_types import string_list_t
 
 
 def string_list_t_example(
-    arg1: string_list_t,
-    arg2: string_list_t,
-    arg3: string_list_t,
+        arg1: string_list_t,
+        arg2: string_list_t,
+        arg3: string_list_t,
 ):
     """
     example for type **string_list_t** and **StringListEdit** widget

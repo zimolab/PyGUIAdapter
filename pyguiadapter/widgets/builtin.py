@@ -61,7 +61,7 @@ from ..parser.typenames import (
     TYPE_MUTABLE_SET,
     TYPING_TYPED_DICT,
 )
-from ..types import (
+from ..extend_types import (
     text_t,
     int_t,
     float_t,

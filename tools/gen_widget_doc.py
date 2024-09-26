@@ -12,7 +12,7 @@ from pyguiadapter import widgets, utils
 from pyguiadapter.adapter import GUIAdapter, uoutput, udialog
 from pyguiadapter.exceptions import ParameterError
 from pyguiadapter.paramwidget import BaseParameterWidgetConfig, BaseParameterWidget
-from pyguiadapter.types import file_t
+from pyguiadapter.extend_types import file_t
 from pyguiadapter.widgets.common import CommonParameterWidgetConfig
 from pyguiadapter.windows import FnExecuteWindowConfig
 

@@ -4,7 +4,7 @@ from typing import Literal
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.adapter import udialog
 from pyguiadapter.exceptions import ParameterError
-from pyguiadapter.types import text_t, file_t
+from pyguiadapter.extend_types import text_t, file_t
 
 
 def show_text_context_example(

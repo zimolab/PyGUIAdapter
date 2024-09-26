@@ -40,12 +40,12 @@ class KeySequenceEditConfig(CommonParameterWidgetConfig):
 ```python
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.adapter.ucontext import uprint
-from pyguiadapter.types import key_sequence_t
+from pyguiadapter.extend_types import key_sequence_t
 from pyguiadapter.widgets import KeySequenceEditConfig, KeySequenceFormat
 
 
 def key_sequence_t_example(
-    arg1: key_sequence_t, arg2: key_sequence_t, arg3: key_sequence_t = "Ctrl+Q"
+        arg1: key_sequence_t, arg2: key_sequence_t, arg3: key_sequence_t = "Ctrl+Q"
 ):
     """
     example for type **key_sequence_t** and **KeySequenceEdit** widget

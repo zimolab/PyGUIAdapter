@@ -1,7 +1,7 @@
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.adapter.ucontext import uprint
 from pyguiadapter.widgets import PlainDictEditConfig
-from pyguiadapter.types import plain_dict_t
+from pyguiadapter.extend_types import plain_dict_t
 
 
 def plain_dict_t_example(arg1: plain_dict_t, arg2: plain_dict_t, arg3: plain_dict_t):

@@ -1,6 +1,6 @@
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.adapter.ucontext import uprint
-from pyguiadapter.types import choices_t
+from pyguiadapter.extend_types import choices_t
 from pyguiadapter.widgets import MultiChoiceBoxConfig
 
 

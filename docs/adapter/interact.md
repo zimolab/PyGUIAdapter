@@ -85,20 +85,18 @@ def show_question_dialog(
 
 下面，提供一个综合性的示例：
 
-
-
 ```python
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.adapter import udialog
 from pyguiadapter.adapter.ucontext import uprint
-from pyguiadapter.types import text_t
+from pyguiadapter.extend_types import text_t
 
 
 def dialog_example(
-    info_message: text_t,
-    warning_message: text_t,
-    error_message: text_t,
-    question_message: text_t,
+        info_message: text_t,
+        warning_message: text_t,
+        error_message: text_t,
+        question_message: text_t,
 ):
     if info_message:
         udialog.show_info_dialog(
@@ -137,6 +135,7 @@ def dialog_example(
         else:
             uprint("Your Choice: No")
             udialog.show_info_dialog("You Choose No!", title="Answer")
+
 
 if __name__ == "__main__":
     adapter = GUIAdapter()
@@ -185,11 +184,11 @@ from typing import Literal
 
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.adapter import udialog
-from pyguiadapter.types import text_t
+from pyguiadapter.extend_types import text_t
 
 
 def show_text_context_example(
-    content: text_t, text_format: Literal["markdown", "plaintext", "html"] = "markdown"
+        content: text_t, text_format: Literal["markdown", "plaintext", "html"] = "markdown"
 ):
     if content:
         udialog.show_text_content(
@@ -237,12 +236,12 @@ from typing import Literal
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.adapter import udialog
 from pyguiadapter.exceptions import ParameterError
-from pyguiadapter.types import file_t
+from pyguiadapter.extend_types import file_t
 
 
 def show_text_file_example(
-    text_file: file_t,
-    text_format: Literal["markdown", "plaintext", "html"] = "markdown",
+        text_file: file_t,
+        text_format: Literal["markdown", "plaintext", "html"] = "markdown",
 ):
     """
     Show text content of the file
@@ -568,7 +567,7 @@ def get_open_files(
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.adapter import uinput
 from pyguiadapter.adapter.ucontext import uprint
-from pyguiadapter.types import choices_t
+from pyguiadapter.extend_types import choices_t
 
 
 # noinspection SpellCheckingInspection
