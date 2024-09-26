@@ -1,6 +1,7 @@
 import dataclasses
 from typing import Literal, Optional
 
+from qtpy.QtGui import QTextCursor
 from qtpy.QtWidgets import QTextBrowser, QWidget
 
 from ... import utils
@@ -55,6 +56,23 @@ class OutputBrowser(QTextBrowser):
             font_family=self._config.font_family,
         )
         self.setStyleSheet(stylesheet)
+
+    def move_cursor_to_end(self):
+        cursor = self.textCursor()
+        cursor.clearSelection()
+        cursor.movePosition(QTextCursor.End)
+        self.setTextCursor(cursor)
+
+    def append_output(self, text: str, html: bool = False):
+        self.move_cursor_to_end()
+        if text and not html:
+            self.insertPlainText(text)
+            return
+        if text:
+            self.insertHtml("<div>" + text + "</div>")
+        self.insertHtml("<br>")
+        # self.move_cursor_to_end()
+        self.ensureCursorVisible()
 
     def contextMenuEvent(self, e):
         """TODO custom context menu actions"""

@@ -1,6 +1,5 @@
 from typing import Optional
 
-from qtpy.QtGui import QTextCursor
 from qtpy.QtWidgets import QWidget, QVBoxLayout
 
 from ._outputbrowser import OutputBrowserConfig, OutputBrowser
@@ -42,15 +41,7 @@ class FnExecuteOutputArea(QWidget):
         self._doc_browser.clear()
 
     def append_output(self, text: str, html: bool = False):
-        if text and not html:
-            self._doc_browser.insertPlainText(text)
-            return
-        cursor: QTextCursor = self._doc_browser.textCursor()
-        if text:
-            cursor.insertHtml(f"<div>{text}</div>")
-        cursor.insertHtml("<br>")
-        self._doc_browser.moveCursor(QTextCursor.End)
-        self._doc_browser.ensureCursorVisible()
+        self._doc_browser.append_output(text, html)
 
     def scroll_to_bottom(self):
         scroll_bar = self._doc_browser.verticalScrollBar()
