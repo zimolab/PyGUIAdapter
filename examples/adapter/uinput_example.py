@@ -21,10 +21,10 @@ def uinput_example(inputs: choices_t):
         value = uinput.get_int(title="Input Integer", label="Enter an integer:")
         uprint("User inputs: ", value)
     if "str" in inputs:
-        value = uinput.get_text(title="Input Text", label="Enter a string:")
+        value = uinput.get_string(title="Input Text", label="Enter a string:")
         uprint("User inputs: ", value)
     if "text" in inputs:
-        value = uinput.get_multiline_text(title="Input Text", label="Enter a string:")
+        value = uinput.get_text(title="Input Text", label="Enter a string:")
         uprint("User inputs: ", value)
     if "float" in inputs:
         value = uinput.get_float(title="Input Float", label="Enter a float:")
