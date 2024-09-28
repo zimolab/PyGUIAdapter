@@ -24,3 +24,33 @@ adapter.run(show_select_window=True)
 
 > `PyGUIAdapter`支持函数分组功能，同一组别的函数将聚合在一个列表中显示。关于函数分组，可以参考这个文档：[添加多个函数-函数分组](adapter/multiple_functions.md?id=四、函数分组)
 
+
+
+### 二、窗口配置
+
+`函数选择窗口`的可配置选项定义在`FnSelectWindowConfig`类中。`FnSelectWindowConfig`类继承自`BaseWindowConfig`类，因此
+
+#### （一）通用配置
+
+| 配置项名称      | 类型                                                         | 默认值       | 说明 |
+| --------------- | ------------------------------------------------------------ | ------------ | ---- |
+| `title`         | `str`                                                        | ``           |      |
+| `icon`          | `Union[str, Tuple[str, Union[list, dict]], QIcon, QPixmap, NoneType]` | `None`       |      |
+| `size`          | `Union[Tuple[int, int], QSize]`                              | `(800, 600)` |      |
+| `position`      | `Union[Tuple[int, int], NoneType]`                           | `None`       |      |
+| `always_on_top` | `bool`                                                       | `False`      |      |
+| `font_family`   | `Union[str, Sequence[str], NoneType]`                        | `None`       |      |
+| `font_size`     | `Union[int, NoneType]`                                       | `None`       |      |
+| `stylesheet`    | `Union[str, NoneType]`                                       | `None`       |      |
+| `toolbar`       | `Union[pyguiadapter.action.ToolbarConfig, NoneType]`         | `None`       |      |
+| `menus`         | `Union[List[Union[pyguiadapter.action.MenuConfig, pyguiadapter.action.Separator]], NoneType]` | `None`       |      |
+| `on_create`     | `Union[Callable[[ForwardRef('BaseWindow')], Any], NoneType]` | `None`       |      |
+| `on_close`      | `Union[Callable[[ForwardRef('BaseWindow')], bool], NoneType]` | `None`       |      |
+| `on_destroy`    | `Union[Callable[[ForwardRef('BaseWindow')], Any], NoneType]` | `None`       |      |
+| `on_hide`       | `Union[Callable[[ForwardRef('BaseWindow')], Any], NoneType]` | `None`       |      |
+| `on_show`       | `Union[Callable[[ForwardRef('BaseWindow')], Any], NoneType]` | `None`       |      |
+
+#### （二）`函数选择窗口`配置
+
+
+
