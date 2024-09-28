@@ -1,11 +1,10 @@
 import warnings
 from concurrent.futures import Future
-from typing import Any, Type, Optional, Union, Callable
+from typing import Any, Type, Optional, Callable
 
 from qtpy.QtCore import QObject, Signal, QMutex
 
-from ._dialog import CustomDialogFactory, BaseCustomDialog
-from ..utils import MessageBoxConfig
+from ..utils import MessageBoxConfig, BaseCustomDialog
 from ..windows.fnexec import FnExecuteWindow
 
 
@@ -28,7 +27,6 @@ class _Context(QObject):
 
         self._lock = QMutex()
         self._current_window: Optional[FnExecuteWindow] = None
-        self._custom_dialog_factory = CustomDialogFactory()
 
         # noinspection PyUnresolvedReferences
         self.current_window_created.connect(self._on_current_window_created)
@@ -48,10 +46,6 @@ class _Context(QObject):
         self.hide_progressbar.connect(self._on_hide_progressbar)
         # noinspection PyUnresolvedReferences
         self.update_progress.connect(self._on_update_progress)
-
-    @property
-    def custom_dialog_factory(self) -> CustomDialogFactory:
-        return self._custom_dialog_factory
 
     @property
     def current_window(self) -> Optional[FnExecuteWindow]:
@@ -113,14 +107,14 @@ class _Context(QObject):
     def _on_show_custom_dialog(
         self,
         future: Future,
-        dialog_class: Union[str, Type[BaseCustomDialog]],
+        dialog_class: Type[BaseCustomDialog],
         kwargs: dict,
     ):
         win = self.current_window
         if not isinstance(win, FnExecuteWindow):
             warnings.warn("current_window is None")
             win = None
-        dialog = _context.custom_dialog_factory.create(win, dialog_class, **kwargs)
+        dialog = dialog_class.new_instance(win, **kwargs)
         ret_code = dialog.exec_()
         result = dialog.get_result()
         dialog.deleteLater()

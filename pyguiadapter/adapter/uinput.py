@@ -1,17 +1,13 @@
 from concurrent.futures import Future
-from typing import List, Tuple, Literal, Callable, Any, Optional, Union
+from typing import List, Tuple, Literal, Callable, Any, Optional, Union, Sequence
 
-from qtpy.QtCore import Qt, QUrl
+from qtpy.QtCore import QUrl
 from qtpy.QtGui import QColor
-from qtpy.QtWidgets import QLineEdit, QInputDialog, QColorDialog
 
 from .ucontext import _context
-from .. import utils
+from ..utils import EchoMode, inputdialog, filedialog, IconType, PyLiteralType
+from ..utils.inputdialog import LineWrapMode
 from ..windows.fnexec import FnExecuteWindow
-
-EchoMode = QLineEdit.EchoMode
-InputMethodHint = Qt.InputMethodHint
-InputMethodHints = Qt.InputMethodHints
 
 
 def _request_get_input(get_input_impl: Callable[[FnExecuteWindow], Any]) -> Any:
@@ -21,47 +17,24 @@ def _request_get_input(get_input_impl: Callable[[FnExecuteWindow], Any]) -> Any:
     return result_future.result()
 
 
-def get_text(
+def get_string(
     title: str = "Input Text",
     label: str = "",
     echo: Optional[EchoMode] = None,
     text: str = "",
-    ime_hints: Union[InputMethodHint, InputMethodHints, None] = None,
 ) -> Optional[str]:
-    if echo is None:
-        echo = EchoMode.Normal
-
-    if ime_hints is None:
-        ime_hints = InputMethodHint.ImhNone
-
     def _impl(wind: Optional[FnExecuteWindow]) -> Optional[str]:
-        input_text, ok = QInputDialog.getText(
-            wind, title, label, echo, text, inputMethodHints=ime_hints
-        )
-        if ok:
-            return input_text
-        return None
+        return inputdialog.input_string(wind, title, label, echo, text)
 
     return _request_get_input(_impl)
 
 
-def get_multiline_text(
-    title: str = "Input Text",
-    label: str = "",
-    text: str = "",
-    ime_hints: Union[InputMethodHint, InputMethodHints, None] = None,
+def get_text(
+    title: str = "Input Text", label: str = "", text: str = ""
 ) -> Optional[str]:
 
-    if ime_hints is None:
-        ime_hints = InputMethodHint.ImhNone
-
     def _impl(wind: Optional[FnExecuteWindow]) -> Optional[str]:
-        input_text, ok = QInputDialog.getMultiLineText(
-            wind, title, label, text, inputMethodHints=ime_hints
-        )
-        if not ok:
-            return None
-        return input_text
+        return inputdialog.input_text(wind, title, label, text)
 
     return _request_get_input(_impl)
 
@@ -75,12 +48,9 @@ def get_int(
     step: int = 1,
 ) -> Optional[int]:
     def _impl(wind: Optional[FnExecuteWindow]) -> Optional[int]:
-        input_int, ok = QInputDialog.getInt(
+        return inputdialog.input_integer(
             wind, title, label, value, min_value, max_value, step
         )
-        if not ok:
-            return None
-        return input_int
 
     return _request_get_input(_impl)
 
@@ -91,19 +61,14 @@ def get_float(
     value: float = 0.0,
     min_value: float = -2147483647.0,
     max_value: float = 2147483647.0,
-    decimals: int = 1,
+    decimals: int = 3,
+    step: float = 1.0,
 ) -> Optional[float]:
 
-    min_value = float(min_value)
-    max_value = float(max_value)
-
     def _impl(wind: Optional[FnExecuteWindow]) -> Optional[float]:
-        input_float, ok = QInputDialog.getDouble(
-            wind, title, label, value, min_value, max_value, decimals
+        return inputdialog.input_float(
+            wind, title, label, value, min_value, max_value, decimals, step
         )
-        if not ok:
-            return None
-        return input_float
 
     return _request_get_input(_impl)
 
@@ -116,12 +81,7 @@ def get_selected_item(
     editable: bool = False,
 ) -> Optional[str]:
     def _impl(wind: Optional[FnExecuteWindow]):
-        selected_item, ok = QInputDialog.getItem(
-            wind, title, label, items, current, editable=editable
-        )
-        if not ok:
-            return None
-        return selected_item
+        return inputdialog.select_item(wind, items, title, label, current, editable)
 
     return _request_get_input(_impl)
 
@@ -132,19 +92,84 @@ def get_color(
     alpha_channel: bool = True,
     return_type: Literal["tuple", "str", "QColor"] = "str",
 ) -> Union[Tuple[int, int, int], Tuple[int, int, int], str, QColor, None]:
-
-    initial = utils.to_qcolor(initial)
-
     def _impl(wind: Optional[FnExecuteWindow]) -> Optional[QColor]:
-        if alpha_channel:
-            color = QColorDialog.getColor(
-                initial, wind, title, options=QColorDialog.ShowAlphaChannel
-            )
-        else:
-            color = QColorDialog.getColor(initial, wind, title)
-        if color.isValid():
-            return utils.convert_color(color, return_type, alpha_channel)
-        return None
+        return inputdialog.input_color(wind, initial, title, alpha_channel, return_type)
+
+    return _request_get_input(_impl)
+
+
+def get_json_object(
+    title: str = "Input Json",
+    icon: IconType = None,
+    size: Tuple[int, int] = (600, 400),
+    ok_button_text: str = "Ok",
+    cancel_button_text: Optional[str] = "Cancel",
+    initial_text: str = "",
+    auto_indent: bool = True,
+    indent_size: int = 4,
+    auto_parentheses: bool = True,
+    line_wrap_mode: LineWrapMode = LineWrapMode.WidgetWidth,
+    line_wrap_width: int = 88,
+    font_family: Union[str, Sequence[str], None] = "Consolas",
+    font_size: Optional[int] = None,
+    **kwargs,
+) -> Any:
+    def _impl(wind: Optional[FnExecuteWindow]) -> Any:
+        return inputdialog.input_json_object(
+            wind,
+            title=title,
+            icon=icon,
+            size=size,
+            ok_button_text=ok_button_text,
+            cancel_button_text=cancel_button_text,
+            initial_text=initial_text,
+            auto_indent=auto_indent,
+            indent_size=indent_size,
+            auto_parentheses=auto_parentheses,
+            line_wrap_mode=line_wrap_mode,
+            line_wrap_width=line_wrap_width,
+            font_family=font_family,
+            font_size=font_size,
+            **kwargs,
+        )
+
+    return _request_get_input(_impl)
+
+
+def get_py_literal(
+    title: str = "Input Python Literal",
+    icon: IconType = None,
+    size: Tuple[int, int] = (600, 400),
+    ok_button_text: str = "Ok",
+    cancel_button_text: Optional[str] = "Cancel",
+    initial_text: str = "",
+    auto_indent: bool = True,
+    indent_size: int = 4,
+    auto_parentheses: bool = True,
+    line_wrap_mode: LineWrapMode = LineWrapMode.WidgetWidth,
+    line_wrap_width: int = 88,
+    font_family: Union[str, Sequence[str], None] = "Consolas",
+    font_size: Optional[int] = None,
+    **kwargs,
+) -> PyLiteralType:
+    def _impl(wind: Optional[FnExecuteWindow]) -> Any:
+        return inputdialog.input_py_literal(
+            wind,
+            title=title,
+            icon=icon,
+            size=size,
+            ok_button_text=ok_button_text,
+            cancel_button_text=cancel_button_text,
+            initial_text=initial_text,
+            auto_indent=auto_indent,
+            indent_size=indent_size,
+            auto_parentheses=auto_parentheses,
+            line_wrap_mode=line_wrap_mode,
+            line_wrap_width=line_wrap_width,
+            font_family=font_family,
+            font_size=font_size,
+            **kwargs,
+        )
 
     return _request_get_input(_impl)
 
@@ -154,7 +179,7 @@ def get_existing_directory(
     start_dir: str = "",
 ) -> Optional[str]:
     def _impl(wind: Optional[FnExecuteWindow]) -> Optional[str]:
-        return utils.get_existing_directory(wind, title, start_dir) or None
+        return filedialog.get_existing_directory(wind, title, start_dir) or None
 
     return _request_get_input(_impl)
 
@@ -165,7 +190,7 @@ def get_existing_directory_url(
     supported_schemes: Optional[List[str]] = None,
 ) -> QUrl:
     def _impl(wind: Optional[FnExecuteWindow]) -> QUrl:
-        return utils.get_existing_directory_url(
+        return filedialog.get_existing_directory_url(
             wind, title, start_dir, supported_schemes
         )
 
@@ -178,7 +203,7 @@ def get_open_file(
     filters: str = "",
 ) -> Optional[str]:
     def _impl(wind: Optional[FnExecuteWindow]) -> Optional[str]:
-        return utils.get_open_file(wind, title, start_dir, filters)
+        return filedialog.get_open_file(wind, title, start_dir, filters)
 
     return _request_get_input(_impl)
 
@@ -189,7 +214,7 @@ def get_open_files(
     filters: str = "",
 ) -> Optional[List[str]]:
     def _impl(wind: Optional[FnExecuteWindow]) -> Optional[List[str]]:
-        return utils.get_open_files(wind, title, start_dir, filters)
+        return filedialog.get_open_files(wind, title, start_dir, filters)
 
     return _request_get_input(_impl)
 
@@ -200,6 +225,6 @@ def get_save_file(
     filters: str = "",
 ) -> Optional[str]:
     def _impl(wind: Optional[FnExecuteWindow]) -> Optional[str]:
-        return utils.get_save_file(wind, title, start_dir, filters)
+        return filedialog.get_save_file(wind, title, start_dir, filters)
 
     return _request_get_input(_impl)

@@ -1,14 +1,13 @@
 import ast
 import dataclasses
-from typing import Type, Union, Optional
+from typing import Type, Optional
 
 from pyqcodeeditor.highlighters import QPythonHighlighter
 from qtpy.QtWidgets import QWidget
 
 from .base import BaseCodeEdit, BaseCodeEditConfig
 from ...codeeditor import PythonFormatter
-
-PyLiteralType = Union[bool, int, float, bytes, str, list, tuple, dict, set]
+from ...utils import PyLiteralType
 
 FILE_FILTERS = (
     "Python files (*.py);;Text files(*.txt);;Text files(*.text);;All files (*.*)"

@@ -11,9 +11,8 @@ from qtpy.QtWidgets import (
 )
 
 from .ucontext import _context
-from ._dialog import BaseCustomDialog
 from .. import utils
-from ..utils import MessageBoxConfig
+from ..utils import MessageBoxConfig, BaseCustomDialog
 
 StandardButton = utils.StandardButton
 StandardButtons = utils.StandardButtons
@@ -234,7 +233,7 @@ def show_messagebox(config: MessageBoxConfig) -> Any:
 
 
 def show_custom_dialog(
-    dialog_class: Union[str, Type[BaseCustomDialog]], **kwargs
+    dialog_class: Type[BaseCustomDialog], **kwargs
 ) -> Tuple[int, Any]:
     result_future = Future()
     # noinspection PyUnresolvedReferences
