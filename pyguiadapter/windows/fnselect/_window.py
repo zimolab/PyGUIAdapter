@@ -58,8 +58,8 @@ class FnSelectWindow(BaseWindow):
         super().__init__(parent, config, listener, toolbar, menus)
         self._create_ui()
 
-    def update_ui(self):
-        super().update_ui()
+    def apply_configs(self):
+        super().apply_configs()
 
     def add_bundle(self, bundle: FnBundle):
         fn = bundle.fn_info

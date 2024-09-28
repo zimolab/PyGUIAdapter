@@ -198,8 +198,8 @@ class FnExecuteWindow(BaseFnExecuteWindow):
         return widget_class, widget_config
 
     # noinspection PyUnresolvedReferences
-    def update_ui(self):
-        super().update_ui()
+    def apply_configs(self):
+        super().apply_configs()
 
         fn_info = self._bundle.fn_info
         window_config = self.window_config
