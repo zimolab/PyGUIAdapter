@@ -306,7 +306,7 @@ if __name__ == "__main__":
 
 ```python
 def show_custom_dialog(
-    dialog_class: str | Type[BaseCustomDialog], **kwargs
+    dialog_class: Type[BaseCustomDialog], **kwargs
 ) -> Tuple[int, Any]:
     ...
 ```
@@ -461,12 +461,11 @@ def get_int(
 **2、单行文本输入框**
 
 ```python
-def get_text(
+def get_string(
     title: str = "Input Text",
     label: str = "",
     echo: EchoMode | None = None,
     text: str = "",
-    ime_hints: InputMethodHint | InputMethodHints | None = None,
 ) -> str | None:
     ...
 ```
@@ -474,11 +473,10 @@ def get_text(
 **3、多行文本输入框**
 
 ```python
-def get_multiline_text(
+def get_text(
     title: str = "Input Text",
     label: str = "",
     text: str = "",
-    ime_hints: InputMethodHint | InputMethodHints | None = None,
 ) -> str | None:
     ...
 ```
@@ -492,7 +490,8 @@ def get_float(
     value: float = 0.0,
     min_value: float = -2147483647.0,
     max_value: float = 2147483647.0,
-    decimals: int = 1,
+    decimals: int = 3,
+    step: float = 1.0,
 ) -> float | None:
     ...
 ```
@@ -593,10 +592,10 @@ def uinput_example(inputs: choices_t):
         value = uinput.get_int(title="Input Integer", label="Enter an integer:")
         uprint("User inputs: ", value)
     if "str" in inputs:
-        value = uinput.get_text(title="Input Text", label="Enter a string:")
+        value = uinput.get_string(title="Input Text", label="Enter a string:")
         uprint("User inputs: ", value)
     if "text" in inputs:
-        value = uinput.get_multiline_text(title="Input Text", label="Enter a string:")
+        value = uinput.get_text(title="Input Text", label="Enter a string:")
         uprint("User inputs: ", value)
     if "float" in inputs:
         value = uinput.get_float(title="Input Float", label="Enter a float:")
