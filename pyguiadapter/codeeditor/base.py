@@ -94,8 +94,8 @@ class BaseCodeEditorWindow(BaseWindow):
     ):
         super().__init__(parent, config, listener, toolbar, menus)
 
-    def update_ui(self):
-        super().update_ui()
+    def apply_configs(self):
+        super().apply_configs()
 
         center_widget = QWidget(self)
 
