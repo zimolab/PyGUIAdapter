@@ -1,4 +1,4 @@
-## 界面风格与美化
+## 界面美化
 
 `PyGUIAdapter`的底层基于`Qt`, 所以一些适用于`Qt`的界面美化方法同样适用于`PyGUIAdapter`。
 

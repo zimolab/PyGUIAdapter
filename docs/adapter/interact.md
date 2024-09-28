@@ -165,14 +165,17 @@ if __name__ == "__main__":
 API如下：
 
 ```python
+import pyguiadapter.utils.messagebox
+
+
 def show_text_content(
-    text_content: str,
-    text_format: Literal["markdown", "plaintext", "html"] = "markdown",
-    size: Tuple[int, int] = None,
-    title: str | None = "",
-    icon: utils.IconType = None,
-    buttons: int | QDialogButtonBox.StandardButtons | None = QDialogButtonBox.Ok,
-    resizeable: bool = True,
+        text_content: str,
+        text_format: Literal["markdown", "plaintext", "html"] = "markdown",
+        size: Tuple[int, int] = None,
+        title: str | None = "",
+        icon: utils.IconType = None,
+        buttons: int | pyguiadapter.utils.messagebox.StandardButtons | None = QDialogButtonBox.Ok,
+        resizeable: bool = True,
 ):
     ...
 ```
@@ -215,14 +218,17 @@ if __name__ == "__main__":
 `PyGUIAdapter`还允许开发者通过对话框展示文本文件内容。
 
 ```python
+import pyguiadapter.utils.messagebox
+
+
 def show_text_file(
-    text_file: str,
-    text_format: Literal["markdown", "plaintext", "html"] = "markdown",
-    size: Tuple[int, int] = None,
-    title: str | None = "",
-    icon: utils.IconType = None,
-    buttons: int | QDialogButtonBox.StandardButtons | None = QDialogButtonBox.Ok,
-    resizeable: bool = True,
+        text_file: str,
+        text_format: Literal["markdown", "plaintext", "html"] = "markdown",
+        size: Tuple[int, int] = None,
+        title: str | None = "",
+        icon: utils.IconType = None,
+        buttons: int | pyguiadapter.utils.messagebox.StandardButtons | None = QDialogButtonBox.Ok,
+        resizeable: bool = True,
 ):
     ...
 ```
