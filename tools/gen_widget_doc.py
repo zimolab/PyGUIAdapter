@@ -8,6 +8,7 @@ from typing import Type, Tuple, List, Literal
 import jinja2
 from markdown_table_generator import generate_markdown, table_from_string_list
 
+import pyguiadapter.utils.messagebox
 from pyguiadapter import widgets, utils
 from pyguiadapter.adapter import GUIAdapter, uoutput, udialog
 from pyguiadapter.exceptions import ParameterError
@@ -107,7 +108,7 @@ def generate_widget_class_doc(
         ret = udialog.show_question_dialog(
             f"Output file {output_file} already exists! Do you want to overwrite it?"
         )
-        if ret != utils.StandardButton.Yes:
+        if ret != pyguiadapter.utils.messagebox.StandardButton.Yes:
             uoutput.warning(" |")
             uoutput.warning("  - User cancelled")
             uoutput.info("==Generating Finished!==")
