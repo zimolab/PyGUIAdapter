@@ -51,61 +51,15 @@ class FnSelectWindow(BaseWindow):
         self._initial_bundles = bundles.copy()
         self._group_pages: Dict[str, FnGroupPage] = {}
         self._current_exec_window: Optional[FnSelectWindow] = None
-
         self._function_group_toolbox: Optional[QToolBox] = None
         self._document_textbrowser: Optional[DocumentBrowser] = None
         self._select_button: Optional[QPushButton] = None
 
         super().__init__(parent, config, listener, toolbar, menus)
+        self._create_ui()
 
     def update_ui(self):
         super().update_ui()
-
-        # central widget
-        _central_widget: QWidget = QWidget(self)
-        # main layout
-        # noinspection PyArgumentList
-        layout_main = QVBoxLayout(_central_widget)
-        self.setCentralWidget(_central_widget)
-
-        # Splitter
-        # noinspection PyArgumentList
-        _splitter = QSplitter(_central_widget)
-        _splitter.setOrientation(Qt.Horizontal)
-        layout_main.addWidget(_splitter)
-
-        # left area
-        # toolbox
-        self._function_group_toolbox: QToolBox = QToolBox(_splitter)
-        # noinspection PyUnresolvedReferences
-        self._function_group_toolbox.currentChanged.connect(
-            self._on_current_group_change
-        )
-        _splitter.addWidget(self._function_group_toolbox)
-
-        # right area
-        # right layout
-        right_area = QWidget(_splitter)
-        # noinspection PyArgumentList
-        _layout_right_area = QVBoxLayout(right_area)
-        _layout_right_area.setContentsMargins(0, 0, 0, 0)
-        # fn document browser
-        doc_config = self._config.document_browser_config or DocumentBrowserConfig()
-        self._document_textbrowser = DocumentBrowser(right_area, doc_config)
-        _layout_right_area.addWidget(self._document_textbrowser)
-        # select button
-        self._select_button = QPushButton(right_area)
-        self._select_button.setText(self._config.select_button_text)
-        _layout_right_area.addWidget(self._select_button)
-
-        left_area_ratio = self._config.document_browser_ratio
-        right_area_ratio = 1.0 - left_area_ratio
-        left_area_width = int(self.width() * left_area_ratio)
-        right_area_width = int(self.width() * right_area_ratio)
-        _splitter.setSizes([left_area_width, right_area_width])
-
-        # noinspection PyUnresolvedReferences
-        self._select_button.clicked.connect(self._on_button_select_click)
 
     def add_bundle(self, bundle: FnBundle):
         fn = bundle.fn_info
@@ -152,6 +106,53 @@ class FnSelectWindow(BaseWindow):
         del self._initial_bundles
         self._function_group_toolbox.setCurrentIndex(0)
         self.show()
+
+    def _create_ui(self):
+        # central widget
+        _central_widget: QWidget = QWidget(self)
+        # main layout
+        # noinspection PyArgumentList
+        layout_main = QVBoxLayout(_central_widget)
+        self.setCentralWidget(_central_widget)
+
+        # Splitter
+        # noinspection PyArgumentList
+        _splitter = QSplitter(_central_widget)
+        _splitter.setOrientation(Qt.Horizontal)
+        layout_main.addWidget(_splitter)
+
+        # left area
+        # toolbox
+        self._function_group_toolbox: QToolBox = QToolBox(_splitter)
+        # noinspection PyUnresolvedReferences
+        self._function_group_toolbox.currentChanged.connect(
+            self._on_current_group_change
+        )
+        _splitter.addWidget(self._function_group_toolbox)
+
+        # right area
+        # right layout
+        right_area = QWidget(_splitter)
+        # noinspection PyArgumentList
+        _layout_right_area = QVBoxLayout(right_area)
+        _layout_right_area.setContentsMargins(0, 0, 0, 0)
+        # fn document browser
+        doc_config = self._config.document_browser_config or DocumentBrowserConfig()
+        self._document_textbrowser = DocumentBrowser(right_area, doc_config)
+        _layout_right_area.addWidget(self._document_textbrowser)
+        # select button
+        self._select_button = QPushButton(right_area)
+        self._select_button.setText(self._config.select_button_text)
+        _layout_right_area.addWidget(self._select_button)
+
+        left_area_ratio = self._config.document_browser_ratio
+        right_area_ratio = 1.0 - left_area_ratio
+        left_area_width = int(self.width() * left_area_ratio)
+        right_area_width = int(self.width() * right_area_ratio)
+        _splitter.setSizes([left_area_width, right_area_width])
+
+        # noinspection PyUnresolvedReferences
+        self._select_button.clicked.connect(self._on_button_select_click)
 
     def _start_exec_window(self, bundle: FnBundle):
         assert isinstance(bundle, FnBundle)
