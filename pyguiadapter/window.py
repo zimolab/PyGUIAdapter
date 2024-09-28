@@ -23,19 +23,19 @@ class BaseWindowConfig(object):
 
 # noinspection PyMethodMayBeStatic
 class WindowStateListener(object):
-    def on_create(self, ctx: "BaseWindow") -> object:
+    def on_create(self, window: "BaseWindow"):
         pass
 
-    def on_close(self, ctx: "BaseWindow") -> bool:
+    def on_close(self, window: "BaseWindow") -> bool:
         return True
 
-    def on_destroy(self, ctx: "BaseWindow"):
+    def on_destroy(self, window: "BaseWindow"):
         pass
 
-    def on_hide(self, ctx: "BaseWindow"):
+    def on_hide(self, window: "BaseWindow"):
         pass
 
-    def on_show(self, ctx: "BaseWindow"):
+    def on_show(self, window: "BaseWindow"):
         pass
 
 
@@ -59,7 +59,7 @@ class BaseWindow(QMainWindow):
 
         self._actions: Dict[int, QAction] = {}
 
-        self.update_ui()
+        self.apply_configs()
         self._setup_toolbar()
         self._setup_menus()
         self._on_create()
@@ -83,7 +83,7 @@ class BaseWindow(QMainWindow):
         self._on_hide()
         super().hideEvent(event)
 
-    def update_ui(self):
+    def apply_configs(self):
         if self._config is None:
             return
 
