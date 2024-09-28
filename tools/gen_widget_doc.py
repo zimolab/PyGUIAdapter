@@ -11,10 +11,10 @@ from markdown_table_generator import generate_markdown, table_from_string_list
 from pyguiadapter import widgets, utils
 from pyguiadapter.adapter import GUIAdapter, uoutput, udialog
 from pyguiadapter.exceptions import ParameterError
-from pyguiadapter.paramwidget import BaseParameterWidgetConfig, BaseParameterWidget
 from pyguiadapter.extend_types import file_t
+from pyguiadapter.paramwidget import BaseParameterWidget
 from pyguiadapter.widgets.common import CommonParameterWidgetConfig
-from pyguiadapter.windows import FnExecuteWindowConfig
+from pyguiadapter.windows.fnexec import FnExecuteWindowConfig
 
 # warnings.filterwarnings("error")
 
@@ -41,11 +41,13 @@ def _get_default_value(field: dataclasses.Field) -> str:
     return ""
 
 
-def _config2table(
-    config_class: Type[BaseParameterWidgetConfig],
+def dataclass2table(
+    clazz: Type,
     header: Tuple[str, str, str, str] | None = None,
     exclude_props: List[str] | None = None,
 ):
+    assert dataclasses.is_dataclass(clazz)
+
     if exclude_props is None:
         exclude_props = []
 
@@ -57,7 +59,7 @@ def _config2table(
 
     props = [list(header)]
 
-    fields = dataclasses.fields(config_class)
+    fields = dataclasses.fields(clazz)
     for field in fields:
         if field.name in exclude_props:
             continue
@@ -146,7 +148,7 @@ def generate_widget_class_doc(
         uoutput.warning(f" |")
         uoutput.warning(f"  -Filename: {widget_config_class_filename}")
 
-    widget_config_props_table = _config2table(
+    widget_config_props_table = dataclass2table(
         widget_config_class, headers, exclude_props
     )
 
