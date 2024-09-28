@@ -1,8 +1,6 @@
-import dataclasses
 import sys
 import warnings
 from collections import OrderedDict
-from distutils.command.config import config
 from typing import (
     Literal,
     Dict,
@@ -33,7 +31,6 @@ from ..paramwidget import (
 from ..parser import FnParser
 from ..widgets import ParameterWidgetFactory
 from ..window import WindowStateListener
-
 from ..windows.fnexec import FnExecuteWindow, FnExecuteWindowConfig
 from ..windows.fnselect import FnSelectWindow, FnSelectWindowConfig
 
