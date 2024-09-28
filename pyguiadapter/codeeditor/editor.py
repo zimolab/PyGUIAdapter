@@ -1,5 +1,5 @@
 import dataclasses
-from typing import cast, Optional
+from typing import cast, Optional, List, Union
 
 from pyqcodeeditor.QCodeEditor import QCodeEditor
 from pyqcodeeditor.QStyleSyntaxHighlighter import QStyleSyntaxHighlighter
@@ -8,20 +8,24 @@ from qtpy.QtWidgets import QWidget
 from .. import utils
 from .base import BaseCodeEditorWindow, CodeEditorConfig
 from .actions import DEFAULT_MENUS, DEFAULT_TOOLBAR
+from ..action import ToolbarConfig, Separator
+from ..window import WindowStateListener
 
 
 class CodeEditorWindow(BaseCodeEditorWindow):
     def __init__(
-        self, parent: Optional[QWidget], config: Optional[CodeEditorConfig] = None
+        self,
+        parent: Optional[QWidget],
+        config: Optional[CodeEditorConfig] = None,
+        listener: Optional[WindowStateListener] = None,
+        toolbar: Optional[ToolbarConfig] = None,
+        menus: Optional[List[Union[ToolbarConfig, Separator]]] = None,
     ):
-        if config is not None:
-            config = dataclasses.replace(config)
-        else:
-            config = CodeEditorConfig()
+        config = config or CodeEditorConfig()
 
-        if config.use_default_menus and not config.menus:
+        if config.use_default_menus and not menus:
             exclude_menus = config.exclude_default_menus
-            menus = {
+            _menus = {
                 menu.title: dataclasses.replace(menu)
                 for menu in DEFAULT_MENUS
                 if menu.title not in exclude_menus
@@ -29,24 +33,24 @@ class CodeEditorWindow(BaseCodeEditorWindow):
             exclude_menu_actions = config.exclude_default_menu_actions
 
             for menu_title, exclude_action in exclude_menu_actions:
-                menu = menus.get(menu_title, None)
+                menu = _menus.get(menu_title, None)
                 if not menu:
                     continue
                 menu.remove_action(exclude_action)
-            config.menus = list(menus.values())
+            menus = list(_menus.values())
 
-        if config.use_default_toolbar and not config.toolbar:
-            config.toolbar = dataclasses.replace(DEFAULT_TOOLBAR)
+        if config.use_default_toolbar and not toolbar:
+            toolbar = DEFAULT_TOOLBAR
             exclude_toolbar_actions = config.exclude_default_toolbar_actions
             for exclude_action in exclude_toolbar_actions:
-                config.toolbar.remove_action(exclude_action)
+                toolbar.remove_action(exclude_action)
 
         self.__editor: Optional[QCodeEditor] = None
         self.__current_file: Optional[str] = None
         self.__fingerprint: Optional[str] = utils.fingerprint(config.initial_text)
         self.__highlighter: Optional[QStyleSyntaxHighlighter] = None
 
-        super().__init__(parent, config)
+        super().__init__(parent, config, listener, toolbar, menus)
 
     def _set_editor_instance(self, editor: QCodeEditor):
         assert self.__editor is None

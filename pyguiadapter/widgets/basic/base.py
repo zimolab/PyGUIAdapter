@@ -28,6 +28,7 @@ from ...codeeditor.constants import (
     CONFIRM_DIALOG_TITLE,
 )
 from ...exceptions import ParameterError
+from ...window import WindowStateListener
 
 T = TypeVar("T")
 
@@ -153,6 +154,8 @@ class BaseCodeEdit(CommonParameterWidget):
             self._code_editor = None
         config: BaseCodeEditConfig = self.config
         editor_title = config.editor_title or EDITOR_TITLE
+        listener = WindowStateListener()
+        listener.on_close = self._on_code_editor_close
         code_editor_config = CodeEditorConfig(
             initial_text=self._editor.toPlainText(),
             formatter=config.formatter,
@@ -172,14 +175,15 @@ class BaseCodeEdit(CommonParameterWidget):
             tab_replace=True,
             tab_size=config.indent_size,
             no_file_mode=True,
-            on_close=self._on_code_editor_close,
             use_default_menus=config.use_default_menus,
             use_default_toolbar=config.use_default_toolbar,
             exclude_default_menus=config.exclude_default_menus,
             exclude_default_menu_actions=config.exclude_default_menu_actions,
             exclude_default_toolbar_actions=config.exclude_default_toolbar_actions,
         )
-        self._code_editor = CodeEditorWindow(self, code_editor_config)
+        self._code_editor = CodeEditorWindow(
+            self, code_editor_config, listener=listener
+        )
         self._code_editor.setWindowModality(Qt.WindowModal)
         self._code_editor.setAttribute(Qt.WA_DeleteOnClose, True)
         self._code_editor.destroyed.connect(self._on_code_editor_destroyed)

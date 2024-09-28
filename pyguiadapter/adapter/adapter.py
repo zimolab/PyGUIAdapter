@@ -1,6 +1,8 @@
+import dataclasses
 import sys
 import warnings
 from collections import OrderedDict
+from distutils.command.config import config
 from typing import (
     Literal,
     Dict,
@@ -19,6 +21,7 @@ from qtpy.QtGui import QIcon, QPixmap
 from qtpy.QtWidgets import QApplication
 
 from . import ucontext
+from ..action import ToolbarConfig, MenuConfig, Separator
 from ..bundle import FnBundle
 from ..exceptions import NotRegisteredError
 from ..fn import ParameterInfo
@@ -29,13 +32,8 @@ from ..paramwidget import (
 )
 from ..parser import FnParser
 from ..widgets import ParameterWidgetFactory
+from ..window import WindowStateListener
 
-# from ..windows import (
-#     FnExecuteWindowConfig,
-#     FnSelectWindow,
-#     FnSelectWindowConfig,
-#     FnExecuteWindow,
-# )
 from ..windows.fnexec import FnExecuteWindow, FnExecuteWindowConfig
 from ..windows.fnselect import FnSelectWindow, FnSelectWindowConfig
 
@@ -72,10 +70,13 @@ class GUIAdapter(object):
         on_execute_result: Callable[[Any], None] = None,
         on_execute_error: Callable[[Exception], None] = None,
         *,
-        window_config: Optional[FnExecuteWindowConfig] = None,
         widget_configs: Optional[
             Dict[str, Union[BaseParameterWidgetConfig, dict]]
         ] = None,
+        window_config: Optional[FnExecuteWindowConfig] = None,
+        window_listener: Optional[WindowStateListener] = None,
+        window_toolbar: Optional[ToolbarConfig] = None,
+        window_menus: Optional[List[Union[MenuConfig, Separator]]] = None,
     ):
         # create the FnInfo from the function and given arguments
         fn_info = self._fn_parser.parse_fn_info(
@@ -104,8 +105,11 @@ class GUIAdapter(object):
         window_config = window_config or FnExecuteWindowConfig()
         bundle = FnBundle(
             fn_info,
-            window_config=window_config,
             widget_configs=widget_configs,
+            window_config=window_config,
+            window_listener=window_listener,
+            window_toolbar=window_toolbar,
+            window_menus=window_menus,
             on_execute_result=on_execute_result,
             on_execute_error=on_execute_error,
         )
@@ -130,6 +134,9 @@ class GUIAdapter(object):
         *,
         show_select_window: bool = False,
         select_window_config: Optional[FnSelectWindowConfig] = None,
+        select_window_listener: Optional[WindowStateListener] = None,
+        select_window_toolbar: Optional[ToolbarConfig] = None,
+        select_window_menus: Optional[List[Union[MenuConfig, Separator]]] = None,
     ):
         if self._application is None:
             self._start_application(argv)
@@ -148,7 +155,10 @@ class GUIAdapter(object):
             else:
                 self._show_select_window(
                     list(self._bundles.values()),
-                    select_window_config or FnSelectWindowConfig(),
+                    config=select_window_config or FnSelectWindowConfig(),
+                    listener=select_window_listener,
+                    toolbar=select_window_toolbar,
+                    menus=select_window_menus,
                 )
 
             self._application.exec()
@@ -197,14 +207,22 @@ class GUIAdapter(object):
             self._on_app_shutdown()
 
     def _show_select_window(
-        self, bundles: List[FnBundle], select_window_config: FnSelectWindowConfig
+        self,
+        bundles: List[FnBundle],
+        config: FnSelectWindowConfig,
+        listener: Optional[WindowStateListener],
+        toolbar: Optional[ToolbarConfig],
+        menus: Optional[List[Union[MenuConfig, Separator]]],
     ):
         if self._select_window is not None:
             return
         self._select_window = FnSelectWindow(
             parent=None,
             bundles=bundles,
-            config=select_window_config,
+            config=config,
+            listener=listener,
+            toolbar=toolbar,
+            menus=menus,
         )
         self._select_window.setAttribute(Qt.WA_DeleteOnClose, True)
         # noinspection PyUnresolvedReferences

@@ -19,7 +19,7 @@ from .constants import (
     MENU_FILE,
     MENU_EDIT,
 )
-from ..window import ActionConfig, MenuConfig, Separator, ToolbarConfig
+from ..action import ActionConfig, Separator, MenuConfig, ToolbarConfig
 
 
 def _on_open_file(ctx: BaseCodeEditorWindow, _: QAction):

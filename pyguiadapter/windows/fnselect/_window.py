@@ -15,8 +15,9 @@ from ._group import FnGroupPage
 from .._docbrowser import DocumentBrowserConfig, DocumentBrowser
 from ..fnexec import FnExecuteWindow
 from ... import utils
+from ...action import ToolbarConfig, MenuConfig, Separator
 from ...bundle import FnBundle
-from ...window import BaseWindow, BaseWindowConfig
+from ...window import BaseWindow, BaseWindowConfig, WindowStateListener
 
 DEFAULT_FN_ICON_SIZE = (48, 48)
 WARNING_MSG_NO_FN_SELECTED = "No Selected Function!"
@@ -42,8 +43,11 @@ class FnSelectWindow(BaseWindow):
         parent: Optional[QWidget],
         bundles: List[FnBundle],
         config: Optional[FnSelectWindowConfig],
+        listener: Optional[WindowStateListener] = None,
+        toolbar: Optional[ToolbarConfig] = None,
+        menus: Optional[List[Union[MenuConfig, Separator]]] = None,
     ):
-        self._config: FnSelectWindowConfig = config or FnSelectWindowConfig()
+        self._config: FnSelectWindowConfig = config
         self._initial_bundles = bundles.copy()
         self._group_pages: Dict[str, FnGroupPage] = {}
         self._current_exec_window: Optional[FnSelectWindow] = None
@@ -52,23 +56,23 @@ class FnSelectWindow(BaseWindow):
         self._document_textbrowser: Optional[DocumentBrowser] = None
         self._select_button: Optional[QPushButton] = None
 
-        super().__init__(parent, config)
+        super().__init__(parent, config, listener, toolbar, menus)
 
-    def _setup_ui(self):
-        super()._setup_ui()
+    def update_ui(self):
+        super().update_ui()
 
         # central widget
         _central_widget: QWidget = QWidget(self)
         # main layout
         # noinspection PyArgumentList
-        self._layout_main = QVBoxLayout(_central_widget)
+        layout_main = QVBoxLayout(_central_widget)
         self.setCentralWidget(_central_widget)
 
         # Splitter
         # noinspection PyArgumentList
         _splitter = QSplitter(_central_widget)
         _splitter.setOrientation(Qt.Horizontal)
-        self._layout_main.addWidget(_splitter)
+        layout_main.addWidget(_splitter)
 
         # left area
         # toolbox

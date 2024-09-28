@@ -2,7 +2,7 @@ import dataclasses
 import inspect
 import os
 from abc import abstractmethod
-from typing import Type, Callable, Tuple, Optional, Union
+from typing import Type, Callable, Tuple, Optional, Union, List
 
 from pyqcodeeditor.QCodeEditor import QCodeEditor
 from pyqcodeeditor.QStyleSyntaxHighlighter import QStyleSyntaxHighlighter
@@ -25,7 +25,8 @@ from .constants import (
     QUIT_DIALOG_TITLE,
 )
 from .. import utils
-from ..window import BaseWindow, BaseWindowConfig
+from ..action import ToolbarConfig, Separator
+from ..window import BaseWindow, BaseWindowConfig, WindowStateListener
 
 
 class BaseCodeFormatter(object):
@@ -83,8 +84,18 @@ class CodeEditorConfig(BaseWindowConfig):
 
 class BaseCodeEditorWindow(BaseWindow):
 
-    def _setup_ui(self):
-        super()._setup_ui()
+    def __init__(
+        self,
+        parent: Optional[QWidget],
+        config: Optional[CodeEditorConfig] = None,
+        listener: Optional[WindowStateListener] = None,
+        toolbar: Optional[ToolbarConfig] = None,
+        menus: Optional[List[Union[ToolbarConfig, Separator]]] = None,
+    ):
+        super().__init__(parent, config, listener, toolbar, menus)
+
+    def update_ui(self):
+        super().update_ui()
 
         center_widget = QWidget(self)
 

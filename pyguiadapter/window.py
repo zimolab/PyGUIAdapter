@@ -1,118 +1,67 @@
 import dataclasses
-from typing import Callable, Tuple, Dict, List, Optional, Union
+from typing import Tuple, Dict, List, Optional, Union, Sequence
 
 from qtpy.QtCore import QSize, Qt
 from qtpy.QtGui import QAction
 from qtpy.QtWidgets import QMainWindow, QWidget, QToolBar, QMenu
 
 from . import utils
-
-DEFAULT_WINDOW_SIZE = (800, 600)
-
-
-# noinspection SpellCheckingInspection
-@dataclasses.dataclass
-class ActionConfig(object):
-    text: str
-    on_triggered: Optional[Callable[["BaseWindow", QAction], None]] = None
-    on_toggled: Optional[Callable[["BaseWindow", QAction], None]] = None
-    icon: utils.IconType = None
-    icon_text: Optional[str] = None
-    auto_repeat: bool = False
-    enabled: bool = True
-    checkable: bool = False
-    checked: bool = False
-    shortcut: Optional[str] = None
-    shortcut_context: Optional[Qt.ShortcutContext] = None
-    tooltip: Optional[str] = None
-    whats_this: Optional[str] = None
-    status_tip: Optional[str] = None
-    priority: Optional[QAction.Priority] = None
-    menu_role: Optional[QAction.MenuRole] = None
-
-
-@dataclasses.dataclass
-class Separator(object):
-    pass
-
-
-@dataclasses.dataclass
-class MenuConfig(object):
-    title: str
-    actions: List[Union[ActionConfig, Separator, "MenuConfig"]]
-    separators_collapsible: bool = True
-    tear_off_enabled: bool = True
-
-    def remove_action(self, action: Union[str, ActionConfig, Separator, "MenuConfig"]):
-        if isinstance(action, str):
-            for action_ in self.actions:
-                if isinstance(action_, ActionConfig):
-                    if action_.text == action:
-                        action = action_
-                        break
-                if isinstance(action_, MenuConfig):
-                    if action_.title == action:
-                        action = action_
-                        break
-            if action in self.actions:
-                self.actions.remove(action)
-            return
-        if action in self.actions:
-            self.actions.remove(action)
-            return
-
-
-# noinspection SpellCheckingInspection
-@dataclasses.dataclass
-class ToolbarConfig(object):
-    actions: List[Union[ActionConfig, Separator]]
-    moveable: bool = True
-    floatable: bool = True
-    horizontal: bool = True
-    icon_size: Union[Tuple[int, int], QSize, None] = None
-    initial_area: Optional[Qt.ToolBarArea] = None
-    allowed_areas: Optional[Qt.ToolBarAreas] = None
-    button_style: Optional[Qt.ToolButtonStyle] = None
-
-    def remove_action(self, action: Union[str, ActionConfig, Separator]):
-        if isinstance(action, str):
-            for action_ in self.actions:
-                if isinstance(action_, ActionConfig):
-                    if action_.text == action:
-                        action = action_
-                        break
-            if action in self.actions:
-                self.actions.remove(action)
-            return
-        if action in self.actions:
-            self.actions.remove(action)
-            return
+from .action import ActionConfig, Separator, MenuConfig, ToolbarConfig
 
 
 @dataclasses.dataclass
 class BaseWindowConfig(object):
     title: str = ""
     icon: utils.IconType = None
-    size: Union[Tuple[int, int], QSize] = DEFAULT_WINDOW_SIZE
-    toolbar: Optional[ToolbarConfig] = None
-    menus: Optional[List[Union[MenuConfig, Separator]]] = None
-    on_create: Optional[Callable[["BaseWindow"], None]] = None
-    on_close: Optional[Callable[["BaseWindow"], bool]] = None
-    on_destroy: Optional[Callable[["BaseWindow"], None]] = None
-    on_hide: Optional[Callable[["BaseWindow"], None]] = None
-    on_show: Optional[Callable[["BaseWindow"], None]] = None
-    stylesheet: Optional[str] = None
+    size: Union[Tuple[int, int], QSize] = (800, 600)
+    position: Optional[Tuple[int, int]] = None
+    always_on_top: bool = False
+    font_family: Union[str, Sequence[str], None] = None
     font_size: Optional[int] = None
+    stylesheet: Optional[str] = None
+
+
+# noinspection PyMethodMayBeStatic
+class WindowStateListener(object):
+    def on_create(self, ctx: "BaseWindow") -> object:
+        pass
+
+    def on_close(self, ctx: "BaseWindow") -> bool:
+        return True
+
+    def on_destroy(self, ctx: "BaseWindow"):
+        pass
+
+    def on_hide(self, ctx: "BaseWindow"):
+        pass
+
+    def on_show(self, ctx: "BaseWindow"):
+        pass
 
 
 class BaseWindow(QMainWindow):
-    def __init__(self, parent: Optional[QWidget], config: BaseWindowConfig):
+    def __init__(
+        self,
+        parent: Optional[QWidget],
+        config: BaseWindowConfig,
+        listener: Optional[WindowStateListener] = None,
+        toolbar: Optional[ToolbarConfig] = None,
+        menus: Optional[List[Union[MenuConfig, Separator]]] = None,
+    ):
         super().__init__(parent)
 
         self._config: BaseWindowConfig = config
-        self._actions: Dict[int, QAction] = {}
-        self._setup_ui()
+        self._toolbar: Optional[ToolbarConfig] = toolbar
+        if menus:
+            menus = menus.copy()
+        self._menus: Optional[List[Union[MenuConfig, Separator]]] = menus
+        self._listener: WindowStateListener = listener
 
+        self._actions: Dict[int, QAction] = {}
+
+        self.update_ui()
+        self._setup_toolbar()
+        self._setup_menus()
         self._on_create()
 
     # noinspection PyMethodOverriding
@@ -134,7 +83,7 @@ class BaseWindow(QMainWindow):
         self._on_hide()
         super().hideEvent(event)
 
-    def _setup_ui(self):
+    def update_ui(self):
         if self._config is None:
             return
 
@@ -147,32 +96,47 @@ class BaseWindow(QMainWindow):
             self.setWindowIcon(utils.get_icon(self._config.icon))
 
         # set window size
-        if self._config.size:
-            if isinstance(self._config.size, tuple):
-                size = QSize(self._config.size[0], self._config.size[1])
-                self.resize(size)
-            elif isinstance(self._config.size, QSize):
-                self.resize(self._config.size)
-            else:
-                raise ValueError(f"invalid size type: {type(self._config.size)}")
+        size = utils.get_size(self._config.size)
+        if size:
+            self.resize(size)
 
-        # create toolbar (if toolbar config provided)
-        if self._config.toolbar:
-            self._create_toolbar(toolbar_config=self._config.toolbar)
+        # set window position
+        if self._config.position:
+            assert len(self._config.position) == 2
+            self.move(*self._config.position)
 
-        # create menu (if menu config provided)
-        if self._config.menus:
-            self._create_menus(menus=self._config.menus)
+        font = self.font()
+        font_size = self._config.font_size
+        if font_size and font_size > 0:
+            font.setPointSize(font_size)
+        font_family = self._config.font_family
+        if not font_family:
+            pass
+        elif isinstance(font_family, str):
+            font.setFamily(font_family)
+        elif isinstance(font_family, Sequence):
+            font = self.font()
+            font.setFamilies(font_family)
+        else:
+            raise TypeError(f"invalid font_family type: {type(font_family)}")
+        self.setFont(font)
+
+        if self._config.always_on_top:
+            self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
 
         # apply stylesheet
         if self._config.stylesheet:
             self.setStyleSheet(self._config.stylesheet)
 
-        font_size = self._config.font_size
-        if font_size and font_size > 0:
-            font = self.font()
-            font.setPointSize(font_size)
-            self.setFont(font)
+    def _setup_toolbar(self):
+        # create toolbar (if toolbar config provided)
+        if self._toolbar:
+            self._create_toolbar(toolbar_config=self._toolbar)
+
+    def _setup_menus(self):
+        # create menu (if menu config provided)
+        if self._menus:
+            self._create_menus(menus=self._menus)
 
     def _create_toolbar(self, toolbar_config: ToolbarConfig):
         toolbar = QToolBar(self)
@@ -203,6 +167,7 @@ class BaseWindow(QMainWindow):
             # noinspection PyUnresolvedReferences
             toolbar_area = Qt.TopToolBarArea
         self.addToolBar(toolbar_area, toolbar)
+        self._toolbar = toolbar
 
     def _add_toolbar_actions(
         self, toolbar: QToolBar, actions: List[Union[ActionConfig, Separator]]
@@ -290,34 +255,36 @@ class BaseWindow(QMainWindow):
         return action
 
     def _on_create(self):
-        if self._config is None or not callable(self._config.on_create):
+        if not self._listener:
             return
-        if self._config.on_create:
-            self._config.on_create(self)
+        self._listener.on_create(self)
 
     def _on_close(self) -> bool:
-        if self._config is None or not callable(self._config.on_close):
+        if not self._listener:
             should_close = True
         else:
-            should_close = self._config.on_close(self)
+            should_close = self._listener.on_close(self)
         return should_close
 
     def _on_destroy(self):
-        if self._config is None or not callable(self._config.on_destroy):
+        if not self._listener:
             return
-        self._config.on_destroy(self)
+        self._listener.on_destroy(self)
 
     def _on_hide(self):
-        if self._config is None or not callable(self._config.on_hide):
+        if not self._listener:
             return
-        self._config.on_hide(self)
+        self._listener.on_hide(self)
 
     def _on_show(self):
-        if self._config is None or not callable(self._config.on_show):
+        if not self._listener:
             return
-        self._config.on_show(self)
+        self._listener.on_show(self)
 
     def _on_cleanup(self):
+        self._clear_actions()
+
+    def _clear_actions(self):
         for action in self._actions.values():
             self.removeAction(action)
             action.deleteLater()

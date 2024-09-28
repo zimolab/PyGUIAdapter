@@ -1,5 +1,5 @@
 import dataclasses
-from typing import Tuple, Literal, Dict, Union, Type, Any, List, Optional
+from typing import Tuple, Literal, Dict, Union, Type, Any, List, Optional, cast
 
 from qtpy.QtCore import Qt
 from qtpy.QtGui import QIcon
@@ -22,9 +22,9 @@ from ._outputarea import (
     FnExecuteOutputArea,
 )
 from ._paramarea import FnParameterArea, FnParameterGroupBox
-from ...bundle import FnBundle
 from ... import utils, fn
 from ...adapter import ucontext
+from ...bundle import FnBundle
 from ...exceptions import FunctionExecutingError, ParameterError
 from ...executor import BaseFunctionExecutor
 from ...fn import ParameterInfo
@@ -47,7 +47,13 @@ class FnExecuteWindow(BaseFnExecuteWindow):
         self._document_dock: Optional[QDockWidget] = None
         self._output_dock: Optional[QDockWidget] = None
 
-        super().__init__(parent, bundle.window_config)
+        super().__init__(
+            parent,
+            bundle.window_config,
+            bundle.window_listener,
+            bundle.window_toolbar,
+            bundle.window_menus,
+        )
 
         executor_class = self._bundle.fn_info.executor or DEFAULT_EXECUTOR_CLASS
         # noinspection PyTypeChecker
@@ -60,7 +66,7 @@ class FnExecuteWindow(BaseFnExecuteWindow):
 
     @property
     def window_config(self) -> FnExecuteWindowConfig:
-        return self._bundle.window_config
+        return cast(FnExecuteWindowConfig, self._config)
 
     @property
     def widget_texts(self) -> WidgetTexts:
@@ -192,8 +198,8 @@ class FnExecuteWindow(BaseFnExecuteWindow):
         return widget_class, widget_config
 
     # noinspection PyUnresolvedReferences
-    def _setup_ui(self):
-        super()._setup_ui()
+    def update_ui(self):
+        super().update_ui()
 
         fn_info = self._bundle.fn_info
         window_config = self.window_config
