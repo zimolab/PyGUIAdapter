@@ -7,7 +7,7 @@ import warnings
 from io import StringIO
 from typing import List, Set, Tuple, Any, Union, Optional
 
-PyLiteralType = Union[bool, int, float, bytes, str, list, tuple, dict, set]
+PyLiteralType = Union[bool, int, float, bytes, str, list, tuple, dict, set, type(None)]
 
 
 def _marks(marks: Union[str, List[str], Tuple[str], Set[str]]) -> Set[str]:
