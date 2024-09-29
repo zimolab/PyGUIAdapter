@@ -189,7 +189,9 @@ def get_custom_input(
     **input_dialog_args,
 ) -> Any:
     def _impl(wind: Optional[FnExecuteWindow]) -> Any:
-        inputdialog.get_custom_input(wind, input_dialog_class, **input_dialog_args)
+        return inputdialog.get_custom_input(
+            wind, input_dialog_class, **input_dialog_args
+        )
 
     return _request_get_input(_impl)
 
