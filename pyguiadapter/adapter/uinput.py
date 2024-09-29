@@ -1,12 +1,22 @@
 from concurrent.futures import Future
-from typing import List, Tuple, Literal, Callable, Any, Optional, Union, Sequence
+from typing import (
+    List,
+    Tuple,
+    Literal,
+    Callable,
+    Any,
+    Optional,
+    Union,
+    Sequence,
+    Type,
+)
 
 from qtpy.QtCore import QUrl
 from qtpy.QtGui import QColor
 
 from .ucontext import _context
 from ..utils import EchoMode, inputdialog, filedialog, IconType, PyLiteralType
-from ..utils.inputdialog import LineWrapMode
+from ..utils.inputdialog import LineWrapMode, UniversalInputDialog
 from ..windows.fnexec import FnExecuteWindow
 
 
@@ -170,6 +180,16 @@ def get_py_literal(
             font_size=font_size,
             **kwargs,
         )
+
+    return _request_get_input(_impl)
+
+
+def get_custom_input(
+    input_dialog_class: Type[UniversalInputDialog],
+    **input_dialog_args,
+) -> Any:
+    def _impl(wind: Optional[FnExecuteWindow]) -> Any:
+        inputdialog.get_custom_input(wind, input_dialog_class, **input_dialog_args)
 
     return _request_get_input(_impl)
 

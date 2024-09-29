@@ -1,7 +1,17 @@
 import ast
 import json
 from abc import abstractmethod
-from typing import Optional, Union, List, Literal, Tuple, Any, Sequence, cast
+from typing import (
+    Optional,
+    Union,
+    List,
+    Literal,
+    Tuple,
+    Any,
+    Sequence,
+    cast,
+    Type,
+)
 
 from pyqcodeeditor.QCodeEditor import QCodeEditor
 from pyqcodeeditor.highlighters import QJSONHighlighter, QPythonHighlighter
@@ -347,7 +357,7 @@ def input_py_literal(
     font_family: Union[str, Sequence[str], None] = "Consolas",
     font_size: Optional[int] = None,
     **kwargs,
-) -> Any:
+) -> PyLiteralType:
     py_dialog = PyLiteralInputDialog(
         parent,
         title=title,
@@ -368,4 +378,14 @@ def input_py_literal(
     ret = py_dialog.exec_()
     if ret == QDialog.Accepted:
         return py_dialog.get_result()
+    return None
+
+
+def get_custom_input(
+    parent: QWidget, input_dialog_class: Type[UniversalInputDialog], **input_dialog_args
+) -> Any:
+    input_dlg = input_dialog_class.new_instance(parent, **input_dialog_args)
+    ret = input_dlg.exec_()
+    if ret == QDialog.Accepted:
+        return input_dlg.get_result()
     return None
