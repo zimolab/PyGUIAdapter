@@ -13,7 +13,7 @@ def uinput_example(inputs: choices_t):
 
     @params
     [inputs]
-    choices = ["int", "str", "text", "float", "item", "color", "dir", "file", "save_file", "files"]
+    choices = ["int", "str", "text", "float", "item", "color", "dir", "file", "save_file", "files", "json object", "python literal"]
     columns = 2
     @end
     """
@@ -52,6 +52,12 @@ def uinput_example(inputs: choices_t):
     if "files" in inputs:
         value = uinput.get_open_files(title="Select Files")
         uprint("User inputs: ", value)
+    if "json object" in inputs:
+        value = uinput.get_json_object(title="Input Json Object")
+        uprint("User inputs: ", value, f" {type(value)}")
+    if "python literal" in inputs:
+        value = uinput.get_py_literal(title="Input Python Literal")
+        uprint("User inputs: ", value, f" {type(value)}")
 
 
 if __name__ == "__main__":
