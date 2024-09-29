@@ -440,11 +440,11 @@ if __name__ == "__main__":
 
 > 输入框相关API在[`pyguiadapter.adapter.uinput`]()模块中定义
 
-`PyGUIAdapter`允许开发者在函数运行过程中弹出输入框从而动态地从获取用户输入。
+`PyGUIAdapter`允许开发者在函数运行过程中弹出输入框，以便开发者动态地从获取用户输入。`PyGUIAdapter`内置了多种类型的输入框，用以输入不同类型的数据。若内置的输入框无法满足需求，开发者也可以自定义输入框。
 
-`PyGUIAdapter`内置了多种类型的输入框，开发者可以根据需要用户输入的数据类型灵活选择。
+#### （一）内置输入框类型
 
-1.**整数输入框**
+**1、整数输入框**
 
 ```python
 def get_int(
@@ -564,7 +564,53 @@ def get_open_files(
 	...
 ```
 
+**11、Json对象输入框**
+```python
+def get_json_object(
+    title: str = "Input Json",
+    icon: IconType = None,
+    size: Tuple[int, int] = (600, 400),
+    ok_button_text: str = "Ok",
+    cancel_button_text: Optional[str] = "Cancel",
+    initial_text: str = "",
+    auto_indent: bool = True,
+    indent_size: int = 4,
+    auto_parentheses: bool = True,
+    line_wrap_mode: LineWrapMode = LineWrapMode.WidgetWidth,
+    line_wrap_width: int = 88,
+    font_family: Union[str, Sequence[str], None] = "Consolas",
+    font_size: Optional[int] = None,
+    **kwargs,
+) -> Any:
+    ...
+```
 
+**12、Python字面值输入框**
+```python
+def get_py_literal(
+    title: str = "Input Python Literal",
+    icon: IconType = None,
+    size: Tuple[int, int] = (600, 400),
+    ok_button_text: str = "Ok",
+    cancel_button_text: Optional[str] = "Cancel",
+    initial_text: str = "",
+    auto_indent: bool = True,
+    indent_size: int = 4,
+    auto_parentheses: bool = True,
+    line_wrap_mode: LineWrapMode = LineWrapMode.WidgetWidth,
+    line_wrap_width: int = 88,
+    font_family: Union[str, Sequence[str], None] = "Consolas",
+    font_size: Optional[int] = None,
+    **kwargs,
+) -> PyLiteralType:
+    ...
+```
+
+> `PyLiteralType`是一个联合类型，表示Python中支持的字面量类型，包括：
+>
+> ```python
+> PyLiteralType = Union[bool, int, float, bytes, str, list, tuple, dict, set, type(None)]
+> ```
 
 一个简单的示例：
 
@@ -584,7 +630,7 @@ def uinput_example(inputs: choices_t):
 
     @params
     [inputs]
-    choices = ["int", "str", "text", "float", "item", "color", "dir", "file", "save_file", "files"]
+    choices = ["int", "str", "text", "float", "item", "color", "dir", "file", "save_file", "files", "json object", "python literal"]
     columns = 2
     @end
     """
@@ -623,6 +669,12 @@ def uinput_example(inputs: choices_t):
     if "files" in inputs:
         value = uinput.get_open_files(title="Select Files")
         uprint("User inputs: ", value)
+    if "json object" in inputs:
+        value = uinput.get_json_object(title="Input Json Object")
+        uprint("User inputs: ", value, f" {type(value)}")
+    if "python literal" in inputs:
+        value = uinput.get_py_literal(title="Input Python Literal")
+        uprint("User inputs: ", value, f" {type(value)}")
 
 
 if __name__ == "__main__":
@@ -630,6 +682,553 @@ if __name__ == "__main__":
     adapter.add(uinput_example)
     adapter.run()
 
+
 ```
 
-<img src="../images/uinput_demo.gif" />
+<img src="../images/uinput_example.gif" />
+
+#### （二）自定义输入框类型
+
+若内置的输入框无法满足开发者需求，开发者也可以创建自定义输入框。具体的步骤如下。
+
+**1、创建自定义输入框类**
+
+自定义输入框类需继承自[`pyguiadapter.utils.inputdialog.UniversalInputDialog`]()类。开发者必须实现以下两个抽象方法。
+
+（1）`create_main_widget()`方法
+
+```
+@abstractmethod
+def create_main_widget(self) -> QWidget:
+    pass
+```
+
+开发者需在该方法中创建输入框的主控件并将其返回。所谓`主控件（main widget）`就是输入框窗口标题栏之下，确认按钮之上，中间的位置:
+
+<img src="../images/custom_input_dialog_main_widget.png" />
+
+(2) `get_result()`方法
+
+```python
+    @abstractmethod
+    def get_result(self) -> Any:
+        pass
+```
+
+该方法用于从输入框获取用户输入的值。
+
+
+
+**2、调用`uinput.get_custom_input()`函数弹出自定义输入框，并获得用户输入值**
+
+```python
+def get_custom_input(
+    input_dialog_class: Type[UniversalInputDialog],
+    **input_dialog_args,
+) -> Any:
+    ...
+```
+
+`get_custom_input()`函数的第一个参数`input_dialog_class`就是开发者创建的自定义输入框类，第二个参数`input_dialog_args`则是将传递给自动输入框类构造函数的参数。
+
+关于`get_custom_input()`函数的返回值，存在以下两种情况：
+
+（1）若自定义输入框被`reject`，则`get_custom_input()`函数返回`None`
+
+（2）若自定义输入框被`accept`，则`get_custom_input()`函数的返回值就是`get_result()`方法的返回值。
+
+---
+
+下面，通过一个实际的例子演示如何创建自定义输入框。这次我们选择用QT提供的可视化设计工具`QT设计师`来设计输入框的主控件。
+
+假设我们需要为以下类型创建自定义输入框：
+
+```python
+@dataclasses.dataclass
+class UserInfo:
+    username: str
+    birthday: date
+    address: str
+    email: str
+    phone: str
+    description: str
+```
+
+**第一步：**创建对应的`自定义输入框类`，假设其名称为`UserInfoDialog`。
+
+```python
+class UserInfoDialog(UniversalInputDialog):
+
+    def __init__(
+        self,
+        parent: Optional[QWidget],
+        title: str = "",
+        icon: IconType = None,
+        size: Tuple[int, int] = (400, 300),
+        ok_button_text: str = "Ok",
+        cancel_button_text: Optional[str] = "Cancel",
+        **kwargs
+    ):
+        super().__init__(
+            parent,
+            title=title,
+            icon=icon,
+            size=size,
+            ok_button_text=ok_button_text,
+            cancel_button_text=cancel_button_text,
+            **kwargs
+        )
+
+    def get_result(self) -> Any:
+        pass
+
+    def create_main_widget(self) -> QWidget:
+        pass
+```
+
+可以看到，`create_main_widget()`和`get_result()`目前都还是未实现的状态，后面，我们将逐步实现它们。
+
+同时，你可能注意到了`UserInfoDialog`的构造函数中有一些参数，这些参数来自父类`UniversalInputDialog`，它们的作用从名称就能看出来，这里就不赘述。
+
+现在，让我们在这些参数之后添加一个参数`initial_user_info`，这个参数将用来为界面上的控件设置初始值，现在`UserInfoDialog`的构造函数如下：
+
+```python
+class UserInfoDialog(UniversalInputDialog):
+
+    def __init__(
+        self,
+        parent: Optional[QWidget],
+        title: str = "",
+        icon: IconType = None,
+        size: Tuple[int, int] = (400, 300),
+        ok_button_text: str = "Ok",
+        cancel_button_text: Optional[str] = "Cancel",
+        initial_user_info: Optional[UserInfo] = None,
+        **kwargs
+    ):
+        self._initial_user_info: Optional[UserInfo] = initial_user_info
+        super().__init__(
+            parent,
+            title=title,
+            icon=icon,
+            size=size,
+            ok_button_text=ok_button_text,
+            cancel_button_text=cancel_button_text,
+            **kwargs
+        )
+
+```
+
+
+
+**第二步**：创建`主控件`，实现`create_main_widget()`函数。
+
+前面说过，这次我们选择使用`QT设计师`，而不是手动写代码的方式来实现主控件。
+
+根据`UserInfo`的字段，在`QT设计师`选择合适的控件，通过拖拽的方式进行布局，最终将布局好的界面保存为`.ui`文件，假设名称为`user_info_dialog_main_widget.ui`。将该文件与自定义输入框的源码文件放在同一目录下。
+
+> 我们需要在`QT设计师`中为字段对应的输入控件合理命名，后续我们将通过其名称在代码中引用它们。在本例中，这些控件的名称如下：
+>
+> <img src="../images/main_widget_names.png" />
+>
+> 
+
+在`create_main_widget()`中加载ui文件，获取各字段对应输入控件，根据`inital_user_info`设置初始值，最后将最外层的控件作为主控件返回。
+
+```python
+    def create_main_widget(self) -> QWidget:
+        ui_file = "user_info_dialog_main_widget.ui"
+        # create widget from ui file
+        main_widget = loadUi(ui_file)
+
+        # obtain input widgets for UserInfo fields and set its initial values from initial_user_info
+        self._username_edit = main_widget.findChild(QLineEdit, "username_edit")
+        if self._initial_user_info:
+            self._username_edit.setText(self._initial_user_info.username)
+
+        self._birthday_edit = main_widget.findChild(QDateEdit, "birthday_edit")
+        if self._initial_user_info:
+            self._birthday_edit.setDate(self._initial_user_info.birthday)
+
+        self._address_edit = main_widget.findChild(QLineEdit, "address_edit")
+        if self._initial_user_info:
+            self._address_edit.setText(self._initial_user_info.address)
+
+        self._email_edit = main_widget.findChild(QLineEdit, "email_edit")
+        if self._initial_user_info:
+            self._email_edit.setText(self._initial_user_info.email)
+
+        self._phone_edit = main_widget.findChild(QLineEdit, "phone_edit")
+        if self._initial_user_info:
+            self._phone_edit.setText(self._initial_user_info.phone)
+
+        self._description_edit = main_widget.findChild(QTextEdit, "description_edit")
+        if self._initial_user_info:
+            self._description_edit.setText(self._initial_user_info.description)
+
+        return main_widget
+```
+
+为了后续引用方便，我们可以在构造函数中预先定义`self._username_edit`、`self._birthday_edit`等成员变量。
+
+于是，我们的`UserInfoDialog`类现在变成了下面这个样子：
+
+```python
+class UserInfoDialog(UniversalInputDialog):
+
+    def __init__(
+        self,
+        parent: Optional[QWidget],
+        title: str = "",
+        icon: IconType = None,
+        size: Tuple[int, int] = (400, 300),
+        ok_button_text: str = "Ok",
+        cancel_button_text: Optional[str] = "Cancel",
+        initial_user_info: Optional[UserInfo] = None,
+        **kwargs
+    ):
+        self._description_edit: Optional[QTextEdit] = None
+        self._phone_edit: Optional[QLineEdit] = None
+        self._email_edit: Optional[QLineEdit] = None
+        self._address_edit: Optional[QLineEdit] = None
+        self._birthday_edit: Optional[QDateEdit] = None
+        self._username_edit: Optional[QLineEdit] = None
+        self._initial_user_info: Optional[UserInfo] = initial_user_info
+        super().__init__(
+            parent,
+            title=title,
+            icon=icon,
+            size=size,
+            ok_button_text=ok_button_text,
+            cancel_button_text=cancel_button_text,
+            **kwargs
+        )
+
+    def get_result(self) -> Any:
+        pass
+
+    def create_main_widget(self) -> QWidget:
+        ui_file = "user_info_dialog_main_widget.ui"
+        # create widget from ui file
+        main_widget = loadUi(ui_file)
+
+        # obtain input widgets for UserInfo fields and set its initial values from initial_user_info
+        self._username_edit = main_widget.findChild(QLineEdit, "username_edit")
+        if self._initial_user_info:
+            self._username_edit.setText(self._initial_user_info.username)
+
+        self._birthday_edit = main_widget.findChild(QDateEdit, "birthday_edit")
+        if self._initial_user_info:
+            self._birthday_edit.setDate(self._initial_user_info.birthday)
+
+        self._address_edit = main_widget.findChild(QLineEdit, "address_edit")
+        if self._initial_user_info:
+            self._address_edit.setText(self._initial_user_info.address)
+
+        self._email_edit = main_widget.findChild(QLineEdit, "email_edit")
+        if self._initial_user_info:
+            self._email_edit.setText(self._initial_user_info.email)
+
+        self._phone_edit = main_widget.findChild(QLineEdit, "phone_edit")
+        if self._initial_user_info:
+            self._phone_edit.setText(self._initial_user_info.phone)
+
+        self._description_edit = main_widget.findChild(QTextEdit, "description_edit")
+        if self._initial_user_info:
+            self._description_edit.setText(self._initial_user_info.description)
+
+        return main_widget
+
+```
+
+现在，离完成只有一步之遥，接下来，只需要实现`get_result()`即可大功告成。
+
+**第三步：**实现`get_result()`，返回用户输入结果。
+
+在我们的例子中，`get_result()`应当返回一个`UserInfo`对象。这将是非常简单的一件事——从字段对应的控件获取当前值，用这些值实例化`UserInfo`，然后返回它，就这么简单：
+
+```python
+    def get_result(self) -> UserInfo:
+        username = self._username_edit.text()
+        birthday = self._birthday_edit.date().toPyDate()
+        address = self._address_edit.text()
+        email = self._email_edit.text()
+        phone = self._phone_edit.text()
+        description = self._description_edit.toPlainText()
+        new_user_info = UserInfo(
+            username=username,
+            birthday=birthday,
+            address=address,
+            email=email,
+            phone=phone,
+            description=description,
+        )
+        return new_user_info
+```
+
+
+
+现在，我们的`UserInfoDialog`已经完成了，完整的代码如下：
+
+```python
+class UserInfoDialog(UniversalInputDialog):
+
+    def __init__(
+        self,
+        parent: Optional[QWidget],
+        title: str = "",
+        icon: IconType = None,
+        size: Tuple[int, int] = (400, 300),
+        ok_button_text: str = "Ok",
+        cancel_button_text: Optional[str] = "Cancel",
+        initial_user_info: Optional[UserInfo] = None,
+        **kwargs
+    ):
+        self._description_edit: Optional[QTextEdit] = None
+        self._phone_edit: Optional[QLineEdit] = None
+        self._email_edit: Optional[QLineEdit] = None
+        self._address_edit: Optional[QLineEdit] = None
+        self._birthday_edit: Optional[QDateEdit] = None
+        self._username_edit: Optional[QLineEdit] = None
+        self._initial_user_info: Optional[UserInfo] = initial_user_info
+        super().__init__(
+            parent,
+            title=title,
+            icon=icon,
+            size=size,
+            ok_button_text=ok_button_text,
+            cancel_button_text=cancel_button_text,
+            **kwargs
+        )
+
+    def get_result(self) -> UserInfo:
+        username = self._username_edit.text()
+        birthday = self._birthday_edit.date().toPyDate()
+        address = self._address_edit.text()
+        email = self._email_edit.text()
+        phone = self._phone_edit.text()
+        description = self._description_edit.toPlainText()
+        new_user_info = UserInfo(
+            username=username,
+            birthday=birthday,
+            address=address,
+            email=email,
+            phone=phone,
+            description=description,
+        )
+        return new_user_info
+
+    def create_main_widget(self) -> QWidget:
+        ui_file = "user_info_dialog_main_widget.ui"
+        # create widget from ui file
+        main_widget = loadUi(ui_file)
+
+        # obtain input widgets for UserInfo fields and set its initial values from initial_user_info
+        self._username_edit = main_widget.findChild(QLineEdit, "username_edit")
+        if self._initial_user_info:
+            self._username_edit.setText(self._initial_user_info.username)
+
+        self._birthday_edit = main_widget.findChild(QDateEdit, "birthday_edit")
+        if self._initial_user_info:
+            self._birthday_edit.setDate(self._initial_user_info.birthday)
+
+        self._address_edit = main_widget.findChild(QLineEdit, "address_edit")
+        if self._initial_user_info:
+            self._address_edit.setText(self._initial_user_info.address)
+
+        self._email_edit = main_widget.findChild(QLineEdit, "email_edit")
+        if self._initial_user_info:
+            self._email_edit.setText(self._initial_user_info.email)
+
+        self._phone_edit = main_widget.findChild(QLineEdit, "phone_edit")
+        if self._initial_user_info:
+            self._phone_edit.setText(self._initial_user_info.phone)
+
+        self._description_edit = main_widget.findChild(QTextEdit, "description_edit")
+        if self._initial_user_info:
+            self._description_edit.setText(self._initial_user_info.description)
+
+        return main_widget
+
+   
+```
+
+让我们写一个函数来测试一下它吧。
+
+```python
+def user_info_example(
+    initial_username: str = "",
+    initial_birthday: date = date(1990, 1, 1),
+    initial_address: str = "",
+    initial_email: str = "",
+    initial_phone: str = "",
+    initial_description: text_t = "",
+):
+    user_info = uinput.get_custom_input(
+        UserInfoDialog,
+        title="Get User Info",
+        size=(350, 400),
+        ok_button_text="Confirm",
+        cancel_button_text="Dismiss",
+        initial_user_info=UserInfo(
+            username=initial_username,
+            birthday=initial_birthday,
+            address=initial_address,
+            email=initial_email,
+            phone=initial_phone,
+            description=initial_description,
+        ),
+    )
+    uprint(user_info)
+
+
+if __name__ == "__main__":
+    adapter = GUIAdapter()
+    adapter.add(user_info_example)
+    adapter.run()
+
+```
+
+<img src="../images/custom_input_dialog_example.gif" />
+
+最后，贴上所有代码：
+
+```python
+import dataclasses
+from datetime import date
+from typing import Optional, Tuple
+
+from qtpy.QtWidgets import QWidget, QLineEdit, QTextEdit, QDateEdit
+from qtpy.uic import loadUi
+
+from pyguiadapter.adapter import uinput, GUIAdapter
+from pyguiadapter.adapter.ucontext import uprint
+from pyguiadapter.extend_types import text_t
+from pyguiadapter.utils import IconType
+from pyguiadapter.utils.inputdialog import UniversalInputDialog
+
+
+@dataclasses.dataclass
+class UserInfo:
+    username: str
+    birthday: date
+    address: str
+    email: str
+    phone: str
+    description: str
+
+
+class UserInfoDialog(UniversalInputDialog):
+
+    def __init__(
+        self,
+        parent: Optional[QWidget],
+        title: str = "",
+        icon: IconType = None,
+        size: Tuple[int, int] = (400, 300),
+        ok_button_text: str = "Ok",
+        cancel_button_text: Optional[str] = "Cancel",
+        initial_user_info: Optional[UserInfo] = None,
+        **kwargs
+    ):
+        self._description_edit: Optional[QTextEdit] = None
+        self._phone_edit: Optional[QLineEdit] = None
+        self._email_edit: Optional[QLineEdit] = None
+        self._address_edit: Optional[QLineEdit] = None
+        self._birthday_edit: Optional[QDateEdit] = None
+        self._username_edit: Optional[QLineEdit] = None
+        self._initial_user_info: Optional[UserInfo] = initial_user_info
+        super().__init__(
+            parent,
+            title=title,
+            icon=icon,
+            size=size,
+            ok_button_text=ok_button_text,
+            cancel_button_text=cancel_button_text,
+            **kwargs
+        )
+
+    def get_result(self) -> UserInfo:
+        username = self._username_edit.text()
+        birthday = self._birthday_edit.date().toPyDate()
+        address = self._address_edit.text()
+        email = self._email_edit.text()
+        phone = self._phone_edit.text()
+        description = self._description_edit.toPlainText()
+        new_user_info = UserInfo(
+            username=username,
+            birthday=birthday,
+            address=address,
+            email=email,
+            phone=phone,
+            description=description,
+        )
+        return new_user_info
+
+    def create_main_widget(self) -> QWidget:
+        ui_file = "user_info_dialog_main_widget.ui"
+        # create widget from ui file
+        main_widget = loadUi(ui_file)
+
+        # obtain input widgets for UserInfo fields and set its initial values from initial_user_info
+        self._username_edit = main_widget.findChild(QLineEdit, "username_edit")
+        if self._initial_user_info:
+            self._username_edit.setText(self._initial_user_info.username)
+
+        self._birthday_edit = main_widget.findChild(QDateEdit, "birthday_edit")
+        if self._initial_user_info:
+            self._birthday_edit.setDate(self._initial_user_info.birthday)
+
+        self._address_edit = main_widget.findChild(QLineEdit, "address_edit")
+        if self._initial_user_info:
+            self._address_edit.setText(self._initial_user_info.address)
+
+        self._email_edit = main_widget.findChild(QLineEdit, "email_edit")
+        if self._initial_user_info:
+            self._email_edit.setText(self._initial_user_info.email)
+
+        self._phone_edit = main_widget.findChild(QLineEdit, "phone_edit")
+        if self._initial_user_info:
+            self._phone_edit.setText(self._initial_user_info.phone)
+
+        self._description_edit = main_widget.findChild(QTextEdit, "description_edit")
+        if self._initial_user_info:
+            self._description_edit.setText(self._initial_user_info.description)
+
+        return main_widget
+
+
+def user_info_example(
+    initial_username: str = "",
+    initial_birthday: date = date(1990, 1, 1),
+    initial_address: str = "",
+    initial_email: str = "",
+    initial_phone: str = "",
+    initial_description: text_t = "",
+):
+    user_info = uinput.get_custom_input(
+        UserInfoDialog,
+        title="Get User Info",
+        size=(350, 400),
+        ok_button_text="Confirm",
+        cancel_button_text="Dismiss",
+        initial_user_info=UserInfo(
+            username=initial_username,
+            birthday=initial_birthday,
+            address=initial_address,
+            email=initial_email,
+            phone=initial_phone,
+            description=initial_description,
+        ),
+    )
+    uprint(user_info)
+
+
+if __name__ == "__main__":
+    adapter = GUIAdapter()
+    adapter.add(user_info_example)
+    adapter.run()
+
+```
+
+> `user_info_dialog_main_widget.ui`文件可在[`examples/adapter`]()目录下找到。
