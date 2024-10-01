@@ -2,7 +2,7 @@
 
 ### 一、简介
 
-在开发者向`GUIAdapter`实例中添加了多个函数后，`PyGUIAdapter`将自动生成一个`函数选择窗口`，将所有已添加的函数显示出来以供用户选择。当然，开发者也可以通过如下方式，在`GUIAdapter`实例中仅添加了一个函数时依旧显示该窗口：
+在开发者向`GUIAdapter`实例中添加了多个函数后，`PyGUIAdapter`将自动生成一个`函数选择窗口`，将所有已添加的函数显示出来供用户选择。当然，开发者也可以通过如下方式，在`GUIAdapter`实例中仅添加了一个函数时强制显示该窗口：
 
 ```python
 adapter.run(show_select_window=True)
@@ -26,31 +26,37 @@ adapter.run(show_select_window=True)
 
 
 
-### 二、窗口配置
+### 二、配置窗口属性
 
-`函数选择窗口`的可配置选项定义在`FnSelectWindowConfig`类中。`FnSelectWindowConfig`类继承自`BaseWindowConfig`类，因此
+`函数选择窗口`的可配置属性由`FnSelectWindowConfig`类定义，主要包括以下属性：
 
-#### （一）通用配置
+>  由于`FnSelectWindowConfig`类继承自`BaseWindowConfig`类，因此`FnSelectWindowConfig`的一些属性来源于`BaseWindowConfig`。
 
-| 配置项名称      | 类型                                                         | 默认值       | 说明 |
-| --------------- | ------------------------------------------------------------ | ------------ | ---- |
-| `title`         | `str`                                                        | ``           |      |
-| `icon`          | `Union[str, Tuple[str, Union[list, dict]], QIcon, QPixmap, NoneType]` | `None`       |      |
-| `size`          | `Union[Tuple[int, int], QSize]`                              | `(800, 600)` |      |
-| `position`      | `Union[Tuple[int, int], NoneType]`                           | `None`       |      |
-| `always_on_top` | `bool`                                                       | `False`      |      |
-| `font_family`   | `Union[str, Sequence[str], NoneType]`                        | `None`       |      |
-| `font_size`     | `Union[int, NoneType]`                                       | `None`       |      |
-| `stylesheet`    | `Union[str, NoneType]`                                       | `None`       |      |
-| `toolbar`       | `Union[pyguiadapter.action.ToolbarConfig, NoneType]`         | `None`       |      |
-| `menus`         | `Union[List[Union[pyguiadapter.action.MenuConfig, pyguiadapter.action.Separator]], NoneType]` | `None`       |      |
-| `on_create`     | `Union[Callable[[ForwardRef('BaseWindow')], Any], NoneType]` | `None`       |      |
-| `on_close`      | `Union[Callable[[ForwardRef('BaseWindow')], bool], NoneType]` | `None`       |      |
-| `on_destroy`    | `Union[Callable[[ForwardRef('BaseWindow')], Any], NoneType]` | `None`       |      |
-| `on_hide`       | `Union[Callable[[ForwardRef('BaseWindow')], Any], NoneType]` | `None`       |      |
-| `on_show`       | `Union[Callable[[ForwardRef('BaseWindow')], Any], NoneType]` | `None`       |      |
+| 配置项名称 | 类型 | 默认值 | 说明 |
+| ---------- | ---- | ------ | ---- |
+|            |      |        |      |
+|            |      |        |      |
+|            |      |        |      |
+|            |      |        |      |
+|            |      |        |      |
+|            |      |        |      |
+|            |      |        |      |
+|            |      |        |      |
+|            |      |        |      |
+|            |      |        |      |
+|            |      |        |      |
+|            |      |        |      |
+|            |      |        |      |
+|            |      |        |      |
+|            |      |        |      |
 
-#### （二）`函数选择窗口`配置
+#### 三、主要接口
+
+#### 四、添加工具栏
+
+#### 五、添加菜单栏
+
+
 
 
 

@@ -1,83 +1,36 @@
-## 为窗口添加工具栏：`ToolBarConfig`的使用
+## 为窗口添加菜单栏：`MenuConfig`的使用
 
-### 一、工具栏的外观
+### 一、菜单栏的外观
 
-窗口上的工具栏一般如下图所示：
+菜单栏（Menu Bar）由一组菜单（Menu）组成，每个菜单下可以添加若干菜单项（Action）或子菜单（Menu）。
 
-<img src="../images/toolbar_1.png" />
+<img src="../images/menu_bar.png" />
 
-### 二、工具栏属性
+菜单（Menu）由`MenuConfig`类定义。菜单栏由一组`MenuConfig`，即`MenuConfig`列表定义。
 
-开发者可以使用`ToolBarConfig`来指定工具栏上的`动作（Action）`以及工具栏本身的属性。
+### 二、菜单属性
 
-> `ToolBarConfig`、`ToolBarArea`、`ToolButtonStyle`均在[`pyguiadapter.toolbar`]()模块中定义。
+菜单下的菜单项（或子菜单）以及菜单本身的属性由`MenuConfig`类定义，该类具有以下字段：
+
+> `MenuConfig`在[`pyguiadapter.menu`]()模块中定义。
 
 ```python
 @dataclasses.dataclass(frozen=True)
-class ToolBarConfig(object):
-    actions: List[Union[ActionConfig, Separator]]
-    moveable: bool = True
-    floatable: bool = True
-    icon_size: Union[int, Tuple[int, int], QSize, None] = None
-    initial_area: Optional[ToolBarArea] = None
-    allowed_areas: ToolBarAreas = None
-    button_style: Optional[ToolButtonStyle] = None
+class MenuConfig(object):
+    title: str
+    actions: List[Union[ActionConfig, Separator, "MenuConfig"]]
+    separators_collapsible: bool = True
+    tear_off_enabled: bool = True
 ```
 
->  `ToolBarConfig`、`ToolBarArea`、`ToolBarAreas`、`ToolButtonStyle`均在[`pyguiadapter.toolbar`]()模块中定义。
+`title`字段用于指定菜单的名称。
 
-**1、`actions`**
-
-该字段用于指定工具栏上的`动作（Action）`。添加到工具栏上的`动作（Action）`将以动作按钮的形式呈现。工具栏上的`动作（Action）`可以设置图标（`icon`）、文字（`text`）、快捷键（`shortcut`）等属性，也可以设置`on_triggered`（被触发时回调）、`on_toggled`（状态发生切换）等事件监听器。
+`actions`字段用于指定菜单下包含的条目，可以是代表菜单项的`ActionConfig`；可以是代表分隔线的`Separator`；也可以是另外一个`MenuConfig`对象，在此情况下，被添加到`actions`的`MenuConfig`将作为当前菜单的子菜单。
 
 > `动作（Action）`的详细说明可以参考如下文档：[使用`ActionConfig`定义`Action`](windows/action.md)
 
-**2、`moveable`**
 
-该字段用于表示工具栏是否可拖动。若为`True`，则用户可以将工具栏任意拖动到允许放置的位置。
-
-**3、`floatable`**
-
-该字段用于表示工具栏是否可以悬浮于窗口之外。
-
-**3、`icon_size`**
-
-该字段用于指定工具栏动作按钮图标的尺寸。
-
-**4、`initial_area`**
-
-该字段用于表示工具栏在窗口上的初始位置。默认值为`None`，意味由系统决定。
-
-`ToolBarArea`包含以下常用值：
-
-- `TopToolBarArea`（在窗口顶部放置工具栏）
-
-- `BottomToolBarArea`（在窗口底部放置工具栏）
-
-- `LeftToolBarArea`（在窗口左侧放置工具栏）
-
-- `RightToolBarArea`（在窗口右侧放置工具栏）
-
-**5、`allowed_areas`**
-
-该字段用于表示窗口上允许工具栏停放的位置，可以是`ToolBarArea`的组合，例如：`TopToolBarArea | BottomToolBarArea`表示工具栏可以停放在窗口的顶部和底部。默认为`None`，意为工具栏可以停放在任何可停放位置。
-
-**6、`button_style`**
-
-工具栏上动作按钮的样式，默认为`None`，意为遵从系统设置，一般为只显示图标。
-
-`ToolButtonStyle` 包含以下常用值：
-
-- `ToolButtonIconOnly`（只显示图标）
-- `ToolButtonTextBesideIcon`（在图标旁显示文字，即`ActionConfig`对象的`text`字段）
-- `ToolButtonTextUnderIcon`（在图标下方显示文字，即`ActionConfig`对象的`text`字段）
-- `ToolButtonTextOnly`（只显示文字，即`ActionConfig`对象的`text`字段）
-- `ToolButtonFollowStyle`（动作按钮的样式遵循系统设置）
-
-
-### 三、实例1：为`函数执行窗口（FnExecuteWindow）`添加工具栏
-
-下面是一个简单的窗口工具栏示例，该示例演示了如何为`函数执行窗口`添加工具栏，同时也演示了如何结合`PyGUIAdapter`提供的对话框、输入框等功能，构建功能更加完整的应用程序。
+### 三、实例1：为`函数执行窗口（FnExecuteWindow）`添加菜单栏
 
 ```python
 import json
@@ -86,19 +39,13 @@ from qtpy.QtWidgets import QAction
 
 from pyguiadapter.action import ActionConfig, Separator
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.toolbar import (
-    ToolBarConfig,
-    RightToolBarArea,
-    LeftToolBarArea,
-    ToolButtonTextUnderIcon,
-    TopToolBarArea,
-)
+from pyguiadapter.menu import MenuConfig
 from pyguiadapter.utils import filedialog, inputdialog, messagebox
 from pyguiadapter.window import SimpleWindowStateListener
 from pyguiadapter.windows.fnexec import FnExecuteWindow
 
 
-def toolbar_example():
+def menu_example():
     pass
 
 
@@ -160,6 +107,36 @@ def on_action_close(window: FnExecuteWindow, action: QAction):
     window.close()
 
 
+def on_action_about(window: FnExecuteWindow, action: QAction):
+    print("on_action_about()")
+    about_text = """
+    <h1>PyGUIAdapter V2</h1>
+    <p>PyGUIAdapter is a GUI lib for those who want make GUI application without writing GUI code!</p>
+    <p>
+        You can access the source code <a href="https://github.com/zimolab/PyGUIAdapter">here</a>!
+    </p>
+    """
+    messagebox.show_text_content(
+        window,
+        text_content=about_text,
+        text_format="html",
+        title="About PyGUIAdapter",
+        icon="fa.info-circle",
+    )
+
+
+def on_action_license(window: FnExecuteWindow, action: QAction):
+    print("on_action_license()")
+    license_file = "../../LICENSE.txt"
+    messagebox.show_text_file(
+        window,
+        text_file=license_file,
+        text_format="plaintext",
+        title="License",
+        icon="fa.copyright",
+    )
+
+
 ###################~Action Callbacks#########################
 
 
@@ -198,25 +175,42 @@ if __name__ == "__main__":
         checked=False,
         on_toggled=on_action_confirm_quit,
     )
+    action_about = ActionConfig(
+        text="About",
+        icon="fa.info-circle",
+        on_triggered=on_action_about,
+    )
+    action_license = ActionConfig(
+        text="License",
+        icon="fa.copyright",
+        on_triggered=on_action_license,
+    )
     ###################~Actions#############################
 
-    ####################ToolBar#############################
-    toolbar = ToolBarConfig(
+    ####################Menus#############################
+    submenu_help = MenuConfig(
+        title="Help",
+        actions=[action_about, action_license],
+    )
+    menu_file = MenuConfig(
+        title="File",
         actions=[
             action_open,
             action_save,
-            action_settings,
             Separator(),
-            action_confirm_quit,
+            submenu_help,
+            Separator(),
             action_quit,
         ],
-        moveable=True,
-        floatable=True,
-        initial_area=RightToolBarArea,
-        allowed_areas=RightToolBarArea | LeftToolBarArea | TopToolBarArea,
-        button_style=ToolButtonTextUnderIcon,
     )
-    ###################~ToolBar#############################
+    menu_settings = MenuConfig(
+        title="Settings",
+        actions=[action_settings, Separator(), action_confirm_quit],
+    )
+
+    menus = [menu_file, menu_settings]
+
+    ###################~Menus#############################
 
     ################Window Event Listener###################
     def on_window_create(window: FnExecuteWindow):
@@ -246,26 +240,53 @@ if __name__ == "__main__":
     #################Window Event Listener##################
 
     adapter = GUIAdapter()
-    adapter.add(
-        toolbar_example, window_toolbar=toolbar, window_listener=window_listener
-    )
+    adapter.add(menu_example, window_menus=menus, window_listener=window_listener)
     adapter.run()
 
 ```
 
-<img src="../images/toolbar_example.gif" />
+<img src="../images/menu_example.gif" />?
 
-### 四、实例2：为`函数选择窗口（FnSelectWindow）`添加工具栏
-`函数选择窗口（FnSelectWindow）`作为`BaseWindow`的子类，同样也可以添加工具栏。方法是在调用`adapter.run()`时传入`select_window_toolbar`参数。当然，别忘了将回调函数的`window`参数的类型注解改成`FnSelectWindow`。下面是一个简单的示例：
+
+
+我们甚至可以同时向窗口添加工具栏和菜单栏，只需对上述代码稍作修改：
+
+```python
+...
+    adapter = GUIAdapter()
+    adapter.add(
+        menu_example,
+        window_menus=menus,
+        window_toolbar=ToolBarConfig(
+            actions=[
+                action_open,
+                action_save,
+                Separator(),
+                action_settings,
+                Separator(),
+                action_about,
+                action_license,
+            ]
+        ),
+        window_listener=window_listener,
+    )
+    adapter.run()
+```
+
+<img src="../images/menu_example_2.png" />
+
+### 四、实例2：为`函数选择窗口（FnSelectWindow）`添加菜单栏
+
+`函数选择窗口（FnSelectWindow）`作为`BaseWindow`的子类，同样也可以添加菜单栏，方法是在调用`adapter.run()`时传入`select_window_menus`参数。当然，别忘了将回调函数的`window`参数的类型注解改成`FnSelectWindow`。下面是一个简单的示例：
 
 ```python
 from qtpy.QtWidgets import QAction
 
 from pyguiadapter.action import ActionConfig
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.toolbar import ToolBarConfig
-from pyguiadapter.windows.fnselect import FnSelectWindow
+from pyguiadapter.menu import MenuConfig
 from pyguiadapter.utils import messagebox
+from pyguiadapter.windows.fnselect import FnSelectWindow
 
 
 def on_action_test(window: FnSelectWindow, action: QAction):
@@ -283,15 +304,16 @@ def foo():
     pass
 
 
-toolbar_config = ToolBarConfig(
+menu_file = MenuConfig(
+    title="File",
     actions=[action_test],
 )
 
 if __name__ == "__main__":
     adapter = GUIAdapter()
     adapter.add(foo)
-    adapter.run(show_select_window=True, select_window_toolbar=toolbar_config)
+    adapter.run(show_select_window=True, select_window_menus=[menu_file])
 
 ```
 
-<img src="../images/toolbar_example_2.gif" />
+<img src="../images/menu_example_3.png" />
