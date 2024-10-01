@@ -14,10 +14,16 @@ from qtpy.QtWidgets import (
 from ._core import get_traceback
 from .dialog import BaseCustomDialog
 from ._ui import IconType, get_icon
+from .io import read_text_file
 
 StandardButton: Type[QMessageBox.StandardButton] = QMessageBox.StandardButton
 StandardButtons: Type[QMessageBox.StandardButtons] = QMessageBox.StandardButtons
 TextFormat = Qt.TextFormat
+
+Yes = QMessageBox.StandardButton.Yes
+No = QMessageBox.StandardButton.No
+Ok = QMessageBox.StandardButton.Ok
+Cancel = QMessageBox.StandardButton.Cancel
 
 
 #########Standard MessageBox#################
@@ -191,7 +197,7 @@ class TextBrowserMessageBox(BaseCustomDialog):
         if self._title is not None:
             self.setWindowTitle(self._title)
 
-        if not self._icon:
+        if self._icon:
             icon = get_icon(self._icon) or QIcon()
             self.setWindowIcon(icon)
 
@@ -221,3 +227,48 @@ class TextBrowserMessageBox(BaseCustomDialog):
 
         self._layout.addWidget(self._textbrowser)
         self._layout.addWidget(self._button_box)
+
+
+def show_text_content(
+    parent: Optional[QWidget],
+    text_content: str,
+    text_format: Literal["markdown", "plaintext", "html"] = "markdown",
+    size: Optional[Tuple[int, int]] = None,
+    title: Optional[str] = None,
+    icon: IconType = None,
+    buttons: Union[int, QDialogButtonBox.StandardButtons, None] = QDialogButtonBox.Ok,
+    resizeable: bool = True,
+):
+    return TextBrowserMessageBox.show_and_get_result(
+        parent,
+        text_content=text_content,
+        text_format=text_format,
+        size=size,
+        title=title,
+        icon=icon,
+        buttons=buttons,
+        resizeable=resizeable,
+    )
+
+
+def show_text_file(
+    parent: Optional[QWidget],
+    text_file: str,
+    text_format: Literal["markdown", "plaintext", "html"] = "markdown",
+    size: Tuple[int, int] = None,
+    title: Optional[str] = "",
+    icon: IconType = None,
+    buttons: Union[int, QDialogButtonBox.StandardButtons, None] = QDialogButtonBox.Ok,
+    resizeable: bool = True,
+):
+    text_content = read_text_file(text_file)
+    return show_text_content(
+        parent,
+        text_content=text_content,
+        text_format=text_format,
+        size=size,
+        title=title,
+        icon=icon,
+        buttons=buttons,
+        resizeable=resizeable,
+    )
