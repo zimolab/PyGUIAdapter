@@ -1,5 +1,6 @@
 import dataclasses
-from typing import Tuple, Dict, List, Optional, Union, Sequence
+import warnings
+from typing import Tuple, Dict, List, Optional, Union, Sequence, Callable
 
 from qtpy.QtCore import QSize, Qt
 from qtpy.QtGui import QAction
@@ -24,7 +25,7 @@ class BaseWindowConfig(object):
 
 
 # noinspection PyMethodMayBeStatic
-class WindowStateListener(object):
+class BaseWindowStateListener(object):
     def on_create(self, window: "BaseWindow"):
         pass
 
@@ -42,12 +43,53 @@ class WindowStateListener(object):
         pass
 
 
+class SimpleWindowStateListener(BaseWindowStateListener):
+    def __init__(
+        self,
+        on_create: Callable[["BaseWindow"], None] = None,
+        on_show: Callable[["BaseWindow"], None] = None,
+        on_hide: Callable[["BaseWindow"], None] = None,
+        on_close: Callable[["BaseWindow"], bool] = None,
+        on_destroy: Callable[["BaseWindow"], None] = None,
+    ):
+        self._on_create_callback = on_create
+        self._on_show_callback = on_show
+        self._on_hide_callback = on_hide
+        self._on_close_callback = on_close
+        self._on_destroy_callback = on_destroy
+
+    def on_create(self, window: "BaseWindow"):
+        if self._on_create_callback:
+            return self._on_create_callback(window)
+        super().on_create(window)
+
+    def on_close(self, window: "BaseWindow") -> bool:
+        if self._on_close_callback:
+            return self._on_close_callback(window)
+        return super().on_close(window)
+
+    def on_destroy(self, window: "BaseWindow"):
+        if self._on_destroy_callback:
+            return self._on_destroy_callback(window)
+        super().on_destroy(window)
+
+    def on_hide(self, window: "BaseWindow"):
+        if self._on_hide_callback:
+            return self._on_hide_callback(window)
+        super().on_hide(window)
+
+    def on_show(self, window: "BaseWindow"):
+        if self._on_show_callback:
+            return self._on_show_callback(window)
+        super().on_show(window)
+
+
 class BaseWindow(QMainWindow):
     def __init__(
         self,
         parent: Optional[QWidget],
         config: BaseWindowConfig,
-        listener: Optional[WindowStateListener] = None,
+        listener: Optional[BaseWindowStateListener] = None,
         toolbar: Optional[ToolBarConfig] = None,
         menus: Optional[List[Union[MenuConfig, Separator]]] = None,
     ):
@@ -58,7 +100,7 @@ class BaseWindow(QMainWindow):
         if menus:
             menus = menus.copy()
         self._menus: Optional[List[Union[MenuConfig, Separator]]] = menus
-        self._listener: WindowStateListener = listener
+        self._listener: BaseWindowStateListener = listener
 
         self._actions: Dict[int, QAction] = {}
 
@@ -130,6 +172,37 @@ class BaseWindow(QMainWindow):
         # apply stylesheet
         if self._config.stylesheet:
             self.setStyleSheet(self._config.stylesheet)
+
+    def find_action(self, action_config: ActionConfig) -> Optional[QAction]:
+        c_id = id(action_config)
+        return self._actions.get(c_id, None)
+
+    def set_action_state(self, action_config: ActionConfig, checked: bool) -> bool:
+        action = self.find_action(action_config)
+        if action is None:
+            warnings.warn(f"action not found: {action_config}")
+            return False
+        if not action.isCheckable():
+            warnings.warn(f"action is not checkable: {action_config}")
+            return False
+        action.setChecked(checked)
+        return True
+
+    def toggle_action_state(self, action_config: ActionConfig) -> bool:
+        action = self.find_action(action_config)
+        if action is None:
+            warnings.warn(f"action not found: {action_config}")
+            return False
+        if not action.isCheckable():
+            warnings.warn(f"action is not checkable: {action_config}")
+            return False
+        action.toggle()
+
+    def query_action_state(self, action_config: ActionConfig) -> Optional[bool]:
+        action = self.find_action(action_config)
+        if action is None:
+            return None
+        return action.isChecked()
 
     def _setup_toolbar(self):
         # create toolbar (if toolbar config provided)
