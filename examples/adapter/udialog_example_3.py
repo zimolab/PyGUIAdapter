@@ -85,10 +85,12 @@ def add_user_example(
         raise ParameterError("username", "username is empty")
 
     if not user_id:
-        udialog.show_warning_dialog("user_id is empty, a random one will be generated!")
+        udialog.show_warning_messagebox(
+            "user_id is empty, a random one will be generated!"
+        )
         user_id = uuid1().hex
 
-    _, result = udialog.show_custom_dialog(
+    result = udialog.show_custom_dialog(
         UserInfoDialog,
         username=username,
         nickname=nickname,
@@ -97,10 +99,10 @@ def add_user_example(
         join_time=join_time,
     )
     if result is not None:
-        udialog.show_info_dialog(f"user added!")
+        udialog.show_info_messagebox(f"user added!")
         uprint(result)
         return
-    udialog.show_info_dialog(f"user not added!")
+    udialog.show_info_messagebox(f"user not added!")
 
 
 if __name__ == "__main__":

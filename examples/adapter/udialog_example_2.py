@@ -40,7 +40,7 @@ def show_text_file_example(
         raise ParameterError("text_file", "text_file is empty!")
 
     if not os.path.isfile(text_file):
-        udialog.show_critical_dialog(text="File not found", title="Error")
+        udialog.show_critical_messagebox(text="File not found", title="Error")
         return
     filename = os.path.basename(text_file)
     if text_file:

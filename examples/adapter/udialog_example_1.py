@@ -11,7 +11,7 @@ def dialog_example(
     question_message: text_t,
 ):
     if info_message:
-        udialog.show_info_dialog(
+        udialog.show_info_messagebox(
             text=info_message,
             title="Information",
             buttons=udialog.QMessageBox.Ok | udialog.QMessageBox.No,
@@ -19,7 +19,7 @@ def dialog_example(
         )
 
     if warning_message:
-        udialog.show_warning_dialog(
+        udialog.show_warning_messagebox(
             text=warning_message,
             title="Warning",
             buttons=udialog.QMessageBox.Ok | udialog.QMessageBox.No,
@@ -27,7 +27,7 @@ def dialog_example(
         )
 
     if error_message:
-        udialog.show_critical_dialog(
+        udialog.show_critical_messagebox(
             text=error_message,
             title="Error",
             buttons=udialog.QMessageBox.Ok | udialog.QMessageBox.No,
@@ -35,7 +35,7 @@ def dialog_example(
         )
 
     if question_message:
-        answer = udialog.show_question_dialog(
+        answer = udialog.show_question_messagebox(
             text=question_message,
             title="Question",
             buttons=udialog.QMessageBox.Yes | udialog.QMessageBox.No,
@@ -43,10 +43,10 @@ def dialog_example(
         )
         if answer == udialog.QMessageBox.Yes:
             uprint("Your Choice: Yes")
-            udialog.show_info_dialog("You Choose Yes!", title="Answer")
+            udialog.show_info_messagebox("You Choose Yes!", title="Answer")
         else:
             uprint("Your Choice: No")
-            udialog.show_info_dialog("You Choose No!", title="Answer")
+            udialog.show_info_messagebox("You Choose No!", title="Answer")
 
 
 if __name__ == "__main__":
