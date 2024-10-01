@@ -30,12 +30,12 @@ class FnSelectWindowConfig(BaseWindowConfig):
     title: str = "Select Function"
     select_button_text: str = "Select"
     icon_mode: bool = False
-    icon_size: Union[Tuple[int, int], QSize, None] = DEFAULT_FN_ICON_SIZE
+    icon_size: Union[Tuple[int, int], int, QSize, None] = DEFAULT_FN_ICON_SIZE
     default_fn_group_name: str = "Main Function"
     default_fn_group_icon: IconType = None
     fn_group_icons: Dict[str, IconType] = dataclasses.field(default_factory=dict)
     document_browser_config: Optional[DocumentBrowserConfig] = None
-    document_browser_ratio: float = 0.35
+    document_browser_ratio: float = 0.65
 
 
 class FnSelectWindow(BaseWindow):
@@ -147,8 +147,8 @@ class FnSelectWindow(BaseWindow):
         self._select_button.setText(self._config.select_button_text)
         _layout_right_area.addWidget(self._select_button)
 
-        left_area_ratio = self._config.document_browser_ratio
-        right_area_ratio = 1.0 - left_area_ratio
+        right_area_ratio = self._config.document_browser_ratio
+        left_area_ratio = 1.0 - right_area_ratio
         left_area_width = int(self.width() * left_area_ratio)
         right_area_width = int(self.width() * right_area_ratio)
         _splitter.setSizes([left_area_width, right_area_width])
