@@ -1,8 +1,8 @@
 import dataclasses
+from typing import Optional, Sequence, Union
 
 from qtpy.QtGui import QTextOption, QColor, QPalette, QTextCursor
 from qtpy.QtWidgets import QTextBrowser, QWidget
-from typing import Optional, Sequence, Union
 
 LineWrapMode = QTextBrowser.LineWrapMode
 WordWrapMode = QTextOption.WrapMode

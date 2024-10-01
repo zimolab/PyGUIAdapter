@@ -22,12 +22,12 @@ from ._outputarea import (
     FnExecuteOutputArea,
 )
 from ._paramarea import FnParameterArea, FnParameterGroupBox
-from ... import utils, fn
+from ...utils import messagebox, get_icon, get_traceback
 from ...adapter import ucontext
 from ...bundle import FnBundle
 from ...exceptions import FunctionExecutingError, ParameterError
 from ...executor import BaseFunctionExecutor
-from ...fn import ParameterInfo
+from ...fn import ParameterInfo, FnInfo
 from ...paramwidget import (
     BaseParameterWidget,
     BaseParameterWidgetConfig,
@@ -136,7 +136,7 @@ class FnExecuteWindow(BaseFnExecuteWindow):
             self._process_param_error(e)
         except Exception as e:
             # any other exceptions are seen as fatal and will cause the whole program to exit
-            utils.show_exception_messagebox(
+            messagebox.show_exception_messagebox(
                 self,
                 exception=e,
                 message=f"An fatal error occurred when creating widget for parameter '{parameter_name}':",
@@ -208,7 +208,7 @@ class FnExecuteWindow(BaseFnExecuteWindow):
         # set title and icon
         title = self._config.title or fn_info.display_name
         icon = self._config.icon or fn_info.icon
-        icon = utils.get_icon(icon) or QIcon()
+        icon = get_icon(icon) or QIcon()
         self.setWindowTitle(title)
         self.setWindowIcon(icon)
 
@@ -299,7 +299,7 @@ class FnExecuteWindow(BaseFnExecuteWindow):
 
         self._output_dock.setFloating(self.window_config.output_dock_floating)
 
-    def before_execute(self, fn_info: fn.FnInfo, arguments: Dict[str, Any]) -> None:
+    def before_execute(self, fn_info: FnInfo, arguments: Dict[str, Any]) -> None:
         super().before_execute(fn_info, arguments)
         if self._parameters_area.is_auto_clear_enabled:
             self.clear_output()
@@ -308,18 +308,18 @@ class FnExecuteWindow(BaseFnExecuteWindow):
 
         self._parameters_area.parameter_groups.clear_validation_error(None)
 
-    def on_execute_start(self, fn_info: fn.FnInfo, arguments: Dict[str, Any]) -> None:
+    def on_execute_start(self, fn_info: FnInfo, arguments: Dict[str, Any]) -> None:
         super().on_execute_start(fn_info, arguments)
         self._parameters_area.enable_cancel_button(True)
 
-    def on_execute_finish(self, fn_info: fn.FnInfo, arguments: Dict[str, Any]) -> None:
+    def on_execute_finish(self, fn_info: FnInfo, arguments: Dict[str, Any]) -> None:
         super().on_execute_finish(fn_info, arguments)
         self._parameters_area.enable_clear_button(True)
         self._parameters_area.enable_execute_button(True)
         self._parameters_area.enable_cancel_button(False)
 
     def on_execute_result(
-        self, fn_info: fn.FnInfo, arguments: Dict[str, Any], result: Any
+        self, fn_info: FnInfo, arguments: Dict[str, Any], result: Any
     ) -> None:
         if callable(self._bundle.on_execute_result):
             self._bundle.on_execute_result(result, arguments.copy())
@@ -331,12 +331,12 @@ class FnExecuteWindow(BaseFnExecuteWindow):
             self.append_output(result_str, scroll_to_bottom=True)
 
         if self.window_config.show_function_result:
-            utils.show_info_message(
+            messagebox.show_info_message(
                 self, result_str, title=self.widget_texts.result_dialog_title
             )
 
     def on_execute_error(
-        self, fn_info: fn.FnInfo, arguments: Dict[str, Any], error: Exception
+        self, fn_info: FnInfo, arguments: Dict[str, Any], error: Exception
     ):
 
         if isinstance(error, ParameterError):
@@ -355,23 +355,23 @@ class FnExecuteWindow(BaseFnExecuteWindow):
             if not self.window_config.show_error_traceback:
                 self.append_output(error_msg, scroll_to_bottom=True)
             else:
-                self.append_output(
-                    utils.get_traceback(error) + "\n", scroll_to_bottom=True
-                )
+                self.append_output(get_traceback(error) + "\n", scroll_to_bottom=True)
 
         error_dialog_title = self.widget_texts.universal_error_dialog_title
         if self.window_config.show_function_error:
             if not self.window_config.show_error_traceback:
-                utils.show_critical_message(self, error_msg, title=error_dialog_title)
+                messagebox.show_critical_message(
+                    self, error_msg, title=error_dialog_title
+                )
             else:
-                utils.show_exception_messagebox(
+                messagebox.show_exception_messagebox(
                     self, exception=error, title=error_dialog_title
                 )
         del error
 
     def _on_close(self) -> bool:
         if self._executor.is_executing:
-            utils.show_warning_message(self, self.message_texts.function_executing)
+            messagebox.show_warning_message(self, self.message_texts.function_executing)
             return False
         return super()._on_close()
 
@@ -386,21 +386,25 @@ class FnExecuteWindow(BaseFnExecuteWindow):
 
     def _on_cancel_button_clicked(self):
         if not self._bundle.fn_info.cancelable:
-            utils.show_warning_message(self, self.message_texts.function_not_cancelable)
+            messagebox.show_warning_message(
+                self, self.message_texts.function_not_cancelable
+            )
             return
         if not self._executor.is_executing:
-            utils.show_warning_message(self, self.message_texts.function_not_executing)
+            messagebox.show_warning_message(
+                self, self.message_texts.function_not_executing
+            )
         else:
             self._executor.try_cancel()
 
     def _on_execute_button_clicked(self):
         if self._executor.is_executing:
-            utils.show_warning_message(self, self.message_texts.function_executing)
+            messagebox.show_warning_message(self, self.message_texts.function_executing)
             return
         try:
             arguments = self.get_parameter_values()
         except FunctionExecutingError:
-            utils.show_warning_message(self, self.message_texts.function_executing)
+            messagebox.show_warning_message(self, self.message_texts.function_executing)
         except ParameterError as e:
             self._process_param_error(e)
         else:
@@ -409,14 +413,14 @@ class FnExecuteWindow(BaseFnExecuteWindow):
     # noinspection PyMethodMayBeStatic
     def _on_clear_button_clicked(self):
         if self._executor.is_executing:
-            utils.show_warning_message(self, self.message_texts.function_executing)
+            messagebox.show_warning_message(self, self.message_texts.function_executing)
             pass
         self.clear_output()
 
     def _process_param_error(self, e: ParameterError):
         self._param_groups.notify_validation_error(e.parameter_name, e.message)
         msg = self.message_texts.parameter_error.format(e.parameter_name, e.message)
-        utils.show_critical_message(
+        messagebox.show_critical_message(
             self, msg, title=self.widget_texts.parameter_error_dialog_title
         )
         self._param_groups.scroll_to_parameter(e.parameter_name)

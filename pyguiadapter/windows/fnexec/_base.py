@@ -8,7 +8,7 @@ from ._outputarea import (
     OutputBrowserConfig,
 )
 from .._docbrowser import DocumentBrowserConfig
-from ... import utils
+from ...utils import IconType
 from ...executor import ExecuteStateListener
 from ...executors import ThreadFunctionExecutor
 from ...paramwidget import (
@@ -73,10 +73,8 @@ class FnExecuteWindowConfig(BaseWindowConfig):
         default_factory=DocumentBrowserConfig
     )
     default_parameter_group_name: str = "Main Parameters"
-    default_parameter_group_icon: utils.IconType = None
-    parameter_group_icons: Dict[str, utils.IconType] = dataclasses.field(
-        default_factory=dict
-    )
+    default_parameter_group_icon: IconType = None
+    parameter_group_icons: Dict[str, IconType] = dataclasses.field(default_factory=dict)
     show_clear_button: bool = True
     enable_auto_clear: bool = True
     print_function_result: bool = True

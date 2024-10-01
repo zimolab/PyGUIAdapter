@@ -1,9 +1,9 @@
 from typing import Literal
 
-from qtpy.QtWidgets import QWidget, QVBoxLayout, QTextBrowser
+from qtpy.QtWidgets import QWidget, QVBoxLayout
 
 from .._docbrowser import DocumentBrowserConfig, DocumentBrowser
-from ... import utils
+from ...utils import set_textbrowser_content
 
 
 class FnDocumentArea(QWidget):
@@ -26,6 +26,4 @@ class FnDocumentArea(QWidget):
         document: str,
         document_format: Literal["markdown", "html", "plaintext"],
     ):
-        utils.set_textbrowser_content(
-            self._document_textbrowser, document, document_format
-        )
+        set_textbrowser_content(self._document_textbrowser, document, document_format)

@@ -9,8 +9,8 @@ from qtpy.QtWidgets import (
     QWidget,
 )
 
-from ... import utils
 from ...bundle import FnBundle
+from ...utils import get_icon
 
 DEFAULT_FN_ICON = "fa5s.cubes"
 
@@ -144,7 +144,7 @@ class FnGroupPage(QWidget):
 
     def _create_bundle_item(self, bundle: FnBundle) -> QListWidgetItem:
         fn = bundle.fn_info
-        icon = utils.get_icon(fn.icon) or qta.icon(DEFAULT_FN_ICON)
+        icon = get_icon(fn.icon) or qta.icon(DEFAULT_FN_ICON)
         item = QListWidgetItem(icon, fn.display_name, self._function_list_widget)
         item.setData(Qt.UserRole, bundle)
         return item

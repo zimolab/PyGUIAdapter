@@ -1,7 +1,8 @@
 import dataclasses
 from typing import Type, Tuple, Dict, Callable, Any, Optional, List, Union
 
-from .action import MenuConfig, Separator
+from .action import Separator
+from .menu import MenuConfig
 from .toolbar import ToolBarConfig
 from .fn import FnInfo
 from .paramwidget import BaseParameterWidget, BaseParameterWidgetConfig

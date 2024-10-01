@@ -15,7 +15,7 @@ from qtpy.QtWidgets import (
     QSizePolicy,
 )
 
-from ... import utils
+from ...utils import get_icon, hline
 from ...exceptions import ParameterAlreadyExistError, ParameterNotFoundError
 from ...paramwidget import BaseParameterWidget, BaseParameterWidgetConfig
 from ._base import FnExecuteWindowConfig
@@ -417,7 +417,7 @@ class FnParameterGroupBox(QToolBox):
             icon = self._config.parameter_group_icons[group_name]
         else:
             return QIcon()
-        return utils.get_icon(icon) or QIcon()
+        return get_icon(icon) or QIcon()
 
 
 class FnParameterArea(QWidget):
@@ -456,7 +456,7 @@ class FnParameterArea(QWidget):
         op_area.setLayout(layout_op_area)
         layout_op_area.setContentsMargins(0, 0, 0, 0)
 
-        layout_op_area.addWidget(utils.hline(op_area))
+        layout_op_area.addWidget(hline(op_area))
 
         self._auto_clear_checkbox = QCheckBox(op_area)
         self._auto_clear_checkbox.setText(widget_texts.clear_checkbox_text)

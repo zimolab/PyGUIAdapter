@@ -6,7 +6,8 @@ from qtpy.QtGui import QAction
 from qtpy.QtWidgets import QMainWindow, QWidget, QToolBar, QMenu
 
 from . import utils
-from .action import ActionConfig, Separator, MenuConfig
+from .action import ActionConfig, Separator
+from .menu import MenuConfig
 from .toolbar import ToolBarConfig
 
 
@@ -27,6 +28,7 @@ class WindowStateListener(object):
     def on_create(self, window: "BaseWindow"):
         pass
 
+    # noinspection PyUnusedLocal
     def on_close(self, window: "BaseWindow") -> bool:
         return True
 

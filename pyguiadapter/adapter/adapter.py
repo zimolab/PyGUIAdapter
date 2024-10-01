@@ -19,7 +19,8 @@ from qtpy.QtGui import QIcon, QPixmap
 from qtpy.QtWidgets import QApplication
 
 from . import ucontext
-from ..action import MenuConfig, Separator
+from ..action import Separator
+from ..menu import MenuConfig
 from ..toolbar import ToolBarConfig
 from ..bundle import FnBundle
 from ..exceptions import NotRegisteredError

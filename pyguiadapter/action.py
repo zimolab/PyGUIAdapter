@@ -1,10 +1,10 @@
 import dataclasses
-from typing import Optional, Callable, List, Union, Tuple, ForwardRef
+from typing import Optional, Callable, ForwardRef
 
-from qtpy.QtCore import Qt, QSize
+from qtpy.QtCore import Qt
 from qtpy.QtWidgets import QAction
 
-from . import utils
+from .utils import IconType
 
 ActionCallback = Callable[[ForwardRef("BaseWindow"), QAction], None]
 
@@ -14,7 +14,7 @@ class ActionConfig(object):
     text: str
     on_triggered: Optional[ActionCallback] = None
     on_toggled: Optional[ActionCallback] = None
-    icon: utils.IconType = None
+    icon: IconType = None
     icon_text: Optional[str] = None
     auto_repeat: bool = False
     enabled: bool = True
@@ -32,29 +32,3 @@ class ActionConfig(object):
 @dataclasses.dataclass(frozen=True)
 class Separator(object):
     pass
-
-
-@dataclasses.dataclass(frozen=True)
-class MenuConfig(object):
-    title: str
-    actions: List[Union[ActionConfig, Separator, "MenuConfig"]]
-    separators_collapsible: bool = True
-    tear_off_enabled: bool = True
-
-    def remove_action(self, action: Union[str, ActionConfig, Separator, "MenuConfig"]):
-        if isinstance(action, str):
-            for action_ in self.actions:
-                if isinstance(action_, ActionConfig):
-                    if action_.text == action:
-                        action = action_
-                        break
-                if isinstance(action_, MenuConfig):
-                    if action_.title == action:
-                        action = action_
-                        break
-            if action in self.actions:
-                self.actions.remove(action)
-            return
-        if action in self.actions:
-            self.actions.remove(action)
-            return

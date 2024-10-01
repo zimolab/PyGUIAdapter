@@ -14,8 +14,9 @@ from qtpy.QtWidgets import (
 from ._group import FnGroupPage
 from .._docbrowser import DocumentBrowserConfig, DocumentBrowser
 from ..fnexec import FnExecuteWindow
-from ... import utils
-from ...action import MenuConfig, Separator
+from ...utils import IconType, get_icon, set_textbrowser_content, messagebox
+from ...action import Separator
+from ...menu import MenuConfig
 from ...toolbar import ToolBarConfig
 from ...bundle import FnBundle
 from ...window import BaseWindow, BaseWindowConfig, WindowStateListener
@@ -31,8 +32,8 @@ class FnSelectWindowConfig(BaseWindowConfig):
     icon_mode: bool = False
     icon_size: Union[Tuple[int, int], QSize, None] = DEFAULT_FN_ICON_SIZE
     default_fn_group_name: str = "Main Function"
-    default_fn_group_icon: utils.IconType = None
-    fn_group_icons: Dict[str, utils.IconType] = dataclasses.field(default_factory=dict)
+    default_fn_group_icon: IconType = None
+    fn_group_icons: Dict[str, IconType] = dataclasses.field(default_factory=dict)
     document_browser_config: Optional[DocumentBrowserConfig] = None
     document_browser_ratio: float = 0.35
 
@@ -172,7 +173,7 @@ class FnSelectWindow(BaseWindow):
     def _on_button_select_click(self):
         bundle = self._current_bundle()
         if bundle is None:
-            utils.show_warning_message(self, WARNING_MSG_NO_FN_SELECTED)
+            messagebox.show_warning_message(self, WARNING_MSG_NO_FN_SELECTED)
             return
         self._start_exec_window(bundle)
 
@@ -224,18 +225,16 @@ class FnSelectWindow(BaseWindow):
 
     def _group_icon(self, group_name: Optional[str]):
         if group_name is None or group_name == self._config.default_fn_group_name:
-            return utils.get_icon(self._config.default_fn_group_icon) or QIcon()
+            return get_icon(self._config.default_fn_group_icon) or QIcon()
         icon_src = self._config.fn_group_icons.get(group_name, None)
         if icon_src is None:
             return QIcon()
-        return utils.get_icon(icon_src) or QIcon()
+        return get_icon(icon_src) or QIcon()
 
     def _update_document(
         self, document: str, document_format: Literal["markdown", "html", "plaintext"]
     ):
-        utils.set_textbrowser_content(
-            self._document_textbrowser, document, document_format
-        )
+        set_textbrowser_content(self._document_textbrowser, document, document_format)
 
     def _current_bundle(self) -> Optional[FnBundle]:
         current_page = self._function_group_toolbox.currentWidget()

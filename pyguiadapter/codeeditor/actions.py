@@ -19,7 +19,8 @@ from .constants import (
     MENU_FILE,
     MENU_EDIT,
 )
-from ..action import ActionConfig, Separator, MenuConfig
+from ..action import ActionConfig, Separator
+from ..menu import MenuConfig
 from ..toolbar import ToolBarConfig
 
 
