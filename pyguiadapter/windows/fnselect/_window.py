@@ -19,7 +19,7 @@ from ...action import Separator
 from ...menu import MenuConfig
 from ...toolbar import ToolBarConfig
 from ...bundle import FnBundle
-from ...window import BaseWindow, BaseWindowConfig, WindowStateListener
+from ...window import BaseWindow, BaseWindowConfig, BaseWindowStateListener
 
 DEFAULT_FN_ICON_SIZE = (48, 48)
 WARNING_MSG_NO_FN_SELECTED = "No Selected Function!"
@@ -45,7 +45,7 @@ class FnSelectWindow(BaseWindow):
         parent: Optional[QWidget],
         bundles: List[FnBundle],
         config: Optional[FnSelectWindowConfig],
-        listener: Optional[WindowStateListener] = None,
+        listener: Optional[BaseWindowStateListener] = None,
         toolbar: Optional[ToolBarConfig] = None,
         menus: Optional[List[Union[MenuConfig, Separator]]] = None,
     ):
