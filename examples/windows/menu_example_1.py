@@ -4,19 +4,13 @@ from qtpy.QtWidgets import QAction
 
 from pyguiadapter.action import ActionConfig, Separator
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.toolbar import (
-    ToolBarConfig,
-    RightToolBarArea,
-    LeftToolBarArea,
-    ToolButtonTextUnderIcon,
-    TopToolBarArea,
-)
+from pyguiadapter.menu import MenuConfig
 from pyguiadapter.utils import filedialog, inputdialog, messagebox
 from pyguiadapter.window import SimpleWindowStateListener
 from pyguiadapter.windows.fnexec import FnExecuteWindow
 
 
-def toolbar_example():
+def menu_example():
     pass
 
 
@@ -78,6 +72,36 @@ def on_action_close(window: FnExecuteWindow, action: QAction):
     window.close()
 
 
+def on_action_about(window: FnExecuteWindow, action: QAction):
+    print("on_action_about()")
+    about_text = """
+    <h1>PyGUIAdapter V2</h1>
+    <p>PyGUIAdapter is a GUI lib for those who want make GUI application without writing GUI code!</p>
+    <p>
+        You can access the source code <a href="https://github.com/zimolab/PyGUIAdapter">here</a>!
+    </p>
+    """
+    messagebox.show_text_content(
+        window,
+        text_content=about_text,
+        text_format="html",
+        title="About PyGUIAdapter",
+        icon="fa.info-circle",
+    )
+
+
+def on_action_license(window: FnExecuteWindow, action: QAction):
+    print("on_action_license()")
+    license_file = "../../LICENSE.txt"
+    messagebox.show_text_file(
+        window,
+        text_file=license_file,
+        text_format="plaintext",
+        title="License",
+        icon="fa.copyright",
+    )
+
+
 ###################~Action Callbacks#########################
 
 
@@ -116,25 +140,42 @@ if __name__ == "__main__":
         checked=False,
         on_toggled=on_action_confirm_quit,
     )
+    action_about = ActionConfig(
+        text="About",
+        icon="fa.info-circle",
+        on_triggered=on_action_about,
+    )
+    action_license = ActionConfig(
+        text="License",
+        icon="fa.copyright",
+        on_triggered=on_action_license,
+    )
     ###################~Actions#############################
 
-    ####################ToolBar#############################
-    toolbar = ToolBarConfig(
+    ####################Menus#############################
+    submenu_help = MenuConfig(
+        title="Help",
+        actions=[action_about, action_license],
+    )
+    menu_file = MenuConfig(
+        title="File",
         actions=[
             action_open,
             action_save,
-            action_settings,
             Separator(),
-            action_confirm_quit,
+            submenu_help,
+            Separator(),
             action_quit,
         ],
-        moveable=True,
-        floatable=True,
-        initial_area=RightToolBarArea,
-        allowed_areas=RightToolBarArea | LeftToolBarArea | TopToolBarArea,
-        button_style=ToolButtonTextUnderIcon,
     )
-    ###################~ToolBar#############################
+    menu_settings = MenuConfig(
+        title="Settings",
+        actions=[action_settings, Separator(), action_confirm_quit],
+    )
+
+    menus = [menu_file, menu_settings]
+
+    ###################~Menus#############################
 
     ################Window Event Listener###################
     def on_window_create(window: FnExecuteWindow):
@@ -164,7 +205,5 @@ if __name__ == "__main__":
     #################Window Event Listener##################
 
     adapter = GUIAdapter()
-    adapter.add(
-        toolbar_example, window_toolbar=toolbar, window_listener=window_listener
-    )
+    adapter.add(menu_example, window_menus=menus, window_listener=window_listener)
     adapter.run()
