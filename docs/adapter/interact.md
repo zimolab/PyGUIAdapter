@@ -99,7 +99,7 @@ def dialog_example(
         question_message: text_t,
 ):
     if info_message:
-        udialog.show_info_dialog(
+        udialog.show_info_messagebox(
             text=info_message,
             title="Information",
             buttons=udialog.QMessageBox.Ok | udialog.QMessageBox.No,
@@ -107,7 +107,7 @@ def dialog_example(
         )
 
     if warning_message:
-        udialog.show_warning_dialog(
+        udialog.show_warning_messagebox(
             text=warning_message,
             title="Warning",
             buttons=udialog.QMessageBox.Ok | udialog.QMessageBox.No,
@@ -115,7 +115,7 @@ def dialog_example(
         )
 
     if error_message:
-        udialog.show_critical_dialog(
+        udialog.show_critical_messagebox(
             text=error_message,
             title="Error",
             buttons=udialog.QMessageBox.Ok | udialog.QMessageBox.No,
@@ -123,7 +123,7 @@ def dialog_example(
         )
 
     if question_message:
-        answer = udialog.show_question_dialog(
+        answer = udialog.show_question_messagebox(
             text=question_message,
             title="Question",
             buttons=udialog.QMessageBox.Yes | udialog.QMessageBox.No,
@@ -131,10 +131,10 @@ def dialog_example(
         )
         if answer == udialog.QMessageBox.Yes:
             uprint("Your Choice: Yes")
-            udialog.show_info_dialog("You Choose Yes!", title="Answer")
+            udialog.show_info_messagebox("You Choose Yes!", title="Answer")
         else:
             uprint("Your Choice: No")
-            udialog.show_info_dialog("You Choose No!", title="Answer")
+            udialog.show_info_messagebox("You Choose No!", title="Answer")
 
 
 if __name__ == "__main__":
@@ -266,7 +266,7 @@ def show_text_file_example(
         raise ParameterError("text_file", "text_file is empty!")
 
     if not os.path.isfile(text_file):
-        udialog.show_critical_dialog(text="File not found", title="Error")
+        udialog.show_critical_messagebox(text="File not found", title="Error")
         return
     filename = os.path.basename(text_file)
     if text_file:
@@ -307,13 +307,13 @@ if __name__ == "__main__":
 ```python
 def show_custom_dialog(
     dialog_class: Type[BaseCustomDialog], **kwargs
-) -> Tuple[int, Any]:
+) -> Any:
     ...
 ```
 
 `udialog.show_custom_dialog()`的第一个参数是自定义对话框类，第一个参数之后的关键字参数将作为自定义对话框`__init__()`函数的参数。
 
-`udialog.show_custom_dialog()`将返回一个二元素元组，该元组的第一个元素对话框的返回码，通常用于指示对话框的状态：accepted或rejected，第二个元素则为`get_result()`方法的返回值。
+`udialog.show_custom_dialog()`将返回`get_result()`方法的返回值。
 
 
 
@@ -334,14 +334,14 @@ from pyguiadapter.exceptions import ParameterError
 
 class UserInfoDialog(BaseCustomDialog):
     def __init__(
-        self,
-        parent: QWidget,
-        username: str,
-        nickname: str,
-        user_id: str,
-        birthdate: date,
-        join_time: datetime,
-        **kwargs,
+            self,
+            parent: QWidget,
+            username: str,
+            nickname: str,
+            user_id: str,
+            birthdate: date,
+            join_time: datetime,
+            **kwargs,
     ):
         super().__init__(parent, **kwargs)
 
@@ -397,20 +397,20 @@ class UserInfoDialog(BaseCustomDialog):
 
 
 def add_user_example(
-    username: str,
-    nickname: str,
-    user_id: str,
-    birth_date: date,
-    join_time: datetime,
+        username: str,
+        nickname: str,
+        user_id: str,
+        birth_date: date,
+        join_time: datetime,
 ):
     if not username:
         raise ParameterError("username", "username is empty")
 
     if not user_id:
-        udialog.show_warning_dialog("user_id is empty, a random one will be generated!")
+        udialog.show_warning_messagebox("user_id is empty, a random one will be generated!")
         user_id = uuid1().hex
 
-    _, result = udialog.show_custom_dialog(
+    result = udialog.show_custom_dialog(
         UserInfoDialog,
         username=username,
         nickname=nickname,
@@ -419,10 +419,10 @@ def add_user_example(
         join_time=join_time,
     )
     if result is not None:
-        udialog.show_info_dialog(f"user added!")
+        udialog.show_info_messagebox(f"user added!")
         uprint(result)
         return
-    udialog.show_info_dialog(f"user not added!")
+    udialog.show_info_messagebox(f"user not added!")
 
 
 if __name__ == "__main__":

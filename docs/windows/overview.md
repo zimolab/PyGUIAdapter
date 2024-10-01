@@ -5,17 +5,6 @@
 `PyGUIAdapter`中的窗口基本上都继承自[`pyguiadapter.window.BaseWindow`]()类。`BaseWindow`定义了所有窗口共有的行为。
 
 ```python
-import dataclasses
-from typing import Tuple, Dict, List, Optional, Union, Sequence
-
-from qtpy.QtCore import QSize, Qt
-from qtpy.QtGui import QAction
-from qtpy.QtWidgets import QMainWindow, QWidget, QToolBar, QMenu
-
-from . import utils
-from .action import ActionConfig, Separator, MenuConfig, ToolbarConfig
-
-
 @dataclasses.dataclass
 class BaseWindowConfig(object):
     ...
@@ -103,11 +92,11 @@ class BaseWindowConfig(object):
 
 开发者可以通过`WindowStateListener`，对某些窗口事件进行监听，包括：
 
-- 窗口被创建
-- 窗口被显示
-- 窗口被隐藏
-- 窗口将被关闭
-- 窗口被销毁
+- 窗口被创建（`on_create()`）
+- 窗口被显示（`on_show()`）
+- 窗口被隐藏（`on_hide()`）
+- 窗口将被关闭（`on_close()`）
+- 窗口被销毁（`on_destroy()`）
 
 `WindowStateListener`的具体定义如下：
 
@@ -130,7 +119,7 @@ class WindowStateListener(object):
 
 ```
 
-`WindowStateListener`中事件回调函数的第一个参数为发出该事件的窗口对象，在`on_close()`函数中，开发者可以通过返回一个`bool`值来表示是否允许关闭窗口，返回`True`时表示允许关闭窗口，返回`False`时表示不允许关闭窗口，此时窗口关闭事件将被忽略。
+`WindowStateListener`中事件回调函数的第一个参数为发出该事件的窗口对象，在`on_close()`函数中，开发者需要返回一个`bool`值来指示是否允许关闭窗口，返回`True`时表示允许关闭窗口，返回`False`时表示不允许关闭窗口（此时窗口关闭事件将被忽略）。
 
 
 
@@ -138,10 +127,7 @@ class WindowStateListener(object):
 
 `BaseWindow`（及其子类）可以添加`工具栏`，开发者通过`ToolbarConfig`来配置工具栏属性及其所包含的`动作（Action）`。
 
-`ToolbarConfig`的定义见[pyguiadapter.action]()模块，也可参考如下文档：
-
-1. [使用`ToolbarConfig`配置窗口工具栏](windows/toolbar.md)
-2. [使用`ActionConfig`定义`Action`](windows/action.md)
+下面是一个简单的添加窗口工具栏的示例，这个示例演示了如何为`函数选择窗口`添加工具栏，同时也演示了如何利用`PyGUIAdapter`提供的对话框、输入框等功能，构建功能更加完整的应用程序。
 
 
 

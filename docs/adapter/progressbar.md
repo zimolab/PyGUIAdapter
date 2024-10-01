@@ -115,11 +115,11 @@ def progressbar_example(total: int = 100, delay: float = 0.5):
         )
         time.sleep(delay)
     if cancelled:
-        udialog.show_warning_dialog(
+        udialog.show_warning_messagebox(
             f"{task_processed} task(s) processed!", title="Cancelled"
         )
     else:
-        udialog.show_info_dialog(
+        udialog.show_info_messagebox(
             f"{task_processed} task(s) processed!", title="Completed"
         )
     uprogress.hide_progressbar()
