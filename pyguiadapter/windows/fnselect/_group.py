@@ -10,7 +10,7 @@ from qtpy.QtWidgets import (
 )
 
 from ...bundle import FnBundle
-from ...utils import get_icon
+from ...utils import get_icon, get_size
 
 DEFAULT_FN_ICON = "fa5s.cubes"
 
@@ -23,7 +23,7 @@ class FnGroupPage(QWidget):
         self,
         parent: QWidget,
         icon_mode: bool,
-        icon_size: Union[Tuple[int, int], QSize, None],
+        icon_size: Union[Tuple[int, int], int, QSize, None],
     ):
         super().__init__(parent)
         self._bundles: List[FnBundle] = []
@@ -37,9 +37,8 @@ class FnGroupPage(QWidget):
             self._function_list_widget.setViewMode(QListWidget.IconMode)
         else:
             self._function_list_widget.setViewMode(QListWidget.ListMode)
-        if icon_size is not None:
-            if isinstance(icon_size, tuple):
-                icon_size = QSize(icon_size[0], icon_size[1])
+        icon_size = get_size(icon_size)
+        if icon_size:
             self._function_list_widget.setIconSize(icon_size)
         self._layout.addWidget(self._function_list_widget)
 
