@@ -25,7 +25,8 @@ from .constants import (
     QUIT_DIALOG_TITLE,
 )
 from .. import utils
-from ..action import ToolbarConfig, Separator
+from ..action import Separator
+from ..toolbar import ToolBarConfig
 from ..window import BaseWindow, BaseWindowConfig, WindowStateListener
 
 
@@ -89,8 +90,8 @@ class BaseCodeEditorWindow(BaseWindow):
         parent: Optional[QWidget],
         config: Optional[CodeEditorConfig] = None,
         listener: Optional[WindowStateListener] = None,
-        toolbar: Optional[ToolbarConfig] = None,
-        menus: Optional[List[Union[ToolbarConfig, Separator]]] = None,
+        toolbar: Optional[ToolBarConfig] = None,
+        menus: Optional[List[Union[ToolBarConfig, Separator]]] = None,
     ):
         super().__init__(parent, config, listener, toolbar, menus)
 
@@ -358,7 +359,7 @@ class BaseCodeEditorWindow(BaseWindow):
         except Exception as e:
             msg = config.open_failed_message or OPEN_FAILED_MSG
             msg = msg.format(filepath)
-            utils.show_exception_message(
+            utils.show_exception_messagebox(
                 self,
                 exception=e,
                 title=config.error_dialog_title or ERROR_DIALOG_TITLE,
@@ -389,7 +390,7 @@ class BaseCodeEditorWindow(BaseWindow):
         except Exception as e:
             msg = config.save_failed_message or SAVE_FAILED_MSG
             msg = msg.format(current_file)
-            utils.show_exception_message(
+            utils.show_exception_messagebox(
                 self,
                 exception=e,
                 title=config.error_dialog_title or ERROR_DIALOG_TITLE,
@@ -417,7 +418,7 @@ class BaseCodeEditorWindow(BaseWindow):
         except Exception as e:
             msg = config.save_failed_message or SAVE_FAILED_MSG
             msg = msg.format(filepath)
-            utils.show_exception_message(
+            utils.show_exception_messagebox(
                 self,
                 exception=e,
                 title=config.error_dialog_title or ERROR_DIALOG_TITLE,
@@ -440,7 +441,7 @@ class BaseCodeEditorWindow(BaseWindow):
                 formatted = config.formatter(self.get_text())
         except Exception as e:
             msg = config.format_failed_message or FORMAT_FAILED_MSG
-            utils.show_exception_message(
+            utils.show_exception_messagebox(
                 self,
                 exception=e,
                 title=config.error_dialog_title or ERROR_DIALOG_TITLE,

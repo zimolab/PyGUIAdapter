@@ -8,7 +8,8 @@ from qtpy.QtWidgets import QWidget
 from .. import utils
 from .base import BaseCodeEditorWindow, CodeEditorConfig
 from .actions import DEFAULT_MENUS, DEFAULT_TOOLBAR
-from ..action import ToolbarConfig, Separator
+from ..action import Separator
+from ..toolbar import ToolBarConfig
 from ..window import WindowStateListener
 
 
@@ -18,8 +19,8 @@ class CodeEditorWindow(BaseCodeEditorWindow):
         parent: Optional[QWidget],
         config: Optional[CodeEditorConfig] = None,
         listener: Optional[WindowStateListener] = None,
-        toolbar: Optional[ToolbarConfig] = None,
-        menus: Optional[List[Union[ToolbarConfig, Separator]]] = None,
+        toolbar: Optional[ToolBarConfig] = None,
+        menus: Optional[List[Union[ToolBarConfig, Separator]]] = None,
     ):
         config = config or CodeEditorConfig()
 

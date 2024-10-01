@@ -6,7 +6,8 @@ from qtpy.QtGui import QAction
 from qtpy.QtWidgets import QMainWindow, QWidget, QToolBar, QMenu
 
 from . import utils
-from .action import ActionConfig, Separator, MenuConfig, ToolbarConfig
+from .action import ActionConfig, Separator, MenuConfig
+from .toolbar import ToolBarConfig
 
 
 @dataclasses.dataclass
@@ -45,13 +46,13 @@ class BaseWindow(QMainWindow):
         parent: Optional[QWidget],
         config: BaseWindowConfig,
         listener: Optional[WindowStateListener] = None,
-        toolbar: Optional[ToolbarConfig] = None,
+        toolbar: Optional[ToolBarConfig] = None,
         menus: Optional[List[Union[MenuConfig, Separator]]] = None,
     ):
         super().__init__(parent)
 
         self._config: BaseWindowConfig = config
-        self._toolbar: Optional[ToolbarConfig] = toolbar
+        self._toolbar: Optional[ToolBarConfig] = toolbar
         if menus:
             menus = menus.copy()
         self._menus: Optional[List[Union[MenuConfig, Separator]]] = menus
@@ -138,19 +139,13 @@ class BaseWindow(QMainWindow):
         if self._menus:
             self._create_menus(menus=self._menus)
 
-    def _create_toolbar(self, toolbar_config: ToolbarConfig):
+    def _create_toolbar(self, toolbar_config: ToolBarConfig):
         toolbar = QToolBar(self)
         toolbar.setMovable(toolbar_config.moveable)
         toolbar.setFloatable(toolbar_config.floatable)
-        # noinspection PyUnresolvedReferences
-        toolbar.setOrientation(
-            Qt.Horizontal if toolbar_config.horizontal else Qt.Vertical
-        )
 
-        if toolbar_config.icon_size:
-            size = toolbar_config.icon_size
-            if isinstance(size, tuple):
-                size = QSize(size[0], size[1])
+        size = utils.get_size(toolbar_config.icon_size)
+        if size:
             toolbar.setIconSize(size)
 
         if toolbar_config.allowed_areas:

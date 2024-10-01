@@ -136,7 +136,7 @@ class FnExecuteWindow(BaseFnExecuteWindow):
             self._process_param_error(e)
         except Exception as e:
             # any other exceptions are seen as fatal and will cause the whole program to exit
-            utils.show_exception_message(
+            utils.show_exception_messagebox(
                 self,
                 exception=e,
                 message=f"An fatal error occurred when creating widget for parameter '{parameter_name}':",
@@ -355,20 +355,17 @@ class FnExecuteWindow(BaseFnExecuteWindow):
             if not self.window_config.show_error_traceback:
                 self.append_output(error_msg, scroll_to_bottom=True)
             else:
-                self.append_output(utils.get_traceback(error), scroll_to_bottom=True)
+                self.append_output(
+                    utils.get_traceback(error) + "\n", scroll_to_bottom=True
+                )
 
+        error_dialog_title = self.widget_texts.universal_error_dialog_title
         if self.window_config.show_function_error:
             if not self.window_config.show_error_traceback:
-                utils.show_critical_message(
-                    self,
-                    error_msg,
-                    title=self.widget_texts.universal_error_dialog_title,
-                )
+                utils.show_critical_message(self, error_msg, title=error_dialog_title)
             else:
-                utils.show_exception_message(
-                    self,
-                    exception=error,
-                    title=self.widget_texts.universal_error_dialog_title,
+                utils.show_exception_messagebox(
+                    self, exception=error, title=error_dialog_title
                 )
         del error
 

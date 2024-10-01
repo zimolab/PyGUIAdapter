@@ -15,7 +15,8 @@ from ._group import FnGroupPage
 from .._docbrowser import DocumentBrowserConfig, DocumentBrowser
 from ..fnexec import FnExecuteWindow
 from ... import utils
-from ...action import ToolbarConfig, MenuConfig, Separator
+from ...action import MenuConfig, Separator
+from ...toolbar import ToolBarConfig
 from ...bundle import FnBundle
 from ...window import BaseWindow, BaseWindowConfig, WindowStateListener
 
@@ -44,7 +45,7 @@ class FnSelectWindow(BaseWindow):
         bundles: List[FnBundle],
         config: Optional[FnSelectWindowConfig],
         listener: Optional[WindowStateListener] = None,
-        toolbar: Optional[ToolbarConfig] = None,
+        toolbar: Optional[ToolBarConfig] = None,
         menus: Optional[List[Union[MenuConfig, Separator]]] = None,
     ):
         self._config: FnSelectWindowConfig = config

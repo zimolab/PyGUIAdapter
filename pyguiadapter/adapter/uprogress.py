@@ -30,12 +30,12 @@ def show_progressbar(
         "info_text_format": info_text_format,
         "initial_info": initial_info,
     }
-    _context.show_progressbar.emit(config)
+    _context.sig_show_progressbar.emit(config)
 
 
 def hide_progressbar():
-    _context.hide_progressbar.emit()
+    _context.sig_hide_progressbar.emit()
 
 
 def update_progress(value: int, info: Optional[str] = None):
-    _context.update_progress.emit(value, info)
+    _context.sig_update_progressbar.emit(value, info)

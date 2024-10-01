@@ -19,7 +19,8 @@ from qtpy.QtGui import QIcon, QPixmap
 from qtpy.QtWidgets import QApplication
 
 from . import ucontext
-from ..action import ToolbarConfig, MenuConfig, Separator
+from ..action import MenuConfig, Separator
+from ..toolbar import ToolBarConfig
 from ..bundle import FnBundle
 from ..exceptions import NotRegisteredError
 from ..fn import ParameterInfo
@@ -72,7 +73,7 @@ class GUIAdapter(object):
         ] = None,
         window_config: Optional[FnExecuteWindowConfig] = None,
         window_listener: Optional[WindowStateListener] = None,
-        window_toolbar: Optional[ToolbarConfig] = None,
+        window_toolbar: Optional[ToolBarConfig] = None,
         window_menus: Optional[List[Union[MenuConfig, Separator]]] = None,
     ):
         # create the FnInfo from the function and given arguments
@@ -132,7 +133,7 @@ class GUIAdapter(object):
         show_select_window: bool = False,
         select_window_config: Optional[FnSelectWindowConfig] = None,
         select_window_listener: Optional[WindowStateListener] = None,
-        select_window_toolbar: Optional[ToolbarConfig] = None,
+        select_window_toolbar: Optional[ToolBarConfig] = None,
         select_window_menus: Optional[List[Union[MenuConfig, Separator]]] = None,
     ):
         if self._application is None:
@@ -208,7 +209,7 @@ class GUIAdapter(object):
         bundles: List[FnBundle],
         config: FnSelectWindowConfig,
         listener: Optional[WindowStateListener],
-        toolbar: Optional[ToolbarConfig],
+        toolbar: Optional[ToolBarConfig],
         menus: Optional[List[Union[MenuConfig, Separator]]],
     ):
         if self._select_window is not None:

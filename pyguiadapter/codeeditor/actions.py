@@ -19,7 +19,8 @@ from .constants import (
     MENU_FILE,
     MENU_EDIT,
 )
-from ..action import ActionConfig, Separator, MenuConfig, ToolbarConfig
+from ..action import ActionConfig, Separator, MenuConfig
+from ..toolbar import ToolBarConfig
 
 
 def _on_open_file(ctx: BaseCodeEditorWindow, _: QAction):
@@ -172,7 +173,7 @@ DEFAULT_EDIT_MENU = MenuConfig(
 )
 
 DEFAULT_MENUS: List[MenuConfig] = [DEFAULT_FILE_MENU, DEFAULT_EDIT_MENU]
-DEFAULT_TOOLBAR = ToolbarConfig(
+DEFAULT_TOOLBAR = ToolBarConfig(
     actions=[
         DEFAULT_ACTION_OPEN,
         DEFAULT_ACTION_SAVE,

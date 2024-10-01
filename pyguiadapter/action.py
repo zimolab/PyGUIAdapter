@@ -58,29 +58,3 @@ class MenuConfig(object):
         if action in self.actions:
             self.actions.remove(action)
             return
-
-
-@dataclasses.dataclass(frozen=True)
-class ToolbarConfig(object):
-    actions: List[Union[ActionConfig, Separator]]
-    moveable: bool = True
-    floatable: bool = True
-    horizontal: bool = True
-    icon_size: Union[Tuple[int, int], QSize, None] = None
-    initial_area: Optional[Qt.ToolBarArea] = None
-    allowed_areas: Optional[Qt.ToolBarAreas] = None
-    button_style: Optional[Qt.ToolButtonStyle] = None
-
-    def remove_action(self, action: Union[str, ActionConfig, Separator]):
-        if isinstance(action, str):
-            for action_ in self.actions:
-                if isinstance(action_, ActionConfig):
-                    if action_.text == action:
-                        action = action_
-                        break
-            if action in self.actions:
-                self.actions.remove(action)
-            return
-        if action in self.actions:
-            self.actions.remove(action)
-            return

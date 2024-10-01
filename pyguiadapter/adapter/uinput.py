@@ -20,10 +20,10 @@ from ..utils.inputdialog import LineWrapMode, UniversalInputDialog
 from ..windows.fnexec import FnExecuteWindow
 
 
-def _request_get_input(get_input_impl: Callable[[FnExecuteWindow], Any]) -> Any:
+def _get_input(get_input_impl: Callable[[FnExecuteWindow], Any]) -> Any:
     result_future = Future()
     # noinspection PyUnresolvedReferences
-    _context.get_input_requested.emit(result_future, get_input_impl)
+    _context.sig_get_input.emit(result_future, get_input_impl)
     return result_future.result()
 
 
@@ -36,7 +36,7 @@ def get_string(
     def _impl(wind: Optional[FnExecuteWindow]) -> Optional[str]:
         return inputdialog.input_string(wind, title, label, echo, text)
 
-    return _request_get_input(_impl)
+    return _get_input(_impl)
 
 
 def get_text(
@@ -46,7 +46,7 @@ def get_text(
     def _impl(wind: Optional[FnExecuteWindow]) -> Optional[str]:
         return inputdialog.input_text(wind, title, label, text)
 
-    return _request_get_input(_impl)
+    return _get_input(_impl)
 
 
 def get_int(
@@ -62,7 +62,7 @@ def get_int(
             wind, title, label, value, min_value, max_value, step
         )
 
-    return _request_get_input(_impl)
+    return _get_input(_impl)
 
 
 def get_float(
@@ -80,7 +80,7 @@ def get_float(
             wind, title, label, value, min_value, max_value, decimals, step
         )
 
-    return _request_get_input(_impl)
+    return _get_input(_impl)
 
 
 def get_selected_item(
@@ -93,7 +93,7 @@ def get_selected_item(
     def _impl(wind: Optional[FnExecuteWindow]):
         return inputdialog.select_item(wind, items, title, label, current, editable)
 
-    return _request_get_input(_impl)
+    return _get_input(_impl)
 
 
 def get_color(
@@ -105,7 +105,7 @@ def get_color(
     def _impl(wind: Optional[FnExecuteWindow]) -> Optional[QColor]:
         return inputdialog.input_color(wind, initial, title, alpha_channel, return_type)
 
-    return _request_get_input(_impl)
+    return _get_input(_impl)
 
 
 def get_json_object(
@@ -143,7 +143,7 @@ def get_json_object(
             **kwargs,
         )
 
-    return _request_get_input(_impl)
+    return _get_input(_impl)
 
 
 def get_py_literal(
@@ -181,7 +181,7 @@ def get_py_literal(
             **kwargs,
         )
 
-    return _request_get_input(_impl)
+    return _get_input(_impl)
 
 
 def get_custom_input(
@@ -193,7 +193,7 @@ def get_custom_input(
             wind, input_dialog_class, **input_dialog_args
         )
 
-    return _request_get_input(_impl)
+    return _get_input(_impl)
 
 
 def get_existing_directory(
@@ -203,7 +203,7 @@ def get_existing_directory(
     def _impl(wind: Optional[FnExecuteWindow]) -> Optional[str]:
         return filedialog.get_existing_directory(wind, title, start_dir) or None
 
-    return _request_get_input(_impl)
+    return _get_input(_impl)
 
 
 def get_existing_directory_url(
@@ -216,7 +216,7 @@ def get_existing_directory_url(
             wind, title, start_dir, supported_schemes
         )
 
-    return _request_get_input(_impl)
+    return _get_input(_impl)
 
 
 def get_open_file(
@@ -227,7 +227,7 @@ def get_open_file(
     def _impl(wind: Optional[FnExecuteWindow]) -> Optional[str]:
         return filedialog.get_open_file(wind, title, start_dir, filters)
 
-    return _request_get_input(_impl)
+    return _get_input(_impl)
 
 
 def get_open_files(
@@ -238,7 +238,7 @@ def get_open_files(
     def _impl(wind: Optional[FnExecuteWindow]) -> Optional[List[str]]:
         return filedialog.get_open_files(wind, title, start_dir, filters)
 
-    return _request_get_input(_impl)
+    return _get_input(_impl)
 
 
 def get_save_file(
@@ -249,4 +249,4 @@ def get_save_file(
     def _impl(wind: Optional[FnExecuteWindow]) -> Optional[str]:
         return filedialog.get_save_file(wind, title, start_dir, filters)
 
-    return _request_get_input(_impl)
+    return _get_input(_impl)
