@@ -1,6 +1,6 @@
 from qtpy.QtWidgets import QAction
 
-from pyguiadapter.action import ActionConfig
+from pyguiadapter.action import ActionConfig, Separator
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.menu import MenuConfig
 from pyguiadapter.utils import messagebox
@@ -13,19 +13,33 @@ def on_action_test(window: FnSelectWindow, action: QAction):
     )
 
 
+def on_action_close(window: FnSelectWindow, action: QAction):
+    ret = messagebox.show_question_message(
+        window,
+        message="Are you sure to close the application?",
+        buttons=messagebox.Yes | messagebox.No,
+    )
+    if ret == messagebox.Yes:
+        window.close()
+
+
 action_test = ActionConfig(
     text="Test", icon="fa.folder-open", on_triggered=on_action_test, shortcut="Ctrl+O"
+)
+action_close = ActionConfig(
+    text="Close", icon="fa.close", on_triggered=on_action_close, shortcut="Ctrl+Q"
+)
+
+
+menu_file = MenuConfig(
+    title="File",
+    actions=[action_test, Separator(), action_close],
 )
 
 
 def foo():
     pass
 
-
-menu_file = MenuConfig(
-    title="File",
-    actions=[action_test],
-)
 
 if __name__ == "__main__":
     adapter = GUIAdapter()
