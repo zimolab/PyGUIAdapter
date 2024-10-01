@@ -105,7 +105,7 @@ def generate_widget_class_doc(
 
     if os.path.isfile(output_file):
         uoutput.warning(f"Output file {output_file} already exists! Overwrite?")
-        ret = udialog.show_question_dialog(
+        ret = udialog.show_question_messagebox(
             f"Output file {output_file} already exists! Do you want to overwrite it?"
         )
         if ret != pyguiadapter.utils.messagebox.StandardButton.Yes:
@@ -194,7 +194,7 @@ def generate_widget_class_doc(
         uoutput.info(" |")
         uoutput.info(f"  - {os.path.normpath(output_file)}")
         uoutput.info("==Generating Finished!==")
-        udialog.show_info_dialog(
+        udialog.show_info_messagebox(
             f"Document file for widget '{widget_class_name}' generated successfully!",
             "Success",
         )
