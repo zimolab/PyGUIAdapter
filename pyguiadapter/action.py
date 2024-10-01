@@ -7,6 +7,9 @@ from qtpy.QtWidgets import QAction
 from .utils import IconType
 
 ActionCallback = Callable[[ForwardRef("BaseWindow"), QAction], None]
+Priority = QAction.Priority
+MenuRole = QAction.MenuRole
+ShortcutContext = Qt.ShortcutContext
 
 
 @dataclasses.dataclass
@@ -21,12 +24,12 @@ class ActionConfig(object):
     checkable: bool = False
     checked: bool = False
     shortcut: Optional[str] = None
-    shortcut_context: Optional[Qt.ShortcutContext] = None
+    shortcut_context: Optional[ShortcutContext] = None
     tooltip: Optional[str] = None
     whats_this: Optional[str] = None
     status_tip: Optional[str] = None
-    priority: Optional[QAction.Priority] = None
-    menu_role: Optional[QAction.MenuRole] = None
+    priority: Optional[Priority] = None
+    menu_role: Optional[MenuRole] = None
 
 
 @dataclasses.dataclass(frozen=True)
