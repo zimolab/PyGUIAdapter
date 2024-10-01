@@ -4,18 +4,13 @@ from qtpy.QtWidgets import QAction
 
 from pyguiadapter.action import ActionConfig, Separator
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.toolbar import (
-    ToolBarConfig,
-    RightToolBarArea,
-    LeftToolBarArea,
-    ToolButtonTextUnderIcon,
-)
+from pyguiadapter.menu import MenuConfig
 from pyguiadapter.utils import filedialog, inputdialog, messagebox
 from pyguiadapter.window import SimpleWindowStateListener
 from pyguiadapter.windows.fnselect import FnSelectWindow
 
 
-def toolbar_example():
+def menu_example():
     pass
 
 
@@ -113,26 +108,9 @@ if __name__ == "__main__":
     )
     action_confirm_quit = ActionConfig(
         text="Confirm Quit",
-        icon="fa.question-circle",
         checkable=True,
         checked=False,
         on_toggled=on_action_confirm_quit,
-    )
-
-    toolbar = ToolBarConfig(
-        actions=[
-            action_open,
-            action_save,
-            action_settings,
-            Separator(),
-            action_confirm_quit,
-            action_quit,
-        ],
-        moveable=True,
-        floatable=True,
-        initial_area=RightToolBarArea,
-        allowed_areas=RightToolBarArea | LeftToolBarArea,
-        button_style=ToolButtonTextUnderIcon,
     )
 
     def on_window_create(window: FnSelectWindow):
@@ -160,10 +138,20 @@ if __name__ == "__main__":
         on_create=on_window_create, on_close=on_window_close
     )
 
+    menus = [
+        MenuConfig(
+            title="File",
+            actions=[
+                action_open,
+                action_save,
+                Separator(),
+                action_confirm_quit,
+                action_quit,
+            ],
+        ),
+        MenuConfig(title="Help", actions=[action_settings]),
+    ]
+
     adapter = GUIAdapter()
-    adapter.add(toolbar_example)
-    adapter.run(
-        show_select_window=True,
-        select_window_toolbar=toolbar,
-        select_window_listener=window_listener,
-    )
+    adapter.add(menu_example, window_menus=menus, window_listener=window_listener)
+    adapter.run()
