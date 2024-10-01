@@ -70,7 +70,7 @@ def get_inverted_color(color: QColor) -> QColor:
     return QColor(255 - color.red(), 255 - color.green(), 255 - color.blue())
 
 
-def get_size(size: Union[int, Tuple[int, int], QSize]) -> Optional[QSize]:
+def get_size(size: Union[int, Tuple[int, int], QSize, None]) -> Optional[QSize]:
     if size is None:
         return None
     if isinstance(size, int):
