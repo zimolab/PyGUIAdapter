@@ -1,6 +1,6 @@
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.adapter.ucontext import uprint
-from pyguiadapter.extend_types import choice_t, choices_t
+from pyguiadapter.extend_types import choice_t
 from pyguiadapter.widgets import ChoiceBoxConfig
 
 
@@ -22,7 +22,7 @@ class MyObject(object):
         return self.name
 
 
-def choice_t_example(arg1: choice_t, arg2: choice_t, arg3: choices_t):
+def choice_t_example(arg1: choice_t, arg2: choice_t, arg3: choice_t):
     """
     example for type **choice_t** and **ChoiceBox** widget
 
