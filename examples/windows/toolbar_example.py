@@ -1,4 +1,5 @@
 import json
+from tabnanny import check
 
 from qtpy.QtWidgets import QAction
 
@@ -10,6 +11,7 @@ from pyguiadapter.toolbar import (
     ToolButtonTextUnderIcon,
 )
 from pyguiadapter.adapter import GUIAdapter
+from pyguiadapter.window import SimpleWindowStateListener
 from pyguiadapter.windows.fnselect import FnSelectWindow
 from pyguiadapter.utils import filedialog, inputdialog, messagebox
 
@@ -67,16 +69,13 @@ def on_action_settings(window: FnSelectWindow, action: QAction):
         messagebox.show_info_message(window, f"new settings: {new_settings}")
 
 
+def on_action_confirm_quit(window: FnSelectWindow, action: QAction):
+    print("on_action_confirm_close(): ", action.isChecked())
+
+
 def on_action_close(window: FnSelectWindow, action: QAction):
     print("on_action_close()")
-    ret = messagebox.show_question_message(
-        window,
-        message="Do you really want to close the window?",
-        title="Quit",
-        buttons=messagebox.StandardButton.Yes | messagebox.StandardButton.No,
-    )
-    if ret == messagebox.StandardButton.Yes:
-        window.close()
+    window.close()
 
 
 def on_action_about(window: FnSelectWindow, action: QAction):
@@ -113,6 +112,14 @@ if __name__ == "__main__":
         on_triggered=on_action_close,
         shortcut="Ctrl+Q",
     )
+    action_confirm_quit = ActionConfig(
+        text="Confirm Quit",
+        icon="fa.question-circle",
+        checkable=True,
+        checked=False,
+        on_toggled=on_action_confirm_quit,
+        shortcut="Ctrl+Q",
+    )
 
     toolbar = ToolBarConfig(
         actions=[
@@ -120,6 +127,7 @@ if __name__ == "__main__":
             action_save,
             action_settings,
             Separator(),
+            action_confirm_quit,
             action_quit,
         ],
         moveable=True,
@@ -129,6 +137,35 @@ if __name__ == "__main__":
         button_style=ToolButtonTextUnderIcon,
     )
 
+    def on_window_create(window: FnSelectWindow):
+        print("on_window_create()")
+        # make action_confirm_quit checked after the select window is created
+        window.set_action_state(action_confirm_quit, True)
+
+    def on_window_close(window: FnSelectWindow) -> bool:
+        # get the state of action_confirm_quit
+        # if it is checked, show a question message box to ask if the user really wants to close the window
+        # if it is not checked, return True to close the window directly.
+        state = window.query_action_state(action_confirm_quit)
+        if state:
+            # access the
+            ret = messagebox.show_question_message(
+                window,
+                message="Do you really want to close the window?",
+                title="Quit",
+                buttons=messagebox.StandardButton.Yes | messagebox.StandardButton.No,
+            )
+            return ret == messagebox.StandardButton.Yes
+        return True
+
+    window_listener = SimpleWindowStateListener(
+        on_create=on_window_create, on_close=on_window_close
+    )
+
     adapter = GUIAdapter()
     adapter.add(toolbar_example)
-    adapter.run(show_select_window=True, select_window_toolbar=toolbar)
+    adapter.run(
+        show_select_window=True,
+        select_window_toolbar=toolbar,
+        select_window_listener=window_listener,
+    )
