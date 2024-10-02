@@ -327,7 +327,7 @@ if __name__ == "__main__":
 
 <img src="../images/fn_select_window_config_10.png" />
 
-### 
+> 关于窗口事件监听，这篇文档作了更为详细的说明：[监听窗口事件](windows/window_event.md)
 
 
 
