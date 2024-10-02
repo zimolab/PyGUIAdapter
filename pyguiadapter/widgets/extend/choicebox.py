@@ -6,7 +6,10 @@ from qtpy.QtWidgets import QWidget, QComboBox
 
 from ..common import CommonParameterWidgetConfig, CommonParameterWidget
 
-_FIRST_ITEM = object()
+
+# noinspection PyPep8Naming
+class _FIRST_ITEM(object):
+    __slots__ = ()
 
 
 @dataclasses.dataclass

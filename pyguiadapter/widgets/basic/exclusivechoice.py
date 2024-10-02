@@ -20,7 +20,9 @@ class _ChoiceButton(QRadioButton):
         return self._user_data
 
 
-_FIRST_OPTION = object()
+# noinspection PyPep8Naming
+class _FIRST_OPTION:
+    __slots__ = ()
 
 
 @dataclasses.dataclass(frozen=True)
