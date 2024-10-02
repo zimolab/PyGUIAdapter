@@ -20,6 +20,7 @@ class TextEditConfig(CommonParameterWidgetConfig):
     line_wrap: LineWrapMode = LineWrapMode.WidgetWidth
     line_wrap_column_or_width: int = 88
     word_wrap: Optional[WrapMode] = None
+    min_height: Optional[int] = 200
 
     @classmethod
     def target_widget_class(cls) -> Type["TextEdit"]:
@@ -64,6 +65,9 @@ class TextEdit(CommonParameterWidget):
             word_wrap = self._config.word_wrap
             if word_wrap is not None:
                 self._value_widget.setWordWrapMode(word_wrap)
+
+            if self._config.min_height is not None and self._config.min_height > 0:
+                self._value_widget.setMinimumHeight(self._config.min_height)
 
         return self._value_widget
 
