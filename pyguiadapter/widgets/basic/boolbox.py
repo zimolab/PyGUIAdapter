@@ -14,7 +14,7 @@ class BoolBoxConfig(CommonParameterWidgetConfig):
     false_text: str = "False"
     true_icon: utils.IconType = None
     false_icon: utils.IconType = None
-    vertical: bool = True
+    vertical: bool = False
 
     @classmethod
     def target_widget_class(cls) -> Type["BoolBox"]:

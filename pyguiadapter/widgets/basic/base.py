@@ -36,7 +36,7 @@ ACCEPT_CHANGES_MSG = "Do you want to keep the changes?"
 EDITOR_BUTTON_TEXT = "Edit"
 EDITOR_TITLE = "Edit - {}"
 INDENT_SIZE = 4
-MIN_HEIGHT = 180
+MIN_HEIGHT = 200
 
 
 @dataclasses.dataclass(frozen=True)
