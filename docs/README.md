@@ -334,14 +334,247 @@ if __name__ == "__main__":
 ```
 <img src="images/parameter_error.png" width="60%"/>
 
-可以看到，**对于函数中抛出的`ParameterError`，`PyGUIAdapter`不仅进行了弹窗提示，而且在对应参数的输入控件下方，以醒目的方式提醒用户他刚刚输入
-了一个不合法的值。**
+可以看到，**对于函数中抛出的`ParameterError`，`PyGUIAdapter`不仅进行了弹窗提示，而且在对应参数的输入控件下方，以醒目的方式提醒用户他刚刚输入了一个不合法的值。**
+
+#### 4、为参数添加描述信息
+
+为了使参数的含义、用途更加明确，一种好的实践是界面上为参数添加适当的描述信息。在`PyGUIAdapter`中，有多种方法可以做到这一点，其中最简单也最自然的一种方法是在函数的文档字符串（`docstring`）对这些参数进行描述。很多开发者已经习惯于编写函数的`docstring`，而且现在的IDE也已经足够智能，可以根据函数的签名，自动生成`docstring`模板，比如下面这样：
+
+<img src="./images/ide_docstring.gif" />
+
+所以，从降低学习成本，尽量利用现有信息的角度出发，`PyGUIAdapter`会从`docstring`中分析并提取函数参数的描述信息，而且`PyGUIAdapter`支持多种风格的`docstring`，包括： `ReST`、`Google`、`Numpydoc-style` 、`Epydoc` 。
+
+> 这篇文档对于任何配置函数参数的控件进行了更加详细和深入的说明：[配置函数参数控件](widgets/configure_widget)
+
+除了利用函数`docstring`中对于各个参数的描述，`PyGUIAdapter`还会利用`docstring`对函数本身的描述，默认情况下，会将其作为函数的说明文档，显示在右侧的文档浏览器中。
+
+>当然，`PyGUIAdapter`允许开发者手动设置函数的说明文档，甚至允许开发者将`markdown`、`html`文件的内容作为函数的说明文档显示在文档浏览器中，下面这文档对此进行了说明：[添加多个函数：函的数名称、图标、文档及分组](adapter/multiple_functions.md)
+
+了解这些信息后，我们可以进一步完善我们的示例程序：
+
+```python
+import math
+from pyguiadapter.adapter import GUIAdapter
+from pyguiadapter.adapter.uoutput import uprint
+from pyguiadapter.exceptions import ParameterError
+
+
+def solve(a: float, b: float, c: float) -> list:
+    """A simple equation solver for equations like:
+
+    **ax^2 + bx + c = 0** (a, b, c ∈ **R**, a != 0)
+
+    @param a: parameter a, <span style="color:red;">a != 0</span>
+    @param b: parameter b
+    @param c: parameter c
+    @return:
+    """
+    if a == 0:
+        raise ParameterError(parameter_name="a", message="a cannot be zero")
+
+    uprint("Solving Equation:")
+    uprint(f"  {a}x² + {b}x + {c} = 0")
+    discriminant = b**2 - 4 * a * c
+    uprint(f"  Δ = {discriminant}", end="")
+    if discriminant < 0:
+        uprint(" < 0, no real roots")
+        return []
+    elif discriminant == 0:
+        uprint(" = 0, one real root")
+        return [-b / (2 * a)]
+    else:
+        uprint(" > 0, two real roots")
+        sqrt_discriminant = math.sqrt(discriminant)
+        return [(-b + sqrt_discriminant) / (2 * a), (-b - sqrt_discriminant) / (2 * a)]
+
+
+if __name__ == "__main__":
+    adapter = GUIAdapter()
+    adapter.add(solve)
+    adapter.run()
+```
+
+<img src="./images/docstring.png" />
+
+#### 5、配置函数参数控件的属性
+
+为了提高程序的健壮性或增强用户体验，`PyGUIAdapter`允许开发者对函数参数控件的属性进行配置。比如，在当前示例函数中，参数`a`、`b`、`c`控件的初始值都是`0`，这显然是不合理的。另外，参数`a`、`b`、`c`的控件目前都只能输入小数点后两位数，无法满足输入更高精度数字的需求。下面，我们将通过对参数控件进行配置，来解决这两个问题。
+
+`PyGUIAdapter`提供了一种简单的机制来配置参数控件的属性，该机制同样需要利用函数的`docstring`，只不过，这次开发者需要做一些额外的工作。`PyGUIAdapter`会将函数`docstring`中`@params`...`@end`包裹的区域视为函数参数控件的配置文档（格式为TOML），在运行时会自动提取并解析该区域的内容。
+
+下面，我们通过这一机制来配置参数`a`、`b`、`c`控件的初始值、精度、步进值等属性：
+
+```python
+import math
+from pyguiadapter.adapter import GUIAdapter
+from pyguiadapter.adapter.uoutput import uprint
+from pyguiadapter.exceptions import ParameterError
+
+
+def solve(a: float, b: float, c: float) -> list:
+    """A simple equation solver for equations like:
+
+    **ax^2 + bx + c = 0** (a, b, c ∈ **R**, a != 0)
+
+    @param a: parameter a, <span style="color:red;">a != 0</span>
+    @param b: parameter b
+    @param c: parameter c
+    @return:
+
+    @params
+
+    [a]
+    default_value = 1.0
+    decimals = 5
+    step = 0.00005
+
+    [b]
+    default_value = 1.0
+    decimals = 5
+    step = 0.00005
+
+    [c]
+    default_value = 0.0
+    decimals = 5
+    step = 0.00005
+
+    @end
+
+    """
+    if a == 0:
+        raise ParameterError(parameter_name="a", message="a cannot be zero")
+
+    uprint("Solving Equation:")
+    uprint(f"  {a}x² + {b}x + {c} = 0")
+    discriminant = b**2 - 4 * a * c
+    uprint(f"  Δ = {discriminant}", end="")
+    if discriminant < 0:
+        uprint(" < 0, no real roots")
+        return []
+    elif discriminant == 0:
+        uprint(" = 0, one real root")
+        return [-b / (2 * a)]
+    else:
+        uprint(" > 0, two real roots")
+        sqrt_discriminant = math.sqrt(discriminant)
+        return [(-b + sqrt_discriminant) / (2 * a), (-b - sqrt_discriminant) / (2 * a)]
+
+
+if __name__ == "__main__":
+    adapter = GUIAdapter()
+    adapter.add(solve)
+    adapter.run()
+```
+
+<img src="./images/widget_config_1.png" />
+
+在函数的`docstring`中添加`@params`...`@end`块来对函数参数控件的属性进行配置，是一种简单而且直观的方法。这种方法适用于大多数需要对控件属性进行调整的场景，但也并非万能，因此，`PyGUIAdapter`提供了更为强大的配置函数参数控件的方法。这篇文档对如何配置函数参数的控件进行了深入的说明，强烈建议开发者进行阅读。：[配置函数参数控件](widgets/configure_widget)。
+
+在`PyGUIAdapter`中，不同的参数类型往往对应不同的控件类型，而不同类型的控件具有不同的可配置属性，开发者可以阅读这篇文档，来了解`PyGUIAdapter`内置的控件类型和对应的数据类型，以及其可供开发者配置的属性：[内置控件类型一览](widgets/types_and_widgets.md)。
+
+### （四）示例：内置控件类型
+
+以下示例展示了`PyGUIAdapter`中大部分内置控件类型：
+
+```python
+import enum
+from datetime import datetime, date, time
+
+from typing import List, Tuple, Literal
+
+from pyguiadapter.adapter import GUIAdapter
+from pyguiadapter.extend_types import (
+    int_t,
+    int_dial_t,
+    int_slider_t,
+    float_t,
+    file_t,
+    directory_t,
+    files_t,
+    color_t,
+    string_list_t,
+    plain_dict_t,
+    json_obj_t,
+    text_t,
+    key_sequence_t,
+    choices_t,
+    choice_t,
+)
+
+
+class WeekDays(enum.Enum):
+    Monday = 1
+    Tuesday = 2
+    Wednesday = 3
+    Thursday = 4
+    Friday = 5
+    Saturday = 6
+    Sunday = 7
+
+
+def more_widgets_example(
+    arg1: int,
+    arg2: float,
+    arg3: str,
+    arg4: bool,
+    arg5: List[int],
+    arg6: Tuple,
+    arg7: dict,
+    arg9: set,
+    arg10: int_t,
+    arg11: int_dial_t,
+    arg12: int_slider_t,
+    arg13: float_t,
+    arg14: file_t,
+    arg15: directory_t,
+    arg16: files_t,
+    arg17: Literal["a", "b", "c"],
+    arg18: color_t,
+    arg19: string_list_t,
+    arg20: plain_dict_t,
+    arg21: json_obj_t,
+    arg22: text_t,
+    arg23: datetime,
+    arg24: date,
+    arg25: time,
+    arg26: key_sequence_t,
+    arg27: choices_t,
+    arg28: choice_t,
+    arg29: WeekDays,
+):
+    """
+    @params
+
+    [arg27]
+    choices = ["a", "b", "c", "d", "e", "f"]
+    columns = 2
+
+    [arg28]
+    choices = ["a", "b", "c", "d", "e", "f"]
+    editable = true
+
+    @end
+    """
+
+
+if __name__ == "__main__":
+    adapter = GUIAdapter()
+    adapter.add(more_widgets_example)
+    adapter.run()
+
+```
+
+<img src="./images/builtin_widgets.gif" />
+
+
+
+
 
 ## 四、高级主题
 
 ### （一）数据类型与控件
 
-#### 1、[配置函数参数控件的类型与属性](widgets/configure_widget)
+#### 1、[配置函数参数控件](widgets/configure_widget)
 
 #### 2、[内置控件类型一览](widgets/types_and_widgets.md)
 
@@ -351,7 +584,7 @@ if __name__ == "__main__":
 
 ### （二）`pyguiadapter.adapter.*`
 
-#### 1、[添加多个函数：函数名称、图标、文档及分组](adapter/multiple_functions.md)
+#### 1、[添加多个函数：函的数名称、图标、文档及分组](adapter/multiple_functions.md)
 
 #### 2、[用户进行交互：消息对话框与输入对话框](adapter/interact.md)
 
@@ -404,12 +637,10 @@ if __name__ == "__main__":
 
 ## 六、开源协议
 
-得益于`qtpy`的抽象能力，`PyGUIAdapter`本身并不依赖特定的qt绑定库，因此`PyGUIAdapter`使用`MIT`许可协议。
-开发者在使用`PyGUIAdapter`开发应用程序时，若依赖特定的Qt绑定库，则其在遵守本项目的许可协议的同时，还必须遵守其所选择的绑定库的许可协议。
+`PyGUIAdapter`使用`MIT`许可协议进行发布。得益于`qtpy`的抽象能力，`PyGUIAdapter`本身并不依赖特定的qt绑定库。然而，开发者在使用`PyGUIAdapter`开发应用程序时，若依赖特定的Qt绑定库，则在遵守本项目的许可协议的同时，还应当遵守所选绑定库的许可协议。例如：
 
-例如：
-- 若开发者选择使用`PySide2`，则其必须遵守`LGPL`（具体以其随附的许可协议为准）。
-- 若开发者选择使用`PyQt5`，则其必须遵守`GPL`（具体以其随附的许可协议为准）。
+- 若开发者选择使用`PySide2`，则其必须遵守`LGPL`（具体以随附的许可协议为准）。
+- 若开发者选择使用`PyQt5`，则其必须遵守`GPL`（具体以随附的许可协议为准）。
 
 
 ## 七、贡献

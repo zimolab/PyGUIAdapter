@@ -2,7 +2,7 @@
 
 ### 一、简介
 
-在开发者向`GUIAdapter`实例中添加了多个函数后，`PyGUIAdapter`将自动生成一个`函数选择窗口`，将所有已添加的函数显示出来供用户选择。当然，开发者也可以通过如下方式，在`GUIAdapter`实例中仅添加了一个函数时强制显示该窗口：
+在开发者向`GUIAdapter`实例中添加了多个函数后，`PyGUIAdapter`将自动生成一个`函数选择窗口`，该窗口会将所有已添加的函数显示出来以供用户选择。当然，开发者也可以通过如下方式，在`GUIAdapter`实例中仅添加了一个函数的情况下强制显示该窗口：
 
 ```python
 adapter.run(show_select_window=True)
