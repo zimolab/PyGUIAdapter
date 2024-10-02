@@ -5,12 +5,35 @@ from pyguiadapter.exceptions import ParameterError
 
 
 def solve(a: float, b: float, c: float) -> list:
-    """
-    Equation Solver, solving equations like:
+    """A simple equation solver for equations like:
 
-    **ax^2 + bx + c = 0** (a,b,c ∈ R)
-    """
+    **ax^2 + bx + c = 0** (a, b, c ∈ **R**, a != 0)
 
+    @param a: parameter a, <span style="color:red;">a != 0</span>
+    @param b: parameter b
+    @param c: parameter c
+    @return:
+
+    @params
+
+    [a]
+    default_value = 1.0
+    decimals = 5
+    step = 0.00005
+
+    [b]
+    default_value = 1.0
+    decimals = 5
+    step = 0.00005
+
+    [c]
+    default_value = 0.0
+    decimals = 5
+    step = 0.00005
+
+    @end
+
+    """
     if a == 0:
         raise ParameterError(parameter_name="a", message="a cannot be zero")
 
