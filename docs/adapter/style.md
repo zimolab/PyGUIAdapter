@@ -1,15 +1,15 @@
-## 界面美化
+## 界面美化：使用样式表与第三方库
 
 `PyGUIAdapter`的底层基于`Qt`, 所以一些适用于`Qt`的界面美化方法同样适用于`PyGUIAdapter`。
 
 ### 一、使用样式表
 开发者可以使用QT样式表（`QSS`）来自定义界面风格。有几种方法可以设置样式表：
 
-1. 在`GUIAdapter`初始化时，通过`global_style`参数设置全局样式表
+#### 1、设置全局样式表
 
 `GUIAdapter`构造函数中有一个`global_style`参数，用于设置全局样式表，用户可以把全局样式表的内容或者一个以全局样式表内容为返回值的函数传递给该参数。
 
-（1）直接传入全局样式表内容
+**（1）直接传入全局样式表内容**
 
 ```python
 import os.path
@@ -45,7 +45,7 @@ if __name__ == "__main__":
 
 ```
 
-（2）传入一个函数
+**（2）传入一个函数**
 
 ```python
 import os.path
@@ -96,9 +96,11 @@ if __name__ == "__main__":
 
 
 
-2. 在`on_app_start(appliaction: QApplication)`回调中手动加载和设置样式表
+#### 2、手动加载并设置样式表
 
-`GUIAdapter`那边将创建QApplication实例，当该实例创建完成之后，将回调`on_app_start()`，开发者可以在该回调函数中访问到当前的QApplication对象。然后便可调用其`setStyleSheet()`设置样式表：
+`GUIAdapter`启动时，内部将创建`QApplication`实例。启动完成后，`PyGUIAdapter`将回调`on_app_start()`，开发者可以在该回调函数中访问到当前`QApplication`对象，之后便可调用其`setStyleSheet()`方法设置样式表。
+
+下面是一个简单的示例：
 
 ```python
 import os.path
@@ -148,7 +150,7 @@ if __name__ == "__main__":
 
 ### 二、接入第三方库
 
-`PyGUIAdapter`的界面建立在`qtpy`基础之上，因此可以接入一些支持`qtpy`的第三方美化库。
+`PyGUIAdapter`生成的界面建立在`qtpy`基础之上，因此可以无缝接入一些支持`qtpy`的第三方美化库。
 
 下面是一些初步测试可用第三方库。
 
@@ -217,7 +219,7 @@ if __name__ == "__main__":
 
 
 
-#### 2. `QDarkStyleSheet`
+#### 2、`QDarkStyleSheet`
 
 > 运行示例代码，需要先安装[`QDarkStyleSheet`](https://github.com/ColinDuquesnoy/QDarkStyleSheet)，比如：
 >

@@ -1,16 +1,14 @@
-## 在函数中与用户进行交互
+## 用户进行交互：消息对话框与输入对话框
 
-`PyGUIAdapter`提供了多种方式，使得开发者可以在其函数允许过程中与用户进行交互。开发者可以在函数运行过程中弹出对话框，向用户展示一些信息，或者请求用户对某些信息进行再次确认，开发者也可以在函数运行过程中弹出输入框，要求用户输入某些数据......
+`PyGUIAdapter`提供了多种方式，使得开发者可以在其函数允许过程中与用户进行交互。开发者可以在函数运行过程中弹出对话框，向用户展示一些信息，或者请求用户对某些信息进行再次确认，开发者也可以在函数运行过程中弹出输入对话框，要求用户输入某些数据......
 
 通过合理使用交互手段，开发者可以使整个应用程序更加易用，增强用户体验。
-
-
 
 ### 一、弹出消息对话框
 
 > 消息对话框相关API定义在[`pyguiadapter.adapter.udialog`]()模块中
 
-#### （一）一般消息对话框
+#### （一）标准消息对话框
 
 `PyGUIAdapter`提供了四种标准的消息对话框，可以用于展示不同级别的提示信息。
 
@@ -30,8 +28,6 @@ def show_info_dialog(
 
 ```
 
-
-
 **2、Warning消息对话框**
 
 用于提示警告信息。
@@ -46,8 +42,6 @@ def show_warning_dialog(
 ) -> int | StandardButton:
     ...
 ```
-
-
 
 **3、Critical消息对话框**
 
@@ -64,8 +58,6 @@ def show_critical_dialog(
     ...
 ```
 
-
-
 **4、Question对话框**
 
 用于提示问询信息，并且可以从用户处获得问询结果。
@@ -80,8 +72,6 @@ def show_question_dialog(
 ) -> int | StandardButton:
     ...
 ```
-
-
 
 下面，提供一个综合性的示例：
 
@@ -296,8 +286,6 @@ if __name__ == "__main__":
 
 如果`PyGUIAdapter`内置的消息对话框不能满足需要，开发者也可以自定义消息对话框。一般流程如下：
 
-
-
 **1、继承`pyguiadater.adapter.BaseCustomDialog`实现自定义对话框类**
 
 开发者需要在自定义对话框类中实现`get_result()`抽象方法，后续，开发者可以在函数中获取该方法的返回值。
@@ -436,15 +424,15 @@ if __name__ == "__main__":
 
 
 
-### 二、弹出输入框
+### 二、弹出输入对话框
 
-> 输入框相关API在[`pyguiadapter.adapter.uinput`]()模块中定义
+> 输入对话框相关API在[`pyguiadapter.adapter.uinput`]()模块中定义
 
-`PyGUIAdapter`允许开发者在函数运行过程中弹出输入框，以便开发者动态地从获取用户输入。`PyGUIAdapter`内置了多种类型的输入框，用以输入不同类型的数据。若内置的输入框无法满足需求，开发者也可以自定义输入框。
+`PyGUIAdapter`允许开发者在函数运行过程中弹出输入对话框，以便开发者动态地从获取用户输入。`PyGUIAdapter`内置了多种类型的输入对话框，用以输入不同类型的数据。若内置的输入对话框无法满足需求，开发者也可以自定义输入对话框。
 
-#### （一）内置输入框类型
+#### （一）内置输入对话框
 
-**1、整数输入框**
+**1、整数输入对话框**
 
 ```python
 def get_int(
@@ -458,7 +446,7 @@ def get_int(
 	...
 ```
 
-**2、单行文本输入框**
+**2、单行文本输入对话框**
 
 ```python
 def get_string(
@@ -470,7 +458,7 @@ def get_string(
     ...
 ```
 
-**3、多行文本输入框**
+**3、多行文本输入对话框**
 
 ```python
 def get_text(
@@ -481,7 +469,7 @@ def get_text(
     ...
 ```
 
-**4、浮点数输入框**
+**4、浮点数输入对话框**
 
 ```python
 def get_float(
@@ -496,7 +484,7 @@ def get_float(
     ...
 ```
 
-**5、多选一输入框**
+**5、多选一输入对话框**
 
 ```python
 def get_selected_item(
@@ -509,7 +497,7 @@ def get_selected_item(
     ...
 ```
 
-**6、颜色输入框**
+**6、颜色输入对话框**
 
 ```python
 def get_color(
@@ -564,7 +552,7 @@ def get_open_files(
 	...
 ```
 
-**11、Json对象输入框**
+**11、Json对象输入对话框**
 ```python
 def get_json_object(
     title: str = "Input Json",
@@ -585,7 +573,7 @@ def get_json_object(
     ...
 ```
 
-**12、Python字面值输入框**
+**12、Python字面值输入对话框**
 ```python
 def get_py_literal(
     title: str = "Input Python Literal",
@@ -687,15 +675,15 @@ if __name__ == "__main__":
 
 <img src="../images/uinput_example.gif" />
 
-#### （二）自定义输入框类型
+#### （二）自定义输入对话框
 
-若内置的输入框无法满足开发者需求，开发者也可以创建自定义输入框。具体的步骤如下。
+若内置的输入对话框无法满足开发者需求，开发者也可以创建自定义输入对话框。具体的步骤如下。
 
-**1、创建自定义输入框类**
+**1、实现自定义输入对话框**
 
-自定义输入框类需继承自[`pyguiadapter.utils.inputdialog.UniversalInputDialog`]()类。开发者必须实现以下两个抽象方法。
+自定义输入对话框类需继承自[`pyguiadapter.utils.inputdialog.UniversalInputDialog`]()类。开发者必须实现以下两个抽象方法。
 
-（1）`create_main_widget()`方法
+**（1）`create_main_widget()`方法**
 
 ```
 @abstractmethod
@@ -703,11 +691,13 @@ def create_main_widget(self) -> QWidget:
     pass
 ```
 
-开发者需在该方法中创建输入框的主控件并将其返回。所谓`主控件（main widget）`就是输入框窗口标题栏之下，确认按钮之上，中间的位置:
+开发者需在该方法中创建输入对话框的主控件并将其返回。所谓`主控件（main widget）`就是输入对话框窗口标题栏之下，确认按钮之上，中间的位置:
 
 <img src="../images/custom_input_dialog_main_widget.png" />
 
-(2) `get_result()`方法
+**(2) `get_result()`方法**
+
+该方法用于返回用户在对话框中输入的值。
 
 ```python
     @abstractmethod
@@ -715,11 +705,9 @@ def create_main_widget(self) -> QWidget:
         pass
 ```
 
-该方法用于从输入框获取用户输入的值。
+**2、弹出自定义输入对话框**
 
-
-
-**2、调用`uinput.get_custom_input()`函数弹出自定义输入框，并获得用户输入值**
+实现自定义输入对话框后，开发者可以调用`uinput.get_custom_input()`函数弹出对话框并获取用户输入值。
 
 ```python
 def get_custom_input(
@@ -729,19 +717,19 @@ def get_custom_input(
     ...
 ```
 
-`get_custom_input()`函数的第一个参数`input_dialog_class`就是开发者创建的自定义输入框类，第二个参数`input_dialog_args`则是将传递给自动输入框类构造函数的参数。
+`get_custom_input()`函数的第一个参数`input_dialog_class`就是自定义输入对话框类（记住是类而非实例），第二个参数`input_dialog_args`则是要传递给自定义输入对话框类构造函数的参数。
 
 关于`get_custom_input()`函数的返回值，存在以下两种情况：
 
-（1）若自定义输入框被`reject`，则`get_custom_input()`函数返回`None`
+（1）若自定义输入对话框被`reject`，则`get_custom_input()`函数返回`None`
 
-（2）若自定义输入框被`accept`，则`get_custom_input()`函数的返回值就是`get_result()`方法的返回值。
+（2）若自定义输入对话框被`accept`，则`get_custom_input()`函数的返回值就是`get_result()`方法的返回值。
 
----
+#### （三）自定义输入对话框实例
 
-下面，通过一个实际的例子演示如何创建自定义输入框。这次我们选择用QT提供的可视化设计工具`QT设计师`来设计输入框的主控件。
+下面，通过一个实际的例子来演示如何创建和使用自定义输入对话框。这次我们选择用QT提供的可视化设计工具`QT设计师`来完成自定义输入对话框的主控件的设计和布局。
 
-假设我们需要为以下类型创建自定义输入框：
+假设需要为以下类型创建自定义输入对话框：
 
 ```python
 @dataclasses.dataclass
@@ -754,7 +742,7 @@ class UserInfo:
     description: str
 ```
 
-**第一步：**创建对应的`自定义输入框类`，假设其名称为`UserInfoDialog`。
+**第一步：**创建对应的`自定义输入对话框类`，类名为`UserInfoDialog`。
 
 ```python
 class UserInfoDialog(UniversalInputDialog):
@@ -786,15 +774,12 @@ class UserInfoDialog(UniversalInputDialog):
         pass
 ```
 
-可以看到，`create_main_widget()`和`get_result()`目前都还是未实现的状态，后面，我们将逐步实现它们。
+`create_main_widget()`和`get_result()`目前都还是未实现的状态，后面我们将逐步实现它们。同时，你可能注意到了，`UserInfoDialog`构造函数中有一些参数，这些参数来自父类`UniversalInputDialog`，可以直接从父类构造函数复制过来。
 
-同时，你可能注意到了`UserInfoDialog`的构造函数中有一些参数，这些参数来自父类`UniversalInputDialog`，它们的作用从名称就能看出来，这里就不赘述。
-
-现在，让我们在这些参数之后添加一个参数`initial_user_info`，这个参数将用来为界面上的控件设置初始值，现在`UserInfoDialog`的构造函数如下：
+现在，在构造函数中添加一个参数：`initial_user_info`，这个参数表示初始的`UserInfo`对象，后续将用于为控件设置初始值。现在`UserInfoDialog`的构造函数如下：
 
 ```python
 class UserInfoDialog(UniversalInputDialog):
-
     def __init__(
         self,
         parent: Optional[QWidget],
@@ -816,7 +801,7 @@ class UserInfoDialog(UniversalInputDialog):
             cancel_button_text=cancel_button_text,
             **kwargs
         )
-
+    ...
 ```
 
 
@@ -825,17 +810,18 @@ class UserInfoDialog(UniversalInputDialog):
 
 前面说过，这次我们选择使用`QT设计师`，而不是手动写代码的方式来实现主控件。
 
-根据`UserInfo`的字段，在`QT设计师`选择合适的控件，通过拖拽的方式进行布局，最终将布局好的界面保存为`.ui`文件，假设名称为`user_info_dialog_main_widget.ui`。将该文件与自定义输入框的源码文件放在同一目录下。
+根据`UserInfo`的字段信息，在`QT设计师`中拖拽合适的控件，完成布局，并将布局好的界面保存为`.ui`文件，这里我们将其命名为`user_info_dialog_main_widget.ui`，将该文件与自定义输入对话框源码文件放在同一目录下。
 
-> 我们需要在`QT设计师`中为字段对应的输入控件合理命名，后续我们将通过其名称在代码中引用它们。在本例中，这些控件的名称如下：
+> 我们需要在`QT设计师`中为输入控件合理设置对象名称（objectName），后续我们将通过该名称在代码中引用它们。在本示例中，这些控件的名称如下：
 >
 > <img src="../images/main_widget_names.png" />
 >
 > 
 
-在`create_main_widget()`中加载ui文件，获取各字段对应输入控件，根据`inital_user_info`设置初始值，最后将最外层的控件作为主控件返回。
+在`create_main_widget()`中加载`.ui`文件，获取各字段对应输入控件，根据`inital_user_info`设置初始值，最后返回最外层的控件。
 
 ```python
+    ...
     def create_main_widget(self) -> QWidget:
         ui_file = "user_info_dialog_main_widget.ui"
         # create widget from ui file
@@ -869,13 +855,10 @@ class UserInfoDialog(UniversalInputDialog):
         return main_widget
 ```
 
-为了后续引用方便，我们可以在构造函数中预先定义`self._username_edit`、`self._birthday_edit`等成员变量。
-
-于是，我们的`UserInfoDialog`类现在变成了下面这个样子：
+为了代码的其他地方引用方便，我们可以在构造函数中预先定义`self._username_edit`、`self._birthday_edit`等成员变量。现在，`UserInfoDialog`类现在变成了下面这个样子：
 
 ```python
 class UserInfoDialog(UniversalInputDialog):
-
     def __init__(
         self,
         parent: Optional[QWidget],
@@ -941,11 +924,11 @@ class UserInfoDialog(UniversalInputDialog):
 
 ```
 
-现在，离完成只有一步之遥，接下来，只需要实现`get_result()`即可大功告成。
+接下来，只需要实现`get_result()`方法即可大功告成。
 
-**第三步：**实现`get_result()`，返回用户输入结果。
+**第三步：**实现`get_result()`方法，返回用户输入结果。
 
-在我们的例子中，`get_result()`应当返回一个`UserInfo`对象。这将是非常简单的一件事——从字段对应的控件获取当前值，用这些值实例化`UserInfo`，然后返回它，就这么简单：
+在我们的例子中，`get_result()`应当返回一个`UserInfo`对象。这将是非常简单的一件事，从对应的控件获取当前值，用这些值实例化`UserInfo`，然后返回它即可：
 
 ```python
     def get_result(self) -> UserInfo:
@@ -965,8 +948,6 @@ class UserInfoDialog(UniversalInputDialog):
         )
         return new_user_info
 ```
-
-
 
 现在，我们的`UserInfoDialog`已经完成了，完整的代码如下：
 
@@ -1092,6 +1073,8 @@ if __name__ == "__main__":
 <img src="../images/custom_input_dialog_example.gif" />
 
 最后，贴上所有代码：
+
+> `user_info_dialog_main_widget.ui`文件可在[`examples/adapter`]()目录下找到。
 
 ```python
 import dataclasses
@@ -1228,7 +1211,5 @@ if __name__ == "__main__":
     adapter = GUIAdapter()
     adapter.add(user_info_example)
     adapter.run()
-
 ```
 
-> `user_info_dialog_main_widget.ui`文件可在[`examples/adapter`]()目录下找到。

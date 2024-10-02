@@ -13,7 +13,9 @@
 
 ![hello_world](images/hello_world.png)
 
-借助`PyGUIAdapter`，从`CLI`切换到`GUI`将变得十分简单。
+借助`PyGUIAdapter`，从`CLI`切换到`GUI`将变得十分简单和平滑。
+
+下面是Python[官方文档](https://docs.python.org/3/library/argparse.html#example)给出的一个使用`argparse`创建命令行程序的例子：
 
 ```python
 import argparse
@@ -28,8 +30,7 @@ args = parser.parse_args()
 print(args.accumulate(args.integers))
 ```
 
-上面的示例代码来自Python[官方文档](https://docs.python.org/3/library/argparse.html#example)。在`PyGUIAdapter`帮助下，开发者可以从此告别编写冗长、乏味的`argument/option`代码，而将全部精力集中
-到核心功能的实现上。
+在`PyGUIAdapter`帮助下，开发者可以从此告别编写冗长、乏味的`argument/option`代码，而将全部精力集中到核心功能的实现上：
 
 ```python
 from typing import List, Literal
@@ -101,19 +102,18 @@ pip install PyGUIAdapter
 pip install pyside2
 ```
 
-> 如果你的环境下同时安装了多个Qt的绑定库，qtpy默认会使用`PyQt5`(如果存在的话)。
-> 或者你可以通过环境变量`QT_API`来明确指定要使用的绑定库，可以指定以下值：
+> 如果你的环境下同时安装了多个Qt的绑定库，qtpy默认会使用`PyQt5`(如果存在的话)。或者你可以通过环境变量`QT_API`来明确指定要使用的绑定库，可以指定以下值：
+>
 > + pyqt5
 > + pyside2
 > + pyqt6
 > + pyside6
 >
-> 更多详细的说明，参见：[qtpy官方说明](https://github.com/spyder-ide/qtpy)。
+> 更多详细信息，可以参见：[qtpy官方说明](https://github.com/spyder-ide/qtpy)。
 
 ### （三）一个简单的示例
 
-`PyGUIAdapter`以函数为基本单元。在开发时，开发者的主要工作是实现业务逻辑并将其封装为Python函数。在这一过程中，开发者将希望用户输入数据以函数参数
-的形式列在参数列表中，并使用[`类型注解`](https://peps.python.org/pep-0484/)正确标注其数据类型。剩下的工作，基本上就可以交由`PyGUIAdapter`自动完成了:
+`PyGUIAdapter`以函数为基本单元。在开发时，开发者的主要工作是实现业务逻辑并将其封装为Python函数。在这一过程中，开发者将希望用户输入数据以函数参数的形式列在参数列表中，并使用[`类型注解`](https://peps.python.org/pep-0484/)正确标注其数据类型。剩下的工作，基本上就可以交由`PyGUIAdapter`自动完成了:
 
 在运行时，`PyGUIAdapter`会提取函数的参数列表，并根据每一个参数的类型，自动选择合适的控件，例如：对于`int`类型的参数，`PyGUIAdapter`将默认创建
 一个`IntSpinBox`；对于`str`类型的参数，`PyGUIAdapter`将默认创建一个`LineEdit`等等。除此之外，`PyGUIAdapter`还将自动完成窗口创建、界面布局
@@ -129,8 +129,36 @@ pip install pyside2
 
 下面通过一个简单的实例来说明`PyGUIAdapter`的基本使用方法。 假设，现在要求我们实现一个简单的`一元二次方程求解器`。
 
-根据定义，我们知道，确定一个`一元二次方程`，需要知道三个系数：`a`、`b`、`c`。由此，可以确定求解函数应当具有三个参数：`a`、`b`、`c`，以对应方程的三个
-系数，这些参数将由用户在运行时给出。又因为方程系数一般为实数，由此可以确定求解函数三个参数的类型为`float`。 下面，我们将实现这个求解函数`“solve()”`：
+根据定义，要确定一个`一元二次方程`，需要知道三个系数：`a`、`b`、`c`。由此，可以确定求解函数应当有三个输入参数：`a`、`b`、`c`。又因为方程系数一般为实数（为了演示的简单性，这里不考虑复数的情况），由此可以确定这三个参数的类型应当为`float`。 下面，我们根据这些信息，使用求根公式来实现求解函数`solve()`：
+
+```python
+import math
+
+def solve(a: float, b: float, c: float) -> list:
+    """
+    Equation Solver, solving equations like:
+
+    **ax^2 + bx + c = 0** (a,b,c ∈ R)
+    """
+    discriminant = b**2 - 4 * a * c
+    if discriminant < 0:
+        return []
+    elif discriminant == 0:
+        return [-b / (2 * a)]
+    else:
+        sqrt_discriminant = math.sqrt(discriminant)
+        return [(-b + sqrt_discriminant) / (2 * a), (-b - sqrt_discriminant) / (2 * a)]
+```
+
+接着，我们为`solve()`函数适配图形界面，对于这个简单的例子，基本上只需要三行代码而无需其他额外的工作，即可完成图形界面的适配：
+
+```python
+adapter = GUIAdapter()
+adapter.add(solve)
+adapter.run()
+```
+
+完整代码如下：
 
 ```python
 import math
@@ -159,17 +187,19 @@ if __name__ == "__main__":
     adapter.run()
 ```
 
+
+
 <img src="images/solver.png" />
 
-如上图所示，`PyGUIAdapter`自动生成的窗口主要包含三个区域：
+>如上图所示，`PyGUIAdapter`生成的窗口主要包含三个区域：
+>
+>1. **参数控件区（Parameters Area）**：从函数参数生成的输入控件将放置在此区域
+>
+>2. **函数文档停靠窗口（Document Dock）**：该区域主要用于显示函数的文档信息，其显示的内容默认来源于函数的`文档字符串（docstring）`
+>
+>3. **程序输出停靠窗口（Output Dock）**：该区域主要用于显示程序的输出信息，函数的返回值、函数调用过程中发生的异常信息默认将显示在此区域。
 
-1. **参数控件区（Parameters Area）**：从函数参数生成的输入控件将放置在此区域
-
-2. **函数文档停靠窗口（Document Dock）**：此区域主要用于显示函数的文档信息，其显示的内容默认来源于函数的`文档字符串（docstring）`
-
-3. **程序输出停靠窗口（Output Dock）**：此区域主要用于显示程序的输出信息，函数的返回值、函数调用过程中发生的异常信息默认将显示在此区域。
-
-下面，让我们将参数`a`调整为零，尝试使函数发生异常，**看看`PyGUIAdapter`如何处理函数中`未捕获的异常`**：
+下面，尝试输入`a`为零，这将使函数发生除以0的异常，看看`PyGUIAdapter`如何处理函数中`未捕获的异常`：
 
 <img src="images/error_handling.png" width="60%"/>
 
@@ -178,11 +208,11 @@ if __name__ == "__main__":
 
 #### 2、在函数中打印信息
 
-在程序运行过程中向用户打印一些信息是一个非常常见的需求，一般我们使用内置函数`print()`来做到这一点。然而，通过`print()`打印的信息通常会被输出到`stdout`，
-因此用户无法在`程序输出停靠窗口`中看到这些信息。为了使开发者能够将信息打印到`程序输出停靠窗口`中，`PyGUIAdapter`提供了`uprint()`函数，
-其用法与`print()`基本一致，下面演示如何使用该方法：
+> 关于这一主题，以下文档作了更为详细的说明：[向窗口输出信息](adapter/output.md)
 
-> Tips：从`pyguiadapter.adapter.ulogging`模块导入`uprint()`函数
+在程序运行过程中向用户打印一些信息是一个常见需求，一般使用内置函数`print()`来打印信息。然而，通过`print()`打印的信息通常会被输出到`stdout`（一般而言就是控制台），因此用户无法在`程序输出停靠窗口`中看到这些信息。为了使开发者能够将信息打印到`程序输出停靠窗口`中，`PyGUIAdapter`提供了`uprint()`函数，其用法与`print()`基本一致，下面演示如何使用该方法：
+
+> Tips：从`pyguiadapter.adapter.uoutput`模块导入`uprint()`函数
 
 ```python
 import math
@@ -222,7 +252,7 @@ if __name__ == "__main__":
 
 > `uprint()`函数支持输出html格式内容，但只支持部分标签。
 
-除了`uprint()`函数，`pyguiadapter.adapter.ulogging`模块中还有许多输出信息的方法，借助这些方法，开发者可以输出格式更加丰富的的信息。
+除了`uprint()`函数，`pyguiadapter.adapter.uoutput`模块中还有许多输出信息的方法，借助这些方法，开发者可以输出格式更加丰富的的信息。
 
 ```python
 from pyguiadapter.adapter import GUIAdapter, uoutput
@@ -249,6 +279,10 @@ if __name__ == "__main__":
 ```
 
 <img src="images/ulogging.png" width="60%"/>
+
+由于`uprint()`支持输出`html`格式的信息，因此开发者甚至可以将图片输出到`Output`窗口中：
+
+> `uprint()`对`html`的支持有限，仅支持部分html标签，不支持`css3`和`html5`。
 
 #### 3、对函数参数进行校验
 
@@ -307,25 +341,25 @@ if __name__ == "__main__":
 
 ### （一）数据类型与控件
 
-#### 1、[如何配置函数参数的控件](widgets/how_to_configure_widget.md)
+#### 1、[配置函数参数控件的类型与属性](widgets/configure_widget)
 
-#### 2、[参数类型与对应控件](widgets/types_and_widgets.md)
+#### 2、[内置控件类型一览](widgets/types_and_widgets.md)
 
-#### 3、[自定义控件类型](widgets/custom_widget.md)
+#### 3、[创建和使用自定义控件](widgets/custom_widget.md)
 
 #### 4、[关于图标](widgets/icons.md)
 
 ### （二）`pyguiadapter.adapter.*`
 
-#### 1、[添加多个函数：函数名称、图标、文档以及分组](adapter/multiple_functions.md)
+#### 1、[添加多个函数：函数名称、图标、文档及分组](adapter/multiple_functions.md)
 
-#### 2、[在函数中与用户进行交互](adapter/interact.md)
+#### 2、[用户进行交互：消息对话框与输入对话框](adapter/interact.md)
 
-#### 3、[取消函数执行](adapter/cancellable_function.md)
+#### 3、[取消正在执行的函数：协商式线程退出机制](adapter/cancellable_function.md)
 
-#### 4、[进度条](adapter/progressbar.md)
+#### 4、[使用进度条](adapter/progressbar.md)
 
-#### 5、[界面美化](adapter/style.md)
+#### 5、[界面美化：使用样式表与第三方库](adapter/style.md)
 
 
 ### （三）窗口
@@ -339,15 +373,15 @@ if __name__ == "__main__":
 
 #### 1、[窗口概述](windows/overview.md)
 
-#### 2、[为窗口添加工具栏：`ToolBarConfig`的使用](windows/toolbar.md)
+#### 2、[为窗口添加工具栏](windows/toolbar.md)
 
-#### 3、[为窗口添加菜单栏：`MenuConfig`的使用](windows/menus.md)
+#### 3、[为窗口添加菜单栏](windows/menus.md)
 
 #### 4、[监听窗口事件](windows/window_event.md)
 
-#### 5、[配置函数选择窗口](windows/fn_select_window.md)
+#### 5、[函数选择窗口（FnSelectWindow）](windows/fn_select_window.md)
 
-#### 6、[配置函数执行窗口](windows/fn_exec_window.md)
+#### 6、[函数执行窗口（FnExecuteWindow）](windows/fn_exec_window.md)
 
 ### （四）实用工具
 

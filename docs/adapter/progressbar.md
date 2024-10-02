@@ -1,4 +1,4 @@
-## 进度条
+## 使用进度条
 
 `PyGUIAdapter`提供了进度条功能，开发者可以在函数执行过程中自由地显示、隐藏和更新进度条。
 
@@ -10,15 +10,11 @@
 - **Message**：进度条上显示的进度信息。
 - **Info**：额外显示的信息。
 
-
-
 进度条相关的API在[`pyguiadapter.adapter.uprogress`]()模块中，主要包括三个接口：
 
 - **`show_progressbar()`**：用于显示进度条。
 - **`hide_progressbar()`**：用于隐藏进度条。
 - **`update_progress()`**：用于更新进度信息。
-
-
 
 ### 一、显示进度条
 
@@ -56,8 +52,6 @@ def show_progressbar(
 - `info_text_format`：该参数用于控制info信息的文本格式，支持`"richtext"` 、` "markdown"` 、`"plaintext"` 、`"autotext"`，默认为`"autotext"`。
 - `initial_info`：该参数用于指定初始info信息。
 
-
-
 ### 二、隐藏进度条
 
 ```python
@@ -67,8 +61,6 @@ def hide_progressbar():
 
 当开发者不再需要进度条时，可以调用该函数将进度条隐藏。
 
-
-
 ### 三、更新进度信息
 
 ```python
@@ -77,8 +69,6 @@ def update_progress(value: int, info: str | None = None):
 ```
 
 开发者可以在函数中调用此函数来更新当前进度和info信息。
-
-
 
 ### 四、示例
 
