@@ -13,7 +13,7 @@ _MSG_TMPL = "<p><pre style='color:{color}'>{msg}</pre></p>"
 
 
 @dataclasses.dataclass
-class LoggingConfig(object):
+class LoggerConfig(object):
     info_color: str = DEFAULT_COLOR_INFO
     debug_color: str = DEFAULT_COLOR_DEBUG
     warning_color: str = DEFAULT_COLOR_WARNING
@@ -22,11 +22,11 @@ class LoggingConfig(object):
 
 
 class Logger(object):
-    def __init__(self, confing: Optional[LoggingConfig] = None):
-        self._config = confing or LoggingConfig()
+    def __init__(self, confing: Optional[LoggerConfig] = None):
+        self._config = confing or LoggerConfig()
 
     @property
-    def config(self) -> LoggingConfig:
+    def config(self) -> LoggerConfig:
         return self._config
 
     def info(self, msg: str):
