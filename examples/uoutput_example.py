@@ -1,5 +1,4 @@
 from pyguiadapter.adapter import GUIAdapter, uoutput
-from pyguiadapter.adapter.ucontext import uprint
 
 
 def output_log_msg(
