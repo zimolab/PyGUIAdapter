@@ -1,5 +1,6 @@
 import dataclasses
 import warnings
+from abc import abstractmethod
 from typing import Tuple, Dict, List, Optional, Union, Sequence, Callable
 
 from qtpy.QtCore import QSize, Qt
@@ -101,9 +102,9 @@ class BaseWindow(QMainWindow):
             menus = menus.copy()
         self._menus: Optional[List[Union[MenuConfig, Separator]]] = menus
         self._listener: BaseWindowStateListener = listener
-
         self._actions: Dict[int, QAction] = {}
 
+        self._create_ui()
         self.apply_configs()
         self._setup_toolbar()
         self._setup_menus()
@@ -359,3 +360,7 @@ class BaseWindow(QMainWindow):
             self.removeAction(action)
             action.deleteLater()
         self._actions.clear()
+
+    @abstractmethod
+    def _create_ui(self):
+        pass

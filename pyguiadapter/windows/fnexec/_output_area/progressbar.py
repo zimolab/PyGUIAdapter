@@ -44,9 +44,10 @@ class ProgressBar(QWidget):
 
         self.update_config(config)
 
-    def update_config(self, config: ProgressBarConfig):
+    def update_config(self, config: Optional[ProgressBarConfig]):
         self._config = config
         if not self._config:
+            self.hide()
             return
         self._progressbar.setRange(self._config.min_value, self._config.max_value)
         self._progressbar.setInvertedAppearance(self._config.inverted_appearance)

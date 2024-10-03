@@ -2,28 +2,31 @@ from typing import Optional
 
 from qtpy.QtWidgets import QWidget, QVBoxLayout
 
-from ._outputbrowser import OutputBrowserConfig, OutputBrowser
-from ._progressbar import ProgressBarConfig, ProgressBar
+from .browser import OutputBrowserConfig, OutputBrowser
+from .progressbar import ProgressBarConfig, ProgressBar
 
 
-class FnExecuteOutputArea(QWidget):
-    def __init__(
-        self,
-        parent: QWidget,
-        progressbar_config: Optional[ProgressBarConfig],
-        output_browser_config: OutputBrowserConfig,
-    ):
+class OutputArea(QWidget):
+    def __init__(self, parent: QWidget, output_browser_config: OutputBrowserConfig):
         self._progressbar: Optional[ProgressBar] = None
         self._doc_browser: Optional[OutputBrowser] = None
 
         super().__init__(parent)
 
         # noinspection PyArgumentList
-        self._layout_main = QVBoxLayout()
-        self.setLayout(self._layout_main)
-        self._layout_main.setContentsMargins(1, 2, 1, 2)
-        self._setup_doc_browser(output_browser_config)
-        self._setup_progressbar(progressbar_config)
+        self._layout = QVBoxLayout()
+        self._layout.setContentsMargins(0, 0, 0, 0)
+
+        self._doc_browser = OutputBrowser(self, output_browser_config)
+        self._layout.addWidget(self._doc_browser)
+
+        self._progressbar = ProgressBar(self)
+        self._layout.addWidget(self._progressbar)
+
+        self.setLayout(self._layout)
+
+    def apply_config(self):
+        self._doc_browser.apply_config()
 
     def show_progressbar(self):
         self._progressbar.show()
@@ -47,12 +50,3 @@ class FnExecuteOutputArea(QWidget):
         scroll_bar = self._doc_browser.verticalScrollBar()
         if scroll_bar:
             scroll_bar.setValue(scroll_bar.maximum())
-
-    # noinspection SpellCheckingInspection
-    def _setup_doc_browser(self, config: Optional[OutputBrowserConfig]):
-        self._doc_browser = OutputBrowser(self, config)
-        self._layout_main.addWidget(self._doc_browser)
-
-    def _setup_progressbar(self, config: Optional[ProgressBarConfig]):
-        self._progressbar = ProgressBar(self, config=config)
-        self._layout_main.addWidget(self._progressbar)

@@ -46,22 +46,11 @@ class CodeEditorWindow(BaseCodeEditorWindow):
             for exclude_action in exclude_toolbar_actions:
                 toolbar.remove_action(exclude_action)
 
-        self.__editor: Optional[QCodeEditor] = None
         self.__current_file: Optional[str] = None
         self.__fingerprint: Optional[str] = utils.fingerprint(config.initial_text)
         self.__highlighter: Optional[QStyleSyntaxHighlighter] = None
 
         super().__init__(parent, config, listener, toolbar, menus)
-
-    def _set_editor_instance(self, editor: QCodeEditor):
-        assert self.__editor is None
-        self.__editor = editor
-
-    def _editor_instance(self) -> QCodeEditor:
-        return self.__editor
-
-    def _config_instance(self) -> CodeEditorConfig:
-        return cast(CodeEditorConfig, self._config)
 
     def _current_highlighter(self) -> Optional[QStyleSyntaxHighlighter]:
         return self.__highlighter

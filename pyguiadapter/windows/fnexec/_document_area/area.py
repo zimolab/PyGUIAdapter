@@ -2,11 +2,11 @@ from typing import Literal
 
 from qtpy.QtWidgets import QWidget, QVBoxLayout
 
-from .._docbrowser import DocumentBrowserConfig, DocumentBrowser
-from ...utils import set_textbrowser_content
+from ..._docbrowser import DocumentBrowserConfig, DocumentBrowser
+from ....utils import set_textbrowser_content
 
 
-class FnDocumentArea(QWidget):
+class DocumentArea(QWidget):
     # noinspection SpellCheckingInspection
     def __init__(self, parent: QWidget, document_browser_config: DocumentBrowserConfig):
         super().__init__(parent)
@@ -14,16 +14,15 @@ class FnDocumentArea(QWidget):
         self._config = document_browser_config
 
         # noinspection PyArgumentList
-        self._layout_main = QVBoxLayout()
-        self.setLayout(self._layout_main)
-        self._layout_main.setContentsMargins(0, 0, 0, 0)
+        self._layout = QVBoxLayout()
+        self._layout.setContentsMargins(0, 0, 0, 0)
+
         self._document_textbrowser = DocumentBrowser(self, document_browser_config)
+        self._layout.addWidget(self._document_textbrowser)
 
-        self._layout_main.addWidget(self._document_textbrowser)
+        self.setLayout(self._layout)
 
-    def update_document(
-        self,
-        document: str,
-        document_format: Literal["markdown", "html", "plaintext"],
+    def set_document(
+        self, document: str, document_format: Literal["markdown", "html", "plaintext"]
     ):
         set_textbrowser_content(self._document_textbrowser, document, document_format)

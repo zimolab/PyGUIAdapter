@@ -26,8 +26,6 @@ class TextBrowser(QTextBrowser):
         super().__init__(parent)
         self._config: TextBrowserConfig = config or TextBrowserConfig()
 
-        self.update_ui()
-
     @property
     def config(self) -> TextBrowserConfig:
         return self._config
@@ -46,10 +44,9 @@ class TextBrowser(QTextBrowser):
         if content:
             self.insertHtml(f"<{html_tag}>" + content + f"</{html_tag}>")
         self.insertHtml("<br>")
-        # self.move_cursor_to_end()
         self.ensureCursorVisible()
 
-    def update_ui(self):
+    def apply_config(self):
         palette = self.palette()
         if self._config.background_color:
             palette.setColor(QPalette.Base, QColor(self._config.background_color))

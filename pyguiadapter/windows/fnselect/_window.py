@@ -58,7 +58,6 @@ class FnSelectWindow(BaseWindow):
         self._select_button: Optional[QPushButton] = None
 
         super().__init__(parent, config, listener, toolbar, menus)
-        self._create_ui()
 
     def apply_configs(self):
         super().apply_configs()

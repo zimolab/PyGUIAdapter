@@ -8,7 +8,7 @@ DEFAULT_TEXT_COLOR = "#FFFFFF"
 DEFAULT_FONT_FAMILY = ("Consolas", "Arial", "sans-serif")
 DEFAULT_FONT_SIZE = 12
 
-from ...textbrowser import TextBrowserConfig, TextBrowser
+from ....textbrowser import TextBrowserConfig, TextBrowser
 
 
 @dataclasses.dataclass

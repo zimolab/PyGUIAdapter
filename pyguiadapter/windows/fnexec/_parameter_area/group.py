@@ -1,39 +1,33 @@
 from collections import OrderedDict
 from typing import Dict, Any, List, Tuple, Type, Literal, Optional
 
-from qtpy.QtCore import Signal
 from qtpy.QtGui import QIcon
 from qtpy.QtWidgets import (
     QWidget,
     QVBoxLayout,
-    QHBoxLayout,
-    QToolBox,
-    QCheckBox,
-    QPushButton,
     QScrollArea,
     QSpacerItem,
     QSizePolicy,
 )
 
-from ...utils import get_icon, hline
-from ...exceptions import ParameterAlreadyExistError, ParameterNotFoundError
-from ...paramwidget import BaseParameterWidget, BaseParameterWidgetConfig
-from ._base import FnExecuteWindowConfig
+from .base import BaseParameterPage, BaseParameterGroupBox
+from .._base import FnExecuteWindowConfig
+from ....exceptions import ParameterAlreadyExistError, ParameterNotFoundError
+from ....paramwidget import BaseParameterWidget, BaseParameterWidgetConfig
+from ....utils import get_icon
 
 
-class FnParameterGroupPage(QWidget):
+class ParameterGroupPage(BaseParameterPage):
     # noinspection SpellCheckingInspection
-    def __init__(self, parent: "FnParameterGroupBox", group_name: str):
-        self._parent: FnParameterGroupBox = parent
-        super().__init__(parent)
+    def __init__(self, parent: "ParameterGroupBox", group_name: str):
+        super().__init__(parent, group_name)
 
-        self._group_name = group_name
         self._parameters: Dict[str, BaseParameterWidget] = OrderedDict()
 
         # noinspection PyArgumentList
         self._layout_main = QVBoxLayout()
-        self.setLayout(self._layout_main)
         self._layout_main.setContentsMargins(0, 0, 0, 0)
+        self.setLayout(self._layout_main)
 
         self._param_scrollarea = QScrollArea(self)
         self._param_scrollarea.setWidgetResizable(True)
@@ -47,10 +41,6 @@ class FnParameterGroupPage(QWidget):
         self._bottom_spacer = QSpacerItem(
             0, 0, QSizePolicy.Minimum, QSizePolicy.Expanding
         )
-
-    @property
-    def group_name(self) -> str:
-        return self._group_name
 
     def scroll_to(self, parameter_name: str, x: int = 50, y: int = 50) -> None:
         widget = self.get_parameter_widget(parameter_name)
@@ -87,9 +77,9 @@ class FnParameterGroupPage(QWidget):
             self._scrollarea_content, parameter_name, widget_config
         )
         # noinspection PyUnresolvedReferences
-        self._parent.validation_failed.connect(new_widget.on_validation_failed)
+        self._parent.sig_validation_failed.connect(new_widget.on_validation_failed)
         # noinspection PyUnresolvedReferences
-        self._parent.validation_error_cleared.connect(
+        self._parent.sig_validation_error_cleared.connect(
             new_widget.on_clear_validation_error
         )
         self._add_to_scrollarea(new_widget, index)
@@ -146,9 +136,9 @@ class FnParameterGroupPage(QWidget):
         index = self._layout_scrollerea_content.indexOf(widget)
         self._layout_scrollerea_content.takeAt(index)
         # noinspection PyUnresolvedReferences
-        self._parent.validation_failed.disconnect(widget.on_validation_failed)
+        self._parent.sig_validation_failed.disconnect(widget.on_validation_failed)
         # noinspection PyUnresolvedReferences
-        self._parent.validation_error_cleared.disconnect(
+        self._parent.sig_validation_error_cleared.disconnect(
             widget.on_clear_validation_error
         )
         widget.deleteLater()
@@ -216,28 +206,24 @@ class FnParameterGroupPage(QWidget):
         self._layout_scrollerea_content.addSpacerItem(self._bottom_spacer)
 
 
-class FnParameterGroupBox(QToolBox):
-
-    validation_failed = Signal(str, object)
-    validation_error_cleared = Signal(object)
-
+class ParameterGroupBox(BaseParameterGroupBox):
     def __init__(self, parent: QWidget, config: FnExecuteWindowConfig):
         self._config = config
-        self._groups: Dict[str, FnParameterGroupPage] = OrderedDict()
+        self._groups: Dict[str, BaseParameterPage] = OrderedDict()
         super().__init__(parent)
 
-    def upsert_parameter_group(self, group_name: Optional[str]) -> FnParameterGroupPage:
+    def upsert_parameter_group(self, group_name: Optional[str]) -> BaseParameterPage:
         group_name = self._group_name(group_name)
         if group_name in self._groups:
             return self._groups[group_name]
 
-        page = FnParameterGroupPage(self, group_name=group_name)
+        page = ParameterGroupPage(self, group_name=group_name)
         icon = self._group_icon(group_name)
         self.addItem(page, icon, group_name)
         self._groups[group_name] = page
         return page
 
-    def add_default_group(self) -> FnParameterGroupPage:
+    def add_default_group(self) -> BaseParameterPage:
         return self.upsert_parameter_group(None)
 
     def has_parameter_group(self, group_name: Optional[str]) -> bool:
@@ -245,7 +231,7 @@ class FnParameterGroupBox(QToolBox):
 
     def _get_parameter_group(
         self, group_name: Optional[str]
-    ) -> Optional[FnParameterGroupPage]:
+    ) -> Optional[BaseParameterPage]:
         return self._groups.get(self._group_name(group_name), None)
 
     def remove_parameter_group(self, group_name: Optional[str]):
@@ -259,7 +245,7 @@ class FnParameterGroupBox(QToolBox):
 
     def _get_parameter_group_of(
         self, parameter_name: str
-    ) -> Optional[FnParameterGroupPage]:
+    ) -> Optional[BaseParameterPage]:
         for group_name, group in self._groups.items():
             if group.has_parameter_widget(parameter_name):
                 return group
@@ -344,9 +330,6 @@ class FnParameterGroupBox(QToolBox):
         widget.set_value(value)
 
     def set_parameter_values(self, params: Dict[str, Any]) -> List[str]:
-        """
-        Set the value of the parameters and collect the unknown parameter names
-        """
         params = params.copy()
         for group_page in self._groups.values():
             used_params = group_page.set_parameter_values(
@@ -374,17 +357,9 @@ class FnParameterGroupBox(QToolBox):
             return
         group.scroll_to(parameter_name, x, y)
 
-    def notify_validation_error(self, parameter_name: str, error: Any):
-        # noinspection PyUnresolvedReferences
-        self.validation_failed.emit(parameter_name, error)
-
-    def clear_validation_error(self, parameter_name: Optional[str]):
-        # noinspection PyUnresolvedReferences
-        self.validation_error_cleared.emit(parameter_name)
-
     def _get_group_and_widget(
         self, parameter_name: str
-    ) -> Tuple[Optional[FnParameterGroupPage], Optional[BaseParameterWidget]]:
+    ) -> Tuple[Optional[BaseParameterPage], Optional[BaseParameterWidget]]:
         if not self._groups:
             return None, None
         for group_page in self._groups.values():
@@ -393,7 +368,7 @@ class FnParameterGroupBox(QToolBox):
                 return group_page, widget
         return None, None
 
-    def _remove_group(self, group: FnParameterGroupPage):
+    def _remove_group(self, group: BaseParameterPage):
         if not group:
             return
         index = self.indexOf(group)
@@ -418,103 +393,3 @@ class FnParameterGroupBox(QToolBox):
         else:
             return QIcon()
         return get_icon(icon) or QIcon()
-
-
-class FnParameterArea(QWidget):
-
-    execute_button_clicked = Signal()
-    cancel_button_clicked = Signal()
-    clear_button_clicked = Signal()
-
-    def __init__(self, parent: QWidget, config: FnExecuteWindowConfig):
-        self._param_groupbox: Optional[FnParameterGroupBox] = None
-        self._auto_clear_checkbox: Optional[QCheckBox] = None
-        self._clear_button: Optional[QPushButton] = None
-        self._execute_button: Optional[QPushButton] = None
-        self._cancel_button: Optional[QPushButton] = None
-
-        super().__init__(parent)
-        self._config: FnExecuteWindowConfig = config
-        # noinspection PyArgumentList
-        self._layout_main = QVBoxLayout()
-        self.setLayout(self._layout_main)
-        self._setup_top_zone()
-        self._setup_bottom_zone()
-
-    def _setup_top_zone(self):
-        self._param_groupbox = FnParameterGroupBox(self, self._config)
-        self._param_groupbox.add_default_group()
-        self._layout_main.addWidget(self._param_groupbox)
-
-    def _setup_bottom_zone(self):
-
-        widget_texts = self._config.widget_texts
-
-        op_area = QWidget(self)
-        # noinspection PyArgumentList
-        layout_op_area = QVBoxLayout()
-        op_area.setLayout(layout_op_area)
-        layout_op_area.setContentsMargins(0, 0, 0, 0)
-
-        layout_op_area.addWidget(hline(op_area))
-
-        self._auto_clear_checkbox = QCheckBox(op_area)
-        self._auto_clear_checkbox.setText(widget_texts.clear_checkbox_text)
-        layout_op_area.addWidget(self._auto_clear_checkbox)
-
-        # noinspection PyArgumentList
-        layout_buttons = QHBoxLayout()
-        layout_op_area.addLayout(layout_buttons)
-
-        # Execute button
-        self._execute_button = QPushButton(self)
-        self._execute_button.setText(widget_texts.execute_button_text)
-        # noinspection PyUnresolvedReferences
-        self._execute_button.clicked.connect(self.execute_button_clicked)
-        layout_buttons.addWidget(self._execute_button)
-        # Clear button
-        self._clear_button = QPushButton(self)
-        self._clear_button.setText(widget_texts.clear_button_text)
-        # noinspection PyUnresolvedReferences
-        self._clear_button.clicked.connect(self.clear_button_clicked)
-        layout_buttons.addWidget(self._clear_button)
-        # Cancel button
-        self._cancel_button = QPushButton(self)
-        self._cancel_button.setText(widget_texts.cancel_button_text)
-        # noinspection PyUnresolvedReferences
-        self._cancel_button.clicked.connect(self.cancel_button_clicked)
-        layout_buttons.addWidget(self._cancel_button)
-
-        self._layout_main.addWidget(op_area)
-
-    @property
-    def parameter_groups(self) -> FnParameterGroupBox:
-        return self._param_groupbox
-
-    @property
-    def is_auto_clear_enabled(self) -> bool:
-        return self._auto_clear_checkbox.isChecked()
-
-    def hide_cancel_button(self):
-        self._cancel_button.hide()
-
-    def show_cancel_button(self):
-        self._cancel_button.show()
-
-    def hide_clear_button(self):
-        self._clear_button.hide()
-
-    def show_clear_button(self):
-        self._clear_button.show()
-
-    def enable_auto_clear(self, enable: bool):
-        self._auto_clear_checkbox.setChecked(enable)
-
-    def enable_execute_button(self, enable: bool):
-        self._execute_button.setEnabled(enable)
-
-    def enable_cancel_button(self, enable: bool):
-        self._cancel_button.setEnabled(enable)
-
-    def enable_clear_button(self, enable: bool):
-        self._clear_button.setEnabled(enable)

@@ -1,20 +1,18 @@
 import dataclasses
+from abc import abstractmethod
 from typing import Tuple, Dict, Union, Type, Optional
 
 from qtpy.QtCore import QSize, Qt
 
-from ._outputarea import (
-    ProgressBarConfig,
-    OutputBrowserConfig,
-)
+from ._output_area import ProgressBarConfig, OutputBrowserConfig
 from .._docbrowser import DocumentBrowserConfig
-from ...utils import IconType
 from ...executor import ExecuteStateListener
 from ...executors import ThreadFunctionExecutor
 from ...paramwidget import (
     BaseParameterWidget,
     BaseParameterWidgetConfig,
 )
+from ...utils import IconType
 from ...window import BaseWindow, BaseWindowConfig
 
 DEFAULT_WINDOW_SIZE = (1024, 768)
@@ -26,56 +24,51 @@ ParameterWidgetType = Union[
 ]
 
 DockWidgetArea = Qt.DockWidgetArea
-
-
-@dataclasses.dataclass
-class WidgetTexts(object):
-    document_dock_title: str = "Document"
-    output_dock_title: str = "Output"
-    execute_button_text: str = "Execute"
-    clear_button_text: str = "Clear"
-    cancel_button_text: str = "Cancel"
-    clear_checkbox_text: str = "Clear output"
-    result_dialog_title: str = "Result"
-    universal_error_dialog_title: str = "Error"
-    parameter_error_dialog_title: str = "Parameter Error"
-
-
-@dataclasses.dataclass
-class MessageTexts(object):
-    function_executing: str = "function is executing now"
-    function_not_executing: str = "function is not executing now"
-    function_not_cancelable: str = "function is not cancelable"
-    function_result: str = "function result: {}\n"
-    function_error: str = "{}: {}\n"
-    parameter_error: str = "{}: {}"
+BottomDockWidgetArea = Qt.DockWidgetArea.BottomDockWidgetArea
+TopDockWidgetArea = Qt.DockWidgetArea.TopDockWidgetArea
+LeftDockWidgetArea = Qt.DockWidgetArea.LeftDockWidgetArea
+RightDockWidgetArea = Qt.DockWidgetArea.RightDockWidgetArea
 
 
 @dataclasses.dataclass
 class FnExecuteWindowConfig(BaseWindowConfig):
-    title: str = ""
+    title: Optional[str] = None
     size: Union[Tuple[int, int], QSize] = DEFAULT_WINDOW_SIZE
-    output_dock_ratio: float = 0.30
-    document_dock_ratio: float = 0.60
+
+    execute_button_text: str = "Execute"
+
+    cancel_button_text: str = "Cancel"
+
+    show_clear_button: bool = True
+    clear_button_text: str = "Clear"
+
+    show_clear_checkbox: bool = True
+    clear_checkbox_text: str = "clear output"
+
     show_output_dock: bool = True
+    output_dock_title: str = "Output"
+    output_dock_ratio: float = 0.30
     output_dock_floating: bool = False
-    output_dock_position: DockWidgetArea = Qt.BottomDockWidgetArea
+    output_dock_position: DockWidgetArea = BottomDockWidgetArea
+
     show_document_dock: bool = True
+    document_dock_title: str = "Document"
+    document_dock_ratio: float = 0.60
     document_dock_floating: bool = False
-    document_dock_position: DockWidgetArea = Qt.RightDockWidgetArea
+    document_dock_position: DockWidgetArea = RightDockWidgetArea
+
     tabify_docks: bool = False
 
-    progressbar: Optional[ProgressBarConfig] = None
-    output_config: OutputBrowserConfig = dataclasses.field(
+    progressbar_config: Optional[ProgressBarConfig] = None
+    output_browser_config: OutputBrowserConfig = dataclasses.field(
         default_factory=OutputBrowserConfig
     )
-    document_config: Optional[DocumentBrowserConfig] = dataclasses.field(
+    document_browser_config: Optional[DocumentBrowserConfig] = dataclasses.field(
         default_factory=DocumentBrowserConfig
     )
     default_parameter_group_name: str = "Main Parameters"
     default_parameter_group_icon: IconType = None
     parameter_group_icons: Dict[str, IconType] = dataclasses.field(default_factory=dict)
-    show_clear_button: bool = True
     enable_auto_clear: bool = True
     print_function_result: bool = True
     show_function_result: bool = False
@@ -83,10 +76,18 @@ class FnExecuteWindowConfig(BaseWindowConfig):
     show_function_error: bool = True
     show_error_traceback: bool = True
 
-    widget_texts: WidgetTexts = dataclasses.field(default_factory=WidgetTexts)
-    message_texts: MessageTexts = dataclasses.field(default_factory=MessageTexts)
+    error_dialog_title: str = "Error"
+    result_dialog_title: str = "Result"
+    parameter_error_message: str = "{}: {}"
+    function_result_message: str = "function result: {}\n"
+    function_error_message: str = "{}: {}\n"
+    function_executing_message: str = "A function is executing now!"
+    uncancelable_function_message: str = "The function is not cancelable!"
+    function_not_executing_message: str = "No function is executing now!"
 
 
 # noinspection SpellCheckingInspection
 class BaseFnExecuteWindow(BaseWindow, ExecuteStateListener):
-    pass
+    @abstractmethod
+    def _create_ui(self):
+        pass
