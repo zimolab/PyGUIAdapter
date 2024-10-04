@@ -51,10 +51,10 @@ class FnExecuteWindow(BaseFnExecuteWindow):
             bundle.window_toolbar,
             bundle.window_menus,
         )
-
         executor_class = self._bundle.fn_info.executor or DEFAULT_EXECUTOR_CLASS
         # noinspection PyTypeChecker
         self._executor = executor_class(self, self)
+
         self.add_parameters(self._bundle.widget_configs)
         # noinspection PyProtectedMember
         ucontext._current_window_created(self)
@@ -119,6 +119,9 @@ class FnExecuteWindow(BaseFnExecuteWindow):
 
         self._operation_area.apply_config()
         self._output_area.apply_config()
+
+        self._operation_area.set_cancel_button_visible(self._bundle.fn_info.cancelable)
+        self._operation_area.set_cancel_button_enabled(False)
 
         self.set_document_dock_property(
             title=self._config.document_dock_title,
