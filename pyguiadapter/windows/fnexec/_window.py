@@ -208,6 +208,8 @@ class FnExecuteWindow(BaseFnExecuteWindow):
         self.resize_document_dock(self._config.document_dock_initial_size)
         self.resize_output_dock(self._config.output_dock_initial_size)
 
+        self.set_statusbar_visible(self._config.statusbar_visible)
+
     def set_output_dock_property(
         self,
         *,
@@ -348,6 +350,23 @@ class FnExecuteWindow(BaseFnExecuteWindow):
 
     def tabify_docks(self):
         self.tabifyDockWidget(self._document_dock, self._output_dock)
+
+    def set_statusbar_visible(self, visible: bool):
+        self._config: FnExecuteWindowConfig
+        statusbar = self.statusBar()
+        statusbar.setVisible(visible)
+        self._config.statusbar_visible = statusbar.isVisible()
+
+    def is_statusbar_visible(self) -> bool:
+        self._config: FnExecuteWindowConfig
+        self._config.statusbar_visible = self.statusBar().isVisible()
+        return self._config.statusbar_visible
+
+    def show_statusbar_message(self, message: str, timeout: int = 3000):
+        self.statusBar().showMessage(message, timeout)
+
+    def clear_statusbar_message(self):
+        self.statusBar().clearMessage()
 
     def before_execute(self, fn_info: FnInfo, arguments: Dict[str, Any]) -> None:
         super().before_execute(fn_info, arguments)

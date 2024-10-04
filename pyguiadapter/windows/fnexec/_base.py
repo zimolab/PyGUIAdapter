@@ -50,6 +50,8 @@ class FnExecuteWindowConfig(BaseWindowConfig):
     show_clear_checkbox: bool = True
     clear_checkbox_text: str = "clear output"
 
+    statusbar_visible: bool = True
+
     initial_docks_state: Literal["auto", "tabified"] = "auto"
 
     output_dock_visible: bool = True
