@@ -1,4 +1,4 @@
-from typing import Literal
+from typing import Literal, Optional
 
 from qtpy.QtWidgets import QWidget, QVBoxLayout
 
@@ -8,10 +8,12 @@ from ....utils import set_textbrowser_content
 
 class DocumentArea(QWidget):
     # noinspection SpellCheckingInspection
-    def __init__(self, parent: QWidget, document_browser_config: DocumentBrowserConfig):
+    def __init__(
+        self, parent: QWidget, document_browser_config: Optional[DocumentBrowserConfig]
+    ):
         super().__init__(parent)
 
-        self._config = document_browser_config
+        self._config = document_browser_config or DocumentBrowserConfig()
 
         # noinspection PyArgumentList
         self._layout = QVBoxLayout()
