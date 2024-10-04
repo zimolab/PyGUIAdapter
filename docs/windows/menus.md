@@ -21,16 +21,28 @@ class MenuConfig(object):
     actions: List[Union[ActionConfig, Separator, "MenuConfig"]]
     separators_collapsible: bool = True
     tear_off_enabled: bool = True
+    exclusive: bool = False
 ```
 
-`title`字段用于指定菜单的名称。
+- `title`：此字段用于指定菜单的名称。
 
-`actions`字段用于指定菜单下包含的条目，可以是代表菜单项的`ActionConfig`；可以是代表分隔线的`Separator`；也可以是另外一个`MenuConfig`对象，在此情况下，被添加到`actions`的`MenuConfig`将作为当前菜单的子菜单。
+- `actions`：此字段用于指定菜单下包含的条目，可以是代表菜单项的`ActionConfig`；可以是代表分隔线的`Separator`；也可以是另外一个`MenuConfig`对象，在此情况下，被添加到`actions`的`MenuConfig`将作为当前菜单的子菜单。
+
+- `exclusive`：此字段用于指定是否将当前菜单下的`动作（Action）`添加到一个互斥组中（只有`checkable`属性为`True`的`动作（Action）`才会被添加的互斥组中）。互斥效果如下图所示：
+
+  
+
+  <img src="../images/exclusive_actions.gif" />
+
+
 
 > `动作（Action）`的详细说明可以参考如下文档：[使用`ActionConfig`定义`Action`](windows/action.md)
 
-
 ### 三、实例1：为`函数执行窗口（FnExecuteWindow）`添加菜单栏
+
+以下代码演示了如何为`函数执行窗口（FnExecuteWindow）`添加菜单（同时演示了如何添加子菜单）。
+
+> [examples/windows/menu_example.py]()
 
 ```python
 import json
@@ -252,7 +264,8 @@ if __name__ == "__main__":
 我们甚至可以同时向窗口添加工具栏和菜单栏，只需对上述代码稍作修改：
 
 ```python
-...
+if __name__ == "__main__":
+    ...
     adapter = GUIAdapter()
     adapter.add(
         menu_example,
@@ -278,6 +291,8 @@ if __name__ == "__main__":
 ### 四、实例2：为`函数选择窗口（FnSelectWindow）`添加菜单栏
 
 `函数选择窗口（FnSelectWindow）`作为`BaseWindow`的子类，同样也可以添加菜单栏，方法是在调用`adapter.run()`时传入`select_window_menus`参数。当然，别忘了将回调函数的`window`参数的类型注解改成`FnSelectWindow`。下面是一个简单的示例：
+
+> [examples/windows/menu_example_3.py]()
 
 ```python
 from qtpy.QtWidgets import QAction
@@ -317,3 +332,80 @@ if __name__ == "__main__":
 ```
 
 <img src="../images/menu_example_3.png" />
+
+### 五、实例3：添加互斥的菜单项
+
+可以将同一菜单下的`checkable`为`True`的`动作（Action）`添加到一个互斥组中，以实现菜单项互斥的效果。以下示例借助互斥菜单项实现了切换界面主题的效果。
+
+> 以下示例用到了第三方库[`PyQtDarkTheme`]([5yutan5/PyQtDarkTheme: A flat dark theme for PySide and PyQt. (github.com)](https://github.com/5yutan5/PyQtDarkTheme))，运行该示例需先安装该库，可以参考这篇文档：[界面美化：使用样式表与第三方库](adapter/style.md)
+
+> [examples/windows/exclusive_actions_example.py]()
+
+```python
+from qtpy.QtWidgets import QApplication
+from qtpy.QtWidgets import QAction
+
+import qdarktheme
+
+from pyguiadapter.action import ActionConfig
+from pyguiadapter.adapter import GUIAdapter
+from pyguiadapter.menu import MenuConfig
+from pyguiadapter.windows.fnselect import FnSelectWindow
+
+
+def exclusive_action_example():
+    pass
+
+
+def on_app_start(app: QApplication):
+    qdarktheme.setup_theme("auto")
+
+
+def on_action_auto(win: FnSelectWindow, action: QAction):
+    if action.isChecked():
+        qdarktheme.setup_theme("auto")
+
+
+def on_action_light(win: FnSelectWindow, action: QAction):
+    if action.isChecked():
+        qdarktheme.setup_theme("light")
+
+
+def on_action_dark(win: FnSelectWindow, action: QAction):
+    if action.isChecked():
+        qdarktheme.setup_theme("dark")
+
+
+action_auto = ActionConfig(
+    text="auto",
+    on_toggled=on_action_auto,
+    checkable=True,
+    checked=True,
+)
+
+action_light = ActionConfig(
+    text="light",
+    on_toggled=on_action_light,
+    checkable=True,
+)
+
+action_dark = ActionConfig(
+    text="dark",
+    on_toggled=on_action_dark,
+    checkable=True,
+)
+
+menu_theme = MenuConfig(
+    title="Theme",
+    actions=[action_auto, action_light, action_dark],
+    exclusive=True,
+)
+
+if __name__ == "__main__":
+    adapter = GUIAdapter(on_app_start=on_app_start)
+    adapter.add(exclusive_action_example)
+    adapter.run(show_select_window=True, select_window_menus=[menu_theme])
+
+```
+
+<img src="../images/exclusive_actions_example.gif" />

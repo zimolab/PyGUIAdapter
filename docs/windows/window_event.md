@@ -38,7 +38,9 @@ class BaseWindowStateListener(object):
 - 返回`False`表示不允许关闭窗口，此时窗口关闭事件将被忽略。
 
 ### 二、监听窗口事件方法之一：子类化`BaseWindowStateListener`
-开发者可以继承`BaseWindowStateListener`并重事件回调函数，以实现对特定事件的监听。例如，下面的例子演示了如何为`函数执行窗口（FnExecuteWindow）`添加事件监听器。
+开发者可以继承`BaseWindowStateListener`并重事件回调函数，以实现对特定事件的监听。例如，下面的例子演示了如何为`函数执行窗口（FnExecuteWindow）`添加事件监听器。下面是一个简单的示例：
+
+> [examples/windows/window_event_example_1.py]()
 
 ```python
 from pyguiadapter.adapter import GUIAdapter
@@ -88,14 +90,15 @@ if __name__ == "__main__":
     adapter.add(event_example_1, window_listener=event_listener)
     adapter.run()
 
-    
 ```
 
 <img src="../images/window_event_example_1.gif" />
 
 ### 二、监听窗口事件方法之二：使用`SimpleWindowStateListener`
 
-对于偏爱函数而非子类化的开发者，`PyGUIAdapter`也提供了另外一种创建窗口事件监听器的方法：
+对于偏爱函数而非子类化的开发者，`PyGUIAdapter`也提供了另外一种创建窗口事件监听器的方法。下面是一个简单的示例：
+
+> [examples/windows/window_event_example_2.py]()
 
 ```python
 from pyguiadapter.adapter import GUIAdapter
@@ -151,9 +154,9 @@ if __name__ == "__main__":
 
 ```
 
-### 三、监听`函数选择窗口（FnSelectWindow）`事件
+上面的例子演示了如何监听`函数执行窗口（FnExecuteWindow）`事件，`函数选择窗口（FnSelectWindow）`作为`BaseWindow`的子类，开发者也可以为其设置事件监听器，方法是在调用`adapter.run()`时指定`select_window_listener`参数，下面是一个简单的示例：
 
-`函数选择窗口（FnSelectWindow）`作为`BaseWindow`的子类，开发者也可以为其设置事件监听器，方法是在调用`adapter.run()`时指定`select_window_listener`参数，下面是一个简单的示例：
+> [examples/windows/window_event_example_3.py]()
 
 ```python
 from pyguiadapter.adapter import GUIAdapter

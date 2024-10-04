@@ -12,6 +12,8 @@
 
 下面是一个简单的示例：
 
+> [examples/adapter/cancellable_function.py]()
+
 ```python
 import time
 

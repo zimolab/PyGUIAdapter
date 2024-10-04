@@ -132,5 +132,5 @@ class BaseWindowConfig(object):
 
 `BaseWindowConfig`的主要子类包括：
 
-- `FnSelectWindowConfig`，用于配置`函数选择窗口（FnSelectWindowConfig）`。
-- `FnExecuteWindowConfig`，用于配置`函数执行窗口（FnExecuteWindowConfig）`。
+- `FnSelectWindowConfig`，用于配置`函数选择窗口（FnSelectWindowConfig）`。配置方法可以参考：[配置函数选择窗口（FnSelectWindow）](windows/fn_select_window.md)。
+- `FnExecuteWindowConfig`，用于配置`函数执行窗口（FnExecuteWindowConfig）`。配置方法可以参考：[函数执行窗口（FnExecuteWindow）](windows/fn_exec_window.md)。

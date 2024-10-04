@@ -30,7 +30,7 @@ args = parser.parse_args()
 print(args.accumulate(args.integers))
 ```
 
-在`PyGUIAdapter`帮助下，开发者可以从此告别编写冗长、乏味的`argument/option`代码，而将全部精力集中到核心功能的实现上：
+在`PyGUIAdapter`帮助下，开发者可以轻松地从命令行切换到图形界面，无需再花大量的心思考虑命令行参数的定义和处理，而将全部精放到到核心功能的实现上。
 
 ```python
 from typing import List, Literal
@@ -189,12 +189,11 @@ if __name__ == "__main__":
 
 
 
-下面，我们尝试在参数`a`控件输入`0`，然后点击`Execute`按钮。不出意外，这将使函数发生异常，让我们看看`PyGUIAdapter`如何处理函数中`未捕获的异常`：
+下面，我们尝试在参数`a`的控件输入`0`，然后点击`Execute`按钮。由于参数`a`在运算中将作为除数，不出意外，函数将发生一个`ZeroDivisionError`，让我们看看`PyGUIAdapter`如何处理函数中`未捕获的异常`：
 
 <img src="images/error_handling.png" width="60%"/>
 
-对于函数中的异常，`PyGUIAdapter`的默认策略是：**捕获它们，弹窗提醒用户，并在程序输出区域打印出异常信息。** 这样的设计主要是为了增强程序的`健壮性`，
-防止未捕获的异常导致整个程序崩溃。
+对于函数中的异常，`PyGUIAdapter`的默认策略是：**捕获它们，弹窗提醒用户，并在程序输出区域打印出异常信息。** 这样的设计主要是**为了增强程序的`健壮性`，防止未捕获的异常导致整个程序崩溃**。
 
 #### 2、在函数中打印信息
 
@@ -462,7 +461,252 @@ if __name__ == "__main__":
 
 在`PyGUIAdapter`中，不同的参数类型往往对应不同的控件类型，而不同类型的控件具有不同的可配置属性，开发者可以阅读这篇文档，来了解`PyGUIAdapter`内置的控件类型和对应的数据类型，以及其可供开发者配置的属性：[内置控件类型一览](widgets/types_and_widgets.md)。
 
-### （四）示例：内置控件类型
+### （四）示例：“小窗口模式”（配置窗口属性）
+
+`PyGUIAdapter`运行开发者对窗口进行配置，调整窗口某些属性。比如下面的示例，实现了所谓的小窗口模式。
+
+<img src="./images/tiny_window_example.gif" />
+
+```python
+from typing import Optional
+
+from pyguiadapter.adapter import GUIAdapter
+from pyguiadapter.exceptions import ParameterError
+from pyguiadapter.windows.fnexec import FnExecuteWindowConfig
+
+
+def equation_solver(a: float, b: float, c: float) -> Optional[tuple]:
+    """
+    Solving Equations: ax^2 + bx + c = 0 (a,b,c ∈ R, a ≠ 0)
+    @param a: a ∈ R, a ≠ 0
+    @param b: b ∈ R
+    @param c: c ∈ R
+    @return:
+    """
+    if a == 0:
+        raise ParameterError(parameter_name="a", message="a cannot be zero!")
+
+    delta = b**2 - 4 * a * c
+    if delta < 0:
+        return None
+    x1 = (-b + delta**0.5) / (2 * a)
+    if delta == 0:
+        return x1, x1
+    x2 = (-b - delta**0.5) / (2 * a)
+    return x1, x2
+
+
+if __name__ == "__main__":
+    window_config = FnExecuteWindowConfig(
+        title="Equation Solver",
+        icon="mdi6.function-variant",
+        execute_button_text="Solve",
+        size=(350, 450),
+        document_dock_visible=False,
+        output_dock_visible=False,
+        clear_button_visible=False,
+        clear_checkbox_visible=False,
+        show_function_result=True,
+        function_result_message="real roots: {}",
+        default_parameter_group_name="Equation Parameters",
+        print_function_error=False,
+        print_function_result=False,
+    )
+    adapter = GUIAdapter()
+    adapter.add(equation_solver, window_config=window_config)
+    adapter.run()
+```
+
+<img src="./images/tiny_window_example.png" />
+
+关于如何配置窗口属性，以下文档进行了更为详细的说明：
+
+- [窗口概述](windows/overview.md)
+- [函数选择窗口（FnSelectWindow）](windows/fn_select_window.md)
+- [函数执行窗口（FnExecuteWindow）](windows/fn_exec_window.md)
+
+### （五）示例：工具栏与菜单
+
+`PyGUIAdapter`运行开发者向窗口添加工具栏和菜单，并为工具栏按钮或菜单项的`动作（Action）`设置事件响应函数。
+
+以下是一个综合性的示例，展示了：
+
+- 如何同时为窗口添加工具栏和菜单栏
+- 可勾选的`动作（Action）`类型——`checkable=True`
+- 互斥的菜单项
+- 子菜单
+- 两种动作事件响应函数——`on_triggered`和`on_toggled`
+- 如何在事件响应函数中使用`pyguiadapter.utils`包提供的功能与用户进行交互
+- ...
+
+```python
+from qtpy.QtWidgets import QAction
+
+from pyguiadapter.action import ActionConfig, Separator
+from pyguiadapter.adapter import GUIAdapter
+from pyguiadapter.menu import MenuConfig
+from pyguiadapter.toolbar import ToolBarConfig
+from pyguiadapter.windows.fnexec import FnExecuteWindow
+from pyguiadapter.utils import messagebox, filedialog
+
+
+def on_action_about(window: FnExecuteWindow, action: QAction):
+    messagebox.show_info_message(
+        parent=window,
+        message="This is an example of toolbar and menu with custom actions.",
+        title="About",
+    )
+
+
+def on_action_close(window: FnExecuteWindow, action: QAction):
+    ret = messagebox.show_question_message(
+        window, "Are you sure you want to quit?", buttons=messagebox.Yes | messagebox.No
+    )
+    if ret == messagebox.Yes:
+        window.close()
+
+
+def on_action_open(window: FnExecuteWindow, action: QAction):
+    ret = filedialog.get_open_file(
+        window,
+        title="Open File",
+        start_dir="./",
+        filters="JSON files(*.json);;Python files(*.py);;All files(*.*)",
+    )
+    if not ret:
+        return
+    messagebox.show_info_message(window, f"File will be opened: {ret}")
+
+
+def on_action_save(window: FnExecuteWindow, action: QAction):
+    ret = filedialog.get_save_file(
+        window,
+        title="Save File",
+        start_dir="./",
+        filters="JSON files(*.json);;All files(*.*)",
+    )
+    if not ret:
+        return
+    messagebox.show_info_message(window, f"File will be saved: {ret}")
+
+
+def on_action_auto_theme(window: FnExecuteWindow, action: QAction):
+    if action.isChecked():
+        messagebox.show_info_message(window, "Auto theme is selected.")
+
+
+def on_action_light_theme(window: FnExecuteWindow, action: QAction):
+    if action.isChecked():
+        messagebox.show_info_message(window, "Light theme is selected.")
+
+
+def on_action_dark_theme(window: FnExecuteWindow, action: QAction):
+    if action.isChecked():
+        messagebox.show_info_message(window, "Dark theme is selected.")
+
+
+action_about = ActionConfig(
+    text="About",
+    icon="fa.info-circle",
+    on_triggered=on_action_about,
+)
+
+action_open = ActionConfig(
+    text="Open",
+    icon="fa.folder-open",
+    shortcut="Ctrl+O",
+    on_triggered=on_action_open,
+)
+
+action_save = ActionConfig(
+    text="Save",
+    icon="fa.save",
+    shortcut="Ctrl+S",
+    on_triggered=on_action_save,
+)
+
+action_close = ActionConfig(
+    text="Quit",
+    icon="fa.close",
+    shortcut="Ctrl+Q",
+    on_triggered=on_action_close,
+)
+
+action_auto_them = ActionConfig(
+    text="Auto",
+    checkable=True,
+    checked=True,
+    on_toggled=on_action_auto_theme,
+)
+
+action_light_theme = ActionConfig(
+    text="Light",
+    checkable=True,
+    on_toggled=on_action_light_theme,
+)
+
+action_dark_theme = ActionConfig(
+    text="Dark",
+    checkable=True,
+    on_toggled=on_action_dark_theme,
+)
+
+submenu_theme = MenuConfig(
+    title="Theme",
+    actions=[action_auto_them, action_light_theme, action_dark_theme],
+    exclusive=True,
+)
+menu_file = MenuConfig(
+    title="File",
+    actions=[
+        action_open,
+        action_save,
+        Separator(),
+        action_close,
+        Separator(),
+        submenu_theme,
+    ],
+)
+menu_help = MenuConfig(
+    title="Help",
+    actions=[action_about],
+)
+
+
+def menu_toolbar_example(arg1: int, arg2: str, arg3: bool):
+    """
+    This example shows how to add and config toolbar and menus to the window.
+    @param arg1:
+    @param arg2:
+    @param arg3:
+    @return:
+    """
+    pass
+
+
+if __name__ == "__main__":
+    adapter = GUIAdapter()
+    adapter.add(
+        menu_toolbar_example,
+        window_menus=[menu_file, menu_help],
+        window_toolbar=ToolBarConfig(
+            actions=[action_open, action_save, Separator(), action_close]
+        ),
+    )
+    adapter.run()
+
+```
+
+<img src="./images/toolbar_and_menus.gif" />
+
+
+
+关于窗口上的工具栏与菜单，以下文档进行了更为详细的说明：
+
+- [为窗口添加工具栏](windows/toolbar.md)
+- [为窗口添加菜单栏](windows/menus.md)
+
+### （六）示例：内置控件类型
 
 以下示例展示了`PyGUIAdapter`中大部分内置控件类型。
 
@@ -555,6 +799,11 @@ if __name__ == "__main__":
 ```
 
 <img src="./images/builtin_widgets.gif" />
+
+关于如何选择和配置参数控件类型，以下文档进行了更加详细的说明：
+
+- [配置函数参数控件](widgets/configure_widget)
+- [内置控件类型一览](widgets/types_and_widgets.md)
 
 
 
