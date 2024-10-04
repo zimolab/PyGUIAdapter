@@ -46,8 +46,9 @@ if __name__ == "__main__":
         icon_size=32,
         icon_mode=True,
         select_button_text="Go!",
-        document_browser_ratio=0.5,
+        document_browser_width=400,
         document_browser_config=DocumentBrowserConfig(),
+        always_on_top=True,
     )
 
     adapter = GUIAdapter()
