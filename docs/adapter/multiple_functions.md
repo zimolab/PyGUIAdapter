@@ -210,9 +210,9 @@ if __name__ == "__main__":
 
 ### 四、函数分组
 
-当开发者向`GUIAdapter`实例添加了多个函数时，从便于用户查找的角度出发，开发者可能希望可以按照一定的逻辑对函数进行分类。`PyGUIAdapter`提供了函数分组功能，开发者在调用`GUIAdapter.add()`方法添加函数时，可以通过`group`参数指定函数的分组，`PyGUIAdapter`会将相同`group`的函数聚合到一起；对于未指定`group`的函数，`PyGUIAdapter`则会将其放置在默认分组中，该分组的默认名称为`"Main Function"`。
+当开发者向`GUIAdapter`实例添加了多个函数时，从便于用户查找的角度出发，开发者可能希望可以按照一定的逻辑对函数进行分类。`PyGUIAdapter`提供了函数分组功能，开发者在调用`GUIAdapter.add()`方法添加函数时，可以通过`group`参数指定函数的分组，`PyGUIAdapter`会将相同`group`的函数聚合到一起；对于未指定`group`的函数，`PyGUIAdapter`则会将其放置在默认分组中，该分组的默认名称为`"Main Functions"`。
 
-比如下面这个示例，将函数按照功能分成了三类：编码器函数`Encoders`、解码器函数`Decoder`和其他函数（默认分组）`Main Function`。
+比如下面这个示例，将函数按照功能分成了三类：编码器函数`Encoders`、解码器函数`Decoder`和其他函数（默认分组）`Main Functions`。
 
 ```python
 from pyguiadapter.adapter import GUIAdapter

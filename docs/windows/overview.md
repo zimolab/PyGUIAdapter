@@ -14,7 +14,11 @@
 
 #### （二）主要接口
 
-父类`BaseWindow`中定义并实现了如下接口。
+父类`BaseWindow`中定义并实现了一些基本的接口，开发者可以在`动作（Action）`或窗口事件的回调函数中调用这些接口。
+
+##### 1、`动作（Action）`相关
+
+以下接口主要用于查找或改变窗口工具栏（菜单栏）中`动作（Action）`的状态。
 
 ```python
 class BaseWindow(QMainWindow):
@@ -31,7 +35,59 @@ class BaseWindow(QMainWindow):
         ...
 ```
 
-上述接口主要用于查找或改变窗口工具栏（菜单栏）中`动作（Action）`的状态，开发者可以在`动作（Action）`或窗口事件的回调函数中调用这些方法。
+##### 2、窗口属性相关
+
+以下接口主要用于设置或获取窗口的某些属性，包括标题、图标、大小、位置、字体、样式、是否置顶等。
+
+```python
+class BaseWindow(QMainWindow):
+    def set_title(self, title: str):
+        ...
+
+    def get_title(self) -> str:
+        ...
+
+    def set_icon(self, icon: IconType):
+        ...
+
+    def set_always_on_top(self, enabled: bool):
+        ...
+
+    def is_always_on_top(self) -> bool:
+        ...
+
+    def set_size(self, size: Union[Tuple[int, int], QSize]):
+        ...
+
+    def get_size(self) -> Tuple[int, int]:
+        ...
+
+    def set_position(self, position: Optional[Tuple[int, int]]):
+        ...
+
+    def get_position(self) -> Tuple[int, int]:
+        ...
+
+    def set_font(self, font_family: Union[str, Sequence[str]], font_size: int):
+        ...
+
+    def get_font_size(self) -> int:
+        ...
+
+    def get_font_family(self) -> str:
+        ...
+
+    def get_font_families(self) -> Sequence[str]:
+        ...
+
+    def set_stylesheet(self, stylesheet: Optional[str]):
+        ...
+
+    def get_stylesheet(self) -> str:
+        ...
+```
+
+
 
 #### （三）主要子类
 

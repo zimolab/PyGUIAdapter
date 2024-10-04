@@ -36,12 +36,12 @@ adapter.run(show_select_window=True)
 
 
 
-|        配置项名称         |                             类型                             |       默认值        |                             说明                             |
-| :-----------------------: | :----------------------------------------------------------: | :-----------------: | :----------------------------------------------------------: |
+|        配置项名称         |                             类型                             |         默认值         |                             说明                             |
+| :-----------------------: | :----------------------------------------------------------: |:-------------------:| :----------------------------------------------------------: |
 |          `title`          |                            `str`                             | `"Select Function"` |                          窗口标题。                          |
-|          `icon`           | `Union[str, Tuple[str, Union[list, dict]], QIcon, QPixmap, NoneType]` |       `None`        |                          窗口图标。                          |
+|          `icon`           | `Union[str, Tuple[str, Union[list, dict]], QIcon, QPixmap, NoneType]` |       `None`        |          窗口图标。默认为`None`，此时使用默认图标。          |
 |          `size`           |               `Union[Tuple[int, int], QSize]`                |    `(800, 600)`     |                          窗口大小。                          |
-|        `position`         |              `Union[Tuple[int, int], NoneType]`              |       `None`        |                          窗口位置。                          |
+|        `position`         |              `Union[Tuple[int, int], NoneType]`              |       `None`        |      窗口位置。默认为`None`，此时由系统决定，一般居中。      |
 |      `always_on_top`      |                       `<class 'bool'>`                       |       `False`       |                      窗口是否始终置顶。                      |
 |       `font_family`       |            `Union[str, Sequence[str], NoneType]`             |       `None`        |                       窗口的字体系列。                       |
 |        `font_size`        |                    `Union[int, NoneType]`                    |       `None`        |                       窗口的字体大小。                       |
@@ -49,13 +49,13 @@ adapter.run(show_select_window=True)
 |   `select_button_text`    |                            `str`                             |     `"Select"`      |                       选择按钮的文本。                       |
 |        `icon_mode`        |                            `bool`                            |       `False`       |           是否以图标形式显示函数，默认为列表形式。           |
 |        `icon_size`        |          `Union[Tuple[int, int], QSize, NoneType]`           |     `(48, 48)`      |                       函数图标的尺寸。                       |
-|  `default_fn_group_name`  |                            `str`                             |  `"Main Function"`  | 默认函数分组的名称。在添加函数到`GUIAdapter`时，若开发者未指定函数分组，则该函数将被添加的默认分组下，这个属性就是用于指定该分组的名称。 |
-|  `default_fn_group_icon`  | `Union[str, Tuple[str, Union[list, dict]], QIcon, QPixmap, NoneType]` |       `None`        |                     默认函数分组的图标。                     |
+|  `default_fn_group_name`  |                            `str`                             | `"Main Functions"`  | 默认函数分组的名称。在添加函数到`GUIAdapter`时，若开发者未指定函数分组，则该函数将被添加的默认分组下，这个属性就是用于指定该分组的名称。 |
+|  `default_fn_group_icon`  | `Union[str, Tuple[str, Union[list, dict]], QIcon, QPixmap, NoneType]` |       `None`        |       默认函数分组的图标。默认为`None`，即不显示图标。       |
 |     `fn_group_icons`      | `Dict[str, Union[str, Tuple[str, Union[list, dict]], QIcon, QPixmap, NoneType]]` |        `{}`         |                     其他函数分组的图标。                     |
-| `document_browser_config` |           `Union[DocumentBrowserConfig, NoneType]`           |       `None`        |                    函数文档浏览器的配置。                    |
-| `document_browser_ratio`  |                           `float`                            |       `0.65`        |                函数文档浏览器区域的宽度占比。                |
+| `document_browser_config` |           `Union[DocumentBrowserConfig, NoneType]`           |       `None`        |    函数文档浏览器的配置，默认为`None`，意味使用默认配置。    |
+| `document_browser_width`  |                           `float`                            |        `490`        |                  函数文档浏览器区域的宽度。                  |
 
-`DocumentBrowserConfig`类用于配置文档浏览器，在[`pyguiadapter.windows._docbrowser.DocumentBrowserConfig`]()中定义，可以通过如下方式引入：
+`DocumentBrowserConfig`类用于配置文档浏览器，该类在[`pyguiadapter.windows.document_browser.DocumentBrowserConfig`]()中定义，可以通过如下方式引入：
 
 ```python
 from pyguiadapter.windows import DocumentBrowserConfig
@@ -77,11 +77,13 @@ from pyguiadapter.windows import DocumentBrowserConfig
 
 #### （二）配置窗口属性的方法
 
-开发者可以通过`GUIAdapter.run()`函数来配置`函数选择窗口（FnSelectWindow）`的窗口属性。
+开发者可以通过`GUIAdapter.run()`函数来配置`函数选择窗口（FnSelectWindow）`的属性。
 
 <img src="../images/fn_select_window_config_3.png" />
 
 下面是一个完整的示例：
+
+> [examples/windows/fn_select_window_config_example.py]()
 
 ```python
 from pyguiadapter.adapter import GUIAdapter
@@ -132,7 +134,7 @@ if __name__ == "__main__":
         icon_size=32,
         icon_mode=True,
         select_button_text="Go!",
-        document_browser_ratio=0.5,
+        document_browser_width=400,
         document_browser_config=DocumentBrowserConfig(),
     )
 
@@ -142,6 +144,7 @@ if __name__ == "__main__":
     adapter.add(fn3, group="Group 2")
     adapter.add(fn4, group="Group 3")
     adapter.run(select_window_config=select_window_config)
+
 ```
 
 <img src="../images/fn_select_window_config_2.png" />
@@ -155,6 +158,8 @@ if __name__ == "__main__":
 <img src="../images/fn_select_window_config_4.png" />
 
 下面是一个完整的示例：
+
+> [examples/windows/toolbar_example2.py]()
 
 ```python
 from qtpy.QtWidgets import QAction
@@ -204,6 +209,8 @@ if __name__ == "__main__":
 
 下面是一个完整的示例：
 
+> [examples/windows/menu_example_3.py]()
+
 ```python
 from qtpy.QtWidgets import QAction
 
@@ -234,7 +241,7 @@ action_test = ActionConfig(
     text="Test", icon="fa.folder-open", on_triggered=on_action_test, shortcut="Ctrl+O"
 )
 action_close = ActionConfig(
-    text="Close", icon="fa.folder-open", on_triggered=on_action_close, shortcut="Ctrl+Q"
+    text="Close", icon="fa.close", on_triggered=on_action_close, shortcut="Ctrl+Q"
 )
 
 
@@ -266,6 +273,8 @@ if __name__ == "__main__":
 <img src="../images/fn_select_window_config_8.png" />
 
 下面是一个完整的示例：
+
+> [examples/windows/menu_example_3.py]()
 
 ```python
 from pyguiadapter.adapter import GUIAdapter
@@ -331,5 +340,17 @@ if __name__ == "__main__":
 
 
 
+### 六、主要接口
 
+`FnSelectWindow`主要提供了以下接口供开发者调用：
 
+> 由于`FnSelectWindow`继承自`BaseWindow`，因此`FnSelectWindow`中包含了从`BaseWindow`继承而来的接口，具体可以参考：[窗口概述](windows/overview.md)
+
+```python
+class FnSelectWindow(BaseWindow):
+    def set_select_button_text(self, text: str):
+        ...
+
+    def set_document_browser_width(self, width: int):
+        ...
+```
