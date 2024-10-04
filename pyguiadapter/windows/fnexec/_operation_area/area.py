@@ -55,10 +55,10 @@ class OperationArea(QWidget):
         self._clear_button.setText(self._config.clear_button_text or "Clear")
         self._clear_checkbox.setText(self._config.clear_checkbox_text or "clear output")
 
-        self._clear_button.setVisible(self._config.show_clear_checkbox)
-        self._clear_checkbox.setVisible(self._config.show_clear_checkbox)
+        self._clear_button.setVisible(self._config.clear_checkbox_visible)
+        self._clear_checkbox.setVisible(self._config.clear_checkbox_visible)
 
-        self._clear_checkbox.setChecked(self._config.auto_clear_output)
+        self._clear_checkbox.setChecked(self._config.clear_checkbox_checked)
 
     def set_execute_button_enabled(self, enabled: bool):
         if self._execute_button is not None:
@@ -86,3 +86,22 @@ class OperationArea(QWidget):
 
     def is_clear_checkbox_checked(self) -> bool:
         return self._clear_checkbox.isChecked()
+
+    def set_clear_checkbox_checked(self, checked: bool):
+        self._clear_checkbox.setChecked(checked)
+
+    def set_execute_button_text(self, text: str):
+        if self._execute_button is not None:
+            self._execute_button.setText(text)
+
+    def set_cancel_button_text(self, text: str):
+        if self._cancel_button is not None:
+            self._cancel_button.setText(text)
+
+    def set_clear_button_text(self, text: str):
+        if self._clear_button is not None:
+            self._clear_button.setText(text)
+
+    def set_clear_checkbox_text(self, text: str):
+        if self._clear_checkbox is not None:
+            self._clear_checkbox.setText(text)
