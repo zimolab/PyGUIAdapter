@@ -16,6 +16,7 @@ from ...utils import IconType
 from ...window import BaseWindow, BaseWindowConfig
 
 DEFAULT_WINDOW_SIZE = (1024, 768)
+
 DEFAULT_EXECUTOR_CLASS = ThreadFunctionExecutor
 
 ParameterWidgetType = Union[
@@ -24,6 +25,8 @@ ParameterWidgetType = Union[
 ]
 
 DockWidgetArea = Qt.DockWidgetArea
+DockWidgetAreas = Qt.DockWidgetAreas
+AllDockWidgetAreas = Qt.AllDockWidgetAreas
 BottomDockWidgetArea = Qt.DockWidgetArea.BottomDockWidgetArea
 TopDockWidgetArea = Qt.DockWidgetArea.TopDockWidgetArea
 LeftDockWidgetArea = Qt.DockWidgetArea.LeftDockWidgetArea
@@ -45,18 +48,25 @@ class FnExecuteWindowConfig(BaseWindowConfig):
     show_clear_checkbox: bool = True
     clear_checkbox_text: str = "clear output"
 
-    show_output_dock: bool = True
-    output_dock_title: str = "Output"
-    output_dock_ratio: float = 0.30
-    output_dock_floating: bool = False
-    output_dock_position: DockWidgetArea = BottomDockWidgetArea
-
-    show_document_dock: bool = True
-    document_dock_title: str = "Document"
-    document_dock_ratio: float = 0.60
-    document_dock_floating: bool = False
-    document_dock_position: DockWidgetArea = RightDockWidgetArea
     tabify_docks: bool = False
+
+    output_dock_visible: bool = True
+    output_dock_title: str = "Output"
+    output_dock_floating: bool = False
+    output_dock_initial_area: DockWidgetArea = BottomDockWidgetArea
+    output_dock_initial_size: Tuple[Optional[int], Optional[int]] = (
+        None,
+        DEFAULT_WINDOW_SIZE[1] * 0.3,
+    )
+
+    document_dock_visible: bool = True
+    document_dock_title: str = "Document"
+    document_dock_floating: bool = False
+    document_dock_initial_area: DockWidgetArea = RightDockWidgetArea
+    document_dock_initial_size: Tuple[Optional[int], Optional[int]] = (
+        DEFAULT_WINDOW_SIZE[0] * 0.6,
+        None,
+    )
 
     output_browser_config: OutputBrowserConfig = dataclasses.field(
         default_factory=OutputBrowserConfig

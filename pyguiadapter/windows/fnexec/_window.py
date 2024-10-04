@@ -1,7 +1,6 @@
 from typing import Tuple, Literal, Dict, Union, Type, Any, List, Optional, cast
 
 from qtpy.QtCore import Qt
-from qtpy.QtGui import QIcon
 from qtpy.QtWidgets import (
     QWidget,
     QVBoxLayout,
@@ -12,6 +11,7 @@ from ._base import (
     BaseFnExecuteWindow,
     DEFAULT_EXECUTOR_CLASS,
     FnExecuteWindowConfig,
+    DockWidgetArea,
 )
 from ._document_area import DocumentArea
 from ._operation_area import OperationArea
@@ -170,69 +170,170 @@ class FnExecuteWindow(BaseFnExecuteWindow):
         super().apply_configs()
 
         self._config: FnExecuteWindowConfig
-        fn_info = self._bundle.fn_info
 
         if self._config.title is None:
-            title = fn_info.display_name or ""
+            title = self._bundle.fn_info.display_name or ""
         else:
             title = self._config.title
-        icon = self._config.icon or fn_info.icon
-        icon = get_icon(icon) or QIcon()
         self.setWindowTitle(title)
-        self.setWindowIcon(icon)
+        icon = self._config.icon or self._bundle.fn_info.icon
+        icon = get_icon(icon)
+        if icon:
+            self.setWindowIcon(icon)
 
         self._operation_area.apply_config()
         self._output_area.apply_config()
 
-        self._document_dock.setWindowTitle(self._config.document_dock_title)
-        self._document_dock.setVisible(self._config.show_document_dock)
-        self._document_dock.setFloating(self._config.document_dock_floating)
-        self.set_document(fn_info.document, fn_info.document_format)
-        self.addDockWidget(self._config.document_dock_position, self._document_dock)
-
-        # create the dock widget and output area
-        self._output_dock.setWindowTitle(self._config.output_dock_title)
-        self._output_dock.setVisible(self._config.show_output_dock)
-        self._output_dock.setFloating(self._config.output_dock_floating)
-        self.addDockWidget(self._config.output_dock_position, self._output_dock)
-
-        if self._config.tabify_docks:
-            self.tabifyDockWidget(self._document_dock, self._output_dock)
-
-        # resize the docks
-        current_width = self.width()
-        current_height = self.height()
-        output_dock_ratio = self._config.output_dock_ratio
-        output_dock_ratio = min(max(output_dock_ratio, 0.1), 1.0)
-        dock_height = int(current_height * output_dock_ratio)
-        document_dock_ratio = min(max(self._config.document_dock_ratio, 0.1), 1.0)
-        dock_width = int(current_width * document_dock_ratio)
-        self.resizeDocks([self._output_dock], [dock_height], Qt.Vertical)
-        self.resizeDocks(
-            [self._document_dock],
-            [dock_width],
-            Qt.Horizontal,
+        self.set_document_dock_property(
+            title=self._config.document_dock_title,
+            visible=self._config.document_dock_visible,
+            floating=self._config.document_dock_floating,
+            area=self._config.document_dock_initial_area,
         )
+        self.set_document(
+            self._bundle.fn_info.document, self._bundle.fn_info.document_format
+        )
+
+        self.set_output_dock_property(
+            title=self._config.output_dock_title,
+            visible=self._config.output_dock_visible,
+            floating=self._config.output_dock_floating,
+            area=self._config.output_dock_initial_area,
+        )
+
+        self.tabify_docks(self._config.tabify_docks)
+        self.resize_document_dock(self._config.document_dock_initial_size)
+        self.resize_output_dock(self._config.output_dock_initial_size)
+
+    def set_output_dock_property(
+        self,
+        *,
+        title: Optional[str] = None,
+        visible: Optional[bool] = None,
+        floating: Optional[bool] = None,
+        area: Optional[DockWidgetArea] = None,
+    ):
+        if title is not None:
+            self.set_output_dock_title(title)
+        if visible is not None:
+            self.set_output_dock_visible(visible)
+        if floating is not None:
+            self.set_output_dock_floating(floating)
+        if area is not None:
+            self.set_output_dock_area(area)
+
+    def set_document_dock_property(
+        self,
+        *,
+        title: Optional[str] = None,
+        visible: Optional[bool] = None,
+        floating: Optional[bool] = None,
+        area: Optional[DockWidgetArea] = None,
+    ):
+        if title is not None:
+            self.set_document_dock_title(title)
+        if visible is not None:
+            self.set_document_dock_visible(visible)
+        if floating is not None:
+            self.set_document_dock_floating(floating)
+        if area is not None:
+            self.set_document_dock_area(area)
 
     def set_output_dock_visible(self, visible: bool):
         self._config: FnExecuteWindowConfig
-        self._config.show_output_dock = visible
         self._output_dock.setVisible(visible)
+        self._config.output_dock_visible = self._output_dock.isVisible()
+
+    def is_output_dock_visible(self) -> bool:
+        self._config: FnExecuteWindowConfig
+        self._config.output_dock_visible = self._output_dock.isVisible()
+        return self._config.output_dock_visible
 
     def set_document_dock_visible(self, visible: bool):
         self._config: FnExecuteWindowConfig
-        self._config.show_document_dock = visible
         self._document_dock.setVisible(visible)
+        self._config.document_dock_visible = self._document_dock.isVisible()
+
+    def is_document_dock_visible(self) -> bool:
+        self._config: FnExecuteWindowConfig
+        self._config.document_dock_visible = self._document_dock.isVisible()
+        return self._config.document_dock_visible
 
     def set_document_dock_floating(self, floating: bool):
         self._config: FnExecuteWindowConfig
-        self._config.document_dock_floating = floating
         self._document_dock.setFloating(floating)
+        self._config.document_dock_floating = self._document_dock.isFloating()
+
+    def is_document_dock_floating(self) -> bool:
+        self._config: FnExecuteWindowConfig
+        self._config.document_dock_floating = self._document_dock.isFloating()
+        return self._config.document_dock_floating
 
     def set_output_dock_floating(self, floating: bool):
         self._config: FnExecuteWindowConfig
-        self._config.output_dock_floating = floating
         self._output_dock.setFloating(floating)
+        self._config.output_dock_floating = self._output_dock.isFloating()
+
+    def is_output_dock_floating(self) -> bool:
+        self._config: FnExecuteWindowConfig
+        self._config.output_dock_floating = self._output_dock.isFloating()
+        return self._config.output_dock_floating
+
+    def set_document_dock_title(self, title: str):
+        if title is None:
+            return
+        self._config: FnExecuteWindowConfig
+        self._config.document_dock_title = title
+        self._document_dock.setWindowTitle(title)
+
+    def get_document_dock_title(self) -> str:
+        self._config: FnExecuteWindowConfig
+        self._config.document_dock_title = self._document_dock.windowTitle()
+        return self._config.document_dock_title
+
+    def set_output_dock_title(self, title: str):
+        if title is None:
+            return
+        self._config: FnExecuteWindowConfig
+        self._config.output_dock_title = title
+        self._output_dock.setWindowTitle(title)
+
+    def get_output_dock_title(self) -> str:
+        self._config: FnExecuteWindowConfig
+        self._config.output_dock_title = self._output_dock.windowTitle()
+        return self._config.output_dock_title
+
+    def set_document_dock_area(self, area: DockWidgetArea):
+        if not self._document_dock.isAreaAllowed(area):
+            messagebox.show_warning_message(self, f"Invalid dock area: {area}")
+            return
+        self.addDockWidget(area, self._document_dock)
+
+    def get_document_dock_area(self) -> DockWidgetArea:
+        return self._document_dock.dockArea()
+
+    def set_output_dock_area(self, area: DockWidgetArea):
+        if not self._output_dock.isAreaAllowed(area):
+            messagebox.show_warning_message(self, f"Invalid dock area: {area}")
+            return
+        self.addDockWidget(area, self._output_dock)
+
+    def get_output_dock_area(self) -> DockWidgetArea:
+        return self._output_dock.dockArea()
+
+    def resize_document_dock(self, size: Tuple[Optional[int], Optional[int]]):
+        width, height = size
+        if width:
+            self.resizeDocks([self._document_dock], [width], Qt.Horizontal)
+        if height:
+            self.resizeDocks([self._document_dock], [height], Qt.Vertical)
+
+    def resize_output_dock(self, size: Tuple[Optional[int], Optional[int]]):
+        width, height = size
+        if width:
+            self.resizeDocks([self._output_dock], [width], Qt.Horizontal)
+        if height:
+            self.resizeDocks([self._output_dock], [height], Qt.Vertical)
 
     def tabify_docks(self, tabify: bool):
         self._config: FnExecuteWindowConfig
