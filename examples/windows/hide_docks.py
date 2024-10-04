@@ -17,8 +17,8 @@ if __name__ == "__main__":
         hide_docks_example,
         window_config=FnExecuteWindowConfig(
             size=(300, 400),
-            show_document_dock=False,
-            show_output_dock=False,
+            document_dock_visible=False,
+            output_dock_visible=False,
         ),
     )
     adapter.run()
