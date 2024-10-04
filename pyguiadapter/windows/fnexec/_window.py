@@ -27,7 +27,7 @@ from ...paramwidget import (
     BaseParameterWidget,
     BaseParameterWidgetConfig,
 )
-from ...utils import messagebox, get_icon, get_traceback
+from ...utils import messagebox, get_traceback
 
 
 class FnExecuteWindow(BaseFnExecuteWindow):
