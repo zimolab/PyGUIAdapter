@@ -1,4 +1,5 @@
-from typing import Tuple, Literal, Dict, Union, Type, Any, List, Optional, cast
+from distutils.command.config import config
+from typing import Tuple, Literal, Dict, Union, Type, Any, List, Optional
 
 from qtpy.QtCore import Qt
 from qtpy.QtWidgets import (
@@ -64,6 +65,8 @@ class FnExecuteWindow(BaseFnExecuteWindow):
         return self._executor
 
     def _create_ui(self):
+        self._config: FnExecuteWindowConfig
+
         super()._create_ui()
 
         self._center_widget = QWidget(self)
@@ -72,15 +75,15 @@ class FnExecuteWindow(BaseFnExecuteWindow):
         self._center_widget.setLayout(layout_main)
         self.setCentralWidget(self._center_widget)
 
-        config: FnExecuteWindowConfig = cast(FnExecuteWindowConfig, self._config)
-
         parameter_area_layout = QVBoxLayout()
         layout_main.addLayout(parameter_area_layout)
 
-        self._parameter_area = ParameterArea(self._center_widget, config, self._bundle)
+        self._parameter_area = ParameterArea(
+            self._center_widget, self._config, self._bundle
+        )
         parameter_area_layout.addWidget(self._parameter_area)
 
-        self._operation_area = OperationArea(self._center_widget, config)
+        self._operation_area = OperationArea(self._center_widget, self._config)
         self._operation_area.set_cancel_button_visible(self._bundle.fn_info.cancelable)
         self._operation_area.sig_execute_requested.connect(
             self._on_execute_button_clicked
@@ -93,12 +96,14 @@ class FnExecuteWindow(BaseFnExecuteWindow):
 
         self._document_dock = QDockWidget(self)
         self._document_area = DocumentArea(
-            self._document_dock, config.document_browser_config
+            self._document_dock, self._config.document_browser_config
         )
         self._document_dock.setWidget(self._document_area)
 
         self._output_dock = QDockWidget(self)
-        self._output_area = OutputArea(self._output_dock, config.output_browser_config)
+        self._output_area = OutputArea(
+            self._output_dock, self._config.output_browser_config
+        )
         self._output_dock.setWidget(self._output_area)
 
     # noinspection PyUnresolvedReferences
@@ -114,7 +119,6 @@ class FnExecuteWindow(BaseFnExecuteWindow):
         self.set_title(title)
 
         icon = self._config.icon or self._bundle.fn_info.icon
-        print(icon)
         self.set_icon(icon)
 
         self._operation_area.apply_config()
@@ -342,6 +346,30 @@ class FnExecuteWindow(BaseFnExecuteWindow):
     def clear_statusbar_message(self):
         self.statusBar().clearMessage()
 
+    def set_execute_text(self, text: str):
+        self._operation_area.set_execute_button_text(text)
+
+    def set_cancel_button_text(self, text: str):
+        self._operation_area.set_cancel_button_text(text)
+
+    def set_clear_button_text(self, text: str):
+        self._operation_area.set_clear_button_text(text)
+
+    def set_clear_checkbox_text(self, text: str):
+        self._operation_area.set_clear_checkbox_text(text)
+
+    def set_clear_button_visible(self, visible: bool):
+        self._operation_area.set_clear_button_visible(visible)
+
+    def set_cler_checkbox_visible(self, visible: bool):
+        self._operation_area.set_clear_checkbox_visible(visible)
+
+    def set_clear_checkbox_checked(self, checked: bool):
+        self._operation_area.set_clear_checkbox_checked(checked)
+
+    def is_clear_checkbox_checked(self) -> bool:
+        return self._operation_area.is_clear_checkbox_checked()
+
     def before_execute(self, fn_info: FnInfo, arguments: Dict[str, Any]) -> None:
         super().before_execute(fn_info, arguments)
         if self._operation_area.is_clear_checkbox_checked():
@@ -397,13 +425,13 @@ class FnExecuteWindow(BaseFnExecuteWindow):
         error_type = type(error).__name__
         error_msg = self._config.function_error_message.format(error_type, str(error))
         if self._config.print_function_error:
-            if not self._config.show_error_traceback:
+            if not self._config.function_error_traceback:
                 self.append_output(error_msg, scroll_to_bottom=True)
             else:
                 self.append_output(get_traceback(error) + "\n", scroll_to_bottom=True)
 
         if self._config.show_function_error:
-            if not self._config.show_error_traceback:
+            if not self._config.function_error_traceback:
                 messagebox.show_critical_message(
                     self, error_msg, title=self._config.error_dialog_title
                 )
