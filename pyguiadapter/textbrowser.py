@@ -23,12 +23,8 @@ class TextBrowserConfig(object):
 
 class TextBrowser(QTextBrowser):
     def __init__(self, parent: Optional[QWidget], config: Optional[TextBrowserConfig]):
-        super().__init__(parent)
         self._config: TextBrowserConfig = config or TextBrowserConfig()
-
-    @property
-    def config(self) -> TextBrowserConfig:
-        return self._config
+        super().__init__(parent)
 
     def move_cursor_to_end(self):
         cursor = self.textCursor()
