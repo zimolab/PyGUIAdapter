@@ -1,7 +1,7 @@
 import dataclasses
 from typing import Callable, Literal, Any, Dict, List, Type, Optional, ForwardRef
 
-from . import utils
+from .utils import IconType
 
 
 @dataclasses.dataclass
@@ -19,7 +19,7 @@ class FnInfo(object):
     display_name: str
     document: str = ""
     document_format: Literal["markdown", "html", "plaintext"] = "markdown"
-    icon: utils.IconType = None
+    icon: IconType = None
     group: Optional[str] = None
     parameters: Dict[str, ParameterInfo] = dataclasses.field(default_factory=dict)
     cancelable: bool = False
