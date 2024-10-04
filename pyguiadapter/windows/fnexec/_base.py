@@ -5,7 +5,7 @@ from typing import Tuple, Dict, Union, Type, Optional
 from qtpy.QtCore import QSize, Qt
 
 from ._output_area import ProgressBarConfig, OutputBrowserConfig
-from .._docbrowser import DocumentBrowserConfig
+from ..document_browser import DocumentBrowserConfig
 from ...executor import ExecuteStateListener
 from ...executors import ThreadFunctionExecutor
 from ...paramwidget import (

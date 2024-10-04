@@ -12,7 +12,7 @@ from qtpy.QtWidgets import (
 )
 
 from ._group import FnGroupPage
-from .._docbrowser import DocumentBrowserConfig, DocumentBrowser
+from ..document_browser import DocumentBrowserConfig, DocumentBrowser
 from ..fnexec import FnExecuteWindow
 from ...utils import IconType, get_icon, set_textbrowser_content, messagebox
 from ...action import Separator

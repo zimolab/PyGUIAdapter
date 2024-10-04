@@ -2,7 +2,7 @@ from typing import Literal
 
 from qtpy.QtWidgets import QWidget, QVBoxLayout
 
-from ..._docbrowser import DocumentBrowserConfig, DocumentBrowser
+from ...document_browser import DocumentBrowserConfig, DocumentBrowser
 from ....utils import set_textbrowser_content
 
 
