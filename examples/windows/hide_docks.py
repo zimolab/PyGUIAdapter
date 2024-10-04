@@ -19,6 +19,10 @@ if __name__ == "__main__":
             size=(300, 400),
             document_dock_visible=False,
             output_dock_visible=False,
+            clear_button_visible=False,
+            clear_checkbox_visible=False,
+            execute_button_text="Start",
+            default_parameter_group_name="Parameters",
         ),
     )
     adapter.run()
