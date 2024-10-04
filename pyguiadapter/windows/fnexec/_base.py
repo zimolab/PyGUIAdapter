@@ -1,6 +1,6 @@
 import dataclasses
 from abc import abstractmethod
-from typing import Tuple, Dict, Union, Type, Optional
+from typing import Tuple, Dict, Union, Type, Optional, Literal
 
 from qtpy.QtCore import QSize, Qt
 
@@ -48,7 +48,7 @@ class FnExecuteWindowConfig(BaseWindowConfig):
     show_clear_checkbox: bool = True
     clear_checkbox_text: str = "clear output"
 
-    tabify_docks: bool = False
+    initial_docks_state: Literal["auto", "tabified"] = "auto"
 
     output_dock_visible: bool = True
     output_dock_title: str = "Output"

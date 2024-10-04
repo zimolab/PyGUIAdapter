@@ -201,7 +201,8 @@ class FnExecuteWindow(BaseFnExecuteWindow):
             area=self._config.output_dock_initial_area,
         )
 
-        self.tabify_docks(self._config.tabify_docks)
+        if self._config.initial_docks_state == "tabified":
+            self.tabify_docks()
         self.resize_document_dock(self._config.document_dock_initial_size)
         self.resize_output_dock(self._config.output_dock_initial_size)
 
@@ -335,11 +336,8 @@ class FnExecuteWindow(BaseFnExecuteWindow):
         if height:
             self.resizeDocks([self._output_dock], [height], Qt.Vertical)
 
-    def tabify_docks(self, tabify: bool):
-        self._config: FnExecuteWindowConfig
-        self._config.tabify_docks = tabify
-        if tabify:
-            self.tabifyDockWidget(self._document_dock, self._output_dock)
+    def tabify_docks(self):
+        self.tabifyDockWidget(self._document_dock, self._output_dock)
 
     def before_execute(self, fn_info: FnInfo, arguments: Dict[str, Any]) -> None:
         super().before_execute(fn_info, arguments)
