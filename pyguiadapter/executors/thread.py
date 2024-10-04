@@ -13,9 +13,9 @@ from ..fn import FnInfo
 
 class _WorkerThread(QThread):
 
-    result_ready = Signal(FnInfo, dict, object)
-    error_raised = Signal(FnInfo, dict, Exception)
-    cancel_requested = Signal()
+    sig_result_ready = Signal(FnInfo, dict, object)
+    sig_error_raised = Signal(FnInfo, dict, Exception)
+    sig_cancel_requested = Signal()
 
     # noinspection PyUnresolvedReferences
     def __init__(
@@ -29,7 +29,7 @@ class _WorkerThread(QThread):
         self._arguments = OrderedDict(arguments)
 
         self._cancel_event = threading.Event()
-        self.cancel_requested.connect(self._on_cancel_requested)
+        self.sig_cancel_requested.connect(self._on_cancel_requested)
 
     def is_cancel_event_set(self) -> bool:
         return self._cancel_event.is_set()
@@ -41,9 +41,9 @@ class _WorkerThread(QThread):
             result = self._on_execute()
         except Exception as e:
             traceback.print_exc()
-            self.error_raised.emit(self._fn_info, self._arguments, e)
+            self.sig_error_raised.emit(self._fn_info, self._arguments, e)
         else:
-            self.result_ready.emit(self._fn_info, self._arguments, result)
+            self.sig_result_ready.emit(self._fn_info, self._arguments, result)
         finally:
             self._cancel_event.clear()
 
@@ -93,8 +93,8 @@ class ThreadFunctionExecutor(BaseFunctionExecutor):
             self._worker_thread = _WorkerThread(self, fn_info, arguments)
             self._worker_thread.started.connect(_callback_on_execute_start)
             self._worker_thread.finished.connect(_callback_on_execute_finish)
-            self._worker_thread.error_raised.connect(self._on_execute_error)
-            self._worker_thread.result_ready.connect(self._on_execute_result)
+            self._worker_thread.sig_error_raised.connect(self._on_execute_error)
+            self._worker_thread.sig_result_ready.connect(self._on_execute_result)
             self._worker_thread.start()
         except Exception as e:
             traceback.print_exc()
@@ -109,7 +109,7 @@ class ThreadFunctionExecutor(BaseFunctionExecutor):
             warnings.warn("function is already cancelled")
             return
         # noinspection PyUnresolvedReferences
-        self._worker_thread.cancel_requested.emit()
+        self._worker_thread.sig_cancel_requested.emit()
 
     def _before_execute(self, fn_info: FnInfo, arguments: Dict[str, Any]):
         if self._listener:
