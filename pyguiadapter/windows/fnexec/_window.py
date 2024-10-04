@@ -60,7 +60,7 @@ class FnExecuteWindow(BaseFnExecuteWindow):
         ucontext._current_window_created(self)
 
     @property
-    def current_executor(self) -> BaseFunctionExecutor:
+    def executor(self) -> BaseFunctionExecutor:
         return self._executor
 
     def _create_ui(self):
