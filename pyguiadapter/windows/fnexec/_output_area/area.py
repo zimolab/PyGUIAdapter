@@ -7,7 +7,9 @@ from .progressbar import ProgressBarConfig, ProgressBar
 
 
 class OutputArea(QWidget):
-    def __init__(self, parent: QWidget, output_browser_config: OutputBrowserConfig):
+    def __init__(
+        self, parent: QWidget, output_browser_config: Optional[OutputBrowserConfig]
+    ):
         self._progressbar: Optional[ProgressBar] = None
         self._doc_browser: Optional[OutputBrowser] = None
 
@@ -17,7 +19,9 @@ class OutputArea(QWidget):
         self._layout = QVBoxLayout()
         self._layout.setContentsMargins(0, 0, 0, 0)
 
-        self._doc_browser = OutputBrowser(self, output_browser_config)
+        self._doc_browser = OutputBrowser(
+            self, output_browser_config or OutputBrowserConfig()
+        )
         self._layout.addWidget(self._doc_browser)
 
         self._progressbar = ProgressBar(self)
