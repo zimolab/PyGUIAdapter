@@ -12,6 +12,7 @@ from ._base import (
     DEFAULT_EXECUTOR_CLASS,
     FnExecuteWindowConfig,
     DockWidgetArea,
+    DockWidgetAreas,
 )
 from ._document_area import DocumentArea
 from ._operation_area import OperationArea
@@ -203,6 +204,7 @@ class FnExecuteWindow(BaseFnExecuteWindow):
 
         if self._config.initial_docks_state == "tabified":
             self.tabify_docks()
+
         self.resize_document_dock(self._config.document_dock_initial_size)
         self.resize_output_dock(self._config.output_dock_initial_size)
 
@@ -239,6 +241,14 @@ class FnExecuteWindow(BaseFnExecuteWindow):
             self.set_document_dock_floating(floating)
         if area is not None:
             self.set_document_dock_area(area)
+
+    def set_allowed_dock_areas(
+        self, areas: Union[DockWidgetArea, DockWidgetAreas, int, type(None)]
+    ):
+        if areas is None:
+            return
+        self._document_dock.setAllowedAreas(areas)
+        self._output_dock.setAllowedAreas(areas)
 
     def set_output_dock_visible(self, visible: bool):
         self._config: FnExecuteWindowConfig
