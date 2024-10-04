@@ -44,13 +44,14 @@ class FnExecuteWindowConfig(BaseWindowConfig):
 
     cancel_button_text: str = "Cancel"
 
-    show_clear_button: bool = True
+    clear_button_visible: bool = True
     clear_button_text: str = "Clear"
 
-    show_clear_checkbox: bool = True
+    clear_checkbox_visible: bool = True
+    clear_checkbox_checked: bool = True
     clear_checkbox_text: str = "clear output"
 
-    statusbar_visible: bool = True
+    statusbar_visible: bool = False
 
     initial_docks_state: Literal["auto", "tabified"] = "auto"
 
@@ -58,38 +59,26 @@ class FnExecuteWindowConfig(BaseWindowConfig):
     output_dock_title: str = "Output"
     output_dock_floating: bool = False
     output_dock_initial_area: DockWidgetArea = BottomDockWidgetArea
-    output_dock_initial_size: Tuple[Optional[int], Optional[int]] = (
-        None,
-        DEFAULT_WINDOW_SIZE[1] * 0.3,
-    )
+    output_dock_initial_size: Tuple[Optional[int], Optional[int]] = (None, 230)
 
     document_dock_visible: bool = True
     document_dock_title: str = "Document"
     document_dock_floating: bool = False
     document_dock_initial_area: DockWidgetArea = RightDockWidgetArea
-    document_dock_initial_size: Tuple[Optional[int], Optional[int]] = (
-        DEFAULT_WINDOW_SIZE[0] * 0.6,
-        None,
-    )
+    document_dock_initial_size: Tuple[Optional[int], Optional[int]] = (614, None)
 
-    output_browser_config: OutputBrowserConfig = dataclasses.field(
-        default_factory=OutputBrowserConfig
-    )
-    document_browser_config: Optional[DocumentBrowserConfig] = dataclasses.field(
-        default_factory=DocumentBrowserConfig
-    )
+    output_browser_config: Optional[OutputBrowserConfig] = None
+    document_browser_config: Optional[DocumentBrowserConfig] = None
 
     default_parameter_group_name: str = "Main Parameters"
     default_parameter_group_icon: IconType = None
     parameter_group_icons: Dict[str, IconType] = dataclasses.field(default_factory=dict)
 
-    auto_clear_output: bool = True
-
     print_function_result: bool = True
     show_function_result: bool = False
     print_function_error: bool = True
     show_function_error: bool = True
-    show_error_traceback: bool = True
+    function_error_traceback: bool = True
 
     error_dialog_title: str = "Error"
     result_dialog_title: str = "Result"
