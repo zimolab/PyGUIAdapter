@@ -25,9 +25,10 @@ DEFAULT_FN_ICON_SIZE = (48, 48)
 WARNING_MSG_NO_FN_SELECTED = "No Selected Function!"
 
 
-@dataclasses.dataclass
+@dataclasses.dataclass(frozen=True)
 class FnSelectWindowConfig(BaseWindowConfig):
     title: str = "Select Function"
+    size: Union[Tuple[int, int], QSize] = (800, 600)
     select_button_text: str = "Select"
     icon_mode: bool = False
     icon_size: Union[Tuple[int, int], int, QSize, None] = DEFAULT_FN_ICON_SIZE
@@ -35,7 +36,7 @@ class FnSelectWindowConfig(BaseWindowConfig):
     default_fn_group_icon: IconType = None
     fn_group_icons: Dict[str, IconType] = dataclasses.field(default_factory=dict)
     document_browser_config: Optional[DocumentBrowserConfig] = None
-    document_browser_ratio: float = 0.65
+    document_browser_width: int = 490
 
 
 class FnSelectWindow(BaseWindow):
@@ -49,18 +50,67 @@ class FnSelectWindow(BaseWindow):
         toolbar: Optional[ToolBarConfig] = None,
         menus: Optional[List[Union[MenuConfig, Separator]]] = None,
     ):
-        self._config: FnSelectWindowConfig = config
         self._initial_bundles = bundles.copy()
         self._group_pages: Dict[str, FnGroupPage] = {}
         self._current_exec_window: Optional[FnSelectWindow] = None
         self._function_group_toolbox: Optional[QToolBox] = None
         self._document_textbrowser: Optional[DocumentBrowser] = None
         self._select_button: Optional[QPushButton] = None
+        self._splitter: Optional[QSplitter] = None
 
         super().__init__(parent, config, listener, toolbar, menus)
 
+    def _create_ui(self):
+        self._config: FnSelectWindowConfig
+
+        central_widget: QWidget = QWidget(self)
+        # noinspection PyArgumentList
+        layout_main = QVBoxLayout(central_widget)
+        self.setCentralWidget(central_widget)
+
+        # noinspection PyArgumentList
+        splitter = QSplitter(central_widget)
+        splitter.setOrientation(Qt.Horizontal)
+        layout_main.addWidget(splitter)
+
+        self._function_group_toolbox: QToolBox = QToolBox(splitter)
+        # noinspection PyUnresolvedReferences
+        self._function_group_toolbox.currentChanged.connect(
+            self._on_current_group_change
+        )
+        splitter.addWidget(self._function_group_toolbox)
+
+        right_area = QWidget(splitter)
+        # noinspection PyArgumentList
+        layout_right_area = QVBoxLayout(right_area)
+        layout_right_area.setContentsMargins(0, 0, 0, 0)
+
+        self._document_textbrowser = DocumentBrowser(
+            right_area, self._config.document_browser_config
+        )
+        layout_right_area.addWidget(self._document_textbrowser)
+
+        self._select_button = QPushButton(right_area)
+        layout_right_area.addWidget(self._select_button)
+
+        # noinspection PyUnresolvedReferences
+        self._select_button.clicked.connect(self._on_button_select_click)
+        self._splitter = splitter
+
     def apply_configs(self):
         super().apply_configs()
+        self._config: FnSelectWindowConfig
+        self.set_select_button_text(self._config.select_button_text)
+        self.set_document_browser_width(self._config.document_browser_width)
+
+    def set_select_button_text(self, text: str):
+        self._select_button.setText(text)
+
+    def set_document_browser_width(self, width: int):
+        if width <= 0:
+            raise ValueError(f"invalid width: {width}")
+        left_width = self.width() - width
+        self._splitter.setSizes([left_width, width])
 
     def add_bundle(self, bundle: FnBundle):
         fn = bundle.fn_info
@@ -108,53 +158,6 @@ class FnSelectWindow(BaseWindow):
         self._function_group_toolbox.setCurrentIndex(0)
         self.show()
 
-    def _create_ui(self):
-        # central widget
-        _central_widget: QWidget = QWidget(self)
-        # main layout
-        # noinspection PyArgumentList
-        layout_main = QVBoxLayout(_central_widget)
-        self.setCentralWidget(_central_widget)
-
-        # Splitter
-        # noinspection PyArgumentList
-        _splitter = QSplitter(_central_widget)
-        _splitter.setOrientation(Qt.Horizontal)
-        layout_main.addWidget(_splitter)
-
-        # left area
-        # toolbox
-        self._function_group_toolbox: QToolBox = QToolBox(_splitter)
-        # noinspection PyUnresolvedReferences
-        self._function_group_toolbox.currentChanged.connect(
-            self._on_current_group_change
-        )
-        _splitter.addWidget(self._function_group_toolbox)
-
-        # right area
-        # right layout
-        right_area = QWidget(_splitter)
-        # noinspection PyArgumentList
-        _layout_right_area = QVBoxLayout(right_area)
-        _layout_right_area.setContentsMargins(0, 0, 0, 0)
-        # fn document browser
-        doc_config = self._config.document_browser_config or DocumentBrowserConfig()
-        self._document_textbrowser = DocumentBrowser(right_area, doc_config)
-        _layout_right_area.addWidget(self._document_textbrowser)
-        # select button
-        self._select_button = QPushButton(right_area)
-        self._select_button.setText(self._config.select_button_text)
-        _layout_right_area.addWidget(self._select_button)
-
-        right_area_ratio = self._config.document_browser_ratio
-        left_area_ratio = 1.0 - right_area_ratio
-        left_area_width = int(self.width() * left_area_ratio)
-        right_area_width = int(self.width() * right_area_ratio)
-        _splitter.setSizes([left_area_width, right_area_width])
-
-        # noinspection PyUnresolvedReferences
-        self._select_button.clicked.connect(self._on_button_select_click)
-
     def _start_exec_window(self, bundle: FnBundle):
         assert isinstance(bundle, FnBundle)
         self._current_exec_window = FnExecuteWindow(self, bundle)
@@ -201,6 +204,7 @@ class FnSelectWindow(BaseWindow):
         self._on_current_bundle_change(bundle, current_page)
 
     def _get_group_page(self, group_name: Optional[str]) -> FnGroupPage:
+        self._config: FnSelectWindowConfig
         group_name = self._group_name(group_name)
         # return existing page
         if group_name in self._group_pages:
@@ -213,9 +217,9 @@ class FnSelectWindow(BaseWindow):
             self._function_group_toolbox, self._config.icon_mode, icon_size
         )
         # noinspection PyUnresolvedReferences
-        page.current_bundle_changed.connect(self._on_current_bundle_change)
+        page.sig_current_bundle_changed.connect(self._on_current_bundle_change)
         # noinspection PyUnresolvedReferences
-        page.item_double_clicked.connect(self._on_item_double_click)
+        page.sig_item_double_clicked.connect(self._on_item_double_click)
         group_icon = self._group_icon(group_name)
         self._function_group_toolbox.addItem(page, group_icon, group_name)
         self._function_group_toolbox.setCurrentWidget(page)
@@ -223,6 +227,7 @@ class FnSelectWindow(BaseWindow):
         return page
 
     def _group_icon(self, group_name: Optional[str]):
+        self._config: FnSelectWindowConfig
         if group_name is None or group_name == self._config.default_fn_group_name:
             return get_icon(self._config.default_fn_group_icon) or QIcon()
         icon_src = self._config.fn_group_icons.get(group_name, None)
@@ -249,6 +254,7 @@ class FnSelectWindow(BaseWindow):
         self._group_pages.clear()
 
     def _group_name(self, group_name: Optional[str]):
+        self._config: FnSelectWindowConfig
         if group_name is None:
             return self._config.default_fn_group_name
         return group_name

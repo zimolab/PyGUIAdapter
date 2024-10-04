@@ -35,7 +35,7 @@ RightDockWidgetArea = Qt.DockWidgetArea.RightDockWidgetArea
 
 
 # noinspection SpellCheckingInspection
-@dataclasses.dataclass
+@dataclasses.dataclass(frozen=True)
 class FnExecuteWindowConfig(BaseWindowConfig):
     title: Optional[str] = None
     size: Union[Tuple[int, int], QSize] = DEFAULT_WINDOW_SIZE

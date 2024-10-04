@@ -12,14 +12,14 @@ config = CodeEditorConfig(
     highlighter=QPythonHighlighter,
     formatter=PythonFormatter(),
     file_filters="python(*.py)",
-    use_default_menus=False,
+    use_default_menus=True,
     # exclude_default_menus=["Edit", "File"],
-    exclude_default_menu_actions=(
-        ("File", "Save"),
-        ("File", "Save as"),
-        ("Edit", "Select all"),
-    ),
-    exclude_default_toolbar_actions=("Save",),
+    # exclude_default_menu_actions=(
+    #     ("File", "Save"),
+    #     ("File", "Save as"),
+    #     ("Edit", "Select all"),
+    # ),
+    # exclude_default_toolbar_actions=("Save",),
 )
 window = CodeEditorWindow(None, config)
 window.show()

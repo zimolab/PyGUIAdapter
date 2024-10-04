@@ -40,8 +40,11 @@ class OperationArea(QWidget):
         self._layout.addWidget(hline(self))
         self._layout.addLayout(self._button_layout)
 
+        # noinspection PyUnresolvedReferences
         self._execute_button.clicked.connect(self.sig_execute_requested)
+        # noinspection PyUnresolvedReferences
         self._cancel_button.clicked.connect(self.sig_cancel_requested)
+        # noinspection PyUnresolvedReferences
         self._clear_button.clicked.connect(self.sig_clear_requested)
 
         self.setLayout(self._layout)
@@ -71,7 +74,6 @@ class OperationArea(QWidget):
 
     def set_clear_button_visible(self, visible: bool):
         if self._clear_button is not None:
-            self._config.show_clear_button = visible
             self._clear_button.setVisible(visible)
 
     def set_cancel_button_visible(self, visible: bool):
@@ -80,7 +82,6 @@ class OperationArea(QWidget):
 
     def set_clear_checkbox_visible(self, visible: bool):
         if self._clear_checkbox is not None:
-            self._config.show_clear_checkbox = visible
             self._clear_checkbox.setVisible(visible)
 
     def is_clear_checkbox_checked(self) -> bool:

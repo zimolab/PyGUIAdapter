@@ -16,8 +16,8 @@ DEFAULT_FN_ICON = "fa5s.cubes"
 
 
 class FnGroupPage(QWidget):
-    current_bundle_changed = Signal(FnBundle, object)
-    item_double_clicked = Signal(FnBundle, object)
+    sig_current_bundle_changed = Signal(FnBundle, object)
+    sig_item_double_clicked = Signal(FnBundle, object)
 
     def __init__(
         self,
@@ -29,32 +29,48 @@ class FnGroupPage(QWidget):
         self._bundles: List[FnBundle] = []
 
         # noinspection PyArgumentList
-        self._layout = QVBoxLayout(self)
+        self._layout = QVBoxLayout()
         self._layout.setContentsMargins(0, 0, 0, 0)
 
-        self._function_list_widget = QListWidget(self)
-        if icon_mode:
-            self._function_list_widget.setViewMode(QListWidget.IconMode)
-        else:
-            self._function_list_widget.setViewMode(QListWidget.ListMode)
-        icon_size = get_size(icon_size)
-        if icon_size:
-            self._function_list_widget.setIconSize(icon_size)
-        self._layout.addWidget(self._function_list_widget)
+        self._fn_list_widget = QListWidget(self)
+        self.set_icon_mode(icon_mode)
+        self.set_icon_size(icon_size)
+        self._layout.addWidget(self._fn_list_widget)
 
         # noinspection PyUnresolvedReferences
-        self._function_list_widget.currentItemChanged.connect(
-            self._on_current_item_change
-        )
+        self._fn_list_widget.currentItemChanged.connect(self._on_current_item_change)
         # noinspection PyUnresolvedReferences
-        self._function_list_widget.doubleClicked.connect(self._on_double_clicked)
+        self._fn_list_widget.doubleClicked.connect(self._on_double_clicked)
+
+        self.setLayout(self._layout)
+
+    def set_icon_size(self, size: Union[int, Tuple[int, int], QSize]):
+        if size is None:
+            return
+        size = get_size(size)
+        if not size:
+            raise ValueError(f"invalid icon size: {size}")
+        self._fn_list_widget.setIconSize(size)
+
+    def get_icon_size(self) -> Tuple[int, int]:
+        size = self._fn_list_widget.iconSize()
+        return size.width(), size.height()
+
+    def set_icon_mode(self, enable: bool):
+        if enable:
+            self._fn_list_widget.setViewMode(QListWidget.IconMode)
+        else:
+            self._fn_list_widget.setViewMode(QListWidget.ListMode)
+
+    def is_icon_mode(self) -> bool:
+        return self._fn_list_widget.viewMode() == QListWidget.IconMode
 
     def add_bundle(self, bundle: FnBundle):
         if bundle in self._bundles:
             return
         item = self._create_bundle_item(bundle)
         self._bundles.append(bundle)
-        self._function_list_widget.addItem(item)
+        self._fn_list_widget.addItem(item)
 
         if not self.current_bundle():
             self.set_current_index(0)
@@ -63,10 +79,10 @@ class FnGroupPage(QWidget):
         return tuple(self._bundles)
 
     def bundles_count(self):
-        return self._function_list_widget.count()
+        return self._fn_list_widget.count()
 
     def bundle_at(self, index: int) -> Optional[FnBundle]:
-        item = self._function_list_widget.item(index)
+        item = self._fn_list_widget.item(index)
         if item is None:
             return None
         bundle = item.data(Qt.UserRole)
@@ -75,8 +91,8 @@ class FnGroupPage(QWidget):
         return None
 
     def bundle_index(self, bundle: FnBundle) -> int:
-        for i in range(self._function_list_widget.count()):
-            item = self._function_list_widget.item(i)
+        for i in range(self._fn_list_widget.count()):
+            item = self._fn_list_widget.item(i)
             if item is None:
                 continue
             if item.data(Qt.UserRole) == bundle:
@@ -84,18 +100,18 @@ class FnGroupPage(QWidget):
         return -1
 
     def current_bundle(self) -> Optional[FnBundle]:
-        current_item = self._function_list_widget.currentItem()
+        current_item = self._fn_list_widget.currentItem()
         if current_item is None:
             return None
         return current_item.data(Qt.UserRole)
 
     def set_current_index(self, index: int):
-        self._function_list_widget.setCurrentRow(index)
+        self._fn_list_widget.setCurrentRow(index)
 
     def remove_bundle(self, bundle: FnBundle):
         idx = self.bundle_index(bundle)
         if idx >= 0:
-            item = self._function_list_widget.takeItem(idx)
+            item = self._fn_list_widget.takeItem(idx)
             self._delete_item(item)
         if bundle in self._bundles:
             self._bundles.remove(bundle)
@@ -103,14 +119,14 @@ class FnGroupPage(QWidget):
     def remove_bundle_at(self, index: int):
         bundle = self.bundle_at(index)
         if bundle is not None:
-            item = self._function_list_widget.takeItem(index)
+            item = self._fn_list_widget.takeItem(index)
             self._delete_item(item)
         if bundle in self._bundles:
             self._bundles.remove(bundle)
 
     def clear_bundles(self):
-        for i in range(self._function_list_widget.count()):
-            item = self._function_list_widget.takeItem(i)
+        for i in range(self._fn_list_widget.count()):
+            item = self._fn_list_widget.takeItem(i)
             self._delete_item(item)
         self._bundles.clear()
 
@@ -129,21 +145,21 @@ class FnGroupPage(QWidget):
         if bundle is None:
             return
         # noinspection PyUnresolvedReferences
-        self.current_bundle_changed.emit(bundle, self)
+        self.sig_current_bundle_changed.emit(bundle, self)
 
     def _on_double_clicked(self, index: QModelIndex):
-        item = self._function_list_widget.item(index.row())
+        item = self._fn_list_widget.item(index.row())
         if item is None:
             return
         bundle = item.data(Qt.UserRole)
         if not isinstance(bundle, FnBundle):
             return
         # noinspection PyUnresolvedReferences
-        self.item_double_clicked.emit(bundle, self)
+        self.sig_item_double_clicked.emit(bundle, self)
 
     def _create_bundle_item(self, bundle: FnBundle) -> QListWidgetItem:
         fn = bundle.fn_info
         icon = get_icon(fn.icon) or qta.icon(DEFAULT_FN_ICON)
-        item = QListWidgetItem(icon, fn.display_name, self._function_list_widget)
+        item = QListWidgetItem(icon, fn.display_name, self._fn_list_widget)
         item.setData(Qt.UserRole, bundle)
         return item

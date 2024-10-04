@@ -1,13 +1,12 @@
 import dataclasses
-from typing import cast, Optional, List, Union
+from typing import Optional, List, Union
 
-from pyqcodeeditor.QCodeEditor import QCodeEditor
 from pyqcodeeditor.QStyleSyntaxHighlighter import QStyleSyntaxHighlighter
 from qtpy.QtWidgets import QWidget
 
-from .. import utils
-from .base import BaseCodeEditorWindow, CodeEditorConfig
 from .actions import DEFAULT_MENUS, DEFAULT_TOOLBAR
+from .base import BaseCodeEditorWindow, CodeEditorConfig
+from .. import utils
 from ..action import Separator
 from ..toolbar import ToolBarConfig
 from ..window import BaseWindowStateListener

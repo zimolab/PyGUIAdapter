@@ -2,7 +2,7 @@ import dataclasses
 import inspect
 import os
 from abc import abstractmethod
-from typing import Type, Callable, Tuple, Optional, Union, List, cast
+from typing import Type, Callable, Tuple, Optional, Union, List
 
 from pyqcodeeditor.QCodeEditor import QCodeEditor
 from pyqcodeeditor.QStyleSyntaxHighlighter import QStyleSyntaxHighlighter
@@ -40,7 +40,7 @@ LineWrapMode = QTextEdit.LineWrapMode
 WordWrapMode = QTextOption.WrapMode
 
 
-@dataclasses.dataclass
+@dataclasses.dataclass(frozen=True)
 class CodeEditorConfig(BaseWindowConfig):
     title: Optional[str] = None
     untitled_filename: Optional[str] = None
@@ -93,56 +93,52 @@ class BaseCodeEditorWindow(BaseWindow):
         toolbar: Optional[ToolBarConfig] = None,
         menus: Optional[List[Union[ToolBarConfig, Separator]]] = None,
     ):
+        config = config or CodeEditorConfig()
         self._editor: Optional[QCodeEditor] = None
         super().__init__(parent, config, listener, toolbar, menus)
 
     def apply_configs(self):
         super().apply_configs()
-        editor_config = self._editor_config()
-        self.set_highlighter(editor_config.highlighter)
-        self.set_completer(editor_config.completer)
-        self.set_auto_indent_enabled(editor_config.auto_indent)
-        self.set_auto_parentheses_enabled(editor_config.auto_parentheses)
-        self.set_tab_replace(editor_config.tab_size, editor_config.tab_replace)
-        self.set_text_font_size(editor_config.text_font_size)
-        self.set_line_wrap_mode(editor_config.line_wrap_mode)
-        self.set_line_wrap_width(editor_config.line_wrap_width)
-        self.set_word_wrap_mode(editor_config.word_wrap_mode)
-
-        self.set_text(editor_config.initial_text)
-        self._update_fingerprint()
-        self._update_title()
+        self._config: CodeEditorConfig
+        self.set_highlighter(self._config.highlighter)
+        self.set_completer(self._config.completer)
+        self.set_auto_indent_enabled(self._config.auto_indent)
+        self.set_auto_parentheses_enabled(self._config.auto_parentheses)
+        self.set_tab_replace(self._config.tab_size, self._config.tab_replace)
+        self.set_text_font_size(self._config.text_font_size)
+        self.set_line_wrap_mode(self._config.line_wrap_mode)
+        self.set_line_wrap_width(self._config.line_wrap_width)
+        self.set_word_wrap_mode(self._config.word_wrap_mode)
 
     def _create_ui(self):
+        self._config: CodeEditorConfig
+
         center_widget = QWidget(self)
         self._editor = QCodeEditor(center_widget)
         layout = QVBoxLayout()
         layout.setContentsMargins(0, 0, 0, 0)
         layout.addWidget(self._editor)
-        center_widget.setLayout(layout)
         self.setCentralWidget(center_widget)
+        center_widget.setLayout(layout)
+
+        self.set_text(self._config.initial_text)
+        self._update_fingerprint()
+        self._update_title()
 
     def _on_close(self) -> bool:
+        self._config: CodeEditorConfig
         if not self.check_modification():
             return super()._on_close()
-
-        config = self._editor_config()
         # noinspection PyUnresolvedReferences
         msgbox = utils.MessageBoxConfig(
-            title=config.quit_dialog_title or QUIT_DIALOG_TITLE,
-            text=config.unsaved_warning_message or UNSAVED_WARNING_MSG,
+            title=self._config.quit_dialog_title or QUIT_DIALOG_TITLE,
+            text=self._config.unsaved_warning_message or UNSAVED_WARNING_MSG,
             buttons=utils.StandardButton.Yes | utils.StandardButton.No,
         ).create_messagebox(self)
         if msgbox.exec_() == utils.StandardButton.Yes:
             return super()._on_close()
         else:
             return False
-
-    def _editor_instance(self) -> QCodeEditor:
-        return self._editor
-
-    def _editor_config(self) -> CodeEditorConfig:
-        return cast(CodeEditorConfig, self._config)
 
     @abstractmethod
     def _current_highlighter(self) -> Optional[QStyleSyntaxHighlighter]:
@@ -171,17 +167,18 @@ class BaseCodeEditorWindow(BaseWindow):
         pass
 
     def _update_title(self):
-        if self._editor_config().title is None:
+        self._config: CodeEditorConfig
+        if self._config.title is None:
             win_title = DEFAULT_WINDOW_TITLE
         else:
-            win_title = self._editor_config().title.strip()
+            win_title = self._config.title.strip()
 
-        if self._editor_config().untitled_filename is None:
+        if self._config.untitled_filename is None:
             untitled_filename = DEFAULT_UNTITLED_FILENAME
         else:
-            untitled_filename = self._editor_config().untitled_filename
+            untitled_filename = self._config.untitled_filename
         current_file = (self._current_file() or "").strip()
-        if self._editor_config().show_filename_in_title:
+        if self._config.show_filename_in_title:
             if not current_file:
                 filename = untitled_filename
             else:
@@ -190,20 +187,16 @@ class BaseCodeEditorWindow(BaseWindow):
         self.setWindowTitle(win_title)
 
     def get_text(self) -> str:
-        return self._editor_instance().toPlainText()
+        return self._editor.toPlainText()
 
     def set_text(self, text: Optional[str]):
-        text = text or ""
-        self._editor_instance().setPlainText(text)
+        self._editor.setPlainText(text or "")
 
     def set_highlighter(
         self,
         highlighter: Optional[Type[QStyleSyntaxHighlighter]],
         args: Union[list, tuple, dict, None] = None,
     ):
-        config = self._editor_config()
-        config.highlighter = highlighter
-        config.highlighter_args = args
         current_highlighter = self._current_highlighter()
         if current_highlighter is not None:
             current_highlighter.setDocument(None)
@@ -212,107 +205,66 @@ class BaseCodeEditorWindow(BaseWindow):
         current_highlighter = create_highlighter(highlighter, args)
         if current_highlighter is not None:
             current_highlighter.setParent(self)
-        self._editor_instance().setHighlighter(current_highlighter)
-
-    def get_highlighter(self) -> Optional[Type[QStyleSyntaxHighlighter]]:
-        return self._editor_config().highlighter
+        self._editor.setHighlighter(current_highlighter)
 
     def set_completer(self, completer: Optional[QCompleter]):
-        self._editor_instance().setCompleter(completer)
-        self._editor_config().completer = completer
-
-    def get_completer(self) -> Optional[QCompleter]:
-        return self._editor_config().completer
-
-    def set_formatter(
-        self, formatter: Union[BaseCodeFormatter, Callable[[str], str], None]
-    ):
-        assert (
-            formatter is None
-            or callable(formatter)
-            or isinstance(formatter, BaseCodeFormatter)
-        )
-        self._editor_config().formatter = formatter
-
-    def get_formatter(self) -> Union[BaseCodeFormatter, Callable[[str], str], None]:
-        return self._editor_config().formatter
+        self._editor.setCompleter(completer)
 
     def set_tab_replace(self, size: int = DEFAULT_TAB_SIZE, tab_replace: bool = True):
-        config = self._editor_config()
-        config.tab_size = size
-        config.tab_replace = tab_replace
-        self._editor_instance().setTabReplace(tab_replace)
-        self._editor_instance().setTabReplaceSize(size)
-
-    def get_tab_size(self) -> int:
-        return self._editor_config().tab_size
+        self._editor.setTabReplace(tab_replace)
+        self._editor.setTabReplaceSize(size)
 
     def is_tab_replace_enabled(self) -> bool:
-        return self._editor_config().tab_replace
+        return self._editor.tabReplace()
+
+    def get_tab_replace_size(self) -> int:
+        return self._editor.tabReplaceSize()
 
     def set_auto_indent_enabled(self, enable: bool = True):
-        self._editor_config().auto_indent = enable
-        self._editor_instance().setAutoIndentation(enable)
+        self._editor.setAutoIndentation(enable)
 
     def is_auto_indent_enabled(self) -> bool:
-        return self._editor_config().auto_indent
+        return self._editor.autoIndentation()
 
     def set_auto_parentheses_enabled(self, enable: bool):
-        self._editor_config().auto_parentheses = enable
-        self._editor_instance().setAutoParentheses(enable)
+        self._editor.setAutoParentheses(enable)
 
     def is_auto_parentheses_enabled(self) -> bool:
-        return self._editor_config().auto_parentheses
+        return self._editor.autoParentheses()
 
     def set_text_font_size(self, size: Optional[int]):
-        self._editor_config().text_font_size = size
-        if size and size > 0:
-            self._editor_instance().setFontSize(size)
+        if size is None:
+            return
+        if size <= 0:
+            raise ValueError(f"invalid size: {size}")
+        self._editor.setFontPointSize(size)
 
     def get_text_font_size(self) -> Optional[int]:
-        return self._editor_config().text_font_size
+        return self._editor.fontSize()
 
     def set_word_wrap_mode(self, mode: WordWrapMode):
         if mode is not None:
-            self._editor_config().word_wrap_mode = mode
-            self._editor_instance().setWordWrapMode(mode)
+            self._editor.setWordWrapMode(mode)
 
     def get_word_wrap_mode(self) -> WordWrapMode:
-        return self._editor_config().word_wrap_mode
+        return self._editor.wordWrapMode()
 
     def set_line_wrap_mode(self, mode: LineWrapMode):
         if mode is not None:
-            self._editor_config().line_wrap_mode = mode
-            self._editor_instance().setLineWrapMode(mode)
+            self._editor.setLineWrapMode(mode)
 
     def get_line_wrap_mode(self) -> LineWrapMode:
-        return self._editor_config().line_wrap_mode
+        return self._editor.lineWrapMode()
 
-    def set_line_wrap_width(self, width: int):
-        assert width > 0
-        self._editor_config().line_wrap_width = width
-        self._editor_instance().setLineWrapColumnOrWidth(width)
+    def set_line_wrap_width(self, width: Optional[int]):
+        if width is None:
+            return
+        if width <= 0:
+            raise ValueError(f"invalid width: {width}")
+        self._editor.setLineWrapColumnOrWidth(width)
 
     def get_line_wrap_width(self) -> int:
-        return self._editor_config().line_wrap_width
-
-    def set_file_filters(self, filters: Optional[str]):
-        self._editor_config().file_filters = filters
-
-    def get_file_filters(self) -> Optional[str]:
-        return self._editor_config().file_filters
-
-    def set_start_dir(self, directory: Optional[str]):
-        self._editor_config().start_dir = directory
-
-    def get_start_dir(self) -> Optional[str]:
-        return self._editor_config().start_dir
-
-    def set_show_filename_in_title(self, show: bool):
-        self._editor_config().show_filename_in_title = show
-
-    def is_show_filename_in_title(self) -> bool:
-        return self._editor_config().show_filename_in_title
+        return self._editor.lineWrapColumnOrWidth()
 
     def is_modified(self) -> bool:
         text = self.get_text()
@@ -320,53 +272,56 @@ class BaseCodeEditorWindow(BaseWindow):
         return current_fingerprint != self._current_fingerprint()
 
     def check_modification(self) -> bool:
-        if not self._editor_config().check_unsaved_changes:
+        self._config: CodeEditorConfig
+        if not self._config.check_unsaved_changes:
             return False
         return self.is_modified()
 
     def open_file(self):
-        config = self._editor_config()
+        self._config: CodeEditorConfig
         if self.check_modification():
             # noinspection PyUnresolvedReferences
             ret = utils.show_question_message(
                 self,
-                message=config.unsaved_warning_message or UNSAVED_WARNING_MSG,
-                title=config.confirm_dialog_title or CONFIRM_DIALOG_TITLE,
+                message=self._config.unsaved_warning_message or UNSAVED_WARNING_MSG,
+                title=self._config.confirm_dialog_title or CONFIRM_DIALOG_TITLE,
                 buttons=utils.StandardButton.No | utils.StandardButton.Yes,
             )
             if ret != utils.StandardButton.Yes:
                 return
         filepath = utils.get_open_file(
             self,
-            title=config.open_file_dialog_title or OPEN_FILE_DIALOG_TITLE,
-            start_dir=config.start_dir,
-            filters=config.file_filters,
+            title=self._config.open_file_dialog_title or OPEN_FILE_DIALOG_TITLE,
+            start_dir=self._config.start_dir,
+            filters=self._config.file_filters,
         )
         if not filepath:
             return
 
         try:
-            new_text = utils.read_text_file(filepath, encoding=config.file_encoding)
+            new_text = utils.read_text_file(
+                filepath, encoding=self._config.file_encoding
+            )
         except Exception as e:
-            msg = config.open_failed_message or OPEN_FAILED_MSG
+            msg = self._config.open_failed_message or OPEN_FAILED_MSG
             msg = msg.format(filepath)
             utils.show_exception_messagebox(
                 self,
                 exception=e,
-                title=config.error_dialog_title or ERROR_DIALOG_TITLE,
+                title=self._config.error_dialog_title or ERROR_DIALOG_TITLE,
                 message=f"{msg}:{e}",
                 detail=True,
             )
             return
         self.set_text(new_text)
-        if not config.no_file_mode:
+        if not self._config.no_file_mode:
             self._update_current_file(os.path.normpath(os.path.abspath(filepath)))
             self._update_fingerprint()
             self._update_title()
 
     def save_file(self):
-        config = self._editor_config()
-        if config.no_file_mode:
+        self._config: CodeEditorConfig
+        if self._config.no_file_mode:
             return
         current_file = self._current_file()
         if not current_file:
@@ -376,43 +331,43 @@ class BaseCodeEditorWindow(BaseWindow):
             return
         try:
             utils.write_text_file(
-                current_file, self.get_text(), encoding=config.file_encoding
+                current_file, self.get_text(), encoding=self._config.file_encoding
             )
         except Exception as e:
-            msg = config.save_failed_message or SAVE_FAILED_MSG
+            msg = self._config.save_failed_message or SAVE_FAILED_MSG
             msg = msg.format(current_file)
             utils.show_exception_messagebox(
                 self,
                 exception=e,
-                title=config.error_dialog_title or ERROR_DIALOG_TITLE,
+                title=self._config.error_dialog_title or ERROR_DIALOG_TITLE,
                 message=f"{msg}: {e}",
             )
         else:
             self._update_fingerprint()
 
     def save_as_file(self):
-        config = self._editor_config()
-        if config.no_file_mode:
+        self._config: CodeEditorConfig
+        if self._config.no_file_mode:
             return
         filepath = utils.get_save_file(
             self,
-            title=config.save_as_dialog_title or SAVE_AS_DIALOG_TITLE,
-            start_dir=config.start_dir,
-            filters=config.file_filters,
+            title=self._config.save_as_dialog_title or SAVE_AS_DIALOG_TITLE,
+            start_dir=self._config.start_dir,
+            filters=self._config.file_filters,
         )
         if not filepath:
             return
         try:
             utils.write_text_file(
-                filepath, self.get_text(), encoding=config.file_encoding
+                filepath, self.get_text(), encoding=self._config.file_encoding
             )
         except Exception as e:
-            msg = config.save_failed_message or SAVE_FAILED_MSG
+            msg = self._config.save_failed_message or SAVE_FAILED_MSG
             msg = msg.format(filepath)
             utils.show_exception_messagebox(
                 self,
                 exception=e,
-                title=config.error_dialog_title or ERROR_DIALOG_TITLE,
+                title=self._config.error_dialog_title or ERROR_DIALOG_TITLE,
                 message=f"{msg}: {e}",
             )
         else:
@@ -421,21 +376,21 @@ class BaseCodeEditorWindow(BaseWindow):
             self._update_title()
 
     def format_code(self):
-        config = self._editor_config()
-        if not config.formatter:
+        self._config: CodeEditorConfig
+        if not self._config.formatter:
             return
 
         try:
-            if isinstance(config.formatter, BaseCodeFormatter):
-                formatted = config.formatter.format_code(self.get_text())
+            if isinstance(self._config.formatter, BaseCodeFormatter):
+                formatted = self._config.formatter.format_code(self.get_text())
             else:
-                formatted = config.formatter(self.get_text())
+                formatted = self._config.formatter(self.get_text())
         except Exception as e:
-            msg = config.format_failed_message or FORMAT_FAILED_MSG
+            msg = self._config.format_failed_message or FORMAT_FAILED_MSG
             utils.show_exception_messagebox(
                 self,
                 exception=e,
-                title=config.error_dialog_title or ERROR_DIALOG_TITLE,
+                title=self._config.error_dialog_title or ERROR_DIALOG_TITLE,
                 message=f"{msg}: {e}",
             )
             return
@@ -443,22 +398,22 @@ class BaseCodeEditorWindow(BaseWindow):
             self.set_text(formatted)
 
     def redo(self):
-        self._editor_instance().redo()
+        self._editor.redo()
 
     def undo(self):
-        self._editor_instance().undo()
+        self._editor.undo()
 
     def cut(self):
-        self._editor_instance().cut()
+        self._editor.cut()
 
     def copy(self):
-        self._editor_instance().copy()
+        self._editor.copy()
 
     def paste(self):
-        self._editor_instance().paste()
+        self._editor.paste()
 
     def select_all(self):
-        self._editor_instance().selectAll()
+        self._editor.selectAll()
 
 
 def create_highlighter(

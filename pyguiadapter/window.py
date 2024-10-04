@@ -4,19 +4,19 @@ from abc import abstractmethod
 from typing import Tuple, Dict, List, Optional, Union, Sequence, Callable
 
 from qtpy.QtCore import QSize, Qt
-from qtpy.QtGui import QAction
+from qtpy.QtGui import QAction, QIcon
 from qtpy.QtWidgets import QMainWindow, QWidget, QToolBar, QMenu
 
-from . import utils
+from .utils import IconType, get_icon, get_size
 from .action import ActionConfig, Separator
 from .menu import MenuConfig
 from .toolbar import ToolBarConfig
 
 
-@dataclasses.dataclass
+@dataclasses.dataclass(frozen=True)
 class BaseWindowConfig(object):
     title: str = ""
-    icon: utils.IconType = None
+    icon: IconType = None
     size: Union[Tuple[int, int], QSize] = (800, 600)
     position: Optional[Tuple[int, int]] = None
     always_on_top: bool = False
@@ -133,29 +133,57 @@ class BaseWindow(QMainWindow):
         if self._config is None:
             return
 
-        # set window title
-        title = self._config.title or ""
+        self.set_title(self._config.title)
+        self.set_icon(self._config.icon)
+        self.set_size(self._config.size)
+        self.set_position(self._config.position)
+        self.set_always_on_top(self._config.always_on_top)
+        self.set_font(self._config.font_family, self._config.font_size)
+        self.set_stylesheet(self._config.stylesheet)
+
+    def set_title(self, title: str):
+        title = title or ""
         self.setWindowTitle(title)
 
-        # set window icon
-        if self._config.icon:
-            self.setWindowIcon(utils.get_icon(self._config.icon))
+    def get_title(self) -> str:
+        return self.windowTitle()
 
-        # set window size
-        size = utils.get_size(self._config.size)
-        if size:
-            self.resize(size)
+    def set_icon(self, icon: IconType):
+        icon = get_icon(icon) or QIcon()
+        self.setWindowIcon(icon)
 
-        # set window position
-        if self._config.position:
-            assert len(self._config.position) == 2
-            self.move(*self._config.position)
+    def set_always_on_top(self, enabled: bool):
+        if enabled:
+            self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
+        else:
+            self.setWindowFlags(self.windowFlags() & ~Qt.WindowStaysOnTopHint)
 
+    def is_always_on_top(self) -> bool:
+        return bool(self.windowFlags() & Qt.WindowStaysOnTopHint)
+
+    def set_size(self, size: Union[Tuple[int, int], QSize]):
+        size = get_size(size)
+        if not size:
+            raise ValueError(f"invalid size: {size}")
+        self.resize(size)
+
+    def get_size(self) -> Tuple[int, int]:
+        size = self.size()
+        return size.width(), size.height()
+
+    def set_position(self, position: Optional[Tuple[int, int]]):
+        if not position:
+            return
+        if len(position) != 2:
+            raise ValueError(f"invalid position: {position}")
+        self.move(*position)
+
+    def get_position(self) -> Tuple[int, int]:
+        pos = self.pos()
+        return pos.x(), pos.y()
+
+    def set_font(self, font_family: Union[str, Sequence[str]], font_size: int):
         font = self.font()
-        font_size = self._config.font_size
-        if font_size and font_size > 0:
-            font.setPointSize(font_size)
-        font_family = self._config.font_family
         if not font_family:
             pass
         elif isinstance(font_family, str):
@@ -165,14 +193,26 @@ class BaseWindow(QMainWindow):
             font.setFamilies(font_family)
         else:
             raise TypeError(f"invalid font_family type: {type(font_family)}")
+        if font_size and font_size > 0:
+            font.setPointSize(font_size)
         self.setFont(font)
 
-        if self._config.always_on_top:
-            self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
+    def get_font_size(self) -> int:
+        return self.font().pointSize()
 
-        # apply stylesheet
-        if self._config.stylesheet:
-            self.setStyleSheet(self._config.stylesheet)
+    def get_font_family(self) -> str:
+        return self.font().family()
+
+    def get_font_families(self) -> Sequence[str]:
+        return self.font().families()
+
+    def set_stylesheet(self, stylesheet: Optional[str]):
+        if not stylesheet:
+            return
+        self.setStyleSheet(stylesheet)
+
+    def get_stylesheet(self) -> str:
+        return self.styleSheet()
 
     def find_action(self, action_config: ActionConfig) -> Optional[QAction]:
         c_id = id(action_config)
@@ -220,7 +260,7 @@ class BaseWindow(QMainWindow):
         toolbar.setMovable(toolbar_config.moveable)
         toolbar.setFloatable(toolbar_config.floatable)
 
-        size = utils.get_size(toolbar_config.icon_size)
+        size = get_size(toolbar_config.icon_size)
         if size:
             toolbar.setIconSize(size)
 
@@ -287,7 +327,7 @@ class BaseWindow(QMainWindow):
         action = QAction(self)
         action.setText(action_config.text)
         if action_config.icon:
-            action.setIcon(utils.get_icon(action_config.icon))
+            action.setIcon(get_icon(action_config.icon))
         if action_config.icon_text:
             action.setIconText(action_config.icon_text)
         action.setAutoRepeat(action_config.auto_repeat)

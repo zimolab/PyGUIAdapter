@@ -111,11 +111,11 @@ class FnExecuteWindow(BaseFnExecuteWindow):
             title = self._bundle.fn_info.display_name or ""
         else:
             title = self._config.title
-        self.setWindowTitle(title)
+        self.set_title(title)
+
         icon = self._config.icon or self._bundle.fn_info.icon
-        icon = get_icon(icon)
-        if icon:
-            self.setWindowIcon(icon)
+        print(icon)
+        self.set_icon(icon)
 
         self._operation_area.apply_config()
         self._output_area.apply_config()
@@ -256,68 +256,44 @@ class FnExecuteWindow(BaseFnExecuteWindow):
         self._output_dock.setAllowedAreas(areas)
 
     def set_output_dock_visible(self, visible: bool):
-        self._config: FnExecuteWindowConfig
         self._output_dock.setVisible(visible)
-        self._config.output_dock_visible = self._output_dock.isVisible()
 
     def is_output_dock_visible(self) -> bool:
-        self._config: FnExecuteWindowConfig
-        self._config.output_dock_visible = self._output_dock.isVisible()
-        return self._config.output_dock_visible
+        return self._output_dock.isVisible()
 
     def set_document_dock_visible(self, visible: bool):
-        self._config: FnExecuteWindowConfig
         self._document_dock.setVisible(visible)
-        self._config.document_dock_visible = self._document_dock.isVisible()
 
     def is_document_dock_visible(self) -> bool:
-        self._config: FnExecuteWindowConfig
-        self._config.document_dock_visible = self._document_dock.isVisible()
-        return self._config.document_dock_visible
+        return self._document_dock.isVisible()
 
     def set_document_dock_floating(self, floating: bool):
-        self._config: FnExecuteWindowConfig
         self._document_dock.setFloating(floating)
-        self._config.document_dock_floating = self._document_dock.isFloating()
 
     def is_document_dock_floating(self) -> bool:
-        self._config: FnExecuteWindowConfig
-        self._config.document_dock_floating = self._document_dock.isFloating()
-        return self._config.document_dock_floating
+        return self._document_dock.isFloating()
 
     def set_output_dock_floating(self, floating: bool):
-        self._config: FnExecuteWindowConfig
         self._output_dock.setFloating(floating)
-        self._config.output_dock_floating = self._output_dock.isFloating()
 
     def is_output_dock_floating(self) -> bool:
-        self._config: FnExecuteWindowConfig
-        self._config.output_dock_floating = self._output_dock.isFloating()
-        return self._config.output_dock_floating
+        return self._output_dock.isFloating()
 
     def set_document_dock_title(self, title: str):
         if title is None:
             return
-        self._config: FnExecuteWindowConfig
-        self._config.document_dock_title = title
         self._document_dock.setWindowTitle(title)
 
     def get_document_dock_title(self) -> str:
-        self._config: FnExecuteWindowConfig
-        self._config.document_dock_title = self._document_dock.windowTitle()
-        return self._config.document_dock_title
+        return self._document_dock.windowTitle()
 
     def set_output_dock_title(self, title: str):
         if title is None:
             return
-        self._config: FnExecuteWindowConfig
-        self._config.output_dock_title = title
         self._output_dock.setWindowTitle(title)
 
     def get_output_dock_title(self) -> str:
-        self._config: FnExecuteWindowConfig
-        self._config.output_dock_title = self._output_dock.windowTitle()
-        return self._config.output_dock_title
+        return self._output_dock.windowTitle()
 
     def set_document_dock_area(self, area: DockWidgetArea):
         if not self._document_dock.isAreaAllowed(area):
@@ -355,15 +331,10 @@ class FnExecuteWindow(BaseFnExecuteWindow):
         self.tabifyDockWidget(self._document_dock, self._output_dock)
 
     def set_statusbar_visible(self, visible: bool):
-        self._config: FnExecuteWindowConfig
-        statusbar = self.statusBar()
-        statusbar.setVisible(visible)
-        self._config.statusbar_visible = statusbar.isVisible()
+        self.statusBar().setVisible(visible)
 
     def is_statusbar_visible(self) -> bool:
-        self._config: FnExecuteWindowConfig
-        self._config.statusbar_visible = self.statusBar().isVisible()
-        return self._config.statusbar_visible
+        return self.statusBar().isVisible()
 
     def show_statusbar_message(self, message: str, timeout: int = 3000):
         self.statusBar().showMessage(message, timeout)
