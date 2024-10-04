@@ -10,6 +10,7 @@ class MenuConfig(object):
     actions: List[Union[ActionConfig, Separator, "MenuConfig"]]
     separators_collapsible: bool = True
     tear_off_enabled: bool = True
+    exclusive: bool = False
 
     def remove_action(self, action: Union[str, ActionConfig, Separator, "MenuConfig"]):
         if isinstance(action, str):
