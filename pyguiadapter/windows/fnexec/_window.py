@@ -63,71 +63,6 @@ class FnExecuteWindow(BaseFnExecuteWindow):
     def current_executor(self) -> BaseFunctionExecutor:
         return self._executor
 
-    def update_progressbar_config(self, config: Union[ProgressBarConfig, dict, None]):
-        if isinstance(config, dict):
-            config = ProgressBarConfig(**config)
-        self._output_area.update_progressbar_config(config)
-
-    def show_progressbar(self):
-        self._output_area.show_progressbar()
-
-    def hide_progressbar(self):
-        self._output_area.hide_progressbar()
-        self._output_area.scroll_to_bottom()
-
-    def update_progress(self, current_value: int, message: Optional[str] = None):
-        self._output_area.update_progress(current_value, message)
-
-    def append_output(
-        self, text: str, html: bool = False, scroll_to_bottom: bool = True
-    ):
-        self._output_area.append_output(text, html)
-        if scroll_to_bottom:
-            self._output_area.scroll_to_bottom()
-
-    def clear_output(self):
-        self._output_area.clear_output()
-
-    def set_document(
-        self, document: str, document_format: Literal["markdown", "html", "plaintext"]
-    ):
-        self._document_area.set_document(document, document_format)
-
-    def add_parameter(
-        self,
-        parameter_name: str,
-        config: Tuple[Type[BaseParameterWidget], BaseParameterWidgetConfig],
-    ) -> BaseParameterWidget:
-        return self._parameter_area.add_parameter(parameter_name, config)
-
-    def add_parameters(
-        self,
-        configs: Dict[str, Tuple[Type[BaseParameterWidget], BaseParameterWidgetConfig]],
-    ):
-        return self._parameter_area.add_parameters(configs)
-
-    def remove_parameter(self, parameter_name: str, safe_remove: bool = True):
-        self._parameter_area.remove_parameter(parameter_name, safe_remove=safe_remove)
-
-    def clear_parameters(self):
-        self._parameter_area.clear_parameters()
-
-    def get_parameter_value(self, parameter_name: str) -> Any:
-        return self._parameter_area.get_parameter_value(parameter_name)
-
-    def get_parameter_values(self) -> Dict[str, Any]:
-        return self._parameter_area.get_parameter_values()
-
-    def set_parameter_value(
-        self, parameter_name: str, value: Any, ignore_unknown_parameter: bool = True
-    ):
-        self._parameter_area.set_parameter_value(
-            parameter_name, value, ignore_unknown_parameter
-        )
-
-    def set_parameter_values(self, values: Dict[str, Any]) -> List[str]:
-        return self._parameter_area.set_parameter_values(values)
-
     def _create_ui(self):
         super()._create_ui()
 
@@ -209,6 +144,71 @@ class FnExecuteWindow(BaseFnExecuteWindow):
         self.resize_output_dock(self._config.output_dock_initial_size)
 
         self.set_statusbar_visible(self._config.statusbar_visible)
+
+    def update_progressbar_config(self, config: Union[ProgressBarConfig, dict, None]):
+        if isinstance(config, dict):
+            config = ProgressBarConfig(**config)
+        self._output_area.update_progressbar_config(config)
+
+    def show_progressbar(self):
+        self._output_area.show_progressbar()
+
+    def hide_progressbar(self):
+        self._output_area.hide_progressbar()
+        self._output_area.scroll_to_bottom()
+
+    def update_progress(self, current_value: int, message: Optional[str] = None):
+        self._output_area.update_progress(current_value, message)
+
+    def append_output(
+        self, text: str, html: bool = False, scroll_to_bottom: bool = True
+    ):
+        self._output_area.append_output(text, html)
+        if scroll_to_bottom:
+            self._output_area.scroll_to_bottom()
+
+    def clear_output(self):
+        self._output_area.clear_output()
+
+    def set_document(
+        self, document: str, document_format: Literal["markdown", "html", "plaintext"]
+    ):
+        self._document_area.set_document(document, document_format)
+
+    def add_parameter(
+        self,
+        parameter_name: str,
+        config: Tuple[Type[BaseParameterWidget], BaseParameterWidgetConfig],
+    ) -> BaseParameterWidget:
+        return self._parameter_area.add_parameter(parameter_name, config)
+
+    def add_parameters(
+        self,
+        configs: Dict[str, Tuple[Type[BaseParameterWidget], BaseParameterWidgetConfig]],
+    ):
+        return self._parameter_area.add_parameters(configs)
+
+    def remove_parameter(self, parameter_name: str, safe_remove: bool = True):
+        self._parameter_area.remove_parameter(parameter_name, safe_remove=safe_remove)
+
+    def clear_parameters(self):
+        self._parameter_area.clear_parameters()
+
+    def get_parameter_value(self, parameter_name: str) -> Any:
+        return self._parameter_area.get_parameter_value(parameter_name)
+
+    def get_parameter_values(self) -> Dict[str, Any]:
+        return self._parameter_area.get_parameter_values()
+
+    def set_parameter_value(
+        self, parameter_name: str, value: Any, ignore_unknown_parameter: bool = True
+    ):
+        self._parameter_area.set_parameter_value(
+            parameter_name, value, ignore_unknown_parameter
+        )
+
+    def set_parameter_values(self, values: Dict[str, Any]) -> List[str]:
+        return self._parameter_area.set_parameter_values(values)
 
     def set_output_dock_property(
         self,
