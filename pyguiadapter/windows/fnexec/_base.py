@@ -4,7 +4,7 @@ from typing import Tuple, Dict, Union, Type, Optional
 
 from qtpy.QtCore import QSize, Qt
 
-from ._output_area import ProgressBarConfig, OutputBrowserConfig
+from ._output_area import OutputBrowserConfig
 from ..document_browser import DocumentBrowserConfig
 from ...executor import ExecuteStateListener
 from ...executors import ThreadFunctionExecutor
@@ -56,20 +56,21 @@ class FnExecuteWindowConfig(BaseWindowConfig):
     document_dock_ratio: float = 0.60
     document_dock_floating: bool = False
     document_dock_position: DockWidgetArea = RightDockWidgetArea
-
     tabify_docks: bool = False
 
-    progressbar_config: Optional[ProgressBarConfig] = None
     output_browser_config: OutputBrowserConfig = dataclasses.field(
         default_factory=OutputBrowserConfig
     )
     document_browser_config: Optional[DocumentBrowserConfig] = dataclasses.field(
         default_factory=DocumentBrowserConfig
     )
+
     default_parameter_group_name: str = "Main Parameters"
     default_parameter_group_icon: IconType = None
     parameter_group_icons: Dict[str, IconType] = dataclasses.field(default_factory=dict)
-    enable_auto_clear: bool = True
+
+    auto_clear_output: bool = True
+
     print_function_result: bool = True
     show_function_result: bool = False
     print_function_error: bool = True
