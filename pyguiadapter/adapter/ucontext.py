@@ -53,14 +53,14 @@ class _Context(QObject):
         return self._current_window
 
     def is_function_cancelled(self) -> bool:
-        wind = self.current_window
-        if not isinstance(wind, FnExecuteWindow):
-            return False
         self._lock.lock()
-        executor = wind.current_executor
-        cancelled = False
-        if executor.is_executing:
-            cancelled = executor.is_cancelled
+        if not isinstance(self._current_window, FnExecuteWindow):
+            self._lock.unlock()
+            return False
+        cancelled = (
+            self._current_window.executor.is_executing
+            and self._current_window.executor.is_cancelled
+        )
         self._lock.unlock()
         return cancelled
 
