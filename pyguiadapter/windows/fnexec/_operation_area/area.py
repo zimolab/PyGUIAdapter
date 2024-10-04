@@ -55,7 +55,7 @@ class OperationArea(QWidget):
         self._clear_button.setVisible(self._config.show_clear_checkbox)
         self._clear_checkbox.setVisible(self._config.show_clear_checkbox)
 
-        self._clear_checkbox.setChecked(self._config.enable_auto_clear)
+        self._clear_checkbox.setChecked(self._config.auto_clear_output)
 
     def set_execute_button_enabled(self, enabled: bool):
         if self._execute_button is not None:
