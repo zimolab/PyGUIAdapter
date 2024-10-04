@@ -32,7 +32,7 @@ class FnSelectWindowConfig(BaseWindowConfig):
     select_button_text: str = "Select"
     icon_mode: bool = False
     icon_size: Union[Tuple[int, int], int, QSize, None] = DEFAULT_FN_ICON_SIZE
-    default_fn_group_name: str = "Main Function"
+    default_fn_group_name: str = "Main Functions"
     default_fn_group_icon: IconType = None
     fn_group_icons: Dict[str, IconType] = dataclasses.field(default_factory=dict)
     document_browser_config: Optional[DocumentBrowserConfig] = None
