@@ -27,6 +27,7 @@ ParameterWidgetType = Union[
 DockWidgetArea = Qt.DockWidgetArea
 DockWidgetAreas = Qt.DockWidgetAreas
 AllDockWidgetAreas = Qt.AllDockWidgetAreas
+NoDockWidgetArea = Qt.DockWidgetArea.NoDockWidgetArea
 BottomDockWidgetArea = Qt.DockWidgetArea.BottomDockWidgetArea
 TopDockWidgetArea = Qt.DockWidgetArea.TopDockWidgetArea
 LeftDockWidgetArea = Qt.DockWidgetArea.LeftDockWidgetArea
