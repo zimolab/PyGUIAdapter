@@ -34,6 +34,7 @@ LeftDockWidgetArea = Qt.DockWidgetArea.LeftDockWidgetArea
 RightDockWidgetArea = Qt.DockWidgetArea.RightDockWidgetArea
 
 
+# noinspection SpellCheckingInspection
 @dataclasses.dataclass
 class FnExecuteWindowConfig(BaseWindowConfig):
     title: Optional[str] = None
