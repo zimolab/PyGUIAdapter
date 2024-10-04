@@ -4,7 +4,7 @@ from abc import abstractmethod
 from typing import Tuple, Dict, List, Optional, Union, Sequence, Callable
 
 from qtpy.QtCore import QSize, Qt
-from qtpy.QtGui import QAction, QIcon
+from qtpy.QtGui import QAction, QIcon, QActionGroup
 from qtpy.QtWidgets import QMainWindow, QWidget, QToolBar, QMenu
 
 from .utils import IconType, get_icon, get_size
@@ -304,12 +304,19 @@ class BaseWindow(QMainWindow):
     def _create_menu(self, menu_config: MenuConfig) -> QMenu:
         menu = QMenu(self)
         menu.setTitle(menu_config.title)
+        exclusive_group = None
+        if menu_config.exclusive:
+            exclusive_group = QActionGroup(self)
+            exclusive_group.setExclusive(True)
+
         for action_config in menu_config.actions:
             if isinstance(action_config, Separator):
                 menu.addSeparator()
                 continue
             if isinstance(action_config, ActionConfig):
                 action = self._create_action(action_config)
+                if action.isCheckable() and exclusive_group:
+                    exclusive_group.addAction(action)
                 menu.addAction(action)
             elif isinstance(action_config, MenuConfig):
                 submenu = self._create_menu(action_config)
