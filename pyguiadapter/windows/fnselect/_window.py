@@ -65,7 +65,10 @@ class FnSelectWindow(BaseWindow):
 
         central_widget: QWidget = QWidget(self)
         # noinspection PyArgumentList
-        layout_main = QVBoxLayout(central_widget)
+        layout_main = QVBoxLayout()
+        print(id(layout_main.parent()))
+        central_widget.setLayout(layout_main)
+        print(id(layout_main.parent()), id(self))
         self.setCentralWidget(central_widget)
 
         # noinspection PyArgumentList
@@ -82,7 +85,7 @@ class FnSelectWindow(BaseWindow):
 
         right_area = QWidget(splitter)
         # noinspection PyArgumentList
-        layout_right_area = QVBoxLayout(right_area)
+        layout_right_area = QVBoxLayout()
         layout_right_area.setContentsMargins(0, 0, 0, 0)
 
         self._document_textbrowser = DocumentBrowser(
@@ -92,6 +95,7 @@ class FnSelectWindow(BaseWindow):
 
         self._select_button = QPushButton(right_area)
         layout_right_area.addWidget(self._select_button)
+        right_area.setLayout(layout_right_area)
 
         # noinspection PyUnresolvedReferences
         self._select_button.clicked.connect(self._on_button_select_click)

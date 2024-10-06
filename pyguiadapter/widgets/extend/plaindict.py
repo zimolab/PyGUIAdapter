@@ -124,8 +124,7 @@ class PlainDictEdit(CommonParameterWidget):
             self._table_view.setModel(self._model)
             layout_main.addWidget(self._table_view)
 
-            layout_buttons = QGridLayout(self._value_widget)
-
+            layout_buttons = QGridLayout()
             self._edit_button = QPushButton(
                 self._config.edit_button_text, self._value_widget
             )
@@ -153,8 +152,8 @@ class PlainDictEdit(CommonParameterWidget):
             # noinspection PyUnresolvedReferences
             self._clear_button.clicked.connect(self._on_clear_items)
             layout_buttons.addWidget(self._clear_button, 2, 1)
-
             layout_main.addLayout(layout_buttons)
+
         return self._value_widget
 
     def set_value_to_widget(self, value: Dict[str, Any]):
@@ -342,7 +341,7 @@ class _KeyValueEditor(QDialog):
         if window_size:
             self.resize(*window_size)
 
-        layout = QVBoxLayout(self)
+        layout = QVBoxLayout()
         self.setLayout(layout)
 
         self._key_label = QLabel(key_label, self)

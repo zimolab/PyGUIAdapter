@@ -89,7 +89,7 @@ class StringListEdit(CommonParameterWidget):
             self._list_view.setModel(self._model)
             layout_main.addWidget(self._list_view)
 
-            layout_buttons = QVBoxLayout(self._value_widget)
+            layout_buttons = QVBoxLayout()
 
             self._add_button = self._create_add_button(self._value_widget)
             layout_buttons.addWidget(self._add_button)
@@ -105,7 +105,6 @@ class StringListEdit(CommonParameterWidget):
             self._clear_button.clicked.connect(self._on_clear_items)
             self._clear_button.setText(self._config.clear_button_text)
             layout_buttons.addWidget(self._clear_button)
-
             layout_main.addLayout(layout_buttons)
         return self._value_widget
 

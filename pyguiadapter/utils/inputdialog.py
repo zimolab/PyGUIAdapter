@@ -161,10 +161,12 @@ class UniversalInputDialog(BaseCustomDialog):
         self._ok_button_text: str = ok_button_text
         self._cancel_button_text: Optional[str] = cancel_button_text
 
-        self._layout: QVBoxLayout = QVBoxLayout(self)
+        self._layout: QVBoxLayout = QVBoxLayout()
         self._main_widget: Optional[QWidget] = None
         self._ok_button: QPushButton = QPushButton(self)
         self._cancel_button: Optional[QPushButton] = None
+
+        self.setLayout(self._layout)
 
         self._setup_ui()
 

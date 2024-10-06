@@ -35,13 +35,14 @@ class ProgressBar(QWidget):
         self._config = None
 
         # noinspection PyArgumentList
-        self._layout_main = QVBoxLayout(self)
+        self._layout_main = QVBoxLayout()
         self._progressbar = QProgressBar(self)
         self._info_label = QLabel(self)
 
         self._layout_main.addWidget(self._progressbar)
         self._layout_main.addWidget(self._info_label)
 
+        self.setLayout(self._layout_main)
         self.update_config(config)
 
     def update_config(self, config: Optional[ProgressBarConfig]):
