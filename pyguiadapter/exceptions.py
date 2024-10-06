@@ -13,10 +13,6 @@ class ParameterError(Exception):
         return self._message
 
 
-class ParameterWidgetConfigError(Exception):
-    pass
-
-
 class AlreadyRegisteredError(Exception):
     pass
 
