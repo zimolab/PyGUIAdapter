@@ -96,13 +96,7 @@ class BaseParameterPage(QWidget):
         pass
 
     @abstractmethod
-    def set_parameter_values(
-        self,
-        values: Dict[str, Any],
-        strategy: Literal[
-            "collect_known_params", "collect_unknown_params", "fail_on_unknown_params"
-        ] = "fail_on_unknown_params",
-    ) -> List[str]:
+    def set_parameter_values(self, values: Dict[str, Any]):
         pass
 
     # noinspection SpellCheckingInspection
@@ -199,7 +193,7 @@ class BaseParameterGroupBox(QToolBox):
         pass
 
     @abstractmethod
-    def set_parameter_values(self, params: Dict[str, Any]) -> List[str]:
+    def set_parameter_values(self, params: Dict[str, Any]):
         pass
 
     @abstractmethod

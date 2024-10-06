@@ -1,4 +1,5 @@
 from collections import OrderedDict
+
 from typing import Dict, Any, List, Tuple, Type, Literal, Optional
 
 from qtpy.QtGui import QIcon
@@ -174,30 +175,18 @@ class ParameterGroupPage(BaseParameterPage):
     def get_parameter_values(self) -> Dict[str, Any]:
         params = OrderedDict()
         for param_name, param_widget in self._parameters.items():
+            if not param_widget:
+                continue
             param_value = param_widget.get_value()
             params[param_name] = param_value
         return params
 
-    def set_parameter_values(
-        self,
-        values: Dict[str, Any],
-        strategy: Literal[
-            "collect_known_params", "collect_unknown_params", "fail_on_unknown_params"
-        ] = "fail_on_unknown_params",
-    ) -> List[str]:
-        ret = []
+    def set_parameter_values(self, values: Dict[str, Any]):
         for param_name, param_value in values.items():
             widget = self.get_parameter_widget(param_name)
             if widget is None:
-                if strategy == "fail_on_unknown_param":
-                    raise ParameterNotFoundError(param_name)
-                if strategy == "collect_unknown_param":
-                    ret.append(param_name)
-            else:
-                widget.set_value(param_value)
-                if strategy == "collect_known_param":
-                    ret.append(param_name)
-        return ret
+                continue
+            widget.set_value(param_value)
 
     # noinspection SpellCheckingInspection
     def _add_to_scrollarea(self, widget: BaseParameterWidget, index: int):
@@ -329,15 +318,9 @@ class ParameterGroupBox(BaseParameterGroupBox):
             raise ParameterNotFoundError(parameter_name)
         widget.set_value(value)
 
-    def set_parameter_values(self, params: Dict[str, Any]) -> List[str]:
-        params = params.copy()
+    def set_parameter_values(self, params: Dict[str, Any]):
         for group_page in self._groups.values():
-            used_params = group_page.set_parameter_values(
-                params, strategy="collect_known_params"
-            )
-            for used_param in used_params:
-                del params[used_param]
-        return list(params.keys())
+            group_page.set_parameter_values(params)
 
     def active_parameter_group(self, group_name: Optional[str]) -> bool:
         group = self._get_parameter_group(group_name)
