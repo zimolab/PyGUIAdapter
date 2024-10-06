@@ -6,7 +6,7 @@ from qtpy.QtGui import QIcon
 from qtpy.QtWidgets import QWidget, QGridLayout, QRadioButton, QButtonGroup
 
 from ..common import CommonParameterWidgetConfig, CommonParameterWidget
-from ... import utils
+from ...utils import IconType, get_icon, unique_list, get_size
 from ...fn import ParameterInfo
 
 
@@ -31,7 +31,7 @@ class ExclusiveChoiceBoxConfig(CommonParameterWidgetConfig):
     choices: Optional[List[Any]] = None
     columns: int = 1
     show_type_icon: bool = True
-    int_icon: utils.IconType = "mdi6.alpha-i-circle"
+    int_icon: IconType = "mdi6.alpha-i-circle"
     bool_icon: str = "mdi6.alpha-b-circle"
     str_icon: str = "mdi6.alpha-s-box"
     object_icon: str_icon = "mdi6.alpha-o-box"
@@ -88,19 +88,19 @@ class ExclusiveChoiceBox(CommonParameterWidget):
 
     def _add_choices(self):
         self._config: ExclusiveChoiceBoxConfig
-        choices = utils.unique_list(self._config.choices)
+        choices = unique_list(self._config.choices)
         cols = max(self._config.columns, 1)
         for idx, choice in enumerate(choices):
             btn = _ChoiceButton(self._value_widget, choice)
-            icon_size = utils.get_size(self._config.icon_size)
+            icon_size = get_size(self._config.icon_size)
             if icon_size is not None:
                 btn.setIconSize(icon_size)
             btn.setText(str(choice))
             if self._config.show_type_icon:
-                str_icon = utils.get_icon(self._config.str_icon) or QIcon()
-                bool_icon = utils.get_icon(self._config.bool_icon) or QIcon()
-                int_icon = utils.get_icon(self._config.int_icon) or QIcon()
-                object_icon = utils.get_icon(self._config.object_icon) or QIcon()
+                str_icon = get_icon(self._config.str_icon) or QIcon()
+                bool_icon = get_icon(self._config.bool_icon) or QIcon()
+                int_icon = get_icon(self._config.int_icon) or QIcon()
+                object_icon = get_icon(self._config.object_icon) or QIcon()
                 if isinstance(choice, str):
                     btn.setIcon(str_icon)
                 elif isinstance(choice, bool):
