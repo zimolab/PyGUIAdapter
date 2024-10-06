@@ -30,7 +30,7 @@ class ExclusiveChoiceBoxConfig(CommonParameterWidgetConfig):
     default_value: Any = _FIRST_OPTION
     choices: Optional[List[Any]] = None
     columns: int = 1
-    show_type_icon: bool = True
+    show_type_icon: bool = False
     int_icon: IconType = "mdi6.alpha-i-circle"
     bool_icon: str = "mdi6.alpha-b-circle"
     str_icon: str = "mdi6.alpha-s-box"
