@@ -37,6 +37,7 @@ class TupleEdit(PyLiteralEdit):
             return None
         if not isinstance(data, tuple):
             raise ValueError(f"not a tuple")
+        return data
 
     def _set_data(self, data: PyLiteralType) -> str:
         if data is None:
