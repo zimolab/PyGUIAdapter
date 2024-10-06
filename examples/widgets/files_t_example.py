@@ -27,6 +27,7 @@ def files_t_example(arg1: files_t, arg2: files_t, arg3: files_t):
 
 if __name__ == "__main__":
     arg1_conf = MultiFileSelectConfig(
+        default_value=("a", "b"),
         placeholder="input files here",
         filters="Text files(*.txt);;All files(*.*)",
         dialog_title="Open Files",
