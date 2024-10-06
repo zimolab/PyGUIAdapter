@@ -1,10 +1,11 @@
 import dataclasses
-from typing import Type, Optional
+from typing import Type, Optional, Any
 
 from qtpy.QtCore import Qt
 from qtpy.QtWidgets import QWidget, QDial, QLabel, QVBoxLayout
 
 from ..common import CommonParameterWidgetConfig, CommonParameterWidget
+from ...utils import type_check
 
 
 @dataclasses.dataclass(frozen=True)
@@ -85,7 +86,10 @@ class Dial(CommonParameterWidget):
                 self._on_value_changed(self._dial.value())
         return self._value_widget
 
-    def set_value_to_widget(self, value: int):
+    def check_value_type(self, value: Any):
+        type_check(value, (int,), allow_none=True)
+
+    def set_value_to_widget(self, value: Any):
         value = int(value)
         self._dial.setValue(value)
 

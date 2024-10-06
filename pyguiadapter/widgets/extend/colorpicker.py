@@ -1,13 +1,12 @@
 import dataclasses
-from typing import Type, Tuple, Union, Literal, Optional, Any
 
 from qtpy.QtCore import Qt
 from qtpy.QtGui import QColor, QFont
 from qtpy.QtWidgets import QWidget, QLabel, QColorDialog, QFrame
+from typing import Type, Tuple, Union, Literal, Optional, Any
 
 from ..common import CommonParameterWidgetConfig, CommonParameterWidget
-from ...exceptions import ParameterError
-from ...utils import to_qcolor, get_inverted_color, convert_color
+from ...utils import to_qcolor, get_inverted_color, convert_color, type_check
 
 ColorType = Union[
     Tuple[int, int, int, int],  # RGB
@@ -46,8 +45,12 @@ class ColorLabel(QLabel):
         if isinstance(color, list):
             color = tuple(color)
 
+        if isinstance(color, tuple):
+            if len(color) not in (3, 4):
+                raise ValueError("color tuple or list must have 3 or 4 elements")
+
         if not isinstance(color, (tuple, QColor, str)):
-            raise ValueError("color must be tuple, QColor or str")
+            raise ValueError(f"invalid color type: {type(color)}")
         self._color = self.normalize_color(color)
         self._update_ui()
 
@@ -117,13 +120,12 @@ class ColorPicker(CommonParameterWidget):
         super().__init__(parent, parameter_name, config)
 
     def check_value_type(self, value: Any):
-        if value is None:
-            return
-        if not isinstance(value, (tuple, QColor, str)):
-            raise ParameterError(
-                parameter_name=self.parameter_name,
-                message=f"value must be a color, but got {type(value)}",
-            )
+        if isinstance(value, (list, tuple)):
+            if len(value) in (3, 4):
+                return
+            else:
+                raise ValueError("color tuple or list must have 3 or 4 elements")
+        type_check(value, (QColor, str), allow_none=True)
 
     @property
     def value_widget(self) -> QLabel:

@@ -1,11 +1,11 @@
 import dataclasses
-from typing import Type, Any, Optional
 
 from qtpy.QtGui import QIntValidator
 from qtpy.QtWidgets import QWidget, QLineEdit
+from typing import Type, Any, Optional
 
 from ..common import CommonParameterWidgetConfig, CommonParameterWidget
-from ...exceptions import ParameterError
+from ...utils import type_check
 
 
 @dataclasses.dataclass(frozen=True)
@@ -30,17 +30,6 @@ class IntLineEdit(CommonParameterWidget):
         self._value_widget: Optional[QLineEdit] = None
         super().__init__(parent, parameter_name, config)
 
-    def check_value_type(self, value: Any):
-        if value is None:
-            return
-        if isinstance(value, str):
-            return
-        if not isinstance(value, int):
-            raise ParameterError(
-                parameter_name=self.parameter_name,
-                message=f"value must be an integer, but got {type(value)}",
-            )
-
     @property
     def value_widget(self) -> QLineEdit:
         self._config: IntLineEditConfig
@@ -59,6 +48,11 @@ class IntLineEdit(CommonParameterWidget):
             value = self._config.empty_value
         self._value_widget.setText(str(value))
 
+    def check_value_type(self, value: Any):
+        if value == "":
+            return
+        type_check(value, (int,), allow_none=True)
+
     def get_value_from_widget(self) -> int:
         self._config: IntLineEditConfig
         value = self._value_widget.text()
@@ -66,7 +60,7 @@ class IntLineEdit(CommonParameterWidget):
             return self._config.empty_value
         try:
             value = int(value)
-        except ValueError as e:
-            raise ParameterError(self.parameter_name, str(e))
+        except Exception as e:
+            raise ValueError(f"not a int: {e}") from e
         else:
             return value

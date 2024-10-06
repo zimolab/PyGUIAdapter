@@ -23,6 +23,7 @@ from qtpy.QtWidgets import (
 from ..common import CommonParameterWidgetConfig, CommonParameterWidget
 from ... import utils
 from ...codeeditor import JsonFormatter
+from ...utils import type_check
 
 TextElideMode = Qt.TextElideMode
 GridStyle = Qt.PenStyle
@@ -156,17 +157,31 @@ class PlainDictEdit(CommonParameterWidget):
 
         return self._value_widget
 
+    def check_value_type(self, value: Any):
+        type_check(value, (dict, OrderedDict), allow_none=True)
+
     def set_value_to_widget(self, value: Dict[str, Any]):
         self._clear_items()
-        for key, value in value.items():
-            self._insert_item(key, value, -1)
+        cur_key = ""
+        try:
+            for key, value in value.items():
+                cur_key = key
+                self._insert_item(key, value, -1)
+        except Exception as e:
+            raise ValueError(f"invalid value of key '{cur_key}': {e}") from e
 
     def get_value_from_widget(self) -> Dict[str, Any]:
         value = OrderedDict()
-        for row in range(self._model.rowCount()):
-            key_item = self._model.item(row, 0)
-            value_item = self._model.item(row, 1)
-            value[key_item.text()] = json.loads(value_item.text())
+        cur_key = ""
+        try:
+            for row in range(self._model.rowCount()):
+                key_item = self._model.item(row, 0)
+                value_item = self._model.item(row, 1)
+                cur_key = key_item.text()
+                cur_value = json.loads(value_item.text())
+                value[cur_key] = cur_value
+        except Exception as e:
+            raise ValueError(f"invalid value of key '{cur_key}': {e}") from e
         return value
 
     def _on_add_item(self):
@@ -290,14 +305,18 @@ class PlainDictEdit(CommonParameterWidget):
         self._model.removeRows(0, self._model.rowCount())
 
     def _insert_item(self, key: str, value: Any, row: int):
-        if row == -1:
-            row = self._model.rowCount()
-        self._model.insertRow(row)
-        key_item = QStandardItem(key)
-        value = json.dumps(value, ensure_ascii=False)
-        value_item = QStandardItem(value)
-        self._model.setItem(row, 0, key_item)
-        self._model.setItem(row, 1, value_item)
+        try:
+            value = json.dumps(value, ensure_ascii=False)
+        except Exception as e:
+            raise e
+        else:
+            if row == -1:
+                row = self._model.rowCount()
+            self._model.insertRow(row)
+            key_item = QStandardItem(key)
+            value_item = QStandardItem(value)
+            self._model.setItem(row, 0, key_item)
+            self._model.setItem(row, 1, value_item)
 
     def _item_count(self) -> int:
         return self._model.rowCount()
@@ -388,10 +407,8 @@ class _KeyValueEditor(QDialog):
         current_value = self._value_edit.toPlainText()
 
         if current_key != self._current_key and current_key in self._keys:
-            utils.show_info_message(
-                self,
-                title="Duplicated key",
-                message="The key is duplicated with other keys.",
+            utils.show_warning_message(
+                self, message=f"Duplicated key: '{current_key}'!"
             )
             return
 
@@ -404,11 +421,7 @@ class _KeyValueEditor(QDialog):
         try:
             current_value = json.dumps(json.loads(current_value), ensure_ascii=False)
         except Exception as e:
-            utils.show_info_message(
-                self,
-                title="Invalid JSON",
-                message=f"The current value text is not valid JSON type: {e}",
-            )
+            utils.show_critical_message(self, message=f"json error: {e}")
         else:
             self._current_value = current_value
             self._current_key = current_key

@@ -39,8 +39,14 @@ class JsonEdit(BaseCodeEdit):
         super().__init__(parent, parameter_name, config)
 
     def _get_data(self, text: str) -> Any:
-        return json.loads(text)
+        try:
+            return json.loads(text)
+        except Exception as e:
+            raise ValueError(f"not a json str: {e}") from e
 
     def _set_data(self, data: Any) -> str:
         config: JsonEditConfig = self.config
-        return json.dumps(data, ensure_ascii=False, indent=config.indent_size)
+        try:
+            return json.dumps(data, ensure_ascii=False, indent=config.indent_size)
+        except Exception as e:
+            raise ValueError(f"not a json object: {e}") from e

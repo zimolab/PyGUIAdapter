@@ -1,5 +1,5 @@
 import dataclasses
-from typing import Type, List, Any, Dict, Optional, Union
+from typing import Type, List, Any, Dict, Optional, Union, Sequence
 
 from qtpy.QtWidgets import QWidget, QGridLayout, QCheckBox, QButtonGroup
 
@@ -18,8 +18,10 @@ class _CheckBox(QCheckBox):
 
 @dataclasses.dataclass(frozen=True)
 class MultiChoiceBoxConfig(CommonParameterWidgetConfig):
-    default_value: Optional[List[Any]] = dataclasses.field(default_factory=list)
-    choices: Union[List[Any], Dict[str, Any]] = dataclasses.field(default_factory=list)
+    default_value: Optional[Sequence[Any]] = dataclasses.field(default_factory=list)
+    choices: Union[Sequence[Any], Dict[str, Any]] = dataclasses.field(
+        default_factory=list
+    )
     columns: int = 1
 
     @classmethod
@@ -53,8 +55,8 @@ class MultiChoiceBox(CommonParameterWidget):
 
         return self._value_widget
 
-    def set_value_to_widget(self, value: List[Any]):
-        if not isinstance(value, list):
+    def set_value_to_widget(self, value: Sequence[Any]):
+        if not isinstance(value, (list, set, tuple)):
             value = [value]
         for btn in self._button_group.buttons():
             if btn.user_data in value:
@@ -71,11 +73,9 @@ class MultiChoiceBox(CommonParameterWidget):
 
     def _add_choices(self):
         self._config: MultiChoiceBoxConfig
-        assert isinstance(self._config.choices, list) or isinstance(
-            self._config.choices, dict
-        )
+        assert isinstance(self._config.choices, (list, tuple, set, dict))
         cols = max(self._config.columns, 1)
-        if isinstance(self._config.choices, list):
+        if isinstance(self._config.choices, (list, tuple, set)):
             for idx, choice in enumerate(self._config.choices):
                 button = _CheckBox(self, choice)
                 button.setText(str(choice))
@@ -84,6 +84,7 @@ class MultiChoiceBox(CommonParameterWidget):
                     self._button_layout.addWidget(button, idx // cols, 0)
                 else:
                     self._button_layout.addWidget(button, idx // cols, idx % cols)
+            return
 
         if isinstance(self._config.choices, dict):
             for idx, (key, value) in enumerate(self._config.choices.items()):

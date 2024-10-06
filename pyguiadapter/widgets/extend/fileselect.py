@@ -1,16 +1,16 @@
 import dataclasses
-from typing import Type, Any, List, Tuple, Set, Optional, Union
 
 from qtpy.QtWidgets import QWidget
+from typing import Type, Any, List, Tuple, Set, Optional, Union, Sequence
 
 from ._path import PathSelectWidget
 from ..common import CommonParameterWidgetConfig, CommonParameterWidget
-from pyguiadapter.exceptions import ParameterError
+from ...utils import type_check
 
 
 @dataclasses.dataclass(frozen=True)
 class FileSelectConfig(CommonParameterWidgetConfig):
-    default_value: str = ""
+    default_value: Optional[str] = ""
     placeholder: str = ""
     dialog_title: str = ""
     start_dir: str = ""
@@ -52,6 +52,9 @@ class FileSelect(CommonParameterWidget):
             )
         return self._value_widget
 
+    def check_value_type(self, value: Any):
+        type_check(value, (str,), allow_none=True)
+
     def set_value_to_widget(self, value: Any):
         value = value or ""
         self._value_widget.set_path(str(value))
@@ -62,7 +65,7 @@ class FileSelect(CommonParameterWidget):
 
 @dataclasses.dataclass(frozen=True)
 class MultiFileSelectConfig(CommonParameterWidgetConfig):
-    default_value: List[str] = dataclasses.field(default_factory=list)
+    default_value: Union[Sequence[str], str, type(None)] = ()
     placeholder: str = ""
     dialog_title: str = ""
     start_dir: str = ""
@@ -109,15 +112,13 @@ class MultiFileSelect(CommonParameterWidget):
             )
         return self._value_widget
 
+    def check_value_type(self, value: Any):
+        type_check(value, (str, list, tuple, set), allow_none=True)
+
     def set_value_to_widget(
         self, value: Union[str, List[str], Tuple[str, ...], Set[str]]
     ):
         value = value or []
-        if not isinstance(value, (str, list, tuple, set)):
-            raise ParameterError(
-                self.parameter_name,
-                f"invalid type of value, expect str or a sequence of str, got {type(value)}",
-            )
         self._value_widget.set_paths(value)
 
     def get_value_from_widget(self) -> List[str]:

@@ -1,10 +1,11 @@
 import dataclasses
-from typing import Type, Union, Optional
+from typing import Type, Union, Optional, Any
 
 from qtpy.QtGui import QKeySequence
 from qtpy.QtWidgets import QWidget, QKeySequenceEdit
 
 from ..common import CommonParameterWidgetConfig, CommonParameterWidget
+from ...utils import type_check
 
 KeySequenceFormat = QKeySequence.SequenceFormat
 
@@ -36,6 +37,9 @@ class KeySequenceEdit(CommonParameterWidget):
         if self._value_widget is None:
             self._value_widget = QKeySequenceEdit(self)
         return self._value_widget
+
+    def check_value_type(self, value: Any):
+        type_check(value, (str, QKeySequence), allow_none=True)
 
     def set_value_to_widget(self, value: Union[str, QKeySequence]):
         self._config: KeySequenceEditConfig

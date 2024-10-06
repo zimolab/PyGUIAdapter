@@ -1,10 +1,11 @@
 import dataclasses
-from typing import Type, Optional
+from typing import Type, Optional, Any
 
 from qtpy.QtCore import Qt
 from qtpy.QtWidgets import QWidget, QSlider, QLabel, QVBoxLayout
 
 from ..common import CommonParameterWidgetConfig, CommonParameterWidget
+from ...utils import type_check
 
 TickPosition = QSlider.TickPosition
 
@@ -79,9 +80,14 @@ class Slider(CommonParameterWidget):
                 self._on_value_changed(self._slider.value())
         return self._value_widget
 
-    def set_value_to_widget(self, value: int):
-        value = int(value)
-        self._slider.setValue(value)
+    def check_value_type(self, value: Any):
+        type_check(value, (int, bool), allow_none=True)
+
+    def set_value_to_widget(self, value: Any):
+        try:
+            self._slider.setValue(int(value))
+        except Exception as e:
+            raise ValueError(f"not a int: {type(value)}") from e
 
     def get_value_from_widget(self) -> int:
         return self._slider.value()

@@ -5,6 +5,7 @@ from qtpy.QtGui import QTextOption
 from qtpy.QtWidgets import QWidget, QTextEdit
 
 from ..common import CommonParameterWidget, CommonParameterWidgetConfig
+from ...utils import type_check
 
 LineWrapMode = QTextEdit.LineWrapMode
 AutoFormatting = QTextEdit.AutoFormatting
@@ -70,6 +71,9 @@ class TextEdit(CommonParameterWidget):
                 self._value_widget.setMinimumHeight(self._config.min_height)
 
         return self._value_widget
+
+    def check_value_type(self, value: Any):
+        type_check(value, (str,), allow_none=True)
 
     def set_value_to_widget(self, value: Any):
         self.value_widget.setPlainText(str(value))

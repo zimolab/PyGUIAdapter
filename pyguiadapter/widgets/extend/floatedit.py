@@ -5,7 +5,7 @@ from qtpy.QtGui import QDoubleValidator
 from qtpy.QtWidgets import QWidget, QLineEdit
 
 from ..common import CommonParameterWidgetConfig, CommonParameterWidget
-from ...exceptions import ParameterError
+from ...utils import type_check
 
 
 @dataclasses.dataclass(frozen=True)
@@ -35,17 +35,6 @@ class FloatLineEdit(CommonParameterWidget):
         self._validator: Optional[QDoubleValidator] = None
         super().__init__(parent, parameter_name, config)
 
-    def check_value_type(self, value: Any):
-        if value is None:
-            return
-        if isinstance(value, str):
-            return
-        if not isinstance(value, (int, float)):
-            raise ParameterError(
-                parameter_name=self.parameter_name,
-                message=f"value must be a float or a int, but got {type(value)}",
-            )
-
     @property
     def value_widget(self) -> QLineEdit:
         if self._value_widget is None:
@@ -66,6 +55,11 @@ class FloatLineEdit(CommonParameterWidget):
             self._value_widget.setText(str(config.empty_value))
         return self._value_widget
 
+    def check_value_type(self, value: Any):
+        if value == "":
+            return
+        type_check(value, (float, int), allow_none=True)
+
     def set_value_to_widget(self, value: Any):
         self._config: FloatLineEditConfig
         if value == "":
@@ -74,12 +68,12 @@ class FloatLineEdit(CommonParameterWidget):
 
     def get_value_from_widget(self) -> float:
         self._config: FloatLineEditConfig
-        value = self._value_widget.text()
+        value = self._value_widget.text().strip()
         if not value:
             return self._config.empty_value
         try:
             value = float(value)
-        except ValueError as e:
-            raise ParameterError(self.parameter_name, str(e))
+        except Exception as e:
+            raise ValueError(f"not a float: {e}") from e
         else:
             return value

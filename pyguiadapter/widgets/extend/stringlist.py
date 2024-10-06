@@ -1,12 +1,13 @@
 import dataclasses
 import os.path
-from typing import Type, List, Literal, Optional
+from typing import Type, List, Literal, Optional, Any
 
 from qtpy.QtCore import QStringListModel, Qt
 from qtpy.QtWidgets import QWidget, QListView, QVBoxLayout, QPushButton, QMenu, QAction
 
 from ..common import CommonParameterWidgetConfig, CommonParameterWidget
 from ... import utils
+from ...utils import type_check
 
 TextElideMode = Qt.TextElideMode
 
@@ -139,6 +140,9 @@ class StringListEdit(CommonParameterWidget):
             add_button.clicked.connect(self._on_add_item)
         return add_button
 
+    def check_value_type(self, value: Any):
+        type_check(value, (list,), allow_none=True)
+
     def set_value_to_widget(self, value: List[str]):
         self._clear_items()
         self._append_items(value)
@@ -147,11 +151,11 @@ class StringListEdit(CommonParameterWidget):
         self._config: StringListEditConfig
         string_list = self._model.stringList()
         if self._config.empty_string_strategy == "keep_all":
-            return string_list.copy()
+            return [str(item) for item in string_list]
         elif self._config.empty_string_strategy == "keep_one":
             return self._keep_one_empty_item(string_list)
         else:
-            return [item for item in string_list if item != ""]
+            return [str(item) for item in string_list if item != "" or item is not None]
 
     def _on_add_item(self):
         self._append_item("", edit=True, set_current=True)
@@ -234,9 +238,11 @@ class StringListEdit(CommonParameterWidget):
         self._model.setStringList([])
 
     def _append_item(self, item: str, edit: bool = False, set_current: bool = False):
+        if item is None:
+            item = ""
         row = self._model.rowCount()
         self._model.insertRow(row)
-        self._model.setData(self._model.index(row), item)
+        self._model.setData(self._model.index(row), str(item))
         if edit:
             self._list_view.edit(self._model.index(row))
         if set_current:
@@ -251,6 +257,9 @@ class StringListEdit(CommonParameterWidget):
         should_add = True
         ret = []
         for item in items:
+            if item is None:
+                item = ""
+            item = str(item)
             if item != "":
                 ret.append(item)
                 continue

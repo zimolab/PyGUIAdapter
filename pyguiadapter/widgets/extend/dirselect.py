@@ -5,11 +5,12 @@ from qtpy.QtWidgets import QWidget
 
 from ._path import PathSelectWidget
 from ..common import CommonParameterWidgetConfig, CommonParameterWidget
+from ...utils import type_check
 
 
 @dataclasses.dataclass(frozen=True)
 class DirSelectConfig(CommonParameterWidgetConfig):
-    default_value: str = ""
+    default_value: Optional[str] = ""
     placeholder: str = ""
     dialog_title: str = ""
     start_dir: str = ""
@@ -48,6 +49,9 @@ class DirSelect(CommonParameterWidget):
                 clear_button=self._config.clear_button,
             )
         return self._value_widget
+
+    def check_value_type(self, value: Any):
+        type_check(value, (str,), allow_none=True)
 
     def set_value_to_widget(self, value: Any):
         value = value or ""
