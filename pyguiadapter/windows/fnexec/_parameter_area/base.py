@@ -86,9 +86,7 @@ class BaseParameterPage(QWidget):
         pass
 
     @abstractmethod
-    def set_parameter_value(
-        self, parameter_name: str, value: Any, ignore_unknown_parameter: bool = False
-    ):
+    def set_parameter_value(self, parameter_name: str, value: Any):
         pass
 
     @abstractmethod
@@ -187,9 +185,7 @@ class BaseParameterGroupBox(QToolBox):
         pass
 
     @abstractmethod
-    def set_parameter_value(
-        self, parameter_name: str, value: Any, ignore_unknown_parameter: bool = False
-    ):
+    def set_parameter_value(self, parameter_name: str, value: Any):
         pass
 
     @abstractmethod
@@ -272,9 +268,7 @@ class BaseParameterArea(QWidget):
         pass
 
     @abstractmethod
-    def set_parameter_value(
-        self, parameter_name: str, value: Any, ignore_unknown_parameter: bool = False
-    ):
+    def set_parameter_value(self, parameter_name: str, value: Any):
         pass
 
     @abstractmethod

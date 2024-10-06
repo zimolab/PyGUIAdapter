@@ -206,16 +206,20 @@ class FnExecuteWindow(BaseFnExecuteWindow):
     def get_parameter_values(self) -> Dict[str, Any]:
         return self._parameter_area.get_parameter_values()
 
-    def set_parameter_value(
-        self, parameter_name: str, value: Any, ignore_unknown_parameter: bool = True
-    ):
-        self._parameter_area.set_parameter_value(
-            parameter_name, value, ignore_unknown_parameter
-        )
+    def set_parameter_value(self, parameter_name: str, value: Any):
+        self._parameter_area.set_parameter_value(parameter_name, value)
 
     def set_parameter_values(self, values: Dict[str, Any]):
         self._parameter_area.clear_validation_error(None)
+        if not values:
+            return
         self._parameter_area.set_parameter_values(values)
+
+    def get_parameter_names(self) -> List[str]:
+        return self._parameter_area.get_parameter_names()
+
+    def get_parameter_names_of(self, group_name: str) -> List[str]:
+        return self._parameter_area.get_parameter_names_of(group_name)
 
     def set_output_dock_property(
         self,
@@ -346,7 +350,7 @@ class FnExecuteWindow(BaseFnExecuteWindow):
     def clear_statusbar_message(self):
         self.statusBar().clearMessage()
 
-    def set_execute_text(self, text: str):
+    def set_execute_button_text(self, text: str):
         self._operation_area.set_execute_button_text(text)
 
     def set_cancel_button_text(self, text: str):
@@ -361,7 +365,7 @@ class FnExecuteWindow(BaseFnExecuteWindow):
     def set_clear_button_visible(self, visible: bool):
         self._operation_area.set_clear_button_visible(visible)
 
-    def set_cler_checkbox_visible(self, visible: bool):
+    def set_clear_checkbox_visible(self, visible: bool):
         self._operation_area.set_clear_checkbox_visible(visible)
 
     def set_clear_checkbox_checked(self, checked: bool):

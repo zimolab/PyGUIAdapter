@@ -162,13 +162,9 @@ class ParameterGroupPage(BaseParameterPage):
             raise ParameterNotFoundError(parameter_name)
         return widget.get_value()
 
-    def set_parameter_value(
-        self, parameter_name: str, value: Any, ignore_unknown_parameter: bool = False
-    ):
+    def set_parameter_value(self, parameter_name: str, value: Any):
         widget = self.get_parameter_widget(parameter_name)
         if widget is None:
-            if ignore_unknown_parameter:
-                return
             raise ParameterNotFoundError(parameter_name)
         widget.set_value(value)
 
@@ -198,54 +194,54 @@ class ParameterGroupPage(BaseParameterPage):
 class ParameterGroupBox(BaseParameterGroupBox):
     def __init__(self, parent: QWidget, config: FnExecuteWindowConfig):
         self._config = config
-        self._groups: Dict[str, BaseParameterPage] = OrderedDict()
+        self._group_pages: Dict[str, BaseParameterPage] = OrderedDict()
         super().__init__(parent)
 
     def upsert_parameter_group(self, group_name: Optional[str]) -> BaseParameterPage:
         group_name = self._group_name(group_name)
-        if group_name in self._groups:
-            return self._groups[group_name]
+        if group_name in self._group_pages:
+            return self._group_pages[group_name]
 
         page = ParameterGroupPage(self, group_name=group_name)
         icon = self._group_icon(group_name)
         self.addItem(page, icon, group_name)
-        self._groups[group_name] = page
+        self._group_pages[group_name] = page
         return page
 
     def add_default_group(self) -> BaseParameterPage:
         return self.upsert_parameter_group(None)
 
     def has_parameter_group(self, group_name: Optional[str]) -> bool:
-        return self._group_name(group_name) in self._groups
+        return self._group_name(group_name) in self._group_pages
 
     def _get_parameter_group(
         self, group_name: Optional[str]
     ) -> Optional[BaseParameterPage]:
-        return self._groups.get(self._group_name(group_name), None)
+        return self._group_pages.get(self._group_name(group_name), None)
 
     def remove_parameter_group(self, group_name: Optional[str]):
-        group = self._groups.get(self._group_name(group_name), None)
+        group = self._group_pages.get(self._group_name(group_name), None)
         if group is None:
             return
         self._remove_group(group)
 
     def get_parameter_group_names(self) -> List[str]:
-        return list(self._groups.keys())
+        return list(self._group_pages.keys())
 
     def _get_parameter_group_of(
         self, parameter_name: str
     ) -> Optional[BaseParameterPage]:
-        for group_name, group in self._groups.items():
+        for group_name, group in self._group_pages.items():
             if group.has_parameter_widget(parameter_name):
                 return group
         return None
 
     def has_parameter(self, parameter_name: str) -> bool:
-        if not self._groups:
+        if not self._group_pages:
             return False
         return any(
             group.has_parameter_widget(parameter_name)
-            for group in self._groups.values()
+            for group in self._group_pages.values()
         )
 
     def add_parameter(
@@ -272,9 +268,9 @@ class ParameterGroupBox(BaseParameterGroupBox):
             self._remove_group(group)
 
     def clear_parameters(self):
-        for group in list(self._groups.values()):
+        for group in list(self._group_pages.values()):
             self._remove_group(group)
-        self._groups.clear()
+        self._group_pages.clear()
 
     def get_parameter_value(self, parameter_name: str) -> Any:
         _, widget = self._get_group_and_widget(parameter_name)
@@ -284,7 +280,7 @@ class ParameterGroupBox(BaseParameterGroupBox):
 
     def get_parameter_values(self) -> Dict[str, Any]:
         params = OrderedDict()
-        for group_page in self._groups.values():
+        for group_page in self._group_pages.values():
             params.update(group_page.get_parameter_values())
         return params
 
@@ -292,34 +288,30 @@ class ParameterGroupBox(BaseParameterGroupBox):
         group_name = self._group_name(group_name)
         group = self._get_parameter_group(group_name)
         if group is None:
-            return {}
+            raise ParameterNotFoundError(group_name)
         return group.get_parameter_values()
 
     def get_parameter_names(self) -> List[str]:
         return [
             parameter_name
-            for group_page in self._groups.values()
+            for group_page in self._group_pages.values()
             for parameter_name in group_page.get_parameter_names()
         ]
 
     def get_parameter_names_of(self, group_name: str) -> List[str]:
         group = self._get_parameter_group(group_name)
         if group is None:
-            return []
+            raise ParameterNotFoundError(group_name)
         return group.get_parameter_names()
 
-    def set_parameter_value(
-        self, parameter_name: str, value: Any, ignore_unknown_parameter: bool = False
-    ):
+    def set_parameter_value(self, parameter_name: str, value: Any):
         _, widget = self._get_group_and_widget(parameter_name)
         if widget is None:
-            if ignore_unknown_parameter:
-                return
             raise ParameterNotFoundError(parameter_name)
         widget.set_value(value)
 
     def set_parameter_values(self, params: Dict[str, Any]):
-        for group_page in self._groups.values():
+        for group_page in self._group_pages.values():
             group_page.set_parameter_values(params)
 
     def active_parameter_group(self, group_name: Optional[str]) -> bool:
@@ -343,9 +335,9 @@ class ParameterGroupBox(BaseParameterGroupBox):
     def _get_group_and_widget(
         self, parameter_name: str
     ) -> Tuple[Optional[BaseParameterPage], Optional[BaseParameterWidget]]:
-        if not self._groups:
+        if not self._group_pages:
             return None, None
-        for group_page in self._groups.values():
+        for group_page in self._group_pages.values():
             widget = group_page.get_parameter_widget(parameter_name)
             if widget is not None:
                 return group_page, widget
@@ -359,8 +351,8 @@ class ParameterGroupBox(BaseParameterGroupBox):
             self.removeItem(index)
         group.clear_parameter_widgets()
         group.deleteLater()
-        if group.group_name in self._groups:
-            del self._groups[group.group_name]
+        if group.group_name in self._group_pages:
+            del self._group_pages[group.group_name]
 
     def _group_name(self, name: Optional[str]) -> str:
         if name is None:

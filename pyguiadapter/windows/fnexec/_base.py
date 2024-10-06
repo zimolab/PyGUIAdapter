@@ -150,7 +150,7 @@ class BaseFnExecuteWindow(BaseWindow, ExecuteStateListener):
         pass
 
     @abstractmethod
-    def set_parameter_value(self, parameter_name, value, ignore_unknown_parameter):
+    def set_parameter_value(self, parameter_name, value):
         pass
 
     @abstractmethod
@@ -262,7 +262,7 @@ class BaseFnExecuteWindow(BaseWindow, ExecuteStateListener):
         pass
 
     @abstractmethod
-    def set_execute_text(self, text):
+    def set_execute_button_text(self, text):
         pass
 
     @abstractmethod
@@ -282,7 +282,7 @@ class BaseFnExecuteWindow(BaseWindow, ExecuteStateListener):
         pass
 
     @abstractmethod
-    def set_cler_checkbox_visible(self, visible):
+    def set_clear_checkbox_visible(self, visible):
         pass
 
     @abstractmethod

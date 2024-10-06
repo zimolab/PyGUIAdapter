@@ -106,14 +106,8 @@ class ParameterArea(BaseParameterArea):
     def get_parameter_values(self) -> Dict[str, Any]:
         return self._groupbox.get_parameter_values()
 
-    def set_parameter_value(
-        self, parameter_name: str, value: Any, ignore_unknown_parameter: bool = False
-    ):
-        self._groupbox.set_parameter_value(
-            parameter_name=parameter_name,
-            value=value,
-            ignore_unknown_parameter=ignore_unknown_parameter,
-        )
+    def set_parameter_value(self, parameter_name: str, value: Any):
+        self._groupbox.set_parameter_value(parameter_name=parameter_name, value=value)
 
     def notify_validation_error(self, parameter_name: str, error: Any):
         self._groupbox.notify_validation_error(parameter_name, error)
