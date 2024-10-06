@@ -44,10 +44,13 @@ def choices_t_example(arg1: choices_t, arg2: choices_t, arg3: choices_t):
 if __name__ == "__main__":
     arg2_conf = MultiChoiceBoxConfig(
         choices=[MyObject("foo"), MyObject("bar"), MyObject("baz")],
+        # make sure MyObject will not be deep copied when set to the widget or get from the widget
+        get_deepcopy=False,
+        set_deepcopy=False,
     )
     arg3_conf = MultiChoiceBoxConfig(
-        default_value=["opt3"],
-        choices=[
+        default_value=("opt3",),
+        choices=(
             "opt1",
             "opt2",
             "opt3",
@@ -58,7 +61,7 @@ if __name__ == "__main__":
             "opt8",
             "opt9",
             "opt10",
-        ],
+        ),
         columns=3,
     )
     adapter = GUIAdapter()
