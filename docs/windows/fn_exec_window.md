@@ -10,9 +10,9 @@
 
 1. **参数控件区（Parameters Area）**：主要用于放置函数参数控件。
 
-2. **函数文档停靠窗口（Document Dock）**：主要用于显示函数的文档信息。默认情况下，其内容来源于函数的`文档字符串（docstring）`。
+2. **文档停靠窗口（Document Dock）**：主要用于显示函数的文档信息。默认情况下，其内容来源于函数的`文档字符串（docstring）`。
 
-3. **程序输出停靠窗口（Output Dock）**：主要用于显示程序的输出信息。默认情况下，函数的返回值、函数调用过程中发生的异常信息均会显示在此区域。
+3. **输出停靠窗口（Output Dock）**：主要用于显示程序的输出信息。默认情况下，函数的返回值、函数调用过程中发生的异常信息均会显示在此区域。
 
 ### 二、配置窗口属性
 
@@ -69,7 +69,7 @@
 |    `function_error_traceback`    |                            `bool`                            |               `True`                |                   是否显示异常的回溯信息。                   |
 |       `error_dialog_title`       |                            `str`                             |              `"Error"`              |                   错误（异常）弹窗的标题。                   |
 |      `result_dialog_title`       |                            `str`                             |             `"Result"`              |                     函数结果弹窗的标题。                     |
-|    `parameter_error_message`     |                            `str`                             |             `"{}: {}"`              | `ParameterError`类异常的消息模板。模板第一个位置将被替换为发生`ParameterError`的参数的名称，第二个位置将被替换为该异常的描述消息。 |
+|    `parameter_error_message`     |                            `str`                             |             `"{}: {}"`              | [`pyguiadapter.exceptions.ParameterError`]()类异常的消息模板。模板第一个位置将被替换为发生[`pyguiadapter.exceptions.ParameterError`]()的参数的名称，第二个位置将被替换为该异常的描述消息。 |
 |    `function_result_message`     |                            `str`                             |      `"function result: {}\n"`      |                     函数结果的消息模板。                     |
 |     `function_error_message`     |                            `str`                             |            `"{}: {}\n"`             | 函数异常的消息模板。第一个位置将被替换为异常类的名称，第二个位置将被替换为异常的消息。 |
 |   `function_executing_message`   |                            `str`                             |  `"A function is executing now!"`   | 消息字符串。当用户意图执行一项操作，而该操作又不允许在函数正在执行时进行的情况下，会发出此提示。比如，函数正在进行，用户要关闭窗口。 |
@@ -164,7 +164,7 @@ def app_style_example(
     @param arg6: arg6 description
     @return:
     """
-    pass
+    ...
 
 
 if __name__ == "__main__":
@@ -228,7 +228,7 @@ def app_style_example(
     @param arg6: arg6 description
     @return:
     """
-    pass
+    ...
 
 
 if __name__ == "__main__":
@@ -273,11 +273,11 @@ from pyguiadapter.windows.fnexec import FnExecuteWindowConfig
 
 
 def function_1(arg1: int, arg2: str, arg3: bool) -> None:
-    pass
+    ...
 
 
 def function_2(arg1: int, arg2: str, arg3: bool) -> None:
-    pass
+    ...
 
 
 if __name__ == "__main__":
@@ -430,7 +430,7 @@ def on_window_destroy(window: FnExecuteWindow):
 
 
 def event_example_2():
-    pass
+    ...
 
 
 if __name__ == "__main__":
@@ -604,7 +604,7 @@ def menu_toolbar_example(arg1: int, arg2: str, arg3: bool):
     @param arg3:
     @return:
     """
-    pass
+    ...
 
 
 if __name__ == "__main__":
@@ -629,8 +629,787 @@ if __name__ == "__main__":
 
 ### 五、主要函数接口
 
-`FnExecuteWindow`中定义了以下函数接口，由于在`动作（Action）`回调函数或窗口事件回调函数中，开发者可以获取到当前的`FnExecuteWindow`示例，因此开发者可以在这些回调函数中使用以下接口来实现一些特殊的操作，比如：读取当前控件上的参数，将其保存到外部文件中；或者，反过来，将外部文件保存的参数设置到对应的控件上。
+`FnExecuteWindow`中定义了以下函数接口，由于在`动作（Action）`回调函数或窗口事件回调函数中，开发者可以获取到当前的`FnExecuteWindow`示例，因此开发者可以在这些回调函数中使用以下接口来实现一些特殊的操作，比如：读取当前控件上的参数，将其保存到外部文件中；或者反过来，将外部文件保存的参数设置到对应的控件上。
+
+> 由于`FnExecuteWindow`继承自`BaseWindow`，因此`FnExecuteWindow`中包含了从`BaseWindow`继承而来的函数，具体可以参考：[窗口概述](windows/overview.md)
+
+#### 1、append_output()
 
 ```python
+FnExecuteWindow.append_output(self, text: str, html: bool = False, scroll_to_bottom: bool = True)
 ```
 
+该函数用于向输出浏览器中追加内容，是`uprint()`函数最终就是调用这个函数来实现信息打印。
+
+---
+
+#### 2、clear_output()
+
+```python
+FnExecuteWindow.clear_output(self)
+```
+
+该函数用于清除输出浏览器当前内容。
+
+---
+
+#### 3、set_document()
+
+```python
+FnExecuteWindow.set_document(self, document: str, document_format: Literal["markdown", "html", "plaintext"])
+```
+
+该函数用于设置文档浏览器显示的文档。
+
+---
+
+#### 4、get_parameter_value()
+
+```python
+FnExecuteWindow.get_parameter_value(self, parameter_name: str) -> Any
+```
+
+该函数用于获取参数当前值（即当前参数控件上的值）。
+
+**参数：**
+
+- `parameter_name`: 要获取的值的参数的名称
+
+返回值：返回对应参数的当前值。
+
+**异常：**
+
+- 当参数`parameter_name`不存在时，将引发[`pyguiadapter.exceptions.ParameterNotFoundError`]()异常；
+- 如果因非法用户输入而导致从控件获取值失败，将引发[`pyguiadapter.exceptions.ParameterError`]()异常；
+- 如果因其他原因导致获取值失败也可能会引发异常，此时可以根据具体情况进行捕获。
+
+---
+
+#### 5、get_parameter_values()
+
+```python
+FnExecuteWindow.get_parameter_values(self) -> Dict[str, Any]
+```
+
+该函数用于获取所有参数的当前值。
+
+**返回值**：
+
+- 函数调用成功后将返回一个字典，该字典的键为参数名称，值为参数当前值
+
+**异常**：
+
+- 如果因存在非法用户输入而导致从控件获取值失败，将引发[`pyguiadapter.exceptions.ParameterError`]()异常；
+- 如果因其他原因导致获取值失败，也可能引发异常，此时可以根据具体情况进行捕获，或使用`Exception`进行统一捕获。
+
+---
+
+#### 6、get_parameter_values_of()
+
+```python
+FnExecuteWindow.get_parameter_values_of(self, group_name: Optional[str]) -> Dict[str, Any]
+```
+
+该函数用于获取指定参数分组下所有参数的当前值。
+
+**参数**：
+
+- `group_name`：要获取当前值的参数分组的名称
+
+---
+
+#### 7、get_parameter_names()
+
+```python
+FnExecuteWindow.get_parameter_names(self) -> List[str]
+```
+
+该函数用于获取当前所有参数的名称。
+
+---
+
+#### 8、get_parameter_names_of()
+
+```python
+FnExecuteWindow.get_parameter_names_of(self, group_name: str) -> List[str]
+```
+
+该函数用于获取指定参数分组下所有参数的名称。
+
+**参数**：
+
+- `group_name`：参数分组名称
+
+**异常**：
+
+- 当参数分组不存在时，将引发[`pyguiadapter.exceptions.ParameterNotFoundError`]()异常；
+
+---
+
+#### 9、set_parameter_value()
+
+```python
+FnExecuteWindow.set_parameter_value(self, parameter_name: str, value: Any)
+```
+
+该函数用于为指定参数设置当前值（即控件上正在显示的值）。
+
+**参数**：
+
+- `parameter_name`：要设置当前值的参数的名称
+- `value`：要设置的值
+
+**异常**：
+
+- 当函数参数不存在时，将引发[`pyguiadapter.exceptions.ParameterNotFoundError`]()异常；
+- 当传入的`value`为非法值（比如：类型不符合要求或为无效值）时，将引发[`pyguiadapter.exceptions.ParameterError`]()异常；
+- 其他原因导致设置参数的值失败，也可能引发异常，此时可以根据具体情况进行捕获，或使用`Exception`进行统一捕获。
+
+---
+
+#### 10、set_parameter_values()
+
+```python
+FnExecuteWindow.set_parameter_values(self, values: Dict[str, Any])
+```
+
+此函数用于为批量设置参数当前值。未知参数将被忽略，不会抛出[`pyguiadapter.exceptions.ParameterError`]()异常。
+
+**参数**：
+
+- `values`：一个字典，键为要设置值的参数的名称，值为要设置的值。
+
+**异常**：
+
+- 当`values`中存在非法值（比如：类型不符合要求或为无效值）时，将引发[`pyguiadapter.exceptions.ParameterError`]()异常；
+- 其他原因导致设置参数的值失败，也可能引发异常，此时可以根据具体情况进行捕获，或使用`Exception`进行统一捕获。
+
+---
+
+#### 11、set_document_dock_property()
+
+```python
+FnExecuteWindow.set_output_dock_property(
+        self,
+        *,
+        title: Optional[str] = None,
+        visible: Optional[bool] = None,
+        floating: Optional[bool] = None,
+        area: Optional[DockWidgetArea] = None,
+)
+```
+
+该函数用于设置文档停靠窗口的各个属性。
+
+**参数**：
+
+- `title`：设置停靠窗口的标题。此参数为可选参数。
+- `visible`：设置停靠窗口是否可见。此参数为可选参数。
+- `floating`：设置停靠窗口是否漂浮在主窗口之外。此参数为可选参数。
+- `area`：设置停靠窗口悬浮的区域。
+
+> `DockWidgetArea`有以下常用值：
+>
+> - `TopDockWidgetArea`，代表停靠在窗口顶部。
+> - `BottomDockWidgetArea`，代表停靠在窗口底部。
+> - `LeftDockWidgetArea`，代表停靠在窗口左侧。
+> - `RightDockWidgetArea`，代表停靠在窗口右侧。
+> - `NoDockWidgetArea`，代表未停靠在窗口状态，比如漂浮状态。
+>
+> 上述值均可以从[`pyguiadapter.windows.fnexec`]()包导入，比如：
+>
+> ```python
+> from pyguiadapter.windows.fnexec import (
+>     TopDockWidgetArea,
+>     BottomDockWidgetArea,
+>     LeftDockWidgetArea,
+>     RightDockWidgetArea,
+>     NoDockWidgetArea,
+> )
+> ```
+
+---
+
+#### 12、is_document_dock_floating()
+
+```python
+FnExecuteWindow.is_document_dock_visible(self) -> bool
+```
+
+该函数用于检测文档停靠窗口是否处于漂浮状态。
+
+---
+
+#### 13、is_document_dock_visible()
+
+```python
+FnExecuteWindow.is_document_dock_visible(self) -> bool
+```
+
+该函数用于检测文档停靠窗口是否处于可见状态。
+
+---
+
+#### 14、get_document_dock_title()
+
+```python
+FnExecuteWindow.get_document_dock_title(self) -> str
+```
+
+该函数用于获取文档停靠窗口当前标题。
+
+---
+
+#### 15、get_document_dock_area()
+
+```python
+FnExecuteWindow.get_document_dock_area(self) -> DockWidgetArea
+```
+
+该函数用于获取文档停靠窗口当前停靠的区域。
+
+> `DockWidgetArea`有以下常用值：
+>
+> - `TopDockWidgetArea`，代表停靠在窗口顶部。
+> - `BottomDockWidgetArea`，代表停靠在窗口底部。
+> - `LeftDockWidgetArea`，代表停靠在窗口左侧。
+> - `RightDockWidgetArea`，代表停靠在窗口右侧。
+> - `NoDockWidgetArea`，代表未停靠在窗口状态，比如漂浮状态。
+>
+> 上述值均可以从[`pyguiadapter.windows.fnexec`]()包导入，比如：
+>
+> ```python
+> from pyguiadapter.windows.fnexec import (
+>     TopDockWidgetArea,
+>     BottomDockWidgetArea,
+>     LeftDockWidgetArea,
+>     RightDockWidgetArea,
+>     NoDockWidgetArea,
+> )
+> ```
+
+---
+
+#### 16、set_output_dock_property()
+
+```python
+FnExecuteWindow.set_output_dock_property(
+        self,
+        *,
+        title: Optional[str] = None,
+        visible: Optional[bool] = None,
+        floating: Optional[bool] = None,
+        area: Optional[DockWidgetArea] = None,
+)
+```
+
+该函数用于设置输出停靠窗口的各个属性。
+
+**参数**：
+
+- `title`：设置停靠窗口的标题。此参数为可选参数。
+- `visible`：设置停靠窗口是否可见。此参数为可选参数。
+- `floating`：设置停靠窗口是否漂浮在主窗口之外。此参数为可选参数。
+- `area`：设置停靠窗口悬浮的区域。
+
+> `DockWidgetArea`有以下常用值：
+>
+> - `TopDockWidgetArea`，代表停靠在窗口顶部。
+> - `BottomDockWidgetArea`，代表停靠在窗口底部。
+> - `LeftDockWidgetArea`，代表停靠在窗口左侧。
+> - `RightDockWidgetArea`，代表停靠在窗口右侧。
+> - `NoDockWidgetArea`，代表未停靠在窗口状态，比如漂浮状态。
+>
+> 上述值均可以从[`pyguiadapter.windows.fnexec`]()包导入，比如：
+>
+> ```python
+> from pyguiadapter.windows.fnexec import (
+>     TopDockWidgetArea,
+>     BottomDockWidgetArea,
+>     LeftDockWidgetArea,
+>     RightDockWidgetArea,
+>     NoDockWidgetArea,
+> )
+> ```
+
+---
+
+#### 17、is_output_dock_floating()
+
+```python
+FnExecuteWindow.is_output_dock_floating(self) -> bool
+```
+
+该函数用于检测输出停靠窗口是否处于漂浮状态。
+
+---
+
+#### 18、is_output_dock_visible()
+
+```python
+FnExecuteWindow.is_output_dock_visible(self) -> bool
+```
+
+该函数用于检测输出停靠窗口是否处于可见状态。
+
+---
+
+#### 19、get_output_dock_title()
+
+```python
+FnExecuteWindow.get_output_dock_title(self) -> str
+```
+
+该函数用于获取输出停靠窗口当前标题。
+
+---
+
+#### 20、get_output_dock_area()
+
+
+```python
+FnExecuteWindow.get_output_dock_area(self) -> DockWidgetArea
+```
+
+该函数用于获取输出停靠窗口当前停靠的区域。
+
+> `DockWidgetArea`有以下常用值：
+>
+> - `TopDockWidgetArea`，代表停靠在窗口顶部。
+> - `BottomDockWidgetArea`，代表停靠在窗口底部。
+> - `LeftDockWidgetArea`，代表停靠在窗口左侧。
+> - `RightDockWidgetArea`，代表停靠在窗口右侧。
+> - `NoDockWidgetArea`，代表未停靠在窗口状态，比如漂浮状态。
+>
+> 上述值均可以从[`pyguiadapter.windows.fnexec`]()包导入，比如：
+>
+> ```python
+> from pyguiadapter.windows.fnexec import (
+>     TopDockWidgetArea,
+>     BottomDockWidgetArea,
+>     LeftDockWidgetArea,
+>     RightDockWidgetArea,
+>     NoDockWidgetArea,
+> )
+> ```
+
+---
+
+#### 21、resize_document_dock()
+
+```python
+FnExecuteWindow.resize_document_dock(self, size: Tuple[Optional[int], Optional[int]])
+```
+
+该参数调整文档停靠窗口的尺寸。
+
+**参数**：
+
+- `size `：停靠窗口尺寸。为一个二元素元组，形式为(`width`, `height`)，`width`和`height`可为`None`，为`None`表示不设置该维度。
+
+> 停靠窗口的尺寸受到多种因素的影响，无法保证实际的尺寸与开发者设置的尺寸保持一致，尤其时多个停靠窗口停靠在同一区域时。具体而言：
+>
+> -  尺寸的调整受最小和最大尺寸的约束；
+> -  尺寸调整不会影响主窗口的大小；
+> -  在空间有限的情况下，将根据各个停靠窗口的相对大小占比进行可以利用空间的调整。
+
+---
+
+#### 22、resize_output_dock()
+
+```python
+FnExecuteWindow.resize_output_dock(self, size: Tuple[Optional[int], Optional[int]])
+```
+
+该参数用于调整输出停靠窗口的尺寸。
+
+**参数**：
+
+- `size `：停靠窗口尺寸。为一个二元素元组，形式为(`width`, `height`)，`width`和`height`可为`None`，为`None`表示不设置该维度。
+
+> 停靠窗口的尺寸受到多种因素的影响，无法保证实际的尺寸与开发者设置的尺寸保持一致，尤其时多个停靠窗口停靠在同一区域时。具体而言：
+>
+> -  尺寸的调整受最小和最大尺寸的约束；
+> -  尺寸调整不会影响主窗口的大小；
+> -  在空间有限的情况下，将根据各个停靠窗口的相对大小占比进行可以利用空间的调整。
+
+---
+
+#### 23、tabify_docks()
+
+```python
+FnExecuteWindow.tabify_docks(self)
+```
+
+该函数用于将所有停靠窗口放置在同一个停靠区域，并将停靠窗口显示成选项卡的形式。
+
+---
+
+#### 24、set_statusbar_visible()
+
+```python
+FnExecuteWindow.set_statusbar_visible(self, visible: bool)
+```
+
+该函数用于设置窗口底部状态栏是否可见。
+
+**参数**：
+
+- `visible`：状态栏的可见性。传入`False`将隐藏状态栏。
+
+---
+
+#### 25、is_statusbar_visible()
+
+```python
+FnExecuteWindow.is_statusbar_visible(self) -> bool
+```
+
+该函数用于判断窗口底部状态栏是否可见。
+
+---
+
+#### 26、show_statusbar_message()
+
+```python
+FnExecuteWindow.show_statusbar_message(self, message: str, timeout: int = 3000)
+```
+
+该函数用于显示状态栏消息。
+
+**参数**：
+
+- `message`：要显示的消息。
+- `timeout`：消息存续的时长，以毫秒计，默认为`3000`毫秒（3秒）。若传入`0`，则该消息将一直显示，直到显示新的消息或调用`clearMessage()`清除了消息。
+
+---
+
+#### 27、clear_statusbar_message()
+
+```python
+FnExecuteWindow.show_statusbar_message(self)
+```
+
+该函数用于清除当前状态栏消息。
+
+---
+
+#### 28、set_execute_button_text()
+
+```python
+FnExecuteWindow.set_execute_button_text(self, text: str)
+```
+
+该函数用于设置执行按钮的文本。
+
+**参数**：
+
+- `text`：标题文本。
+
+---
+
+
+#### 29、set_cancel_button_text()
+
+```python
+FnExecuteWindow.set_cancel_button_text(self, text: str)
+```
+
+该函数用于设置取消按钮的文本。
+
+**参数**：
+
+- `text`：标题文本。
+
+---
+
+#### 30、set_clear_button_text()
+
+```python
+FnExecuteWindow.set_clear_button_text(self, text: str)
+```
+
+该函数用于设置清除按钮的文本。
+
+**参数**：
+
+- `text`：标题文本。
+
+---
+
+#### 31、set_clear_checkbox_text()
+
+```python
+FnExecuteWindow.set_clear_checkbox_text(self, text: str)
+```
+
+该函数用于设置清除选项框的文本。
+
+**参数**：
+
+- `text`：选项框文本。
+
+---
+
+#### 32、set_clear_button_visible()
+
+```python
+FnExecuteWindow.set_clear_button_visible(self, visible: bool)
+```
+
+该函数用于设置清除按钮是否可见
+
+**参数**：
+
+- `visiable`：按钮的可见性。传入`False`将使按钮隐藏。
+
+---
+
+#### 33、set_clear_checkbox_visible()
+
+```python
+FnExecuteWindow.set_clear_checkbox_visible(self, visible: bool)
+```
+
+该函数用于设置清除选项框是否可见
+
+**参数**：
+- `visiable`：选项框的可见性。传入`False`将使选项框隐藏。
+
+---
+
+#### 34、set_clear_checkbox_checked()
+
+```python
+FnExecuteWindow.set_clear_checkbox_checked(self, checked: bool)
+```
+
+该函数用于设置清除选项框的选中状态。
+
+**参数**：
+
+- `checked`：选项框的选中状态。
+
+---
+
+#### 35、is_clear_checkbox_checked()
+
+```python
+FnExecuteWindow.is_clear_checkbox_checked(self) -> bool
+```
+
+该函数用于检测选项框是否处于选中状态。
+
+---
+
+#### 36、is_function_executing()
+
+```python
+FnExecuteWindow.is_function_executing(self) -> bool
+```
+
+该函数用于获取函数是否正在执行。
+
+----
+
+#### 37、is_function_cancelable()
+
+```python
+FnExecuteWindow.is_function_cancelable(self) -> bool
+```
+
+该函数用于获取函数是否为可取消函数。
+
+---
+
+#### 38、process_parameter_error()
+
+```python
+FnExecuteWindow.process_parameter_error(self, e: ParameterError)
+```
+
+该函数用于处理`ParameterError`异常。`FnExecuteWindow`内建了`ParameterError`异常的处理逻辑，开发者捕获到此类异常后，可以直接调用该方法将异常交由窗口处理。
+
+**参数**：
+
+- `e`：捕获到的`ParameterError`。
+
+### 六、一些例子
+
+`FnExecuteWindow`提供的函数接口一般与窗口事件、工具栏、菜单栏等机制结合使用。因为在窗口事件或`动作（Action）`的回调函数中，开发者才有机会访问当前`FnExecuteWindow`实例。下面是一些例子，旨在说明开发者如何使用这些机制以及它们能做些什么。
+
+#### （一）保存和加载当前参数
+
+下面结合菜单的使用，来实现参数的保存和加载的效果。将界面上的当前参数值保存到外部文件，以及从外部文件中读取参数值并使用其设置界面控件，有时是一个比较有用的功能，比如这样可以让使用者方便地分享参数，也可以让使用者将节省调试参数的时间。
+
+要实现这个功能，主要要用到以下几个接口：
+
+- `get_parameter_values()`
+- `set_parameter_values()`
+- `process_parameter_error`
+
+同时，由于要与用户进行交互，还需要用到`utils`下几个包，主要是：
+
+- `utils.messagebox`
+- `utils.filedialog`
+
+
+
+具体的代码如下：
+
+> [examples/windows/simple_load_save_example.py]()
+
+```python
+import json
+
+from typing import Dict, Any
+
+from qtpy.QtWidgets import QAction
+
+from pyguiadapter.action import ActionConfig
+from pyguiadapter.adapter import GUIAdapter
+from pyguiadapter.adapter.ucontext import uprint
+from pyguiadapter.exceptions import ParameterError
+from pyguiadapter.extend_types import color_t
+from pyguiadapter.menu import MenuConfig
+from pyguiadapter.utils import messagebox, filedialog
+from pyguiadapter.windows.fnexec import FnExecuteWindow
+
+
+def simple_load_save_example(
+    arg1: int,
+    arg2: float,
+    arg3: bool,
+    arg4: str,
+    arg5: color_t,
+):
+    """
+    This example shows how to save current parameter values to a json file and load a parameter values from a json file.
+    @param arg1:
+    @param arg2:
+    @param arg3:
+    @param arg4:
+    @param arg5:
+    @return:
+    """
+    uprint("arg1=", arg1)
+    uprint("arg2=", arg2)
+    uprint("arg3=", arg3)
+    uprint("arg4=", arg4)
+    uprint("arg5=", arg5)
+
+
+def on_save_params(window: FnExecuteWindow, action: QAction):
+    # Step 1: obtain current parameter values from widgets
+    #
+    # if the current input in the widgets of some parameter is invalid, the get_parameter_values() method may raise a
+    # exception. A good practice is to catch the exception and handle it properly:
+    #  - for ParameterError, the FnExecuteWindow has a builtin logic to deal with it, so just call the
+    #  process_parameter_error() method and let the window do the job.
+    #
+    #  - for other exceptions, we need handle it by ourselves. Here we choose to show the exception message with a
+    #  message box to the user.
+
+    try:
+        params: Dict[str, Any] = window.get_parameter_values()
+    except ParameterError as e:
+        window.process_parameter_error(e)
+        return
+    except Exception as e:
+        messagebox.show_exception_messagebox(
+            window, e, message="Unable to get the parameters: "
+        )
+        return
+
+    # Step2: serialize the parameter values and save them to a json file
+    #
+    # In this example, because we don't use any complex types, we can use simply json.dump() to do the serialization.
+    # However, If your function contains parameters of complex types, such as list, tuple, set, dict, enum, then
+    # serialization and deserialization must be considered very carefully.
+    #
+    save_file = filedialog.get_save_file(
+        window, "Save Parameters", filters="JSON files(*.json)"
+    )
+    if not save_file:
+        return
+    try:
+        with open(save_file, "w") as f:
+            json.dump(params, f)
+    except Exception as e:
+        messagebox.show_exception_messagebox(
+            window, e, message="Unable to save the parameters: "
+        )
+    else:
+        messagebox.show_info_message(window, "Parameters have been saved!")
+
+
+def on_load_params(window: FnExecuteWindow, action: QAction):
+    # Step 1: load the parameter values from a json file
+    file = filedialog.get_open_file(
+        window, "Load Parameters", filters="JSON files(*.json)"
+    )
+    if not file:
+        return
+    try:
+        with open(file, "r") as f:
+            params: Dict[str, Any] = json.load(f)
+    except Exception as e:
+        messagebox.show_exception_messagebox(
+            window, e, message="Unable to load the parameters: "
+        )
+        return
+    if not isinstance(params, dict):
+        messagebox.show_critical_message(window, message="Invalid parameters format!")
+        return
+
+    # Step2: set the parameter values to the widgets
+    try:
+        window.set_parameter_values(params)
+    except ParameterError as e:
+        window.process_parameter_error(e)
+        return
+    except Exception as e:
+        messagebox.show_exception_messagebox(
+            window, e, message="Unable to set the parameters: "
+        )
+    else:
+        messagebox.show_info_message(window, "Parameters have been loaded!")
+
+
+if __name__ == "__main__":
+    action_save_params = ActionConfig(
+        text="Save Parameters",
+        icon="fa.save",
+        shortcut="Ctrl+S",
+        on_triggered=on_save_params,
+    )
+
+    action_load_params = ActionConfig(
+        text="Load Parameters",
+        icon="fa.folder-open",
+        shortcut="Ctrl+L",
+        on_triggered=on_load_params,
+    )
+
+    menu = MenuConfig(
+        title="File",
+        actions=[action_save_params, action_load_params],
+    )
+
+    adapter = GUIAdapter()
+    adapter.add(simple_load_save_example, window_menus=[menu])
+    adapter.run()
+
+```
+
+效果如下：
+
+<img src="../images/simple_save_load_example.gif" />
+
+**需要说明的是**，上面演示的只是比较简单的情形，函数只包含一些简单类型的参数，因此可以（几乎）可以直接使用`json`对`get_parameter_values()`获取到的值进行序列化和反序列化。然而，一旦函数的参数包含更为复杂的类型，例如`dict`、`list`、`tuple`、`set`、`Enum`等，那么开发者就需要认真考虑序列化的问题了，当然方案有很多，包括`pickle`、`jsonpickle`等等，具体的做法一定是和具体的场景结合起来的，这里就没办法展开了，仅仅是做一个提示。
+
+另外，在以上示例代码中，有很大一部分是在进行异常处理，一方面这是为了说明异常处理的重要性，另一方面也是为了演示如何运用`utils`包提供的功能。
+
+关于`ParameterError`，这类异常一般是因为在获取/设置参数时遇到了一个非法的输入。因为这种错误比较常见，所以`FnExecuteWindow`内建了一套处理流程，包括弹窗提醒用户，以及在参数控件上以醒目的方式提醒用户“该参数的值存在问题”。下面，我们修改一下之前保存的参数文件，给其中一个参数赋予一个非法的值，然后再加载它，看看`ParameterError`是如何被处理的。
+
+<img src="../images/simple_save_load_example_2.gif" />

@@ -340,11 +340,11 @@ if __name__ == "__main__":
 
 
 
-### 六、主要接口
+### 六、主要函数接口
 
 `FnSelectWindow`主要提供了以下接口供开发者调用：
 
-> 由于`FnSelectWindow`继承自`BaseWindow`，因此`FnSelectWindow`中包含了从`BaseWindow`继承而来的接口，具体可以参考：[窗口概述](windows/overview.md)
+> 由于`FnSelectWindow`继承自`BaseWindow`，因此`FnSelectWindow`中包含了从`BaseWindow`继承而来的函数，具体可以参考：[窗口概述](windows/overview.md)
 
 ```python
 class FnSelectWindow(BaseWindow):
