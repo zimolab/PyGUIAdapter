@@ -23,7 +23,7 @@ if __name__ == "__main__":
         default_value=datetime(2023, 6, 1, 12, 59, 59),
         min_datetime=datetime(2023, 1, 1),
         max_datetime=datetime(2023, 12, 31),
-        calendar_popup=True,
+        calendar_popup=False,
     )
     adapter = GUIAdapter()
     adapter.add(
