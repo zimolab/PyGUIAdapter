@@ -5,7 +5,7 @@ import re
 import traceback
 import warnings
 from io import StringIO
-from typing import List, Set, Tuple, Any, Union, Optional
+from typing import List, Set, Tuple, Any, Union, Optional, Sequence, Type
 
 PyLiteralType = Union[bool, int, float, bytes, str, list, tuple, dict, set, type(None)]
 
@@ -157,3 +157,10 @@ def get_traceback(
     msg = buffer.getvalue()
     buffer.close()
     return msg
+
+
+def type_check(value: Any, allowed_types: Tuple[Type[Any], ...], allow_none: bool):
+    if allow_none and value is None:
+        return
+    if not isinstance(value, allowed_types):
+        raise TypeError(f"invalid type: {type(value)}")
