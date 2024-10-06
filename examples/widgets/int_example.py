@@ -17,6 +17,7 @@ def int_example(int_arg1: int, int_arg2: int, int_arg3: int = 100) -> int:
     max_value = 100
 
     [int_arg2]
+    default_value = 1000
     max_value = 999
     prefix = "$"
 
