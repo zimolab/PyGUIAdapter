@@ -43,7 +43,7 @@ if __name__ == "__main__":
             "float_arg2": float_arg2_config,
             "float_arg3": {
                 # this will override the default_value in the function signature
-                "default_value": 0.5,
+                "default_value": 1,
                 "max_value": 2.0,
                 "step": 0.00001,
                 "decimals": 5,
