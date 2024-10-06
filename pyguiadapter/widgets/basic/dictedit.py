@@ -1,10 +1,11 @@
 import dataclasses
-from typing import Type, Optional
+from typing import Type, Optional, Any
 
 from qtpy.QtWidgets import QWidget
 
 from .literaledit import PyLiteralEdit, PyLiteralEditConfig, PyLiteralType
 from ... import utils
+from ...exceptions import ParameterError
 from ...fn import ParameterInfo
 
 
@@ -25,6 +26,15 @@ class DictEdit(PyLiteralEdit):
         self, parent: Optional[QWidget], parameter_name: str, config: DictEditConfig
     ):
         super().__init__(parent, parameter_name, config)
+
+    def check_value_type(self, value: Any):
+        if value is None:
+            return
+        if not isinstance(value, dict):
+            raise ParameterError(
+                parameter_name=self.parameter_name,
+                message=f"value must be a dict, but got {type(value)}",
+            )
 
     def _get_data(self, text: str) -> Optional[dict]:
         if text is None or text.strip() == "":

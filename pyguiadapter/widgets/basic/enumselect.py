@@ -1,12 +1,13 @@
 import dataclasses
 import inspect
 from enum import Enum
-from typing import Type, Tuple, Union, Optional, Dict
+from typing import Type, Tuple, Union, Optional, Dict, Any
 
 from qtpy.QtCore import QSize
 from qtpy.QtWidgets import QWidget, QComboBox
 
 from ..common import CommonParameterWidgetConfig, CommonParameterWidget
+from ...exceptions import ParameterError
 from ...fn import ParameterInfo
 from ... import utils
 
@@ -34,6 +35,15 @@ class EnumSelect(CommonParameterWidget):
     ):
         self._value_widget: Optional[QComboBox] = None
         super().__init__(parent, parameter_name, config)
+
+    def check_value_type(self, value: Any):
+        if value is None:
+            return
+        if not isinstance(value, (int, str, self.config.enum_class)):
+            raise ParameterError(
+                parameter_name=self.parameter_name,
+                message=f"invalid type of '{self.parameter_name}': expect {self.config.enum_class}, got {type(value)}",
+            )
 
     @property
     def value_widget(self) -> QComboBox:

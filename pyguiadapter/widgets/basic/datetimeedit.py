@@ -1,6 +1,6 @@
 import dataclasses
 from datetime import datetime
-from typing import Type, Union, Optional
+from typing import Type, Union, Optional, Any
 
 from qtpy.QtCore import Qt, QDateTime
 from qtpy.QtWidgets import QWidget, QDateTimeEdit
@@ -9,6 +9,7 @@ from ..common import (
     CommonParameterWidgetConfig,
     CommonParameterWidget,
 )
+from ...exceptions import ParameterError
 
 Alignment = Qt.Alignment
 ButtonSymbols = QDateTimeEdit.ButtonSymbols
@@ -50,6 +51,15 @@ class DateTimeEdit(CommonParameterWidget):
     ):
         self._value_widget: Optional[QDateTimeEdit] = None
         super().__init__(parent, parameter_name, config)
+
+    def check_value_type(self, value: Any):
+        if value is None:
+            return
+        if not isinstance(value, (datetime, QDateTime)):
+            raise ParameterError(
+                parameter_name=self.parameter_name,
+                message=f"value must be a datetime or QDateTime object, but got {type(value)}",
+            )
 
     @property
     def value_widget(self) -> QWidget:

@@ -1,12 +1,13 @@
 import dataclasses
-from typing import Type, Tuple, Union, Literal, Optional
+from typing import Type, Tuple, Union, Literal, Optional, Any
 
 from qtpy.QtCore import Qt
 from qtpy.QtGui import QColor, QFont
 from qtpy.QtWidgets import QWidget, QLabel, QColorDialog, QFrame
 
 from ..common import CommonParameterWidgetConfig, CommonParameterWidget
-from ... import utils
+from ...exceptions import ParameterError
+from ...utils import to_qcolor, get_inverted_color, convert_color
 
 ColorType = Union[
     Tuple[int, int, int, int],  # RGB
@@ -72,32 +73,20 @@ class ColorLabel(QLabel):
         css = "ColorLabel{\n#props\n}"
         props = f"background-color: {self._color.name()};\n"
         if self._display_color_name:
-            text_color = utils.get_inverted_color(self._color)
+            text_color = get_inverted_color(self._color)
             text_color.setAlpha(255)
             props += f"color: {text_color.name()};"
             # display_text = self._color.name()
             # if self._alpha_channel:
             #     display_text += f"\nalpha: {self._color.alpha()}"
-            display_text = utils.convert_color(self._color, "str", self._alpha_channel)
+            display_text = convert_color(self._color, "str", self._alpha_channel)
             self.setText(display_text)
 
         self.setStyleSheet(css.replace("#props", props))
 
     @classmethod
     def normalize_color(cls, color: ColorType) -> QColor:
-        # if not isinstance(color, (tuple, QColor, str)):
-        #     raise ValueError("color must be tuple, QColor or str")
-        # if isinstance(color, QColor):
-        #     return color
-        # if isinstance(color, str):
-        #     return QColor(color)
-        # if isinstance(color, tuple) and 4 < len(color) < 3:
-        #     raise ValueError("color must be tuple of 3 or 4 ints")
-        # c = QColor(color[0], color[1], color[2])
-        # if len(color) == 4:
-        #     c.setAlpha(color[3])
-        # return c
-        return utils.to_qcolor(color)
+        return to_qcolor(color)
 
 
 @dataclasses.dataclass(frozen=True)
@@ -127,6 +116,15 @@ class ColorPicker(CommonParameterWidget):
         self._value_widget: Optional[ColorLabel] = None
         super().__init__(parent, parameter_name, config)
 
+    def check_value_type(self, value: Any):
+        if value is None:
+            return
+        if not isinstance(value, (tuple, QColor, str)):
+            raise ParameterError(
+                parameter_name=self.parameter_name,
+                message=f"value must be a color, but got {type(value)}",
+            )
+
     @property
     def value_widget(self) -> QLabel:
         self._config: ColorPickerConfig
@@ -147,17 +145,9 @@ class ColorPicker(CommonParameterWidget):
     def get_value_from_widget(self) -> ColorType:
         self._config: ColorPickerConfig
         color = self._value_widget.get_color()
-        return utils.convert_color(
+        return convert_color(
             color, self._config.return_type, self._config.alpha_channel
         )
-        # if self._config.return_type == "tuple":
-        #     color_tuple = color.getRgb()
-        #     if self._config.alpha_channel:
-        #         return color_tuple
-        #     return color_tuple[:3]
-        # if self._config.return_type == "QColor":
-        #     return color
-        # return color.name()
 
 
 @dataclasses.dataclass(frozen=True)

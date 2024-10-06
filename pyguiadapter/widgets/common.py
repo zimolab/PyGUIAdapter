@@ -74,7 +74,11 @@ class CommonParameterWidget(BaseParameterWidget):
         self.__build_flag = True
         return self
 
+    def check_value_type(self, value: Any):
+        pass
+
     def set_value(self, value: Any):
+        self.check_value_type(value)
         value = copy.deepcopy(value)
         if not self._check_set_value(value):
             return

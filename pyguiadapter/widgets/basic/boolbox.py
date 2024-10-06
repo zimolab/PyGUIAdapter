@@ -1,10 +1,11 @@
 import dataclasses
-from typing import Type, Optional
+from typing import Type, Optional, Any
 
 from qtpy.QtWidgets import QWidget, QButtonGroup, QRadioButton, QVBoxLayout, QHBoxLayout
 
 from ..common import CommonParameterWidgetConfig, CommonParameterWidget
-from ... import utils
+from ...exceptions import ParameterError
+from ...utils import IconType, get_icon
 
 
 @dataclasses.dataclass(frozen=True)
@@ -12,8 +13,8 @@ class BoolBoxConfig(CommonParameterWidgetConfig):
     default_value: Optional[bool] = False
     true_text: str = "True"
     false_text: str = "False"
-    true_icon: utils.IconType = None
-    false_icon: utils.IconType = None
+    true_icon: IconType = None
+    false_icon: IconType = None
     vertical: bool = False
 
     @classmethod
@@ -37,6 +38,13 @@ class BoolBox(CommonParameterWidget):
 
         super().__init__(parent, parameter_name, config)
 
+    def check_value_type(self, value: Any):
+        if not isinstance(value, (bool, int, type(None))):
+            raise ParameterError(
+                parameter_name=self.parameter_name,
+                message=f"invalid type of '{self.parameter_name}': expect bool, got {type(value)}",
+            )
+
     @property
     def value_widget(self) -> QWidget:
         if self._value_widget is None:
@@ -51,13 +59,13 @@ class BoolBox(CommonParameterWidget):
 
             self._true_radio_button = QRadioButton(self._value_widget)
             self._true_radio_button.setText(config.true_text)
-            true_icon = utils.get_icon(config.true_icon)
+            true_icon = get_icon(config.true_icon)
             if true_icon is not None:
                 self._true_radio_button.setIcon(true_icon)
 
             self._false_radio_button = QRadioButton(self._value_widget)
             self._false_radio_button.setText(config.false_text)
-            false_icon = utils.get_icon(config.false_icon)
+            false_icon = get_icon(config.false_icon)
             if false_icon is not None:
                 self._false_radio_button.setIcon(false_icon)
 

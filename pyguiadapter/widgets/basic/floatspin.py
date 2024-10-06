@@ -1,5 +1,5 @@
 import dataclasses
-from typing import Type, Optional, Union
+from typing import Type, Optional, Union, Any
 
 from qtpy.QtWidgets import QWidget, QDoubleSpinBox
 
@@ -33,6 +33,15 @@ class FloatSpinBox(CommonParameterWidget):
     ):
         self._value_widget: Optional[QDoubleSpinBox] = None
         super().__init__(parent, parameter_name, config)
+
+    def check_value_type(self, value: Any):
+        if value is None:
+            return
+        if not isinstance(value, (float, int)):
+            raise ParameterError(
+                parameter_name=self.parameter_name,
+                message=f"value must be float or int, but got {type(value)}",
+            )
 
     @property
     def value_widget(self) -> QDoubleSpinBox:

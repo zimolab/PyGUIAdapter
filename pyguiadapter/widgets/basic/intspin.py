@@ -1,6 +1,6 @@
 import dataclasses
 import warnings
-from typing import Type, Optional, Union
+from typing import Type, Optional, Union, Any
 
 from qtpy.QtWidgets import QWidget, QSpinBox
 
@@ -36,6 +36,13 @@ class IntSpinBox(CommonParameterWidget):
         super().__init__(parent, parameter_name, config)
 
         assert config.max_value >= config.min_value
+
+    def check_value_type(self, value: Any):
+        if not isinstance(value, (int, type(None))):
+            raise ParameterError(
+                parameter_name=self.parameter_name,
+                message=f"invalid type of '{self.parameter_name}': expect int, got {type(value)}",
+            )
 
     @property
     def value_widget(self) -> QSpinBox:

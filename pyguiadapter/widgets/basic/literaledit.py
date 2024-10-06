@@ -1,12 +1,13 @@
 import ast
 import dataclasses
-from typing import Type, Optional
+from typing import Type, Optional, Any
 
 from pyqcodeeditor.highlighters import QPythonHighlighter
 from qtpy.QtWidgets import QWidget
 
 from .base import BaseCodeEdit, BaseCodeEditConfig
 from ...codeeditor import PythonFormatter
+from ...exceptions import ParameterError
 from ...utils import PyLiteralType
 
 FILE_FILTERS = (
@@ -37,6 +38,15 @@ class PyLiteralEdit(BaseCodeEdit):
         config: PyLiteralEditConfig,
     ):
         super().__init__(parent, parameter_name, config)
+
+    def check_value_type(self, value: Any):
+        if not isinstance(
+            value, (bool, int, float, bytes, str, list, tuple, dict, set, type(None))
+        ):
+            raise ParameterError(
+                parameter_name=self.parameter_name,
+                message=f"invalid type of '{self.parameter_name}': expect literal, got {type(value)}",
+            )
 
     def _get_data(self, text: str) -> PyLiteralType:
         text = text.strip()
