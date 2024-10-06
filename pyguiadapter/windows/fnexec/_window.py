@@ -214,8 +214,8 @@ class FnExecuteWindow(BaseFnExecuteWindow):
         )
 
     def set_parameter_values(self, values: Dict[str, Any]):
-        self._parameter_area.set_parameter_values(values)
         self._parameter_area.clear_validation_error(None)
+        self._parameter_area.set_parameter_values(values)
 
     def set_output_dock_property(
         self,
