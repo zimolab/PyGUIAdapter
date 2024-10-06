@@ -1,15 +1,15 @@
 import dataclasses
 from datetime import datetime
-from typing import Type, Union, Optional, Any
 
 from qtpy.QtCore import Qt, QDateTime
 from qtpy.QtWidgets import QWidget, QDateTimeEdit
+from typing import Type, Union, Optional, Any
 
 from ..common import (
     CommonParameterWidgetConfig,
     CommonParameterWidget,
 )
-from ...exceptions import ParameterError
+from ...utils import type_check
 
 Alignment = Qt.Alignment
 ButtonSymbols = QDateTimeEdit.ButtonSymbols
@@ -33,7 +33,7 @@ class DateTimeEditConfig(CommonParameterWidgetConfig):
     correction_mode: Optional[CorrectionMode] = None
     keyboard_tracking: bool = True
     accelerated: bool = False
-    calendar_popup: bool = False
+    calendar_popup: bool = True
 
     @classmethod
     def target_widget_class(cls) -> Type["DateTimeEdit"]:
@@ -51,15 +51,6 @@ class DateTimeEdit(CommonParameterWidget):
     ):
         self._value_widget: Optional[QDateTimeEdit] = None
         super().__init__(parent, parameter_name, config)
-
-    def check_value_type(self, value: Any):
-        if value is None:
-            return
-        if not isinstance(value, (datetime, QDateTime)):
-            raise ParameterError(
-                parameter_name=self.parameter_name,
-                message=f"value must be a datetime or QDateTime object, but got {type(value)}",
-            )
 
     @property
     def value_widget(self) -> QWidget:
@@ -95,11 +86,16 @@ class DateTimeEdit(CommonParameterWidget):
 
         return self._value_widget
 
+    def check_value_type(self, value: Any):
+        type_check(value, (datetime, QDateTime), allow_none=True)
+
     def set_value_to_widget(self, value: Union[datetime, QDateTime]):
-        if not isinstance(value, (datetime, QDateTime)):
-            raise ValueError("value must be a datetime or QDateTime object")
-        if isinstance(value, datetime):
+        if isinstance(value, QDateTime):
+            pass
+        elif isinstance(value, datetime):
             value = QDateTime(value)
+        else:
+            raise TypeError(f"invalid type: {type(value)}")
         self._value_widget.setDateTime(value)
 
     def get_value_from_widget(self) -> datetime:

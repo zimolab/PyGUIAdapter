@@ -1,15 +1,15 @@
 import dataclasses
 from datetime import date
-from typing import Type, Union, Optional, Any
 
 from qtpy.QtCore import Qt, QDate
 from qtpy.QtWidgets import QWidget, QDateEdit
+from typing import Type, Union, Optional, Any
 
 from ..common import (
     CommonParameterWidgetConfig,
     CommonParameterWidget,
 )
-from ...exceptions import ParameterError
+from ...utils import type_check
 
 Alignment = Qt.Alignment
 ButtonSymbols = QDateEdit.ButtonSymbols
@@ -50,13 +50,6 @@ class DateEdit(CommonParameterWidget):
         self._value_widget: Optional[QDateEdit] = None
         super().__init__(parent, parameter_name, config)
 
-    def check_value_type(self, value: Any):
-        if not isinstance(value, (date, QDate, type(None))):
-            raise ParameterError(
-                parameter_name=self.parameter_name,
-                message=f"value must be a date or QDate object, but got {type(value)}",
-            )
-
     @property
     def value_widget(self) -> QDateEdit:
         self._config: DateEditConfig
@@ -86,11 +79,16 @@ class DateEdit(CommonParameterWidget):
             self._value_widget.setCalendarPopup(self._config.calendar_popup)
         return self._value_widget
 
+    def check_value_type(self, value: Any):
+        type_check(value, (date, QDate), allow_none=True)
+
     def set_value_to_widget(self, value: Union[date, QDate]):
-        if not isinstance(value, (date, QDate)):
-            raise ValueError("value must be date or QDate")
-        if isinstance(value, date):
+        if isinstance(value, QDate):
+            pass
+        elif isinstance(value, date):
             value = QDate(value)
+        else:
+            raise TypeError(f"invalid type: {type(value)}")
         self._value_widget.setDate(value)
 
     def get_value_from_widget(self) -> date:

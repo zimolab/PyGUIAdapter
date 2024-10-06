@@ -4,6 +4,7 @@ from typing import Type, Optional, Union, Any
 from qtpy.QtWidgets import QWidget, QDoubleSpinBox
 
 from ...exceptions import ParameterError
+from ...utils import type_check
 from ...widgets.common import (
     CommonParameterWidgetConfig,
     CommonParameterWidget,
@@ -34,15 +35,6 @@ class FloatSpinBox(CommonParameterWidget):
         self._value_widget: Optional[QDoubleSpinBox] = None
         super().__init__(parent, parameter_name, config)
 
-    def check_value_type(self, value: Any):
-        if value is None:
-            return
-        if not isinstance(value, (float, int)):
-            raise ParameterError(
-                parameter_name=self.parameter_name,
-                message=f"value must be float or int, but got {type(value)}",
-            )
-
     @property
     def value_widget(self) -> QDoubleSpinBox:
         if self._value_widget is None:
@@ -62,11 +54,15 @@ class FloatSpinBox(CommonParameterWidget):
             self._value_widget.setSuffix(config.suffix or "")
         return self._value_widget
 
+    def check_value_type(self, value: Any):
+        if value == "":
+            return
+        type_check(value, (float, int), allow_none=True)
+
     def set_value_to_widget(self, value: Union[float, int, str]):
-        try:
-            value = float(value)
-        except ValueError as e:
-            raise ParameterError(self.parameter_name, str(e))
+        if value == "":
+            self._value_widget.setValue(0.0)
+        value = float(value)
         self._value_widget.setValue(value)
 
     def get_value_from_widget(self) -> float:

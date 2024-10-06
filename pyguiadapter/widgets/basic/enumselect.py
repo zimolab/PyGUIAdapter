@@ -1,23 +1,22 @@
 import dataclasses
 import inspect
 from enum import Enum
-from typing import Type, Tuple, Union, Optional, Dict, Any
 
 from qtpy.QtCore import QSize
 from qtpy.QtWidgets import QWidget, QComboBox
+from typing import Type, Tuple, Union, Optional, Dict, Any
 
 from ..common import CommonParameterWidgetConfig, CommonParameterWidget
-from ...exceptions import ParameterError
 from ...fn import ParameterInfo
-from ... import utils
+from ...utils import IconType, get_icon, get_size, is_subclass_of, type_check
 
 
 @dataclasses.dataclass(frozen=True)
 class EnumSelectConfig(CommonParameterWidgetConfig):
     default_value: Union[Enum, str, int, None] = 0
     enum_class: Optional[Type[Enum]] = None
-    icons: Optional[Dict[Union[Enum, str], utils.IconType]] = None
-    icon_size: Union[Tuple[int, int], QSize, None] = None
+    icons: Optional[Dict[Union[Enum, str], IconType]] = None
+    icon_size: Union[int, Tuple[int, int], QSize, None] = None
 
     @classmethod
     def target_widget_class(cls) -> Type["EnumSelect"]:
@@ -36,25 +35,13 @@ class EnumSelect(CommonParameterWidget):
         self._value_widget: Optional[QComboBox] = None
         super().__init__(parent, parameter_name, config)
 
-    def check_value_type(self, value: Any):
-        if value is None:
-            return
-        if not isinstance(value, (int, str, self.config.enum_class)):
-            raise ParameterError(
-                parameter_name=self.parameter_name,
-                message=f"invalid type of '{self.parameter_name}': expect {self.config.enum_class}, got {type(value)}",
-            )
-
     @property
     def value_widget(self) -> QComboBox:
         if self._value_widget is None:
             config: EnumSelectConfig = self.config
             self._value_widget = QComboBox(self)
-            if config.icon_size:
-                icon_size = config.icon_size
-                if isinstance(icon_size, Tuple):
-                    assert len(icon_size) == 2
-                    icon_size = QSize(config.icon_size[0], config.icon_size[1])
+            icon_size = get_size(config.icon_size)
+            if icon_size:
                 self._value_widget.setIconSize(icon_size)
             all_enums = config.enum_class.__members__
             for enum_name, enum_value in all_enums.items():
@@ -65,7 +52,7 @@ class EnumSelect(CommonParameterWidget):
         self,
         name: str,
         value: Enum,
-        icons: Optional[Dict[Union[Enum, str], utils.IconType]],
+        icons: Optional[Dict[Union[Enum, str], IconType]],
     ):
         if not icons:
             self._value_widget.addItem(name, value)
@@ -76,20 +63,31 @@ class EnumSelect(CommonParameterWidget):
             self._value_widget.addItem(name, value)
             return
 
-        icon = utils.get_icon(icon)
-        if not icon:
-            self._value_widget.addItem(name, value)
+        icon = get_icon(icon)
+        if icon:
+            self._value_widget.addItem(icon, name, value)
             return
+        self._value_widget.addItem(name, value)
 
-        self._value_widget.addItem(icon, name, value)
+    def check_value_type(self, value: Any):
+        self._config: EnumSelectConfig
+        type_check(value, (str, int, self._config.enum_class), allow_none=True)
 
     def set_value_to_widget(self, value: Union[Enum, str, int]):
         if isinstance(value, int):
+            if value < 0 or value >= self._value_widget.count():
+                raise ValueError(f"invalid index: {value}")
             self._value_widget.setCurrentIndex(value)
             return
         if isinstance(value, Enum):
-            value = value.name
-        self._value_widget.setCurrentText(value)
+            self._value_widget.setCurrentText(value.name)
+            return
+        if isinstance(value, str):
+            self._config: EnumSelectConfig
+            if value not in self._config.enum_class.__members__:
+                raise ValueError(f"invalid enum name: {value}")
+            self._value_widget.setCurrentText(value)
+            return
 
     def get_value_from_widget(self) -> Enum:
         return self._value_widget.currentData()
@@ -112,6 +110,6 @@ class EnumSelect(CommonParameterWidget):
     def _enum_type_mapping_rule(
         cls, parameter_info: ParameterInfo
     ) -> Optional[Type["EnumSelect"]]:
-        if utils.is_subclass_of(parameter_info.type, Enum):
+        if is_subclass_of(parameter_info.type, Enum):
             return cls
         return None

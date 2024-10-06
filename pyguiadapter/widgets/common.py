@@ -14,6 +14,7 @@ from qtpy.QtWidgets import (
     QSizePolicy,
 )
 
+from ..exceptions import ParameterError
 from ..paramwidget import BaseParameterWidgetConfig, BaseParameterWidget
 
 
@@ -22,6 +23,8 @@ class CommonParameterWidgetConfig(BaseParameterWidgetConfig):
 
     set_default_value_on_init: bool = True
     hide_default_value_checkbox: bool = True
+    set_deepcopy: bool = True
+    get_deepcopy: bool = True
 
     @classmethod
     def target_widget_class(cls) -> Type["CommonParameterWidget"]:
@@ -78,16 +81,30 @@ class CommonParameterWidget(BaseParameterWidget):
         pass
 
     def set_value(self, value: Any):
-        self.check_value_type(value)
-        value = copy.deepcopy(value)
-        if not self._check_set_value(value):
-            return
-        self.set_value_to_widget(value)
+        try:
+            self.check_value_type(value)
+            if self._config.set_deepcopy:
+                value = copy.deepcopy(value)
+            if not self._check_set_value(value):
+                return
+            self.set_value_to_widget(value)
+        except (TypeError, ValueError) as e:
+            raise ParameterError(
+                parameter_name=self.parameter_name,
+                message=str(e),
+            )
 
     def get_value(self) -> Any:
         if self._default_value_used():
             return self.default_value
-        return copy.deepcopy(self.get_value_from_widget())
+        try:
+            original_value = self.get_value_from_widget()
+        except (ValueError, TypeError) as e:
+            raise ParameterError(parameter_name=self.parameter_name, message=str(e))
+        else:
+            if self._config.get_deepcopy:
+                return copy.deepcopy(original_value)
+            return original_value
 
     @property
     def label(self) -> str:

@@ -5,6 +5,7 @@ from typing import Type, Optional, Union, Any
 from qtpy.QtWidgets import QWidget, QSpinBox
 
 from ...exceptions import ParameterError
+from ...utils import type_check
 from ...widgets.common import (
     CommonParameterWidgetConfig,
     CommonParameterWidget,
@@ -37,13 +38,6 @@ class IntSpinBox(CommonParameterWidget):
 
         assert config.max_value >= config.min_value
 
-    def check_value_type(self, value: Any):
-        if not isinstance(value, (int, type(None))):
-            raise ParameterError(
-                parameter_name=self.parameter_name,
-                message=f"invalid type of '{self.parameter_name}': expect int, got {type(value)}",
-            )
-
     @property
     def value_widget(self) -> QSpinBox:
         if self._value_widget is None:
@@ -62,13 +56,16 @@ class IntSpinBox(CommonParameterWidget):
                 )
         return self._value_widget
 
-    def set_value_to_widget(self, value: Union[int, str]):
-        try:
-            value = int(value)
-        except ValueError as e:
-            raise ParameterError(self.parameter_name, str(e))
-        except TypeError as e:
-            raise ParameterError(self.parameter_name, str(e))
+    def check_value_type(self, value: Any):
+        if value == "":
+            return
+        type_check(value, (int, bool), allow_none=True)
+
+    def set_value_to_widget(self, value: Union[int, bool]):
+        if value == "":
+            self._value_widget.setValue(0)
+            return
+        value = int(value)
         self._value_widget.setValue(value)
 
     def get_value_from_widget(self) -> int:

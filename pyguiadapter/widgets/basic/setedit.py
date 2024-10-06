@@ -1,16 +1,16 @@
 import dataclasses
-from typing import Type, Optional, Any
 
 from qtpy.QtWidgets import QWidget
+from typing import Type, Optional, Any
 
 from .literaledit import PyLiteralEdit, PyLiteralEditConfig, PyLiteralType
-from ...exceptions import ParameterError
+from ...utils import type_check
 
 
 @dataclasses.dataclass(frozen=True)
 class SetEditConfig(PyLiteralEditConfig):
     default_value: Optional[set] = dataclasses.field(default_factory=set)
-    initial_text: str = "None"
+    initial_text: str = "{}"
 
     @classmethod
     def target_widget_class(cls) -> Type["SetEdit"]:
@@ -26,24 +26,21 @@ class SetEdit(PyLiteralEdit):
         super().__init__(parent, parameter_name, config)
 
     def check_value_type(self, value: Any):
-        if value is None:
+        if value == "":
             return
-        if not isinstance(value, set):
-            raise ParameterError(
-                parameter_name=self.parameter_name,
-                message=f"value must be a set, but got {type(value)}",
-            )
+        type_check(value, allowed_types=(set,), allow_none=True)
 
     def _get_data(self, text: str) -> Optional[set]:
-        if text is None or text.strip() == "":
+        text = text.strip()
+        if text is None or text == "":
             return None
-        if text.strip() == "{}":
+        if text == "{}":
             return set()
         data = super()._get_data(text)
         if data is None:
             return None
         if not isinstance(data, set):
-            raise ValueError(f"not a set: {text}")
+            raise ValueError(f"not a set")
         return data
 
     def _set_data(self, data: PyLiteralType) -> str:

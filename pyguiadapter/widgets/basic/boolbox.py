@@ -1,11 +1,10 @@
 import dataclasses
-from typing import Type, Optional, Any
 
 from qtpy.QtWidgets import QWidget, QButtonGroup, QRadioButton, QVBoxLayout, QHBoxLayout
+from typing import Type, Optional, Any
 
 from ..common import CommonParameterWidgetConfig, CommonParameterWidget
-from ...exceptions import ParameterError
-from ...utils import IconType, get_icon
+from ...utils import IconType, get_icon, type_check
 
 
 @dataclasses.dataclass(frozen=True)
@@ -37,13 +36,6 @@ class BoolBox(CommonParameterWidget):
         self._button_group: Optional[QButtonGroup] = None
 
         super().__init__(parent, parameter_name, config)
-
-    def check_value_type(self, value: Any):
-        if not isinstance(value, (bool, int, type(None))):
-            raise ParameterError(
-                parameter_name=self.parameter_name,
-                message=f"invalid type of '{self.parameter_name}': expect bool, got {type(value)}",
-            )
 
     @property
     def value_widget(self) -> QWidget:
@@ -78,6 +70,9 @@ class BoolBox(CommonParameterWidget):
             layout.addWidget(self._false_radio_button)
 
         return self._value_widget
+
+    def check_value_type(self, value: Any):
+        type_check(value, (bool, int), allow_none=True)
 
     def set_value_to_widget(self, value: bool):
         if value:

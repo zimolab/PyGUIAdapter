@@ -1,15 +1,15 @@
 import dataclasses
-from typing import Type, Optional, Any
 
 from qtpy.QtWidgets import QWidget
+from typing import Type, Optional, Any
 
 from .literaledit import PyLiteralEdit, PyLiteralEditConfig, PyLiteralType
-from ...exceptions import ParameterError
+from ...utils import type_check
 
 
 @dataclasses.dataclass(frozen=True)
 class TupleEditConfig(PyLiteralEditConfig):
-    default_value: Optional[tuple] = dataclasses.field(default_factory=tuple)
+    default_value: Optional[tuple] = ()
     initial_text: str = "()"
 
     @classmethod
@@ -26,23 +26,17 @@ class TupleEdit(PyLiteralEdit):
         super().__init__(parent, parameter_name, config)
 
     def check_value_type(self, value: Any):
-        if value is None:
-            return
-        if not isinstance(value, tuple):
-            raise ParameterError(
-                parameter_name=self.parameter_name,
-                message=f"value must be a tuple, but got {type(value)}",
-            )
+        type_check(value, (tuple,), allow_none=True)
 
     def _get_data(self, text: str) -> Optional[tuple]:
-        if text is None or text.strip() == "":
+        text = text.strip()
+        if text is None or text == "":
             return None
         data = super()._get_data(text)
         if data is None:
             return None
         if not isinstance(data, tuple):
-            raise ValueError(f"cannot convert to a tuple: {text}")
-        return data
+            raise ValueError(f"not a tuple")
 
     def _set_data(self, data: PyLiteralType) -> str:
         if data is None:
