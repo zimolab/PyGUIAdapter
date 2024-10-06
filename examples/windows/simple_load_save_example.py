@@ -40,13 +40,14 @@ def simple_load_save_example(
 def on_save_params(window: FnExecuteWindow, action: QAction):
     # Step 1: obtain current parameter values from widgets
     #
-    # if the current input in the widget of some parameter is invalid, the get_parameter_values() method may raise a
+    # if the current input in the widgets of some parameter is invalid, the get_parameter_values() method may raise a
     # exception. A good practice is to catch the exception and handle it properly:
-    #  - for ParameterError, the FnExecuteWindow has a builtin logic to deal with it, so just call
-    # the process_parameter_error() method and let the window handle it.
-    #  - for other exceptions, we need handle it by ourselves properly. Here we just show the exception message with a
-    # message box.
+    #  - for ParameterError, the FnExecuteWindow has a builtin logic to deal with it, so just call the
+    #  process_parameter_error() method and let the window do the job.
     #
+    #  - for other exceptions, we need handle it by ourselves. Here we choose to show the exception message with a
+    #  message box to the user.
+
     try:
         params: Dict[str, Any] = window.get_parameter_values()
     except ParameterError as e:
@@ -60,9 +61,9 @@ def on_save_params(window: FnExecuteWindow, action: QAction):
 
     # Step2: serialize the parameter values and save them to a json file
     #
-    # In this example, because we don't use any complex types, we can just simply json.dump() or json.dumps() to do the
-    # serialization. However, If your function contains parameters of complex types, such as list, tuple, set, dict, enum,
-    # then serialization and deserialization must be considered very carefully.
+    # In this example, because we don't use any complex types, we can use simply json.dump() to do the serialization.
+    # However, If your function contains parameters of complex types, such as list, tuple, set, dict, enum, then
+    # serialization and deserialization must be considered very carefully.
     #
     save_file = filedialog.get_save_file(
         window, "Save Parameters", filters="JSON files(*.json)"
