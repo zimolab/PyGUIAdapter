@@ -32,6 +32,11 @@ def literal_example(
 ):
     """
     example for type **typing.Literal**
+    @params
+    [arg3]
+    columns = 2
+    show_type_icon = false
+    @end
     """
     uprint("arg1: ", arg1)
     uprint("arg2: ", arg2)
