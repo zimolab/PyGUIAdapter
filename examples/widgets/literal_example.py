@@ -48,6 +48,7 @@ if __name__ == "__main__":
     arg4_conf = ExclusiveChoiceBoxConfig(
         # this will override the default value defined in the function signature
         default_value=my_objects[1],
+        show_type_icon=True,
         choices=my_objects,
         object_icon="ei.asl",
     )
