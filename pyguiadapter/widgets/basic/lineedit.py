@@ -1,12 +1,11 @@
 import dataclasses
-from typing import Type, Optional, Union
 
 from qtpy.QtCore import QRegularExpression, Qt
 from qtpy.QtGui import QValidator, QRegularExpressionValidator
 from qtpy.QtWidgets import QWidget, QLineEdit
+from typing import Type, Optional, Union
 
 from ..common import CommonParameterWidget, CommonParameterWidgetConfig
-from ...exceptions import ParameterError
 
 EchoMode = QLineEdit.EchoMode
 Alignment = Qt.Alignment
@@ -84,5 +83,5 @@ class LineEdit(CommonParameterWidget):
 
     def get_value_from_widget(self) -> str:
         if not self._value_widget.hasAcceptableInput():
-            raise ParameterError(self.parameter_name, "invalid input")
+            raise ValueError("unacceptable input: validation failed")
         return self.value_widget.text()
