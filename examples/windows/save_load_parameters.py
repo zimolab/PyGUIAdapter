@@ -6,6 +6,7 @@ from typing import Any, Dict
 
 from pyguiadapter.action import ActionConfig
 from pyguiadapter.adapter import GUIAdapter
+from pyguiadapter.adapter.ucontext import uprint
 from pyguiadapter.exceptions import ParameterError
 from pyguiadapter.extend_types import color_t, json_obj_t
 from pyguiadapter.menu import MenuConfig
@@ -57,9 +58,10 @@ def on_action_save_params(window: FnExecuteWindow, action: QAction):
         return
 
     # process arg8 which is a set
+    # set is not serializable by default, so we have to convert it to a list first
     if "arg8" in params:
         arg8 = params["arg8"]
-        params["arg8"] = set(arg8)
+        params["arg8"] = list(arg8)
 
     # process arg11 which is an enum of type WeekDay
     if "arg11" in params:
@@ -85,7 +87,7 @@ def on_action_save_params(window: FnExecuteWindow, action: QAction):
             window, e, message="Unable to save the parameters: "
         )
         return
-    messagebox.show_info_message(window, "Parameters saved to {}".format(save_path))
+    messagebox.show_info_message(window, "Parameters have been saved!")
 
 
 def on_action_load_params(window: FnExecuteWindow, action: QAction):
@@ -109,22 +111,21 @@ def on_action_load_params(window: FnExecuteWindow, action: QAction):
     if not isinstance(params, dict):
         messagebox.show_critical_message(window, message="Invalid parameters format!")
         return
-
-    # process some special parameters with complex types
+    # some parameters require special processing to be converted back
     try:
         # arg7: tuple
         if "arg7" in params:
-            arg5 = params["arg7"]
-            params["arg7"] = tuple(arg5)
+            arg7 = params["arg7"]
+            params["arg7"] = tuple(arg7)
         # arg8: set
         if "arg8" in params:
             arg8 = params["arg8"]
             params["arg8"] = set(arg8)
-        # arg9: color_t (which is actually a tuple of 4 elements in our case)
+        # arg9: color_t (which is actually a tuple of 3 or 4 elements in this demo)
         if "arg9" in params:
             arg9 = params["arg9"]
             params["arg9"] = tuple(arg9)
-        # arg11: WeekDay
+        # arg11: WeekDay (a Enum class)
         if "arg11" in params:
             arg11 = params["arg11"]
             params["arg11"] = WeekDay(arg11)
@@ -144,21 +145,8 @@ def on_action_load_params(window: FnExecuteWindow, action: QAction):
             window, e, message="Unable to set the parameters: "
         )
         return
-
-
-action_save_params = ActionConfig(
-    text="Save Parameters",
-    icon="fa.save",
-    shortcut="Ctrl+S",
-    on_triggered=on_action_save_params,
-)
-
-action_load_params = ActionConfig(
-    text="Load Parameters",
-    icon="fa.folder-open",
-    shortcut="Ctrl+L",
-    on_triggered=on_action_load_params,
-)
+    else:
+        messagebox.show_info_message(window, "Parameters have been loaded!")
 
 
 class WeekDay(enum.Enum):
@@ -185,10 +173,35 @@ def load_save_example(
     arg11: WeekDay,
     ar12: PyLiteralType,
 ):
-    pass
+    uprint("arg1=", arg1)
+    uprint("arg2=", arg2)
+    uprint("arg3=", arg3)
+    uprint("arg4=", arg4)
+    uprint("arg5=", arg5)
+    uprint("arg6=", arg6)
+    uprint("arg7=", arg7)
+    uprint("arg8=", arg8)
+    uprint("arg9=", arg9)
+    uprint("arg10=", arg10)
+    uprint("arg11=", arg11)
+    uprint("ar12=", ar12)
 
 
 if __name__ == "__main__":
+    action_save_params = ActionConfig(
+        text="Save Parameters",
+        icon="fa.save",
+        shortcut="Ctrl+S",
+        on_triggered=on_action_save_params,
+    )
+
+    action_load_params = ActionConfig(
+        text="Load Parameters",
+        icon="fa.folder-open",
+        shortcut="Ctrl+L",
+        on_triggered=on_action_load_params,
+    )
+
     file_menu = MenuConfig(
         title="File",
         actions=[action_save_params, action_load_params],

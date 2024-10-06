@@ -4,6 +4,7 @@ from datetime import datetime, date, time
 from typing import List, Tuple, Literal
 
 from pyguiadapter.adapter import GUIAdapter
+from pyguiadapter.adapter.ucontext import uprint
 from pyguiadapter.extend_types import (
     int_t,
     int_dial_t,
@@ -76,6 +77,34 @@ def more_widgets_example(
 
     @end
     """
+    uprint("arg1=", arg1)
+    uprint("arg2=", arg2)
+    uprint("arg3=", arg3)
+    uprint("arg4=", arg4)
+    uprint("arg5=", arg5)
+    uprint("arg6=", arg6)
+    uprint("arg7=", arg7)
+    uprint("arg9=", arg9)
+    uprint("arg10=", arg10)
+    uprint("arg11=", arg11)
+    uprint("arg12=", arg12)
+    uprint("arg13=", arg13)
+    uprint("arg14=", arg14)
+    uprint("arg15=", arg15)
+    uprint("arg16=", arg16)
+    uprint("arg17=", arg17)
+    uprint("arg18=", arg18)
+    uprint("arg19=", arg19)
+    uprint("arg20=", arg20)
+    uprint("arg21=", arg21)
+    uprint("arg22=", arg22)
+    uprint("arg23=", arg23)
+    uprint("arg24=", arg24)
+    uprint("arg25=", arg25)
+    uprint("arg26=", arg26)
+    uprint("arg27=", arg27)
+    uprint("arg28=", arg28)
+    uprint("arg29=", arg29)
 
 
 if __name__ == "__main__":
