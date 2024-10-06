@@ -6,6 +6,7 @@ from qtpy.QtCore import QSize, Qt
 
 from ._output_area import OutputBrowserConfig
 from ..document_browser import DocumentBrowserConfig
+from ...exceptions import ParameterError
 from ...executor import ExecuteStateListener
 from ...executors import ThreadFunctionExecutor
 from ...paramwidget import (
@@ -94,4 +95,212 @@ class FnExecuteWindowConfig(BaseWindowConfig):
 class BaseFnExecuteWindow(BaseWindow, ExecuteStateListener):
     @abstractmethod
     def _create_ui(self):
+        pass
+
+    @abstractmethod
+    def update_progressbar_config(self, config):
+        pass
+
+    @abstractmethod
+    def show_progressbar(self):
+        pass
+
+    @abstractmethod
+    def hide_progressbar(self):
+        pass
+
+    @abstractmethod
+    def update_progress(self, current_value, message):
+        pass
+
+    @abstractmethod
+    def append_output(self, text, html, scroll_to_bottom):
+        pass
+
+    @abstractmethod
+    def clear_output(self):
+        pass
+
+    @abstractmethod
+    def set_document(self, document, document_format):
+        pass
+
+    @abstractmethod
+    def add_parameter(self, parameter_name, config):
+        pass
+
+    @abstractmethod
+    def add_parameters(self, configs):
+        pass
+
+    @abstractmethod
+    def remove_parameter(self, parameter_name, safe_remove):
+        pass
+
+    @abstractmethod
+    def clear_parameters(self):
+        pass
+
+    @abstractmethod
+    def get_parameter_value(self, parameter_name):
+        pass
+
+    @abstractmethod
+    def get_parameter_values(self):
+        pass
+
+    @abstractmethod
+    def set_parameter_value(self, parameter_name, value, ignore_unknown_parameter):
+        pass
+
+    @abstractmethod
+    def set_parameter_values(self, values):
+        pass
+
+    @abstractmethod
+    def set_output_dock_property(self, title, visible, floating, area):
+        pass
+
+    @abstractmethod
+    def set_document_dock_property(self, title, visible, floating, area):
+        pass
+
+    @abstractmethod
+    def set_allowed_dock_areas(self, areas):
+        pass
+
+    @abstractmethod
+    def set_output_dock_visible(self, visible):
+        pass
+
+    @abstractmethod
+    def is_output_dock_visible(self):
+        pass
+
+    @abstractmethod
+    def set_document_dock_visible(self, visible):
+        pass
+
+    @abstractmethod
+    def is_document_dock_visible(self):
+        pass
+
+    @abstractmethod
+    def set_document_dock_floating(self, floating):
+        pass
+
+    @abstractmethod
+    def is_document_dock_floating(self):
+        pass
+
+    @abstractmethod
+    def set_output_dock_floating(self, floating):
+        pass
+
+    @abstractmethod
+    def is_output_dock_floating(self):
+        pass
+
+    @abstractmethod
+    def set_document_dock_title(self, title):
+        pass
+
+    @abstractmethod
+    def get_document_dock_title(self):
+        pass
+
+    @abstractmethod
+    def set_output_dock_title(self, title):
+        pass
+
+    @abstractmethod
+    def get_output_dock_title(self):
+        pass
+
+    @abstractmethod
+    def set_document_dock_area(self, area):
+        pass
+
+    @abstractmethod
+    def get_document_dock_area(self):
+        pass
+
+    @abstractmethod
+    def set_output_dock_area(self, area):
+        pass
+
+    @abstractmethod
+    def get_output_dock_area(self):
+        pass
+
+    @abstractmethod
+    def resize_document_dock(self, size):
+        pass
+
+    @abstractmethod
+    def resize_output_dock(self, size):
+        pass
+
+    @abstractmethod
+    def tabify_docks(self):
+        pass
+
+    @abstractmethod
+    def set_statusbar_visible(self, visible):
+        pass
+
+    @abstractmethod
+    def is_statusbar_visible(self):
+        pass
+
+    @abstractmethod
+    def show_statusbar_message(self, message, timeout):
+        pass
+
+    @abstractmethod
+    def clear_statusbar_message(self):
+        pass
+
+    @abstractmethod
+    def set_execute_text(self, text):
+        pass
+
+    @abstractmethod
+    def set_cancel_button_text(self, text):
+        pass
+
+    @abstractmethod
+    def set_clear_button_text(self, text):
+        pass
+
+    @abstractmethod
+    def set_clear_checkbox_text(self, text):
+        pass
+
+    @abstractmethod
+    def set_clear_button_visible(self, visible):
+        pass
+
+    @abstractmethod
+    def set_cler_checkbox_visible(self, visible):
+        pass
+
+    @abstractmethod
+    def set_clear_checkbox_checked(self, checked):
+        pass
+
+    @abstractmethod
+    def is_clear_checkbox_checked(self):
+        pass
+
+    @abstractmethod
+    def is_function_executing(self) -> bool:
+        pass
+
+    @abstractmethod
+    def is_function_cancelable(self) -> bool:
+        pass
+
+    @abstractmethod
+    def process_parameter_error(self, e: ParameterError):
         pass
