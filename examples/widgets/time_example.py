@@ -1,5 +1,7 @@
 from datetime import time
 
+from qtpy.QtCore import QTime
+
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.adapter.ucontext import uprint
 from pyguiadapter.widgets import TimeEditConfig
@@ -25,12 +27,14 @@ if __name__ == "__main__":
         max_time=time(hour=23, minute=59),
         min_time=time(hour=12, minute=0),
     )
+    arg3_conf = TimeEditConfig(default_value=QTime().currentTime())
     adapter = GUIAdapter()
     adapter.add(
         time_example,
         widget_configs={
             "arg1": arg1_conf,
             "arg2": arg2_conf,
+            "arg3": arg3_conf,
         },
     )
     adapter.run()
