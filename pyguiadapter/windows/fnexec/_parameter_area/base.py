@@ -1,4 +1,4 @@
-from abc import abstractmethod, ABCMeta
+from abc import abstractmethod
 from typing import Dict, Any, List, Tuple, Type, Literal, Optional
 
 from qtpy.QtCore import Signal
