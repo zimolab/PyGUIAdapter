@@ -6,6 +6,7 @@ from datetime import datetime
 
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.extend_types import text_t
+from pyguiadapter.windows.fnexec import FnExecuteWindowConfig, OutputBrowserConfig
 
 
 def app_style_example(
@@ -14,12 +15,15 @@ def app_style_example(
     """
     This example requires [PyQtDarkTheme](https://github.com/5yutan5/PyQtDarkTheme).
     Please install it before you run the example.
-
     <br />
 
     e.g. using `pip`:
 
     > `pip install pyqtdarktheme`
+
+    <br />
+
+    The style of output browser will be overridden with **OutputBrowserConfig.stylesheet**
 
     @param arg1: arg1 description
     @param arg2: arg2 description
@@ -41,5 +45,17 @@ if __name__ == "__main__":
         qdarktheme.setup_theme("dark")
 
     adapter = GUIAdapter(on_app_start=on_app_start)
-    adapter.add(app_style_example)
+    adapter.add(
+        app_style_example,
+        window_config=FnExecuteWindowConfig(
+            output_browser_config=OutputBrowserConfig(
+                stylesheet="""
+                background-color: "#380C2A";
+                color: "#FFFFFF";
+                font-family: "Consolas";
+                font-size: 12pt;
+                """
+            )
+        ),
+    )
     adapter.run()
