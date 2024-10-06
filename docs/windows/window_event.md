@@ -154,7 +154,17 @@ if __name__ == "__main__":
 
 ```
 
-上面的例子演示了如何监听`函数执行窗口（FnExecuteWindow）`事件，`函数选择窗口（FnSelectWindow）`作为`BaseWindow`的子类，开发者也可以为其设置事件监听器，方法是在调用`adapter.run()`时指定`select_window_listener`参数，下面是一个简单的示例：
+<img src="../images/window_event_example_2.gif" />
+
+
+
+控制台输出如下：
+
+<img src="G:/Projects/PyGUIAdapter/docs/images/window_event_example_2_output.png" />
+
+---
+
+上面的例子均以`函数执行窗口（FnExecuteWindow）`为例，`函数选择窗口（FnSelectWindow）`作为`BaseWindow`的子类，开发者同样也可以为其设置事件监听器，方法是在调用`adapter.run()`时指定`select_window_listener`参数，下面是一个简单的示例：
 
 > [examples/windows/window_event_example_3.py]()
 

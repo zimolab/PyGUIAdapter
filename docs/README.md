@@ -539,6 +539,8 @@ if __name__ == "__main__":
 - 如何在事件响应函数中使用`pyguiadapter.utils`包提供的功能与用户进行交互
 - ...
 
+> [examples/windows/menu_and_toolbar.py]()
+
 ```python
 from qtpy.QtWidgets import QAction
 
@@ -701,7 +703,7 @@ if __name__ == "__main__":
 
 
 
-关于窗口上的工具栏与菜单，以下文档进行了更为详细的说明：
+关于工具栏与菜单栏，以下文档进行了更为详细的说明：
 
 - [为窗口添加工具栏](windows/toolbar.md)
 - [为窗口添加菜单栏](windows/menus.md)

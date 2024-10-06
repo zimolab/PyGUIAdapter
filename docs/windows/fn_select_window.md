@@ -55,21 +55,21 @@ adapter.run(show_select_window=True)
 | `document_browser_config` |           `Union[DocumentBrowserConfig, NoneType]`           |       `None`        |    函数文档浏览器的配置，默认为`None`，意味使用默认配置。    |
 | `document_browser_width`  |                           `float`                            |        `490`        |                  函数文档浏览器区域的宽度。                  |
 
-`DocumentBrowserConfig`类用于配置文档浏览器，该类在[`pyguiadapter.windows.document_browser.DocumentBrowserConfig`]()中定义，可以通过如下方式引入：
+`DocumentBrowserConfig`类用于配置文档浏览器属性，该类在[`pyguiadapter.windows.document_browser.DocumentBrowserConfig`]()中定义，可以通过如下方式引入：
 
 ```python
 from pyguiadapter.windows import DocumentBrowserConfig
 ```
 
-`DocumentBrowserConfig`主要包含以下属性：
+文档浏览器主要包含以下属性：
 
 | 配置项名称            | 类型                        | 默认值                                | 说明                                             |
 | --------------------- | --------------------------- | ------------------------------------- | ------------------------------------------------ |
-| `text_color`          | `str`                       | `#000000`                             | 文本颜色。                                       |
+| `text_color`          | `str`                       | `#000000`                             | 文本颜色。默认为黑色。                           |
 | `font_family`         | `Union[Sequence[str], str]` | `('Consolas', 'Arial', 'sans-serif')` | 文本字体系列。                                   |
 | `font_size`           | `int`                       | `12`                                  | 文本字体大小。                                   |
-| `background_color`    | `str`                       | `#FFFFFF`                             | 背景颜色。                                       |
-| `line_wrap_mode`      | `LineWrapMode`              | `LineWrapMode.WidgetWidth`            | 行包裹模式。                                     |
+| `background_color`    | `str`                       | `#FFFFFF`                             | 背景颜色。默认为白色。                           |
+| `line_wrap_mode`      | `LineWrapMode`              | `LineWrapMode.WidgetWidth`            | 行包裹模式。默认根据控件宽度换行。               |
 | `line_wrap_width`     | `int`                       | `88`                                  | 行包裹宽度。                                     |
 | `word_wrap_mode`      | `WrapMode`                  | `WrapMode.WordWrap`                   | 词包裹模式。                                     |
 | `open_external_links` | `bool`                      | `True`                                | 是否可以允许调用系统浏览器打开文档中的外部链接。 |
@@ -274,7 +274,7 @@ if __name__ == "__main__":
 
 下面是一个完整的示例：
 
-> [examples/windows/menu_example_3.py]()
+> [examples/windows/window_event_example_3.py]()
 
 ```python
 from pyguiadapter.adapter import GUIAdapter
