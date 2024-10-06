@@ -73,13 +73,22 @@ def get_inverted_color(color: QColor) -> QColor:
 def get_size(size: Union[int, Tuple[int, int], QSize, None]) -> Optional[QSize]:
     if size is None:
         return None
+
     if isinstance(size, int):
+        if size <= 0:
+            warnings.warn(f"invalid size: {size}")
+            return None
         return QSize(size, size)
+
     if isinstance(size, tuple):
-        assert len(size) == 2
-        return QSize(*size)
+        if len(size) < 2:
+            warnings.warn(f"invalid size: {size}")
+            return None
+        return QSize(size[0], size[1])
+
     if isinstance(size, QSize):
         return size
+
     warnings.warn(f"invalid size type: {type(size)}")
     return None
 
