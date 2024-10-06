@@ -1,4 +1,3 @@
-from distutils.command.config import config
 from typing import Tuple, Literal, Dict, Union, Type, Any, List, Optional
 
 from qtpy.QtCore import Qt
@@ -369,6 +368,15 @@ class FnExecuteWindow(BaseFnExecuteWindow):
 
     def is_clear_checkbox_checked(self) -> bool:
         return self._operation_area.is_clear_checkbox_checked()
+
+    def is_function_executing(self) -> bool:
+        return self._executor.is_executing
+
+    def is_function_cancelable(self) -> bool:
+        return self._executor.is_cancelled
+
+    def process_parameter_error(self, e: ParameterError):
+        self._parameter_area.process_param_error(e)
 
     def before_execute(self, fn_info: FnInfo, arguments: Dict[str, Any]) -> None:
         super().before_execute(fn_info, arguments)
