@@ -5,17 +5,11 @@
 `PyGUIAdapter`是一个基于`qtpy`的GUI框架，其核心理念是：以尽可能“低侵入性”和“无感”的方式，帮助Python开发者快速开发图形用户界面程序，使开发者
 能够专注于核心功能的实现，而不必将有限的精力分散到用户界面设计和输入输出处理等繁琐、重复、乏味且容易出错的方面。
 
-> 尽管`PyGUIAdapter`基于`qtpy`，但一般而言，使用`PyGUIAdapter`并不要求开发者掌握`qtpy`或`Qt`相关知识。当然，在涉及自定义控件等高级主题时，
-> 情况有所不同，此时需要开发者对`qtpy`（或者`PyQt5/6`、`PySide2/6`等绑定库）有一定了解。
-
-`PyGUIAdapter`使图形用户界面程序的开发变得轻松写意，甚至允许开发者在不编写一行GUI代码（或CLI代码）的情况下，构建简洁高效的图形用户界面，大大降低了
-开发者的学习成本和心智负担。
+`PyGUIAdapter`可以让图形界面程序的开发变得轻松写意，甚至允许开发者在不编写一行GUI代码（或CLI代码）的情况下，构建出简洁高效的图形用户界面，大大降低了开发者的学习成本和心智负担。
 
 ![hello_world](images/hello_world.png)
 
-借助`PyGUIAdapter`，从`CLI`切换到`GUI`将变得十分简单和平滑。
-
-下面是Python[官方文档](https://docs.python.org/3/library/argparse.html#example)给出的一个使用`argparse`创建命令行程序的例子：
+借助`PyGUIAdapter`，从`CLI`切换到`GUI`将变得十分丝滑。下面是Python[官方文档](https://docs.python.org/3/library/argparse.html#example)给出的一个使用`argparse`创建命令行程序的例子：
 
 ```python
 import argparse
@@ -30,7 +24,7 @@ args = parser.parse_args()
 print(args.accumulate(args.integers))
 ```
 
-在`PyGUIAdapter`帮助下，开发者可以轻松地从命令行切换到图形界面，无需再花大量的心思考虑命令行参数的定义和处理，而将全部精放到到核心功能的实现上。
+借助`PyGUIAdapter`，开发者可以用极少的代码将其转换成GUI程序。
 
 ```python
 from typing import List, Literal
@@ -87,6 +81,7 @@ if __name__ == "__main__":
 > + `docstring-parser`
 > + `tomli`
 > + `pyqcodeeditor`
+> + `yapf`
 
 ### （二）安装依赖
 
