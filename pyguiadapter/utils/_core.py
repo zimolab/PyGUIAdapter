@@ -5,7 +5,7 @@ import re
 import traceback
 import warnings
 from io import StringIO
-from typing import List, Set, Tuple, Any, Union, Optional, Sequence, Type
+from typing import List, Set, Tuple, Any, Union, Optional, Type
 
 PyLiteralType = Union[bool, int, float, bytes, str, list, tuple, dict, set, type(None)]
 
