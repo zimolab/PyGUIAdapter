@@ -1,5 +1,5 @@
 import dataclasses
-from abc import abstractmethod
+from abc import abstractmethod, ABCMeta
 from typing import Tuple, Dict, Union, Type, Optional, Literal
 
 from qtpy.QtCore import QSize, Qt
@@ -303,4 +303,20 @@ class BaseFnExecuteWindow(BaseWindow, ExecuteStateListener):
 
     @abstractmethod
     def process_parameter_error(self, e: ParameterError):
+        pass
+
+    @abstractmethod
+    def get_parameter_names(self):
+        pass
+
+    @abstractmethod
+    def get_parameter_names_of(self, group_name):
+        pass
+
+    @abstractmethod
+    def get_document_dock_size(self):
+        pass
+
+    @abstractmethod
+    def get_output_dock_size(self):
         pass

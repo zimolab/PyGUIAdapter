@@ -253,7 +253,7 @@ class FnExecuteWindow(BaseFnExecuteWindow):
             self.set_document_dock_area(area)
 
     def set_allowed_dock_areas(
-        self, areas: Union[DockWidgetArea, DockWidgetAreas, int, type(None)]
+        self, areas: Union[DockWidgetAreas, DockWidgetArea, int, type(None)]
     ):
         if areas is None:
             return
@@ -292,6 +292,10 @@ class FnExecuteWindow(BaseFnExecuteWindow):
     def get_document_dock_title(self) -> str:
         return self._document_dock.windowTitle()
 
+    def get_document_dock_size(self) -> Tuple[int, int]:
+        size = self._document_dock.size()
+        return size.width(), size.height()
+
     def set_output_dock_title(self, title: str):
         if title is None:
             return
@@ -307,7 +311,7 @@ class FnExecuteWindow(BaseFnExecuteWindow):
         self.addDockWidget(area, self._document_dock)
 
     def get_document_dock_area(self) -> DockWidgetArea:
-        return self._document_dock.dockArea()
+        return self.dockWidgetArea(self._document_dock)
 
     def set_output_dock_area(self, area: DockWidgetArea):
         if not self._output_dock.isAreaAllowed(area):
@@ -316,7 +320,11 @@ class FnExecuteWindow(BaseFnExecuteWindow):
         self.addDockWidget(area, self._output_dock)
 
     def get_output_dock_area(self) -> DockWidgetArea:
-        return self._output_dock.dockArea()
+        return self.dockWidgetArea(self._output_dock)
+
+    def get_output_dock_size(self) -> Tuple[int, int]:
+        size = self._output_dock.size()
+        return size.width(), size.height()
 
     def resize_document_dock(self, size: Tuple[Optional[int], Optional[int]]):
         width, height = size
