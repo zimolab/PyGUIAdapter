@@ -1234,6 +1234,22 @@ FnExecuteWindow.process_parameter_error(self, e: ParameterError)
 
 - `e`：捕获到的`ParameterError`。
 
+#### 39、get_document_dock_size()
+
+```python
+FnExecuteWindow.get_document_dock_size(self) -> Tuple[int, int]
+```
+
+该函数用于获取文档停靠窗口的尺寸。
+
+#### 40、get_output_dock_size()
+
+```python
+FnExecuteWindow.get_output_dock_size(self) -> Tuple[int, int]
+```
+
+该函数用于获取输出停靠窗口的尺寸。
+
 ### 六、一些例子
 
 `FnExecuteWindow`提供的函数接口一般与窗口事件、工具栏、菜单栏等机制结合使用。因为在窗口事件或`动作（Action）`的回调函数中，开发者才有机会访问当前`FnExecuteWindow`实例。下面是一些例子，旨在说明开发者如何使用这些机制以及它们能做些什么。
@@ -1413,3 +1429,98 @@ if __name__ == "__main__":
 关于`ParameterError`，这类异常一般是因为在获取/设置参数时遇到了一个非法的输入。因为这种错误比较常见，所以`FnExecuteWindow`内建了一套处理流程，包括弹窗提醒用户，以及在参数控件上以醒目的方式提醒用户“该参数的值存在问题”。下面，我们修改一下之前保存的参数文件，给其中一个参数赋予一个非法的值，然后再加载它，看看`ParameterError`是如何被处理的。
 
 <img src="../images/simple_save_load_example_2.gif" />
+
+#### （二）操作停靠窗口：隐藏/显示/调整位置......
+
+下面的例子演示了如何操作文档停靠窗口和输出停靠窗口。
+
+主要用到了以下函数：
+
+- set_output_dock_property()
+- set_document_dock_property()
+- tabify_docks()
+- is_document_dock_visible()
+- is_output_dock_visible()
+
+```python
+from qtpy.QtWidgets import QAction
+
+from pyguiadapter.action import ActionConfig, Separator
+from pyguiadapter.adapter import GUIAdapter
+from pyguiadapter.menu import MenuConfig
+from pyguiadapter.windows.fnexec import (
+    FnExecuteWindow,
+    BottomDockWidgetArea,
+)
+
+
+def dock_operation_example() -> None:
+    pass
+
+
+def on_toggle_document_dock(win: FnExecuteWindow, action: QAction):
+    win.set_document_dock_property(visible=not win.is_document_dock_visible())
+
+
+def on_toggle_output_dock(win: FnExecuteWindow, action: QAction):
+    win.set_output_dock_property(visible=not win.is_output_dock_visible())
+
+
+def on_tabify_docks(win: FnExecuteWindow, action: QAction):
+    win.tabify_docks()
+
+
+def on_move_output_area(win: FnExecuteWindow, action: QAction):
+    if win.is_output_dock_floating():
+        win.set_output_dock_property(floating=False)
+    win.set_output_dock_property(area=BottomDockWidgetArea)
+
+
+def on_float_output_dock(win: FnExecuteWindow, action: QAction):
+    win.set_output_dock_property(floating=True)
+
+
+def main():
+    action_document_dock = ActionConfig(
+        text="Toggle Document Dock",
+        on_triggered=on_toggle_document_dock,
+    )
+    action_output_dock = ActionConfig(
+        text="Toggle Output Dock",
+        on_triggered=on_toggle_output_dock,
+    )
+    action_tabify_docks = ActionConfig(
+        text="Tabify Docks",
+        on_triggered=on_tabify_docks,
+    )
+    action_move_output_area = ActionConfig(
+        text="Move Output Area",
+        on_triggered=on_move_output_area,
+    )
+    action_float_output_dock = ActionConfig(
+        text="Float Output Dock",
+        on_triggered=on_float_output_dock,
+    )
+    menu_views = MenuConfig(
+        title="Views",
+        actions=[
+            action_document_dock,
+            action_output_dock,
+            Separator(),
+            action_tabify_docks,
+            action_move_output_area,
+            action_float_output_dock,
+        ],
+    )
+    ##########
+    adapter = GUIAdapter()
+    adapter.add(dock_operation_example, window_menus=[menu_views])
+    adapter.run()
+
+
+if __name__ == "__main__":
+    main()
+
+```
+
+<img src="../images/dock_operations.gif" />

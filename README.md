@@ -1,350 +1,690 @@
 # PyGUIAdapter
 
-## 一、简介
-pyguiadapter是一个基于qtpy的GUI库，它可以简单、快速地为几乎“任意”python函数创建基于PyQt5/PyQt6/PySide2/PySide6的图形用户界面。
+## 一、概述
 
-借助pyguiadapter，为命令行程序适配图形用户界面的过程将变得无比简单。开发者只需专注于核心功能的实现，将需要对用户提供的功能封装为普通的python
-函数，通过参数列表定义用户输入，然后将这个函数传递给pyguiadapter，pyguiadapter将自动为其生成合适的界面，并在背后处理一切有关GUI的细节。
+`PyGUIAdapter`是一个基于`qtpy`的GUI框架，其核心理念是：以尽可能“低侵入性”和“无感”的方式，帮助Python开发者快速开发图形用户界面程序，使开发者
+能够专注于核心功能的实现，而不必将有限的精力分散到用户界面设计和输入输出处理等繁琐、重复、乏味且容易出错的方面。
 
-如下图所示，为一个函数创建了一个GUI界面，并恰当地处理用户输入输出，也许仅仅只需要三行代码：
+> 尽管`PyGUIAdapter`基于`qtpy`，但一般而言，使用`PyGUIAdapter`并不要求开发者掌握`qtpy`或`Qt`相关知识。当然，在涉及自定义控件等高级主题时，
+> 情况有所不同，此时需要开发者对`qtpy`（或者`PyQt5/6`、`PySide2/6`等绑定库）有一定了解。
 
-![demo](screenshots/hello_world_demo.png)
+`PyGUIAdapter`使图形用户界面程序的开发变得轻松写意，甚至允许开发者在不编写一行GUI代码（或CLI代码）的情况下，构建简洁高效的图形用户界面，大大降低了
+开发者的学习成本和心智负担。
+
+![hello_world](docs/images/hello_world.png)
+
+借助`PyGUIAdapter`，从`CLI`切换到`GUI`将变得十分简单和平滑。
+
+下面是Python[官方文档](https://docs.python.org/3/library/argparse.html#example)给出的一个使用`argparse`创建命令行程序的例子：
+
+```python
+import argparse
+parser = argparse.ArgumentParser(description='Process some integers.')
+parser.add_argument('integers', metavar='N', type=int, nargs='+',
+                    help='an integer for the accumulator')
+parser.add_argument('--sum', dest='accumulate', action='store_const',
+                    const=sum, default=max,
+                    help='sum the integers (default: find the max)')
+
+args = parser.parse_args()
+print(args.accumulate(args.integers))
+```
+
+在`PyGUIAdapter`帮助下，开发者可以轻松地从命令行切换到图形界面，无需再花大量的心思考虑命令行参数的定义和处理，而将全部精放到到核心功能的实现上。
+
+```python
+from typing import List, Literal
+from pyguiadapter.adapter import GUIAdapter
+
+
+def process_integers(
+    integers: List[int], operation: Literal["sum", "max"] = "max"
+) -> int:
+    """
+    Process some integers.
+
+    @param integers: an integer for the accumulator
+    @param operation: sum the integers (default: find the max)
+    """
+    func = max if operation == "max" else sum
+    return func(integers)
+
+
+if __name__ == "__main__":
+    adapter = GUIAdapter()
+    adapter.add(process_integers)
+    adapter.run()
+
+```
+
+![process_integers.png](docs/images/process_integers.png)
 
 
 ## 二、特性
-* 使用简单，自动识别函数参数，自动生成输入控件，自动处理用户输入输出。
-* 丰富的内置控件类型，涵盖几乎所有常见数据类型，包括：int, float, str, bool, list, dict, tuple, Any, Literal, datetime, date, time等。
-同时，从内置类型中扩展了许多语义化类型， 如：file_t, directory_t, color_hex_t等，实现了对应的专属控件，方便用户选择文件、目录、颜色等特定对象。
-* 高度的可扩展性，支持为复杂数据类型自定义控件类型。
-* 高度的灵活性，窗口、控件提供了大量的可配置属性，可以自定义窗口、控件的外观和行为。
-* 支持添加多个函数，提供函数选择界面，支持函数分组。
-* 支持函数参数分组。
-* 支持窗口菜单和工具栏
-* 基于qtpy，用户可以自由选择qt的python绑定库，包括PyQt5/PyQt6/PySide2/PySide6
 
-## 三、安装
-
-1. 安装pyguiadapter库本身
-
-```commandline
-pip install pyguiadapter
-```
-
-2. 由于pyguiadapter并不依赖特定的Qt库，因此需要先选择一个qt的python绑定库，例如PyQt5、PyQt6、PySide2、PySide6等，以PySide2为例：
-
-```commandline
-pip install Pyside2
-```
-
-## 四、快速入门
-
-### （一）基本使用
-
-1. 准备一个函数，该函数封装了你要提供给用户的功能，其中需要从用户获取的输入，通过参数列表定义，参数的类型决定了控件的类型，因此需要给参数标志
-合适的类型注解，假设我们有一个函数，用于将mp3文件编码为ogg文件，它接受3个参数，一个输入文件路径，一个输出文件路径，一个编码质量参数， 那么可以
-这样编写这个函数的签名（这里省略该功能的实现，因为这仅仅是一个演示，我们讨论的是如何使用pyguiadapter）：
-
-```python
-
-def encode_mp3(input_file: str, output_dir: str, output_file: str, quality: int):
-    pass
-```
-
-2. 导入pyguiadapter库，创建GUIAdapter对象，将函数添加到GUIAdapter对象中，并调用run()方法以启动GUI
-```python
-from pyguiadapter.adapter import GUIAdapter
+* 使用简单，开发快速，可以用极少的代码创建图形用户界面，学习成本低，心智负担小。
+* 丰富的内置控件类型，近30种内置控件，基本实现开箱即用。Python的基本数据类型均实现了对应输入控件。同时，对基本类型进行了扩展，提供了丰富的语义类型，方便用户输入日期、时间、颜色、文件路径等特殊数据对象。实现了通用对象输入控件，支持输入Json对象和任意Python字面量对象（包括`int`、`float`、`bool`、`str`、`bytes`、`list`、`tuple`、`set`、`dict`）。
+* 高度可扩展性，提供了自定义控件接口。开发者可以很方便地为自定义数据类型实现专用输入控件。
+* 高度的灵活性。提供了大量可配置属性，开发者可以灵活地调整窗口及控件的外观、样式、行为，提升用户体验。支持使用QSS对界面进行美化，支持接入第三方界面美化库。
+* 支持自定义窗口菜单栏、工具栏，支持监听窗口事件，支持动态修改参数控件，为构建复杂应用提供了可能。
+* 基于[`qtpy`](https://github.com/spyder-ide/qtpy)抽象层，不依赖特定Qt的Python绑定库，用户可自由选择`PyQt5`、`PyQt6`、`PySide2`、`PySide2`。
+* 界面底层使用`Qt`，兼容性好，对高分屏的支持更加友好，相比webview类方案，性能更好，内存占用更低。
+* 跨平台，支持主流桌面操作系统，包括Windows、Linux、MacOS等。
 
 
-if __name__ == '__main__':
-    adapter = GUIAdapter()
-    adapter.add(encode_mp3)
-    adapter.run()
-```
+## 三、开始入门
 
-3. 运行程序，你将看到一个窗口，通过界面输入参数，点击“Execute”按钮即可调用encode_mp3()函数：
+### （一）依赖条件
 
-![](screenshots/get_started_1.png)
+使用`PyGUIAdapter`开发应用程序，需要满足以下条件：
 
-该示例的完整代码如下，你也可以在此处找到：[get_started.py](examples/get_started_1.py)
++ Python 3.8+
++ 安装`PyGUIAdapter`
++ 安装Qt的绑定库之一，可选`PyQt5`、`PyQt6`、`PySide2`、`PySide6`
 
-```python
-from pyguiadapter.adapter import GUIAdapter
-
-
-def encode_mp3(input_file: str, output_dir: str, output_file: str, quality: int):
-    pass
-
-
-if __name__ == "__main__":
-    adapter = GUIAdapter()
-    adapter.add(encode_mp3)
-    adapter.run()
-```
-
-### （二）增强用户体验：PyGUIAdapter的进阶用法
-
-#### 1. 使用语义化类型
-
-在上面的示例中，参数`input_file`, `output_dir`, `output_file`的类型均被标注为`str`。对于`str`类型的参数，PyGUIAdapter默认会生成一个
-单行文本输入框。虽然这不产生什么根本性的错误，但从语义上看，`input_file`应当代表的是一个文件路径，`output_dir`表示的是一个目录路径，而`output_file`
-则代表一个文件名，将这些含义各不相同的统一定义为`str`语义上是不精确的，而且适用于输入通用字符串的单行文本输入框对于输入文件路径、目录路径而言，
-并不能为用户带来使用上的便利。考虑到这一点，PyGUIAdapter从一些基本类型扩展出一些更加语义化的类型，并为这些类型实现了更加特定化的控件类型，例如：
-针对文件路径，从str扩展了`file_t`，并为其实现文件选择控件；针对目录路径，从str扩展了`directory_t`类型，并实现对应的目录选择控件。一般而言，
-使用这些语义化类型，可以大大增强用户体验。
-
-现在，让我们使用这些类型对上面的示例进行一些修改：
-
-首先，导入这些类型，一般而言，这些类型定义在[`pyguiadapter.types`](pyguiadapter/extend_types.py)模块中：
-
-```python
-from pyguiadapter.extend_types import file_t, directory_t
-```
-
-接着，修改函数签名，使用这些类型标注对应的参数：
-```python
-def encode_mp3(input_file: file_t, output_dir: directory_t, output_file: str, quality: int):
-    pass
-```
-
-完整的代码如下，也可以在[这里](examples/get_started_2.py)找到：
-
-```python
-
-from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.extend_types import file_t, directory_t
-
-
-def encode_mp3(input_file: file_t, output_dir: directory_t, output_file: str, quality: int):
-    pass
-
-
-if __name__ == "__main__":
-    adapter = GUIAdapter()
-    adapter.add(encode_mp3)
-    adapter.run()
-```
-
-让我们再次运行程序：
-
-![](screenshots/get_started_2a.png)
-
-可以看到，参数`input_file`和`output_dir`的控件已经从单行文本输入框变成了文件选择控件（[FileSelect](pyguiadapter/widgets/extend/fileselect.py)）
-和目录选择控件([DirSelect](pyguiadapter/widgets/extend/dirselect.py))。
-
-现在，用户可以通过点击右侧按钮来选择文件和目录，仅仅是改变了参数的类型标注，用户体验就得到了很大的提升。
-
-![](screenshots/get_started_2b.png)
-
-#### 扩展：更多语义化类型
-除了`file_t`、`directory_t`，PyGUIAdapter还提供了其他语义化类型，可以查看[`pyguiadapter.types`](pyguiadapter/extend_types.py)模块，获取
-这些类型的信息。你也可以自行尝试用这些类型对参数进行标注，然后运行程序，观察不同类型所对应的控件有何不同。 
-
-当然，也可以查看[docs/semantic_types.md](docs/widgets/semantic_types.md)，其中，对一些常见的语义化类型做了说明。
-
-### 2. 配置控件属性
-
-一般来说，PyGUIAdapter会根据参数类型自动选择合适的控件，但有时，我们可能希望对生成的控件进行一些配置，以更加精确的控制控件的外观和行为，
-比如，我们可能希望改变控件上的文字，添加一些提示信息，或者是限制输入的值的范围。考虑到这一点，PyGUIAdapter提供了一些机制，让我们可以在生成控件前
-对控件属性进行配置。
-
-在PyGUIAdapter中，控件的属性由其对应的控件配置类定义，比如对于`int`类型，其默认控件类型为[`IntSpinBox`](pyguiadapter/widgets/basic/intspin.py)，
-该类型的控件所具有的属性由其配置类[`IntSpinBoxConfig`](pyguiadapter/widgets/basic/intspin.py)定义：
-
-```python
-@dataclasses.dataclass(frozen=True)
-class IntSpinBoxConfig(CommonParameterWidgetConfig):
-    default_value: int = 0
-    min_value: int = -2147483648
-    max_value: int = 2147483647
-    step: int = 1
-    prefix: str = ""
-    suffix: str = ""
-    display_integer_base: int = 10
-```
-
-其他控件也类似，例如，对于[`FloatSpinBox`](pyguiadapter/widgets/basic/floatspin.py)， 其配置类为
-[`FloatSpinBoxConfig`](pyguiadapter/widgets/basic/floatspin.py)；[`IntLineEdit`](pyguiadapter/widgets/extend/intedit.py)
-的配置类为[`IntLineEditConfig`](pyguiadapter/widgets/extend/intedit.py)......凡此种种，不一一而足。
-
-所有的配置类都应继承自[`BaseParameterWidgetConfig`](pyguiadapter/paramwidget.py)基类，因此所有控件都有以下可配置属性：
-
-```python
-DEFAULT_VALUE_DESCRIPTION = "use default value: {}"
-
-@dataclasses.dataclass(frozen=True)
-class BaseParameterWidgetConfig(object):
-    default_value: Any = None
-    group: str | None = None
-    label: str | None = None
-    description: str | None = None
-    default_value_description: str | None = DEFAULT_VALUE_DESCRIPTION
-    stylesheet: str | None = None
-```
-
-有因为，所有的内置控件都继承自[`CommonParameterWidgetConfig`](pyguiadapter/widgets/common.py)(CommonParameterWidgetConfig是
-BaseParameterWidgetConfig)，因此所有内置控件还有以下来自CommonParameterWidgetConfig的属性：
-
-```python
-@dataclasses.dataclass(frozen=True)
-class CommonParameterWidgetConfig(BaseParameterWidgetConfig):
-    set_default_value_on_init: bool = True
-    hide_default_value_checkbox: bool = True
-```
-
-除了上述公共的属性，不同控件类型还在其配置类中定义了一些独有的属性，对于内置控件配置类定义的属性及其作用，可以查看这篇文档：
-[控件及其配置类](docs/widgets/widget_config_classes.md)。
-
-现在，我们不必了解每一个属性的作用，我们先来学习一下如何配置这些属性，以及它们是如何影响控件的外观及行为的。
-
-#### 2.1 在文档字符串（docstring）中配置控件属性
-
-PyGUIAdapter充分利用了函数的文档字符串。函数文档字符串中`@params`与`@end`之间的文本块，被用于定义控件的属性。、
-
-还是拿最初的例子进行说明，假设现在我们想要改变`input_file`的控件的标签，并为其添加一些说明文字，那么，我们可以这样做：
-
-```python
-def encode_mp3(
-    input_file: file_t, output_dir: directory_t, output_file: str, quality: int
-):
-    """
-    @params
-    [input_file]
-    label = "Input MP3 File"
-    description = "select the path of the mp3 file you want to encode."
-
-    @end
-    """
-```
-
-运行程序，我们发现`input_file`的控件发生了如下的变化：
-
-![](screenshots/get_started_3a.png)
-
-> 你也许已经注意到，`label`和`description`属性均来自`BaseParameterWidgetConfig`基类，上面的示例说明了基类中定义的这些属性是如何影响控件的。
+> `PyGUIAdapter`本身依赖如下项目：
 >
-> 特别地，如果不显式地指定`label`属性的值，那么，PyGUIAdapter会自动将参数名称作为控件的标签。
-> 
+> + `qtpy`
+> + `qtawesome`
+> + `docstring-parser`
+> + `tomli`
+> + `pyqcodeeditor`
 
-`input_file`控件的类型为[`FileSelect`](pyguiadapter/widgets/extend/fileselect.py)，我们可以查看其配置类
-[`FileSelectConfihg`](pyguiadapter/widgets/extend/fileselect.py)获取其他可定义的属性，
-比如，让我们将文件对话框的标题（`dialog_title`）修改为“Select MP3 File”，并将可选的文件类型限制为MP3文件（通过`filters`属性）：
+### （二）安装依赖
 
-```python
-def encode_mp3(
-    input_file: file_t, output_dir: directory_t, output_file: str, quality: int
-):
-    """
-    @params
-    [input_file]
-    label = "Input MP3 File"
-    description = "select the path of the mp3 file you want to encode."
-    dialog_title = "Select MP3 File"
-    filters = "MP3 Files(*.mp3)"
+1、安装`PyGUIAdapter`本身
 
-    @end
-    """
+```shell
+pip install PyGUIAdapter
 ```
 
-![](screenshots/get_started_3c.png)
+2、安装Qt的绑定库之一，这里以`PySide2`为例：
 
-> 如果想要知道一个控件有哪些可配置属性，最快的方法就是查看其所对应的配置类的源码。
-> 
-> 控件的配置类一般与控件定义在同一个文件中， 你可以在[(pyguiadapter/widgets/](pyguiadapter/widgets)目录下找到所有内置控件及配置类。
+```shell
+pip install pyside2
+```
 
-让我们按照上述方法，进一步完善示例代码：
+> 如果你的环境下同时安装了多个Qt的绑定库，qtpy默认会使用`PyQt5`(如果存在的话)。或者你可以通过环境变量`QT_API`来明确指定要使用的绑定库，可以指定以下值：
+>
+> + pyqt5
+> + pyside2
+> + pyqt6
+> + pyside6
+>
+> 更多详细信息，可以参见：[qtpy官方说明](https://github.com/spyder-ide/qtpy)。
+
+### （三）一个简单的示例
+
+`PyGUIAdapter`以函数为基本单元。在开发时，开发者的主要工作是实现业务逻辑并将其封装为Python函数。在这一过程中，开发者将希望用户输入数据以函数参数的形式列在参数列表中，并使用[`类型注解`](https://peps.python.org/pep-0484/)正确标注其数据类型。剩下的工作，基本上就可以交由`PyGUIAdapter`自动完成了:
+
+在运行时，`PyGUIAdapter`会提取函数的参数列表，并根据每一个参数的类型，自动选择合适的控件，例如：对于`int`类型的参数，`PyGUIAdapter`将默认创建
+一个`IntSpinBox`；对于`str`类型的参数，`PyGUIAdapter`将默认创建一个`LineEdit`等等。除此之外，`PyGUIAdapter`还将自动完成窗口创建、界面布局
+和事件绑定等工作。在用户点击`Execute`按钮时，`PyGUIAdapter`将自动调用目标函数，在此之前，`PyGUIAdapter`自动从界面中收集用户输入的数据，并将
+这些数据作为参数传递给目标函数。
+
+> `PyGUIAdapter`充分利用了Python的类型注解机制。在`PyGUIAdapter`中，函数参数的类型注解不是那种可有可无的东西，它是生成参数控件的决定性因素。
+> 虽然并不是说不使用类型注解就完全无法利用`PyGUIAdapter`——`PyGUIAdapter`也允许开发者手动为每一个参数显式地指定控件的类型——但是，那样会在很大程度
+> 上失去使用`PyGUIAdapter`的意义。所以，**我们强烈建议开发者养成在函数参数上使用类型注解的开发习惯**，如果能够做到这一点的，那么我相信，未来
+> 一定会很多人会感激你，甚至包括你自己。
+
+#### 1、基本代码结构
+
+下面通过一个简单的实例来说明`PyGUIAdapter`的基本使用方法。 假设，现在要求我们实现一个简单的`一元二次方程求解器`。
+
+根据定义，要确定一个`一元二次方程`，需要知道三个系数：`a`、`b`、`c`。由此，可以确定求解函数应当有三个输入参数：`a`、`b`、`c`。又因为方程系数一般为实数（为了演示的简单性，这里不考虑复数的情况），由此可以确定这三个参数的类型应当为`float`。 下面，我们根据这些信息，使用求根公式来实现求解函数`solve()`：
 
 ```python
+import math
+
+def solve(a: float, b: float, c: float) -> list:
+    """
+    Equation Solver, solving equations like:
+
+    **ax^2 + bx + c = 0** (a,b,c ∈ R)
+    """
+    discriminant = b**2 - 4 * a * c
+    if discriminant < 0:
+        return []
+    elif discriminant == 0:
+        return [-b / (2 * a)]
+    else:
+        sqrt_discriminant = math.sqrt(discriminant)
+        return [(-b + sqrt_discriminant) / (2 * a), (-b - sqrt_discriminant) / (2 * a)]
+```
+
+接着，我们为`solve()`函数适配图形界面，对于这个简单的例子，基本上只需要三行代码而无需其他额外的工作，即可完成图形界面的适配：
+
+```python
+adapter = GUIAdapter()
+adapter.add(solve)
+adapter.run()
+```
+
+完整代码如下：
+
+```python
+import math
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.extend_types import file_t, directory_t
 
 
-def encode_mp3(
-        input_file: file_t, output_dir: directory_t, output_file: str, quality: int
-):
+def solve(a: float, b: float, c: float) -> list:
     """
-    @params
-    [input_file]
-    label = "Input MP3 File"
-    description = "select the path of the mp3 file you want to encode."
-    placeholder = "No input file"
-    dialog_title = "Select MP3 File"
-    filters = "MP3 Files(*.mp3)"
+    Equation Solver, solving equations like:
 
-    [output_dir]
-    label = "Output File Directory"
-    description = "select the directory of the output file"
-    placeholder = "Output directory not specified"
-    dialog_title = "Select Output Directory"
-
-    [output_file]
-    label = "Output Filename"
-    description = "The filename of output file, <b>must endswith .ogg</b>"
-    placeholder = "No output filename"
-
-    [quality]
-    label = "Encoding Quality"
-    default_value = 80
-    description = "from 10 to 100, <font color='red'>higher value, better quality, but requires more time to encode</font>"
-    min_value = 10
-    max_value = 100
-    step = 1
-    suffix = " %"
-    @end
+    **ax^2 + bx + c = 0** (a,b,c ∈ R)
     """
-    pass
+    discriminant = b**2 - 4 * a * c
+    if discriminant < 0:
+        return []
+    elif discriminant == 0:
+        return [-b / (2 * a)]
+    else:
+        sqrt_discriminant = math.sqrt(discriminant)
+        return [(-b + sqrt_discriminant) / (2 * a), (-b - sqrt_discriminant) / (2 * a)]
 
 
 if __name__ == "__main__":
     adapter = GUIAdapter()
-    adapter.add(encode_mp3)
+    adapter.add(solve)
     adapter.run()
 ```
 
-![](screenshots/get_started_3d.png)
-
-##### 一些说明
-
-（1）关于`description`属性：
-
-除了可以在@params...@end块中定义控件的`description`，PyGUIAdapter还支持从`ReST`、`Google`、`Numpydoc-style`以及`Epydoc`风格的文档中
-读取参数的说明文字，并将其作为`description`的值，比如：
-
-![](screenshots/get_started_4a.png)
 
 
-（2）关于`default_value`属性
+下面，我们尝试在参数`a`的控件输入`0`，然后点击`Execute`按钮。由于参数`a`在运算中将作为除数，不出意外，函数将发生一个`ZeroDivisionError`，让我们看看`PyGUIAdapter`如何处理函数中`未捕获的异常`：
 
-`default_value`属性除了可以在@params...@end块中定义，PyGUIAdapter还支持直接从函数的签名中获取参数的默认值，比如：
+<img src="docs/images/error_handling.png" width="60%"/>
 
-![](screenshots/get_started_4b.png)
+对于函数中的异常，`PyGUIAdapter`的默认策略是：**捕获它们，弹窗提醒用户，并在程序输出区域打印出异常信息。** 这样的设计主要是**为了增强程序的`健壮性`，防止未捕获的异常导致整个程序崩溃**。
 
-在上面的代码中，参数`a`、`b`的默认值在@params...@end块中定义，而参数`c`的默认值则直接在函数参数列表中定义。
+#### 2、在函数中打印信息
 
+> 关于这一主题，以下文档作了更为详细的说明：[向窗口输出信息](adapter/output.md)
 
-#### 2.2 通过add()函数配置控件属性
+在程序运行过程中向用户打印一些信息是一个常见需求，一般使用内置函数`print()`来打印信息。然而，通过`print()`打印的信息通常会被输出到`stdout`（一般而言就是控制台），因此用户无法在`程序输出停靠窗口`中看到这些信息。为了使开发者能够将信息打印到`程序输出停靠窗口`中，`PyGUIAdapter`提供了`uprint()`函数，其用法与`print()`基本一致，下面演示如何使用该方法：
 
-除了在文档字符串中配置控件属性，我们还可以通过向`add()`函数传入`widget_configs`来对参数的控件进行配置，比如：
+> Tips：从`pyguiadapter.adapter.uoutput`模块导入`uprint()`函数
 
 ```python
+import math
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.extend_types import file_t, directory_t
-from pyguiadapter.widgets import (
-    FileSelectConfig,
-    DirSelectConfig,
-    LineEditConfig,
-    IntSpinBoxConfig,
+from pyguiadapter.adapter.uoutput import uprint
+
+
+def solve(a: float, b: float, c: float) -> list:
+    """
+    Equation Solver, solving equations like:
+
+    **ax^2 + bx + c = 0** (a,b,c ∈ R)
+    """
+    uprint("Solving Equation:")
+    uprint(f"  {a}x² + {b}x + {c} = 0")
+    discriminant = b**2 - 4 * a * c
+    uprint(f"  Δ = {discriminant}", end="")
+    if discriminant < 0:
+        uprint(" < 0, no real roots")
+        return []
+    elif discriminant == 0:
+        uprint(" = 0, one real root")
+        return [-b / (2 * a)]
+    else:
+        uprint(" > 0, two real roots")
+        sqrt_discriminant = math.sqrt(discriminant)
+        return [(-b + sqrt_discriminant) / (2 * a), (-b - sqrt_discriminant) / (2 * a)]
+
+
+if __name__ == "__main__":
+    adapter = GUIAdapter()
+    adapter.add(solve)
+    adapter.run()
+
+```
+
+<img src="docs/images/uprint.png" width="60%"/>
+
+> `uprint()`函数支持输出html格式内容，但只支持部分标签。
+
+除了`uprint()`函数，`pyguiadapter.adapter.uoutput`模块中还有许多输出信息的方法，借助这些方法，开发者可以输出格式更加丰富的的信息。
+
+```python
+from pyguiadapter.adapter import GUIAdapter, uoutput
+
+def output_log_msg(
+    info_msg: str = "info message",
+    debug_msg: str = "debug message",
+    warning_msg: str = "warning message",
+    critical_msg: str = "critical message",
+    fatal_msg: str = "fatal message",
+):
+    uoutput.info(info_msg)
+    uoutput.debug(debug_msg)
+    uoutput.warning(warning_msg)
+    uoutput.critical(critical_msg)
+    uoutput.fatal(fatal_msg)
+
+
+if __name__ == "__main__":
+    adapter = GUIAdapter()
+    adapter.add(output_log_msg)
+    adapter.run()
+
+```
+
+<img src="docs/images/ulogging.png" width="60%"/>
+
+由于`uprint()`支持输出`html`格式的信息，因此开发者甚至可以将图片输出到`Output`窗口中：
+
+> `uprint()`对`html`的支持有限，仅支持部分html标签，不支持`css3`和`html5`。
+
+#### 3、对函数参数进行校验
+
+虽然`PyGUIAdapter`对程序中的未捕获异常进行了处理，但我们仍然鼓励开发者尽力预见并避免可能发生的异常，因为这是提高程序健壮性、稳定性的基础之一。
+而程序中的异常或错误，很多时候源自于未经检验的用户输入，基于**“永远不要相信用户的输入”**这一共识，开发者都应当对函数参数进行必要的校验。
+
+对于函数参数的合法性校验，`PyGUIAdapter`提供了一种特殊但非常简单、直接的机制，不同于其他库中的做法，`PyGUIAdapter`不要求开发者为每个参数提供类似于`Validator`
+的东西。开发者仍然需要在函数中手动编写参数校验代码，只不过，对于非法的参数，开发者可以抛出`ParameterError`，`PyGUIAdapter`在捕获到此类特殊异常时，
+会做出一些特殊的处理：
+
+```python
+import math
+from pyguiadapter.adapter import GUIAdapter
+from pyguiadapter.adapter.uoutput import uprint
+from pyguiadapter.exceptions import ParameterError
+
+
+def solve(a: float, b: float, c: float) -> list:
+    """
+    Equation Solver, solving equations like:
+
+    **ax^2 + bx + c = 0** (a,b,c ∈ R)
+    """
+
+    if a == 0:
+        raise ParameterError(parameter_name="a", message="a cannot be zero")
+
+    uprint("Solving Equation:")
+    uprint(f"  {a}x² + {b}x + {c} = 0")
+    discriminant = b**2 - 4 * a * c
+    uprint(f"  Δ = {discriminant}", end="")
+    if discriminant < 0:
+        uprint(" < 0, no real roots")
+        return []
+    elif discriminant == 0:
+        uprint(" = 0, one real root")
+        return [-b / (2 * a)]
+    else:
+        uprint(" > 0, two real roots")
+        sqrt_discriminant = math.sqrt(discriminant)
+        return [(-b + sqrt_discriminant) / (2 * a), (-b - sqrt_discriminant) / (2 * a)]
+
+
+if __name__ == "__main__":
+    adapter = GUIAdapter()
+    adapter.add(solve)
+    adapter.run()
+
+```
+
+<img src="docs/images/parameter_error.png" width="60%"/>
+
+可以看到，**对于函数中抛出的`ParameterError`，`PyGUIAdapter`不仅进行了弹窗提示，而且在对应参数的输入控件下方，以醒目的方式提醒用户他刚刚输入了一个不合法的值。**
+
+#### 4、为参数添加描述信息
+
+为了使参数的含义、用途更加明确，一种好的实践是界面上为参数添加适当的描述信息。在`PyGUIAdapter`中，有多种方法可以做到这一点，其中最简单也最自然的一种方法是在函数的文档字符串（`docstring`）对这些参数进行描述。很多开发者已经习惯于编写函数的`docstring`，而且现在的IDE或代码编辑器也已经足够智能，可以根据函数的签名，自动生成`docstring`模板，比如下面这样：
+
+<img src="docs/images/ide_docstring.gif" />
+
+所以，从降低学习成本，尽量利用现有信息的角度出发，`PyGUIAdapter`会从`docstring`中分析并提取函数参数的描述信息，而且`PyGUIAdapter`支持多种风格的`docstring`，包括： `ReST`、`Google`、`Numpydoc-style` 、`Epydoc` 。
+
+> 这篇文档对于任何配置函数参数的控件进行了更加详细和深入的说明：[配置函数参数控件](widgets/configure_widget)
+
+除了利用函数`docstring`中对于各个参数的描述，`PyGUIAdapter`还会利用`docstring`对函数本身的描述，默认情况下，会将其作为函数的说明文档，显示在右侧的文档浏览器中。
+
+>当然，`PyGUIAdapter`允许开发者手动设置函数的说明文档，甚至允许开发者将`markdown`、`html`文件的内容作为函数的说明文档显示在文档浏览器中，下面这文档对此进行了说明：[函的数名称、图标、文档及分组](adapter/multiple_functions.md)
+
+了解这些信息后，我们可以进一步完善我们的示例程序：
+
+```python
+import math
+from pyguiadapter.adapter import GUIAdapter
+from pyguiadapter.adapter.uoutput import uprint
+from pyguiadapter.exceptions import ParameterError
+
+
+def solve(a: float, b: float, c: float) -> list:
+    """A simple equation solver for equations like:
+
+    **ax^2 + bx + c = 0** (a, b, c ∈ **R**, a != 0)
+
+    @param a: parameter a, <span style="color:red;">a != 0</span>
+    @param b: parameter b
+    @param c: parameter c
+    @return:
+    """
+    if a == 0:
+        raise ParameterError(parameter_name="a", message="a cannot be zero")
+
+    uprint("Solving Equation:")
+    uprint(f"  {a}x² + {b}x + {c} = 0")
+    discriminant = b**2 - 4 * a * c
+    uprint(f"  Δ = {discriminant}", end="")
+    if discriminant < 0:
+        uprint(" < 0, no real roots")
+        return []
+    elif discriminant == 0:
+        uprint(" = 0, one real root")
+        return [-b / (2 * a)]
+    else:
+        uprint(" > 0, two real roots")
+        sqrt_discriminant = math.sqrt(discriminant)
+        return [(-b + sqrt_discriminant) / (2 * a), (-b - sqrt_discriminant) / (2 * a)]
+
+
+if __name__ == "__main__":
+    adapter = GUIAdapter()
+    adapter.add(solve)
+    adapter.run()
+```
+
+<img src="docs/images/docstring.png" />
+
+#### 5、配置函数参数控件的属性
+
+为了提高程序的健壮性或增强用户体验，`PyGUIAdapter`允许开发者对函数参数控件的属性进行配置。比如，在当前示例函数中，参数`a`、`b`、`c`控件的初始值都是`0`，这显然是不合理的。另外，参数`a`、`b`、`c`的控件目前都只能输入小数点后两位数，无法满足输入更高精度数字的需求。下面，我们将通过对参数控件进行配置，来解决这两个问题。
+
+`PyGUIAdapter`提供了一种简单的机制来配置参数控件的属性，该机制同样需要利用函数的`docstring`，只不过，这次开发者需要做一些额外的工作。`PyGUIAdapter`会将函数`docstring`中`@params`...`@end`包裹的区域视为函数参数控件的配置文档（格式为TOML），在运行时会自动提取并解析该区域的内容。
+
+下面，我们通过这一机制来配置参数`a`、`b`、`c`控件的初始值、精度、步进值等属性：
+
+```python
+import math
+from pyguiadapter.adapter import GUIAdapter
+from pyguiadapter.adapter.uoutput import uprint
+from pyguiadapter.exceptions import ParameterError
+
+
+def solve(a: float, b: float, c: float) -> list:
+    """A simple equation solver for equations like:
+
+    **ax^2 + bx + c = 0** (a, b, c ∈ **R**, a != 0)
+
+    @param a: parameter a, <span style="color:red;">a != 0</span>
+    @param b: parameter b
+    @param c: parameter c
+    @return:
+
+    @params
+
+    [a]
+    default_value = 1.0
+    decimals = 5
+    step = 0.00005
+
+    [b]
+    default_value = 1.0
+    decimals = 5
+    step = 0.00005
+
+    [c]
+    default_value = 0.0
+    decimals = 5
+    step = 0.00005
+
+    @end
+
+    """
+    if a == 0:
+        raise ParameterError(parameter_name="a", message="a cannot be zero")
+
+    uprint("Solving Equation:")
+    uprint(f"  {a}x² + {b}x + {c} = 0")
+    discriminant = b**2 - 4 * a * c
+    uprint(f"  Δ = {discriminant}", end="")
+    if discriminant < 0:
+        uprint(" < 0, no real roots")
+        return []
+    elif discriminant == 0:
+        uprint(" = 0, one real root")
+        return [-b / (2 * a)]
+    else:
+        uprint(" > 0, two real roots")
+        sqrt_discriminant = math.sqrt(discriminant)
+        return [(-b + sqrt_discriminant) / (2 * a), (-b - sqrt_discriminant) / (2 * a)]
+
+
+if __name__ == "__main__":
+    adapter = GUIAdapter()
+    adapter.add(solve)
+    adapter.run()
+```
+
+<img src="docs/images/widget_config_1.png" />
+
+在函数的`docstring`中添加`@params`...`@end`块来对函数参数控件的属性进行配置，是一种简单而且直观的方法。这种方法适用于大多数需要对控件属性进行调整的场景，但也并非万能，因此，`PyGUIAdapter`提供了更为强大的配置函数参数控件的方法。这篇文档对如何配置函数参数的控件进行了深入的说明，强烈建议开发者进行阅读。：[配置函数参数控件](widgets/configure_widget)。
+
+在`PyGUIAdapter`中，不同的参数类型往往对应不同的控件类型，而不同类型的控件具有不同的可配置属性，开发者可以阅读这篇文档，来了解`PyGUIAdapter`内置的控件类型和对应的数据类型，以及其可供开发者配置的属性：[内置控件类型一览](widgets/types_and_widgets.md)。
+
+### （四）示例：“小窗口模式”（配置窗口属性）
+
+`PyGUIAdapter`运行开发者对窗口进行配置，调整窗口某些属性。比如下面的示例，实现了所谓的小窗口模式。
+
+<img src="docs/images/tiny_window_example.gif" />
+
+```python
+from typing import Optional
+
+from pyguiadapter.adapter import GUIAdapter
+from pyguiadapter.exceptions import ParameterError
+from pyguiadapter.windows.fnexec import FnExecuteWindowConfig
+
+
+def equation_solver(a: float, b: float, c: float) -> Optional[tuple]:
+    """
+    Solving Equations: ax^2 + bx + c = 0 (a,b,c ∈ R, a ≠ 0)
+    @param a: a ∈ R, a ≠ 0
+    @param b: b ∈ R
+    @param c: c ∈ R
+    @return:
+    """
+    if a == 0:
+        raise ParameterError(parameter_name="a", message="a cannot be zero!")
+
+    delta = b**2 - 4 * a * c
+    if delta < 0:
+        return None
+    x1 = (-b + delta**0.5) / (2 * a)
+    if delta == 0:
+        return x1, x1
+    x2 = (-b - delta**0.5) / (2 * a)
+    return x1, x2
+
+
+if __name__ == "__main__":
+    window_config = FnExecuteWindowConfig(
+        title="Equation Solver",
+        icon="mdi6.function-variant",
+        execute_button_text="Solve",
+        size=(350, 450),
+        document_dock_visible=False,
+        output_dock_visible=False,
+        clear_button_visible=False,
+        clear_checkbox_visible=False,
+        show_function_result=True,
+        function_result_message="real roots: {}",
+        default_parameter_group_name="Equation Parameters",
+        print_function_error=False,
+        print_function_result=False,
+    )
+    adapter = GUIAdapter()
+    adapter.add(equation_solver, window_config=window_config)
+    adapter.run()
+```
+
+<img src="docs/images/tiny_window_example.png" />
+
+关于如何配置窗口属性，以下文档进行了更为详细的说明：
+
+- [窗口概述](windows/overview.md)
+- [函数选择窗口（FnSelectWindow）](windows/fn_select_window.md)
+- [函数执行窗口（FnExecuteWindow）](windows/fn_exec_window.md)
+
+### （五）示例：工具栏与菜单
+
+`PyGUIAdapter`运行开发者向窗口添加工具栏和菜单，并为工具栏按钮或菜单项的`动作（Action）`设置事件响应函数。
+
+以下是一个综合性的示例，展示了：
+
+- 如何同时为窗口添加工具栏和菜单栏
+- 可勾选的`动作（Action）`类型——`checkable=True`
+- 互斥的菜单项
+- 子菜单
+- 两种动作事件响应函数——`on_triggered`和`on_toggled`
+- 如何在事件响应函数中使用`pyguiadapter.utils`包提供的功能与用户进行交互
+- ...
+
+> [examples/windows/menu_and_toolbar.py]()
+
+```python
+from qtpy.QtWidgets import QAction
+
+from pyguiadapter.action import ActionConfig, Separator
+from pyguiadapter.adapter import GUIAdapter
+from pyguiadapter.menu import MenuConfig
+from pyguiadapter.toolbar import ToolBarConfig
+from pyguiadapter.windows.fnexec import FnExecuteWindow
+from pyguiadapter.utils import messagebox, filedialog
+
+
+def on_action_about(window: FnExecuteWindow, action: QAction):
+    messagebox.show_info_message(
+        parent=window,
+        message="This is an example of toolbar and menu with custom actions.",
+        title="About",
+    )
+
+
+def on_action_close(window: FnExecuteWindow, action: QAction):
+    ret = messagebox.show_question_message(
+        window, "Are you sure you want to quit?", buttons=messagebox.Yes | messagebox.No
+    )
+    if ret == messagebox.Yes:
+        window.close()
+
+
+def on_action_open(window: FnExecuteWindow, action: QAction):
+    ret = filedialog.get_open_file(
+        window,
+        title="Open File",
+        start_dir="./",
+        filters="JSON files(*.json);;Python files(*.py);;All files(*.*)",
+    )
+    if not ret:
+        return
+    messagebox.show_info_message(window, f"File will be opened: {ret}")
+
+
+def on_action_save(window: FnExecuteWindow, action: QAction):
+    ret = filedialog.get_save_file(
+        window,
+        title="Save File",
+        start_dir="./",
+        filters="JSON files(*.json);;All files(*.*)",
+    )
+    if not ret:
+        return
+    messagebox.show_info_message(window, f"File will be saved: {ret}")
+
+
+def on_action_auto_theme(window: FnExecuteWindow, action: QAction):
+    if action.isChecked():
+        messagebox.show_info_message(window, "Auto theme is selected.")
+
+
+def on_action_light_theme(window: FnExecuteWindow, action: QAction):
+    if action.isChecked():
+        messagebox.show_info_message(window, "Light theme is selected.")
+
+
+def on_action_dark_theme(window: FnExecuteWindow, action: QAction):
+    if action.isChecked():
+        messagebox.show_info_message(window, "Dark theme is selected.")
+
+
+action_about = ActionConfig(
+    text="About",
+    icon="fa.info-circle",
+    on_triggered=on_action_about,
+)
+
+action_open = ActionConfig(
+    text="Open",
+    icon="fa.folder-open",
+    shortcut="Ctrl+O",
+    on_triggered=on_action_open,
+)
+
+action_save = ActionConfig(
+    text="Save",
+    icon="fa.save",
+    shortcut="Ctrl+S",
+    on_triggered=on_action_save,
+)
+
+action_close = ActionConfig(
+    text="Quit",
+    icon="fa.close",
+    shortcut="Ctrl+Q",
+    on_triggered=on_action_close,
+)
+
+action_auto_them = ActionConfig(
+    text="Auto",
+    checkable=True,
+    checked=True,
+    on_toggled=on_action_auto_theme,
+)
+
+action_light_theme = ActionConfig(
+    text="Light",
+    checkable=True,
+    on_toggled=on_action_light_theme,
+)
+
+action_dark_theme = ActionConfig(
+    text="Dark",
+    checkable=True,
+    on_toggled=on_action_dark_theme,
+)
+
+submenu_theme = MenuConfig(
+    title="Theme",
+    actions=[action_auto_them, action_light_theme, action_dark_theme],
+    exclusive=True,
+)
+menu_file = MenuConfig(
+    title="File",
+    actions=[
+        action_open,
+        action_save,
+        Separator(),
+        action_close,
+        Separator(),
+        submenu_theme,
+    ],
+)
+menu_help = MenuConfig(
+    title="Help",
+    actions=[action_about],
 )
 
 
-def encode_mp3(
-        input_file: file_t, output_dir: directory_t, output_file: str, quality: int
-):
+def menu_toolbar_example(arg1: int, arg2: str, arg3: bool):
     """
-    encode_mp3
-    @param input_file: select the path of the mp3 file you want to encode.
-    @param output_dir: select the directory of the output file
-    @param output_file: The filename of output file, <b>must endswith .ogg</b>
-    @param quality: from 10 to 100, <font color='red'>higher value, better quality, but requires more time to encode</font>
+    This example shows how to add and config toolbar and menus to the window.
+    @param arg1:
+    @param arg2:
+    @param arg3:
     @return:
     """
     pass
@@ -353,251 +693,201 @@ def encode_mp3(
 if __name__ == "__main__":
     adapter = GUIAdapter()
     adapter.add(
-        encode_mp3,
-        widget_configs={
-            "input_file": FileSelectConfig(
-                label="Input MP3 File",
-                placeholder="No input file",
-                dialog_title="Select MP3 File",
-                filters="MP3 Files(*.mp3)",
-            ),
-            "output_dir": DirSelectConfig(
-                label="Output File Directory",
-                placeholder="Output directory not specified",
-                dialog_title="Select Output Directory",
-            ),
-            "output_file": LineEditConfig(
-                label="Output Filename", placeholder="No output filename"
-            ),
-            "quality": IntSpinBoxConfig(
-                label="Encoding Quality",
-                default_value=80,
-                min_value=10,
-                max_value=100,
-                step=1,
-                suffix=" %",
-            ),
-        },
-    )
-    adapter.run()
-```
-
-在上面这个例子中，除了参数的`description`，其他属性都是通过`add()`函数的`widget_configs`，它的效果与之前的示例一样：
-
-![](screenshots/get_started_6.png)
-
-> 有了@params...@end，为什么还要实现另外一种配置参数控件属性的机制？这个问题大概基于以下几点考虑：
-> 1. @params...@end之间的文本块本质上是一个TOML格式的字符串，因此其允许的属性的值的类型是受限制的，而PyGUIAdapter并不要求控件配置类中定义的属性
->的值是简单类型，开发者完全可以使用复杂的自定义类型作为控件的配置属性，在这种情况下，就无法在@params...@end块中配置这些属性了，因此，我们需要一种
->更加灵活的方式。当然，@params...@end适用绝大多数情形。
-> 2. @params...@end中配置的属性是静态的，无法在运行时针对不同的情形进行调整，而在某些情况下，开发者可能需要根据不同的情况，动态配置控件的属性，
->其中一个最常见的例子就是实现i18n。
-> 3. 防止文档字符串过度膨胀的需要。比如，当一个函数的参数比较多时， @params...@end的内容可能会非常长，而有些开发者可能希望保持函数代码的简洁，
->不希望文档字符串的部分占据太多空间。
-
-### 3. 配置窗口属性
-
-除了可以对参数的控件的属性进行配置，PyGUIAdapter还允许开发者对窗口本身进行调整，包括调整窗口的标题、图标、大小、字体尺寸、界面上的文字等等。
-
-具体的方法是向`add()`函数传入一个[FnExecuteWindowConfig](pyguiadapter/windows/fnexec/_window.py)对象。
-
-> 在[FnExecuteWindowConfig](pyguiadapter/windows/fnexec/_window.py)中，有非常多的配置选项，可以尝试调整这些选项，并观察其所产生的效果。
-
-#### 3.1 调整窗口标题和图标
-
-##### （1）设置窗口标题
-函数执行界面的窗口标题默认为函数的名称，可以通过以下配置项进行调整：
-
-![](screenshots/get_started_7.png)
-
-![](screenshots/get_started_7a.png)
-
-##### （2）设置窗口图标
-
-![](screenshots/get_started_7b.png)
-
-> PyGUIAdapter引入了[qtawesome](https://github.com/spyder-ide/qtawesome)作为内置的图标库，因此，
-> 在绝大多数需要传入一个图标对象的地方，都可以直接传入qtawesome支持的图标名称。
-
-
-#### 3.3 调整窗口大小
-
-将窗口大小调整为`400x300`:
-
-```python
-if __name__ == "__main__":
-    adapter = GUIAdapter()
-    adapter.add(
-        resize_window_demo,
-        window_config=FnExecuteWindowConfig(
-            size=(300, 400),
+        menu_toolbar_example,
+        window_menus=[menu_file, menu_help],
+        window_toolbar=ToolBarConfig(
+            actions=[action_open, action_save, Separator(), action_close]
         ),
     )
     adapter.run()
-```
-![](screenshots/get_started_7g.png)
 
-
-#### 3.4 调整界面上的文字
-
-窗口上的文字以及提示信息基本上都是可以自定义的，在[`FnExecuteWindowConfig`](pyguiadapter/windows/fnexec/_window.py)类中, 
-`widget_texts`和`message_texts`负责管理这些文字。
-
-
-```python
-@dataclasses.dataclass
-class FnExecuteWindowConfig(BaseWindowConfig):
-    ...
-    widget_texts: WidgetTexts = dataclasses.field(default_factory=WidgetTexts)
-    message_texts: MessageTexts = dataclasses.field(default_factory=MessageTexts)
-
-
-@dataclasses.dataclass
-class WidgetTexts(object):
-    document_dock_title: str = "Document"
-    output_dock_title: str = "Output"
-    execute_button_text: str = "Execute"
-    clear_button_text: str = "Clear"
-    cancel_button_text: str = "Cancel"
-    clear_checkbox_text: str = "Clear output"
-    result_dialog_title: str = "Function Result"
-    error_dialog_title: str = "Function Error"
-    validation_dialog_title: str = "Parameter Validation Error"
-
-
-@dataclasses.dataclass
-class MessageTexts(object):
-    function_executing: str = "function is executing now"
-    function_not_executing: str = "function is not executing now"
-    function_not_cancelable: str = "function is not cancelable"
-    function_result: str = "function result: {}"
-    function_error: str = "function error: {}"
-    parameter_validation: str = "{}:\n{}"
 ```
 
-![](screenshots/get_started_8.png)
+<img src="docs/images/toolbar_and_menus.gif" />
 
 
 
+关于工具栏与菜单栏，以下文档进行了更为详细的说明：
 
-#### 3.5 显示/隐藏Dock区域
+- [为窗口添加工具栏](windows/toolbar.md)
+- [为窗口添加菜单栏](windows/menus.md)
 
-#### 3.6 自定义Document区域内容
+### （六）示例：内置控件类型
 
-##### (1) Document区域默认显示的内容
-
-Document区域通常用于显示函数的说明文档，该区域显示的内容默认来自于函数的文档字符串（@params...@end块会被忽略），格式默认为Markdown。
+以下示例展示了`PyGUIAdapter`中大部分内置控件类型。
 
 ```python
+import enum
+from datetime import datetime, date, time
+
+from typing import List, Tuple, Literal
+
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.extend_types import file_t, directory_t
-from pyguiadapter.windows import FnExecuteWindowConfig
+from pyguiadapter.extend_types import (
+    int_t,
+    int_dial_t,
+    int_slider_t,
+    float_t,
+    file_t,
+    directory_t,
+    files_t,
+    color_t,
+    string_list_t,
+    plain_dict_t,
+    json_obj_t,
+    text_t,
+    key_sequence_t,
+    choices_t,
+    choice_t,
+)
 
 
-def encode_mp3(
-        input_file: file_t, output_dir: directory_t, output_file: str, quality: int
+class WeekDays(enum.Enum):
+    Monday = 1
+    Tuesday = 2
+    Wednesday = 3
+    Thursday = 4
+    Friday = 5
+    Saturday = 6
+    Sunday = 7
+
+
+def more_widgets_example(
+    arg1: int,
+    arg2: float,
+    arg3: str,
+    arg4: bool,
+    arg5: List[int],
+    arg6: Tuple,
+    arg7: dict,
+    arg9: set,
+    arg10: int_t,
+    arg11: int_dial_t,
+    arg12: int_slider_t,
+    arg13: float_t,
+    arg14: file_t,
+    arg15: directory_t,
+    arg16: files_t,
+    arg17: Literal["a", "b", "c"],
+    arg18: color_t,
+    arg19: string_list_t,
+    arg20: plain_dict_t,
+    arg21: json_obj_t,
+    arg22: text_t,
+    arg23: datetime,
+    arg24: date,
+    arg25: time,
+    arg26: key_sequence_t,
+    arg27: choices_t,
+    arg28: choice_t,
+    arg29: WeekDays,
 ):
     """
-    This function is used to encode a mp3 file into ogg format.
-
-    Note: **The quality parameter will affect the output file size.**
-
     @params
-    [input_file]
-    label = "Input MP3 File"
-    description = "select the path of the mp3 file you want to encode."
-    placeholder = "No input file"
-    dialog_title = "Select MP3 File"
-    filters = "MP3 Files(*.mp3)"
 
-    [output_dir]
-    label = "Output File Directory"
-    description = "select the directory of the output file"
-    placeholder = "Output directory not specified"
-    dialog_title = "Select Output Directory"
+    [arg27]
+    choices = ["a", "b", "c", "d", "e", "f"]
+    columns = 2
 
-    [output_file]
-    label = "Output Filename"
-    description = "The filename of output file, <b>must endswith .ogg</b>"
-    placeholder = "No output filename"
+    [arg28]
+    choices = ["a", "b", "c", "d", "e", "f"]
+    editable = true
 
-    [quality]
-    label = "Encoding Quality"
-    default_value = 80
-    description = "from 10 to 100, <font color='red'>higher value, better quality, but requires more time to encode</font>"
-    min_value = 10
-    max_value = 100
-    step = 1
-    suffix = " %"
     @end
     """
-    pass
 
 
 if __name__ == "__main__":
     adapter = GUIAdapter()
-    adapter.add(
-        encode_mp3,
-        window_config=FnExecuteWindowConfig(
-            title="MP3 Encoder",
-            icon="mdi.file-music",
-        ),
-    )
+    adapter.add(more_widgets_example)
     adapter.run()
+
 ```
 
-![](screenshots/get_started_7e.png)
+<img src="docs/images/builtin_widgets.gif" />
 
-##### （2）调整Document区域显示的内容
-可以通过`add()`函数的`document`参数来调整Document区域显示的内容，同时，可以通过`document_format`参数指定`document`的格式，支持以下格式：
-"markdown"、"html"、 "plaintext"。
+关于如何选择和配置参数控件类型，以下文档进行了更加详细的说明：
 
-下面的示例演示如何读取html文件内容，并将其显示在Document区域（完整代码见[examples/get_started_7f.py](examples/get_started_7f.py)）:
-
-```python
-if __name__ == "__main__":
-
-    fn_doc_path = os.path.join(os.path.dirname(__file__), "fn_doc.html")
-
-    with open(fn_doc_path, "r") as f:
-        fn_doc = f.read()
-
-    adapter = GUIAdapter()
-    adapter.add(
-        encode_mp3,
-        document=fn_doc,
-        document_format="html",
-        window_config=FnExecuteWindowConfig(
-            title="Audio Encoder",
-            icon="mdi.file-music",
-        ),
-    )
-    adapter.run()
-```
-
-![](screenshots/get_started_7f.png)
-
-#### 3.7 其他可以调整的属性
-
-## 五、自定义控件类型
-
-TODO
-
-## 六、高级主题
-
-TODO
-
-## 七、打包
-
-TODO
-
-## 八、开源许可
-
-得益于qtpy的对不同的qt绑定库以及不同qt版本的抽象，PyGUIAdapter本身并不依赖与特定的qt绑定库，因此其使用MIT开源许可发布。用户利用PyGUIAdapter
-开发应用程序，若用到了Qt的python绑定库，则在遵守本项目的许可协议的同时，还必须遵守其所选择的绑定库的许可协议。
-
-例如，若用户选择使用PySide2，则在遵守本项目的许可协议同时，还必须遵守PySide2的许可协议，即LGPL（具体以PySide2随附的许可协议为准）。
-
-又比如，若用户选择使用PyQt5，则在遵守本项目的许可协议同时，还必须遵守PyQt5的许可协议，即GPL（具体以其随附的许可协议为准）。
+- [配置函数参数控件](widgets/configure_widget)
+- [内置控件类型一览](widgets/types_and_widgets.md)
 
 
+
+
+
+## 四、高级主题
+
+### （一）数据类型与控件
+
+#### 1、[配置函数参数控件](widgets/configure_widget)
+
+#### 2、[内置控件类型一览](widgets/types_and_widgets.md)
+
+#### 3、[创建和使用自定义控件](widgets/custom_widget.md)
+
+#### 4、[关于图标](widgets/icons.md)
+
+### （二）`pyguiadapter.adapter.*`
+
+#### 1、[函的数名称、图标、文档及分组](adapter/multiple_functions.md)
+
+#### 2、[用户进行交互：消息对话框与输入对话框](adapter/interact.md)
+
+#### 3、[取消正在执行的函数：协商式线程退出机制](adapter/cancellable_function.md)
+
+#### 4、[使用进度条](adapter/progressbar.md)
+
+#### 5、[界面美化：使用样式表与第三方库](adapter/style.md)
+
+
+### （三）窗口
+
+在`PyGUIAdapter`中，主要有两类窗口，分别是`函数选择窗口（FnSelectWindow）`和`函数执行窗口（FnExecutWindow）`。
+
+1. `函数选择窗口`：该窗口用于选择要执行的函数，当开发者向`GUIAdapter`实例中添加了超过一个函数时，会自动显示该窗口。开发者也可以在强制显示该窗口（即使实例中只添加了一个函数），方法是在调用`GUIAdapter.run()`时传入`show_select_window=True`。
+2. `函数执行窗口`：该窗口用于接受函数的参数，并执行函数。
+
+上述两类窗口均提供了大量的配置选项，开发者可以根据需要自由调整这些配置选项，以实现更加定制化的界面。下面是窗口相关的一些高级用法。
+
+#### 1、[窗口概述](windows/overview.md)
+
+#### 2、[为窗口添加工具栏](windows/toolbar.md)
+
+#### 3、[为窗口添加菜单栏](windows/menus.md)
+
+#### 4、[监听窗口事件](windows/window_event.md)
+
+#### 5、[函数选择窗口（FnSelectWindow）](windows/fn_select_window.md)
+
+#### 6、[函数执行窗口（FnExecuteWindow）](windows/fn_exec_window.md)
+
+### （四）实用工具
+
+> TODO
+
+### （五）打包应用
+
+> TODO
+
+
+## 五、教程
+
+上面的示例代码演示了`PyGUIAdapter`的基本用法。 除此之外，`PyGUIAdapter`为构建更加大型、复杂的应用程序，提供了更多的功能。
+
+下面是一些案例教程，通过逐步构建一个完整的应用程序，开发者可以学到`PyGUIAdapter`的进阶用法。
+
+> TODO
+
+
+
+## 六、开源协议
+
+`PyGUIAdapter`使用`MIT`许可协议进行发布。得益于`qtpy`的抽象能力，`PyGUIAdapter`本身并不依赖特定的qt绑定库。然而，开发者在使用`PyGUIAdapter`开发应用程序时，若依赖特定的Qt绑定库，则在遵守本项目的许可协议的同时，还应当遵守所选绑定库的许可协议。例如：
+
+- 若开发者选择使用`PySide2`，则其必须遵守`LGPL`（具体以随附的许可协议为准）。
+- 若开发者选择使用`PyQt5`，则其必须遵守`GPL`（具体以随附的许可协议为准）。
+
+
+## 七、贡献
+
+参见：[CONTRIBUTING.md](CONTRIBUTING.md)
