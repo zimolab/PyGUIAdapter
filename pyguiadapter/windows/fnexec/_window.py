@@ -120,9 +120,6 @@ class FnExecuteWindow(BaseFnExecuteWindow):
         icon = self._config.icon or self._bundle.fn_info.icon
         self.set_icon(icon)
 
-        self._operation_area.apply_config()
-        self._output_area.apply_config()
-
         self._operation_area.set_cancel_button_visible(self._bundle.fn_info.cancelable)
         self._operation_area.set_cancel_button_enabled(False)
 

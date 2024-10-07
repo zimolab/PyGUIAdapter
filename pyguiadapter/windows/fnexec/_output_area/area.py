@@ -11,7 +11,7 @@ class OutputArea(QWidget):
         self, parent: QWidget, output_browser_config: Optional[OutputBrowserConfig]
     ):
         self._progressbar: Optional[ProgressBar] = None
-        self._doc_browser: Optional[OutputBrowser] = None
+        self._output_browser: Optional[OutputBrowser] = None
 
         super().__init__(parent)
 
@@ -19,18 +19,14 @@ class OutputArea(QWidget):
         self._layout = QVBoxLayout()
         self._layout.setContentsMargins(0, 0, 0, 0)
 
-        self._doc_browser = OutputBrowser(
+        self._output_browser = OutputBrowser(
             self, output_browser_config or OutputBrowserConfig()
         )
-        self._layout.addWidget(self._doc_browser)
+        self._layout.addWidget(self._output_browser)
 
         self._progressbar = ProgressBar(self)
         self._layout.addWidget(self._progressbar)
-
         self.setLayout(self._layout)
-
-    def apply_config(self):
-        self._doc_browser.apply_config()
 
     def show_progressbar(self):
         self._progressbar.show()
@@ -45,12 +41,12 @@ class OutputArea(QWidget):
         self._progressbar.update_progress(current_value, message)
 
     def clear_output(self):
-        self._doc_browser.clear()
+        self._output_browser.clear()
 
     def append_output(self, text: str, html: bool = False):
-        self._doc_browser.append_output(text, html)
+        self._output_browser.append_output(text, html)
 
     def scroll_to_bottom(self):
-        scroll_bar = self._doc_browser.verticalScrollBar()
+        scroll_bar = self._output_browser.verticalScrollBar()
         if scroll_bar:
             scroll_bar.setValue(scroll_bar.maximum())

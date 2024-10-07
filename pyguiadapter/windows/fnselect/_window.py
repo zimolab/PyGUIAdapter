@@ -54,7 +54,7 @@ class FnSelectWindow(BaseWindow):
         self._group_pages: Dict[str, FnGroupPage] = {}
         self._current_exec_window: Optional[FnSelectWindow] = None
         self._function_group_toolbox: Optional[QToolBox] = None
-        self._document_textbrowser: Optional[DocumentBrowser] = None
+        self._document_browser: Optional[DocumentBrowser] = None
         self._select_button: Optional[QPushButton] = None
         self._splitter: Optional[QSplitter] = None
 
@@ -65,10 +65,7 @@ class FnSelectWindow(BaseWindow):
 
         central_widget: QWidget = QWidget(self)
         # noinspection PyArgumentList
-        layout_main = QVBoxLayout()
-        print(id(layout_main.parent()))
-        central_widget.setLayout(layout_main)
-        print(id(layout_main.parent()), id(self))
+        layout_main = QVBoxLayout(central_widget)
         self.setCentralWidget(central_widget)
 
         # noinspection PyArgumentList
@@ -88,10 +85,10 @@ class FnSelectWindow(BaseWindow):
         layout_right_area = QVBoxLayout()
         layout_right_area.setContentsMargins(0, 0, 0, 0)
 
-        self._document_textbrowser = DocumentBrowser(
+        self._document_browser = DocumentBrowser(
             right_area, self._config.document_browser_config
         )
-        layout_right_area.addWidget(self._document_textbrowser)
+        layout_right_area.addWidget(self._document_browser)
 
         self._select_button = QPushButton(right_area)
         layout_right_area.addWidget(self._select_button)
@@ -242,7 +239,7 @@ class FnSelectWindow(BaseWindow):
     def _update_document(
         self, document: str, document_format: Literal["markdown", "html", "plaintext"]
     ):
-        set_textbrowser_content(self._document_textbrowser, document, document_format)
+        set_textbrowser_content(self._document_browser, document, document_format)
 
     def _current_bundle(self) -> Optional[FnBundle]:
         current_page = self._function_group_toolbox.currentWidget()

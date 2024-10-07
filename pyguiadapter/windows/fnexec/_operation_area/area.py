@@ -49,7 +49,9 @@ class OperationArea(QWidget):
 
         self.setLayout(self._layout)
 
-    def apply_config(self):
+        self._apply_config()
+
+    def _apply_config(self):
         self._execute_button.setText(self._config.execute_button_text or "Execute")
         self._cancel_button.setText(self._config.cancel_button_text or "Cancel")
         self._clear_button.setText(self._config.clear_button_text or "Clear")

@@ -25,6 +25,7 @@ class TextBrowser(QTextBrowser):
     def __init__(self, parent: Optional[QWidget], config: Optional[TextBrowserConfig]):
         self._config: TextBrowserConfig = config or TextBrowserConfig()
         super().__init__(parent)
+        self._apply_config()
 
     def move_cursor_to_end(self):
         cursor = self.textCursor()
@@ -42,7 +43,7 @@ class TextBrowser(QTextBrowser):
         self.insertHtml("<br>")
         self.ensureCursorVisible()
 
-    def apply_config(self):
+    def _apply_config(self):
         palette = self.palette()
         if self._config.background_color:
             palette.setColor(QPalette.Base, QColor(self._config.background_color))
