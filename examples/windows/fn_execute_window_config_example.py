@@ -24,8 +24,10 @@ if __name__ == "__main__":
         # set window config for function_2
         window_config=FnExecuteWindowConfig(
             title="Function 2",
+            size=(400, 600),
             clear_checkbox_visible=False,
             clear_checkbox_checked=False,
+            document_dock_visible=False,
         ),
     )
     adapter.run()
