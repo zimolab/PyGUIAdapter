@@ -4,7 +4,7 @@ from pyguiadapter.adapter.uoutput import uprint
 
 def greeting(name: str):
     """
-    This is a simple *hello world* demo of PyGUIAdapter.
+    This is a simple *hello world* demo of [`PyGUIAdapter`](https://github.com/zimolab/PyGUIAdapter).
 
     :param name:  Hi, please tell me what your name
     """
