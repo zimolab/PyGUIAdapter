@@ -22,6 +22,7 @@ class _Context(QObject):
     sig_show_progressbar = Signal(dict)
     sig_hide_progressbar = Signal()
     sig_update_progressbar = Signal(int, str)
+    sig_clipboard_operation = Signal(Future, int, object)
 
     def __init__(self, parent):
         super().__init__(parent)
@@ -47,6 +48,8 @@ class _Context(QObject):
         self.sig_hide_progressbar.connect(self._on_hide_progressbar)
         # noinspection PyUnresolvedReferences
         self.sig_update_progressbar.connect(self._on_update_progressbar)
+        # noinspection PyUnresolvedReferences
+        self.sig_clipboard_operation.connect(self._on_clipboard_operation)
 
     @property
     def current_window(self) -> Optional[FnExecuteWindow]:
@@ -153,6 +156,13 @@ class _Context(QObject):
             warnings.warn("current_window is None")
             win = None
         win.update_progress(progress, msg)
+
+    def _on_clipboard_operation(self, future: Future, operation: int, data: object):
+        win = self.current_window
+        if not isinstance(win, FnExecuteWindow):
+            warnings.warn("current_window is None")
+            return
+        win.on_clipboard_operation(future, operation, data)
 
 
 _context = _Context(None)

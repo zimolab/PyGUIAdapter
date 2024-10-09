@@ -1,16 +1,26 @@
 import dataclasses
 import warnings
 from abc import abstractmethod
+from concurrent.futures import Future
 from typing import Tuple, Dict, List, Optional, Union, Sequence, Callable
 
 from qtpy.QtCore import QSize, Qt
-from qtpy.QtGui import QAction, QIcon, QActionGroup
-from qtpy.QtWidgets import QMainWindow, QWidget, QToolBar, QMenu
+from qtpy.QtGui import QAction, QIcon, QActionGroup, QClipboard
+from qtpy.QtWidgets import QMainWindow, QWidget, QToolBar, QMenu, QApplication
 
+from .exceptions import ClipboardOperationError
 from .utils import IconType, get_icon, get_size
 from .action import ActionConfig, Separator
 from .menu import MenuConfig
 from .toolbar import ToolBarConfig
+
+CLIPBOARD_SET_TEXT = 0
+CLIPBOARD_GET_TEXT = 1
+CLIPBOARD_SUPPORTS_SELECTION = 2
+CLIPBOARD_GET_SELECTION_TEXT = 3
+CLIPBOARD_SET_SELECTION_TEXT = 4
+CLIPBOARD_OWNS_SELECTION = 5
+CLIPBOARD_OWNS_CLIPBOARD = 6
 
 
 @dataclasses.dataclass(frozen=True)
@@ -244,6 +254,83 @@ class BaseWindow(QMainWindow):
         if action is None:
             return None
         return action.isChecked()
+
+    @staticmethod
+    def get_clipboard_text() -> str:
+        clipboard = QApplication.clipboard()
+        return clipboard.text()
+
+    @staticmethod
+    def set_clipboard_text(text: str):
+        clipboard = QApplication.clipboard()
+        clipboard.setText(text)
+
+    @staticmethod
+    def get_selection_text() -> Optional[str]:
+        clipboard = QApplication.clipboard()
+        return clipboard.text(mode=QClipboard.Selection)
+
+    @staticmethod
+    def set_selection_text(text: str):
+        clipboard = QApplication.clipboard()
+        clipboard.setText(text, mode=QClipboard.Selection)
+
+    @staticmethod
+    def supports_selection() -> bool:
+        return QApplication.clipboard().supportsSelection()
+
+    @staticmethod
+    def owns_clipboard() -> bool:
+        return QApplication.clipboard().ownsClipboard()
+
+    @staticmethod
+    def owns_selection() -> bool:
+        return QApplication.clipboard().ownsSelection()
+
+    def on_clipboard_operation(self, future: Future, operation: int, data: object):
+        if operation == CLIPBOARD_GET_TEXT:
+            text = self.get_clipboard_text()
+            future.set_result(text)
+            return
+
+        if operation == CLIPBOARD_SET_TEXT:
+            if not isinstance(data, str):
+                raise ClipboardOperationError(
+                    operation, f"data must be a str, got {data}"
+                )
+            self.set_clipboard_text(data)
+            future.set_result(None)
+            return
+
+        if operation == CLIPBOARD_GET_SELECTION_TEXT:
+            text = self.get_selection_text()
+            future.set_result(text)
+            return
+
+        if operation == CLIPBOARD_SET_SELECTION_TEXT:
+            if not isinstance(data, str):
+                raise ClipboardOperationError(
+                    operation, f"data must be a str, got {data}"
+                )
+            self.set_selection_text(data)
+            future.set_result(None)
+            return
+
+        if operation == CLIPBOARD_SUPPORTS_SELECTION:
+            future.set_result(self.supports_selection())
+            return
+
+        if operation == CLIPBOARD_OWNS_CLIPBOARD:
+            future.set_result(self.owns_clipboard())
+            return
+
+        if operation == CLIPBOARD_OWNS_SELECTION:
+            future.set_result(self.owns_selection())
+            return
+
+        raise ClipboardOperationError(
+            operation, f"invalid clipboard operation: {operation}"
+        )
 
     def _setup_toolbar(self):
         # create toolbar (if toolbar config provided)

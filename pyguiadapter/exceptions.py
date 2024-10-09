@@ -47,3 +47,13 @@ class ParameterNotFoundError(RuntimeError):
     @property
     def parameter_name(self) -> str:
         return self._parameter_name
+
+
+class ClipboardOperationError(RuntimeError):
+    def __init__(self, operation: int, message: str):
+        super().__init__(message)
+        self._operation: int = operation
+
+    @property
+    def operation(self) -> int:
+        return self._operation
