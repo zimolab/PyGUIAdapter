@@ -123,7 +123,7 @@ def show_text_content(
     size: Tuple[int, int] = None,
     title: Optional[str] = "",
     icon: IconType = None,
-    buttons: Union[DialogButtons, int, None] = DialogButtonOk,
+    buttons: Optional[DialogButtons] = DialogButtonOk,
     resizeable: bool = True,
 ):
     return show_custom_dialog(
@@ -144,7 +144,7 @@ def show_text_file(
     size: Tuple[int, int] = None,
     title: Optional[str] = "",
     icon: IconType = None,
-    buttons: Union[DialogButtons, int, None] = DialogButtonOk,
+    buttons: Optional[DialogButtons] = DialogButtonOk,
     resizeable: bool = True,
 ):
     text_content = io.read_text_file(text_file)

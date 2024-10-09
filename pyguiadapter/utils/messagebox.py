@@ -26,7 +26,7 @@ Cancel = StandardButton.Cancel
 NoButton = QMessageBox.NoButton
 
 DialogButton: Type[QDialogButtonBox.StandardButton] = QDialogButtonBox.StandardButton
-DialogButtons: Type[QDialogButtonBox.StandardButtons] = QDialogButtonBox.StandardButtons
+DialogButtons = Union[DialogButton, int]
 DialogButtonYes = DialogButton.Yes
 DialogButtonNo = DialogButton.No
 DialogButtonCancel = DialogButton.Cancel
@@ -178,7 +178,7 @@ class TextBrowserMessageBox(BaseCustomDialog):
         size: Optional[Tuple[int, int]] = None,
         title: Optional[str] = None,
         icon: IconType = None,
-        buttons: Union[DialogButtons, int, None] = DialogButtonYes,
+        buttons: Optional[DialogButtons] = DialogButtonYes,
         resizeable: bool = True,
         **kwargs,
     ):
@@ -249,7 +249,7 @@ def show_text_content(
     size: Optional[Tuple[int, int]] = None,
     title: Optional[str] = None,
     icon: IconType = None,
-    buttons: Union[DialogButtons, int, None] = DialogButtonOk,
+    buttons: Optional[DialogButtons] = DialogButtonOk,
     resizeable: bool = True,
 ):
     return TextBrowserMessageBox.show_and_get_result(
@@ -271,7 +271,7 @@ def show_text_file(
     size: Tuple[int, int] = None,
     title: Optional[str] = "",
     icon: IconType = None,
-    buttons: Union[DialogButtons, int, None] = DialogButtonOk,
+    buttons: Optional[DialogButtons] = DialogButtonOk,
     resizeable: bool = True,
 ):
     text_content = read_text_file(text_file)

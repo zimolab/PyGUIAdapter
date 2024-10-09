@@ -5,6 +5,7 @@ from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.adapter import udialog
 from pyguiadapter.exceptions import ParameterError
 from pyguiadapter.extend_types import text_t, file_t
+from pyguiadapter.utils import messagebox
 
 
 def show_text_context_example(
@@ -15,6 +16,7 @@ def show_text_context_example(
             title="Hello",
             text_content=content,
             text_format=text_format,
+            buttons=messagebox.DialogButtonYes | messagebox.DialogButtonNo,
             size=(600, 400),
         )
 
