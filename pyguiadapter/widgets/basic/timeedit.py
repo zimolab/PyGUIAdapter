@@ -6,10 +6,9 @@ from qtpy.QtCore import Qt, QTime
 from qtpy.QtWidgets import QWidget, QTimeEdit
 
 from ..common import CommonParameterWidgetConfig, CommonParameterWidget
-from ...exceptions import ParameterError
 from ...utils import type_check
 
-Alignment = Qt.Alignment
+Alignment = Qt.AlignmentFlag
 ButtonSymbols = QTimeEdit.ButtonSymbols
 CorrectionMode = QTimeEdit.CorrectionMode
 TimeSpec = Qt.TimeSpec

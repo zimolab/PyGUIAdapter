@@ -11,7 +11,7 @@ from ..common import (
 )
 from ...utils import type_check
 
-Alignment = Qt.Alignment
+Alignment = Qt.AlignmentFlag
 ButtonSymbols = QDateEdit.ButtonSymbols
 CorrectionMode = QDateEdit.CorrectionMode
 TimeSpec = Qt.TimeSpec

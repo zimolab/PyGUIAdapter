@@ -8,7 +8,7 @@ from typing import Type, Optional, Union
 from ..common import CommonParameterWidget, CommonParameterWidgetConfig
 
 EchoMode = QLineEdit.EchoMode
-Alignment = Qt.Alignment
+Alignment = Qt.AlignmentFlag
 
 
 @dataclasses.dataclass(frozen=True)
@@ -32,8 +32,6 @@ class LineEditConfig(CommonParameterWidgetConfig):
 
 class LineEdit(CommonParameterWidget):
     ConfigClass = LineEditConfig
-    EchoMode = EchoMode
-    Alignment = Alignment
 
     def __init__(
         self, parent: Optional[QWidget], parameter_name: str, config: LineEditConfig

@@ -1,5 +1,5 @@
 import dataclasses
-from abc import abstractmethod, ABCMeta
+from abc import abstractmethod
 from typing import Tuple, Dict, Union, Type, Optional, Literal
 
 from qtpy.QtCore import QSize, Qt
@@ -26,13 +26,13 @@ ParameterWidgetType = Union[
 ]
 
 DockWidgetArea = Qt.DockWidgetArea
-DockWidgetAreas = Qt.DockWidgetAreas
-AllDockWidgetAreas = Qt.AllDockWidgetAreas
 NoDockWidgetArea = Qt.DockWidgetArea.NoDockWidgetArea
 BottomDockWidgetArea = Qt.DockWidgetArea.BottomDockWidgetArea
 TopDockWidgetArea = Qt.DockWidgetArea.TopDockWidgetArea
 LeftDockWidgetArea = Qt.DockWidgetArea.LeftDockWidgetArea
 RightDockWidgetArea = Qt.DockWidgetArea.RightDockWidgetArea
+DockWidgetAreas = Union[DockWidgetArea, int]
+AllDockWidgetAreas = Qt.AllDockWidgetAreas
 
 
 # noinspection SpellCheckingInspection

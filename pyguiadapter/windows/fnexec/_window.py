@@ -252,9 +252,7 @@ class FnExecuteWindow(BaseFnExecuteWindow):
         if area is not None:
             self.set_document_dock_area(area)
 
-    def set_allowed_dock_areas(
-        self, areas: Union[DockWidgetAreas, DockWidgetArea, int, type(None)]
-    ):
+    def set_allowed_dock_areas(self, areas: Optional[DockWidgetAreas]):
         if areas is None:
             return
         self._document_dock.setAllowedAreas(areas)

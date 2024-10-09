@@ -6,11 +6,11 @@ from qtpy.QtCore import Qt, QSize
 from .action import ActionConfig, Separator
 
 ToolBarArea = Qt.ToolBarArea
-ToolBarAreas = Union[Qt.ToolBarArea, Qt.ToolBarAreas, int, type(None)]
-TopToolBarArea = Qt.TopToolBarArea
-BottomToolBarArea = Qt.BottomToolBarArea
-LeftToolBarArea = Qt.LeftToolBarArea
-RightToolBarArea = Qt.RightToolBarArea
+TopToolBarArea = ToolBarArea.TopToolBarArea
+BottomToolBarArea = ToolBarArea.BottomToolBarArea
+LeftToolBarArea = ToolBarArea.LeftToolBarArea
+RightToolBarArea = ToolBarArea.RightToolBarArea
+ToolBarAreas = Union[ToolBarArea, int]
 AllToolBarAreas = Qt.AllToolBarAreas
 
 ToolButtonStyle = Qt.ToolButtonStyle
@@ -28,7 +28,7 @@ class ToolBarConfig(object):
     floatable: bool = True
     icon_size: Union[int, Tuple[int, int], QSize, None] = None
     initial_area: Optional[ToolBarArea] = None
-    allowed_areas: ToolBarAreas = None
+    allowed_areas: Optional[ToolBarAreas] = None
     button_style: Optional[ToolButtonStyle] = None
 
     def remove_action(self, action: Union[str, ActionConfig, Separator]):

@@ -59,6 +59,7 @@ if __name__ == "__main__":
 
     str_arg5_conf = {
         "validator": r"^[a-zA-Z0-9]+$",
+        "alignment": LineEdit.Alignment.AlignRight,
     }
 
     adapter = GUIAdapter()

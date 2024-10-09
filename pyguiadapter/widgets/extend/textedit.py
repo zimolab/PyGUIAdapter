@@ -8,7 +8,7 @@ from ..common import CommonParameterWidget, CommonParameterWidgetConfig
 from ...utils import type_check
 
 LineWrapMode = QTextEdit.LineWrapMode
-AutoFormatting = QTextEdit.AutoFormatting
+AutoFormatting = QTextEdit.AutoFormattingFlag
 WrapMode = QTextOption.WrapMode
 
 
