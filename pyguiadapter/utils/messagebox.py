@@ -17,13 +17,28 @@ from ._ui import IconType, get_icon
 from .io import read_text_file
 
 StandardButton: Type[QMessageBox.StandardButton] = QMessageBox.StandardButton
-StandardButtons: Type[QMessageBox.StandardButtons] = QMessageBox.StandardButtons
 TextFormat = Qt.TextFormat
 
-Yes = QMessageBox.StandardButton.Yes
-No = QMessageBox.StandardButton.No
-Ok = QMessageBox.StandardButton.Ok
-Cancel = QMessageBox.StandardButton.Cancel
+Yes = StandardButton.Yes
+No = StandardButton.No
+Ok = StandardButton.Ok
+Cancel = StandardButton.Cancel
+NoButton = QMessageBox.NoButton
+
+DialogButton: Type[QDialogButtonBox.StandardButton] = QDialogButtonBox.StandardButton
+DialogButtons: Type[QDialogButtonBox.StandardButtons] = QDialogButtonBox.StandardButtons
+DialogButtonYes = DialogButton.Yes
+DialogButtonNo = DialogButton.No
+DialogButtonCancel = DialogButton.Cancel
+DialogButtonOk = DialogButton.Ok
+DialogNoButton = QDialogButtonBox.NoButton
+
+MessageBoxIcon: Type[QMessageBox.Icon] = QMessageBox.Icon
+InformationIcon = MessageBoxIcon.Information
+WarningIcon = MessageBoxIcon.Warning
+CriticalIcon = MessageBoxIcon.Critical
+QuestionIcon = MessageBoxIcon.Question
+NoIcon = MessageBoxIcon.NoIcon
 
 
 #########Standard MessageBox#################
@@ -55,7 +70,7 @@ def show_question_message(
     parent: QWidget,
     message: str,
     title: str = "Question",
-    buttons: Union[int, StandardButton, StandardButtons, None] = None,
+    buttons: Union[int, StandardButton, None] = None,
 ) -> Union[int, StandardButton]:
     if buttons is None:
         return QMessageBox.question(parent, title, message)
@@ -71,9 +86,9 @@ class MessageBoxConfig(object):
     detailed_text: Optional[str] = None
     informative_text: Optional[str] = None
     text_format: Optional[TextFormat] = None
-    buttons: Union[StandardButton, StandardButtons, int, None] = None
-    default_button: Optional[StandardButton] = None
-    escape_button: Optional[StandardButton] = None
+    buttons: Union[StandardButton, int, None] = None
+    default_button: Union[StandardButton, int, None] = None
+    escape_button: Union[StandardButton, int, None] = None
 
     def create_messagebox(self, parent: Optional[QWidget]) -> QMessageBox:
         # noinspection SpellCheckingInspection,PyArgumentList
@@ -163,9 +178,7 @@ class TextBrowserMessageBox(BaseCustomDialog):
         size: Optional[Tuple[int, int]] = None,
         title: Optional[str] = None,
         icon: IconType = None,
-        buttons: Union[
-            int, QDialogButtonBox.StandardButtons, None
-        ] = QDialogButtonBox.Ok,
+        buttons: Union[DialogButtons, int, None] = DialogButtonYes,
         resizeable: bool = True,
         **kwargs,
     ):
@@ -236,7 +249,7 @@ def show_text_content(
     size: Optional[Tuple[int, int]] = None,
     title: Optional[str] = None,
     icon: IconType = None,
-    buttons: Union[int, QDialogButtonBox.StandardButtons, None] = QDialogButtonBox.Ok,
+    buttons: Union[DialogButtons, int, None] = DialogButtonOk,
     resizeable: bool = True,
 ):
     return TextBrowserMessageBox.show_and_get_result(
@@ -258,7 +271,7 @@ def show_text_file(
     size: Tuple[int, int] = None,
     title: Optional[str] = "",
     icon: IconType = None,
-    buttons: Union[int, QDialogButtonBox.StandardButtons, None] = QDialogButtonBox.Ok,
+    buttons: Union[DialogButtons, int, None] = DialogButtonOk,
     resizeable: bool = True,
 ):
     text_content = read_text_file(text_file)
