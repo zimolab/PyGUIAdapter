@@ -19,15 +19,14 @@ class ToastConfig(object):
     opacity: float = 0.9
     background_color: str = "#222222"
     text_color: str = "#FEFEFE"
-    text_alignment: Optional[TextAlignment] = AlignCenter
-    text_padding: int = 5
+    text_padding: int = 50
+    text_alignment: Optional[TextAlignment] = None
     font_size: int = 14
     font_family: str = "Consolas, sans-serif"
     position: Optional[Tuple[Union[int, float, None], Union[int, float, None]]] = (
         DEFAULT_POSITION
     )
-    min_width: Optional[int] = 150
-    min_height: Optional[int] = 100
+    fixed_size: Optional[Tuple[int, int]] = None
     fade_out: Optional[int] = None
     styles: Optional[Dict[str, str]] = None
 
@@ -51,6 +50,13 @@ class ToastWidget(QLabel):
         self._closing: bool = False
 
         self._fadeout_animation: Optional[QPropertyAnimation] = None
+        if self._config.fade_out:
+            self._fadeout_animation = QPropertyAnimation(self, b"windowOpacity")
+            self._fadeout_animation.setDuration(self._config.fade_out)
+            self._fadeout_animation.setStartValue(self._config.opacity)
+            self._fadeout_animation.setEndValue(0.0)
+            # noinspection PyUnresolvedReferences
+            self._fadeout_animation.finished.connect(self.close)
 
         self._setup_ui()
 
@@ -79,22 +85,16 @@ class ToastWidget(QLabel):
         self.setAttribute(Qt.WA_TransparentForMouseEvents, True)
 
         self.setWordWrap(True)
-        if self._config.text_alignment:
-            self.setAlignment(self._config.text_alignment)
         stylesheet = self._stylesheet()
         self.setStyleSheet(stylesheet)
 
-        if self._config.fade_out:
-            self._fadeout_animation = QPropertyAnimation(self, b"windowOpacity")
-            self._fadeout_animation.setDuration(self._config.fade_out)
-            self._fadeout_animation.setStartValue(self._config.opacity)
-            self._fadeout_animation.setEndValue(0.0)
-            # noinspection PyUnresolvedReferences
-            self._fadeout_animation.finished.connect(self.close)
+        if self._config.text_alignment:
+            self.setAlignment(self._config.text_alignment)
+        if self._config.fixed_size:
+            self.setFixedSize(self._config.fixed_size[0], self._config.fixed_size[1])
+        else:
+            self.adjustSize()
 
-        # set window geometry
-        self._set_min_size()
-        self._update_size()
         move_window(self, *self._config.position)
         self.setWindowOpacity(self._config.opacity)
 
@@ -150,23 +150,3 @@ class ToastWidget(QLabel):
         }
 
         return "\n".join(f"{k}:{v};" for k, v in style_dict.items())
-
-    def _update_size(self):
-        self.setFixedWidth(self.sizeHint().width() * 2)
-        self.setFixedHeight(self.sizeHint().height() * 2)
-
-    def _set_min_size(self):
-        # text_rect = self.fontMetrics().boundingRect(self._message)
-        self.setMinimumWidth(
-            max(
-                self._config.min_width or 0,
-                self.fontMetrics().boundingRect(self._message).width() * 2,
-            )
-        )
-
-        self.setMinimumHeight(
-            max(
-                self._config.min_height or 0,
-                self.fontMetrics().boundingRect(self._message).height() * 2,
-            )
-        )

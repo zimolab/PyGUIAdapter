@@ -25,6 +25,8 @@ class _Context(QObject):
     sig_hide_progressbar = Signal()
     sig_update_progressbar = Signal(int, str)
     sig_clipboard_operation = Signal(Future, int, object)
+    sig_show_toast = Signal(str, int, object, bool)
+    sig_clear_toasts = Signal()
 
     def __init__(self, parent):
         super().__init__(parent)
