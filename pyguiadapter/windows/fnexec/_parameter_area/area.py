@@ -62,7 +62,7 @@ class ParameterArea(BaseParameterArea):
                 if widget_config.set_default_value_on_init:
                     widget.set_value(widget_config.default_value)
         except ParameterError as e:
-            self.process_param_error(e)
+            self.process_parameter_error(e)
         except Exception as e:
             # any other exceptions are seen as fatal and will cause the whole program to exit
             messagebox.show_exception_messagebox(
@@ -142,7 +142,7 @@ class ParameterArea(BaseParameterArea):
         )
         return widget_class, widget_config
 
-    def process_param_error(self, e: ParameterError):
+    def process_parameter_error(self, e: ParameterError):
         self._groupbox.notify_validation_error(e.parameter_name, e.message)
         msg = self._config.parameter_error_message.format(e.parameter_name, e.message)
         messagebox.show_critical_message(
@@ -150,3 +150,6 @@ class ParameterArea(BaseParameterArea):
         )
         self._groupbox.scroll_to_parameter(e.parameter_name)
         del e
+
+    def disable_parameter_widgets(self, disabled: bool):
+        self._groupbox.disable_parameter_widgets(disabled)

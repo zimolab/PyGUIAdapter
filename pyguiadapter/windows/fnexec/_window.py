@@ -384,13 +384,19 @@ class FnExecuteWindow(BaseFnExecuteWindow):
         return self._executor.is_cancelled
 
     def process_parameter_error(self, e: ParameterError):
-        self._parameter_area.process_param_error(e)
+        self._parameter_area.process_parameter_error(e)
+
+    def disable_parameter_widgets(self, disabled):
+        self._parameter_area.disable_parameter_widgets(disabled)
 
     def before_execute(self, fn_info: FnInfo, arguments: Dict[str, Any]) -> None:
+        self._config: FnExecuteWindowConfig
         super().before_execute(fn_info, arguments)
         if self._operation_area.is_clear_checkbox_checked():
             self.clear_output()
         self._operation_area.set_execute_button_enabled(False)
+        if self._config.disable_widgets_on_execute:
+            self._parameter_area.disable_parameter_widgets(True)
         # self._operation_area.set_clear_button_enabled(False)
         self._operation_area.set_cancel_button_enabled(False)
         self._parameter_area.clear_validation_error(None)
@@ -400,8 +406,11 @@ class FnExecuteWindow(BaseFnExecuteWindow):
         self._operation_area.set_cancel_button_enabled(True)
 
     def on_execute_finish(self, fn_info: FnInfo, arguments: Dict[str, Any]) -> None:
+        self._config: FnExecuteWindowConfig
         super().on_execute_finish(fn_info, arguments)
         self._operation_area.set_execute_button_enabled(True)
+        if self._config.disable_widgets_on_execute:
+            self._parameter_area.disable_parameter_widgets(False)
         # self._operation_area.set_clear_button_enabled(True)
         self._operation_area.set_cancel_button_enabled(False)
 
@@ -429,7 +438,7 @@ class FnExecuteWindow(BaseFnExecuteWindow):
 
         self._config: FnExecuteWindowConfig
         if isinstance(error, ParameterError):
-            self._parameter_area.process_param_error(error)
+            self._parameter_area.process_parameter_error(error)
             del error
             return
 
@@ -503,7 +512,7 @@ class FnExecuteWindow(BaseFnExecuteWindow):
                 self, self._config.function_executing_message
             )
         except ParameterError as e:
-            self._parameter_area.process_param_error(e)
+            self._parameter_area.process_parameter_error(e)
         else:
             self._executor.execute(self._bundle.fn_info, arguments)
 

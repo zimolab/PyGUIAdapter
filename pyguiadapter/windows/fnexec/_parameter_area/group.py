@@ -1,6 +1,5 @@
 from collections import OrderedDict
-
-from typing import Dict, Any, List, Tuple, Type, Literal, Optional
+from typing import Dict, Any, List, Tuple, Type, Optional
 
 from qtpy.QtGui import QIcon
 from qtpy.QtWidgets import (
@@ -331,6 +330,10 @@ class ParameterGroupBox(BaseParameterGroupBox):
         if not self.active_parameter_group(group_name=group.group_name):
             return
         group.scroll_to(parameter_name, x, y)
+
+    def disable_parameter_widgets(self, disabled: bool):
+        for page in self._group_pages.values():
+            page.setDisabled(disabled)
 
     def _get_group_and_widget(
         self, parameter_name: str

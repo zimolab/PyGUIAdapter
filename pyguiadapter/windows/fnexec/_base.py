@@ -75,6 +75,8 @@ class FnExecuteWindowConfig(BaseWindowConfig):
     default_parameter_group_icon: IconType = None
     parameter_group_icons: Dict[str, IconType] = dataclasses.field(default_factory=dict)
 
+    disable_widgets_on_execute: bool = False
+
     print_function_result: bool = True
     show_function_result: bool = False
     print_function_error: bool = True
@@ -319,4 +321,8 @@ class BaseFnExecuteWindow(BaseWindow, ExecuteStateListener):
 
     @abstractmethod
     def get_output_dock_size(self):
+        pass
+
+    @abstractmethod
+    def disable_parameter_widgets(self, disabled):
         pass

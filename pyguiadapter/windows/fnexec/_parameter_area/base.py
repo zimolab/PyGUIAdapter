@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from typing import Dict, Any, List, Tuple, Type, Literal, Optional
+from typing import Dict, Any, List, Tuple, Type, Optional
 
 from qtpy.QtCore import Signal
 from qtpy.QtGui import QIcon
@@ -209,6 +209,10 @@ class BaseParameterGroupBox(QToolBox):
         self.sig_validation_error_cleared.emit(parameter_name)
 
     @abstractmethod
+    def disable_parameter_widgets(self, disabled: bool):
+        pass
+
+    @abstractmethod
     def _get_group_and_widget(
         self, parameter_name: str
     ) -> Tuple[Optional[BaseParameterPage], Optional[BaseParameterWidget]]:
@@ -309,4 +313,12 @@ class BaseParameterArea(QWidget):
 
     @abstractmethod
     def clear_validation_error(self, parameter_name):
+        pass
+
+    @abstractmethod
+    def process_parameter_error(self, e):
+        pass
+
+    @abstractmethod
+    def disable_parameter_widgets(self, disabled: bool):
         pass
