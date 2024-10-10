@@ -6,9 +6,12 @@ import qtawesome as qta
 from qtpy.QtCore import QSize
 from qtpy.QtGui import QColor
 from qtpy.QtGui import QIcon, QPixmap, QTextCursor
-from qtpy.QtWidgets import QTextBrowser, QWidget, QFrame
+from qtpy.QtWidgets import QTextBrowser, QWidget, QFrame, QDesktopWidget
 
 IconType = Union[str, Tuple[str, Union[list, dict]], QIcon, QPixmap, type(None)]
+
+SIZE_FLAG_DESKTOP = -1
+POSITION_FLAG_DESKTOP_CENTER = -1
 
 
 # noinspection PyArgumentList
@@ -130,3 +133,28 @@ def to_qcolor(color: Union[str, tuple, list, QColor]) -> QColor:
         return QColor(color)
 
     raise ValueError(f"invalid color type: {type(color)}")
+
+
+def move_window(
+    window: QWidget, x: Union[int, float, None], y: Union[int, float, None]
+) -> None:
+    desktop = QDesktopWidget()
+    screen_size = desktop.screenGeometry().size()
+    window_size = window.geometry().size()
+    if isinstance(x, float):
+        x = min(max(0.0, x), 1.0)
+        x = int((screen_size.width() - window_size.width()) * x)
+    elif isinstance(x, int):
+        x = max(0, x)
+    else:
+        pass
+    if isinstance(y, float):
+        y = min(max(0.0, y), 1.0)
+        y = int((screen_size.height() - window_size.height()) * y)
+    elif isinstance(y, int):
+        y = max(0, y)
+    else:
+        pass
+    window.move(x, y)
+    desktop.deleteLater()
+    del desktop
