@@ -13,7 +13,7 @@ from .utils import IconType, get_icon, get_size
 from .action import ActionConfig, Separator
 from .menu import MenuConfig
 from .toolbar import ToolBarConfig
-from .toast import ToastWidget
+from .toast import ToastWidget, ToastConfig
 
 CLIPBOARD_SET_TEXT = 0
 CLIPBOARD_GET_TEXT = 1
@@ -335,20 +335,30 @@ class BaseWindow(QMainWindow):
             operation, f"invalid clipboard operation: {operation}"
         )
 
-    def show_toast(self, message: str, duration: int = 2000):
-        toast = ToastWidget(self, message, duration)
+    def show_toast(
+        self,
+        message: str,
+        duration: int = 2000,
+        config: Optional[ToastConfig] = None,
+        clear: bool = False,
+    ):
+        if clear:
+            self.clear_toasts()
+        toast = ToastWidget(self, message, duration, config=config)
         toast.sig_toast_finished.connect(self._on_toast_finished)
+        # noinspection PyUnresolvedReferences
         self.sig_clear_toasts.connect(toast.finish)
         toast.start()
 
     def clear_toasts(self):
+        # noinspection PyUnresolvedReferences
         self.sig_clear_toasts.emit()
 
     def _on_toast_finished(self):
         w = self.sender()
         if not isinstance(w, ToastWidget):
             return
-        print("toast finished")
+        # noinspection PyUnresolvedReferences
         self.sig_clear_toasts.disconnect(w.finish)
         w.sig_toast_finished.disconnect(self._on_toast_finished)
         w.deleteLater()
