@@ -3,9 +3,8 @@ from typing import Optional
 from qtpy.QtCore import Signal
 from qtpy.QtWidgets import QWidget, QPushButton, QCheckBox, QVBoxLayout, QHBoxLayout
 
-from ....adapter import ucontext
-from ....utils import hline
 from .._base import FnExecuteWindowConfig
+from ....utils import hline
 
 
 class OperationArea(QWidget):
