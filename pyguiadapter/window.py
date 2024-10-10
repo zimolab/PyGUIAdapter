@@ -4,7 +4,7 @@ from abc import abstractmethod
 from concurrent.futures import Future
 from typing import Tuple, Dict, List, Optional, Union, Sequence, Callable
 
-from qtpy.QtCore import QSize, Qt
+from qtpy.QtCore import QSize, Qt, Signal
 from qtpy.QtGui import QAction, QIcon, QActionGroup, QClipboard
 from qtpy.QtWidgets import QMainWindow, QWidget, QToolBar, QMenu, QApplication
 
@@ -13,6 +13,7 @@ from .utils import IconType, get_icon, get_size
 from .action import ActionConfig, Separator
 from .menu import MenuConfig
 from .toolbar import ToolBarConfig
+from .toast import ToastWidget
 
 CLIPBOARD_SET_TEXT = 0
 CLIPBOARD_GET_TEXT = 1
@@ -96,6 +97,8 @@ class SimpleWindowStateListener(BaseWindowStateListener):
 
 
 class BaseWindow(QMainWindow):
+    sig_clear_toasts = Signal()
+
     def __init__(
         self,
         parent: Optional[QWidget],
@@ -109,7 +112,7 @@ class BaseWindow(QMainWindow):
         self._config: BaseWindowConfig = config
         self._toolbar: Optional[ToolBarConfig] = toolbar
         if menus:
-            menus = menus.copy()
+            menus = [*menus]
         self._menus: Optional[List[Union[MenuConfig, Separator]]] = menus
         self._listener: BaseWindowStateListener = listener
         self._actions: Dict[int, QAction] = {}
@@ -332,6 +335,25 @@ class BaseWindow(QMainWindow):
             operation, f"invalid clipboard operation: {operation}"
         )
 
+    def show_toast(self, message: str, duration: int = 2000):
+        toast = ToastWidget(self, message, duration)
+        toast.sig_toast_finished.connect(self._on_toast_finished)
+        self.sig_clear_toasts.connect(toast.finish)
+        toast.start()
+
+    def clear_toasts(self):
+        self.sig_clear_toasts.emit()
+
+    def _on_toast_finished(self):
+        w = self.sender()
+        if not isinstance(w, ToastWidget):
+            return
+        print("toast finished")
+        self.sig_clear_toasts.disconnect(w.finish)
+        w.sig_toast_finished.disconnect(self._on_toast_finished)
+        w.deleteLater()
+        del w
+
     def _setup_toolbar(self):
         # create toolbar (if toolbar config provided)
         if self._toolbar:
@@ -487,6 +509,7 @@ class BaseWindow(QMainWindow):
         self._listener.on_show(self)
 
     def _on_cleanup(self):
+        self.clear_toasts()
         self._clear_actions()
 
     def _clear_actions(self):
@@ -494,6 +517,7 @@ class BaseWindow(QMainWindow):
             self.removeAction(action)
             action.deleteLater()
         self._actions.clear()
+        del self._actions
 
     @abstractmethod
     def _create_ui(self):
