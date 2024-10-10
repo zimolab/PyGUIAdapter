@@ -2,6 +2,7 @@ import time
 
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.adapter.ucontext import uprint, is_function_cancelled
+from pyguiadapter.windows.fnexec import FnExecuteWindowConfig
 
 
 def cancellable_function_example(target: int = 10, delay_per_iter: float = 0.5):
@@ -27,5 +28,9 @@ def cancellable_function_example(target: int = 10, delay_per_iter: float = 0.5):
 
 if __name__ == "__main__":
     adapter = GUIAdapter()
-    adapter.add(cancellable_function_example, cancelable=True)
+    adapter.add(
+        cancellable_function_example,
+        cancelable=True,
+        window_config=FnExecuteWindowConfig(disable_widgets_on_execute=True),
+    )
     adapter.run()
