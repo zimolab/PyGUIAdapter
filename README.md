@@ -210,16 +210,20 @@ if __name__ == "__main__":
 
 ## 五、文档
 
-`PyGUIAdapter`还提供许多高级的特性，开发者可以阅读[文档](https://zimolab.github.io/PyGUIAdapter/#/README)，了解`PyGUIAdapter`的高级用法。
+`PyGUIAdapter`还提供了许多高级特性，开发者可以阅读[文档](https://zimolab.github.io/PyGUIAdapter/#/README)，了解`PyGUIAdapter`的高级用法。
 
-## 六、许可协议
+## 六、示例代码
+
+为了演示`PyGUIAdapter`的各种功能， 作者编写了大量示例代码，这些代码可以在[example/](https://github.com/zimolab/PyGUIAdapter/tree/main/examples/)目录下找到。
+
+## 七、许可协议
 
 `PyGUIAdapter`使用`MIT`许可协议进行发布。得益于`qtpy`的抽象能力，`PyGUIAdapter`本身并不依赖特定的Qt绑定库。开发者在使用`PyGUIAdapter`开发应用程序时，若依赖特定的Qt绑定库，则在遵守本项目的许可协议的同时，还应当遵守所选绑定库的许可协议。例如：
 
 - 若开发者选择使用`PySide2`，则其须遵守`LGPL`（具体以随附的许可协议为准）。
 - 若开发者选择使用`PyQt5`，则其须遵守`GPL`（具体以随附的许可协议为准）。
 
-## 七、致谢
+## 八、致谢
 
 `PyGUIAdapter`依赖如下开源项目，在此向作者表示感谢。
 

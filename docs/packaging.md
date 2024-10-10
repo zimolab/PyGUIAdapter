@@ -81,17 +81,24 @@ pyinstaller app.py
 
 - `build/`目录下存放的是打包过程中生成的一些中间文件，一般无需过多关注。
 - `dist/`目录则存放最终的结果产物。
-- `app.spec`文件记录了打包所使用的参数，后续可以直接使用`pyinstaller app.spec`打包应用，而无需每次都手动输入参数。
+- `app.spec`文件记录了打包所使用的参数，后续可以直接使用`pyinstaller app.spec`打包应用，而无需每次都手动输入参数。\
 
-<img src="./images/packaging_1.png" />
+<div style="text-align: center;">
+    <img src="./images/packaging_1.png" />
+</div>
 
-现在让我们查看`dist`目录，里面包含一个名为`app`的子目录，最终的可执行文件就在该目录下。默认情况下，`pyinstaller`会生成一个可执行文件及一个`_internal`目录。
+现在让我们查看`dist`目录，里面包含一个名为`app`的子目录，最终的可执行文件就在该目录下。默认情况下，`pyinstaller`会生成一个可执行文件及一个`_internal/`目录：
 
-<img src="./images/packaging_2.png" />
+<div style="text-align: center;">
+    <img src="./images/packaging_2.png" />
+</div>
+`_internal/`目录下存在这可执行文件运行时依赖的库和其他文件：
 
-`_internal`下存放着可执行文件所需的支持库和其他运行时所需的文件。
+<div style="text-align:center">
+    <img src="./images/packaging_3.png" />
+</div>
 
-<img src="./images/packaging_3.png" />
+
 
 #### （二）打包资源（数据）文件
 

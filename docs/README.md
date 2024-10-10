@@ -273,7 +273,9 @@ if __name__ == "__main__":
     adapter.run()
 
 ```
+<div style="text-align: center;">
 <img src="images/uprint.png" width="60%"/>
+</div>
 
 > `uprint()`函数支持输出`html`格式的内容，因此开发者甚至可以将图片输出到`Output`窗口中。不过`Output`浏览器对`html`的支持有限，仅支持`html4`的子集，具体可以参考Qt官方文档的说明：[Supported HTML Subset | Qt GUI 5.15.17](https://doc.qt.io/qt-5/richtext-html-subset.html#table-cell-attributes)。
 
@@ -303,7 +305,9 @@ if __name__ == "__main__":
 
 ```
 
+<div style="text-align: center;">
 <img src="images/ulogging.png" width="60%"/>
+</div>
 
 ### （三）校验函数参数
 
@@ -313,7 +317,9 @@ if __name__ == "__main__":
 
 
 
+<div style="text-align: center;">
 <img src="images/parameter_error.gif" />
+</div>
 
 **对于函数中抛出的`ParameterError`，`PyGUIAdapter`将进行弹窗提示，并在对应参数控件所在的区域，以醒目的方式提醒用户其输入了一个不合法的值。**
 
@@ -321,7 +327,9 @@ if __name__ == "__main__":
 
 为了使参数的含义、用途更加明确，一个好的实践是界面上为参数添加适当的描述信息。在`PyGUIAdapter`中，有多种方法可以做到这一点，其中最简单也最自然的一种方法是在函数的文档字符串（`docstring`）对这些参数进行描述。很多开发者已经习惯于编写函数的`docstring`，而且现在的IDE或代码编辑器也已经足够智能，可以根据函数的签名，自动生成`docstring`模板，比如下面这样：
 
+<div style="text-align: center;">
 <img src="./images/ide_docstring.gif" />
+</div>
 
 所以，从降低学习成本，尽量利用现有信息的角度出发，`PyGUIAdapter`会从`docstring`中分析并提取函数参数的描述信息并将其显示在界面上。`PyGUIAdapter`支持多种风格的`docstring`，包括： `ReST`、`Google`、`Numpydoc-style` 、`Epydoc` 。
 
@@ -333,7 +341,9 @@ if __name__ == "__main__":
 
 了解这些信息后，我们可以进一步完善我们的示例程序：
 
+<div style="text-align: center;">
 <img src="./images/docstring.png" />
+</div>
 
 ### （五）配置控件属性
 
