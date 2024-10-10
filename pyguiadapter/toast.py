@@ -8,7 +8,7 @@ from .utils import move_window
 
 DEFAULT_POSITION = (0.5, 0.9)
 
-TextAlignment = Union[Qt.Alignment, int]
+TextAlignment = Union[Qt.AlignmentFlag, int]
 AlignCenter = Qt.AlignVCenter | Qt.AlignHCenter
 AlignLeft = Qt.AlignLeft | Qt.AlignVCenter
 AlignRight = Qt.AlignRight | Qt.AlignVCenter
