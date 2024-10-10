@@ -391,7 +391,7 @@ class FnExecuteWindow(BaseFnExecuteWindow):
         if self._operation_area.is_clear_checkbox_checked():
             self.clear_output()
         self._operation_area.set_execute_button_enabled(False)
-        self._operation_area.set_clear_button_enabled(False)
+        # self._operation_area.set_clear_button_enabled(False)
         self._operation_area.set_cancel_button_enabled(False)
         self._parameter_area.clear_validation_error(None)
 
@@ -402,7 +402,7 @@ class FnExecuteWindow(BaseFnExecuteWindow):
     def on_execute_finish(self, fn_info: FnInfo, arguments: Dict[str, Any]) -> None:
         super().on_execute_finish(fn_info, arguments)
         self._operation_area.set_execute_button_enabled(True)
-        self._operation_area.set_clear_button_enabled(True)
+        # self._operation_area.set_clear_button_enabled(True)
         self._operation_area.set_cancel_button_enabled(False)
 
     def on_execute_result(
@@ -509,10 +509,10 @@ class FnExecuteWindow(BaseFnExecuteWindow):
 
     # noinspection PyMethodMayBeStatic
     def _on_clear_button_clicked(self):
-        self._config: FnExecuteWindowConfig
-        if self._executor.is_executing:
-            messagebox.show_warning_message(
-                self, self._config.function_executing_message
-            )
-            pass
-        self.clear_output()
+        # self._config: FnExecuteWindowConfig
+        # if self._executor.is_executing:
+        #     messagebox.show_warning_message(
+        #         self, self._config.function_executing_message
+        #     )
+        #     pass
+        ucontext.clear_output()
