@@ -6,7 +6,7 @@ import qtawesome as qta
 from qtpy.QtCore import QSize
 from qtpy.QtGui import QColor
 from qtpy.QtGui import QIcon, QPixmap, QTextCursor
-from qtpy.QtWidgets import QTextBrowser, QWidget, QFrame, QDesktopWidget
+from qtpy.QtWidgets import QTextBrowser, QWidget, QFrame, QApplication
 
 IconType = Union[str, Tuple[str, Union[list, dict]], QIcon, QPixmap, type(None)]
 
@@ -138,8 +138,8 @@ def to_qcolor(color: Union[str, tuple, list, QColor]) -> QColor:
 def move_window(
     window: QWidget, x: Union[int, float, None], y: Union[int, float, None]
 ) -> None:
-    desktop = QDesktopWidget()
-    screen_size = desktop.screenGeometry().size()
+    desktop = QApplication.primaryScreen()
+    screen_size = desktop.size()
     window_size = window.geometry().size()
     if isinstance(x, float):
         x = min(max(0.0, x), 1.0)
@@ -156,5 +156,3 @@ def move_window(
     else:
         pass
     window.move(x, y)
-    desktop.deleteLater()
-    del desktop
