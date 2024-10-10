@@ -6,16 +6,18 @@ from qtpy.QtCore import QObject, Signal, QMutex
 
 from ..utils import BaseCustomDialog
 from ..utils.messagebox import show_messagebox
-from ..windows.fnexec import FnExecuteWindow
+from ..windows.fnexec import BaseFnExecuteWindow
 
 
 # noinspection PyMethodMayBeStatic,SpellCheckingInspection
 class _Context(QObject):
 
-    sig_current_window_created = Signal(FnExecuteWindow)
+    sig_current_window_created = Signal(BaseFnExecuteWindow)
     sig_current_window_destroyed = Signal()
     # noinspection SpellCheckingInspection
     sig_uprint = Signal(str, bool, bool)
+    # noinspection SpellCheckingInspection
+    sig_clear_output = Signal()
     sig_show_messagebox = Signal(Future, dict)
     sig_show_custom_dialog = Signal(Future, object, dict)
     sig_get_input = Signal(Future, object)
@@ -28,7 +30,7 @@ class _Context(QObject):
         super().__init__(parent)
 
         self._lock = QMutex()
-        self._current_window: Optional[FnExecuteWindow] = None
+        self._current_window: Optional[BaseFnExecuteWindow] = None
 
         # noinspection PyUnresolvedReferences
         self.sig_current_window_created.connect(self._on_current_window_created)
@@ -36,6 +38,8 @@ class _Context(QObject):
         self.sig_current_window_destroyed.connect(self._on_current_window_destroyed)
         # noinspection PyUnresolvedReferences
         self.sig_uprint.connect(self._on_uprint)
+        # noinspection PyUnresolvedReferences
+        self.sig_clear_output.connect(self._on_clear_output)
         # noinspection PyUnresolvedReferences
         self.sig_show_messagebox.connect(self._on_show_messagebox)
         # noinspection PyUnresolvedReferences
@@ -52,12 +56,12 @@ class _Context(QObject):
         self.sig_clipboard_operation.connect(self._on_clipboard_operation)
 
     @property
-    def current_window(self) -> Optional[FnExecuteWindow]:
+    def current_window(self) -> Optional[BaseFnExecuteWindow]:
         return self._current_window
 
     def is_function_cancelled(self) -> bool:
         self._lock.lock()
-        if not isinstance(self._current_window, FnExecuteWindow):
+        if not isinstance(self._current_window, BaseFnExecuteWindow):
             self._lock.unlock()
             return False
         cancelled = (
@@ -80,8 +84,8 @@ class _Context(QObject):
             finally:
                 self._current_window = None
 
-    def _on_current_window_created(self, window: FnExecuteWindow):
-        if not isinstance(window, FnExecuteWindow):
+    def _on_current_window_created(self, window: BaseFnExecuteWindow):
+        if not isinstance(window, BaseFnExecuteWindow):
             raise TypeError(f"FnExecuteWindow expected, got {type(window)}")
         self._try_cleanup_old_window()
         self._current_window = window
@@ -92,15 +96,22 @@ class _Context(QObject):
 
     def _on_uprint(self, msg: str, html: bool, scroll_to_bottom: bool):
         win = self.current_window
-        if not isinstance(win, FnExecuteWindow):
+        if not isinstance(win, BaseFnExecuteWindow):
             warnings.warn("current_window is None")
             print(msg)
             return
         win.append_output(msg, html, scroll_to_bottom)
 
+    def _on_clear_output(self):
+        wind = self.current_window
+        if not isinstance(wind, BaseFnExecuteWindow):
+            warnings.warn("current_window is None")
+            return
+        wind.clear_output()
+
     def _on_show_messagebox(self, future: Future, kwargs: dict):
         win = self.current_window
-        if not isinstance(win, FnExecuteWindow):
+        if not isinstance(win, BaseFnExecuteWindow):
             warnings.warn("current_window is None")
             win = None
         ret = show_messagebox(win, **kwargs)
@@ -113,7 +124,7 @@ class _Context(QObject):
         kwargs: dict,
     ):
         win = self.current_window
-        if not isinstance(win, FnExecuteWindow):
+        if not isinstance(win, BaseFnExecuteWindow):
             warnings.warn("current_window is None")
             win = None
         # dialog = dialog_class.new_instance(win, **kwargs)
@@ -125,10 +136,10 @@ class _Context(QObject):
         future.set_result(result)
 
     def _on_get_input(
-        self, future: Future, get_input_impl: Callable[[FnExecuteWindow], Any]
+        self, future: Future, get_input_impl: Callable[[BaseFnExecuteWindow], Any]
     ):
         win = self.current_window
-        if not isinstance(win, FnExecuteWindow):
+        if not isinstance(win, BaseFnExecuteWindow):
             warnings.warn("current_window is None")
             win = None
         result = get_input_impl(win)
@@ -136,7 +147,7 @@ class _Context(QObject):
 
     def _on_show_progressbar(self, config: dict):
         win = self.current_window
-        if not isinstance(win, FnExecuteWindow):
+        if not isinstance(win, BaseFnExecuteWindow):
             warnings.warn("current_window is None")
             win = None
         win.update_progressbar_config(config)
@@ -144,7 +155,7 @@ class _Context(QObject):
 
     def _on_hide_progressbar(self):
         win = self.current_window
-        if not isinstance(win, FnExecuteWindow):
+        if not isinstance(win, BaseFnExecuteWindow):
             warnings.warn("current_window is None")
             win = None
         win.update_progressbar_config({})
@@ -152,14 +163,14 @@ class _Context(QObject):
 
     def _on_update_progressbar(self, progress: int, msg: str):
         win = self.current_window
-        if not isinstance(win, FnExecuteWindow):
+        if not isinstance(win, BaseFnExecuteWindow):
             warnings.warn("current_window is None")
             win = None
         win.update_progress(progress, msg)
 
     def _on_clipboard_operation(self, future: Future, operation: int, data: object):
         win = self.current_window
-        if not isinstance(win, FnExecuteWindow):
+        if not isinstance(win, BaseFnExecuteWindow):
             warnings.warn("current_window is None")
             return
         win.on_clipboard_operation(future, operation, data)
@@ -179,7 +190,7 @@ def _reset():
 
 
 # noinspection PyUnresolvedReferences
-def _current_window_created(window: FnExecuteWindow):
+def _current_window_created(window: BaseFnExecuteWindow):
     global _context
     _context.sig_current_window_created.emit(window)
 
@@ -190,7 +201,7 @@ def _current_window_destroyed():
     _context.sig_current_window_destroyed.emit()
 
 
-def get_current_window() -> Optional[FnExecuteWindow]:
+def get_current_window() -> Optional[BaseFnExecuteWindow]:
     global _context
     return _context.current_window
 
@@ -206,3 +217,9 @@ def uprint(*args, sep=" ", end="\n", html: bool = False, scroll_to_bottom: bool 
     text = sep.join([str(arg) for arg in args]) + end
     # noinspection PyUnresolvedReferences
     _context.sig_uprint.emit(text, html, scroll_to_bottom)
+
+
+def clear_output():
+    global _context
+    # noinspection PyUnresolvedReferences
+    _context.sig_clear_output.emit()
