@@ -109,17 +109,26 @@ class ParameterArea(BaseParameterArea):
     def set_parameter_value(self, parameter_name: str, value: Any):
         self._groupbox.set_parameter_value(parameter_name=parameter_name, value=value)
 
-    def notify_validation_error(self, parameter_name: str, error: Any):
-        self._groupbox.notify_validation_error(parameter_name, error)
-
-    def clear_validation_error(self, parameter_name: Optional[str]):
-        self._groupbox.clear_validation_error(parameter_name)
+    def clear_parameter_error(self, parameter_name: Optional[str]):
+        self._groupbox.clear_parameter_error(parameter_name)
 
     def set_parameter_values(self, params: Dict[str, Any]) -> List[str]:
         return self._groupbox.set_parameter_values(params)
 
     def get_parameter_values_of(self, group_name: Optional[str]) -> Dict[str, Any]:
         return self._groupbox.get_parameter_values_of(group_name)
+
+    def process_parameter_error(self, e: ParameterError):
+        self._groupbox.notify_parameter_error(e.parameter_name, e.message)
+        msg = self._config.parameter_error_message.format(e.parameter_name, e.message)
+        messagebox.show_critical_message(
+            self, message=msg, title=self._config.error_dialog_title
+        )
+        self._groupbox.scroll_to_parameter(e.parameter_name)
+        del e
+
+    def disable_parameter_widgets(self, disabled: bool):
+        self._groupbox.disable_parameter_widgets(disabled)
 
     @staticmethod
     def _process_config(
@@ -141,15 +150,3 @@ class ParameterArea(BaseParameterArea):
             widget_config, param_name, param_info
         )
         return widget_class, widget_config
-
-    def process_parameter_error(self, e: ParameterError):
-        self._groupbox.notify_validation_error(e.parameter_name, e.message)
-        msg = self._config.parameter_error_message.format(e.parameter_name, e.message)
-        messagebox.show_critical_message(
-            self, message=msg, title=self._config.error_dialog_title
-        )
-        self._groupbox.scroll_to_parameter(e.parameter_name)
-        del e
-
-    def disable_parameter_widgets(self, disabled: bool):
-        self._groupbox.disable_parameter_widgets(disabled)

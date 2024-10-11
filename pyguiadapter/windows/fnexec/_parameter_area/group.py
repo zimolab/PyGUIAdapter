@@ -77,10 +77,10 @@ class ParameterGroupPage(BaseParameterPage):
             self._scrollarea_content, parameter_name, widget_config
         )
         # noinspection PyUnresolvedReferences
-        self._parent.sig_validation_failed.connect(new_widget.on_validation_failed)
+        self._parent.sig_parameter_error.connect(new_widget.on_parameter_error)
         # noinspection PyUnresolvedReferences
-        self._parent.sig_validation_error_cleared.connect(
-            new_widget.on_clear_validation_error
+        self._parent.sig_clear_parameter_error.connect(
+            new_widget.on_clear_parameter_error
         )
         self._add_to_scrollarea(new_widget, index)
         self._parameters[parameter_name] = new_widget
@@ -136,10 +136,10 @@ class ParameterGroupPage(BaseParameterPage):
         index = self._layout_scrollerea_content.indexOf(widget)
         self._layout_scrollerea_content.takeAt(index)
         # noinspection PyUnresolvedReferences
-        self._parent.sig_validation_failed.disconnect(widget.on_validation_failed)
+        self._parent.sig_parameter_error.disconnect(widget.on_parameter_error)
         # noinspection PyUnresolvedReferences
-        self._parent.sig_validation_error_cleared.disconnect(
-            widget.on_clear_validation_error
+        self._parent.sig_clear_parameter_error.disconnect(
+            widget.on_clear_parameter_error
         )
         widget.deleteLater()
         del self._parameters[parameter_name]

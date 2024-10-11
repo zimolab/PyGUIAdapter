@@ -56,7 +56,7 @@ class CommonParameterWidget(BaseParameterWidget):
 
         self._label_description = None
         self._checkbox_default_value = None
-        self._label_validation_error = None
+        self._label_parameter_error = None
 
         self.__build_flag: bool = False
 
@@ -67,7 +67,7 @@ class CommonParameterWidget(BaseParameterWidget):
             self._layout_container.addWidget(self.description_label)
         self._layout_container.addWidget(self.value_widget)
         self._layout_container.addWidget(self.default_value_checkbox)
-        self._layout_container.addWidget(self.validation_error_label)
+        self._layout_container.addWidget(self.parameter_error_label)
         spacer = QSpacerItem(
             0, 0, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding
         )
@@ -206,27 +206,27 @@ class CommonParameterWidget(BaseParameterWidget):
         return self._checkbox_default_value
 
     @property
-    def validation_error_label(self) -> QLabel:
-        if self._label_validation_error is not None:
-            return self._label_validation_error
-        self._label_validation_error = QLabel(self._groupbox_container)
-        self._label_validation_error.setWordWrap(True)
-        self._label_validation_error.setAlignment(
+    def parameter_error_label(self) -> QLabel:
+        if self._label_parameter_error is not None:
+            return self._label_parameter_error
+        self._label_parameter_error = QLabel(self._groupbox_container)
+        self._label_parameter_error.setWordWrap(True)
+        self._label_parameter_error.setAlignment(
             Qt.AlignLeading | Qt.AlignLeft | Qt.AlignTop
         )
-        self._label_validation_error.setIndent(-1)
-        self._label_validation_error.setOpenExternalLinks(True)
-        self._label_validation_error.setStyleSheet("color: red;")
-        self._label_validation_error.setHidden(True)
-        return self._label_validation_error
+        self._label_parameter_error.setIndent(-1)
+        self._label_parameter_error.setOpenExternalLinks(True)
+        self._label_parameter_error.setStyleSheet("color: red;")
+        self._label_parameter_error.setHidden(True)
+        return self._label_parameter_error
 
-    def show_validation_error(self, error: str):
-        self.validation_error_label.setText(error)
-        self.validation_error_label.setHidden(False)
+    def show_parameter_error(self, error: str):
+        self.parameter_error_label.setText(error)
+        self.parameter_error_label.setHidden(False)
 
-    def clear_validation_error(self):
-        self.validation_error_label.setText("")
-        self.validation_error_label.setHidden(True)
+    def clear_parameter_error(self):
+        self.parameter_error_label.setText("")
+        self.parameter_error_label.setHidden(True)
 
     @abstractmethod
     def set_value_to_widget(self, value: Any):
@@ -236,15 +236,15 @@ class CommonParameterWidget(BaseParameterWidget):
     def get_value_from_widget(self) -> Any:
         pass
 
-    def on_validation_failed(self, parameter_name: str, error: Any):
+    def on_parameter_error(self, parameter_name: str, error: Any):
         if parameter_name != self.parameter_name:
             return
         error_message = str(error)
-        self.show_validation_error(error_message)
+        self.show_parameter_error(error_message)
 
-    def on_clear_validation_error(self, parameter_name: Optional[str]):
+    def on_clear_parameter_error(self, parameter_name: Optional[str]):
         if parameter_name is None or parameter_name == self.parameter_name:
-            self.clear_validation_error()
+            self.clear_parameter_error()
 
     def _default_value_used(self) -> bool:
         if self.default_value_checkbox.isHidden():

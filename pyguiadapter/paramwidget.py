@@ -105,10 +105,10 @@ class BaseParameterWidget(QWidget):
     def build(self):
         pass
 
-    def on_validation_failed(self, parameter_name: str, error: Any):
+    def on_parameter_error(self, parameter_name: str, error: Any):
         pass
 
-    def on_clear_validation_error(self, parameter_name: Optional[str]):
+    def on_clear_parameter_error(self, parameter_name: Optional[str]):
         pass
 
     @classmethod

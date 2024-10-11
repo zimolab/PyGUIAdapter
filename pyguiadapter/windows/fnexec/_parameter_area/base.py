@@ -105,8 +105,8 @@ class BaseParameterPage(QWidget):
 
 class BaseParameterGroupBox(QToolBox):
 
-    sig_validation_failed = Signal(str, object)
-    sig_validation_error_cleared = Signal(object)
+    sig_parameter_error = Signal(str, object)
+    sig_clear_parameter_error = Signal(object)
 
     def __init__(self, parent: QWidget):
         super().__init__(parent)
@@ -200,13 +200,13 @@ class BaseParameterGroupBox(QToolBox):
     def scroll_to_parameter(self, parameter_name: str, x: int = 50, y: int = 50):
         pass
 
-    def notify_validation_error(self, parameter_name: str, error: Any):
+    def notify_parameter_error(self, parameter_name: str, error: Any):
         # noinspection PyUnresolvedReferences
-        self.sig_validation_failed.emit(parameter_name, error)
+        self.sig_parameter_error.emit(parameter_name, error)
 
-    def clear_validation_error(self, parameter_name: Optional[str]):
+    def clear_parameter_error(self, parameter_name: Optional[str]):
         # noinspection PyUnresolvedReferences
-        self.sig_validation_error_cleared.emit(parameter_name)
+        self.sig_clear_parameter_error.emit(parameter_name)
 
     @abstractmethod
     def disable_parameter_widgets(self, disabled: bool):
@@ -308,11 +308,7 @@ class BaseParameterArea(QWidget):
         pass
 
     @abstractmethod
-    def notify_validation_error(self, parameter_name, error):
-        pass
-
-    @abstractmethod
-    def clear_validation_error(self, parameter_name):
+    def clear_parameter_error(self, parameter_name):
         pass
 
     @abstractmethod

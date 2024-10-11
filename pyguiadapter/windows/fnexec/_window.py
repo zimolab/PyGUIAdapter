@@ -207,7 +207,7 @@ class FnExecuteWindow(BaseFnExecuteWindow):
         self._parameter_area.set_parameter_value(parameter_name, value)
 
     def set_parameter_values(self, values: Dict[str, Any]):
-        self._parameter_area.clear_validation_error(None)
+        self._parameter_area.clear_parameter_error(None)
         if not values:
             return
         self._parameter_area.set_parameter_values(values)
@@ -399,7 +399,7 @@ class FnExecuteWindow(BaseFnExecuteWindow):
             self._parameter_area.disable_parameter_widgets(True)
         # self._operation_area.set_clear_button_enabled(False)
         self._operation_area.set_cancel_button_enabled(False)
-        self._parameter_area.clear_validation_error(None)
+        self._parameter_area.clear_parameter_error(None)
 
     def on_execute_start(self, fn_info: FnInfo, arguments: Dict[str, Any]) -> None:
         super().on_execute_start(fn_info, arguments)
