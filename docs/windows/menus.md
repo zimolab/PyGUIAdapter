@@ -139,7 +139,7 @@ def on_action_about(window: FnExecuteWindow, action: QAction):
 
 def on_action_license(window: FnExecuteWindow, action: QAction):
     print("on_action_license()")
-    license_file = "../../LICENSE.txt"
+    license_file = "../../LICENSE"
     messagebox.show_text_file(
         window,
         text_file=license_file,
@@ -222,6 +222,7 @@ if __name__ == "__main__":
 
     menus = [menu_file, menu_settings]
 
+
     ###################~Menus#############################
 
     ################Window Event Listener###################
@@ -229,6 +230,7 @@ if __name__ == "__main__":
         print("on_window_create()")
         # make action_confirm_quit checked after the select window is created
         window.set_action_state(action_confirm_quit, True)
+
 
     def on_window_close(window: FnExecuteWindow) -> bool:
         # get the state of action_confirm_quit
@@ -245,6 +247,7 @@ if __name__ == "__main__":
             )
             return ret == messagebox.Yes
         return True
+
 
     window_listener = SimpleWindowStateListener(
         on_create=on_window_create, on_close=on_window_close

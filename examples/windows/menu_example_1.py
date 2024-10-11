@@ -92,7 +92,7 @@ def on_action_about(window: FnExecuteWindow, action: QAction):
 
 def on_action_license(window: FnExecuteWindow, action: QAction):
     print("on_action_license()")
-    license_file = "../../LICENSE.txt"
+    license_file = "../../LICENSE"
     messagebox.show_text_file(
         window,
         text_file=license_file,
