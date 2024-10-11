@@ -97,6 +97,9 @@ class BaseParameterPage(QWidget):
     def set_parameter_values(self, values: Dict[str, Any]):
         pass
 
+    def disable_parameter_widgets(self, disabled: bool):
+        pass
+
     # noinspection SpellCheckingInspection
     @abstractmethod
     def _add_to_scrollarea(self, widget: BaseParameterWidget, index: int):

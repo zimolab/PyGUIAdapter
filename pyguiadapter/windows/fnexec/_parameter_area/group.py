@@ -183,6 +183,9 @@ class ParameterGroupPage(BaseParameterPage):
                 continue
             widget.set_value(param_value)
 
+    def disable_parameter_widgets(self, disabled: bool):
+        self._scrollarea_content.setDisabled(disabled)
+
     # noinspection SpellCheckingInspection
     def _add_to_scrollarea(self, widget: BaseParameterWidget, index: int):
         self._layout_scrollerea_content.removeItem(self._bottom_spacer)
@@ -333,7 +336,7 @@ class ParameterGroupBox(BaseParameterGroupBox):
 
     def disable_parameter_widgets(self, disabled: bool):
         for page in self._group_pages.values():
-            page.setDisabled(disabled)
+            page.disable_parameter_widgets(disabled)
 
     def _get_group_and_widget(
         self, parameter_name: str
