@@ -182,8 +182,8 @@ class GUIAdapter(object):
         if self._application is not None:
             warnings.warn("application already started")
             return
-        if self._hdpi_mode:
-            QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
+        if self._hdpi_mode and hasattr(Qt, "AA_EnableHighDpiScaling"):
+            QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
         self._application = QApplication(argv)
         if self._global_stylesheet:
             if isinstance(self._global_stylesheet, str):
