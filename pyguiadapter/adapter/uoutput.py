@@ -2,23 +2,30 @@ import dataclasses
 from typing import Optional
 
 from .ucontext import uprint
+from ..constants.color import (
+    COLOR_INFO,
+    COLOR_TERMINAL_TEXT_CLASSIC,
+    COLOR_WARNING,
+    COLOR_ERROR,
+    COLOR_FATAL,
+)
 
-DEFAULT_COLOR_INFO = "#00FF00"
-DEFAULT_COLOR_DEBUG = "#FFFFFF"
-DEFAULT_COLOR_WARNING = "#FFFF00"
-DEFAULT_COLOR_CRITICAL = "#FF0000"
-DEFAULT_COLOR_FATAL = "#A61C00"
+# DEFAULT_COLOR_INFO = "#00FF00"
+# DEFAULT_COLOR_DEBUG = "#FFFFFF"
+# DEFAULT_COLOR_WARNING = "#FFFF00"
+# DEFAULT_COLOR_CRITICAL = "#FF0000"
+# DEFAULT_COLOR_FATAL = "#A61C00"
 
 _MSG_TMPL = "<p><pre style='color:{color}'>{msg}</pre></p>"
 
 
 @dataclasses.dataclass
 class LoggerConfig(object):
-    info_color: str = DEFAULT_COLOR_INFO
-    debug_color: str = DEFAULT_COLOR_DEBUG
-    warning_color: str = DEFAULT_COLOR_WARNING
-    critical_color: str = DEFAULT_COLOR_CRITICAL
-    fatal_color: str = DEFAULT_COLOR_FATAL
+    info_color: str = COLOR_INFO
+    debug_color: str = COLOR_TERMINAL_TEXT_CLASSIC
+    warning_color: str = COLOR_WARNING
+    critical_color: str = COLOR_ERROR
+    fatal_color: str = COLOR_FATAL
 
 
 class Logger(object):

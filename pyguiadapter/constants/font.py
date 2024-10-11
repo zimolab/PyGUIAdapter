@@ -1,4 +1,4 @@
-FONT_FAMILY = "Consolas, monospace, Monaco, Source Code Pro, Inter, Arial, sans-serif"
+FONT_FAMILY = "Consolas, monospace, Monaco, Source Code Pro, Inter, Arial, sans-serif;"
 FONT_EXTRA_SMALL = 12
 FONT_SMALL = 13
 FONT_BASE = 14

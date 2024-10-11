@@ -7,12 +7,14 @@ from ....constants.color import (
     COLOR_TERMINAL_BACKGROUND_CLASSIC,
     COLOR_TERMINAL_TEXT_CLASSIC,
 )
+from ....constants.font import FONT_FAMILY
 from ....textbrowser import TextBrowserConfig, TextBrowser
 
 
 @dataclasses.dataclass
 class OutputBrowserConfig(TextBrowserConfig):
     text_color: str = COLOR_TERMINAL_TEXT_CLASSIC
+    font_family: str = FONT_FAMILY
     background_color: str = COLOR_TERMINAL_BACKGROUND_CLASSIC
 
 

@@ -18,7 +18,6 @@ from .constants.clipboard import (
     CLIPBOARD_GET_SELECTION_TEXT,
     CLIPBOARD_SET_SELECTION_TEXT,
 )
-from .constants.font import FONT_FAMILY, FONT_MEDIUM
 from .exceptions import ClipboardOperationError
 from .menu import MenuConfig
 from .toast import ToastWidget, ToastConfig
@@ -33,8 +32,8 @@ class BaseWindowConfig(object):
     size: Union[Tuple[int, int], QSize] = (800, 600)
     position: Optional[Tuple[int, int]] = None
     always_on_top: bool = False
-    font_family: Union[str, Sequence[str], None] = FONT_FAMILY
-    font_size: Optional[int] = FONT_MEDIUM
+    font_family: Union[str, Sequence[str], None] = None
+    font_size: Optional[int] = None
     stylesheet: Optional[str] = None
 
 

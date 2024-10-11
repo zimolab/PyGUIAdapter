@@ -14,6 +14,8 @@ from qtpy.QtWidgets import (
     QSizePolicy,
 )
 
+from ..constants.color import COLOR_ERROR, COLOR_REGULAR_TEXT
+from ..constants.font import FONT_BASE
 from ..exceptions import ParameterError
 from ..paramwidget import BaseParameterWidgetConfig, BaseParameterWidget
 
@@ -25,6 +27,10 @@ class CommonParameterWidgetConfig(BaseParameterWidgetConfig):
     hide_default_value_checkbox: bool = True
     set_deepcopy: bool = True
     get_deepcopy: bool = True
+    description_font_size: Optional[int] = FONT_BASE
+    description_color: Optional[str] = COLOR_REGULAR_TEXT
+    parameter_error_font_size: Optional[int] = FONT_BASE
+    parameter_error_color: Optional[str] = COLOR_ERROR
 
     @classmethod
     def target_widget_class(cls) -> Type["CommonParameterWidget"]:
@@ -88,10 +94,7 @@ class CommonParameterWidget(BaseParameterWidget):
                 return
             self.set_value_to_widget(value)
         except (TypeError, ValueError) as e:
-            raise ParameterError(
-                parameter_name=self.parameter_name,
-                message=str(e),
-            )
+            raise ParameterError(parameter_name=self.parameter_name, message=str(e))
 
     def get_value(self) -> Any:
         if self._default_value_used():
@@ -175,6 +178,15 @@ class CommonParameterWidget(BaseParameterWidget):
         )
         self._label_description.setIndent(-1)
         self._label_description.setOpenExternalLinks(True)
+        if self._config.description_color:
+            self._label_description.setStyleSheet(
+                f'color: "{self._config.description_color}"'
+            )
+        if self._config.description_font_size:
+            font = self._label_description.font()
+            font.setPixelSize(self._config.description_font_size)
+            self._label_description.setFont(font)
+
         if self.description:
             self._label_description.setText(self.description)
         return self._label_description
@@ -210,6 +222,14 @@ class CommonParameterWidget(BaseParameterWidget):
         self._label_parameter_error.setAlignment(
             Qt.AlignLeading | Qt.AlignLeft | Qt.AlignTop
         )
+        if self._config.parameter_error_color:
+            self._label_parameter_error.setStyleSheet(
+                f'color: "{self._config.parameter_error_color}"'
+            )
+        if self._config.parameter_error_font_size:
+            font = self._label_parameter_error.font()
+            font.setPixelSize(self._config.parameter_error_font_size)
+            self._label_parameter_error.setFont(font)
         self._label_parameter_error.setIndent(-1)
         self._label_parameter_error.setOpenExternalLinks(True)
         self._label_parameter_error.setHidden(True)
