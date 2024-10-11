@@ -42,11 +42,13 @@ class GUIAdapter(object):
     def __init__(
         self,
         *,
-        global_style: Union[str, Callable[[], str], None] = None,
+        hdpi_mode: bool = True,
+        global_stylesheet: Union[str, Callable[[], str], None] = None,
         on_app_start: Optional[Callable[[QApplication], None]] = None,
         on_app_shutdown: Optional[Callable] = None,
     ):
-        self._global_style: Optional[str] = global_style
+        self._hdpi_mode: bool = hdpi_mode
+        self._global_stylesheet: Optional[str] = global_stylesheet
         self._on_app_start: Optional[Callable[[QApplication], None]] = on_app_start
         self._on_app_shutdown: Optional[Callable] = on_app_shutdown
 
@@ -180,13 +182,14 @@ class GUIAdapter(object):
         if self._application is not None:
             warnings.warn("application already started")
             return
-
+        if self._hdpi_mode:
+            QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
         self._application = QApplication(argv)
-        if self._global_style:
-            if isinstance(self._global_style, str):
-                self._application.setStyleSheet(self._global_style)
-            if callable(self._global_style):
-                self._application.setStyleSheet(self._global_style())
+        if self._global_stylesheet:
+            if isinstance(self._global_stylesheet, str):
+                self._application.setStyleSheet(self._global_stylesheet)
+            if callable(self._global_stylesheet):
+                self._application.setStyleSheet(self._global_stylesheet())
 
         if self._on_app_start:
             self._on_app_start(self._application)
