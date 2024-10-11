@@ -15,7 +15,7 @@ from qtpy.QtWidgets import (
 )
 
 from ..constants.color import COLOR_ERROR, COLOR_REGULAR_TEXT
-from ..constants.font import FONT_BASE
+from ..constants.font import FONT_BASE, FONT_SMALL
 from ..exceptions import ParameterError
 from ..paramwidget import BaseParameterWidgetConfig, BaseParameterWidget
 
@@ -29,7 +29,7 @@ class CommonParameterWidgetConfig(BaseParameterWidgetConfig):
     get_deepcopy: bool = True
     description_font_size: Optional[int] = FONT_BASE
     description_color: Optional[str] = COLOR_REGULAR_TEXT
-    parameter_error_font_size: Optional[int] = FONT_BASE
+    parameter_error_font_size: Optional[int] = FONT_SMALL
     parameter_error_color: Optional[str] = COLOR_ERROR
 
     @classmethod
