@@ -7,7 +7,7 @@ from ....constants.color import (
     COLOR_TERMINAL_BACKGROUND_CLASSIC,
     COLOR_TERMINAL_TEXT_CLASSIC,
 )
-from ....constants.font import FONT_FAMILY
+from ....constants.font import FONT_FAMILY, FONT_LARGE
 from ....textbrowser import TextBrowserConfig, TextBrowser
 
 
@@ -15,6 +15,7 @@ from ....textbrowser import TextBrowserConfig, TextBrowser
 class OutputBrowserConfig(TextBrowserConfig):
     text_color: str = COLOR_TERMINAL_TEXT_CLASSIC
     font_family: str = FONT_FAMILY
+    font_size: str = FONT_LARGE
     background_color: str = COLOR_TERMINAL_BACKGROUND_CLASSIC
 
 
