@@ -4,16 +4,19 @@ from typing import Optional, Sequence, Union
 from qtpy.QtGui import QTextOption, QColor, QPalette, QTextCursor
 from qtpy.QtWidgets import QTextBrowser, QWidget
 
+from .constants.color import COLOR_BASE_BACKGROUND, COLOR_BASE_TEXT
+from .constants.font import FONT_LARGE
+
 LineWrapMode = QTextBrowser.LineWrapMode
 WordWrapMode = QTextOption.WrapMode
 
 
 @dataclasses.dataclass
 class TextBrowserConfig(object):
-    text_color: str = "black"
-    font_family: Union[Sequence[str], str] = "Consolas"
-    font_size: int = 12
-    background_color: str = "white"
+    text_color: str = COLOR_BASE_TEXT
+    font_family: Union[Sequence[str], str] = None
+    font_size: Optional[int] = FONT_LARGE
+    background_color: str = COLOR_BASE_BACKGROUND
     line_wrap_mode: LineWrapMode = LineWrapMode.NoWrap
     line_wrap_width: int = 88
     word_wrap_mode: WordWrapMode = WordWrapMode.WordWrap
@@ -59,8 +62,7 @@ class TextBrowser(QTextBrowser):
             else:
                 font.setFamilies(self._config.font_family)
         if self._config.font_size:
-            assert self._config.font_size > 0
-            font.setPointSize(self._config.font_size)
+            font.setPixelSize(self._config.font_size)
         self.setFont(font)
 
         self.setLineWrapMode(self._config.line_wrap_mode)

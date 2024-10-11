@@ -31,6 +31,6 @@ if __name__ == "__main__":
         """
         return utils.read_text_file(QSS_FILE)
 
-    adapter = GUIAdapter(global_style=load_stylesheet)
+    adapter = GUIAdapter(global_stylesheet=load_stylesheet)
     adapter.add(app_style_example)
     adapter.run()

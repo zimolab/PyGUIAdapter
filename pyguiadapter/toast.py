@@ -1,9 +1,11 @@
 import dataclasses
-from typing import Optional, Union, Tuple, Dict
+from typing import Optional, Union, Tuple, Dict, Sequence
 
 from qtpy.QtCore import Signal, QTimer, QMutex, Qt, QPropertyAnimation
 from qtpy.QtWidgets import QWidget, QLabel
 
+from .constants.font import FONT_FAMILY, FONT_HUGE
+from .constants.color import COLOR_TOAST_BACKGROUND_CLASSIC, COLOR_TOAST_TEXT_CLASSIC
 from .utils import move_window
 
 DEFAULT_POSITION = (0.5, 0.9)
@@ -17,12 +19,12 @@ AlignRight = Qt.AlignRight | Qt.AlignVCenter
 @dataclasses.dataclass(frozen=True)
 class ToastConfig(object):
     opacity: float = 0.9
-    background_color: str = "#222222"
-    text_color: str = "#FEFEFE"
+    background_color: str = COLOR_TOAST_BACKGROUND_CLASSIC
+    text_color: str = COLOR_TOAST_TEXT_CLASSIC
     text_padding: int = 50
     text_alignment: Optional[TextAlignment] = None
-    font_size: int = 14
-    font_family: str = "Consolas, sans-serif"
+    font_family: Union[Sequence[str], str] = FONT_FAMILY
+    font_size: Optional[int] = FONT_HUGE
     position: Optional[Tuple[Union[int, float, None], Union[int, float, None]]] = (
         DEFAULT_POSITION
     )
@@ -143,7 +145,7 @@ class ToastWidget(QLabel):
         style_dict = {
             "background-color": f'"{self._config.background_color}"',
             "color": f'"{self._config.text_color}"',
-            "font-size": f"{self._config.font_size}pt",
+            "font-size": f"{self._config.font_size}px",
             "font-family": f'"{self._config.font_family}"',
             "padding": f"{self._config.text_padding}",
             **more_styles,

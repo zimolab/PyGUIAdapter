@@ -235,7 +235,7 @@ class CodeEditDialog(UniversalInputDialog):
         auto_parentheses: bool = True,
         line_wrap_mode: LineWrapMode = LineWrapMode.WidgetWidth,
         line_wrap_width: int = 88,
-        font_family: Union[str, Sequence[str], None] = "Consolas",
+        font_family: Union[str, Sequence[str], None] = None,
         font_size: Optional[int] = None,
         **kwargs,
     ):
@@ -301,7 +301,7 @@ class ObjectInputDialog(CodeEditDialog):
         auto_parentheses: bool = True,
         line_wrap_mode: LineWrapMode = LineWrapMode.WidgetWidth,
         line_wrap_width: int = 88,
-        font_family: Union[str, Sequence[str], None] = "Consolas",
+        font_family: Union[str, Sequence[str], None] = None,
         font_size: Optional[int] = None,
         **kwargs,
     ):
@@ -389,7 +389,7 @@ def input_json_object(
     auto_parentheses: bool = True,
     line_wrap_mode: LineWrapMode = LineWrapMode.WidgetWidth,
     line_wrap_width: int = 88,
-    font_family: Union[str, Sequence[str], None] = "Consolas",
+    font_family: Union[str, Sequence[str], None] = None,
     font_size: Optional[int] = None,
     **kwargs,
 ) -> Any:
@@ -425,7 +425,7 @@ def input_py_literal(
     auto_parentheses: bool = True,
     line_wrap_mode: LineWrapMode = LineWrapMode.WidgetWidth,
     line_wrap_width: int = 88,
-    font_family: Union[str, Sequence[str], None] = "Consolas",
+    font_family: Union[str, Sequence[str], None] = None,
     font_size: Optional[int] = None,
     **kwargs,
 ) -> PyLiteralType:

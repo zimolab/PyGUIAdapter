@@ -1,23 +1,16 @@
-from typing import Union, Sequence, Optional
-
 import dataclasses
+from typing import Optional
 
 from qtpy.QtWidgets import QWidget
 
+from ..constants.color import COLOR_PAGE_BACKGROUND, COLOR_PRIMARY_TEXT
 from ..textbrowser import TextBrowserConfig, TextBrowser, LineWrapMode
-
-DEFAULT_BACKGROUND_COLOR = "#FFFFFF"
-DEFAULT_TEXT_COLOR = "#000000"
-DEFAULT_FONT_FAMILY = ("Consolas", "Arial", "sans-serif")
-DEFAULT_FONT_SIZE = 12
 
 
 @dataclasses.dataclass
 class DocumentBrowserConfig(TextBrowserConfig):
-    text_color: str = DEFAULT_TEXT_COLOR
-    font_family: Union[Sequence[str], str] = DEFAULT_FONT_FAMILY
-    font_size: int = DEFAULT_FONT_SIZE
-    background_color: str = DEFAULT_BACKGROUND_COLOR
+    text_color: str = COLOR_PRIMARY_TEXT
+    background_color: str = COLOR_PAGE_BACKGROUND
     line_wrap_mode: LineWrapMode = LineWrapMode.WidgetWidth
 
 

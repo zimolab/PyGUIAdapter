@@ -1,0 +1,9 @@
+FONT_FAMILY = "Consolas, monospace, Monaco, Source Code Pro, Inter, Arial, sans-serif"
+FONT_EXTRA_SMALL = 12
+FONT_SMALL = 13
+FONT_BASE = 14
+FONT_MEDIUM = 16
+FONT_LARGE = 18
+FONT_EXTRA_LARGE = 20
+FONT_HUGE = 26
+FONT_EXTRA_HUGE = 30

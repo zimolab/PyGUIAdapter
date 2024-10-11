@@ -8,20 +8,22 @@ from qtpy.QtCore import QSize, Qt, Signal
 from qtpy.QtGui import QAction, QIcon, QActionGroup, QClipboard
 from qtpy.QtWidgets import QMainWindow, QWidget, QToolBar, QMenu, QApplication
 
-from .exceptions import ClipboardOperationError
-from .utils import IconType, get_icon, get_size
 from .action import ActionConfig, Separator
+from .constants.clipboard import (
+    CLIPBOARD_OWNS_CLIPBOARD,
+    CLIPBOARD_SET_TEXT,
+    CLIPBOARD_GET_TEXT,
+    CLIPBOARD_OWNS_SELECTION,
+    CLIPBOARD_SUPPORTS_SELECTION,
+    CLIPBOARD_GET_SELECTION_TEXT,
+    CLIPBOARD_SET_SELECTION_TEXT,
+)
+from .constants.font import FONT_FAMILY, FONT_MEDIUM
+from .exceptions import ClipboardOperationError
 from .menu import MenuConfig
-from .toolbar import ToolBarConfig
 from .toast import ToastWidget, ToastConfig
-
-CLIPBOARD_SET_TEXT = 0
-CLIPBOARD_GET_TEXT = 1
-CLIPBOARD_SUPPORTS_SELECTION = 2
-CLIPBOARD_GET_SELECTION_TEXT = 3
-CLIPBOARD_SET_SELECTION_TEXT = 4
-CLIPBOARD_OWNS_SELECTION = 5
-CLIPBOARD_OWNS_CLIPBOARD = 6
+from .toolbar import ToolBarConfig
+from .utils import IconType, get_icon, get_size
 
 
 @dataclasses.dataclass(frozen=True)
@@ -31,8 +33,8 @@ class BaseWindowConfig(object):
     size: Union[Tuple[int, int], QSize] = (800, 600)
     position: Optional[Tuple[int, int]] = None
     always_on_top: bool = False
-    font_family: Union[str, Sequence[str], None] = None
-    font_size: Optional[int] = None
+    font_family: Union[str, Sequence[str], None] = FONT_FAMILY
+    font_size: Optional[int] = FONT_MEDIUM
     stylesheet: Optional[str] = None
 
 
@@ -207,7 +209,8 @@ class BaseWindow(QMainWindow):
         else:
             raise TypeError(f"invalid font_family type: {type(font_family)}")
         if font_size and font_size > 0:
-            font.setPointSize(font_size)
+            font.setPixelSize(font_size)
+            # font.setPointSize(font_size)
         self.setFont(font)
 
     def get_font_size(self) -> int:

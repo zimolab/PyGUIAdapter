@@ -26,6 +26,6 @@ if __name__ == "__main__":
     QSS_FILE = os.path.join(os.path.dirname(__file__), "Ubuntu.qss")
     global_stylesheet = utils.read_text_file(QSS_FILE)
 
-    adapter = GUIAdapter(global_style=global_stylesheet)
+    adapter = GUIAdapter(global_stylesheet=global_stylesheet)
     adapter.add(app_style_example)
     adapter.run()

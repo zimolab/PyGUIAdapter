@@ -68,12 +68,11 @@ class CommonParameterWidget(BaseParameterWidget):
         self._layout_container.addWidget(self.value_widget)
         self._layout_container.addWidget(self.default_value_checkbox)
         self._layout_container.addWidget(self.parameter_error_label)
-        spacer = QSpacerItem(
-            0, 0, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding
+        self._layout_container.addSpacerItem(
+            QSpacerItem(
+                0, 0, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding
+            )
         )
-        self._layout_container.addSpacerItem(spacer)
-        # if self.set_default_value_on_init:
-        #     self.set_value(self.default_value)
         self.__build_flag = True
         return self
 
@@ -176,9 +175,6 @@ class CommonParameterWidget(BaseParameterWidget):
         )
         self._label_description.setIndent(-1)
         self._label_description.setOpenExternalLinks(True)
-        # self._label_description.setStyleSheet(
-        #     """QLabel{ font-weight: 300; color: #424242; }"""
-        # )
         if self.description:
             self._label_description.setText(self.description)
         return self._label_description
@@ -216,7 +212,6 @@ class CommonParameterWidget(BaseParameterWidget):
         )
         self._label_parameter_error.setIndent(-1)
         self._label_parameter_error.setOpenExternalLinks(True)
-        self._label_parameter_error.setStyleSheet("color: red;")
         self._label_parameter_error.setHidden(True)
         return self._label_parameter_error
 
