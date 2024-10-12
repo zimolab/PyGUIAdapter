@@ -19,15 +19,6 @@ def clipboard_example(text: text_t):
     uprint("clipboard text:")
     uprint(uclipboard.get_text())
     uprint("======================")
-    # for i in range(1000):
-    #     if is_function_cancelled():
-    #         break
-    #     uprint("hello world ", i)
-    #     time.sleep(0.01)
-    time.sleep(5)
-    for i in range(10):
-        uclipboard.set_text(f"hello world {i}")
-        time.sleep(0.5)
 
 
 if __name__ == "__main__":
