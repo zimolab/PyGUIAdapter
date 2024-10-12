@@ -38,6 +38,9 @@ from ..windows.fnselect import FnSelectWindow, FnSelectWindowConfig
 
 
 class GUIAdapter(object):
+    """
+    GUI适配器类，负责管理函数和启动GUI应用。
+    """
 
     def __init__(
         self,
@@ -47,6 +50,13 @@ class GUIAdapter(object):
         on_app_start: Optional[Callable[[QApplication], None]] = None,
         on_app_shutdown: Optional[Callable] = None,
     ):
+        """
+        构造函数，用于创建`GUIAdapter`类实例。
+        :param hdpi_mode: 是否启用HDPI模式，在某些Qt6版本中，该参数无效。
+        :param global_stylesheet: GUI应用的全局样式表。可以为样式表字符串，也可以为一个返回样式表字符串的无参函数。
+        :param on_app_start: 回调函数。在应用启动时回调。
+        :param on_app_shutdown: 回调函数。在应用关闭时回调。
+        """
         self._hdpi_mode: bool = hdpi_mode
         self._global_stylesheet: Optional[str] = global_stylesheet
         self._on_app_start: Optional[Callable[[QApplication], None]] = on_app_start
@@ -79,6 +89,24 @@ class GUIAdapter(object):
         window_toolbar: Optional[ToolBarConfig] = None,
         window_menus: Optional[List[Union[MenuConfig, Separator]]] = None,
     ):
+        """
+        添加函数。将函数添加到当前`GUIAdapter`实例中。
+        :param fn: 待添加的函数。一般的Python的函数均可的添加到`GUIAdapter`实例中。限制：不支持含义`position-only`参数的函数。
+        :param display_name: 函数显示的名称。该名称将显示在`函数选择窗口`的函数列表中或者作为`函数执行窗口`的窗口标题。若未指定，则使用函数名。
+        :param group: 函数的分组。若未指定，则将函数添加到缺省分组中。
+        :param icon: 函数显示的图标。该图标将显示在`函数选择窗口`的函数列表中，若未指定，这使用默认图标。
+        :param document: 函数的文档。该文档将显示在`函数选择窗口`和`函数执行窗口`的`文档浏览器`区域。
+        :param document_format: 函数文档的格式。支持：`markdown`、`html`、`plaintext`。默认为`markdown`。
+        :param cancelable: 指示函数是否可取消。
+        :param on_execute_result:
+        :param on_execute_error:
+        :param widget_configs:
+        :param window_config:
+        :param window_listener:
+        :param window_toolbar:
+        :param window_menus:
+        :return:
+        """
         # create the FnInfo from the function and given arguments
         fn_info = self._fn_parser.parse_fn_info(
             fn,
