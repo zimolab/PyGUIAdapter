@@ -51,11 +51,25 @@ class GUIAdapter(object):
         on_app_shutdown: Optional[Callable] = None,
     ):
         """
-        构造函数，用于创建`GUIAdapter`类实例。
-        :param hdpi_mode: 是否启用HDPI模式，在某些Qt6版本中，该参数无效。
-        :param global_stylesheet: GUI应用的全局样式表。可以为样式表字符串，也可以为一个返回样式表字符串的无参函数。
-        :param on_app_start: 回调函数。在应用启动时回调。
-        :param on_app_shutdown: 回调函数。在应用关闭时回调。
+        `GUIAdapter`构造函数。用于创建`GUIAdapter`实例。
+        Args:
+            hdpi_mode: 启用高DPI模式。某些Qt版本上，该参数不生效。
+            global_stylesheet: 应用全局样式。可以为样式表字符串，也可以为一个返回全局样式表字符串的函数。
+            on_app_start: 应用启动回调函数。在应用启动时调用。
+            on_app_shutdown: 应用停止回调函数。在应用停止时调用。
+
+        Examples:
+            ```python
+            from pyguiadapter.adapter import GUIAdapter
+
+            def foo(a: int, b: int, c: str):
+                pass
+
+            adapter = GUIAdapter()
+            adapter.add(foo)
+            adapter.run()
+            ```
+
         """
         self._hdpi_mode: bool = hdpi_mode
         self._global_stylesheet: Optional[str] = global_stylesheet
