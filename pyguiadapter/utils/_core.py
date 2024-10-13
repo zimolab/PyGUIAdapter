@@ -1,4 +1,5 @@
 import ast
+import base64
 import hashlib
 import inspect
 import re
@@ -164,3 +165,7 @@ def type_check(value: Any, allowed_types: Tuple[Type[Any], ...], allow_none: boo
         return
     if not isinstance(value, allowed_types):
         raise TypeError(f"invalid type: {type(value)}")
+
+
+def to_base64(data: Union[bytes, str]) -> str:
+    return base64.b64encode(data).decode()
