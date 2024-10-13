@@ -3,7 +3,8 @@
 """
 
 import dataclasses
-from typing import Optional
+import os.path
+from typing import Optional, Union, Dict, Any
 
 from .ucontext import uprint
 from ..constants.color import (
@@ -13,6 +14,7 @@ from ..constants.color import (
     COLOR_FATAL,
     COLOR_CRITICAL,
 )
+from ..utils import io, to_base64
 
 _MSG_TMPL = "<p><pre style='color:{color}'>{msg}</pre></p>"
 
@@ -211,3 +213,58 @@ def fatal(msg: str) -> None:
         无返回值
     """
     _global_logger.fatal(msg)
+
+
+def _join_props(props: Dict[str, Any]):
+    return " ".join([f'{k}="{v}"' for k, v in props.items() if v is not None])
+
+
+def _make_img_url(img: str, props: Dict[str, Any]) -> str:
+    return f'<img src="{os.path.abspath(img)}"  {_join_props(props)} />'
+
+
+def _make_embed_img_url(img: bytes, img_type: str, props: Dict[str, Any]) -> str:
+    return f'<img src="data:image/{img_type};base64,{to_base64(img)}"  {_join_props(props)} />'
+
+
+def print_image(
+    img: Union[str, bytes],
+    img_type: str = "jpeg",
+    embed_base64: bool = False,
+    width: Optional[int] = None,
+    height: Optional[int] = None,
+    centered: bool = True,
+) -> None:
+    """
+    模块级函数。打印图片。
+
+    Args:
+        img: 待打印的图片。可以为图片文件的路径（`str`）或图片的二进制数据（`bytes`）
+        img_type: 图片类型。
+        embed_base64: 是否使用`data url`（`base64格式`）嵌入图片。传入二进制图片数据时，将忽略此参数。
+        width: 图片的宽度。若未指定，则显示图片的原始宽度。
+        height: 图片的高度。若未指定，则显示图片的原始高度。
+        centered: 是否将图片居中显示。
+
+    Returns:
+        无返回值。
+    """
+    props = {
+        "width": width,
+        "height": height,
+    }
+    uprint("print image...")
+    uprint("<p>some text</p>", html=True)
+    if isinstance(img, str):
+        if not embed_base64:
+            url = _make_img_url(img, props)
+        else:
+            url = _make_embed_img_url(io.read_file(img), img_type, props)
+    else:
+        url = _make_embed_img_url(img, img_type, props)
+    if centered:
+        url = f'<br /><div style="text-align:center;">{url}</div><br />'
+    else:
+        url = f"<br /><div>{url}</div><br />"
+    uprint(url, html=True)
+    del url
