@@ -8,7 +8,7 @@ def process_integers(
     """
     Process some integers.
 
-    @param integers: an integer for the accumulator
+    @param integers: integers for the accumulator
     @param operation: sum the integers (default: find the max)
     """
     func = max if operation == "max" else sum
