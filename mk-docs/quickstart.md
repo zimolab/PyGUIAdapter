@@ -235,34 +235,7 @@ if __name__ == "__main__":
 > 如其原型所示，`uprint()`支持输出`html`格式的富文本内容，比如图片。但需要指出的是，`输出浏览器`对于`html`的支持是有限的，具体可以参考QT的官方文档：[Supported HTML Subset](https://doc.qt.io/qtforpython-5/overviews/richtext-html-subset.html)
 
 
-除了`uprint()`，`pyguiadapter.adapter.uoutput`中还提供了一些其他输出信息的方法。借助这些方法，开发者可以输出格式更加丰富的内容。
+除了`uprint()`，`pyguiadapter.adapter.uoutput`中还提供了一些其他输出信息的方法。借助这些方法，开发者可以输出格式更加丰富的内容，可以查看以下文档获取更多信息：
 
-::: pyguiadapter.adapter.uoutput.info
-    options:
-        heading_level: 4
-        show_source: false
-        show_root_full_path: false
+[pyguiadapter.adapter.uoutput](apis/pyguiadapter.adapter.uoutput.md)
 
-::: pyguiadapter.adapter.uoutput.debug
-    options:
-        heading_level: 4
-        show_source: false
-        show_root_full_path: false
-        
-::: pyguiadapter.adapter.uoutput.warning
-    options:
-        heading_level: 4
-        show_source: false
-        show_root_full_path: false
-        
-::: pyguiadapter.adapter.uoutput.critical
-    options:
-        heading_level: 4
-        show_source: false
-        show_root_full_path: false
-
-::: pyguiadapter.adapter.uoutput.fatal
-    options:
-        heading_level: 4
-        show_source: false
-        show_root_full_path: false

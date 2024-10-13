@@ -10,7 +10,7 @@ nav:
   - 首页: index.md
   - 快速开始: quickstart.md
   - 添加多个函数: multiple-functions.md
-  - 数据类型与控件: widget.md
+  - 数据类型与控件: widgets.md
   - 配置控件属性: widget-config.md
   - 窗口: window.md
   - 工具栏: toolbar.md
@@ -22,7 +22,8 @@ nav:
   - 自定义控件: custom-widget.md
   - 实用函数: utility.md
   - 应用打包: packaging.md
-  - API参考: api.md
+  - API参考:
+    - pyguiadapter.adapter.uoutput: apis/pyguiadapter.adapter.uoutput.md
   - 贡献: contribution.md
   - 开源许可: license.md
   - 版本历史: changelog.md
@@ -36,7 +37,11 @@ plugins:
         python:
           options:
             show_root_heading: true
-            show_source: true
+            show_source: false
+            separate_signature: false
+            show_signature_annotations: true
+            signature_crossrefs: true
+            modernize_annotations: true
           selection:
             docstring_style: google
             filters: "! (^_|^__)"  # 过滤掉私有方法和属性
