@@ -1,6 +1,6 @@
 import warnings
 from concurrent.futures import Future
-from typing import Any, Type, Optional, Callable
+from typing import Any, Type, Optional, Callable, NoReturn, Dict
 
 from qtpy.QtCore import QObject, Signal, QMutex
 
@@ -111,7 +111,7 @@ class _Context(QObject):
             return
         wind.clear_output()
 
-    def _on_show_messagebox(self, future: Future, kwargs: dict):
+    def _on_show_messagebox(self, future: Future, kwargs: Dict[str, Any]):
         win = self.current_window
         if not isinstance(win, BaseFnExecuteWindow):
             warnings.warn("current_window is None")
@@ -123,7 +123,7 @@ class _Context(QObject):
         self,
         future: Future,
         dialog_class: Type[BaseCustomDialog],
-        kwargs: dict,
+        kwargs: Dict[str, Any],
     ):
         win = self.current_window
         if not isinstance(win, BaseFnExecuteWindow):
@@ -214,7 +214,26 @@ def is_function_cancelled() -> bool:
 
 
 # noinspection SpellCheckingInspection
-def uprint(*args, sep=" ", end="\n", html: bool = False, scroll_to_bottom: bool = True):
+def uprint(
+    *args: Any,
+    sep: str = " ",
+    end: str = "\n",
+    html: bool = False,
+    scroll_to_bottom: bool = True,
+) -> NoReturn:
+    """打印信息到输出浏览器
+
+    Args:
+        *args: 要打印的信息
+        sep: 每条信息之间的分隔字符串
+        end: 添加到最后一条信息后面的字符串
+        html: 要打印的信息是否为`html`格式
+        scroll_to_bottom: 打印信息后是否将`输出浏览器`滚动到最底部
+
+    Returns:
+        无返回值
+
+    """
     global _context
     text = sep.join([str(arg) for arg in args]) + end
     # noinspection PyUnresolvedReferences
