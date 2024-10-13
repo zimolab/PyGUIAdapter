@@ -43,7 +43,7 @@ class TextBrowser(QTextBrowser):
             return
         if content:
             self.insertHtml(f"<{html_tag}>" + content + f"</{html_tag}>")
-        self.insertHtml("<br>")
+        self.insertHtml("<br />")
         self.ensureCursorVisible()
 
     def _apply_config(self):
