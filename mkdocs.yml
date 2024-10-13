@@ -1,0 +1,60 @@
+site_name: PyGUIAdapter Docs
+repo_url: https://github.com/zimolab/PyGUIAdapter
+docs_dir: mk-docs/
+
+theme:
+  name: material
+  language: zh
+
+nav:
+  - 首页: index.md
+  - 快速开始: quickstart.md
+  - 数据类型与控件: widget.md
+  - 窗口: window.md
+  - 工具栏: toolbar.md
+  - 菜单栏: menu.md
+  - 取消函数执行: cancel.md
+  - 进度条: progressbar.md
+  - 与用户交互: user-interaction.md
+  - 界面美化: style.md
+  - 自定义控件: custom-widget.md
+  - 实用函数: utility.md
+  - 应用打包: packaging.md
+  - API参考: api.md
+  - 贡献: contribution.md
+  - 开源许可: license.md
+  - 版本历史: changelog.md
+
+plugins:
+  - search:
+
+  - mkdocstrings:
+      default_handler: python
+
+  - i18n:
+      docs_structure: folder
+      languages:
+        - locale: zh
+          default: true
+          name: 简体中文
+          build: true
+        - locale: en
+          default: false
+          name: English
+          build: true
+
+  - glightbox:
+      touchNavigation: true
+      loop: false
+      effect: zoom
+      width: 100%
+      height: auto
+      zoomable: true
+      draggable: true
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
