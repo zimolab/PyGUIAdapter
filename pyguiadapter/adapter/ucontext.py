@@ -1,6 +1,6 @@
 import warnings
 from concurrent.futures import Future
-from typing import Any, Type, Optional, Callable, NoReturn, Dict
+from typing import Any, Type, Optional, Callable, Dict
 
 from qtpy.QtCore import QObject, Signal, QMutex
 
@@ -209,6 +209,11 @@ def get_current_window() -> Optional[BaseFnExecuteWindow]:
 
 
 def is_function_cancelled() -> bool:
+    """检测函数是否被用户取消
+
+    Returns:
+        用户发出取消函数执行的请求时返回`True`，否则返回`False`
+    """
     global _context
     return _context.is_function_cancelled()
 
@@ -220,7 +225,7 @@ def uprint(
     end: str = "\n",
     html: bool = False,
     scroll_to_bottom: bool = True,
-) -> NoReturn:
+) -> None:
     """打印信息到输出浏览器
 
     Args:
@@ -240,7 +245,12 @@ def uprint(
     _context.sig_uprint.emit(text, html, scroll_to_bottom)
 
 
-def clear_output():
+def clear_output() -> None:
+    """清除`输出浏览器`中所有内容
+
+    Returns:
+        无返回值
+    """
     global _context
     # noinspection PyUnresolvedReferences
     _context.sig_clear_output.emit()

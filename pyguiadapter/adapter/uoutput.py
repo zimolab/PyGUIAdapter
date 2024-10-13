@@ -4,17 +4,11 @@ from typing import Optional
 from .ucontext import uprint
 from ..constants.color import (
     COLOR_INFO,
-    COLOR_TERMINAL_TEXT_CLASSIC,
+    COLOR_DEBUG,
     COLOR_WARNING,
-    COLOR_ERROR,
     COLOR_FATAL,
+    COLOR_CRITICAL,
 )
-
-# DEFAULT_COLOR_INFO = "#00FF00"
-# DEFAULT_COLOR_DEBUG = "#FFFFFF"
-# DEFAULT_COLOR_WARNING = "#FFFF00"
-# DEFAULT_COLOR_CRITICAL = "#FF0000"
-# DEFAULT_COLOR_FATAL = "#A61C00"
 
 _MSG_TMPL = "<p><pre style='color:{color}'>{msg}</pre></p>"
 
@@ -22,9 +16,9 @@ _MSG_TMPL = "<p><pre style='color:{color}'>{msg}</pre></p>"
 @dataclasses.dataclass
 class LoggerConfig(object):
     info_color: str = COLOR_INFO
-    debug_color: str = COLOR_TERMINAL_TEXT_CLASSIC
+    debug_color: str = COLOR_DEBUG
     warning_color: str = COLOR_WARNING
-    critical_color: str = COLOR_ERROR
+    critical_color: str = COLOR_CRITICAL
     fatal_color: str = COLOR_FATAL
 
 
@@ -70,21 +64,61 @@ class Logger(object):
 _global_logger = Logger()
 
 
-def info(msg: str):
+def info(msg: str) -> None:
+    """打印`info`级别的消息。`info`消息颜色值默认为：<b>`#00FF00`</b>。
+
+    Args:
+        msg: 要打印的消息
+
+    Returns:
+        无返回值
+    """
     _global_logger.info(msg)
 
 
-def debug(msg: str):
+def debug(msg: str) -> None:
+    """打印`debug`级别的消息。`debug`消息颜色值默认为：<b>`#909399`</b>。
+
+    Args:
+        msg: 要打印的消息
+
+    Returns:
+        无返回值
+    """
     _global_logger.debug(msg)
 
 
-def warning(msg: str):
+def warning(msg: str) -> None:
+    """打印`warning`级别的消息。`warning`消息颜色值默认为：<b>`#FFFF00`</b>。
+
+    Args:
+        msg: 要打印的消息
+
+    Returns:
+        无返回值
+    """
     _global_logger.warning(msg)
 
 
-def critical(msg: str):
+def critical(msg: str) -> None:
+    """打印`critical`级别的消息。`critical`消息颜色值默认为：<b>`#A61C00`</b>。
+
+    Args:
+        msg: 要打印的消息
+
+    Returns:
+        无返回值
+    """
     _global_logger.critical(msg)
 
 
-def fatal(msg: str):
+def fatal(msg: str) -> None:
+    """打印`fatal`级别的消息。`fatal`消息颜色值默认为：<b>`#FF0000`</b>。
+
+    Args:
+        msg: 要打印的消息
+
+    Returns:
+        无返回值
+    """
     _global_logger.fatal(msg)
