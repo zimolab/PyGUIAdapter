@@ -2,7 +2,7 @@ from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.adapter.uoutput import Logger, LoggerConfig
 
 logger = Logger(
-    confing=LoggerConfig(
+    config=LoggerConfig(
         info_color="green",
         debug_color="blue",
         warning_color="yellow",
