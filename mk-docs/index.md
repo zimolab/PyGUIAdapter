@@ -5,7 +5,7 @@
 `PyGUIAdapter`的核心理念是，以尽可能“无感”和“低侵入性”的方式，帮助开发者建立用户界面，使开发者能够专注于核心功能的实现，而不必将精力分散到复杂、繁琐的GUI编程上，从而尽可能降低开发者的学习成本和心智负担。
 
 <div style="text-align: center;">
-    <img src="./assets/hello_world.png" />
+    <img src="assets/hello_world.png" />
 </div>
 
 

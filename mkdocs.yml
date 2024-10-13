@@ -1,6 +1,6 @@
 site_name: PyGUIAdapter Docs
 repo_url: https://github.com/zimolab/PyGUIAdapter
-docs_dir: mk-docs/
+docs_dir: ./mk-docs/
 
 theme:
   name: material
@@ -9,7 +9,9 @@ theme:
 nav:
   - 首页: index.md
   - 快速开始: quickstart.md
+  - 添加多个函数: multiple-functions.md
   - 数据类型与控件: widget.md
+  - 配置控件属性: widget-config.md
   - 窗口: window.md
   - 工具栏: toolbar.md
   - 菜单栏: menu.md
@@ -30,7 +32,14 @@ plugins:
 
   - mkdocstrings:
       default_handler: python
-
+      handlers:
+        python:
+          options:
+            show_root_heading: true
+            show_source: true
+          selection:
+            docstring_style: google
+            filters: "! (^_|^__)"  # 过滤掉私有方法和属性
   - i18n:
       docs_structure: folder
       languages:
