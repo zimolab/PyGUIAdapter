@@ -78,4 +78,4 @@ if __name__ == "__main__":
 - 支持动态修改控件，为构建复杂应用提供了可能。
 - 基于[`qtpy`](https://github.com/spyder-ide/qtpy)抽象层，不依赖特定Qt绑定库，开发者可以根据实际需要可自由选择`PyQt5`、`PyQt6`、`PySide2`、`PySide2`。
 - 界面底层使用`Qt`，兼容性好，相比`webview类`方案，系统资源占用更小。
-- 纯Python，跨平台性好。
+- 纯Python，跨平台简单。

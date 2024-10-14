@@ -44,7 +44,7 @@ class BaseWindowStateListener(object):
 
 ```python
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.window import BaseWindowStateListener
+from pyguiadapter.window import BaseWindowEventListener
 from pyguiadapter.windows.fnexec import FnExecuteWindow
 from pyguiadapter.utils import messagebox
 
@@ -53,7 +53,7 @@ def event_example_1():
     pass
 
 
-class ExampleEventListener(BaseWindowStateListener):
+class ExampleEventListener(BaseWindowEventListener):
 
     def on_create(self, window: FnExecuteWindow):
         print("on_create")
@@ -102,7 +102,7 @@ if __name__ == "__main__":
 
 ```python
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.window import SimpleWindowStateListener
+from pyguiadapter.window import SimpleWindowEventListener
 from pyguiadapter.windows.fnexec import FnExecuteWindow
 from pyguiadapter.utils import messagebox
 
@@ -141,7 +141,7 @@ def event_example_2():
 
 
 if __name__ == "__main__":
-    event_listener = SimpleWindowStateListener(
+    event_listener = SimpleWindowEventListener(
         on_create=on_window_create,
         on_show=on_window_show,
         on_hide=on_window_hide,
@@ -170,7 +170,7 @@ if __name__ == "__main__":
 
 ```python
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.window import SimpleWindowStateListener
+from pyguiadapter.window import SimpleWindowEventListener
 from pyguiadapter.utils import messagebox
 from pyguiadapter.windows.fnselect import FnSelectWindow
 
@@ -209,7 +209,7 @@ def event_example_3():
 
 
 if __name__ == "__main__":
-    event_listener = SimpleWindowStateListener(
+    event_listener = SimpleWindowEventListener(
         on_create=on_window_create,
         on_show=on_window_show,
         on_hide=on_window_hide,

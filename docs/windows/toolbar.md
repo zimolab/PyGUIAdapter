@@ -94,7 +94,7 @@ from pyguiadapter.toolbar import (
     TopToolBarArea,
 )
 from pyguiadapter.utils import filedialog, inputdialog, messagebox
-from pyguiadapter.window import SimpleWindowStateListener
+from pyguiadapter.window import SimpleWindowEventListener
 from pyguiadapter.windows.fnexec import FnExecuteWindow
 
 
@@ -216,6 +216,8 @@ if __name__ == "__main__":
         allowed_areas=RightToolBarArea | LeftToolBarArea | TopToolBarArea,
         button_style=ToolButtonTextUnderIcon,
     )
+
+
     ###################~ToolBar#############################
 
     ################Window Event Listener###################
@@ -223,6 +225,7 @@ if __name__ == "__main__":
         print("on_window_create()")
         # make action_confirm_quit checked after the select window is created
         window.set_action_state(action_confirm_quit, True)
+
 
     def on_window_close(window: FnExecuteWindow) -> bool:
         # get the state of action_confirm_quit
@@ -240,7 +243,8 @@ if __name__ == "__main__":
             return ret == messagebox.Yes
         return True
 
-    window_listener = SimpleWindowStateListener(
+
+    window_listener = SimpleWindowEventListener(
         on_create=on_window_create, on_close=on_window_close
     )
     #################Window Event Listener##################
