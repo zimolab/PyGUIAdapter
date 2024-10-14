@@ -23,21 +23,22 @@ _MSG_TMPL = "<p><pre style='color:{color}'>{msg}</pre></p>"
 class LoggerConfig(object):
     """
     `Logger`的配置类，用于配置`Logger`的颜色等属性。
-    包含以下属性：
-
-    + `info_color`: `info`级别消息的颜色
-    + `debug_color`: `debug`级别消息的颜色
-    + `warning_color`: `warning`级别消息的颜色
-    + `critical_color`: `critical`级别消息的颜色
-    + `fatal_color`: `fatal`级别消息的颜色
-
     """
 
     info_color: str = COLOR_INFO
+    """`info`级别消息的颜色值"""
+
     debug_color: str = COLOR_DEBUG
+    """`debug`级别消息的颜色值"""
+
     warning_color: str = COLOR_WARNING
+    """`warning`级别消息的颜色值"""
+
     critical_color: str = COLOR_CRITICAL
+    """`critical`级别消息的颜色值"""
+
     fatal_color: str = COLOR_FATAL
+    """`fatal`级别消息的颜色值"""
 
 
 class Logger(object):
