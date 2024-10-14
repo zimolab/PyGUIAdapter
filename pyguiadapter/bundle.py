@@ -6,7 +6,7 @@ from .menu import MenuConfig
 from .toolbar import ToolBarConfig
 from .fn import FnInfo
 from .paramwidget import BaseParameterWidget, BaseParameterWidgetConfig
-from .window import BaseWindowStateListener
+from .window import BaseWindowEventListener
 from .windows.fnexec import FnExecuteWindowConfig
 
 
@@ -17,7 +17,7 @@ class FnBundle(object):
         str, Tuple[Type[BaseParameterWidget], BaseParameterWidgetConfig]
     ]
     window_config: FnExecuteWindowConfig
-    window_listener: Optional[BaseWindowStateListener]
+    window_listener: Optional[BaseWindowEventListener]
     window_toolbar: Optional[ToolBarConfig]
     window_menus: Optional[List[Union[MenuConfig, Separator]]]
     on_execute_result: Optional[Callable[[Any, Dict[str, Any]], None]] = None

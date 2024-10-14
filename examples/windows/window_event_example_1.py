@@ -1,5 +1,5 @@
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.window import BaseWindowStateListener
+from pyguiadapter.window import BaseWindowEventListener
 from pyguiadapter.windows.fnexec import FnExecuteWindow
 from pyguiadapter.utils import messagebox
 
@@ -8,7 +8,7 @@ def event_example_1():
     pass
 
 
-class ExampleEventListener(BaseWindowStateListener):
+class ExampleEventListener(BaseWindowEventListener):
 
     def on_create(self, window: FnExecuteWindow):
         print("on_create")

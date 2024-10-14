@@ -28,7 +28,7 @@ from ...codeeditor.constants import (
     CONFIRM_DIALOG_TITLE,
 )
 from ...exceptions import ParameterError
-from ...window import BaseWindowStateListener
+from ...window import BaseWindowEventListener
 
 T = TypeVar("T")
 
@@ -154,7 +154,7 @@ class BaseCodeEdit(CommonParameterWidget):
             self._code_editor = None
         config: BaseCodeEditConfig = self.config
         editor_title = config.editor_title or EDITOR_TITLE
-        listener = BaseWindowStateListener()
+        listener = BaseWindowEventListener()
         listener.on_close = self._on_code_editor_close
         code_editor_config = CodeEditorConfig(
             initial_text=self._editor.toPlainText(),

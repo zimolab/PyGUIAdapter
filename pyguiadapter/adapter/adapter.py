@@ -32,7 +32,7 @@ from ..paramwidget import (
 )
 from ..parser import FnParser
 from ..widgets import ParameterWidgetFactory
-from ..window import BaseWindowStateListener
+from ..window import BaseWindowEventListener
 from ..windows.fnexec import FnExecuteWindow, FnExecuteWindowConfig
 from ..windows.fnselect import FnSelectWindow, FnSelectWindowConfig
 
@@ -99,7 +99,7 @@ class GUIAdapter(object):
             Dict[str, Union[BaseParameterWidgetConfig, dict]]
         ] = None,
         window_config: Optional[FnExecuteWindowConfig] = None,
-        window_listener: Optional[BaseWindowStateListener] = None,
+        window_listener: Optional[BaseWindowEventListener] = None,
         window_toolbar: Optional[ToolBarConfig] = None,
         window_menus: Optional[List[Union[MenuConfig, Separator]]] = None,
     ):
@@ -177,7 +177,7 @@ class GUIAdapter(object):
         *,
         show_select_window: bool = False,
         select_window_config: Optional[FnSelectWindowConfig] = None,
-        select_window_listener: Optional[BaseWindowStateListener] = None,
+        select_window_listener: Optional[BaseWindowEventListener] = None,
         select_window_toolbar: Optional[ToolBarConfig] = None,
         select_window_menus: Optional[List[Union[MenuConfig, Separator]]] = None,
     ):
@@ -254,7 +254,7 @@ class GUIAdapter(object):
         self,
         bundles: List[FnBundle],
         config: FnSelectWindowConfig,
-        listener: Optional[BaseWindowStateListener],
+        listener: Optional[BaseWindowEventListener],
         toolbar: Optional[ToolBarConfig],
         menus: Optional[List[Union[MenuConfig, Separator]]],
     ):

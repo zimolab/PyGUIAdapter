@@ -53,7 +53,7 @@ class BaseWindowConfig(object):
 
 
 # noinspection PyMethodMayBeStatic
-class BaseWindowStateListener(object):
+class BaseWindowEventListener(object):
     """该类为窗口事件监听器基类，用于监听`BaseWindow`类的窗口事件。开发者可以在子类中override特定的事件回调函数，以实现对特定事件的监听"""
 
     def on_create(self, window: "BaseWindow") -> None:
@@ -118,7 +118,7 @@ class BaseWindowStateListener(object):
         pass
 
 
-class SimpleWindowStateListener(BaseWindowStateListener):
+class SimpleWindowEventListener(BaseWindowEventListener):
     def __init__(
         self,
         on_create: Callable[["BaseWindow"], None] = None,
@@ -166,7 +166,7 @@ class BaseWindow(QMainWindow):
         self,
         parent: Optional[QWidget],
         config: BaseWindowConfig,
-        listener: Optional[BaseWindowStateListener] = None,
+        listener: Optional[BaseWindowEventListener] = None,
         toolbar: Optional[ToolBarConfig] = None,
         menus: Optional[List[Union[MenuConfig, Separator]]] = None,
     ):
@@ -177,7 +177,7 @@ class BaseWindow(QMainWindow):
         if menus:
             menus = [*menus]
         self._menus: Optional[List[Union[MenuConfig, Separator]]] = menus
-        self._listener: BaseWindowStateListener = listener
+        self._listener: BaseWindowEventListener = listener
         self._actions: Dict[int, QAction] = {}
 
         self._create_ui()

@@ -9,7 +9,7 @@ from .base import BaseCodeEditorWindow, CodeEditorConfig
 from .. import utils
 from ..action import Separator
 from ..toolbar import ToolBarConfig
-from ..window import BaseWindowStateListener
+from ..window import BaseWindowEventListener
 
 
 class CodeEditorWindow(BaseCodeEditorWindow):
@@ -17,7 +17,7 @@ class CodeEditorWindow(BaseCodeEditorWindow):
         self,
         parent: Optional[QWidget],
         config: Optional[CodeEditorConfig] = None,
-        listener: Optional[BaseWindowStateListener] = None,
+        listener: Optional[BaseWindowEventListener] = None,
         toolbar: Optional[ToolBarConfig] = None,
         menus: Optional[List[Union[ToolBarConfig, Separator]]] = None,
     ):

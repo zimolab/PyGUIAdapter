@@ -27,7 +27,7 @@ from .constants import (
 from .. import utils
 from ..action import Separator
 from ..toolbar import ToolBarConfig
-from ..window import BaseWindow, BaseWindowConfig, BaseWindowStateListener
+from ..window import BaseWindow, BaseWindowConfig, BaseWindowEventListener
 
 
 class BaseCodeFormatter(object):
@@ -89,7 +89,7 @@ class BaseCodeEditorWindow(BaseWindow):
         self,
         parent: Optional[QWidget],
         config: Optional[CodeEditorConfig] = None,
-        listener: Optional[BaseWindowStateListener] = None,
+        listener: Optional[BaseWindowEventListener] = None,
         toolbar: Optional[ToolBarConfig] = None,
         menus: Optional[List[Union[ToolBarConfig, Separator]]] = None,
     ):

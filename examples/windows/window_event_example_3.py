@@ -1,5 +1,5 @@
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.window import SimpleWindowStateListener
+from pyguiadapter.window import SimpleWindowEventListener
 from pyguiadapter.utils import messagebox
 from pyguiadapter.windows.fnselect import FnSelectWindow
 
@@ -38,7 +38,7 @@ def event_example_3():
 
 
 if __name__ == "__main__":
-    event_listener = SimpleWindowStateListener(
+    event_listener = SimpleWindowEventListener(
         on_create=on_window_create,
         on_show=on_window_show,
         on_hide=on_window_hide,

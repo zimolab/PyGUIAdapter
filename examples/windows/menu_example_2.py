@@ -7,7 +7,7 @@ from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.menu import MenuConfig
 from pyguiadapter.toolbar import ToolBarConfig
 from pyguiadapter.utils import filedialog, inputdialog, messagebox
-from pyguiadapter.window import SimpleWindowStateListener
+from pyguiadapter.window import SimpleWindowEventListener
 from pyguiadapter.windows.fnexec import FnExecuteWindow
 
 
@@ -200,7 +200,7 @@ if __name__ == "__main__":
             return ret == messagebox.Yes
         return True
 
-    window_listener = SimpleWindowStateListener(
+    window_listener = SimpleWindowEventListener(
         on_create=on_window_create, on_close=on_window_close
     )
     #################Window Event Listener##################
