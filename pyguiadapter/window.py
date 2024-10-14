@@ -71,7 +71,7 @@ class BaseWindowEventListener(object):
     # noinspection PyUnusedLocal
     def on_close(self, window: "BaseWindow") -> bool:
         """
-        事件回调函数，在窗口关闭后调用。
+        事件回调函数，在窗口关闭时调用。
 
         Args:
             window: 发生事件的窗口
@@ -119,6 +119,10 @@ class BaseWindowEventListener(object):
 
 
 class SimpleWindowEventListener(BaseWindowEventListener):
+    """该类为`BaseWindowEventListener`子类，用于快速创建`BaseWindowEventListener`实例。开发者可以直接在构造函数中传入要监听的事件的回调函数，
+    而不必手动创建`BaseWindowEventListener`的子类。
+    """
+
     def __init__(
         self,
         on_create: Callable[["BaseWindow"], None] = None,
@@ -127,6 +131,16 @@ class SimpleWindowEventListener(BaseWindowEventListener):
         on_close: Callable[["BaseWindow"], bool] = None,
         on_destroy: Callable[["BaseWindow"], None] = None,
     ):
+        """
+        构造函数。用于创建`SimpleWindowEventListener`类实例。
+
+        Args:
+            on_create: 回调函数，该函数在窗口创建后调用。
+            on_show: 回调函数，该函数在窗口显示后回调。
+            on_hide: 回调函数，该函数在窗口被隐藏时回调。
+            on_close: 回调函数，该函数在窗口被关闭时回调。
+            on_destroy: 回调函数，该函数在窗口被销毁后回调。
+        """
         self._on_create_callback = on_create
         self._on_show_callback = on_show
         self._on_hide_callback = on_hide
@@ -160,6 +174,11 @@ class SimpleWindowEventListener(BaseWindowEventListener):
 
 
 class BaseWindow(QMainWindow):
+    """
+    `PyGUIAdapter`中所有顶级窗口的基类，定义了窗口基本的外观和逻辑，并且实现了一些公共的方法。
+    这些方法可以在窗口事件回调函数中或者`Action`的回调函数中调用。
+    """
+
     sig_clear_toasts = Signal()
 
     def __init__(
@@ -218,36 +237,105 @@ class BaseWindow(QMainWindow):
         self.set_stylesheet(self._config.stylesheet)
 
     def set_title(self, title: str):
+        """
+        设置窗口标题。
+
+        Args:
+            title: 待设置的标题
+
+        Returns:
+            无返回值
+
+        """
         title = title or ""
         self.setWindowTitle(title)
 
     def get_title(self) -> str:
+        """
+        获取窗口标题。
+
+        Returns:
+            返回当前窗口标题
+        """
         return self.windowTitle()
 
     def set_icon(self, icon: IconType):
+        """
+        设置窗口图标。
+
+        Args:
+            icon: 待设置的图标
+
+        Returns:
+            无返回值
+
+        """
         icon = get_icon(icon) or QIcon()
         self.setWindowIcon(icon)
 
     def set_always_on_top(self, enabled: bool):
+        """
+        设置窗口是否总是置顶。
+
+        Args:
+            enabled: 是否总是置顶
+
+        Returns:
+            无返回值
+        """
         if enabled:
             self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
         else:
             self.setWindowFlags(self.windowFlags() & ~Qt.WindowStaysOnTopHint)
 
     def is_always_on_top(self) -> bool:
+        """
+        判断窗口是否总是置顶。
+
+        Returns:
+            返回`True`代表窗口当前处于总是置顶状态。
+
+        """
         return bool(self.windowFlags() & Qt.WindowStaysOnTopHint)
 
     def set_size(self, size: Union[Tuple[int, int], QSize]):
+        """
+        设置窗口尺寸。
+
+        Args:
+            size: 目标尺寸。
+
+        Returns:
+            无返回值
+
+        """
         size = get_size(size)
         if not size:
             raise ValueError(f"invalid size: {size}")
         self.resize(size)
 
     def get_size(self) -> Tuple[int, int]:
+        """
+        获取窗口当前尺寸。
+
+        Returns:
+            返回窗口当前尺寸。
+
+        """
         size = self.size()
         return size.width(), size.height()
 
     def set_position(self, position: Optional[Tuple[int, int]]):
+        """
+        设置窗口在屏幕上的位置。
+
+        Args:
+            position: 目标位置。
+
+        Returns:
+            无返回值
+
+        """
         if not position:
             return
         if len(position) != 2:
@@ -255,10 +343,28 @@ class BaseWindow(QMainWindow):
         self.move(*position)
 
     def get_position(self) -> Tuple[int, int]:
+        """
+        获取窗口位置。
+
+        Returns:
+            返回窗口当前在屏幕上的位置。
+
+        """
         pos = self.pos()
         return pos.x(), pos.y()
 
     def set_font(self, font_family: Union[str, Sequence[str]], font_size: int):
+        """
+        设置窗口字体。
+
+        Args:
+            font_family: 字体名称
+            font_size: 字体大小（px）
+
+        Returns:
+            无返回值
+
+        """
         font = self.font()
         if not font_family:
             pass
@@ -275,27 +381,83 @@ class BaseWindow(QMainWindow):
         self.setFont(font)
 
     def get_font_size(self) -> int:
+        """
+        获取窗口字体大小（px）。
+
+        Returns:
+           返回当前窗口字体大小。
+        """
         return self.font().pointSize()
 
     def get_font_family(self) -> str:
+        """
+        获取当前窗口字体系列名称。
+
+        Returns:
+            返回当前窗口字体系列名称（以字符串形式）。
+        """
         return self.font().family()
 
     def get_font_families(self) -> Sequence[str]:
+        """
+        获取当前窗口字体系列名称。
+
+        Returns:
+            返回当前窗口字体系列名称（以列表形式）。
+        """
         return self.font().families()
 
     def set_stylesheet(self, stylesheet: Optional[str]):
+        """
+        为窗口设置样式表（QSS）格式。
+
+        Args:
+            stylesheet: 样式表
+
+        Returns:
+            无返回值
+
+        """
         if not stylesheet:
             return
         self.setStyleSheet(stylesheet)
 
     def get_stylesheet(self) -> str:
+        """
+        获取窗口当前样式表。
+
+        Returns:
+            返回窗口当前样式表。
+
+        """
         return self.styleSheet()
 
     def find_action(self, action_config: ActionConfig) -> Optional[QAction]:
-        c_id = id(action_config)
-        return self._actions.get(c_id, None)
+        """
+        查找`action_config`对应的`QAction`实例。
+
+        Args:
+            action_config: 待查找的`ActionConfig`实例
+
+        Returns:
+            如果`action_config`被添加到当前窗口的菜单栏或工具栏中，则返回对应的`QAction`实例，否则，返回`None`。
+        """
+        return self._actions.get(id(action_config), None)
 
     def set_action_state(self, action_config: ActionConfig, checked: bool) -> bool:
+        """
+        设置`action_config`对应`QAction`对象的“选中”（`checked`)状态。
+
+        Args:
+            action_config: 待查找的`ActionConfig`实例
+            checked: 目标状态
+
+        Returns:
+            若未找到`action_config`对应的`QAction`对象，或者对应的`QAction`对象的`checkable`属性为`False`（`isCheckable() == False`），
+            则该函数返回`False`。否则返回`True`。
+
+
+        """
         action = self.find_action(action_config)
         if action is None:
             warnings.warn(f"action not found: {action_config}")
@@ -307,6 +469,16 @@ class BaseWindow(QMainWindow):
         return True
 
     def toggle_action_state(self, action_config: ActionConfig) -> bool:
+        """
+        切换`action_config`对应`QAction`对象的“选中”（`checked`)状态。
+
+        Args:
+            action_config: 待查找的`ActionConfig`实例
+
+        Returns:
+            若未找到`action_config`对应的`QAction`对象，或者对应的`QAction`对象的`checkable`属性为`False`（`isCheckable() == False`），
+            则该函数返回`False`。否则返回`True`。
+        """
         action = self.find_action(action_config)
         if action is None:
             warnings.warn(f"action not found: {action_config}")
@@ -317,6 +489,16 @@ class BaseWindow(QMainWindow):
         action.toggle()
 
     def query_action_state(self, action_config: ActionConfig) -> Optional[bool]:
+        """
+        查询`action_config`对应`QAction`对象是否处于“选中”（`checked`)状态。
+
+        Args:
+            action_config: 待查找的`ActionConfig`实例
+
+        Returns:
+            若未找到`action_config`对应的`QAction`对象，函数将返回`None`。否则返回一个`bool`值，用以表示对应`QAction`是否处于“选中”（`checked`)状态。
+
+        """
         action = self.find_action(action_config)
         if action is None:
             return None
@@ -324,11 +506,27 @@ class BaseWindow(QMainWindow):
 
     @staticmethod
     def get_clipboard_text() -> str:
+        """
+        获取剪贴板内容。
+
+        Returns:
+            返回当前剪贴板文本。
+        """
         clipboard = QApplication.clipboard()
         return clipboard.text()
 
     @staticmethod
     def set_clipboard_text(text: str):
+        """
+        设置剪贴板内容。
+
+        Args:
+            text: 要设置到剪贴板中的文本
+
+        Returns:
+            无返回值
+
+        """
         clipboard = QApplication.clipboard()
         clipboard.setText(text)
 
@@ -406,6 +604,18 @@ class BaseWindow(QMainWindow):
         config: Optional[ToastConfig] = None,
         clear: bool = False,
     ):
+        """
+        显示一条toast消息。
+
+        Args:
+            message: 待显示的消息
+            duration: 消息显示的时长，单位毫秒
+            config: toast的配置
+            clear: 在显示当前消息前，是否清除之前发出的消息
+
+        Returns:
+            无返回值
+        """
         if clear:
             self.clear_toasts()
         toast = ToastWidget(self, message, duration, config=config)
@@ -415,6 +625,13 @@ class BaseWindow(QMainWindow):
         toast.start()
 
     def clear_toasts(self):
+        """
+        清除之前发出的toast消息。
+
+        Returns:
+            无返回值
+
+        """
         # noinspection PyUnresolvedReferences
         self.sig_clear_toasts.emit()
 
