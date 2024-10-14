@@ -28,31 +28,93 @@ from .utils import IconType, get_icon, get_size
 @dataclasses.dataclass(frozen=True)
 class BaseWindowConfig(object):
     title: str = ""
+    """窗口标题"""
+
     icon: IconType = None
+    """窗口图标"""
+
     size: Union[Tuple[int, int], QSize] = (800, 600)
+    """窗口大小"""
+
     position: Optional[Tuple[int, int]] = None
+    """窗口位置"""
+
     always_on_top: bool = False
+    """窗口是否永远置顶"""
+
     font_family: Union[str, Sequence[str], None] = None
+    """窗口使用的字体"""
+
     font_size: Optional[int] = None
+    """窗口字体的大小（px）"""
+
     stylesheet: Optional[str] = None
+    """窗口的样式表（QSS格式）"""
 
 
 # noinspection PyMethodMayBeStatic
 class BaseWindowStateListener(object):
-    def on_create(self, window: "BaseWindow"):
+    """该类为窗口事件监听器基类，用于监听`BaseWindow`类的窗口事件。开发者可以在子类中override特定的事件回调函数，以实现对特定事件的监听"""
+
+    def on_create(self, window: "BaseWindow") -> None:
+        """
+        事件回调函数，在窗口创建后调用。
+
+        Args:
+            window: 发生事件的窗口
+
+        Returns:
+            无返回值
+        """
         pass
 
     # noinspection PyUnusedLocal
     def on_close(self, window: "BaseWindow") -> bool:
+        """
+        事件回调函数，在窗口关闭后调用。
+
+        Args:
+            window: 发生事件的窗口
+
+        Returns:
+            返回一个`bool`值，用于指示是否要关闭窗口。返回`True`表示确实要关闭窗口，返回`False`将阻止窗口被关闭。默认返回`True`。
+        """
         return True
 
     def on_destroy(self, window: "BaseWindow"):
+        """
+        事件回调函数，在窗口销毁后调用（注意：在该函数回调后，还将回调一次`on_hide()`）。
+
+        Args:
+            window: 发生事件的窗口
+
+        Returns:
+            无返回值
+        """
         pass
 
     def on_hide(self, window: "BaseWindow"):
+        """
+        事件回调函数，在窗口被隐藏后调用（注意：在`on_destroy()`被回调后，此函数将被回调）。
+
+        Args:
+            window: 发生事件的窗口
+
+        Returns:
+            无返回值
+        """
         pass
 
     def on_show(self, window: "BaseWindow"):
+        """
+        事件回调函数，在窗口显示后调用。
+
+        Args:
+            window: 发生事件的窗口
+
+        Returns:
+            无返回值
+        """
         pass
 
 
