@@ -164,6 +164,7 @@ if __name__ == "__main__":
     <img src="/assets/handle_parameter_error.gif" />
 </div>
 
+
 事实上，`PyGUIAdapter`对于`ParameterError`的处理是更为一般的异常处理机制的一个特例。尽管`PyGUIAdapter`鼓励开发者尽可能预见程序可能发生的异常并提前规避它们，但客观上看程序的异常是无法完全消除的。对于函数中发生的异常，`PyGUIAdapter`的默认策略是：**捕获它们，弹窗提醒用户，并在程序输出区域打印出异常信息。** 这样的设计主要是**为了增强程序的`健壮性`，防止未捕获的异常导致整个程序崩溃**。
 
 
@@ -174,7 +175,6 @@ if __name__ == "__main__":
 <div style="text-align: center">
     <img src="/assets/cli_help.png" />
 </div>
-
 `PyGUIAdapter`同样支持为函数参数以及函数本身添加描述信息。
 
 对于函数参数，`PyGUIAdapter`在其输入控件的上方预留了用于显示描述信息的空间：
@@ -196,7 +196,6 @@ if __name__ == "__main__":
 <div style="text-align: center">
     <img src="/assets/gui_description.png" />
 </div>
-
 
 
 **“尽可能利用现有信息，降低开发者的学习和使用成本”**是`PyGUIAdapter`的重要设计思想，因此它会自动从函数的`docstring`中提取函数和参数的描述信息，并将其显示在界面的正确位置。当然，这也要求开发者尽可能规范地编写函数的说明文档，考虑到不同的开发者可能习惯于不同的文档格式，`PyGUIAdapter`对多种常用的文档格式进行了支持，包括：
@@ -235,7 +234,101 @@ if __name__ == "__main__":
 > 如其原型所示，`uprint()`支持输出`html`格式的富文本内容，比如图片。但需要指出的是，`输出浏览器`对于`html`的支持是有限的，具体可以参考QT的官方文档：[Supported HTML Subset](https://doc.qt.io/qtforpython-5/overviews/richtext-html-subset.html)
 
 
-除了`uprint()`，`pyguiadapter.adapter.uoutput`中还提供了一些其他输出信息的方法。借助这些方法，开发者可以输出格式更加丰富的内容，可以查看以下文档获取更多信息：
 
-[pyguiadapter.adapter.uoutput](apis/pyguiadapter.adapter.uoutput.md)
+除了`uprint()`，`pyguiadapter.adapter.uoutput`还实现了许多用于输出信息的函数，借助这些函数，开发者可以输出格式更加丰富的内容，可以查看以下文档获取更多信息：[pyguiadapter.adapter.uoutput](apis/pyguiadapter.adapter.uoutput.md)
 
+
+## （五）、示例进阶
+
+`PyGUIAdapter`的高度灵活性体现在允许开发者对生成的界面进行配置，开发者不仅可以配置窗口的属性和外观，而且可以对函数每个参数对应的控件进行精细化的调整，改变其默认的行为。
+
+下面，将逐步完善上述示例代码，并在此过程中演示配置窗口和控件属性的方法。 
+
+### 1、“小窗口模式”——配置窗口属性
+
+首先，我们将对示例程序的窗口进行配置，包括：
+
+
+
++ 调整窗口大小
++ 设置窗口标题和图标
++ 隐藏`文档浏览器`
++ 改变函数返回值的消息格式
++ 弹出对话框显示函数返回值
++  ......
+
+对窗口属性的调整需要借助`窗口配置类`对象。对于函数执行窗口，其窗口配置类为`FnExecuteWindowConfig`，该类中定义了函数执行窗口的可配置属性，开发者可以通过以下方式对窗口进行配置：
+
+<div style="text-align: center">
+    <img src="/assets/how_to_config_exec_win.png" />
+</div>
+
+完整代码如下：
+
+```python
+from typing import Optional
+
+from pyguiadapter.adapter import GUIAdapter
+from pyguiadapter.adapter.uoutput import uprint
+from pyguiadapter.exceptions import ParameterError
+from pyguiadapter.windows.fnexec import FnExecuteWindowConfig
+
+
+def equation_solver_2(
+    a: float = 1.0, b: float = 0.0, c: float = 0.0
+) -> Optional[tuple]:
+    """A simple equation solver for equations like:
+
+    **ax^2 + bx + c = 0** (a, b, c ∈ **R** and a ≠ 0)
+
+    @param a: a ∈ R and a ≠ 0
+    @param b: b ∈ R
+    @param c: c ∈ R
+    @return:
+    """
+    if a == 0:
+        raise ParameterError(parameter_name="a", message="a cannot be zero!")
+    uprint(f"Equation:")
+    uprint(f"  {a}x² + {b}x + {c} = 0")
+    delta = b**2 - 4 * a * c
+    if delta < 0:
+        return None
+    x1 = (-b + delta**0.5) / (2 * a)
+    if delta == 0:
+        return x1, x1
+    x2 = (-b - delta**0.5) / (2 * a)
+    return x1, x2
+
+
+if __name__ == "__main__":
+    window_config = FnExecuteWindowConfig(
+        title="Equation Solver",
+        icon="mdi6.function-variant",
+        execute_button_text="Solve",
+        size=(350, 550),
+        document_dock_visible=False,
+        output_dock_initial_size=(None, 100),
+        show_function_result=True,
+        function_result_message="roots: {}",
+        default_parameter_group_name="Equation Parameters",
+    )
+
+    adapter = GUIAdapter()
+    adapter.add(equation_solver_2, window_config=window_config)
+    adapter.run()
+
+```
+
+效果如下：
+
+<div style="text-align: center">
+    <img src="/assets/how_to_config_exec_win_result.png" />
+</div>
+
+> `FnExecuteWindowConfig`定义了大量可配置属性，这里仅仅演示了其中一小部分，开发者可以参考以下文档获取完整的可配置属性列表：[pyguiadapter.windows.fnexec.FnExecuteWindowConfig](apis/pyguiadapter.windows.fnexec.md#FnExecuteWindowConfig)
+
+
+
+###  2、更高的精度——控件属性的配置
+
+###  3、添加菜单
