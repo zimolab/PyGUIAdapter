@@ -24,6 +24,7 @@ nav:
   - 应用打包: packaging.md
   - API参考:
     - pyguiadapter.adapter.uoutput: apis/pyguiadapter.adapter.uoutput.md
+    - pyguiadapter.action: apis/pyguiadapter.action.md
     - pyguiadapter.window: apis/pyguiadapter.window.md
     - pyguiadapter.windows.fnexec: apis/pyguiadapter.windows.fnexec.md
   - 贡献: contribution.md
