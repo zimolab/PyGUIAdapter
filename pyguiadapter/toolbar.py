@@ -24,6 +24,8 @@ ToolButtonTextOnly = ToolButtonStyle.ToolButtonTextOnly
 
 @dataclasses.dataclass(frozen=True)
 class ToolBar(object):
+    """该类用于配置窗口上的工具栏"""
+
     actions: List[Union[Action, Separator]]
     """要添加到工具栏中的动作（`Action`）或分隔符（`Separator`）列表。在工具栏中，动作`Action`以工具栏按钮的形式出现。"""
 
