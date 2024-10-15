@@ -12,7 +12,7 @@
 
 
 ---
-## 类型别名
+## 类型与常量
 
 ::: pyguiadapter.action.ActionTriggeredCallback
     options:
