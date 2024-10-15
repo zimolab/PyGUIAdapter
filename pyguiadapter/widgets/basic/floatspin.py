@@ -16,8 +16,8 @@ class FloatSpinBoxConfig(CommonParameterWidgetConfig):
     default_value: Optional[float] = 0.0
     min_value: float = -2147483648.0
     max_value: float = 2147483647.0
-    step: Optional[float] = None
-    decimals: Optional[int] = None
+    step: Optional[float] = 1.0
+    decimals: Optional[int] = 2
     prefix: str = ""
     suffix: str = ""
 
