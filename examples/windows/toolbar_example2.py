@@ -1,15 +1,13 @@
-from qtpy.QtWidgets import QAction
-
 from pyguiadapter.action import Action
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.toolbar import ToolBarConfig
+from pyguiadapter.toolbar import ToolBar
 from pyguiadapter.windows.fnselect import FnSelectWindow
 from pyguiadapter.utils import messagebox
 
 
-def on_action_test(window: FnSelectWindow, action: QAction):
+def on_action_test(window: FnSelectWindow, action: Action):
     messagebox.show_info_message(
-        window, message=f"Action Triggered!(Action: {action.text()})"
+        window, message=f"Action Triggered!(Action: {action.text})"
     )
 
 
@@ -22,7 +20,7 @@ def foo():
     pass
 
 
-toolbar_config = ToolBarConfig(
+toolbar_config = ToolBar(
     actions=[action_test],
 )
 

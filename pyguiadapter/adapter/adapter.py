@@ -20,8 +20,8 @@ from qtpy.QtWidgets import QApplication
 
 from . import ucontext
 from ..action import Separator
-from ..menu import MenuConfig
-from ..toolbar import ToolBarConfig
+from ..menu import Menu
+from ..toolbar import ToolBar
 from ..bundle import FnBundle
 from ..exceptions import NotRegisteredError
 from ..fn import ParameterInfo
@@ -100,8 +100,8 @@ class GUIAdapter(object):
         ] = None,
         window_config: Optional[FnExecuteWindowConfig] = None,
         window_listener: Optional[BaseWindowEventListener] = None,
-        window_toolbar: Optional[ToolBarConfig] = None,
-        window_menus: Optional[List[Union[MenuConfig, Separator]]] = None,
+        window_toolbar: Optional[ToolBar] = None,
+        window_menus: Optional[List[Union[Menu, Separator]]] = None,
     ):
         """
         添加函数。将函数添加到当前`GUIAdapter`实例中。
@@ -178,8 +178,8 @@ class GUIAdapter(object):
         show_select_window: bool = False,
         select_window_config: Optional[FnSelectWindowConfig] = None,
         select_window_listener: Optional[BaseWindowEventListener] = None,
-        select_window_toolbar: Optional[ToolBarConfig] = None,
-        select_window_menus: Optional[List[Union[MenuConfig, Separator]]] = None,
+        select_window_toolbar: Optional[ToolBar] = None,
+        select_window_menus: Optional[List[Union[Menu, Separator]]] = None,
     ):
         if self._application is None:
             self._start_application(argv)
@@ -255,8 +255,8 @@ class GUIAdapter(object):
         bundles: List[FnBundle],
         config: FnSelectWindowConfig,
         listener: Optional[BaseWindowEventListener],
-        toolbar: Optional[ToolBarConfig],
-        menus: Optional[List[Union[MenuConfig, Separator]]],
+        toolbar: Optional[ToolBar],
+        menus: Optional[List[Union[Menu, Separator]]],
     ):
         if self._select_window is not None:
             return

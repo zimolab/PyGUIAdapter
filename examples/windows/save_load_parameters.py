@@ -1,7 +1,5 @@
 import enum
 import json
-
-from qtpy.QtWidgets import QAction
 from typing import Any, Dict
 
 from pyguiadapter.action import Action
@@ -9,12 +7,12 @@ from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.adapter.ucontext import uprint
 from pyguiadapter.exceptions import ParameterError
 from pyguiadapter.extend_types import color_t, json_obj_t
-from pyguiadapter.menu import MenuConfig
+from pyguiadapter.menu import Menu
 from pyguiadapter.utils import PyLiteralType, messagebox, filedialog, io
 from pyguiadapter.windows.fnexec import FnExecuteWindow
 
 
-def on_action_save_params(window: FnExecuteWindow, action: QAction):
+def on_action_save_params(window: FnExecuteWindow, _: Action):
     # check if the function is executing
     if window.is_function_executing():
         messagebox.show_warning_message(window, "Function is executing")
@@ -90,7 +88,7 @@ def on_action_save_params(window: FnExecuteWindow, action: QAction):
     messagebox.show_info_message(window, "Parameters have been saved!")
 
 
-def on_action_load_params(window: FnExecuteWindow, action: QAction):
+def on_action_load_params(window: FnExecuteWindow, _: Action):
     # check if the function is executing
     if window.is_function_executing():
         messagebox.show_warning_message(window, "Function is executing")
@@ -202,7 +200,7 @@ if __name__ == "__main__":
         on_triggered=on_action_load_params,
     )
 
-    file_menu = MenuConfig(
+    file_menu = Menu(
         title="File",
         actions=[action_save_params, action_load_params],
     )

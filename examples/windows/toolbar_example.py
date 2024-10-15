@@ -1,11 +1,9 @@
 import json
 
-from qtpy.QtWidgets import QAction
-
 from pyguiadapter.action import Action, Separator
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.toolbar import (
-    ToolBarConfig,
+    ToolBar,
     RightToolBarArea,
     LeftToolBarArea,
     ToolButtonTextUnderIcon,
@@ -21,7 +19,7 @@ def toolbar_example():
 
 
 ###################Action Callbacks#########################
-def on_action_open(window: FnExecuteWindow, action: QAction):
+def on_action_open(window: FnExecuteWindow, _: Action):
     print("on_action_open()")
     ret = filedialog.get_open_file(
         parent=window,
@@ -33,7 +31,7 @@ def on_action_open(window: FnExecuteWindow, action: QAction):
         messagebox.show_info_message(window, f"File will be opened: {ret}")
 
 
-def on_action_save(window: FnExecuteWindow, action: QAction):
+def on_action_save(window: FnExecuteWindow, _: Action):
     print("on_action_save()")
     ret = filedialog.get_save_file(
         parent=window,
@@ -45,7 +43,7 @@ def on_action_save(window: FnExecuteWindow, action: QAction):
         messagebox.show_info_message(window, f"File will be saved to: {ret}")
 
 
-def on_action_settings(window: FnExecuteWindow, action: QAction):
+def on_action_settings(window: FnExecuteWindow, _: Action):
     default_settings = {
         "opt1": 1,
         "opt2": "2",
@@ -69,11 +67,11 @@ def on_action_settings(window: FnExecuteWindow, action: QAction):
         messagebox.show_info_message(window, f"new settings: {new_settings}")
 
 
-def on_action_confirm_quit(window: FnExecuteWindow, action: QAction):
-    print("on_action_confirm_close(): ", action.isChecked())
+def on_action_confirm_quit(window: FnExecuteWindow, _: Action, checked: bool):
+    print("on_action_confirm_close(): ", checked)
 
 
-def on_action_close(window: FnExecuteWindow, action: QAction):
+def on_action_close(window: FnExecuteWindow, _: Action):
     print("on_action_close()")
     window.close()
 
@@ -119,7 +117,7 @@ if __name__ == "__main__":
     ###################~Actions#############################
 
     ####################ToolBar#############################
-    toolbar = ToolBarConfig(
+    toolbar = ToolBar(
         actions=[
             action_open,
             action_save,
@@ -146,7 +144,7 @@ if __name__ == "__main__":
         # get the state of action_confirm_quit
         # if it is checked, show a question message box to ask if the user really wants to close the window
         # if it is not checked, return True to close the window directly.
-        state = window.query_action_state(action_confirm_quit)
+        state = window.get_action_state(action_confirm_quit)
         if state:
             # access the
             ret = messagebox.show_question_message(

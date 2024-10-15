@@ -2,14 +2,12 @@ import json
 
 from typing import Dict, Any
 
-from qtpy.QtWidgets import QAction
-
 from pyguiadapter.action import Action
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.adapter.ucontext import uprint
 from pyguiadapter.exceptions import ParameterError
 from pyguiadapter.extend_types import color_t
-from pyguiadapter.menu import MenuConfig
+from pyguiadapter.menu import Menu
 from pyguiadapter.utils import messagebox, filedialog
 from pyguiadapter.windows.fnexec import FnExecuteWindow
 
@@ -37,7 +35,7 @@ def simple_load_save_example(
     uprint("arg5=", arg5)
 
 
-def on_save_params(window: FnExecuteWindow, action: QAction):
+def on_save_params(window: FnExecuteWindow, _: Action):
     # Step 1: obtain current parameter values from widgets
     #
     # if the current input in the widgets of some parameter is invalid, the get_parameter_values() method may raise a
@@ -81,7 +79,7 @@ def on_save_params(window: FnExecuteWindow, action: QAction):
         messagebox.show_info_message(window, "Parameters have been saved!")
 
 
-def on_load_params(window: FnExecuteWindow, action: QAction):
+def on_load_params(window: FnExecuteWindow, _: Action):
     # Step 1: load the parameter values from a json file
     file = filedialog.get_open_file(
         window, "Load Parameters", filters="JSON files(*.json)"
@@ -129,7 +127,7 @@ if __name__ == "__main__":
         on_triggered=on_load_params,
     )
 
-    menu = MenuConfig(
+    menu = Menu(
         title="File",
         actions=[action_save_params, action_load_params],
     )

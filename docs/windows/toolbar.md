@@ -87,7 +87,7 @@ from qtpy.QtWidgets import QAction
 from pyguiadapter.action import Action, Separator
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.toolbar import (
-    ToolBarConfig,
+    ToolBar,
     RightToolBarArea,
     LeftToolBarArea,
     ToolButtonTextUnderIcon,
@@ -201,7 +201,7 @@ if __name__ == "__main__":
     ###################~Actions#############################
 
     ####################ToolBar#############################
-    toolbar = ToolBarConfig(
+    toolbar = ToolBar(
         actions=[
             action_open,
             action_save,
@@ -231,7 +231,7 @@ if __name__ == "__main__":
         # get the state of action_confirm_quit
         # if it is checked, show a question message box to ask if the user really wants to close the window
         # if it is not checked, return True to close the window directly.
-        state = window.query_action_state(action_confirm_quit)
+        state = window.get_action_state(action_confirm_quit)
         if state:
             # access the
             ret = messagebox.show_question_message(
@@ -267,7 +267,7 @@ from qtpy.QtWidgets import QAction
 
 from pyguiadapter.action import Action
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.toolbar import ToolBarConfig
+from pyguiadapter.toolbar import ToolBar
 from pyguiadapter.windows.fnselect import FnSelectWindow
 from pyguiadapter.utils import messagebox
 
@@ -287,7 +287,7 @@ def foo():
     pass
 
 
-toolbar_config = ToolBarConfig(
+toolbar_config = ToolBar(
     actions=[action_test],
 )
 

@@ -6,17 +6,22 @@ from qtpy.QtWidgets import QAction
 
 from .utils import IconType
 
-ActionCallback = Callable[[ForwardRef("BaseWindow"), QAction], None]
 Priority = QAction.Priority
 MenuRole = QAction.MenuRole
 ShortcutContext = Qt.ShortcutContext
+
+BaseWindow_ = ForwardRef("BaseWindow")
+Action_ = ForwardRef("Action")
+
+ActionTriggeredCallback = Callable[[BaseWindow_, Action_], None]
+ActionToggledCallback = Callable[[BaseWindow_, Action_, bool], None]
 
 
 @dataclasses.dataclass
 class Action(object):
     text: str
-    on_triggered: Optional[ActionCallback] = None
-    on_toggled: Optional[ActionCallback] = None
+    on_triggered: Optional[ActionTriggeredCallback] = None
+    on_toggled: Optional[ActionToggledCallback] = None
     icon: IconType = None
     icon_text: Optional[str] = None
     auto_repeat: bool = False

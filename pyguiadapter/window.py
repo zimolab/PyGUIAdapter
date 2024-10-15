@@ -19,9 +19,9 @@ from .constants.clipboard import (
     CLIPBOARD_SET_SELECTION_TEXT,
 )
 from .exceptions import ClipboardOperationError
-from .menu import MenuConfig
+from .menu import Menu
 from .toast import ToastWidget, ToastConfig
-from .toolbar import ToolBarConfig
+from .toolbar import ToolBar
 from .utils import IconType, get_icon, get_size
 
 
@@ -186,17 +186,19 @@ class BaseWindow(QMainWindow):
         parent: Optional[QWidget],
         config: BaseWindowConfig,
         listener: Optional[BaseWindowEventListener] = None,
-        toolbar: Optional[ToolBarConfig] = None,
-        menus: Optional[List[Union[MenuConfig, Separator]]] = None,
+        toolbar: Optional[ToolBar] = None,
+        menus: Optional[List[Union[Menu, Separator]]] = None,
     ):
         super().__init__(parent)
 
         self._config: BaseWindowConfig = config
-        self._toolbar: Optional[ToolBarConfig] = toolbar
+        self._toolbar: Optional[ToolBar] = toolbar
+
         if menus:
             menus = [*menus]
-        self._menus: Optional[List[Union[MenuConfig, Separator]]] = menus
+        self._menus: Optional[List[Union[Menu, Separator]]] = menus
         self._listener: BaseWindowEventListener = listener
+
         self._actions: Dict[int, QAction] = {}
 
         self._create_ui()
@@ -432,6 +434,27 @@ class BaseWindow(QMainWindow):
         """
         return self.styleSheet()
 
+    def has_action(self, action: Action) -> bool:
+        pass
+
+    def is_action_checkable(self, action: Action) -> Optional[bool]:
+        pass
+
+    def is_action_checked(self, action: Action) -> Optional[bool]:
+        pass
+
+    # def set_action_state(self, action: Action, checked: bool) -> Optional[bool]:
+    #     pass
+    #
+    # def toggle_action_state(self, action: Action) -> Optional[bool]:
+    #     pass
+
+    def set_action_enabled(self, action: Action, enabled: bool) -> Optional[bool]:
+        pass
+
+    def is_action_enabled(self, action: Action) -> Optional[bool]:
+        pass
+
     def find_action(self, action: Action) -> Optional[QAction]:
         """
         查找`action`对应的`QAction`实例。
@@ -488,9 +511,9 @@ class BaseWindow(QMainWindow):
             return False
         action.toggle()
 
-    def query_action_state(self, action: Action) -> Optional[bool]:
+    def get_action_state(self, action: Action) -> Optional[bool]:
         """
-        查询`action`对应`QAction`对象是否处于“选中”（`checked`)状态。
+        查询`action`是否处于“选中”（`checked`)状态。
 
         Args:
             action: 待查找的`Action`实例
@@ -655,7 +678,7 @@ class BaseWindow(QMainWindow):
         if self._menus:
             self._create_menus(menus=self._menus)
 
-    def _create_toolbar(self, toolbar_config: ToolBarConfig):
+    def _create_toolbar(self, toolbar_config: ToolBar):
         toolbar = QToolBar(self)
         toolbar.setMovable(toolbar_config.moveable)
         toolbar.setFloatable(toolbar_config.floatable)
@@ -691,86 +714,99 @@ class BaseWindow(QMainWindow):
             action = self._create_action(action)
             toolbar.addAction(action)
 
-    def _create_menus(self, menus: List[MenuConfig]):
+    def _create_menus(self, menus: Sequence[Menu]):
         menubar = self.menuBar()
-        for menu_config in menus:
-            if isinstance(menu_config, Separator):
+        for menu in menus:
+            if isinstance(menu, Separator):
                 menubar.addSeparator()
                 continue
-            menu = self._create_menu(menu_config)
+            menu = self._create_menu(menu)
             menubar.addMenu(menu)
 
     # noinspection PyArgumentList
-    def _create_menu(self, menu_config: MenuConfig) -> QMenu:
-        menu = QMenu(self)
-        menu.setTitle(menu_config.title)
+    def _create_menu(self, menu: Menu) -> QMenu:
+        q_menu = QMenu(self)
+        q_menu.setTitle(menu.title)
+
         exclusive_group = None
-        if menu_config.exclusive:
+        if menu.exclusive:
             exclusive_group = QActionGroup(self)
             exclusive_group.setExclusive(True)
 
-        for action in menu_config.actions:
+        for action in menu.actions:
             if isinstance(action, Separator):
-                menu.addSeparator()
+                q_menu.addSeparator()
                 continue
             if isinstance(action, Action):
                 action = self._create_action(action)
                 if action.isCheckable() and exclusive_group:
                     exclusive_group.addAction(action)
-                menu.addAction(action)
-            elif isinstance(action, MenuConfig):
+                q_menu.addAction(action)
+            elif isinstance(action, Menu):
                 submenu = self._create_menu(action)
-                menu.addMenu(submenu)
+                q_menu.addMenu(submenu)
             else:
                 raise ValueError(f"invalid action type: {type(action)}")
-        return menu
+        return q_menu
 
     def _create_action(self, action: Action) -> QAction:
-        action_id = id(action)
+        aid = id(action)
         # reuse action if already created
-        if action_id in self._actions:
-            return self._actions[action_id]
+        if aid in self._actions:
+            return self._actions[aid]
 
-        action = QAction(self)
-        action.setText(action.text)
+        q_action = QAction(self)
+
+        if action.text:
+            q_action.setText(action.text)
+
         if action.icon:
-            action.setIcon(get_icon(action.icon))
-        if action.icon_text:
-            action.setIconText(action.icon_text)
-        action.setAutoRepeat(action.auto_repeat)
-        action.setEnabled(action.enabled)
-        action.setCheckable(action.checkable)
-        action.setChecked(action.checked)
-        if action.shortcut:
-            action.setShortcut(action.shortcut)
-        if action.shortcut_context is not None:
-            action.setShortcutContext(action.shortcut_context)
-        if action.tooltip:
-            action.setToolTip(action.tooltip)
-        if action.status_tip:
-            action.setStatusTip(action.status_tip)
-        if action.whats_this:
-            action.setWhatsThis(action.whats_this)
-        if action.priority is not None:
-            action.setPriority(action.priority)
-        if action.menu_role is not None:
-            action.setMenuRole(action.menu_role)
+            q_action.setIcon(get_icon(action.icon))
 
-        def _on_triggered():
+        if action.icon_text:
+            q_action.setIconText(action.icon_text)
+
+        q_action.setAutoRepeat(action.auto_repeat)
+        q_action.setEnabled(action.enabled)
+        q_action.setCheckable(action.checkable)
+        q_action.setChecked(action.checked)
+
+        if action.shortcut:
+            q_action.setShortcut(action.shortcut)
+
+        if action.shortcut_context is not None:
+            q_action.setShortcutContext(action.shortcut_context)
+
+        if action.tooltip:
+            q_action.setToolTip(action.tooltip)
+
+        if action.status_tip:
+            q_action.setStatusTip(action.status_tip)
+
+        if action.whats_this:
+            q_action.setWhatsThis(action.whats_this)
+
+        if action.priority is not None:
+            q_action.setPriority(action.priority)
+
+        if action.menu_role is not None:
+            q_action.setMenuRole(action.menu_role)
+
+        def _triggered():
             if action.on_triggered is not None:
                 action.on_triggered(self, action)
 
         def _toggled():
             if action.on_toggled is not None:
-                action.on_toggled(self, action)
+                action.on_toggled(self, action, q_action.isChecked())
 
         # noinspection PyUnresolvedReferences
-        action.triggered.connect(_on_triggered)
+        q_action.triggered.connect(_triggered)
         # noinspection PyUnresolvedReferences
-        action.toggled.connect(_toggled)
+        q_action.toggled.connect(_toggled)
 
-        self._actions[action_id] = action
-        return action
+        self._actions[aid] = q_action
+        return q_action
 
     def _on_create(self):
         if not self._listener:

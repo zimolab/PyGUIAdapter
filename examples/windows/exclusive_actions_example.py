@@ -5,7 +5,7 @@ import qdarktheme
 
 from pyguiadapter.action import Action
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.menu import MenuConfig
+from pyguiadapter.menu import Menu
 from pyguiadapter.windows.fnselect import FnSelectWindow
 
 
@@ -51,7 +51,7 @@ action_dark = Action(
     checkable=True,
 )
 
-menu_theme = MenuConfig(
+menu_theme = Menu(
     title="Theme",
     actions=[action_auto, action_light, action_dark],
     exclusive=True,

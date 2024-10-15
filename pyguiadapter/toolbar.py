@@ -22,7 +22,7 @@ ToolButtonTextOnly = ToolButtonStyle.ToolButtonTextOnly
 
 
 @dataclasses.dataclass(frozen=True)
-class ToolBarConfig(object):
+class ToolBar(object):
     actions: List[Union[Action, Separator]]
     moveable: bool = True
     floatable: bool = True

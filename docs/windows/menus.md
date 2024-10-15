@@ -51,7 +51,7 @@ from qtpy.QtWidgets import QAction
 
 from pyguiadapter.action import Action, Separator
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.menu import MenuConfig
+from pyguiadapter.menu import Menu
 from pyguiadapter.utils import filedialog, inputdialog, messagebox
 from pyguiadapter.window import SimpleWindowEventListener
 from pyguiadapter.windows.fnexec import FnExecuteWindow
@@ -200,11 +200,11 @@ if __name__ == "__main__":
     ###################~Actions#############################
 
     ####################Menus#############################
-    submenu_help = MenuConfig(
+    submenu_help = Menu(
         title="Help",
         actions=[action_about, action_license],
     )
-    menu_file = MenuConfig(
+    menu_file = Menu(
         title="File",
         actions=[
             action_open,
@@ -215,7 +215,7 @@ if __name__ == "__main__":
             action_quit,
         ],
     )
-    menu_settings = MenuConfig(
+    menu_settings = Menu(
         title="Settings",
         actions=[action_settings, Separator(), action_confirm_quit],
     )
@@ -236,7 +236,7 @@ if __name__ == "__main__":
         # get the state of action_confirm_quit
         # if it is checked, show a question message box to ask if the user really wants to close the window
         # if it is not checked, return True to close the window directly.
-        state = window.query_action_state(action_confirm_quit)
+        state = window.get_action_state(action_confirm_quit)
         if state:
             # access the
             ret = messagebox.show_question_message(
@@ -302,7 +302,7 @@ from qtpy.QtWidgets import QAction
 
 from pyguiadapter.action import Action
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.menu import MenuConfig
+from pyguiadapter.menu import Menu
 from pyguiadapter.utils import messagebox
 from pyguiadapter.windows.fnselect import FnSelectWindow
 
@@ -322,7 +322,7 @@ def foo():
     pass
 
 
-menu_file = MenuConfig(
+menu_file = Menu(
     title="File",
     actions=[action_test],
 )
@@ -352,7 +352,7 @@ import qdarktheme
 
 from pyguiadapter.action import Action
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.menu import MenuConfig
+from pyguiadapter.menu import Menu
 from pyguiadapter.windows.fnselect import FnSelectWindow
 
 
@@ -398,7 +398,7 @@ action_dark = Action(
     checkable=True,
 )
 
-menu_theme = MenuConfig(
+menu_theme = Menu(
     title="Theme",
     actions=[action_auto, action_light, action_dark],
     exclusive=True,

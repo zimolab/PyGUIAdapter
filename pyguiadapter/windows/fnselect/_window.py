@@ -16,8 +16,8 @@ from ..document_browser import DocumentBrowserConfig, DocumentBrowser
 from ..fnexec import FnExecuteWindow
 from ...utils import IconType, get_icon, set_textbrowser_content, messagebox
 from ...action import Separator
-from ...menu import MenuConfig
-from ...toolbar import ToolBarConfig
+from ...menu import Menu
+from ...toolbar import ToolBar
 from ...bundle import FnBundle
 from ...window import BaseWindow, BaseWindowConfig, BaseWindowEventListener
 
@@ -47,8 +47,8 @@ class FnSelectWindow(BaseWindow):
         bundles: List[FnBundle],
         config: Optional[FnSelectWindowConfig],
         listener: Optional[BaseWindowEventListener] = None,
-        toolbar: Optional[ToolBarConfig] = None,
-        menus: Optional[List[Union[MenuConfig, Separator]]] = None,
+        toolbar: Optional[ToolBar] = None,
+        menus: Optional[List[Union[Menu, Separator]]] = None,
     ):
         self._initial_bundles = bundles.copy()
         self._group_pages: Dict[str, FnGroupPage] = {}

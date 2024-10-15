@@ -1,7 +1,5 @@
 from typing import List
 
-from qtpy.QtGui import QAction
-
 from .base import BaseCodeEditorWindow
 from .constants import (
     DEFAULT_ICON_SIZE,
@@ -20,51 +18,51 @@ from .constants import (
     MENU_EDIT,
 )
 from ..action import Action, Separator
-from ..menu import MenuConfig
-from ..toolbar import ToolBarConfig
+from ..menu import Menu
+from ..toolbar import ToolBar
 
 
-def _on_open_file(ctx: BaseCodeEditorWindow, _: QAction):
+def _on_open_file(ctx: BaseCodeEditorWindow, _: Action):
     ctx.open_file()
 
 
-def _on_save_file(ctx: BaseCodeEditorWindow, _: QAction):
+def _on_save_file(ctx: BaseCodeEditorWindow, _: Action):
     ctx.save_file()
 
 
-def _on_save_file_as(ctx: BaseCodeEditorWindow, _: QAction):
+def _on_save_file_as(ctx: BaseCodeEditorWindow, _: Action):
     ctx.save_as_file()
 
 
-def _on_quit(ctx: BaseCodeEditorWindow, _: QAction):
+def _on_quit(ctx: BaseCodeEditorWindow, _: Action):
     ctx.close()
 
 
-def _on_undo(ctx: BaseCodeEditorWindow, _: QAction):
+def _on_undo(ctx: BaseCodeEditorWindow, _: Action):
     ctx.undo()
 
 
-def _on_redo(ctx: BaseCodeEditorWindow, _: QAction):
+def _on_redo(ctx: BaseCodeEditorWindow, _: Action):
     ctx.redo()
 
 
-def _on_cut(ctx: BaseCodeEditorWindow, _: QAction):
+def _on_cut(ctx: BaseCodeEditorWindow, _: Action):
     ctx.cut()
 
 
-def _on_copy(ctx: BaseCodeEditorWindow, _: QAction):
+def _on_copy(ctx: BaseCodeEditorWindow, _: Action):
     ctx.copy()
 
 
-def _on_paste(ctx: BaseCodeEditorWindow, _: QAction):
+def _on_paste(ctx: BaseCodeEditorWindow, _: Action):
     ctx.paste()
 
 
-def _on_format_code(ctx: BaseCodeEditorWindow, _: QAction):
+def _on_format_code(ctx: BaseCodeEditorWindow, _: Action):
     ctx.format_code()
 
 
-def _on_select_all(ctx: BaseCodeEditorWindow, _: QAction):
+def _on_select_all(ctx: BaseCodeEditorWindow, _: Action):
     ctx.select_all()
 
 
@@ -146,7 +144,7 @@ DEFAULT_ACTION_SELECT_ALL = Action(
     on_triggered=_on_select_all,
 )
 
-DEFAULT_FILE_MENU = MenuConfig(
+DEFAULT_FILE_MENU = Menu(
     title=MENU_FILE,
     actions=[
         DEFAULT_ACTION_OPEN,
@@ -157,7 +155,7 @@ DEFAULT_FILE_MENU = MenuConfig(
     ],
 )
 
-DEFAULT_EDIT_MENU = MenuConfig(
+DEFAULT_EDIT_MENU = Menu(
     title=MENU_EDIT,
     actions=[
         DEFAULT_ACTION_UNDO,
@@ -173,8 +171,8 @@ DEFAULT_EDIT_MENU = MenuConfig(
     ],
 )
 
-DEFAULT_MENUS: List[MenuConfig] = [DEFAULT_FILE_MENU, DEFAULT_EDIT_MENU]
-DEFAULT_TOOLBAR = ToolBarConfig(
+DEFAULT_MENUS: List[Menu] = [DEFAULT_FILE_MENU, DEFAULT_EDIT_MENU]
+DEFAULT_TOOLBAR = ToolBar(
     actions=[
         DEFAULT_ACTION_OPEN,
         DEFAULT_ACTION_SAVE,

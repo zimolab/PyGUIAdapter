@@ -1,10 +1,8 @@
 import json
 
-from qtpy.QtWidgets import QAction
-
 from pyguiadapter.action import Action, Separator
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.menu import MenuConfig
+from pyguiadapter.menu import Menu
 from pyguiadapter.utils import filedialog, inputdialog, messagebox
 from pyguiadapter.window import SimpleWindowEventListener
 from pyguiadapter.windows.fnselect import FnSelectWindow
@@ -15,7 +13,7 @@ def menu_example():
 
 
 ############Action Callbacks##########
-def on_action_open(window: FnSelectWindow, action: QAction):
+def on_action_open(window: FnSelectWindow, _: Action):
     print("on_action_open()")
     ret = filedialog.get_open_file(
         parent=window,
@@ -27,7 +25,7 @@ def on_action_open(window: FnSelectWindow, action: QAction):
         messagebox.show_info_message(window, f"File will be opened: {ret}")
 
 
-def on_action_save(window: FnSelectWindow, action: QAction):
+def on_action_save(window: FnSelectWindow, _: Action):
     print("on_action_save()")
     ret = filedialog.get_save_file(
         parent=window,
@@ -39,7 +37,7 @@ def on_action_save(window: FnSelectWindow, action: QAction):
         messagebox.show_info_message(window, f"File will be saved to: {ret}")
 
 
-def on_action_settings(window: FnSelectWindow, action: QAction):
+def on_action_settings(window: FnSelectWindow, _: Action):
     default_settings = {
         "opt1": 1,
         "opt2": "2",
@@ -63,16 +61,16 @@ def on_action_settings(window: FnSelectWindow, action: QAction):
         messagebox.show_info_message(window, f"new settings: {new_settings}")
 
 
-def on_action_confirm_quit(window: FnSelectWindow, action: QAction):
-    print("on_action_confirm_close(): ", action.isChecked())
+def on_action_confirm_quit(window: FnSelectWindow, action: Action, checked: bool):
+    print("on_action_confirm_close(): ", checked)
 
 
-def on_action_close(window: FnSelectWindow, action: QAction):
+def on_action_close(window: FnSelectWindow, _: Action):
     print("on_action_close()")
     window.close()
 
 
-def on_action_about(window: FnSelectWindow, action: QAction):
+def on_action_about(window: FnSelectWindow, _: Action):
     print("on_action_about()")
 
 
@@ -122,16 +120,16 @@ if __name__ == "__main__":
         # get the state of action_confirm_quit
         # if it is checked, show a question message box to ask if the user really wants to close the window
         # if it is not checked, return True to close the window directly.
-        state = window.query_action_state(action_confirm_quit)
+        state = window.get_action_state(action_confirm_quit)
         if state:
             # access the
             ret = messagebox.show_question_message(
                 window,
                 message="Do you really want to close the window?",
                 title="Quit",
-                buttons=messagebox.StandardButton.Yes | messagebox.StandardButton.No,
+                buttons=messagebox.Yes | messagebox.No,
             )
-            return ret == messagebox.StandardButton.Yes
+            return ret == messagebox.Yes
         return True
 
     window_listener = SimpleWindowEventListener(
@@ -139,7 +137,7 @@ if __name__ == "__main__":
     )
 
     menus = [
-        MenuConfig(
+        Menu(
             title="File",
             actions=[
                 action_open,
@@ -149,7 +147,7 @@ if __name__ == "__main__":
                 action_quit,
             ],
         ),
-        MenuConfig(title="Help", actions=[action_settings]),
+        Menu(title="Help", actions=[action_settings]),
     ]
 
     adapter = GUIAdapter()

@@ -8,7 +8,7 @@ from .actions import DEFAULT_MENUS, DEFAULT_TOOLBAR
 from .base import BaseCodeEditorWindow, CodeEditorConfig
 from .. import utils
 from ..action import Separator
-from ..toolbar import ToolBarConfig
+from ..toolbar import ToolBar
 from ..window import BaseWindowEventListener
 
 
@@ -18,8 +18,8 @@ class CodeEditorWindow(BaseCodeEditorWindow):
         parent: Optional[QWidget],
         config: Optional[CodeEditorConfig] = None,
         listener: Optional[BaseWindowEventListener] = None,
-        toolbar: Optional[ToolBarConfig] = None,
-        menus: Optional[List[Union[ToolBarConfig, Separator]]] = None,
+        toolbar: Optional[ToolBar] = None,
+        menus: Optional[List[Union[ToolBar, Separator]]] = None,
     ):
         config = config or CodeEditorConfig()
 

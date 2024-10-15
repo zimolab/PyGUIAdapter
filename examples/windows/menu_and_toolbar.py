@@ -1,14 +1,12 @@
-from qtpy.QtWidgets import QAction
-
 from pyguiadapter.action import Action, Separator
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.menu import MenuConfig
-from pyguiadapter.toolbar import ToolBarConfig
+from pyguiadapter.menu import Menu
+from pyguiadapter.toolbar import ToolBar
 from pyguiadapter.windows.fnexec import FnExecuteWindow
 from pyguiadapter.utils import messagebox, filedialog
 
 
-def on_action_about(window: FnExecuteWindow, action: QAction):
+def on_action_about(window: FnExecuteWindow, _: Action):
     messagebox.show_info_message(
         parent=window,
         message="This is an example of toolbar and menu with custom actions.",
@@ -16,7 +14,7 @@ def on_action_about(window: FnExecuteWindow, action: QAction):
     )
 
 
-def on_action_close(window: FnExecuteWindow, action: QAction):
+def on_action_close(window: FnExecuteWindow, _: Action):
     ret = messagebox.show_question_message(
         window, "Are you sure you want to quit?", buttons=messagebox.Yes | messagebox.No
     )
@@ -24,7 +22,7 @@ def on_action_close(window: FnExecuteWindow, action: QAction):
         window.close()
 
 
-def on_action_open(window: FnExecuteWindow, action: QAction):
+def on_action_open(window: FnExecuteWindow, _: Action):
     ret = filedialog.get_open_file(
         window,
         title="Open File",
@@ -36,7 +34,7 @@ def on_action_open(window: FnExecuteWindow, action: QAction):
     messagebox.show_info_message(window, f"File will be opened: {ret}")
 
 
-def on_action_save(window: FnExecuteWindow, action: QAction):
+def on_action_save(window: FnExecuteWindow, _: Action):
     ret = filedialog.get_save_file(
         window,
         title="Save File",
@@ -48,18 +46,18 @@ def on_action_save(window: FnExecuteWindow, action: QAction):
     messagebox.show_info_message(window, f"File will be saved: {ret}")
 
 
-def on_action_auto_theme(window: FnExecuteWindow, action: QAction):
-    if action.isChecked():
+def on_action_auto_theme(window: FnExecuteWindow, _: Action, checked: bool):
+    if checked:
         messagebox.show_info_message(window, "Auto theme is selected.")
 
 
-def on_action_light_theme(window: FnExecuteWindow, action: QAction):
-    if action.isChecked():
+def on_action_light_theme(window: FnExecuteWindow, _: Action, checked: bool):
+    if checked:
         messagebox.show_info_message(window, "Light theme is selected.")
 
 
-def on_action_dark_theme(window: FnExecuteWindow, action: QAction):
-    if action.isChecked():
+def on_action_dark_theme(window: FnExecuteWindow, _: Action, checked: bool):
+    if checked:
         messagebox.show_info_message(window, "Dark theme is selected.")
 
 
@@ -109,12 +107,12 @@ action_dark_theme = Action(
     on_toggled=on_action_dark_theme,
 )
 
-submenu_theme = MenuConfig(
+submenu_theme = Menu(
     title="Theme",
     actions=[action_auto_them, action_light_theme, action_dark_theme],
     exclusive=True,
 )
-menu_file = MenuConfig(
+menu_file = Menu(
     title="File",
     actions=[
         action_open,
@@ -125,7 +123,7 @@ menu_file = MenuConfig(
         submenu_theme,
     ],
 )
-menu_help = MenuConfig(
+menu_help = Menu(
     title="Help",
     actions=[action_about],
 )
@@ -147,7 +145,7 @@ if __name__ == "__main__":
     adapter.add(
         menu_toolbar_example,
         window_menus=[menu_file, menu_help],
-        window_toolbar=ToolBarConfig(
+        window_toolbar=ToolBar(
             actions=[action_open, action_save, Separator(), action_close]
         ),
     )

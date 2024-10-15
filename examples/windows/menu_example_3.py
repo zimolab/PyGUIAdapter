@@ -1,19 +1,17 @@
-from qtpy.QtWidgets import QAction
-
 from pyguiadapter.action import Action, Separator
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.menu import MenuConfig
+from pyguiadapter.menu import Menu
 from pyguiadapter.utils import messagebox
 from pyguiadapter.windows.fnselect import FnSelectWindow
 
 
-def on_action_test(window: FnSelectWindow, action: QAction):
+def on_action_test(window: FnSelectWindow, action: Action):
     messagebox.show_info_message(
-        window, message=f"Action Triggered!(Action: {action.text()})"
+        window, message=f"Action Triggered!(Action: {action.text})"
     )
 
 
-def on_action_close(window: FnSelectWindow, action: QAction):
+def on_action_close(window: FnSelectWindow, _: Action):
     ret = messagebox.show_question_message(
         window,
         message="Are you sure to close the application?",
@@ -31,7 +29,7 @@ action_close = Action(
 )
 
 
-menu_file = MenuConfig(
+menu_file = Menu(
     title="File",
     actions=[action_test, Separator(), action_close],
 )

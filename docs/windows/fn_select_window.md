@@ -166,7 +166,7 @@ from qtpy.QtWidgets import QAction
 
 from pyguiadapter.action import Action
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.toolbar import ToolBarConfig
+from pyguiadapter.toolbar import ToolBar
 from pyguiadapter.windows.fnselect import FnSelectWindow
 from pyguiadapter.utils import messagebox
 
@@ -186,7 +186,7 @@ def foo():
     pass
 
 
-toolbar_config = ToolBarConfig(
+toolbar_config = ToolBar(
     actions=[action_test],
 )
 
@@ -216,7 +216,7 @@ from qtpy.QtWidgets import QAction
 
 from pyguiadapter.action import Action, Separator
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.menu import MenuConfig
+from pyguiadapter.menu import Menu
 from pyguiadapter.utils import messagebox
 from pyguiadapter.windows.fnselect import FnSelectWindow
 
@@ -244,7 +244,7 @@ action_close = Action(
     text="Close", icon="fa.close", on_triggered=on_action_close, shortcut="Ctrl+Q"
 )
 
-menu_file = MenuConfig(
+menu_file = Menu(
     title="File",
     actions=[action_test, Separator(), action_close],
 )

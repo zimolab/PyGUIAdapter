@@ -2,8 +2,8 @@ import dataclasses
 from typing import Type, Tuple, Dict, Callable, Any, Optional, List, Union
 
 from .action import Separator
-from .menu import MenuConfig
-from .toolbar import ToolBarConfig
+from .menu import Menu
+from .toolbar import ToolBar
 from .fn import FnInfo
 from .paramwidget import BaseParameterWidget, BaseParameterWidgetConfig
 from .window import BaseWindowEventListener
@@ -18,7 +18,7 @@ class FnBundle(object):
     ]
     window_config: FnExecuteWindowConfig
     window_listener: Optional[BaseWindowEventListener]
-    window_toolbar: Optional[ToolBarConfig]
-    window_menus: Optional[List[Union[MenuConfig, Separator]]]
+    window_toolbar: Optional[ToolBar]
+    window_menus: Optional[List[Union[Menu, Separator]]]
     on_execute_result: Optional[Callable[[Any, Dict[str, Any]], None]] = None
     on_execute_error: Optional[Callable[[Exception, Dict[str, Any]], None]] = None

@@ -5,21 +5,21 @@ from .action import Action, Separator
 
 
 @dataclasses.dataclass(frozen=True)
-class MenuConfig(object):
+class Menu(object):
     title: str
-    actions: List[Union[Action, Separator, "MenuConfig"]]
+    actions: List[Union[Action, Separator, "Menu"]]
     separators_collapsible: bool = True
     tear_off_enabled: bool = True
     exclusive: bool = False
 
-    def remove_action(self, action: Union[str, Action, Separator, "MenuConfig"]):
+    def remove_action(self, action: Union[str, Action, Separator, "Menu"]):
         if isinstance(action, str):
             for action_ in self.actions:
                 if isinstance(action_, Action):
                     if action_.text == action:
                         action = action_
                         break
-                if isinstance(action_, MenuConfig):
+                if isinstance(action_, Menu):
                     if action_.title == action:
                         action = action_
                         break

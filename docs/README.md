@@ -506,8 +506,8 @@ from qtpy.QtWidgets import QAction
 
 from pyguiadapter.action import Action, Separator
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.menu import MenuConfig
-from pyguiadapter.toolbar import ToolBarConfig
+from pyguiadapter.menu import Menu
+from pyguiadapter.toolbar import ToolBar
 from pyguiadapter.windows.fnexec import FnExecuteWindow
 from pyguiadapter.utils import messagebox, filedialog
 
@@ -613,12 +613,12 @@ action_dark_theme = Action(
     on_toggled=on_action_dark_theme,
 )
 
-submenu_theme = MenuConfig(
+submenu_theme = Menu(
     title="Theme",
     actions=[action_auto_them, action_light_theme, action_dark_theme],
     exclusive=True,
 )
-menu_file = MenuConfig(
+menu_file = Menu(
     title="File",
     actions=[
         action_open,
@@ -629,7 +629,7 @@ menu_file = MenuConfig(
         submenu_theme,
     ],
 )
-menu_help = MenuConfig(
+menu_help = Menu(
     title="Help",
     actions=[action_about],
 )
@@ -651,7 +651,7 @@ if __name__ == "__main__":
     adapter.add(
         menu_toolbar_example,
         window_menus=[menu_file, menu_help],
-        window_toolbar=ToolBarConfig(
+        window_toolbar=ToolBar(
             actions=[action_open, action_save, Separator(), action_close]
         ),
     )

@@ -467,8 +467,8 @@ from qtpy.QtWidgets import QAction
 
 from pyguiadapter.action import Action, Separator
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.menu import MenuConfig
-from pyguiadapter.toolbar import ToolBarConfig
+from pyguiadapter.menu import Menu
+from pyguiadapter.toolbar import ToolBar
 from pyguiadapter.windows.fnexec import FnExecuteWindow
 from pyguiadapter.utils import messagebox, filedialog
 
@@ -574,12 +574,12 @@ action_dark_theme = Action(
     on_toggled=on_action_dark_theme,
 )
 
-submenu_theme = MenuConfig(
+submenu_theme = Menu(
     title="Theme",
     actions=[action_auto_them, action_light_theme, action_dark_theme],
     exclusive=True,
 )
-menu_file = MenuConfig(
+menu_file = Menu(
     title="File",
     actions=[
         action_open,
@@ -590,7 +590,7 @@ menu_file = MenuConfig(
         submenu_theme,
     ],
 )
-menu_help = MenuConfig(
+menu_help = Menu(
     title="Help",
     actions=[action_about],
 )
@@ -612,7 +612,7 @@ if __name__ == "__main__":
     adapter.add(
         menu_toolbar_example,
         window_menus=[menu_file, menu_help],
-        window_toolbar=ToolBarConfig(
+        window_toolbar=ToolBar(
             actions=[action_open, action_save, Separator(), action_close]
         ),
     )
@@ -1287,7 +1287,7 @@ from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.adapter.ucontext import uprint
 from pyguiadapter.exceptions import ParameterError
 from pyguiadapter.extend_types import color_t
-from pyguiadapter.menu import MenuConfig
+from pyguiadapter.menu import Menu
 from pyguiadapter.utils import messagebox, filedialog
 from pyguiadapter.windows.fnexec import FnExecuteWindow
 
@@ -1407,7 +1407,7 @@ if __name__ == "__main__":
         on_triggered=on_load_params,
     )
 
-    menu = MenuConfig(
+    menu = Menu(
         title="File",
         actions=[action_save_params, action_load_params],
     )
@@ -1447,7 +1447,7 @@ from qtpy.QtWidgets import QAction
 
 from pyguiadapter.action import Action, Separator
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.menu import MenuConfig
+from pyguiadapter.menu import Menu
 from pyguiadapter.windows.fnexec import (
     FnExecuteWindow,
     BottomDockWidgetArea,
@@ -1501,7 +1501,7 @@ def main():
         text="Float Output Dock",
         on_triggered=on_float_output_dock,
     )
-    menu_views = MenuConfig(
+    menu_views = Menu(
         title="Views",
         actions=[
             action_document_dock,

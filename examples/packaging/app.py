@@ -1,12 +1,11 @@
 import os.path
 from typing import Optional
 
-from qtpy.QtWidgets import QAction
 
 from pyguiadapter.action import Action
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.exceptions import ParameterError
-from pyguiadapter.menu import MenuConfig
+from pyguiadapter.menu import Menu
 from pyguiadapter.utils import messagebox
 from pyguiadapter.windows.fnexec import FnExecuteWindowConfig, FnExecuteWindow
 
@@ -36,7 +35,7 @@ if __name__ == "__main__":
 
     ABOUT_FILEPATH = os.path.join(os.path.dirname(__file__), "about.html")
 
-    def on_action_about(window: FnExecuteWindow, action: QAction):
+    def on_action_about(window: FnExecuteWindow, action: Action):
         messagebox.show_text_file(
             window, text_file=ABOUT_FILEPATH, text_format="html", title="About"
         )
@@ -46,7 +45,7 @@ if __name__ == "__main__":
         icon="mdi6.information-outline",
         on_triggered=on_action_about,
     )
-    menu_help = MenuConfig(title="Help", actions=[action_about])
+    menu_help = Menu(title="Help", actions=[action_about])
 
     window_config = FnExecuteWindowConfig(
         title="Equation Solver",

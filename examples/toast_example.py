@@ -1,18 +1,16 @@
-from qtpy.QtWidgets import QAction
-
 from pyguiadapter.action import Action
 from pyguiadapter.adapter import GUIAdapter, utoast
 from pyguiadapter.extend_types import text_t
 from pyguiadapter.toast import ToastConfig
-from pyguiadapter.toolbar import ToolBarConfig
+from pyguiadapter.toolbar import ToolBar
 from pyguiadapter.windows.fnexec import FnExecuteWindow
 
 
-def show_toast(win: FnExecuteWindow, action: QAction):
+def show_toast(win: FnExecuteWindow, action: Action):
     win.show_toast("Paused!", duration=3000, clear=True)
 
 
-def clear_toasts(win: FnExecuteWindow, action: QAction):
+def clear_toasts(win: FnExecuteWindow, action: Action):
     win.clear_toasts()
 
 
@@ -47,6 +45,6 @@ if __name__ == "__main__":
     adapter = GUIAdapter()
     adapter.add(
         toast_example,
-        window_toolbar=ToolBarConfig(actions=[action_toast, action_clear_toasts]),
+        window_toolbar=ToolBar(actions=[action_toast, action_clear_toasts]),
     )
     adapter.run()
