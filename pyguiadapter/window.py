@@ -1,5 +1,4 @@
 import dataclasses
-import warnings
 from abc import abstractmethod
 from concurrent.futures import Future
 from typing import Tuple, Dict, List, Optional, Union, Sequence, Callable
@@ -435,97 +434,133 @@ class BaseWindow(QMainWindow):
         return self.styleSheet()
 
     def has_action(self, action: Action) -> bool:
-        pass
-
-    def is_action_checkable(self, action: Action) -> Optional[bool]:
-        pass
-
-    def is_action_checked(self, action: Action) -> Optional[bool]:
-        pass
-
-    # def set_action_state(self, action: Action, checked: bool) -> Optional[bool]:
-    #     pass
-    #
-    # def toggle_action_state(self, action: Action) -> Optional[bool]:
-    #     pass
-
-    def set_action_enabled(self, action: Action, enabled: bool) -> Optional[bool]:
-        pass
-
-    def is_action_enabled(self, action: Action) -> Optional[bool]:
-        pass
-
-    def find_action(self, action: Action) -> Optional[QAction]:
         """
-        查找`action`对应的`QAction`实例。
+        检测指定`Action`是否被添加到当前窗口中。
 
         Args:
-            action: 待查找的`Action`实例
+            action: 待检测的`Action`
 
         Returns:
-            如果`action`被添加到当前窗口的菜单栏或工具栏中，则返回对应的`QAction`实例，否则，返回`None`。
+            返回`True`代表指定`Action`已被添加到当前窗口中，否则返回`False`。
         """
-        return self._actions.get(id(action), None)
+        return self._find_action(action) is not None
 
-    def set_action_state(self, action: Action, checked: bool) -> bool:
+    def is_action_checkable(self, action: Action) -> Optional[bool]:
         """
-        设置`action`对应`QAction`对象的“选中”（`checked`)状态。
+         检测指定`Action`是否为“可选中”的。
 
         Args:
-            action: 待查找的`Action`实例
+            action: 待检测的`Action`
+
+        Returns:
+             返回`True`代表指定`Action`为“可选中”的，否则返回`False`。若未找到指定`Action`，则返回`None`。
+        """
+        action = self._find_action(action)
+        if not action:
+            return None
+        return action.isCheckable()
+
+    def is_action_checked(self, action: Action) -> Optional[bool]:
+        """
+         检测指定`Action`是否处于“选中”状态。
+
+        Args:
+            action: 待检测的`Action`
+
+        Returns:
+             返回`True`代表指定`Action`当前为“选中”状态的，否则返回`False`。若未找到指定`Action`，则返回`None`。
+        """
+        action = self._find_action(action)
+        if not action:
+            return None
+        return action.isChecked()
+
+    def set_action_state(self, action: Action, checked: bool) -> Optional[bool]:
+        """
+        设置`Action`当前状态。
+
+        Args:
+            action: 目标`Action`
             checked: 目标状态
 
         Returns:
-            若未找到`action`对应的`QAction`对象，或者对应的`QAction`对象的`checkable`属性为`False`（`isCheckable() == False`），
-            则该函数返回`False`。否则返回`True`。
-
-
+            返回设置之前的状态。若未找到目标`Action`，则返回`None`。
         """
-        action = self.find_action(action)
-        if action is None:
-            warnings.warn(f"action not found: {action}")
-            return False
-        if not action.isCheckable():
-            warnings.warn(f"action is not checkable: {action}")
-            return False
+        action = self._find_action(action)
+        if not action:
+            return None
+        old_state = action.isChecked()
         action.setChecked(checked)
-        return True
+        return old_state
 
-    def toggle_action_state(self, action: Action) -> bool:
+    def toggle_action_state(self, action: Action) -> Optional[bool]:
         """
-        切换`action`对应`QAction`对象的“选中”（`checked`)状态。
+        切换目标`Action`的当前状态。
 
         Args:
-            action: 待查找的`Action`实例
+            action: 目标`Action`
 
         Returns:
-            若未找到`action`对应的`QAction`对象，或者对应的`QAction`对象的`checkable`属性为`False`（`isCheckable() == False`），
-            则该函数返回`False`。否则返回`True`。
+            返回切换之前的状态。若未找到目标`Action`，则返回`None`。
         """
-        action = self.find_action(action)
-        if action is None:
-            warnings.warn(f"action not found: {action}")
-            return False
-        if not action.isCheckable():
-            warnings.warn(f"action is not checkable: {action}")
-            return False
+        action = self._find_action(action)
+        if not action:
+            return None
+        old_state = action.isChecked()
         action.toggle()
+        return old_state
 
     def get_action_state(self, action: Action) -> Optional[bool]:
         """
-        查询`action`是否处于“选中”（`checked`)状态。
+        检查目标`Action`的当前状态
 
         Args:
-            action: 待查找的`Action`实例
+            action: 目标`Action`
 
         Returns:
-            若未找到`action`对应的`QAction`对象，函数将返回`None`。否则返回一个`bool`值，用以表示对应`QAction`是否处于“选中”（`checked`)状态。
+            返回目标`Action`的当前状态。若未找到目标`Action`，则返回`None`。
 
         """
-        action = self.find_action(action)
+        action = self._find_action(action)
         if action is None:
             return None
         return action.isChecked()
+
+    def set_action_enabled(self, action: Action, enabled: bool) -> Optional[bool]:
+        """
+        设置目标`Action`的启用状态。
+
+        Args:
+            action: 目标`Action`
+            enabled: 目标状态
+
+        Returns:
+            返回设置之前的启用状态。若未找到目标`Action`，则返回`None`。
+        """
+        action = self._find_action(action)
+        if not action:
+            return None
+        old_state = action.isEnabled()
+        action.setEnabled(enabled)
+        return old_state
+
+    def is_action_enabled(self, action: Action) -> Optional[bool]:
+        """
+        检查目标`Action`当前的启用状态。
+
+        Args:
+            action: 目标`Action`
+
+        Returns:
+            返回目标`Action`当前的启用状态。若未找到目标`Action`，则返回`None`。
+        """
+        action = self._find_action(action)
+        if not action:
+            return None
+        return action.isEnabled()
+
+    def _find_action(self, action: Action) -> Optional[QAction]:
+        return self._actions.get(id(action), None)
 
     @staticmethod
     def get_clipboard_text() -> str:
