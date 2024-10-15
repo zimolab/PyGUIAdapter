@@ -16,8 +16,6 @@ from ...paramwidget import (
 from ...utils import IconType
 from ...window import BaseWindow, BaseWindowConfig
 
-DEFAULT_WINDOW_SIZE = (1024, 768)
-
 DEFAULT_EXECUTOR_CLASS = ThreadFunctionExecutor
 
 ParameterWidgetType = Union[
@@ -39,58 +37,124 @@ AllDockWidgetAreas = Qt.AllDockWidgetAreas
 @dataclasses.dataclass(frozen=True)
 class FnExecuteWindowConfig(BaseWindowConfig):
     title: Optional[str] = None
-    size: Union[Tuple[int, int], QSize] = DEFAULT_WINDOW_SIZE
+    """窗口标题。"""
+
+    size: Union[Tuple[int, int], QSize] = (1024, 768)
+    """窗口大小。"""
 
     execute_button_text: str = "Execute"
+    """执行按钮文本。"""
 
     cancel_button_text: str = "Cancel"
+    """取消按钮文本。"""
+
+    clear_button_text: str = "Clear"
+    """清除按钮文本。"""
 
     clear_button_visible: bool = True
-    clear_button_text: str = "Clear"
+    """是否显示清除按钮。"""
+
+    clear_checkbox_text: str = "clear output"
+    """清除选项框文本。"""
 
     clear_checkbox_visible: bool = True
+    """是否显示清除选项框。"""
+
     clear_checkbox_checked: bool = True
-    clear_checkbox_text: str = "clear output"
+    """是否将清除选项框设置为选中状态。"""
 
     statusbar_visible: bool = False
+    """是否显示窗口状态栏"""
 
     initial_docks_state: Literal["auto", "tabified"] = "auto"
+    """停靠窗口的初始状态。可选`auto`或`tabified`。当指定为`tabified`时，停靠窗口将组合成一个`Tab`组件，每个停靠窗口都将以`Tab页`的形式出现。"""
 
     output_dock_visible: bool = True
+    """是否显示`Output停靠窗口`。"""
+
     output_dock_title: str = "Output"
+    """`Output停靠窗口`的标题。"""
+
     output_dock_floating: bool = False
+    """是否使`Output停靠窗口`处于悬浮状态。"""
+
     output_dock_initial_area: DockWidgetArea = BottomDockWidgetArea
+    """`Output停靠窗口`的初始停靠区域。"""
+
     output_dock_initial_size: Tuple[Optional[int], Optional[int]] = (None, 230)
+    """`Output停靠窗口`的初始大小，格式为`(width, height)`，可以只设置其中一个维度，另一个不需要设置的维度置为`None`即可。"""
 
     document_dock_visible: bool = True
+    """是否显示`Document停靠窗口`。"""
+
     document_dock_title: str = "Document"
+    """`Document停靠窗口`的标题。"""
+
     document_dock_floating: bool = False
+    """是否使`Document停靠窗口`处于悬浮状态。"""
+
     document_dock_initial_area: DockWidgetArea = RightDockWidgetArea
+    """`Document停靠窗口`的初始停靠区域。"""
+
     document_dock_initial_size: Tuple[Optional[int], Optional[int]] = (614, None)
+    """`Document停靠窗口`的初始大小，格式为`(width, height)`，可以只设置其中一个维度，另一个不需要设置的维度置为`None`即可。"""
 
     output_browser_config: Optional[OutputBrowserConfig] = None
+    """`输出浏览器`的配置。"""
+
     document_browser_config: Optional[DocumentBrowserConfig] = None
+    """`文档浏览器`的配置。"""
 
     default_parameter_group_name: str = "Main Parameters"
+    """默认函数参数分组的名称。"""
+
     default_parameter_group_icon: IconType = None
+    """默认函数参数分组的图标。"""
+
     parameter_group_icons: Dict[str, IconType] = dataclasses.field(default_factory=dict)
+    """除默认函数参数分组外其他函数参数分组的图标"""
 
     disable_widgets_on_execute: bool = False
+    """是否在函数执行期间使参数控件处于不可输入状态。"""
 
     print_function_result: bool = True
+    """是否在`输出浏览器`中打印函数调用结果。"""
+
     show_function_result: bool = False
+    """是否弹窗显示函数调用结果。"""
+
     print_function_error: bool = True
+    """是否在`输出浏览器`中打印函数执行过程中发生的异常和错误。"""
+
     show_function_error: bool = True
+    """是否弹窗显示函数执行过程中发生的异常和错误。"""
+
     function_error_traceback: bool = True
+    """在打印或弹窗显示函数执行过程中发生的异常时，是否显示异常的回溯信息。"""
 
     error_dialog_title: str = "Error"
+    """错误信息弹窗的标题。"""
+
     result_dialog_title: str = "Result"
+    """函数调用结果弹窗的标题。"""
+
     parameter_error_message: str = "{}: {}"
+    """`ParameterError`类型异常的消息模板，模板第一个变量（`{}`）为`参数名称`，第二个变量(`{}`)为`异常的消息（message）`。"""
+
     function_result_message: str = "function result: {}\n"
+    """函数调用结果的消息模板，模板变量（`{}`）为函数的返回值。"""
+
     function_error_message: str = "{}: {}\n"
+    """函数异常或错误的消息模板，模板第一个变量（`{}`）为`异常的类型`，第二个变量(`{}`)为`异常的消息（message）`。"""
+
     function_executing_message: str = "A function is executing now!"
+    """提示消息，用以提示“函数正在执行”。"""
+
     uncancelable_function_message: str = "The function is not cancelable!"
+    """提示消息，用以提示“当前函数为不可取消的函数”。"""
+
     function_not_executing_message: str = "No function is executing now!"
+    """提示消息，用以提示“当前函数未处于执行状态”。"""
 
 
 # noinspection SpellCheckingInspection
