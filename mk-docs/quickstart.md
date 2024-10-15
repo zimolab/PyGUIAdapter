@@ -331,4 +331,106 @@ if __name__ == "__main__":
 
 ###  2、更高的精度——控件属性的配置
 
+在目前的示例程序中，参数`a`、`b`、`c`的输入控件只能输入小数点后2位，且每次调整的步进值为1。
+
+<div style="text-align: center">
+    <img src="/assets/widget_config_before.gif" />
+</div>
+
+
+
+原因在于`float`类型对应的`FloatSpinBox`控件，其`step`（单次步进值）属性和`decimals`（小数点位数）属性分别被配置为`1.0`和`2`。开发者可以通过多种方式修改控件的默认属性配置，以达到改变控件的默认行为的目的。
+
+<div style="text-align: center">
+    <img src="/assets/floatspin_def_config.png" />
+</div>
+
+现在我们将对上述示例做进一步修改，将参数`a`、`b`、`c`对应控件的`decimals`（小数点位数）配置为`5`，`step`（单次步进值）配置为`0.00005`。
+
+#### 方法1：利用`@params...@end`配置块
+
+<div style="text-align: center">
+    <img src="/assets/params_config_block.png" />
+</div>
+
+**完整代码如下：**
+
+```python
+from typing import Optional
+
+from pyguiadapter.adapter import GUIAdapter
+from pyguiadapter.adapter.uoutput import uprint
+from pyguiadapter.exceptions import ParameterError
+from pyguiadapter.windows.fnexec import FnExecuteWindowConfig
+
+
+def equation_solver_3(
+    a: float = 1.0, b: float = 0.0, c: float = 0.0
+) -> Optional[tuple]:
+    """A simple equation solver for equations like:
+
+    **ax^2 + bx + c = 0** (a, b, c ∈ **R** and a ≠ 0)
+
+    @param a: a ∈ R and a ≠ 0
+    @param b: b ∈ R
+    @param c: c ∈ R
+    @return:
+
+    @params
+    [a]
+    decimals = 5
+    step = 0.00005
+
+    [b]
+    decimals = 5
+    step = 0.00005
+
+    [c]
+    decimals = 5
+    step = 0.00005
+    @end
+
+    """
+    if a == 0:
+        raise ParameterError(parameter_name="a", message="a cannot be zero!")
+    uprint(f"Equation:")
+    uprint(f"  {a}x² + {b}x + {c} = 0")
+    delta = b**2 - 4 * a * c
+    if delta < 0:
+        return None
+    x1 = (-b + delta**0.5) / (2 * a)
+    if delta == 0:
+        return x1, x1
+    x2 = (-b - delta**0.5) / (2 * a)
+    return x1, x2
+
+
+if __name__ == "__main__":
+    window_config = FnExecuteWindowConfig(
+        title="Equation Solver",
+        icon="mdi6.function-variant",
+        execute_button_text="Solve",
+        size=(350, 550),
+        document_dock_visible=False,
+        output_dock_initial_size=(None, 100),
+        show_function_result=True,
+        function_result_message="roots: {}",
+        default_parameter_group_name="Equation Parameters",
+    )
+
+    adapter = GUIAdapter()
+    adapter.add(equation_solver_3, window_config=window_config)
+    adapter.run()
+
+```
+
+
+
+#### 方法2：指定控件配置类对象
+
+```python
+```
+
+
+
 ###  3、添加菜单

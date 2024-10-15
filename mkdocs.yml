@@ -12,7 +12,7 @@ nav:
   - 添加多个函数: multiple-functions.md
   - 数据类型与控件: widgets.md
   - 配置控件属性: widget-config.md
-  - 窗口: window.md
+  - 配置窗口属性: window.md
   - 工具栏: toolbar.md
   - 菜单栏: menu.md
   - 取消函数执行: cancel.md
@@ -21,6 +21,7 @@ nav:
   - 界面美化: style.md
   - 自定义控件: custom-widget.md
   - 实用函数: utility.md
+  - 关于图标: icon_type.md
   - 应用打包: packaging.md
   - API参考:
     - pyguiadapter.window: apis/pyguiadapter.window.md
@@ -28,6 +29,8 @@ nav:
     - pyguiadapter.toolbar: apis/pyguiadapter.toolbar.md
     - pyguiadapter.menu: apis/pyguiadapter.menu.md
     - pyguiadapter.adapter.uoutput: apis/pyguiadapter.adapter.uoutput.md
+    - pyguiadapter.textbrowser: apis/pyguiadapter.textbrowser.md
+    - pyguiadapter.windows: apis/pyguiadapter.windows.md
     - pyguiadapter.windows.fnexec: apis/pyguiadapter.windows.fnexec.md
   - 贡献: contribution.md
   - 开源许可: license.md

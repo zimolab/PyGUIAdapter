@@ -1,10 +1,4 @@
-::: pyguiadapter.windows.fnexec.FnExecuteWindowConfig
-    options:
-        heading_level: 3
-        show_root_full_path: false
-        show_source: true
-
-::: pyguiadapter.windows.fnexec.OutputBrowserConfig
+::: pyguiadapter.textbrowser.TextBrowserConfig
     options:
         heading_level: 3
         show_root_full_path: false
@@ -12,51 +6,69 @@
 
 ---
 
-## 类型与常量
+## 类型和常量
 
-::: pyguiadapter.windows.fnexec.DockWidgetArea
+::: pyguiadapter.textbrowser.LineWrapMode
     options:
         heading_level: 3
         show_root_full_path: false
         show_source: true
 
-::: pyguiadapter.windows.fnexec.NoDockWidgetArea
+::: pyguiadapter.textbrowser.NoLineWrap
     options:
         heading_level: 4
         show_root_full_path: false
         show_source: true
 
-::: pyguiadapter.windows.fnexec.BottomDockWidgetArea
+::: pyguiadapter.textbrowser.WidgetWidth
     options:
         heading_level: 4
         show_root_full_path: false
         show_source: true
 
-::: pyguiadapter.windows.fnexec.TopDockWidgetArea
+::: pyguiadapter.textbrowser.FixedPixelWidth
     options:
         heading_level: 4
         show_root_full_path: false
         show_source: true
 
-::: pyguiadapter.windows.fnexec.LeftDockWidgetArea
+::: pyguiadapter.textbrowser.FixedColumnWidth
     options:
         heading_level: 4
         show_root_full_path: false
         show_source: true
 
-::: pyguiadapter.windows.fnexec.RightDockWidgetArea
-    options:
-        heading_level: 4
-        show_root_full_path: false
-        show_source: true
-
-::: pyguiadapter.windows.fnexec.DockWidgetAreas
+::: pyguiadapter.textbrowser.WordWrapMode
     options:
         heading_level: 3
         show_root_full_path: false
         show_source: true
 
-::: pyguiadapter.windows.fnexec.AllDockWidgetAreas
+::: pyguiadapter.textbrowser.NoWrap
+    options:
+        heading_level: 4
+        show_root_full_path: false
+        show_source: true
+
+::: pyguiadapter.textbrowser.WordWrap
+    options:
+        heading_level: 4
+        show_root_full_path: false
+        show_source: true
+
+::: pyguiadapter.textbrowser.ManualWrap
+    options:
+        heading_level: 4
+        show_root_full_path: false
+        show_source: true
+
+::: pyguiadapter.textbrowser.WrapAnywhere
+    options:
+        heading_level: 4
+        show_root_full_path: false
+        show_source: true
+
+::: pyguiadapter.textbrowser.WrapAtWordBoundaryOrAnywhere
     options:
         heading_level: 4
         show_root_full_path: false
