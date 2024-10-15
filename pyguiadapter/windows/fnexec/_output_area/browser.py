@@ -13,6 +13,8 @@ from ....textbrowser import TextBrowserConfig, TextBrowser
 
 @dataclasses.dataclass
 class OutputBrowserConfig(TextBrowserConfig):
+    """输出浏览器配置类。"""
+
     text_color: str = COLOR_TERMINAL_TEXT_CLASSIC
     font_family: str = FONT_FAMILY
     font_size: str = FONT_LARGE
