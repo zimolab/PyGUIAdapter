@@ -9,6 +9,8 @@ from ..textbrowser import TextBrowserConfig, TextBrowser, LineWrapMode
 
 @dataclasses.dataclass
 class DocumentBrowserConfig(TextBrowserConfig):
+    """文档浏览器配置类。"""
+
     text_color: str = COLOR_PRIMARY_TEXT
     background_color: str = COLOR_PAGE_BACKGROUND
     line_wrap_mode: LineWrapMode = LineWrapMode.WidgetWidth
