@@ -504,7 +504,7 @@ if __name__ == "__main__":
 ```python
 from qtpy.QtWidgets import QAction
 
-from pyguiadapter.action import ActionConfig, Separator
+from pyguiadapter.action import Action, Separator
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.menu import MenuConfig
 from pyguiadapter.toolbar import ToolBarConfig
@@ -567,47 +567,47 @@ def on_action_dark_theme(window: FnExecuteWindow, action: QAction):
         messagebox.show_info_message(window, "Dark theme is selected.")
 
 
-action_about = ActionConfig(
+action_about = Action(
     text="About",
     icon="fa.info-circle",
     on_triggered=on_action_about,
 )
 
-action_open = ActionConfig(
+action_open = Action(
     text="Open",
     icon="fa.folder-open",
     shortcut="Ctrl+O",
     on_triggered=on_action_open,
 )
 
-action_save = ActionConfig(
+action_save = Action(
     text="Save",
     icon="fa.save",
     shortcut="Ctrl+S",
     on_triggered=on_action_save,
 )
 
-action_close = ActionConfig(
+action_close = Action(
     text="Quit",
     icon="fa.close",
     shortcut="Ctrl+Q",
     on_triggered=on_action_close,
 )
 
-action_auto_them = ActionConfig(
+action_auto_them = Action(
     text="Auto",
     checkable=True,
     checked=True,
     on_toggled=on_action_auto_theme,
 )
 
-action_light_theme = ActionConfig(
+action_light_theme = Action(
     text="Light",
     checkable=True,
     on_toggled=on_action_light_theme,
 )
 
-action_dark_theme = ActionConfig(
+action_dark_theme = Action(
     text="Dark",
     checkable=True,
     on_toggled=on_action_dark_theme,

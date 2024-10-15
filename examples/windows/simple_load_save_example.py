@@ -4,7 +4,7 @@ from typing import Dict, Any
 
 from qtpy.QtWidgets import QAction
 
-from pyguiadapter.action import ActionConfig
+from pyguiadapter.action import Action
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.adapter.ucontext import uprint
 from pyguiadapter.exceptions import ParameterError
@@ -115,14 +115,14 @@ def on_load_params(window: FnExecuteWindow, action: QAction):
 
 
 if __name__ == "__main__":
-    action_save_params = ActionConfig(
+    action_save_params = Action(
         text="Save Parameters",
         icon="fa.save",
         shortcut="Ctrl+S",
         on_triggered=on_save_params,
     )
 
-    action_load_params = ActionConfig(
+    action_load_params = Action(
         text="Load Parameters",
         icon="fa.folder-open",
         shortcut="Ctrl+L",

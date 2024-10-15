@@ -4,7 +4,7 @@ import json
 from qtpy.QtWidgets import QAction
 from typing import Any, Dict
 
-from pyguiadapter.action import ActionConfig
+from pyguiadapter.action import Action
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.adapter.ucontext import uprint
 from pyguiadapter.exceptions import ParameterError
@@ -188,14 +188,14 @@ def load_save_example(
 
 
 if __name__ == "__main__":
-    action_save_params = ActionConfig(
+    action_save_params = Action(
         text="Save Parameters",
         icon="fa.save",
         shortcut="Ctrl+S",
         on_triggered=on_action_save_params,
     )
 
-    action_load_params = ActionConfig(
+    action_load_params = Action(
         text="Load Parameters",
         icon="fa.folder-open",
         shortcut="Ctrl+L",

@@ -164,7 +164,7 @@ if __name__ == "__main__":
 ```python
 from qtpy.QtWidgets import QAction
 
-from pyguiadapter.action import ActionConfig
+from pyguiadapter.action import Action
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.toolbar import ToolBarConfig
 from pyguiadapter.windows.fnselect import FnSelectWindow
@@ -177,7 +177,7 @@ def on_action_test(window: FnSelectWindow, action: QAction):
     )
 
 
-action_test = ActionConfig(
+action_test = Action(
     text="Test", icon="fa.folder-open", on_triggered=on_action_test, shortcut="Ctrl+O"
 )
 
@@ -214,7 +214,7 @@ if __name__ == "__main__":
 ```python
 from qtpy.QtWidgets import QAction
 
-from pyguiadapter.action import ActionConfig, Separator
+from pyguiadapter.action import Action, Separator
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.menu import MenuConfig
 from pyguiadapter.utils import messagebox
@@ -237,13 +237,12 @@ def on_action_close(window: FnSelectWindow, action: QAction):
         window.close()
 
 
-action_test = ActionConfig(
+action_test = Action(
     text="Test", icon="fa.folder-open", on_triggered=on_action_test, shortcut="Ctrl+O"
 )
-action_close = ActionConfig(
+action_close = Action(
     text="Close", icon="fa.close", on_triggered=on_action_close, shortcut="Ctrl+Q"
 )
-
 
 menu_file = MenuConfig(
     title="File",

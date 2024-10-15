@@ -3,7 +3,7 @@ from typing import Optional, List, Union, Tuple
 
 from qtpy.QtCore import Qt, QSize
 
-from .action import ActionConfig, Separator
+from .action import Action, Separator
 
 ToolBarArea = Qt.ToolBarArea
 TopToolBarArea = ToolBarArea.TopToolBarArea
@@ -23,7 +23,7 @@ ToolButtonTextOnly = ToolButtonStyle.ToolButtonTextOnly
 
 @dataclasses.dataclass(frozen=True)
 class ToolBarConfig(object):
-    actions: List[Union[ActionConfig, Separator]]
+    actions: List[Union[Action, Separator]]
     moveable: bool = True
     floatable: bool = True
     icon_size: Union[int, Tuple[int, int], QSize, None] = None
@@ -31,10 +31,10 @@ class ToolBarConfig(object):
     allowed_areas: Optional[ToolBarAreas] = None
     button_style: Optional[ToolButtonStyle] = None
 
-    def remove_action(self, action: Union[str, ActionConfig, Separator]):
+    def remove_action(self, action: Union[str, Action, Separator]):
         if isinstance(action, str):
             for action_ in self.actions:
-                if isinstance(action_, ActionConfig):
+                if isinstance(action_, Action):
                     if action_.text == action:
                         action = action_
                         break

@@ -49,7 +49,7 @@ import json
 
 from qtpy.QtWidgets import QAction
 
-from pyguiadapter.action import ActionConfig, Separator
+from pyguiadapter.action import Action, Separator
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.menu import MenuConfig
 from pyguiadapter.utils import filedialog, inputdialog, messagebox
@@ -154,45 +154,45 @@ def on_action_license(window: FnExecuteWindow, action: QAction):
 
 if __name__ == "__main__":
     ###################Actions#############################
-    action_open = ActionConfig(
+    action_open = Action(
         text="Open",
         icon="fa.folder-open",
         on_triggered=on_action_open,
         shortcut="Ctrl+O",
     )
-    action_save = ActionConfig(
+    action_save = Action(
         text="Save",
         icon="fa.save",
         on_triggered=on_action_save,
         shortcut="Ctrl+S",
     )
 
-    action_settings = ActionConfig(
+    action_settings = Action(
         text="Settings",
         icon="fa.cog",
         on_triggered=on_action_settings,
         shortcut="Ctrl+,",
     )
 
-    action_quit = ActionConfig(
+    action_quit = Action(
         text="Quit",
         icon="fa.power-off",
         on_triggered=on_action_close,
         shortcut="Ctrl+Q",
     )
-    action_confirm_quit = ActionConfig(
+    action_confirm_quit = Action(
         text="Confirm Quit",
         icon="fa.question-circle",
         checkable=True,
         checked=False,
         on_toggled=on_action_confirm_quit,
     )
-    action_about = ActionConfig(
+    action_about = Action(
         text="About",
         icon="fa.info-circle",
         on_triggered=on_action_about,
     )
-    action_license = ActionConfig(
+    action_license = Action(
         text="License",
         icon="fa.copyright",
         on_triggered=on_action_license,
@@ -300,7 +300,7 @@ if __name__ == "__main__":
 ```python
 from qtpy.QtWidgets import QAction
 
-from pyguiadapter.action import ActionConfig
+from pyguiadapter.action import Action
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.menu import MenuConfig
 from pyguiadapter.utils import messagebox
@@ -313,7 +313,7 @@ def on_action_test(window: FnSelectWindow, action: QAction):
     )
 
 
-action_test = ActionConfig(
+action_test = Action(
     text="Test", icon="fa.folder-open", on_triggered=on_action_test, shortcut="Ctrl+O"
 )
 
@@ -350,7 +350,7 @@ from qtpy.QtWidgets import QAction
 
 import qdarktheme
 
-from pyguiadapter.action import ActionConfig
+from pyguiadapter.action import Action
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.menu import MenuConfig
 from pyguiadapter.windows.fnselect import FnSelectWindow
@@ -379,20 +379,20 @@ def on_action_dark(win: FnSelectWindow, action: QAction):
         qdarktheme.setup_theme("dark")
 
 
-action_auto = ActionConfig(
+action_auto = Action(
     text="auto",
     on_toggled=on_action_auto,
     checkable=True,
     checked=True,
 )
 
-action_light = ActionConfig(
+action_light = Action(
     text="light",
     on_toggled=on_action_light,
     checkable=True,
 )
 
-action_dark = ActionConfig(
+action_dark = Action(
     text="dark",
     on_toggled=on_action_dark,
     checkable=True,

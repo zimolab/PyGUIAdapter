@@ -13,7 +13,7 @@ ShortcutContext = Qt.ShortcutContext
 
 
 @dataclasses.dataclass
-class ActionConfig(object):
+class Action(object):
     text: str
     on_triggered: Optional[ActionCallback] = None
     on_toggled: Optional[ActionCallback] = None

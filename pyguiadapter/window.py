@@ -8,7 +8,7 @@ from qtpy.QtCore import QSize, Qt, Signal
 from qtpy.QtGui import QAction, QIcon, QActionGroup, QClipboard
 from qtpy.QtWidgets import QMainWindow, QWidget, QToolBar, QMenu, QApplication
 
-from .action import ActionConfig, Separator
+from .action import Action, Separator
 from .constants.clipboard import (
     CLIPBOARD_OWNS_CLIPBOARD,
     CLIPBOARD_SET_TEXT,
@@ -432,74 +432,74 @@ class BaseWindow(QMainWindow):
         """
         return self.styleSheet()
 
-    def find_action(self, action_config: ActionConfig) -> Optional[QAction]:
+    def find_action(self, action: Action) -> Optional[QAction]:
         """
-        查找`action_config`对应的`QAction`实例。
+        查找`action`对应的`QAction`实例。
 
         Args:
-            action_config: 待查找的`ActionConfig`实例
+            action: 待查找的`Action`实例
 
         Returns:
-            如果`action_config`被添加到当前窗口的菜单栏或工具栏中，则返回对应的`QAction`实例，否则，返回`None`。
+            如果`action`被添加到当前窗口的菜单栏或工具栏中，则返回对应的`QAction`实例，否则，返回`None`。
         """
-        return self._actions.get(id(action_config), None)
+        return self._actions.get(id(action), None)
 
-    def set_action_state(self, action_config: ActionConfig, checked: bool) -> bool:
+    def set_action_state(self, action: Action, checked: bool) -> bool:
         """
-        设置`action_config`对应`QAction`对象的“选中”（`checked`)状态。
+        设置`action`对应`QAction`对象的“选中”（`checked`)状态。
 
         Args:
-            action_config: 待查找的`ActionConfig`实例
+            action: 待查找的`Action`实例
             checked: 目标状态
 
         Returns:
-            若未找到`action_config`对应的`QAction`对象，或者对应的`QAction`对象的`checkable`属性为`False`（`isCheckable() == False`），
+            若未找到`action`对应的`QAction`对象，或者对应的`QAction`对象的`checkable`属性为`False`（`isCheckable() == False`），
             则该函数返回`False`。否则返回`True`。
 
 
         """
-        action = self.find_action(action_config)
+        action = self.find_action(action)
         if action is None:
-            warnings.warn(f"action not found: {action_config}")
+            warnings.warn(f"action not found: {action}")
             return False
         if not action.isCheckable():
-            warnings.warn(f"action is not checkable: {action_config}")
+            warnings.warn(f"action is not checkable: {action}")
             return False
         action.setChecked(checked)
         return True
 
-    def toggle_action_state(self, action_config: ActionConfig) -> bool:
+    def toggle_action_state(self, action: Action) -> bool:
         """
-        切换`action_config`对应`QAction`对象的“选中”（`checked`)状态。
+        切换`action`对应`QAction`对象的“选中”（`checked`)状态。
 
         Args:
-            action_config: 待查找的`ActionConfig`实例
+            action: 待查找的`Action`实例
 
         Returns:
-            若未找到`action_config`对应的`QAction`对象，或者对应的`QAction`对象的`checkable`属性为`False`（`isCheckable() == False`），
+            若未找到`action`对应的`QAction`对象，或者对应的`QAction`对象的`checkable`属性为`False`（`isCheckable() == False`），
             则该函数返回`False`。否则返回`True`。
         """
-        action = self.find_action(action_config)
+        action = self.find_action(action)
         if action is None:
-            warnings.warn(f"action not found: {action_config}")
+            warnings.warn(f"action not found: {action}")
             return False
         if not action.isCheckable():
-            warnings.warn(f"action is not checkable: {action_config}")
+            warnings.warn(f"action is not checkable: {action}")
             return False
         action.toggle()
 
-    def query_action_state(self, action_config: ActionConfig) -> Optional[bool]:
+    def query_action_state(self, action: Action) -> Optional[bool]:
         """
-        查询`action_config`对应`QAction`对象是否处于“选中”（`checked`)状态。
+        查询`action`对应`QAction`对象是否处于“选中”（`checked`)状态。
 
         Args:
-            action_config: 待查找的`ActionConfig`实例
+            action: 待查找的`Action`实例
 
         Returns:
-            若未找到`action_config`对应的`QAction`对象，函数将返回`None`。否则返回一个`bool`值，用以表示对应`QAction`是否处于“选中”（`checked`)状态。
+            若未找到`action`对应的`QAction`对象，函数将返回`None`。否则返回一个`bool`值，用以表示对应`QAction`是否处于“选中”（`checked`)状态。
 
         """
-        action = self.find_action(action_config)
+        action = self.find_action(action)
         if action is None:
             return None
         return action.isChecked()
@@ -681,14 +681,14 @@ class BaseWindow(QMainWindow):
         self._toolbar = toolbar
 
     def _add_toolbar_actions(
-        self, toolbar: QToolBar, actions: List[Union[ActionConfig, Separator]]
+        self, toolbar: QToolBar, actions: List[Union[Action, Separator]]
     ):
-        for action_config in actions:
-            if isinstance(action_config, Separator):
+        for action in actions:
+            if isinstance(action, Separator):
                 toolbar.addSeparator()
                 continue
 
-            action = self._create_action(action_config)
+            action = self._create_action(action)
             toolbar.addAction(action)
 
     def _create_menus(self, menus: List[MenuConfig]):
@@ -709,67 +709,67 @@ class BaseWindow(QMainWindow):
             exclusive_group = QActionGroup(self)
             exclusive_group.setExclusive(True)
 
-        for action_config in menu_config.actions:
-            if isinstance(action_config, Separator):
+        for action in menu_config.actions:
+            if isinstance(action, Separator):
                 menu.addSeparator()
                 continue
-            if isinstance(action_config, ActionConfig):
-                action = self._create_action(action_config)
+            if isinstance(action, Action):
+                action = self._create_action(action)
                 if action.isCheckable() and exclusive_group:
                     exclusive_group.addAction(action)
                 menu.addAction(action)
-            elif isinstance(action_config, MenuConfig):
-                submenu = self._create_menu(action_config)
+            elif isinstance(action, MenuConfig):
+                submenu = self._create_menu(action)
                 menu.addMenu(submenu)
             else:
-                raise ValueError(f"invalid action_config type: {type(action_config)}")
+                raise ValueError(f"invalid action type: {type(action)}")
         return menu
 
-    def _create_action(self, action_config: ActionConfig) -> QAction:
-        action_config_id = id(action_config)
+    def _create_action(self, action: Action) -> QAction:
+        action_id = id(action)
         # reuse action if already created
-        if action_config_id in self._actions:
-            return self._actions[action_config_id]
+        if action_id in self._actions:
+            return self._actions[action_id]
 
         action = QAction(self)
-        action.setText(action_config.text)
-        if action_config.icon:
-            action.setIcon(get_icon(action_config.icon))
-        if action_config.icon_text:
-            action.setIconText(action_config.icon_text)
-        action.setAutoRepeat(action_config.auto_repeat)
-        action.setEnabled(action_config.enabled)
-        action.setCheckable(action_config.checkable)
-        action.setChecked(action_config.checked)
-        if action_config.shortcut:
-            action.setShortcut(action_config.shortcut)
-        if action_config.shortcut_context is not None:
-            action.setShortcutContext(action_config.shortcut_context)
-        if action_config.tooltip:
-            action.setToolTip(action_config.tooltip)
-        if action_config.status_tip:
-            action.setStatusTip(action_config.status_tip)
-        if action_config.whats_this:
-            action.setWhatsThis(action_config.whats_this)
-        if action_config.priority is not None:
-            action.setPriority(action_config.priority)
-        if action_config.menu_role is not None:
-            action.setMenuRole(action_config.menu_role)
+        action.setText(action.text)
+        if action.icon:
+            action.setIcon(get_icon(action.icon))
+        if action.icon_text:
+            action.setIconText(action.icon_text)
+        action.setAutoRepeat(action.auto_repeat)
+        action.setEnabled(action.enabled)
+        action.setCheckable(action.checkable)
+        action.setChecked(action.checked)
+        if action.shortcut:
+            action.setShortcut(action.shortcut)
+        if action.shortcut_context is not None:
+            action.setShortcutContext(action.shortcut_context)
+        if action.tooltip:
+            action.setToolTip(action.tooltip)
+        if action.status_tip:
+            action.setStatusTip(action.status_tip)
+        if action.whats_this:
+            action.setWhatsThis(action.whats_this)
+        if action.priority is not None:
+            action.setPriority(action.priority)
+        if action.menu_role is not None:
+            action.setMenuRole(action.menu_role)
 
         def _on_triggered():
-            if action_config.on_triggered is not None:
-                action_config.on_triggered(self, action)
+            if action.on_triggered is not None:
+                action.on_triggered(self, action)
 
         def _toggled():
-            if action_config.on_toggled is not None:
-                action_config.on_toggled(self, action)
+            if action.on_toggled is not None:
+                action.on_toggled(self, action)
 
         # noinspection PyUnresolvedReferences
         action.triggered.connect(_on_triggered)
         # noinspection PyUnresolvedReferences
         action.toggled.connect(_toggled)
 
-        self._actions[action_config_id] = action
+        self._actions[action_id] = action
         return action
 
     def _on_create(self):

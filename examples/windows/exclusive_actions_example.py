@@ -3,7 +3,7 @@ from qtpy.QtWidgets import QAction
 
 import qdarktheme
 
-from pyguiadapter.action import ActionConfig
+from pyguiadapter.action import Action
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.menu import MenuConfig
 from pyguiadapter.windows.fnselect import FnSelectWindow
@@ -32,20 +32,20 @@ def on_action_dark(win: FnSelectWindow, action: QAction):
         qdarktheme.setup_theme("dark")
 
 
-action_auto = ActionConfig(
+action_auto = Action(
     text="auto",
     on_toggled=on_action_auto,
     checkable=True,
     checked=True,
 )
 
-action_light = ActionConfig(
+action_light = Action(
     text="light",
     on_toggled=on_action_light,
     checkable=True,
 )
 
-action_dark = ActionConfig(
+action_dark = Action(
     text="dark",
     on_toggled=on_action_dark,
     checkable=True,

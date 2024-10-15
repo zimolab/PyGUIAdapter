@@ -1,6 +1,6 @@
 from qtpy.QtWidgets import QAction
 
-from pyguiadapter.action import ActionConfig
+from pyguiadapter.action import Action
 from pyguiadapter.adapter import GUIAdapter, utoast
 from pyguiadapter.extend_types import text_t
 from pyguiadapter.toast import ToastConfig
@@ -16,14 +16,14 @@ def clear_toasts(win: FnExecuteWindow, action: QAction):
     win.clear_toasts()
 
 
-action_toast = ActionConfig(
+action_toast = Action(
     text="Toast",
     icon="mdi.message-text-clock",
     tooltip="Show toast message",
     on_triggered=show_toast,
 )
 
-action_clear_toasts = ActionConfig(
+action_clear_toasts = Action(
     text="Clear toasts",
     icon="ei.remove-circle",
     tooltip="Clear all toasts",

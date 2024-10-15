@@ -2,7 +2,7 @@ import json
 
 from qtpy.QtWidgets import QAction
 
-from pyguiadapter.action import ActionConfig, Separator
+from pyguiadapter.action import Action, Separator
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.menu import MenuConfig
 from pyguiadapter.utils import filedialog, inputdialog, messagebox
@@ -80,33 +80,33 @@ def on_action_about(window: FnSelectWindow, action: QAction):
 
 
 if __name__ == "__main__":
-    action_open = ActionConfig(
+    action_open = Action(
         text="Open",
         icon="fa.folder-open",
         on_triggered=on_action_open,
         shortcut="Ctrl+O",
     )
-    action_save = ActionConfig(
+    action_save = Action(
         text="Save",
         icon="fa.save",
         on_triggered=on_action_save,
         shortcut="Ctrl+S",
     )
 
-    action_settings = ActionConfig(
+    action_settings = Action(
         text="Settings",
         icon="fa.cog",
         on_triggered=on_action_settings,
         shortcut="Ctrl+,",
     )
 
-    action_quit = ActionConfig(
+    action_quit = Action(
         text="Quit",
         icon="fa.power-off",
         on_triggered=on_action_close,
         shortcut="Ctrl+Q",
     )
-    action_confirm_quit = ActionConfig(
+    action_confirm_quit = Action(
         text="Confirm Quit",
         checkable=True,
         checked=False,

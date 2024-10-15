@@ -1,6 +1,6 @@
 from qtpy.QtWidgets import QAction
 
-from pyguiadapter.action import ActionConfig
+from pyguiadapter.action import Action
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.toolbar import ToolBarConfig
 from pyguiadapter.windows.fnselect import FnSelectWindow
@@ -13,7 +13,7 @@ def on_action_test(window: FnSelectWindow, action: QAction):
     )
 
 
-action_test = ActionConfig(
+action_test = Action(
     text="Test", icon="fa.folder-open", on_triggered=on_action_test, shortcut="Ctrl+O"
 )
 

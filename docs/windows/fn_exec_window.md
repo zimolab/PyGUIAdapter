@@ -465,7 +465,7 @@ if __name__ == "__main__":
 ```python
 from qtpy.QtWidgets import QAction
 
-from pyguiadapter.action import ActionConfig, Separator
+from pyguiadapter.action import Action, Separator
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.menu import MenuConfig
 from pyguiadapter.toolbar import ToolBarConfig
@@ -528,47 +528,47 @@ def on_action_dark_theme(window: FnExecuteWindow, action: QAction):
         messagebox.show_info_message(window, "Dark theme is selected.")
 
 
-action_about = ActionConfig(
+action_about = Action(
     text="About",
     icon="fa.info-circle",
     on_triggered=on_action_about,
 )
 
-action_open = ActionConfig(
+action_open = Action(
     text="Open",
     icon="fa.folder-open",
     shortcut="Ctrl+O",
     on_triggered=on_action_open,
 )
 
-action_save = ActionConfig(
+action_save = Action(
     text="Save",
     icon="fa.save",
     shortcut="Ctrl+S",
     on_triggered=on_action_save,
 )
 
-action_close = ActionConfig(
+action_close = Action(
     text="Quit",
     icon="fa.close",
     shortcut="Ctrl+Q",
     on_triggered=on_action_close,
 )
 
-action_auto_them = ActionConfig(
+action_auto_them = Action(
     text="Auto",
     checkable=True,
     checked=True,
     on_toggled=on_action_auto_theme,
 )
 
-action_light_theme = ActionConfig(
+action_light_theme = Action(
     text="Light",
     checkable=True,
     on_toggled=on_action_light_theme,
 )
 
-action_dark_theme = ActionConfig(
+action_dark_theme = Action(
     text="Dark",
     checkable=True,
     on_toggled=on_action_dark_theme,
@@ -1282,7 +1282,7 @@ from typing import Dict, Any
 
 from qtpy.QtWidgets import QAction
 
-from pyguiadapter.action import ActionConfig
+from pyguiadapter.action import Action
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.adapter.ucontext import uprint
 from pyguiadapter.exceptions import ParameterError
@@ -1293,11 +1293,11 @@ from pyguiadapter.windows.fnexec import FnExecuteWindow
 
 
 def simple_load_save_example(
-    arg1: int,
-    arg2: float,
-    arg3: bool,
-    arg4: str,
-    arg5: color_t,
+        arg1: int,
+        arg2: float,
+        arg3: bool,
+        arg4: str,
+        arg5: color_t,
 ):
     """
     This example shows how to save current parameter values to a json file and load a parameter values from a json file.
@@ -1393,14 +1393,14 @@ def on_load_params(window: FnExecuteWindow, action: QAction):
 
 
 if __name__ == "__main__":
-    action_save_params = ActionConfig(
+    action_save_params = Action(
         text="Save Parameters",
         icon="fa.save",
         shortcut="Ctrl+S",
         on_triggered=on_save_params,
     )
 
-    action_load_params = ActionConfig(
+    action_load_params = Action(
         text="Load Parameters",
         icon="fa.folder-open",
         shortcut="Ctrl+L",
@@ -1445,7 +1445,7 @@ if __name__ == "__main__":
 ```python
 from qtpy.QtWidgets import QAction
 
-from pyguiadapter.action import ActionConfig, Separator
+from pyguiadapter.action import Action, Separator
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.menu import MenuConfig
 from pyguiadapter.windows.fnexec import (
@@ -1481,23 +1481,23 @@ def on_float_output_dock(win: FnExecuteWindow, action: QAction):
 
 
 def main():
-    action_document_dock = ActionConfig(
+    action_document_dock = Action(
         text="Toggle Document Dock",
         on_triggered=on_toggle_document_dock,
     )
-    action_output_dock = ActionConfig(
+    action_output_dock = Action(
         text="Toggle Output Dock",
         on_triggered=on_toggle_output_dock,
     )
-    action_tabify_docks = ActionConfig(
+    action_tabify_docks = Action(
         text="Tabify Docks",
         on_triggered=on_tabify_docks,
     )
-    action_move_output_area = ActionConfig(
+    action_move_output_area = Action(
         text="Move Output Area",
         on_triggered=on_move_output_area,
     )
-    action_float_output_dock = ActionConfig(
+    action_float_output_dock = Action(
         text="Float Output Dock",
         on_triggered=on_float_output_dock,
     )

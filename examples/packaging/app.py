@@ -3,7 +3,7 @@ from typing import Optional
 
 from qtpy.QtWidgets import QAction
 
-from pyguiadapter.action import ActionConfig
+from pyguiadapter.action import Action
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.exceptions import ParameterError
 from pyguiadapter.menu import MenuConfig
@@ -41,7 +41,7 @@ if __name__ == "__main__":
             window, text_file=ABOUT_FILEPATH, text_format="html", title="About"
         )
 
-    action_about = ActionConfig(
+    action_about = Action(
         text="About",
         icon="mdi6.information-outline",
         on_triggered=on_action_about,

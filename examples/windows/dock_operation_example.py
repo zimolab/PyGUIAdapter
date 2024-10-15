@@ -1,6 +1,6 @@
 from qtpy.QtWidgets import QAction
 
-from pyguiadapter.action import ActionConfig, Separator
+from pyguiadapter.action import Action, Separator
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.menu import MenuConfig
 from pyguiadapter.windows.fnexec import (
@@ -36,23 +36,23 @@ def on_float_output_dock(win: FnExecuteWindow, action: QAction):
 
 
 def main():
-    action_document_dock = ActionConfig(
+    action_document_dock = Action(
         text="Toggle Document Dock",
         on_triggered=on_toggle_document_dock,
     )
-    action_output_dock = ActionConfig(
+    action_output_dock = Action(
         text="Toggle Output Dock",
         on_triggered=on_toggle_output_dock,
     )
-    action_tabify_docks = ActionConfig(
+    action_tabify_docks = Action(
         text="Tabify Docks",
         on_triggered=on_tabify_docks,
     )
-    action_move_output_area = ActionConfig(
+    action_move_output_area = Action(
         text="Move Output Area",
         on_triggered=on_move_output_area,
     )
-    action_float_output_dock = ActionConfig(
+    action_float_output_dock = Action(
         text="Float Output Dock",
         on_triggered=on_float_output_dock,
     )
