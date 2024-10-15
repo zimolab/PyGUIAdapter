@@ -8,20 +8,49 @@ from .constants.color import COLOR_BASE_BACKGROUND, COLOR_BASE_TEXT
 from .constants.font import FONT_LARGE
 
 LineWrapMode = QTextBrowser.LineWrapMode
+NoLineWrap = QTextBrowser.NoWrap
+WidgetWidth = QTextBrowser.WidgetWidth
+FixedPixelWidth = QTextBrowser.FixedPixelWidth
+FixedColumnWidth = QTextBrowser.FixedColumnWidth
+
 WordWrapMode = QTextOption.WrapMode
+NoWrap = QTextOption.NoWrap
+WordWrap = QTextOption.WordWrap
+ManualWrap = QTextOption.ManualWrap
+WrapAnywhere = QTextOption.WrapAnywhere
+WrapAtWordBoundaryOrAnywhere = QTextOption.WrapAtWordBoundaryOrAnywhere
 
 
 @dataclasses.dataclass
 class TextBrowserConfig(object):
+    """文本浏览器的配置类。"""
+
     text_color: str = COLOR_BASE_TEXT
+    """文本颜色。"""
+
     font_family: Union[Sequence[str], str] = None
+    "文本的字体系列。"
+
     font_size: Optional[int] = FONT_LARGE
+    """文本的字体大小（px）。"""
+
     background_color: str = COLOR_BASE_BACKGROUND
+    """背景颜色。"""
+
     line_wrap_mode: LineWrapMode = LineWrapMode.NoWrap
+    """换行模式。"""
+
     line_wrap_width: int = 88
+    """换行宽度。"""
+
     word_wrap_mode: WordWrapMode = WordWrapMode.WordWrap
+    """“单词换行模式"""
+
     open_external_links: bool = True
+    """是否允许打开外部链接。"""
+
     stylesheet: str = ""
+    """样式表（QSS格式）。"""
 
 
 class TextBrowser(QTextBrowser):
