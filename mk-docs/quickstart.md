@@ -231,7 +231,7 @@ if __name__ == "__main__":
         show_source: false
         show_root_full_path: false
 
-> 如其原型所示，`uprint()`支持输出`html`格式的富文本内容，比如图片。但需要指出的是，`输出浏览器`对于`html`的支持是有限的，具体可以参考QT的官方文档：[Supported HTML Subset](https://doc.qt.io/qtforpython-5/overviews/richtext-html-subset.html)
+> `uprint()`支持输出`html`格式的富文本内容，比如图片。但需要指出的是，`输出浏览器`对于`html`的支持是有限的，具体可以参考QT的官方文档：[Supported HTML Subset](https://doc.qt.io/qtforpython-5/overviews/richtext-html-subset.html)
 
 
 
@@ -244,7 +244,7 @@ if __name__ == "__main__":
 
 下面，将逐步完善上述示例代码，并在此过程中演示配置窗口和控件属性的方法。 
 
-### 1、“小窗口模式”——配置窗口属性
+### 1、配置窗口属性
 
 首先，我们将对示例程序的窗口进行配置，包括：
 
@@ -329,7 +329,7 @@ if __name__ == "__main__":
 
 
 
-###  2、更高的精度——控件属性的配置
+###  2、配置控件属性
 
 在目前的示例程序中，参数`a`、`b`、`c`的输入控件只能输入小数点后2位，且每次调整的步进值为1。
 
@@ -348,6 +348,17 @@ if __name__ == "__main__":
 现在我们将对上述示例做进一步修改，将参数`a`、`b`、`c`对应控件的`decimals`（小数点位数）配置为`5`，`step`（单次步进值）配置为`0.00005`。
 
 #### 方法1：利用`@params...@end`配置块
+
+开发者可以在函数的`docstring`中配置参数的控件。`PyGUIAdapter`将`docstring`中使用`@params`和`@end`包裹起来文本块视为控件的配置块。开发者可以在该区域对控件的属性进行配置。配置块的格式为`TOML`。可以使用如下格式配置指定控件的指定属性：
+
+```toml
+[参数名称]
+属性名称1 = 属性值1
+属性名称2 = 属性值2
+属性名称N = 属性值N
+```
+
+比如要配置上述示例中参数`a`、`b`、`c`对应控件的`step`属性和`decimals`属性，可以这样做：
 
 <div style="text-align: center">
     <img src="/assets/params_config_block.png" />
@@ -424,13 +435,233 @@ if __name__ == "__main__":
 
 ```
 
+#### 方法2：使用配置类对象
 
+在`@params...@end`块中配置参数的控件，优点是简单、快速，但也并非万能。一方面，由于配置块的格式为`TOML`，其支持的数据类型有限，某些控件的一些属性可能使用了超出其表达能力范围的数据类型；另一方面，如果要配置的参数很多，或者要设置的属性很多，可能会使`docstring`变得非常冗长。在`docstring`中编写参数配置代码也将失去现代`IDE`或者代码编辑所带来种种便利，比如代码提示、自动完成等。
 
-#### 方法2：指定控件配置类对象
+总之，在`@params...@end`中配置控件参数是一种很便捷的手段，但也无法解决所有的问题，因此，`PyGUIAdapter`提供了另一种更加通用的配置控件属性的方法，那就是使用控件的配置类对象（实际上，在`@params...@end`中编写配置，最终也会被转换为对应的配置类对象）。
+
+在`PyGUIAdapter`，函数参数的控件，其类型一般由参数的数据类型决定，而控件的属性，则由其对应的配置类定义。比如：
+
+- `int` -> `IntSpinBox`  -> `IntSpinBoxConfig`
+
+- `float` -> `FloatSpinBox` -> `FloatSpinBox`
+- `str` -> `LineEdit` -> `LineEditConfig`
+- ......
+
+确定了参数对应控件的类型，便可以创建对应配置类对象来对其属性进行配置，以上述示例代码为例，可以这样配置其属性：
+
+> 使用配置类对象时，开发者在函数签名中指定的参数的默认值将会被覆盖，可以通过配置类对象的`default_value`属性重新指定
+
+<div style="text-align: center">
+    <img src="/assets/widget_config_class_demo.png" />
+</div>
+
+**完整代码如下**
 
 ```python
+from typing import Optional
+
+from pyguiadapter.adapter import GUIAdapter
+from pyguiadapter.adapter.uoutput import uprint
+from pyguiadapter.exceptions import ParameterError
+from pyguiadapter.widgets import FloatSpinBoxConfig
+from pyguiadapter.windows.fnexec import FnExecuteWindowConfig
+
+
+def equation_solver_4(
+    a: float = 1.0, b: float = 0.0, c: float = 0.0
+) -> Optional[tuple]:
+    """A simple equation solver for equations like:
+
+    **ax^2 + bx + c = 0** (a, b, c ∈ **R** and a ≠ 0)
+
+    @param a: a ∈ R and a ≠ 0
+    @param b: b ∈ R
+    @param c: c ∈ R
+    @return:
+    """
+    if a == 0:
+        raise ParameterError(parameter_name="a", message="a cannot be zero!")
+    uprint(f"Equation:")
+    uprint(f"  {a}x² + {b}x + {c} = 0")
+    delta = b**2 - 4 * a * c
+    if delta < 0:
+        return None
+    x1 = (-b + delta**0.5) / (2 * a)
+    if delta == 0:
+        return x1, x1
+    x2 = (-b - delta**0.5) / (2 * a)
+    return x1, x2
+
+
+if __name__ == "__main__":
+    window_config = FnExecuteWindowConfig(
+        title="Equation Solver",
+        icon="mdi6.function-variant",
+        execute_button_text="Solve",
+        size=(350, 550),
+        document_dock_visible=False,
+        output_dock_initial_size=(None, 100),
+        show_function_result=True,
+        function_result_message="roots: {}",
+        default_parameter_group_name="Equation Parameters",
+    )
+
+    adapter = GUIAdapter()
+    adapter.add(
+        equation_solver_4,
+        window_config=window_config,
+        widget_configs={
+            "a": FloatSpinBoxConfig(
+                default_value=1.0,
+                decimals=5,
+                step=0.00005,
+            ),
+            "b": FloatSpinBoxConfig(decimals=5, step=0.00005),
+            "c": FloatSpinBoxConfig(decimals=5, step=0.00005),
+        },
+    )
+    adapter.run()
+
 ```
 
+- 使用配置类对象对控件进行配置，首先需要知道参数对应控件的控件配置类是什么，下面的链接展示了`参数数据类型`、`控件类型`、`控件配置对象类型`三者之间的映射关系，开发者若不清楚某个数据类型对应的`控件类型`或`控件配置对象类型`，可以参考该文档：[**控件与参数数据类型**](widget-map.md)。
 
+- 开发者可以阅读以下文档，以获取关于控件属性配置更为详细的说明：[**配置控件属性**](widget-config.md)。
 
 ###  3、添加菜单
+
+可以为窗口添加菜单栏，并向菜单栏添加菜单和菜单项，为菜单项设置事件回调。下面，在上述示例代码基础上，演示如何添加菜单并响应事件。
+
+```python
+from typing import Optional
+
+from pyguiadapter.action import Action
+from pyguiadapter.adapter import GUIAdapter
+from pyguiadapter.adapter.uoutput import uprint
+from pyguiadapter.exceptions import ParameterError
+from pyguiadapter.menu import Menu
+from pyguiadapter.utils import messagebox
+from pyguiadapter.widgets import FloatSpinBoxConfig
+from pyguiadapter.windows.fnexec import FnExecuteWindowConfig, FnExecuteWindow
+
+
+def equation_solver_5(
+    a: float = 1.0, b: float = 0.0, c: float = 0.0
+) -> Optional[tuple]:
+    """A simple equation solver for equations like:
+
+    **ax^2 + bx + c = 0** (a, b, c ∈ **R** and a ≠ 0)
+
+    @param a: a ∈ R and a ≠ 0
+    @param b: b ∈ R
+    @param c: c ∈ R
+    @return:
+    """
+    if a == 0:
+        raise ParameterError(parameter_name="a", message="a cannot be zero!")
+    uprint(f"Equation:")
+    uprint(f"  {a}x² + {b}x + {c} = 0")
+    delta = b**2 - 4 * a * c
+    if delta < 0:
+        return None
+    x1 = (-b + delta**0.5) / (2 * a)
+    if delta == 0:
+        return x1, x1
+    x2 = (-b - delta**0.5) / (2 * a)
+    return x1, x2
+
+
+if __name__ == "__main__":
+    window_config = FnExecuteWindowConfig(
+        title="Equation Solver",
+        icon="mdi6.function-variant",
+        execute_button_text="Solve",
+        size=(350, 450),
+        document_dock_visible=False,
+        show_function_result=True,
+        function_result_message="roots: {}",
+        default_parameter_group_name="Equation Parameters",
+        # 隐藏`OutputDock`窗口
+        output_dock_visible=False,
+        # 因为隐藏了`OutputDock`窗口，所以无需将函数调用结果及函数异常信息打印到输出浏览器中
+        print_function_error=False,
+        print_function_result=False,
+    )
+
+    def on_action_about(wind: FnExecuteWindow, action: Action):
+        messagebox.show_text_file(
+            wind,
+            text_file="./about.html",
+            text_format="html",
+            title="About",
+        )
+
+    action_about = Action(text="About", on_triggered=on_action_about)
+    menu_help = Menu(title="Help", actions=[action_about])
+
+    adapter = GUIAdapter()
+    adapter.add(
+        equation_solver_5,
+        window_menus=[menu_help],
+        window_config=window_config,
+        widget_configs={
+            "a": FloatSpinBoxConfig(
+                default_value=1.0,
+                decimals=5,
+                step=0.00005,
+            ),
+            "b": FloatSpinBoxConfig(decimals=5, step=0.00005),
+            "c": FloatSpinBoxConfig(decimals=5, step=0.00005),
+        },
+    )
+    adapter.run()
+
+```
+
+**效果如下：**
+
+<div style="text-align: center">
+    <img src="/assets/window_menu_demo.gif" />
+</div>
+**代码说明：**
+
+在上面的代码中，我们添加了一个动作（`Action`）：`action_about`，并为其指定了`triggered`事件响应函数：`on_action_about`，该函数将在动作被触发时调用。
+
+<div style="text-align: center">
+ <img src="/assets/l64.png" />
+</div>
+
+在`action_about`的事件回调函数中，我们调用`pyguiadapter.utils.messagebox`模块中的`show_text_file()`函数，弹窗展示当前目录下的`about.html`文件：
+
+<div style="text-align: center">
+ <img src="/assets/l56.png" />
+</div>
+
+然后，创建了一个`Menu`对象：`menu_help`，将其标题设置为"Help"，并将`action_about`添加到其`actions`中：
+
+<div style="text-align: center">
+ <img src="/assets/l65.png" />
+</div>
+
+最后，将`menu_help`对象添加到`window_menus`中，这样便完成了创建和添加菜单的全过程：
+
+<div style="text-align: center">
+ <img src="/assets/l68.png" />
+</div>
+
+> - 所谓“动作”（`Action`），就是具有文字、图标等一系列属性，可以响应特定鼠标、快捷键事件的组件。它可以被添加到菜单、工具栏中，当其被添加到菜单中，其表现为菜单项；当其被添加到工具栏时，其表现为工具栏按钮。比如下图中红色方框标记的是同一组`Action`分别在菜单和工具栏中的样子。
+>
+> <div style="text-align: center">
+>  <img src="/assets/actions_demo.png" />
+> </div>
+>
+> - 可以通过鼠标单击或快捷键来“触发”动作。
+
+
+
+可以参考以下文档，获取关于窗口菜单栏与工具栏的详细说明：
+
++ [ 窗口工具栏](toolbar.md)
++ [ 窗口菜单栏 ](menu.md)

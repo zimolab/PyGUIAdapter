@@ -10,11 +10,11 @@ nav:
   - 首页: index.md
   - 快速开始: quickstart.md
   - 添加多个函数: multiple-functions.md
-  - 数据类型与控件: widgets.md
   - 配置控件属性: widget-config.md
+  - 控件与参数数据类型: widget-map.md
   - 配置窗口属性: window.md
-  - 工具栏: toolbar.md
-  - 菜单栏: menu.md
+  - 窗口工具栏: toolbar.md
+  - 窗口菜单栏: menu.md
   - 取消函数执行: cancel.md
   - 进度条: progressbar.md
   - 与用户交互: user-interaction.md
