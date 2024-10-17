@@ -15,22 +15,22 @@ from typing import (
 )
 
 from qtpy.QtCore import Qt
-from qtpy.QtGui import QIcon, QPixmap
 from qtpy.QtWidgets import QApplication
 
 from . import ucontext
 from ..action import Separator
-from ..menu import Menu
-from ..toolbar import ToolBar
 from ..bundle import FnBundle
 from ..exceptions import NotRegisteredError
 from ..fn import ParameterInfo
+from ..menu import Menu
 from ..paramwidget import (
     BaseParameterWidget,
     BaseParameterWidgetConfig,
     is_parameter_widget_class,
 )
 from ..parser import FnParser
+from ..toolbar import ToolBar
+from ..utils import IconType
 from ..widgets import ParameterWidgetFactory
 from ..window import BaseWindowEventListener
 from ..windows.fnexec import FnExecuteWindow, FnExecuteWindowConfig
@@ -88,7 +88,7 @@ class GUIAdapter(object):
         fn: Callable,
         display_name: Optional[str] = None,
         group: Optional[str] = None,
-        icon: Union[str, QIcon, QPixmap, None] = None,
+        icon: IconType = None,
         document: Optional[str] = None,
         document_format: Literal["markdown", "html", "plaintext"] = "markdown",
         cancelable: bool = False,
