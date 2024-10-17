@@ -5,13 +5,12 @@ from collections import OrderedDict
 from typing import Callable, Literal, List, Tuple, Set, Dict, Any, Type, Union, Optional
 
 import tomli
-from qtpy.QtGui import QIcon, QPixmap
 
-from .typenames import get_typename, get_type_args
 from .docstring import FnDocstring
+from .typenames import get_typename, get_type_args
 from .. import utils
 from ..fn import FnInfo, ParameterInfo
-
+from ..utils import IconType
 
 PARAM_WIDGET_METADATA_START = ("@widgets", "@parameters", "@params")
 PARAM_WIDGET_METADATA_END = "@end"
@@ -67,7 +66,7 @@ class FnParser(object):
         display_name: Optional[str] = None,
         document: Optional[str] = None,
         document_format: Literal["markdown", "html", "plaintext"] = "markdown",
-        icon: Union[str, QIcon, QPixmap, None] = None,
+        icon: IconType = None,
         group: Optional[str] = None,
         ignore_self_param: bool = True,
     ) -> FnInfo:

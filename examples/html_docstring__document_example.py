@@ -5,12 +5,12 @@ def function_2(arg1: int, arg2: str, arg3: bool):
     """
     <h3>Description</h3>
     <p>
-    This is the document of the <b>function_1</b>. And by default this document will automatically
+    This is the document of the <b>function_3</b>. And by default this document will automatically
     appear in the <strong>document area</strong>.
     </p>
     <p>
-    The format of the document is <b>Markdown</b> by default. The <b>plaintext</b> and <b>html</b> formats are also
-    supported.
+    The format of the document is <b>Markdown</b> by default.
+    The <b>plaintext</b> and <b>html</b> formats are also supported.
     </p>
     <hr>
     <h3>Arguments</h3>
