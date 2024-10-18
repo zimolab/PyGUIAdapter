@@ -259,10 +259,12 @@ class ParameterGroupBox(BaseParameterGroupBox):
             parameter_name, widget_class, widget_config
         )
 
-    def remove_parameter(self, parameter_name: str, safe_remove: bool = True):
+    def remove_parameter(
+        self, parameter_name: str, ignore_unknown_parameter: bool = True
+    ):
         group, widget = self._get_group_and_widget(parameter_name)
         if group is None or widget is None:
-            if safe_remove:
+            if ignore_unknown_parameter:
                 return
             raise ParameterNotFoundError(parameter_name)
         group.remove_parameter_widget(parameter_name)

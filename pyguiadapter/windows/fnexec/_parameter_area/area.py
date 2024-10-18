@@ -62,12 +62,14 @@ class ParameterArea(BaseParameterArea):
                 if widget_config.set_default_value_on_init:
                     widget.set_value(widget_config.default_value)
         except ParameterError as e:
-            self.process_parameter_error(e)
+            # self.process_parameter_error(e)
+            # return None
+            raise e
         except Exception as e:
             # any other exceptions are seen as fatal and will cause the whole program to exit
             messagebox.show_exception_messagebox(
                 self,
-                message=f"An fatal error occurred when create widget for parameter '{parameter_name}':",
+                message=f"cannot create parameter widget for parameter '{parameter_name}':",
                 exception=e,
                 title=self._config.error_dialog_title,
             )
@@ -75,8 +77,12 @@ class ParameterArea(BaseParameterArea):
         else:
             return widget
 
-    def remove_parameter(self, parameter_name: str, safe_remove: bool = True):
-        self._groupbox.remove_parameter(parameter_name, safe_remove=safe_remove)
+    def remove_parameter(
+        self, parameter_name: str, ignore_unknown_parameter: bool = True
+    ):
+        self._groupbox.remove_parameter(
+            parameter_name, ignore_unknown_parameter=ignore_unknown_parameter
+        )
 
     def clear_parameters(self):
         self._groupbox.clear_parameters()

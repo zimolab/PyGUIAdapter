@@ -79,7 +79,7 @@ class ThreadFunctionExecutor(BaseFunctionExecutor):
     # noinspection PyUnresolvedReferences
     def execute(self, fn_info: FnInfo, arguments: Dict[str, Any]):
         if self.is_executing:
-            raise FunctionExecutingError("function is already executing")
+            raise FunctionExecutingError("function is executing")
 
         def _callback_on_execute_start():
             self._on_execute_start(fn_info, arguments)

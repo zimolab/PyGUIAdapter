@@ -160,7 +160,9 @@ class BaseParameterGroupBox(QToolBox):
         pass
 
     @abstractmethod
-    def remove_parameter(self, parameter_name: str, safe_remove: bool = True):
+    def remove_parameter(
+        self, parameter_name: str, ignore_unknown_parameter: bool = True
+    ):
         pass
 
     @abstractmethod
@@ -259,7 +261,9 @@ class BaseParameterArea(QWidget):
             self.add_parameter(parameter_name, config)
 
     @abstractmethod
-    def remove_parameter(self, parameter_name: str, safe_remove: bool = True):
+    def remove_parameter(
+        self, parameter_name: str, ignore_unknown_parameter: bool = True
+    ):
         pass
 
     @abstractmethod

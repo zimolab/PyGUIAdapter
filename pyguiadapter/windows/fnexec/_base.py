@@ -204,6 +204,10 @@ class BaseFnExecuteWindow(BaseWindow, ExecuteStateListener):
         pass
 
     @abstractmethod
+    def has_parameter(self, parameter_name) -> bool:
+        pass
+
+    @abstractmethod
     def clear_parameters(self):
         pass
 

@@ -20,7 +20,7 @@ from ._output_area import OutputArea, ProgressBarConfig
 from ._parameter_area import ParameterArea
 from ...adapter import ucontext
 from ...bundle import FnBundle
-from ...exceptions import FunctionExecutingError, ParameterError
+from ...exceptions import ParameterError
 from ...executor import BaseFunctionExecutor
 from ...fn import FnInfo
 from ...paramwidget import (
@@ -55,7 +55,13 @@ class FnExecuteWindow(BaseFnExecuteWindow):
         # noinspection PyTypeChecker
         self._executor = executor_class(self, self)
 
-        self.add_parameters(self._bundle.widget_configs)
+        try:
+            self.add_parameters(self._bundle.widget_configs)
+        except Exception as e:
+            messagebox.show_exception_messagebox(
+                self, e, "Error when initializing parameters widgets", detail=True
+            )
+            exit(-1)
         # noinspection PyProtectedMember
         ucontext._current_window_created(self)
 
@@ -148,65 +154,236 @@ class FnExecuteWindow(BaseFnExecuteWindow):
 
         self.set_statusbar_visible(self._config.statusbar_visible)
 
-    def update_progressbar_config(self, config: Union[ProgressBarConfig, dict, None]):
+    def update_progressbar_config(
+        self, config: Union[ProgressBarConfig, dict, None]
+    ) -> None:
+        """
+        更新进度条配置。
+
+        Args:
+            config: 进度条配置
+
+        Returns:
+            无返回值
+        """
         if isinstance(config, dict):
             config = ProgressBarConfig(**config)
         self._output_area.update_progressbar_config(config)
 
-    def show_progressbar(self):
+    def show_progressbar(self) -> None:
+        """
+        显示进度条。
+
+        Returns:
+            无返回值
+        """
         self._output_area.show_progressbar()
 
-    def hide_progressbar(self):
+    def hide_progressbar(self) -> None:
+        """
+        隐藏进度条。
+
+        Returns:
+            无返回值
+        """
         self._output_area.hide_progressbar()
         self._output_area.scroll_to_bottom()
 
-    def update_progress(self, current_value: int, message: Optional[str] = None):
+    def update_progress(
+        self, current_value: int, message: Optional[str] = None
+    ) -> None:
+        """
+        更新进度条进度。
+
+        Args:
+            current_value: 当前进度
+            message: 额外信息
+
+        Returns:
+
+        """
         self._output_area.update_progress(current_value, message)
 
     def append_output(
         self, text: str, html: bool = False, scroll_to_bottom: bool = True
-    ):
+    ) -> None:
+        """
+        把文本追加到输出浏览器中。
+
+        Args:
+            text: 带输出的文本
+            html: 是否为html格式
+            scroll_to_bottom: 完成后是否将输出浏览器滚动到底部
+
+        Returns:
+            无返回值
+        """
         self._output_area.append_output(text, html)
         if scroll_to_bottom:
             self._output_area.scroll_to_bottom()
 
-    def clear_output(self):
+    def clear_output(self) -> None:
+        """
+        清除输出浏览器内容。
+
+        Returns:
+            无返回值
+        """
         self._output_area.clear_output()
 
     def set_document(
         self, document: str, document_format: Literal["markdown", "html", "plaintext"]
-    ):
+    ) -> None:
+        """
+        设置函数说明文档。
+
+        Args:
+            document: 文档内容
+            document_format: 文档格式
+
+        Returns:
+            无返回值
+        """
         self._document_area.set_document(document, document_format)
 
     def add_parameter(
         self,
         parameter_name: str,
         config: Tuple[Type[BaseParameterWidget], BaseParameterWidgetConfig],
-    ) -> BaseParameterWidget:
-        return self._parameter_area.add_parameter(parameter_name, config)
+    ) -> None:
+        """
+        添加一个新的函数参数。
+
+        Args:
+            parameter_name: 要增加的函数参数名称
+            config: 函数参数配置，格式为: (参数控件类, 参数控件配置类实例)
+
+        Returns:
+            无返回值
+
+        Raises:
+            ParameterError: 当参数为空、参数名称重复时将引发此异常。
+        """
+        self._parameter_area.add_parameter(parameter_name, config)
 
     def add_parameters(
         self,
         configs: Dict[str, Tuple[Type[BaseParameterWidget], BaseParameterWidgetConfig]],
-    ):
-        return self._parameter_area.add_parameters(configs)
+    ) -> None:
+        """
+        增加一组新的函数参数。
 
-    def remove_parameter(self, parameter_name: str, safe_remove: bool = True):
-        self._parameter_area.remove_parameter(parameter_name, safe_remove=safe_remove)
+        Args:
+            configs: 要增加的函数参数名称及其配置
+
+        Returns:
+            无返回值
+
+        Raises:
+            ParameterError: 当参数为空、参数名称重复时将引发此异常。
+        """
+        self._parameter_area.add_parameters(configs)
+
+    def remove_parameter(
+        self, parameter_name: str, ignore_unknown_parameter: bool = True
+    ) -> None:
+        """
+        移除指定参数控件。
+
+        Args:
+            parameter_name: 要移除的指定参数名称
+            ignore_unknown_parameter: 是否忽略未知参数
+
+        Returns:
+            无返回值
+
+        Raises:
+            ParameterNotFoundError: 当参数`parameter_name`不存在且`ignore_unknown_parameter`为`False`，将引发此异常。
+        """
+        self._parameter_area.remove_parameter(
+            parameter_name, ignore_unknown_parameter=ignore_unknown_parameter
+        )
+
+    def has_parameter(self, parameter_name: str) -> bool:
+        """
+        判断是否存在指定参数名称。
+
+        Args:
+            parameter_name: 带判断的参数名称
+
+        Returns:
+            存在指定参数时返回`True`，否则返回`False`。
+        """
+        return self._parameter_area.has_parameter(parameter_name)
 
     def clear_parameters(self):
+        """
+        清除所有参数。
+
+        Returns:
+            无返回值
+        """
         self._parameter_area.clear_parameters()
 
     def get_parameter_value(self, parameter_name: str) -> Any:
+        """
+        获取指定参数当前值。
+
+        Args:
+            parameter_name: 参数名称
+
+        Returns:
+            返回当前值。
+
+        Raises:
+            ParameterNotFoundError: 若指定参数不存在，则引发此异常。
+            ParameterError: 若无法从对应控件获取值，那么将引发此异常。
+
+        """
         return self._parameter_area.get_parameter_value(parameter_name)
 
     def get_parameter_values(self) -> Dict[str, Any]:
+        """
+        获取所有参数的当前值。
+
+        Returns:
+            以字典形式返回当前所有参数的值。
+
+        Raises:
+            ParameterError: 若无法从对应控件获取值，那么将引发此异常。
+        """
         return self._parameter_area.get_parameter_values()
 
-    def set_parameter_value(self, parameter_name: str, value: Any):
+    def set_parameter_value(self, parameter_name: str, value: Any) -> None:
+        """
+        设置参数当前值。
+
+        Args:
+            parameter_name: 参数名称
+            value: 要设置的值。
+
+        Returns:
+            无返回值
+
+        Raises:
+            ParameterNotFoundError: 若指定参数不存在，则引发此异常。
+            ParameterError: 若无法将值设置到对应的控件，那么将引发此异常。
+        """
         self._parameter_area.set_parameter_value(parameter_name, value)
 
-    def set_parameter_values(self, values: Dict[str, Any]):
+    def set_parameter_values(self, values: Dict[str, Any]) -> None:
+        """
+        设置多个参数的当前值。
+
+        Args:
+            values: 要设置的参数名称和值。
+
+        Returns:
+            无返回值。
+
+        Raises:
+            ParameterError: 若无法将值设置到对应的控件，那么将引发此异常。
+        """
         self._parameter_area.clear_parameter_error(None)
         if not values:
             return
@@ -507,10 +684,10 @@ class FnExecuteWindow(BaseFnExecuteWindow):
             return
         try:
             arguments = self.get_parameter_values()
-        except FunctionExecutingError:
-            messagebox.show_warning_message(
-                self, self._config.function_executing_message
-            )
+        # except FunctionExecutingError:
+        #     messagebox.show_warning_message(
+        #         self, self._config.function_executing_message
+        #     )
         except ParameterError as e:
             self._parameter_area.process_parameter_error(e)
         else:
