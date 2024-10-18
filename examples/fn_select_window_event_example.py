@@ -1,6 +1,6 @@
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.window import SimpleWindowEventListener
 from pyguiadapter.utils import messagebox
+from pyguiadapter.window import SimpleWindowEventListener
 from pyguiadapter.windows.fnselect import FnSelectWindow
 
 

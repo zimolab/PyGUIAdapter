@@ -32,6 +32,7 @@ nav:
     - pyguiadapter.textbrowser: apis/pyguiadapter.textbrowser.md
     - pyguiadapter.windows: apis/pyguiadapter.windows.md
     - pyguiadapter.windows.fnexec: apis/pyguiadapter.windows.fnexec.md
+    - pyguiadapter.windows.fnselect: apis/pyguiadapter.windows.fnselect.md
   - 贡献: contribution.md
   - 开源许可: license.md
   - 版本历史: changelog.md
