@@ -11,13 +11,31 @@ def show_progressbar(
     message_visible: bool = False,
     message_format: str = "%p%",
     message_centered: str = True,
-    show_info: bool = True,
+    info_visible: bool = True,
     info_centered: bool = True,
     info_text_format: Literal[
         "richtext", "markdown", "plaintext", "autotext"
     ] = "autotext",
     initial_info: str = "",
-):
+) -> None:
+    """
+    显示进度条。默认情况下，进度条处于隐藏状态，开发者必须手动调用此函数来显示进度条，此函数除了用于显示进度条，还可以对进度条进行配置。
+
+    Args:
+        min_value: 最小进度值，默认为`0`
+        max_value: 最大进度值，默认为`100`
+        inverted_appearance: 是否改变进度条的显示方式，使其以反方向显示进度
+        message_visible: 是否显示message信息
+        message_format: message信息的格式，支持：`%p%`（显示完成的百分比，这是默认显示方式）、`%v`（显示当前的进度值）和`%m`（显示总的步进值）
+        message_centered: message信息是否居中显示
+        info_visible: 是否显示info区域
+        info_centered: info信息是否居中显示
+        info_text_format: info信息的文本格式，支持`"richtext"` 、` "markdown"` 、`"plaintext"` 、`"autotext"`
+        initial_info: info信息的初始值
+
+    Returns:
+        无返回值
+    """
     config = {
         "min_value": min_value,
         "max_value": max_value,
@@ -25,7 +43,7 @@ def show_progressbar(
         "message_visible": message_visible,
         "message_format": message_format,
         "message_centered": message_centered,
-        "show_info_label": show_info,
+        "show_info_label": info_visible,
         "info_text_centered": info_centered,
         "info_text_format": info_text_format,
         "initial_info": initial_info,
@@ -33,9 +51,25 @@ def show_progressbar(
     _context.sig_show_progressbar.emit(config)
 
 
-def hide_progressbar():
+def hide_progressbar() -> None:
+    """
+    隐藏进度条
+
+    Returns:
+        无返回值
+    """
     _context.sig_hide_progressbar.emit()
 
 
-def update_progress(value: int, info: Optional[str] = None):
+def update_progress(value: int, info: Optional[str] = None) -> None:
+    """
+    更新进度信息
+
+    Args:
+        value: 当前进度值
+        info:  当前info文本
+
+    Returns:
+        无返回值
+    """
     _context.sig_update_progressbar.emit(value, info)
