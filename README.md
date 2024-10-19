@@ -7,7 +7,7 @@
 
 
 <div style="text-align: center;">
-    <img src="docs/images/hello_world.png" />
+    <img src="mk-docs/assets/hello_world.png" />
 </div>
 
 
