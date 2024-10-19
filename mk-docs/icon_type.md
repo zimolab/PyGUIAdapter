@@ -19,7 +19,7 @@
 > 其界面如下：
 >
 > <div style="text-align: center">
->     <img src="/assets/qta-browser.gif" />
+>     <img src="../assets/qta-browser.gif" />
 > </div>
 
 

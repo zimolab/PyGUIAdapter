@@ -57,6 +57,6 @@ if __name__ == "__main__":
 效果如下：
 
 <div style="text-align: center">
-    <img src="/assets/cancellable_function.gif"
+    <img src="../assets/cancellable_function.gif"
 </div>
 

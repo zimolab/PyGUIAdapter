@@ -12,7 +12,7 @@ def f1(a: str, b: int, c: float):
 例如，在上面的函数`f1`中，参数`a`、`b`、`c`的类型分别被标注为`str`、`int`、`float`。在运行时，`PyGUIAdapter`将读取这一信息，分别为`a`、`b`、`c`生成`LineEdit`、`IntSpinBox`、`FloatSpinBox`，作为其输入控件。
 
 <div style="text-align: center">
-    <img src="/assets/snippet_f1.png" />
+    <img src="../assets/snippet_f1.png" />
 </div>
 
 
@@ -29,7 +29,7 @@ def f1(a: str, b: int, c: float):
 > ```
 >
 > <div style="text-align: center">
->     <img src="/assets/snippet_f2.png" />
+>     <img src="../assets/snippet_f2.png" />
 > </div>
 >
 > 
@@ -53,7 +53,7 @@ def f1(a: str, b: int, c: float):
 > ```
 >
 > <div style="text-align: center">
->     <img src="/assets/snippet_f3.png" />
+>     <img src="../assets/snippet_f3.png" />
 > </div>
 >
 > 
@@ -83,7 +83,7 @@ def f1(a: str, b: int, c: float):
 每种类型的控件都有一个与之关联的`控件配置类`，控件配置类中不仅定义了控件类的属性，而且包含控件类本身的信息，也就是说，通过`控件配置类`可以获取其关联的控件类（当然反过来也成立，通过控件类我们也可以访问到其关联的配置类）。
 
 <div style="text-align:center">
-    <img src="/assets/widget_config_relationship.svg" />
+    <img src="../assets/widget_config_relationship.svg" />
 </div>
 
 > 例如，`IntSpinBox`控件类与其配置类`IntSpinBoxConfig`的关系如下：
@@ -92,7 +92,7 @@ def f1(a: str, b: int, c: float):
 > - `IntSpinBoxConfig.target_widget_class()` == `IntSpinBox`
 >
 > <div style="text-align: center">
->    <img src="/assets/snippet_2.png" />
+>    <img src="../assets/snippet_2.png" />
 > </div>
 
 
@@ -125,7 +125,7 @@ adapter.run()
 ```
 
 <div style="text-align: center">
-   <img src="/assets/snippet_3.png" />
+   <img src="../assets/snippet_3.png" />
 </div>
 
 
@@ -163,7 +163,7 @@ adapter.run()
 ```
 
 <div style="text-align: center">
-   <img src="/assets/snippet_3_bar.png" />
+   <img src="../assets/snippet_3_bar.png" />
 </div>
 
 如果开发者在`@params-@end`中配置了参数的控件，同时又向`GUIAdapter.run()`传入了`widget_configs`，那么`PyGUIAdapter`会将两处配置合并，对于发生冲突的属性，将以`widget_configs`中设置的为准。
@@ -188,7 +188,7 @@ adapter.run()
 控件的属性定义在控件对应的配置类中，其中，公共属性来自共同的父类（基类）`BaseParameterWidgetConfig`，而独有属性则在各配置类子类中定义。
 
 <div style="text-align: center">
-   <img src="/assets/widget_config_classes_uml.png" />
+   <img src="../assets/widget_config_classes_uml.png" />
 </div>
 
 对控件属性进行配置，可以实现更加精细化的控制，比如：设置数字输入的上下限，设置文本框的输入掩码等等。很多时候，合适的配置不仅可以提高用户体验，还可以增强程序的健壮性。
@@ -252,7 +252,7 @@ adapter.run()
 ```
 
 <div style="text-align: center">
-   <img src="/assets/snippet_4_foo.png" />
+   <img src="../assets/snippet_4_foo.png" />
 </div>
 
 ##### 2、使用配置项字典
@@ -295,7 +295,7 @@ adapter.run()
 ```
 
 <div style="text-align: center">
-   <img src="/assets/snippet_4_foo2.png" />
+   <img src="../assets/snippet_4_foo2.png" />
 </div>
 
 #### （二）在`@params-@end`块中配置控件属性
@@ -344,7 +344,7 @@ adapter.run()
 ```
 
 <div style="text-align: center">
-   <img src="/assets/snippet_6_f1.png" />
+   <img src="../assets/snippet_6_f1.png" />
 </div>
 
 
@@ -387,7 +387,7 @@ adapter.run()
 ```
 
 <div style="text-align: center">
-   <img src="/assets/snippet_6_f2.png" />
+   <img src="../assets/snippet_6_f2.png" />
 </div>
 
 #### （三）特殊控件属性
@@ -417,7 +417,7 @@ adapter.run()
 ```
 
 <div style="text-align: center">
-   <img src="/assets/snippet_5_f1.png" />
+   <img src="../assets/snippet_5_f1.png" />
 </div>
 
 ##### 2、default_value
@@ -438,7 +438,7 @@ adapter.run()
 ```
 
 <div style="text-align: center">
-   <img src="/assets/snippet_5_f2.png" />
+   <img src="../assets/snippet_5_f2.png" />
 </div>
 
 ##### 3、description
@@ -465,7 +465,7 @@ adapter.run()
 ```
 
 <div style="text-align: center">
-   <img src="/assets/snippet_5_f3.png" />
+   <img src="../assets/snippet_5_f3.png" />
 </div>
 
 ### 三、总结

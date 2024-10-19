@@ -44,7 +44,7 @@ adapter.run(show_select_window=True)
 - ③`函数选择按钮`
 
 <div style="text-align:center">
-    <img src="/assets/fn_select_window_areas.png" />
+    <img src="../assets/fn_select_window_areas.png" />
 </div>
 
 ### 2、配置窗口属性
@@ -54,7 +54,7 @@ adapter.run(show_select_window=True)
 
 
 <div style="text-align:center">
-    <img src="/assets/fn_select_window_config_3.png" />
+    <img src="../assets/fn_select_window_config_3.png" />
 </div>
 完整代码如下：
 
@@ -121,11 +121,11 @@ if __name__ == "__main__":
 ```
 
 <div style="text-align: center">
-    <img src="/assets/fn_select_window_config_1.png" />
+    <img src="../assets/fn_select_window_config_1.png" />
 </div>
 
 <div style="text-align: center">
-    <img src="/assets/fn_select_window_config_2.png" />
+    <img src="../assets/fn_select_window_config_2.png" />
 </div>
 
 
@@ -140,7 +140,7 @@ if __name__ == "__main__":
 开发者可以对`函数选择窗口（FnSelectWindow）`的事件进行监听。方法如下：
 
 <div style="text-align: center">
-    <img src="/assets/fn_select_window_config_8.png" />
+    <img src="../assets/fn_select_window_config_8.png" />
 </div>
 
 完整代码如下：
@@ -202,13 +202,13 @@ if __name__ == "__main__":
 代码运行效果如下：
 
 <div style="text-align: center">
-    <img src="/assets/fn_select_window_config_9.png" />
+    <img src="../assets/fn_select_window_config_9.png" />
 </div>
 
 控制台输出如下：
 
 <div style="text-align: center">
-    <img src="/assets/fn_select_window_config_10.png" />
+    <img src="../assets/fn_select_window_config_10.png" />
 </div>
 
 ### 4、添加工具栏
@@ -216,7 +216,7 @@ if __name__ == "__main__":
 开发者可以向`函数选择窗口（FnSelectWindow）`中添加工具栏，方法如下：
 
 <div style="text-align: center">
-    <img src="/assets/fn_select_window_toolbar.png" />
+    <img src="../assets/fn_select_window_toolbar.png" />
 </div>
 
 完整代码如下：
@@ -273,7 +273,7 @@ if __name__ == "__main__":
 效果如下：
 
 <div style="text-align: center">
-    <img src="/assets/fn_select_window_toolbar.gif" />
+    <img src="../assets/fn_select_window_toolbar.gif" />
 </div>
 
 ### 5、添加窗口菜单
@@ -281,7 +281,7 @@ if __name__ == "__main__":
 开发者可以向`函数选择窗口（FnSelectWindow）`中添加菜单栏，方法如下：
 
 <div style="text-align: center">
-    <img src="/assets/fn_select_window_config_6.png" />
+    <img src="../assets/fn_select_window_config_6.png" />
 </div>
 
 完整示例代码如下：
@@ -338,7 +338,7 @@ if __name__ == "__main__":
 效果如下：
 
 <div style="text-align: center">
-    <img src="/assets/fn_select_window_menu.gif" />
+    <img src="../assets/fn_select_window_menu.gif" />
 </div>
 
 ### 6、主要接口
@@ -352,7 +352,7 @@ if __name__ == "__main__":
 `函数执行窗口（FnExecuteWindow）`是用户与程序进行交互的主要界面。一个典型的`函数执行窗口（FnExecuteWindow）`由以下几个部分组成：
 
 <div style="text-align: center">
-    <img src="/assets/fn_exec_window.png" />
+    <img src="../assets/fn_exec_window.png" />
 </div>
 
 其中：
@@ -404,7 +404,7 @@ if __name__ == "__main__":
 ```
 
 <div style="text-align: center">
-    <img src="/assets/fn_execute_window_config_example.gif" />
+    <img src="../assets/fn_execute_window_config_example.gif" />
 </div>
 
 
@@ -462,7 +462,7 @@ if __name__ == "__main__":
 ```
 
 <div style="text-align: center">
-    <img src="/assets/tiny_window_example.png" />
+    <img src="../assets/tiny_window_example.png" />
 </div>
 
 
@@ -541,7 +541,7 @@ if __name__ == "__main__":
 >  ````
 >
 >  <div style="text-align: center">
->      <img src="/assets/style_override.png" />
+>      <img src="../assets/style_override.png" />
 >  </div>
 >
 >  如果开发者确实需要设置文档浏览器或输出浏览器的样式，而不希望它被第三方库覆盖，可以通过`DocumentBrowserConfig`或`OutputBrowserConfig`的`stylesheet`属性指定其样式表内容，通过`stylesheet`设置的样式一般不会被第三方库覆盖。比如下面的示例：
@@ -611,7 +611,7 @@ if __name__ == "__main__":
 >  ```
 >
 >  <div style="text-align: center">
->      <img src="/assets/style_override_2.png" />
+>      <img src="../assets/style_override_2.png" />
 >  </div>
 
 
@@ -621,7 +621,7 @@ if __name__ == "__main__":
 开发者可以对`（函数执行窗口）FnExecuteWindow`的事件进行监听并做出响应，一个比较常见的场景是，在用户关闭窗口时再次向用户进行确认。监听窗口事件的方法如下：
 
 <div style="text-align: center">
-    <img src="/assets/fn_execute_window_event.png" />
+    <img src="../assets/fn_execute_window_event.png" />
 </div>
 
 ```python
@@ -680,13 +680,13 @@ if __name__ == "__main__":
 上述示例效果如下：
 
 <div style="text-align: center">
-    <img src="/assets/window_event_example_2.gif" />
+    <img src="../assets/window_event_example_2.gif" />
 </div>
 
 控制台输出如下：
 
 <div style="text-align: center">
-    <img src="/assets/window_event_example_2_output.png" />
+    <img src="../assets/window_event_example_2_output.png" />
 </div>
 
 ### 4、添加菜单和工具栏
@@ -694,7 +694,7 @@ if __name__ == "__main__":
 开发者可以为`FnExecuteWindow`添加工具栏和菜单栏，具体方法如下：
 
 <div style="text-align: center">
-    <img src="/assets/fn_execute_window_add_menus_toolbar.png" />
+    <img src="../assets/fn_execute_window_add_menus_toolbar.png" />
 </div>
 
 ```python
@@ -856,7 +856,7 @@ if __name__ == "__main__":
 效果如下：
 
 <div style="text-align: center">
-    <img src="/assets/toolbar_and_menus.gif" />
+    <img src="../assets/toolbar_and_menus.gif" />
 </div>
 
 ### 5、主要接口

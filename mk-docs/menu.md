@@ -5,7 +5,7 @@
 菜单栏的典型外观如下图所示：
 
 <div style="text-align: center">
-    <img src="/assets/menu_bar.png" />
+    <img src="../assets/menu_bar.png" />
 </div>
 
 开发者可以通过[**Menu**]({{main_branch}}/pyguiadapter/menu.py)类对象来定义菜单的属性，包括指定菜单的标题、是否合并连续的分隔符、菜单是否可被"tear-off"以及该菜单下包含的菜单项（`Action`）或子菜单（`Menu`）。可以通过如下方式导入`Menu`类
@@ -69,7 +69,7 @@ from pyguiadapter.menu import Menu
 菜单项互斥的效果如下图所示：
 
 <div style="text-align: center">
-    <img src="/assets/exclusive_actions.gif" />
+    <img src="../assets/exclusive_actions.gif" />
 </div>
 
 ## （三）示例
@@ -235,7 +235,7 @@ if __name__ == "__main__":
 ```
 
 <div style="text-align: center">
-    <img src="/assets/menu_example.gif" />
+    <img src="../assets/menu_example.gif" />
 </div>
 
 ### 2、示例2：通过互斥菜单项实现主题切换效果
@@ -306,5 +306,5 @@ if __name__ == "__main__":
 ```
 
 <div style="text-align: center">
-    <img src="/assets/exclusive_actions_example.gif" />
+    <img src="../assets/exclusive_actions_example.gif" />
 </div>

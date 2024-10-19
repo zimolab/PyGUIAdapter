@@ -94,20 +94,20 @@ pyinstaller app.py
 - `app.spec`：`*.spec`文件时打包配置文件，该文件记录了打包所使用的参数，运行打包命令后将自动生成该文件。后续可以直接输入`pyinstaller app.spec`命令打包应用，而无需每次都手动输入参数。
 
 <div style="text-align: center;">
-    <img src="/assets/packaging_1.png" />
+    <img src="../assets/packaging_1.png" />
 </div>
 
 
 现在让我们查看`dist`目录，里面包含一个名为`app`的子目录，最终的可执行文件就在该目录下。默认情况下，`pyinstaller`会生成一个可执行文件及一个`_internal/`目录：
 
 <div style="text-align: center;">
-    <img src="/assets/packaging_2.png" />
+    <img src="../assets/packaging_2.png" />
 </div>
 
 `_internal/`目录下存放着这可执行文件运行时依赖的库和其他文件：
 
 <div style="text-align:center">
-    <img src="/assets/packaging_3.png" />
+    <img src="../assets/packaging_3.png" />
 </div>
 
 ### 2、打包资源（数据）文件
@@ -179,13 +179,13 @@ FileNotFoundError: [Errno 2] No such file or directory: '...\\dist\\app\\_intern
 打包完成后。可以发现，`yapf_third_party`和`pyqcodeeditor`中的资源文件打包到`_internal`目录下了。
 
 <div style="text-align:center">
-    <img src="/assets/packaging_4.png" />
+    <img src="../assets/packaging_4.png" />
 </div>
 
 让我们再次运行`app.exe`，已经可以正常显示程序界面了。
 
 <div style="text-align:center">
-    <img src="/assets/packaging_5.gif" />
+    <img src="../assets/packaging_5.gif" />
 </div>
 **小结：**如果程序引用了一些第三方库，而`pyinstaller`目前还无法自动收集这些库或是其资源文件，开发者可以使用`--collect-xxx`选项手动包含需要的文件。
 
@@ -194,7 +194,7 @@ FileNotFoundError: [Errno 2] No such file or directory: '...\\dist\\app\\_intern
 现在，我们的应用仍然存在一个小问题：当我们单击`Help`菜单下的`About`菜单项，本应弹出一个关于对话框，但是，什么都没有发生。
 
 <div style="text-align:center">
-    <img src="/assets/packaging_6.gif" />
+    <img src="../assets/packaging_6.gif" />
 </div>
 
 让我们从命令行输出中定位问题：
@@ -211,7 +211,7 @@ FileNotFoundError: [Errno 2] No such file or directory: '...\\dist\\app\\_intern
 非常清晰的错误消息：`app.py`的第`40行`用到了一个文件`about.html`，但该文件并不存在。
 
 <div style="text-align:center">
-    <img src="/assets/packaging_7.png" />
+    <img src="../assets/packaging_7.png" />
 </div>
 
 `about.html`与`app.py`在同一目录下，`pyinstaller`在打包时却没有将`about.html`打包到`_internal`目录下，这就是问题的根源。因此，我们需要手动指定项目中哪些资源文件需要被打包到最终产物中。对此，`pyinstaller`提供了`--add-data`选项。
@@ -233,13 +233,13 @@ pyinstaller app.py  --collect-data yapf_third_party --collect-data pyqcodeeditor
 打包完成后，可以发现`about.html`已经被打包到`_internal`目录下了。
 
 <div style="text-align:center">
-    <img src="/assets/packaging_8.png" />
+    <img src="../assets/packaging_8.png" />
 </div>
 
 再次运行`app.exe`，现在终于可以正常弹出对话框了：
 
 <div style="text-align:center">
-    <img src="/assets/packaging_9.gif" />
+    <img src="../assets/packaging_9.gif" />
 </div>
 
 #### （3）关于文件路径的一些提示
@@ -247,7 +247,7 @@ pyinstaller app.py  --collect-data yapf_third_party --collect-data pyqcodeeditor
 为了在程序打包后仍然可以访问到项目中的资源文件，需要在代码中必须非常小心的除了路径问题，尤其是采用`相对路径`时，源码状态下和打包状态下`相对路径`中**“相对”**的含义是不同的，具体而言，**“相对”的起点**不同。为了解决这个问题，一种可行的方法是，以`__file__`为起点对路径进行定位，本例中就是采用这种做法。
 
 <div style="text-align:center">
-    <img src="/assets/packaging_10.png" />
+    <img src="../assets/packaging_10.png" />
 </div>
 
 ## （四）修改可执行文件名称、图标
@@ -271,7 +271,7 @@ pyinstaller app.py --name "Equation-Solver"  --collect-data yapf_third_party --c
 打包完成后，重新生成了一个`.spec`文件，名称为`Equation-Solver.spec`。在`dist/Equation-Solver`目录下，生成了一个名为`Equation-Solver.exe`的可执行文件。
 
 <div style="text-align:center">
-    <img src="/assets/packaging_11.png" />
+    <img src="../assets/packaging_11.png" />
 </div>
 
 ### 2、修改可执行文件的图标
@@ -285,7 +285,7 @@ pyinstaller app.py --name "Equation-Solver"  --collect-data yapf_third_party --c
 首先，需要准备好图标文件（`.ico`或`.icns`格式），并将其放到`app.py`同目录下。
 
 <div style="text-align:center">
-    <img src="/assets/packaging_12.png" />
+    <img src="../assets/packaging_12.png" />
 </div>
 
 执行以下打包命令：
@@ -297,7 +297,7 @@ pyinstaller app.py --name "Equation-Solver"  --collect-data yapf_third_party --c
 打包完成后，我们就得到了一个带自定义图标的可执行文件了：
 
 <div style="text-align:center">
-    <img src="/assets/packaging_13.png" />
+    <img src="../assets/packaging_13.png" />
 </div>
 
 ## （五）窗口模式
@@ -329,13 +329,13 @@ pyinstaller app.py -F -w --name "Equation-Solver" --icon "./icon.ico"   --collec
 打包完成后，`dist/`目录下只有一个可执行文件，其他所有文件都被打包到这个文件中了。
 
 <div style="text-align:center">
-    <img src="/assets/packaging_14.png" />
+    <img src="../assets/packaging_14.png" />
 </div>
 
 现在只需要一个文件就可以完成程序的分发了。
 
 <div style="text-align:center">
-    <img src="/assets/packaging_15.gif" />
+    <img src="../assets/packaging_15.gif" />
 </div>
 
 相比多文件模式，单文件打包的优势主要包括以下两点：

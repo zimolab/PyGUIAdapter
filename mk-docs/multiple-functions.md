@@ -3,19 +3,19 @@
 开发者可以向 `GUIAdapter`实例中添加多个函数，在此情况下，`PyGUIAdapter`将显示一个`函数选择窗口（FnSelectWindow）`，并以列表的形式展现所有已添加的函数，供用户选择。在函数列表中，将显示函数图标与名称，开发者可以对图标与函数的显示名称进行自定义。同时，在`函数选择窗口（FnSelectWindow）`的右侧，将通过`文档浏览器（Document Browser）`显示当前选中函数的说明文档。
 
 <div style="text-align:center">
-    <img src="/assets/fn_select_wind.png" />
+    <img src="../assets/fn_select_wind.png" />
 </div>
 
 用户可通过双击函数列表中的条目或者点击`选择按钮（Select）`打开目标函数的执行窗口（`FnExecuteWindow`）。
 
 <div style="text-align:center">
-    <img src="/assets/fn_select_wind.gif" />
+    <img src="../assets/fn_select_wind.gif" />
 </div>
 
 同时，`PyGUIAdapter`支持函数分组功能，在函数较多时，使用该功能可以使界面更加简洁、直观。
 
 <div style="text-align:center">
-    <img src="/assets/fn_groups.gif" />
+    <img src="../assets/fn_groups.gif" />
 </div>
 
 下面，围绕`GUIAdapter.add()`函数对上面提到的功能进行详细说明。
@@ -62,7 +62,7 @@ if __name__ == "__main__":
 ```
 
 <div style="text-align:center">
-    <img src="/assets/fn_select_wind.gif" />
+    <img src="../assets/fn_select_wind.gif" />
 </div>
 
 所有添加到`GUIAdapter`实例中的函数都会显示在`函数选择窗口（FnSelectWindow）`左侧的函数列表中。函数列表将同时显示函数的名称及图标，如果没有显式地指定函数的图标和名称，`PyGUIAadpter`将使用默认的图标，显示的名称则为函数名。
@@ -110,7 +110,7 @@ if __name__ == "__main__":
 ```
 
 <div style="text-align:center">
-    <img src="/assets/custom_icon_and_name.png" />
+    <img src="../assets/custom_icon_and_name.png" />
 </div>
 
 > 在本例中，使用了字体图标名称作为函数的`icon`，开发者也可以传入图标文件路径。更多详细信息可以参考：[关于图标](icon_type.md)。
@@ -124,7 +124,7 @@ if __name__ == "__main__":
 默认情况下，`PyGUIAdapter`会自动提取函数文档字符串（`docstring`）中对于函数的描述（包括`long description`和`short description`，但一般不包括参数的描述部分和`@params...@end`块）作为说明文档，格式默认为`Markdown`。比如：
 
 <div style="text-align:center">
-    <img src="/assets/docstring_document.png" />
+    <img src="../assets/docstring_document.png" />
 </div>
 
 > [examples/html_docstring__document_example.py]({{main_branch}}/examples/html_docstring__document_example.py)
@@ -168,7 +168,7 @@ if __name__ == "__main__":
 除了`markdown`，也可以将文档的格式指定为`html`或`plaintext`。比如：
 
 <div style="text-align:center">
-    <img src="/assets/html_docstring.png" />
+    <img src="../assets/html_docstring.png" />
 </div>
 
 > 
@@ -215,7 +215,7 @@ if __name__ == "__main__":
 当然，如果开发者不想将大段文本放到函数的`docstring`中，也可以手动指定函数的说明文档，比如将外部文件作为说明文档：
 
 <div style="text-align:center">
-    <img src="/assets/html_document_file.gif" />
+    <img src="../assets/html_document_file.gif" />
 </div>
 
 > [examples/html_file_document_example.py]({{main_branch}}/examples/html_file_document_example.py)
@@ -252,11 +252,11 @@ if __name__ == "__main__":
 比如下面这个示例，将函数按照功能分成了三组：编码器函数`Encoders`、解码器函数`Decoders`和其他函数（默认分组）`Main Functions`。
 
 <div style="text-align:center">
-    <img src="/assets/function_groups_2.png" />
+    <img src="../assets/function_groups_2.png" />
 </div>
 
 <div style="text-align:center">
-    <img src="/assets/function_groups.png" />
+    <img src="../assets/function_groups.png" />
 </div>
 
 > [examples/function_groups_example.py]({{main_branch}}/examples/function_groups_example.py)

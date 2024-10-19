@@ -3,7 +3,7 @@
 `BaseWindow`的子类窗口均可添加工具栏，工具栏的典型外观如下图所示：
 
 <div style="text-align: center">
-    <img src="/assets/toolbar_1.png" />
+    <img src="../assets/toolbar_1.png" />
 </div>
 
 为`函数选择窗口`和`函数执行窗口`添加工具栏的具体方法，在[**配置窗口属性**](window.md)一章已经给出，这里不再赘述，本章节主要介绍工具栏本身的属性。
@@ -281,5 +281,5 @@ if __name__ == "__main__":
 ```
 
 <div style="text-align: center">
-    <img src="/assets/toolbar_example.gif" />
+    <img src="../assets/toolbar_example.gif" />
 </div>

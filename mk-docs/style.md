@@ -98,7 +98,7 @@ if __name__ == "__main__":
 ```
 
 <div style="text-align: center">
-    <img src="/assets/global_style_example.png" />
+    <img src="../assets/global_style_example.png" />
 </div>
 
 
@@ -149,7 +149,7 @@ if __name__ == "__main__":
 ```
 
 <div style="text-align: center">
-    <img src="/assets/global_style_example_3.png" />
+    <img src="../assets/global_style_example_3.png" />
 </div>
 
 ## （三）使用第三方库
@@ -215,7 +215,7 @@ if __name__ == "__main__":
 ```
 
 <div style="text-align: center">
-    <img src="/assets/qdarktheme_example.gif" />
+    <img src="../assets/qdarktheme_example.gif" />
 </div>
 
 ### 2、QDarkStyleSheet
@@ -280,7 +280,7 @@ if __name__ == "__main__":
 ```
 
 <div style="text-align: center">
-    <img src="/assets/qdarkstyle_example.gif" />
+    <img src="../assets/qdarkstyle_example.gif" />
 </div>
 
 ### 3、qtmodern
@@ -345,7 +345,7 @@ if __name__ == "__main__":
 ```
 
 <div style="text-align: center">
-    <img src="/assets/qtmodern_example.gif" />
+    <img src="../assets/qtmodern_example.gif" />
 </div>
 
 ### 4、Qt-Material
@@ -417,5 +417,5 @@ if __name__ == "__main__":
 ```
 
 <div style="text-align: center">
-    <img src="/assets/qt_material_example.gif" />
+    <img src="../assets/qt_material_example.gif" />
 </div>

@@ -109,7 +109,7 @@ if __name__ == "__main__":
 ```
 
 <div style="text-align:center">
-    <img src="/assets/udialog_demo.gif" />
+    <img src="../assets/udialog_demo.gif" />
 </div>
 
 ### 2、长文本消息对话框
@@ -195,11 +195,11 @@ if __name__ == "__main__":
 ```
 
 <div style="text-align:center">
-    <img src="/assets/udialog_demo_2.gif" />
+    <img src="../assets/udialog_demo_2.gif" />
 </div>
 
 <div style="text-align:center">
-    <img src="/assets/udialog_demo_3.gif" />
+    <img src="../assets/udialog_demo_3.gif" />
 </div>
 
 ### 3、自定义消息对话框
@@ -340,7 +340,7 @@ if __name__ == "__main__":
 ```
 
 <div style="text-align:center">
-    <img src="/assets/udialog_demo_4.gif" />
+    <img src="../assets/udialog_demo_4.gif" />
 </div>
 
 
@@ -442,7 +442,7 @@ if __name__ == "__main__":
 ```
 
 <div style="text-align:center">
-    <img src="/assets/uinput_example.gif" />
+    <img src="../assets/uinput_example.gif" />
 </div>
 
 ### 2、自定义输入对话框
@@ -466,7 +466,7 @@ def create_main_widget(self) -> QWidget:
 开发者需在该方法中创建输入对话框的主控件并将其返回。所谓`主控件（main widget）`是指下图中使用红框标注的位置：
 
 <div style="text-align:center">
-    <img src="/assets/custom_input_dialog_main_widget.png" />
+    <img src="../assets/custom_input_dialog_main_widget.png" />
 </div>
 
 **`get_result()`方法**
@@ -591,7 +591,7 @@ class UserInfoDialog(UniversalInputDialog):
 > 我们需要在`QT设计师`中为输入控件合理设置对象名称（objectName），以便后续在代码中引用它们。在本示例中，这些控件的名称如下图所示：
 >
 > <div style="text-align:center">
->     <img src="/assets/main_widget_names.png" />
+>     <img src="../assets/main_widget_names.png" />
 > </div>
 >
 > 
@@ -849,7 +849,7 @@ if __name__ == "__main__":
 效果如下：
 
 <div style="text-align:center">
-    <img src="/assets/custom_input_dialog_example.gif" />
+    <img src="../assets/custom_input_dialog_example.gif" />
 </div>
 
 最后，贴上完整代码：

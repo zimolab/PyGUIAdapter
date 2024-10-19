@@ -5,7 +5,7 @@
 进度条位于函数执行窗口`Ouput Dock`中，在输出浏览器下方，主要包括三个部分：
 
 <div style="text-align: center">
-    <img src="/assets/progressbar.png" />
+    <img src="../assets/progressbar.png" />
 </div>
 
 - **Progress Bar**：进度条本体。
@@ -84,6 +84,6 @@ if __name__ == "__main__":
 效果如下：
 
 <div style="text-align: center">
-    <img src="/assets/progressbar_example.gif" />
+    <img src="../assets/progressbar_example.gif" />
 </div>
 

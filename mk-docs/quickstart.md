@@ -119,7 +119,7 @@ if __name__ == "__main__":
 **界面效果如下：**
 
 <div style="text-align:center">
-    <img src="/assets/equation_solver.gif" />
+    <img src="../assets/equation_solver.gif" />
 </div>
 
 
@@ -161,7 +161,7 @@ if __name__ == "__main__":
 对于非法的函数参数值，开发者只需抛出`ParameterError`异常，即完成了参数的校验工作。`PyGUIAdapter`将自动完成的后续的工作，以合适的方式提醒用户，函数的某个参数输入了一个不合适的值。
 
 <div style="text-align: center">
-    <img src="/assets/handle_parameter_error.gif" />
+    <img src="../assets/handle_parameter_error.gif" />
 </div>
 
 
@@ -173,20 +173,20 @@ if __name__ == "__main__":
 无论是命令行程序还是图形界面程序，为程序及其参数提供描述性文字都是非常有必要的一件事。这些文字一般被称为程序的**帮助信息**，对于`CLI`程序，一般使用`-h`或`--help`来获取其帮助信息，例如，下图是`pyhton -h`命令打印出的`Python`解释器程序的部分帮助信息。
 
 <div style="text-align: center">
-    <img src="/assets/cli_help.png" />
+    <img src="../assets/cli_help.png" />
 </div>
 `PyGUIAdapter`同样支持为函数参数以及函数本身添加描述信息。
 
 对于函数参数，`PyGUIAdapter`在其输入控件的上方预留了用于显示描述信息的空间：
 
 <div style="text-align: center">
-    <img src="/assets/parameter_description.png" />
+    <img src="../assets/parameter_description.png" />
 </div>
 
 对于函数本身，`PyGUIAdapter`则提供了专门的`文档浏览器（Document Browser）`来展示其说明信息：
 
 <div style="text-align: center">
-    <img src="/assets/function_description.png" />
+    <img src="../assets/function_description.png" />
 </div>
 
 回看示例代码，似乎并没有通过特殊的方法添加这些信息，那么这些信息从何而来呢？仔细阅读代码，不难发现，这些信息实际上来自于函数的`文档字符串（docstring）`。
@@ -194,7 +194,7 @@ if __name__ == "__main__":
 
 
 <div style="text-align: center">
-    <img src="/assets/gui_description.png" />
+    <img src="../assets/gui_description.png" />
 </div>
 
 
@@ -260,7 +260,7 @@ if __name__ == "__main__":
 对窗口属性的调整需要借助`窗口配置类`对象。对于函数执行窗口，其窗口配置类为`FnExecuteWindowConfig`，该类中定义了函数执行窗口的可配置属性，开发者可以通过以下方式对窗口进行配置：
 
 <div style="text-align: center">
-    <img src="/assets/how_to_config_exec_win.png" />
+    <img src="../assets/how_to_config_exec_win.png" />
 </div>
 
 完整代码如下：
@@ -322,7 +322,7 @@ if __name__ == "__main__":
 效果如下：
 
 <div style="text-align: center">
-    <img src="/assets/how_to_config_exec_win_result.png" />
+    <img src="../assets/how_to_config_exec_win_result.png" />
 </div>
 
 > `FnExecuteWindowConfig`定义了大量可配置属性，这里仅仅演示了其中一小部分，开发者可以参考以下文档获取完整的可配置属性列表：[pyguiadapter.windows.fnexec.FnExecuteWindowConfig](apis/pyguiadapter.windows.fnexec.md#FnExecuteWindowConfig)
@@ -334,7 +334,7 @@ if __name__ == "__main__":
 在目前的示例程序中，参数`a`、`b`、`c`的输入控件只能输入小数点后2位，且每次调整的步进值为1。
 
 <div style="text-align: center">
-    <img src="/assets/widget_config_before.gif" />
+    <img src="../assets/widget_config_before.gif" />
 </div>
 
 
@@ -342,7 +342,7 @@ if __name__ == "__main__":
 原因在于`float`类型对应的`FloatSpinBox`控件，其`step`（单次步进值）属性和`decimals`（小数点位数）属性分别被配置为`1.0`和`2`。开发者可以通过多种方式修改控件的默认属性配置，以达到改变控件的默认行为的目的。
 
 <div style="text-align: center">
-    <img src="/assets/floatspin_def_config.png" />
+    <img src="../assets/floatspin_def_config.png" />
 </div>
 
 现在我们将对上述示例做进一步修改，将参数`a`、`b`、`c`对应控件的`decimals`（小数点位数）配置为`5`，`step`（单次步进值）配置为`0.00005`。
@@ -361,7 +361,7 @@ if __name__ == "__main__":
 比如要配置上述示例中参数`a`、`b`、`c`对应控件的`step`属性和`decimals`属性，可以这样做：
 
 <div style="text-align: center">
-    <img src="/assets/params_config_block.png" />
+    <img src="../assets/params_config_block.png" />
 </div>
 
 **完整代码如下：**
@@ -454,7 +454,7 @@ if __name__ == "__main__":
 > 使用配置类对象时，开发者在函数签名中指定的参数的默认值将会被覆盖，可以通过配置类对象的`default_value`属性重新指定
 
 <div style="text-align: center">
-    <img src="/assets/widget_config_class_demo.png" />
+    <img src="../assets/widget_config_class_demo.png" />
 </div>
 
 **完整代码如下**
@@ -623,38 +623,38 @@ if __name__ == "__main__":
 **效果如下：**
 
 <div style="text-align: center">
-    <img src="/assets/window_menu_demo.gif" />
+    <img src="../assets/window_menu_demo.gif" />
 </div>
 **代码说明：**
 
 在上面的代码中，我们添加了一个动作（`Action`）：`action_about`，并为其指定了`triggered`事件响应函数：`on_action_about`，该函数将在动作被触发时调用。
 
 <div style="text-align: center">
- <img src="/assets/l64.png" />
+ <img src="../assets/l64.png" />
 </div>
 
 在`action_about`的事件回调函数中，我们调用`pyguiadapter.utils.messagebox`模块中的`show_text_file()`函数，弹窗展示当前目录下的`about.html`文件：
 
 <div style="text-align: center">
- <img src="/assets/l56.png" />
+ <img src="../assets/l56.png" />
 </div>
 
 然后，创建了一个`Menu`对象：`menu_help`，将其标题设置为"Help"，并将`action_about`添加到其`actions`中：
 
 <div style="text-align: center">
- <img src="/assets/l65.png" />
+ <img src="../assets/l65.png" />
 </div>
 
 最后，将`menu_help`对象添加到`window_menus`中，这样便完成了创建和添加菜单的全过程：
 
 <div style="text-align: center">
- <img src="/assets/l68.png" />
+ <img src="../assets/l68.png" />
 </div>
 
 > - 所谓“动作”（`Action`），就是具有文字、图标等一系列属性，可以响应特定鼠标、快捷键事件的组件。它可以被添加到菜单、工具栏中，当其被添加到菜单中，其表现为菜单项；当其被添加到工具栏时，其表现为工具栏按钮。比如下图中红色方框标记的是同一组`Action`分别在菜单和工具栏中的样子。
 >
 > <div style="text-align: center">
->  <img src="/assets/actions_demo.png" />
+>  <img src="../assets/actions_demo.png" />
 > </div>
 >
 > - 可以通过鼠标单击或快捷键来“触发”动作。
