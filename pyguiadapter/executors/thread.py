@@ -1,6 +1,5 @@
 import threading
 import traceback
-import warnings
 from collections import OrderedDict
 from typing import Any, Dict, Optional
 
@@ -103,10 +102,8 @@ class ThreadFunctionExecutor(BaseFunctionExecutor):
 
     def try_cancel(self):
         if not self.is_executing:
-            warnings.warn("function is not executing")
             return
         if self.is_cancelled:
-            warnings.warn("function is already cancelled")
             return
         # noinspection PyUnresolvedReferences
         self._worker_thread.sig_cancel_requested.emit()
