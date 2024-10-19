@@ -1,0 +1,2129 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../">
+      
+      
+        <link rel="next" href="../multiple-functions/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.41">
+    
+    
+      
+        <title>快速开始 - PyGUIAdapter Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+   <link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+    html.glightbox-open { overflow: initial; height: 100%; }
+    .gslide-title { margin-top: 0px; user-select: text; }
+    .gslide-desc { color: #666; user-select: text; }
+    .gslide-image img { background: white; }
+    .gscrollbar-fixer { padding-right: 15px; }
+    .gdesc-inner { font-size: 0.75rem; }
+    body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
+    body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
+    body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}</style> <script src="../../assets/javascripts/glightbox.min.js"></script></head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../" title="PyGUIAdapter Docs" class="md-header__button md-logo" aria-label="PyGUIAdapter Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            PyGUIAdapter Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              快速开始
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Select language">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../quickstart/" hreflang="zh" class="md-select__link">
+              简体中文
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/zimolab/PyGUIAdapter" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../" title="PyGUIAdapter Docs" class="md-nav__button md-logo" aria-label="PyGUIAdapter Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    PyGUIAdapter Docs
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/zimolab/PyGUIAdapter" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    首页
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    快速开始
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    快速开始
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      （一）前置条件
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      （二）安装依赖
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      （三）编写代码
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="（三）编写代码">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      1、实现业务逻辑，并封装为函数。
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2gui" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、创建GUI界面
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      （四）一些说明
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="（四）一些说明">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      1、原理
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、参数校验与异常处理
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      3、描述性信息
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      4、打印消息
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4、打印消息">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pyguiadapter.adapter.ucontext.uprint" class="md-nav__link">
+    <span class="md-ellipsis">
+      uprint
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      （五）、示例进阶
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="（五）、示例进阶">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      1、配置窗口属性
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、配置控件属性
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2、配置控件属性">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1paramsend" class="md-nav__link">
+    <span class="md-ellipsis">
+      方法1：利用@params...@end配置块
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      方法2：使用配置类对象
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      3、添加菜单
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../multiple-functions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    添加多个函数
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../widget-config/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    配置控件属性
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../widget-map/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    控件与参数数据类型
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../window/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    配置窗口属性
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../toolbar/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    窗口工具栏
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../menu/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    窗口菜单栏
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cancel/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    取消函数执行
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../progressbar/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    进度条
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user-interaction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    与用户交互
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../style/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    界面美化
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../custom-widget/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    自定义控件
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../utility/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    实用函数
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../icon_type/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    关于图标
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../packaging/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    应用打包
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_17" >
+        
+          
+          <label class="md-nav__link" for="__nav_17" id="__nav_17_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    API参考
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_17_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_17">
+            <span class="md-nav__icon md-icon"></span>
+            API参考
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.window/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.window
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.action/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.action
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.toolbar/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.toolbar
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.menu/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.menu
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.adapter.uoutput/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.adapter.uoutput
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.adapter.uprogress/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.adapter.uprogress
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.adapter.udialog/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.adapter.udialog
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.adapter.uinput/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.adapter.uinput
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.textbrowser/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.textbrowser
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.windows/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.windows
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.windows.fnexec/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.windows.fnexec
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.windows.fnselect/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.windows.fnselect
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contribution/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    贡献
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../license/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    开源许可
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../changelog/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    版本历史
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      （一）前置条件
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      （二）安装依赖
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      （三）编写代码
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="（三）编写代码">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      1、实现业务逻辑，并封装为函数。
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2gui" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、创建GUI界面
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      （四）一些说明
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="（四）一些说明">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      1、原理
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、参数校验与异常处理
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      3、描述性信息
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      4、打印消息
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4、打印消息">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pyguiadapter.adapter.ucontext.uprint" class="md-nav__link">
+    <span class="md-ellipsis">
+      uprint
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      （五）、示例进阶
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="（五）、示例进阶">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      1、配置窗口属性
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、配置控件属性
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2、配置控件属性">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1paramsend" class="md-nav__link">
+    <span class="md-ellipsis">
+      方法1：利用@params...@end配置块
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      方法2：使用配置类对象
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      3、添加菜单
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+  <h1>快速开始</h1>
+
+<h2 id="_1">（一）前置条件</h2>
+<p>要使用<code>PyGUIAdapter</code>开发应用程序，需满足以下条件：</p>
+<ul>
+<li><code>Python</code>版本 &gt;= <code>3.8</code></li>
+<li>安装<code>PyGUIAdapter</code></li>
+<li>安装Qt的绑定库之一，可选：<code>PyQt5</code>、<code>PyQt6</code>、<code>PySide2</code>、<code>PySide6</code></li>
+</ul>
+<h2 id="_2">（二）安装依赖</h2>
+<p>1、安装<code>PyGUIAdapter</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pip<span class="w"> </span>install<span class="w"> </span>PyGUIAdapter
+</code></pre></div>
+<p>2、安装Qt的绑定库，这里以<code>PySide2</code>为例：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>pip<span class="w"> </span>install<span class="w"> </span>pyside2
+</code></pre></div>
+<blockquote>
+<p>如果你的环境下同时安装了多个Qt绑定库，<code>qtpy</code>默认会使用<code>PyQt5</code>(如果存在的话)。可以通过环境变量<code>QT_API</code>明确指定要使用的绑定库，可以指定以下值：</p>
+<ul>
+<li><code>pyqt5</code></li>
+<li><code>pyside2</code></li>
+<li><code>pyqt6</code></li>
+<li><code>pyside6</code></li>
+</ul>
+<p>可以参见<a href="https://github.com/spyder-ide/qtpy">qtpy官方说明</a>。</p>
+</blockquote>
+<h2 id="_3">（三）编写代码</h2>
+<h3 id="1">1、实现业务逻辑，并封装为函数。</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter.uoutput</span> <span class="kn">import</span> <span class="n">uprint</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="kn">from</span> <span class="nn">pyguiadapter.exceptions</span> <span class="kn">import</span> <span class="n">ParameterError</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="k">def</span> <span class="nf">equation_solver</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">c</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">tuple</span><span class="p">]:</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;A simple equation solver for equations like:</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="sd">    **ax^2 + bx + c = 0** (a, b, c ∈ **R** and a ≠ 0)</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="sd">    @param a: a ∈ R and a ≠ 0</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="sd">    @param b: b ∈ R</span>
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="sd">    @param c: c ∈ R</span>
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="sd">    @return:</span>
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>    <span class="k">if</span> <span class="n">a</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>        <span class="k">raise</span> <span class="n">ParameterError</span><span class="p">(</span><span class="n">parameter_name</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;a cannot be zero!&quot;</span><span class="p">)</span>
+<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>    <span class="n">uprint</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Equation:&quot;</span><span class="p">)</span>
+<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>    <span class="n">uprint</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">a</span><span class="si">}</span><span class="s2">x² + </span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s2">x + </span><span class="si">{</span><span class="n">c</span><span class="si">}</span><span class="s2"> = 0&quot;</span><span class="p">)</span>
+<a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a>    <span class="n">delta</span> <span class="o">=</span> <span class="n">b</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">a</span> <span class="o">*</span> <span class="n">c</span>
+<a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a>    <span class="k">if</span> <span class="n">delta</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+<a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a>        <span class="k">return</span> <span class="kc">None</span>
+<a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a>    <span class="n">x1</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">b</span> <span class="o">+</span> <span class="n">delta</span><span class="o">**</span><span class="mf">0.5</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">a</span><span class="p">)</span>
+<a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a>    <span class="k">if</span> <span class="n">delta</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a>        <span class="k">return</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x1</span>
+<a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a>    <span class="n">x2</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">b</span> <span class="o">-</span> <span class="n">delta</span><span class="o">**</span><span class="mf">0.5</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">a</span><span class="p">)</span>
+<a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a>    <span class="k">return</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span>
+</code></pre></div>
+<h3 id="2gui">2、创建GUI界面</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter</span> <span class="kn">import</span> <span class="n">GUIAdapter</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="o">...</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="n">adapter</span> <span class="o">=</span> <span class="n">GUIAdapter</span><span class="p">()</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">equation_solver</span><span class="p">)</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre></div>
+<p><strong>完整代码如下：</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter</span> <span class="kn">import</span> <span class="n">GUIAdapter</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter.uoutput</span> <span class="kn">import</span> <span class="n">uprint</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="kn">from</span> <span class="nn">pyguiadapter.exceptions</span> <span class="kn">import</span> <span class="n">ParameterError</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="k">def</span> <span class="nf">equation_solver</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">c</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">tuple</span><span class="p">]:</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;A simple equation solver for equations like:</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="sd">    **ax^2 + bx + c = 0** (a, b, c ∈ **R** and a ≠ 0)</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="sd">    @param a: a ∈ R and a ≠ 0</span>
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="sd">    @param b: b ∈ R</span>
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="sd">    @param c: c ∈ R</span>
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="sd">    @return:</span>
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>    <span class="k">if</span> <span class="n">a</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>        <span class="k">raise</span> <span class="n">ParameterError</span><span class="p">(</span><span class="n">parameter_name</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;a cannot be zero!&quot;</span><span class="p">)</span>
+<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>    <span class="n">uprint</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Equation:&quot;</span><span class="p">)</span>
+<a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>    <span class="n">uprint</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">a</span><span class="si">}</span><span class="s2">x² + </span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s2">x + </span><span class="si">{</span><span class="n">c</span><span class="si">}</span><span class="s2"> = 0&quot;</span><span class="p">)</span>
+<a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a>    <span class="n">delta</span> <span class="o">=</span> <span class="n">b</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">a</span> <span class="o">*</span> <span class="n">c</span>
+<a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a>    <span class="k">if</span> <span class="n">delta</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+<a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a>        <span class="k">return</span> <span class="kc">None</span>
+<a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a>    <span class="n">x1</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">b</span> <span class="o">+</span> <span class="n">delta</span><span class="o">**</span><span class="mf">0.5</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">a</span><span class="p">)</span>
+<a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a>    <span class="k">if</span> <span class="n">delta</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a>        <span class="k">return</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x1</span>
+<a id="__codelineno-4-28" name="__codelineno-4-28" href="#__codelineno-4-28"></a>    <span class="n">x2</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">b</span> <span class="o">-</span> <span class="n">delta</span><span class="o">**</span><span class="mf">0.5</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">a</span><span class="p">)</span>
+<a id="__codelineno-4-29" name="__codelineno-4-29" href="#__codelineno-4-29"></a>    <span class="k">return</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span>
+<a id="__codelineno-4-30" name="__codelineno-4-30" href="#__codelineno-4-30"></a>
+<a id="__codelineno-4-31" name="__codelineno-4-31" href="#__codelineno-4-31"></a>
+<a id="__codelineno-4-32" name="__codelineno-4-32" href="#__codelineno-4-32"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<a id="__codelineno-4-33" name="__codelineno-4-33" href="#__codelineno-4-33"></a>    <span class="n">adapter</span> <span class="o">=</span> <span class="n">GUIAdapter</span><span class="p">()</span>
+<a id="__codelineno-4-34" name="__codelineno-4-34" href="#__codelineno-4-34"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">equation_solver</span><span class="p">)</span>
+<a id="__codelineno-4-35" name="__codelineno-4-35" href="#__codelineno-4-35"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre></div>
+<p><strong>界面效果如下：</strong></p>
+<div style="text-align:center">
+    <a class="glightbox" href="/assets/equation_solver.gif" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/equation_solver.gif" /></a>
+</div>
+
+<h2 id="_4">（四）一些说明</h2>
+<h3 id="1_1">1、原理</h3>
+<p>在<code>PyGUIAdapter</code>中，函数是界面的基本单元，一个函数对应了一个窗口，函数的参数列表则定义了窗口中的控件。</p>
+<p>在基于“<code>输入（Input）-处理（Process）-输出（Output）</code>”的程序设计模型中，<code>PyGUIAdapter</code>为开发者自动完成了“<code>输入（Input）</code>”和“<code>输出（Output）</code>”这两个环节。因此，在绝大多数情况下，开发者唯一需要关注的就是如何实现“<code>处理（Process）</code>”环节，也就是实现程序的核心功能或者说业务逻辑。</p>
+<p>与传统GUI编程不同，在使用<code>PyGUIAdapter</code>时，GUI创建和管理的整个过程对于开发者而言几乎是透明的，开发者基本上不会感知到这一过程的存在，这意味着，开发者不会被<code>“如何创建窗口和控件”</code>、<code>“如何选择和布局控件”</code>、<code>“如何处理用户输入数据”</code>、<code>“如何响应事件”</code>之类细枝末节的问题分散注意力，从而将关注点始终聚焦在核心功能的实现上。</p>
+<p>将界面与逻辑进行分离被认为是一种好实践，<code>PyGUIAdapter</code>这种设计模式进一步探索了界面与逻辑分离的可能性。 那么，<code>PyGUIAdapter</code>是如何做到这一点的呢？<code>PyGUIAdapter</code>的实现实际上并不复杂，没有使用所谓的“黑魔法”，全部基1于Python的基本特性，主要包括：</p>
+<ul>
+<li><strong>类型注解（type hint）</strong></li>
+<li><strong>内醒与反射机制（inspect）</strong></li>
+<li><strong>文档字符串（docstring）</strong></li>
+</ul>
+<p>在运行时，<code>PyGUIAdapter</code>会获取函数参数列表，并根据参数的类型、默认值等，自动选择最合适控件。</p>
+<blockquote>
+<p>例如：对于<code>int</code>类型的参数，将默认创建<code>IntSpinBox</code>；对于<code>str</code>类型的参数，将默认创建<code>LineEdit</code>等。 </p>
+</blockquote>
+<p>同时，<code>PyGUIAdapter</code>还将从函数的签名、文档字符串等处，充分挖掘函数的信息，并基于此自完成窗口创建、界面布局和事件绑定等工作。当用户点击<code>Execute</code>按钮时，<code>PyGUIAdapter</code>将从控件中收集用户输入数据，并对这些数据进行必要转换和处理，之后，将其作为对应参数调用函数，获取函数调用的结果并处理可能发生的异常。</p>
+<blockquote>
+<p><code>PyGUIAdapter</code>充分利用了Python的类型注解机制。在<code>PyGUIAdapter</code>中，函数参数的类型注解不是可有可无的，它是生成参数控件的决定因素之一。
+虽然并非说不使用类型注解就完全无法利用<code>PyGUIAdapter</code>——<code>PyGUIAdapter</code>也允许开发者手动为每个参数显式地指定控件——但是，这样会在很大程度上会失去使用<code>PyGUIAdapter</code>的意义。所以，<strong>强烈建议开发者养成使用类型注解的习惯。</strong>。</p>
+</blockquote>
+<h3 id="2">2、参数校验与异常处理</h3>
+<p>程序运行时的错误或者异常，很多时候根源在于<code>未经校验的用户输入</code>。在编写程序时，不要做一个乐观主义者，总是抱着“用户会按照预想的方式使用我的程序”将会成为混乱之始，要多想想那些<strong>“最坏”</strong>的情况，也就是所谓的<strong>“边界条件”</strong>。<strong>“永远不要相信用户的输入”</strong>可以避免很多问题（或者说绝大部分问题），对用户输入进行校验，尽可能过滤那些“非法”的值是增强程序健壮性的关键所在。 </p>
+<p>因此，<code>PyGUIAdapter</code>不仅鼓励开发者对函数参数（也就是用户输入）进行校验，并且为此提供了一种简单且符合直觉的处理机制。 在上述的示例代码中，有这样几行代码，展示了参数校验的基本方式：
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>    <span class="o">...</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    <span class="k">if</span> <span class="n">a</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>        <span class="k">raise</span> <span class="n">ParameterError</span><span class="p">(</span><span class="n">parameter_name</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;a cannot be zero!&quot;</span><span class="p">)</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    <span class="o">...</span>
+</code></pre></div></p>
+<p>对于非法的函数参数值，开发者只需抛出<code>ParameterError</code>异常，即完成了参数的校验工作。<code>PyGUIAdapter</code>将自动完成的后续的工作，以合适的方式提醒用户，函数的某个参数输入了一个不合适的值。</p>
+<div style="text-align: center">
+    <a class="glightbox" href="/assets/handle_parameter_error.gif" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/handle_parameter_error.gif" /></a>
+</div>
+
+<p>事实上，<code>PyGUIAdapter</code>对于<code>ParameterError</code>的处理是更为一般的异常处理机制的一个特例。尽管<code>PyGUIAdapter</code>鼓励开发者尽可能预见程序可能发生的异常并提前规避它们，但客观上看程序的异常是无法完全消除的。对于函数中发生的异常，<code>PyGUIAdapter</code>的默认策略是：<strong>捕获它们，弹窗提醒用户，并在程序输出区域打印出异常信息。</strong> 这样的设计主要是<strong>为了增强程序的<code>健壮性</code>，防止未捕获的异常导致整个程序崩溃</strong>。</p>
+<h3 id="3">3、描述性信息</h3>
+<p>无论是命令行程序还是图形界面程序，为程序及其参数提供描述性文字都是非常有必要的一件事。这些文字一般被称为程序的<strong>帮助信息</strong>，对于<code>CLI</code>程序，一般使用<code>-h</code>或<code>--help</code>来获取其帮助信息，例如，下图是<code>pyhton -h</code>命令打印出的<code>Python</code>解释器程序的部分帮助信息。</p>
+<div style="text-align: center">
+    <a class="glightbox" href="/assets/cli_help.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/cli_help.png" /></a>
+</div>
+<p><code>PyGUIAdapter</code>同样支持为函数参数以及函数本身添加描述信息。</p>
+<p>对于函数参数，<code>PyGUIAdapter</code>在其输入控件的上方预留了用于显示描述信息的空间：</p>
+<div style="text-align: center">
+    <a class="glightbox" href="/assets/parameter_description.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/parameter_description.png" /></a>
+</div>
+
+<p>对于函数本身，<code>PyGUIAdapter</code>则提供了专门的<code>文档浏览器（Document Browser）</code>来展示其说明信息：</p>
+<div style="text-align: center">
+    <a class="glightbox" href="/assets/function_description.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/function_description.png" /></a>
+</div>
+
+<p>回看示例代码，似乎并没有通过特殊的方法添加这些信息，那么这些信息从何而来呢？仔细阅读代码，不难发现，这些信息实际上来自于函数的<code>文档字符串（docstring）</code>。</p>
+<div style="text-align: center">
+    <a class="glightbox" href="/assets/gui_description.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/gui_description.png" /></a>
+</div>
+
+<p><strong>“尽可能利用现有信息，降低开发者的学习和使用成本”</strong>是<code>PyGUIAdapter</code>的重要设计思想，因此它会自动从函数的<code>docstring</code>中提取函数和参数的描述信息，并将其显示在界面的正确位置。当然，这也要求开发者尽可能规范地编写函数的说明文档，考虑到不同的开发者可能习惯于不同的文档格式，<code>PyGUIAdapter</code>对多种常用的文档格式进行了支持，包括：</p>
+<ul>
+<li><code>ReST</code></li>
+<li><code>Google</code></li>
+<li><code>Numpydoc-style</code> </li>
+<li><code>Epydoc</code> </li>
+</ul>
+<blockquote>
+<p>除了从函数的<code>docstring</code>中提取函数及其参数的描述信息，<code>PyGUIAdapter</code>也允许开发者手动设置这些信息，这对于描述信息太长或者需要国际化的场合尤其有用。可以从以下文档获取具体的说明：</p>
+<ul>
+<li>关于如何手动设置参数的描述信息，参见：<a href="../widget-config/">配置控件属性</a>。</li>
+<li>关于如何手动设置函数的描述信息（文档），参见：<a href="../multiple-functions/">添加多个函数</a>。</li>
+</ul>
+</blockquote>
+<h3 id="4">4、打印消息</h3>
+<p><code>print()</code>是Python开发者非常熟悉的一个函数，常被用于向用户展示程序运行信息。一般情况下，通过<code>print()</code>打印的信息会被输出到程序的标准输出上，为了使开发者能够将信息打印到窗口的<code>输出浏览器（Output Browser）</code>，<code>PyGUIAdapter</code>提供了<code>uprint()</code>函数。</p>
+<blockquote>
+<p>可以通过以下方式导入<code>uprint()</code>函数：
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter.ucontext</span> <span class="kn">import</span> <span class="n">uprint</span>
+</code></pre></div>
+或者，从<code>pyguiadapter.adapter.uoutput</code>导入：
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter.uoutput</span> <span class="kn">import</span> <span class="n">uprint</span>
+</code></pre></div></p>
+</blockquote>
+<p><code>uprint()</code>函数的用法基本上同内置函数<code>print()</code>保持一致，其原型如下：</p>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="pyguiadapter.adapter.ucontext.uprint" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">uprint</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">sep</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">end</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">html</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">scroll_to_bottom</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents first">
+
+        <p>打印信息到输出浏览器</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>*args</code></td>
+            <td>
+                  <code><span title="typing.Any">Any</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>要打印的信息</p>
+              </div>
+            </td>
+            <td>
+                  <code>()</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>sep</code></td>
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>每条信息之间的分隔字符串</p>
+              </div>
+            </td>
+            <td>
+                  <code>&#39; &#39;</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>end</code></td>
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>添加到最后一条信息后面的字符串</p>
+              </div>
+            </td>
+            <td>
+                  <code>&#39;\n&#39;</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>html</code></td>
+            <td>
+                  <code>bool</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>要打印的信息是否为<code>html</code>格式</p>
+              </div>
+            </td>
+            <td>
+                  <code>False</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>scroll_to_bottom</code></td>
+            <td>
+                  <code>bool</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>打印信息后是否将<code>输出浏览器</code>滚动到最底部</p>
+              </div>
+            </td>
+            <td>
+                  <code>True</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>无返回值</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+    </div>
+
+</div><blockquote>
+<p><code>uprint()</code>支持输出<code>html</code>格式的富文本内容，比如图片。但需要指出的是，<code>输出浏览器</code>对于<code>html</code>的支持是有限的，具体可以参考QT的官方文档：<a href="https://doc.qt.io/qtforpython-5/overviews/richtext-html-subset.html">Supported HTML Subset</a></p>
+</blockquote>
+<p>除了<code>uprint()</code>，<code>pyguiadapter.adapter.uoutput</code>还实现了许多用于输出信息的函数，借助这些函数，开发者可以输出格式更加丰富的内容，可以查看以下文档获取更多信息：<a href="../apis/pyguiadapter.adapter.uoutput/">pyguiadapter.adapter.uoutput</a></p>
+<h2 id="_5">（五）、示例进阶</h2>
+<p><code>PyGUIAdapter</code>的高度灵活性体现在允许开发者对生成的界面进行配置，开发者不仅可以配置窗口的属性和外观，而且可以对函数每个参数对应的控件进行精细化的调整，改变其默认的行为。</p>
+<p>下面，将逐步完善上述示例代码，并在此过程中演示配置窗口和控件属性的方法。 </p>
+<h3 id="1_2">1、配置窗口属性</h3>
+<p>首先，我们将对示例程序的窗口进行配置，包括：</p>
+<ul>
+<li>调整窗口大小</li>
+<li>设置窗口标题和图标</li>
+<li>隐藏<code>文档浏览器</code></li>
+<li>改变函数返回值的消息格式</li>
+<li>弹出对话框显示函数返回值</li>
+<li>......</li>
+</ul>
+<p>对窗口属性的调整需要借助<code>窗口配置类</code>对象。对于函数执行窗口，其窗口配置类为<code>FnExecuteWindowConfig</code>，该类中定义了函数执行窗口的可配置属性，开发者可以通过以下方式对窗口进行配置：</p>
+<div style="text-align: center">
+    <a class="glightbox" href="/assets/how_to_config_exec_win.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/how_to_config_exec_win.png" /></a>
+</div>
+
+<p>完整代码如下：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter</span> <span class="kn">import</span> <span class="n">GUIAdapter</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter.uoutput</span> <span class="kn">import</span> <span class="n">uprint</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="kn">from</span> <span class="nn">pyguiadapter.exceptions</span> <span class="kn">import</span> <span class="n">ParameterError</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="kn">from</span> <span class="nn">pyguiadapter.windows.fnexec</span> <span class="kn">import</span> <span class="n">FnExecuteWindowConfig</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="k">def</span> <span class="nf">equation_solver_2</span><span class="p">(</span>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>    <span class="n">a</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">c</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">tuple</span><span class="p">]:</span>
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;A simple equation solver for equations like:</span>
+<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>
+<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a><span class="sd">    **ax^2 + bx + c = 0** (a, b, c ∈ **R** and a ≠ 0)</span>
+<a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a>
+<a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a><span class="sd">    @param a: a ∈ R and a ≠ 0</span>
+<a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a><span class="sd">    @param b: b ∈ R</span>
+<a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a><span class="sd">    @param c: c ∈ R</span>
+<a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a><span class="sd">    @return:</span>
+<a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-8-21" name="__codelineno-8-21" href="#__codelineno-8-21"></a>    <span class="k">if</span> <span class="n">a</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<a id="__codelineno-8-22" name="__codelineno-8-22" href="#__codelineno-8-22"></a>        <span class="k">raise</span> <span class="n">ParameterError</span><span class="p">(</span><span class="n">parameter_name</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;a cannot be zero!&quot;</span><span class="p">)</span>
+<a id="__codelineno-8-23" name="__codelineno-8-23" href="#__codelineno-8-23"></a>    <span class="n">uprint</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Equation:&quot;</span><span class="p">)</span>
+<a id="__codelineno-8-24" name="__codelineno-8-24" href="#__codelineno-8-24"></a>    <span class="n">uprint</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">a</span><span class="si">}</span><span class="s2">x² + </span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s2">x + </span><span class="si">{</span><span class="n">c</span><span class="si">}</span><span class="s2"> = 0&quot;</span><span class="p">)</span>
+<a id="__codelineno-8-25" name="__codelineno-8-25" href="#__codelineno-8-25"></a>    <span class="n">delta</span> <span class="o">=</span> <span class="n">b</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">a</span> <span class="o">*</span> <span class="n">c</span>
+<a id="__codelineno-8-26" name="__codelineno-8-26" href="#__codelineno-8-26"></a>    <span class="k">if</span> <span class="n">delta</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+<a id="__codelineno-8-27" name="__codelineno-8-27" href="#__codelineno-8-27"></a>        <span class="k">return</span> <span class="kc">None</span>
+<a id="__codelineno-8-28" name="__codelineno-8-28" href="#__codelineno-8-28"></a>    <span class="n">x1</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">b</span> <span class="o">+</span> <span class="n">delta</span><span class="o">**</span><span class="mf">0.5</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">a</span><span class="p">)</span>
+<a id="__codelineno-8-29" name="__codelineno-8-29" href="#__codelineno-8-29"></a>    <span class="k">if</span> <span class="n">delta</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<a id="__codelineno-8-30" name="__codelineno-8-30" href="#__codelineno-8-30"></a>        <span class="k">return</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x1</span>
+<a id="__codelineno-8-31" name="__codelineno-8-31" href="#__codelineno-8-31"></a>    <span class="n">x2</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">b</span> <span class="o">-</span> <span class="n">delta</span><span class="o">**</span><span class="mf">0.5</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">a</span><span class="p">)</span>
+<a id="__codelineno-8-32" name="__codelineno-8-32" href="#__codelineno-8-32"></a>    <span class="k">return</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span>
+<a id="__codelineno-8-33" name="__codelineno-8-33" href="#__codelineno-8-33"></a>
+<a id="__codelineno-8-34" name="__codelineno-8-34" href="#__codelineno-8-34"></a>
+<a id="__codelineno-8-35" name="__codelineno-8-35" href="#__codelineno-8-35"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<a id="__codelineno-8-36" name="__codelineno-8-36" href="#__codelineno-8-36"></a>    <span class="n">window_config</span> <span class="o">=</span> <span class="n">FnExecuteWindowConfig</span><span class="p">(</span>
+<a id="__codelineno-8-37" name="__codelineno-8-37" href="#__codelineno-8-37"></a>        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Equation Solver&quot;</span><span class="p">,</span>
+<a id="__codelineno-8-38" name="__codelineno-8-38" href="#__codelineno-8-38"></a>        <span class="n">icon</span><span class="o">=</span><span class="s2">&quot;mdi6.function-variant&quot;</span><span class="p">,</span>
+<a id="__codelineno-8-39" name="__codelineno-8-39" href="#__codelineno-8-39"></a>        <span class="n">execute_button_text</span><span class="o">=</span><span class="s2">&quot;Solve&quot;</span><span class="p">,</span>
+<a id="__codelineno-8-40" name="__codelineno-8-40" href="#__codelineno-8-40"></a>        <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">350</span><span class="p">,</span> <span class="mi">550</span><span class="p">),</span>
+<a id="__codelineno-8-41" name="__codelineno-8-41" href="#__codelineno-8-41"></a>        <span class="n">document_dock_visible</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<a id="__codelineno-8-42" name="__codelineno-8-42" href="#__codelineno-8-42"></a>        <span class="n">output_dock_initial_size</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span>
+<a id="__codelineno-8-43" name="__codelineno-8-43" href="#__codelineno-8-43"></a>        <span class="n">show_function_result</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-8-44" name="__codelineno-8-44" href="#__codelineno-8-44"></a>        <span class="n">function_result_message</span><span class="o">=</span><span class="s2">&quot;roots: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">,</span>
+<a id="__codelineno-8-45" name="__codelineno-8-45" href="#__codelineno-8-45"></a>        <span class="n">default_parameter_group_name</span><span class="o">=</span><span class="s2">&quot;Equation Parameters&quot;</span><span class="p">,</span>
+<a id="__codelineno-8-46" name="__codelineno-8-46" href="#__codelineno-8-46"></a>    <span class="p">)</span>
+<a id="__codelineno-8-47" name="__codelineno-8-47" href="#__codelineno-8-47"></a>
+<a id="__codelineno-8-48" name="__codelineno-8-48" href="#__codelineno-8-48"></a>    <span class="n">adapter</span> <span class="o">=</span> <span class="n">GUIAdapter</span><span class="p">()</span>
+<a id="__codelineno-8-49" name="__codelineno-8-49" href="#__codelineno-8-49"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">equation_solver_2</span><span class="p">,</span> <span class="n">window_config</span><span class="o">=</span><span class="n">window_config</span><span class="p">)</span>
+<a id="__codelineno-8-50" name="__codelineno-8-50" href="#__codelineno-8-50"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre></div>
+<p>效果如下：</p>
+<div style="text-align: center">
+    <a class="glightbox" href="/assets/how_to_config_exec_win_result.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/how_to_config_exec_win_result.png" /></a>
+</div>
+
+<blockquote>
+<p><code>FnExecuteWindowConfig</code>定义了大量可配置属性，这里仅仅演示了其中一小部分，开发者可以参考以下文档获取完整的可配置属性列表：<a href="../apis/pyguiadapter.windows.fnexec/#FnExecuteWindowConfig">pyguiadapter.windows.fnexec.FnExecuteWindowConfig</a></p>
+</blockquote>
+<h3 id="2_1">2、配置控件属性</h3>
+<p>在目前的示例程序中，参数<code>a</code>、<code>b</code>、<code>c</code>的输入控件只能输入小数点后2位，且每次调整的步进值为1。</p>
+<div style="text-align: center">
+    <a class="glightbox" href="/assets/widget_config_before.gif" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/widget_config_before.gif" /></a>
+</div>
+
+<p>原因在于<code>float</code>类型对应的<code>FloatSpinBox</code>控件，其<code>step</code>（单次步进值）属性和<code>decimals</code>（小数点位数）属性分别被配置为<code>1.0</code>和<code>2</code>。开发者可以通过多种方式修改控件的默认属性配置，以达到改变控件的默认行为的目的。</p>
+<div style="text-align: center">
+    <a class="glightbox" href="/assets/floatspin_def_config.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/floatspin_def_config.png" /></a>
+</div>
+
+<p>现在我们将对上述示例做进一步修改，将参数<code>a</code>、<code>b</code>、<code>c</code>对应控件的<code>decimals</code>（小数点位数）配置为<code>5</code>，<code>step</code>（单次步进值）配置为<code>0.00005</code>。</p>
+<h4 id="1paramsend">方法1：利用<code>@params...@end</code>配置块</h4>
+<p>开发者可以在函数的<code>docstring</code>中配置参数的控件。<code>PyGUIAdapter</code>将<code>docstring</code>中使用<code>@params</code>和<code>@end</code>包裹起来文本块视为控件的配置块。开发者可以在该区域对控件的属性进行配置。配置块的格式为<code>TOML</code>。可以使用如下格式配置指定控件的指定属性：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">[</span><span class="err">参数名称</span><span class="k">]</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="err">属性名称</span><span class="n">1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">属性值</span><span class="mi">1</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="err">属性名称</span><span class="n">2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">属性值</span><span class="mi">2</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="err">属性名称</span><span class="n">N</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">属性值N</span>
+</code></pre></div>
+<p>比如要配置上述示例中参数<code>a</code>、<code>b</code>、<code>c</code>对应控件的<code>step</code>属性和<code>decimals</code>属性，可以这样做：</p>
+<div style="text-align: center">
+    <a class="glightbox" href="/assets/params_config_block.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/params_config_block.png" /></a>
+</div>
+
+<p><strong>完整代码如下：</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter</span> <span class="kn">import</span> <span class="n">GUIAdapter</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter.uoutput</span> <span class="kn">import</span> <span class="n">uprint</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="kn">from</span> <span class="nn">pyguiadapter.exceptions</span> <span class="kn">import</span> <span class="n">ParameterError</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="kn">from</span> <span class="nn">pyguiadapter.windows.fnexec</span> <span class="kn">import</span> <span class="n">FnExecuteWindowConfig</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="k">def</span> <span class="nf">equation_solver_3</span><span class="p">(</span>
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>    <span class="n">a</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">c</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">tuple</span><span class="p">]:</span>
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;A simple equation solver for equations like:</span>
+<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a>
+<a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a><span class="sd">    **ax^2 + bx + c = 0** (a, b, c ∈ **R** and a ≠ 0)</span>
+<a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a>
+<a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a><span class="sd">    @param a: a ∈ R and a ≠ 0</span>
+<a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a><span class="sd">    @param b: b ∈ R</span>
+<a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a><span class="sd">    @param c: c ∈ R</span>
+<a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a><span class="sd">    @return:</span>
+<a id="__codelineno-10-20" name="__codelineno-10-20" href="#__codelineno-10-20"></a>
+<a id="__codelineno-10-21" name="__codelineno-10-21" href="#__codelineno-10-21"></a><span class="sd">    @params</span>
+<a id="__codelineno-10-22" name="__codelineno-10-22" href="#__codelineno-10-22"></a><span class="sd">    [a]</span>
+<a id="__codelineno-10-23" name="__codelineno-10-23" href="#__codelineno-10-23"></a><span class="sd">    decimals = 5</span>
+<a id="__codelineno-10-24" name="__codelineno-10-24" href="#__codelineno-10-24"></a><span class="sd">    step = 0.00005</span>
+<a id="__codelineno-10-25" name="__codelineno-10-25" href="#__codelineno-10-25"></a>
+<a id="__codelineno-10-26" name="__codelineno-10-26" href="#__codelineno-10-26"></a><span class="sd">    [b]</span>
+<a id="__codelineno-10-27" name="__codelineno-10-27" href="#__codelineno-10-27"></a><span class="sd">    decimals = 5</span>
+<a id="__codelineno-10-28" name="__codelineno-10-28" href="#__codelineno-10-28"></a><span class="sd">    step = 0.00005</span>
+<a id="__codelineno-10-29" name="__codelineno-10-29" href="#__codelineno-10-29"></a>
+<a id="__codelineno-10-30" name="__codelineno-10-30" href="#__codelineno-10-30"></a><span class="sd">    [c]</span>
+<a id="__codelineno-10-31" name="__codelineno-10-31" href="#__codelineno-10-31"></a><span class="sd">    decimals = 5</span>
+<a id="__codelineno-10-32" name="__codelineno-10-32" href="#__codelineno-10-32"></a><span class="sd">    step = 0.00005</span>
+<a id="__codelineno-10-33" name="__codelineno-10-33" href="#__codelineno-10-33"></a><span class="sd">    @end</span>
+<a id="__codelineno-10-34" name="__codelineno-10-34" href="#__codelineno-10-34"></a>
+<a id="__codelineno-10-35" name="__codelineno-10-35" href="#__codelineno-10-35"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-10-36" name="__codelineno-10-36" href="#__codelineno-10-36"></a>    <span class="k">if</span> <span class="n">a</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<a id="__codelineno-10-37" name="__codelineno-10-37" href="#__codelineno-10-37"></a>        <span class="k">raise</span> <span class="n">ParameterError</span><span class="p">(</span><span class="n">parameter_name</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;a cannot be zero!&quot;</span><span class="p">)</span>
+<a id="__codelineno-10-38" name="__codelineno-10-38" href="#__codelineno-10-38"></a>    <span class="n">uprint</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Equation:&quot;</span><span class="p">)</span>
+<a id="__codelineno-10-39" name="__codelineno-10-39" href="#__codelineno-10-39"></a>    <span class="n">uprint</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">a</span><span class="si">}</span><span class="s2">x² + </span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s2">x + </span><span class="si">{</span><span class="n">c</span><span class="si">}</span><span class="s2"> = 0&quot;</span><span class="p">)</span>
+<a id="__codelineno-10-40" name="__codelineno-10-40" href="#__codelineno-10-40"></a>    <span class="n">delta</span> <span class="o">=</span> <span class="n">b</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">a</span> <span class="o">*</span> <span class="n">c</span>
+<a id="__codelineno-10-41" name="__codelineno-10-41" href="#__codelineno-10-41"></a>    <span class="k">if</span> <span class="n">delta</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+<a id="__codelineno-10-42" name="__codelineno-10-42" href="#__codelineno-10-42"></a>        <span class="k">return</span> <span class="kc">None</span>
+<a id="__codelineno-10-43" name="__codelineno-10-43" href="#__codelineno-10-43"></a>    <span class="n">x1</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">b</span> <span class="o">+</span> <span class="n">delta</span><span class="o">**</span><span class="mf">0.5</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">a</span><span class="p">)</span>
+<a id="__codelineno-10-44" name="__codelineno-10-44" href="#__codelineno-10-44"></a>    <span class="k">if</span> <span class="n">delta</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<a id="__codelineno-10-45" name="__codelineno-10-45" href="#__codelineno-10-45"></a>        <span class="k">return</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x1</span>
+<a id="__codelineno-10-46" name="__codelineno-10-46" href="#__codelineno-10-46"></a>    <span class="n">x2</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">b</span> <span class="o">-</span> <span class="n">delta</span><span class="o">**</span><span class="mf">0.5</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">a</span><span class="p">)</span>
+<a id="__codelineno-10-47" name="__codelineno-10-47" href="#__codelineno-10-47"></a>    <span class="k">return</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span>
+<a id="__codelineno-10-48" name="__codelineno-10-48" href="#__codelineno-10-48"></a>
+<a id="__codelineno-10-49" name="__codelineno-10-49" href="#__codelineno-10-49"></a>
+<a id="__codelineno-10-50" name="__codelineno-10-50" href="#__codelineno-10-50"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<a id="__codelineno-10-51" name="__codelineno-10-51" href="#__codelineno-10-51"></a>    <span class="n">window_config</span> <span class="o">=</span> <span class="n">FnExecuteWindowConfig</span><span class="p">(</span>
+<a id="__codelineno-10-52" name="__codelineno-10-52" href="#__codelineno-10-52"></a>        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Equation Solver&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-53" name="__codelineno-10-53" href="#__codelineno-10-53"></a>        <span class="n">icon</span><span class="o">=</span><span class="s2">&quot;mdi6.function-variant&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-54" name="__codelineno-10-54" href="#__codelineno-10-54"></a>        <span class="n">execute_button_text</span><span class="o">=</span><span class="s2">&quot;Solve&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-55" name="__codelineno-10-55" href="#__codelineno-10-55"></a>        <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">350</span><span class="p">,</span> <span class="mi">550</span><span class="p">),</span>
+<a id="__codelineno-10-56" name="__codelineno-10-56" href="#__codelineno-10-56"></a>        <span class="n">document_dock_visible</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<a id="__codelineno-10-57" name="__codelineno-10-57" href="#__codelineno-10-57"></a>        <span class="n">output_dock_initial_size</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span>
+<a id="__codelineno-10-58" name="__codelineno-10-58" href="#__codelineno-10-58"></a>        <span class="n">show_function_result</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-10-59" name="__codelineno-10-59" href="#__codelineno-10-59"></a>        <span class="n">function_result_message</span><span class="o">=</span><span class="s2">&quot;roots: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-60" name="__codelineno-10-60" href="#__codelineno-10-60"></a>        <span class="n">default_parameter_group_name</span><span class="o">=</span><span class="s2">&quot;Equation Parameters&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-61" name="__codelineno-10-61" href="#__codelineno-10-61"></a>    <span class="p">)</span>
+<a id="__codelineno-10-62" name="__codelineno-10-62" href="#__codelineno-10-62"></a>
+<a id="__codelineno-10-63" name="__codelineno-10-63" href="#__codelineno-10-63"></a>    <span class="n">adapter</span> <span class="o">=</span> <span class="n">GUIAdapter</span><span class="p">()</span>
+<a id="__codelineno-10-64" name="__codelineno-10-64" href="#__codelineno-10-64"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">equation_solver_3</span><span class="p">,</span> <span class="n">window_config</span><span class="o">=</span><span class="n">window_config</span><span class="p">)</span>
+<a id="__codelineno-10-65" name="__codelineno-10-65" href="#__codelineno-10-65"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre></div>
+<h4 id="2_2">方法2：使用配置类对象</h4>
+<p>在<code>@params...@end</code>块中配置参数的控件，优点是简单、快速，但也并非万能。一方面，由于配置块的格式为<code>TOML</code>，其支持的数据类型有限，某些控件的一些属性可能使用了超出其表达能力范围的数据类型；另一方面，如果要配置的参数很多，或者要设置的属性很多，可能会使<code>docstring</code>变得非常冗长。在<code>docstring</code>中编写参数配置代码也将失去现代<code>IDE</code>或者代码编辑所带来种种便利，比如代码提示、自动完成等。</p>
+<p>总之，在<code>@params...@end</code>中配置控件参数是一种很便捷的手段，但也无法解决所有的问题，因此，<code>PyGUIAdapter</code>提供了另一种更加通用的配置控件属性的方法，那就是使用控件的配置类对象（实际上，在<code>@params...@end</code>中编写配置，最终也会被转换为对应的配置类对象）。</p>
+<p>在<code>PyGUIAdapter</code>，函数参数的控件，其类型一般由参数的数据类型决定，而控件的属性，则由其对应的配置类定义。比如：</p>
+<ul>
+<li>
+<p><code>int</code> -&gt; <code>IntSpinBox</code>  -&gt; <code>IntSpinBoxConfig</code></p>
+</li>
+<li>
+<p><code>float</code> -&gt; <code>FloatSpinBox</code> -&gt; <code>FloatSpinBox</code></p>
+</li>
+<li><code>str</code> -&gt; <code>LineEdit</code> -&gt; <code>LineEditConfig</code></li>
+<li>......</li>
+</ul>
+<p>确定了参数对应控件的类型，便可以创建对应配置类对象来对其属性进行配置，以上述示例代码为例，可以这样配置其属性：</p>
+<blockquote>
+<p>使用配置类对象时，开发者在函数签名中指定的参数的默认值将会被覆盖，可以通过配置类对象的<code>default_value</code>属性重新指定</p>
+</blockquote>
+<div style="text-align: center">
+    <a class="glightbox" href="/assets/widget_config_class_demo.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/widget_config_class_demo.png" /></a>
+</div>
+
+<p><strong>完整代码如下</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter</span> <span class="kn">import</span> <span class="n">GUIAdapter</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter.uoutput</span> <span class="kn">import</span> <span class="n">uprint</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="kn">from</span> <span class="nn">pyguiadapter.exceptions</span> <span class="kn">import</span> <span class="n">ParameterError</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="kn">from</span> <span class="nn">pyguiadapter.widgets</span> <span class="kn">import</span> <span class="n">FloatSpinBoxConfig</span>
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="kn">from</span> <span class="nn">pyguiadapter.windows.fnexec</span> <span class="kn">import</span> <span class="n">FnExecuteWindowConfig</span>
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="k">def</span> <span class="nf">equation_solver_4</span><span class="p">(</span>
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>    <span class="n">a</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">c</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">tuple</span><span class="p">]:</span>
+<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;A simple equation solver for equations like:</span>
+<a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a>
+<a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a><span class="sd">    **ax^2 + bx + c = 0** (a, b, c ∈ **R** and a ≠ 0)</span>
+<a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a>
+<a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a><span class="sd">    @param a: a ∈ R and a ≠ 0</span>
+<a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a><span class="sd">    @param b: b ∈ R</span>
+<a id="__codelineno-11-19" name="__codelineno-11-19" href="#__codelineno-11-19"></a><span class="sd">    @param c: c ∈ R</span>
+<a id="__codelineno-11-20" name="__codelineno-11-20" href="#__codelineno-11-20"></a><span class="sd">    @return:</span>
+<a id="__codelineno-11-21" name="__codelineno-11-21" href="#__codelineno-11-21"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-11-22" name="__codelineno-11-22" href="#__codelineno-11-22"></a>    <span class="k">if</span> <span class="n">a</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<a id="__codelineno-11-23" name="__codelineno-11-23" href="#__codelineno-11-23"></a>        <span class="k">raise</span> <span class="n">ParameterError</span><span class="p">(</span><span class="n">parameter_name</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;a cannot be zero!&quot;</span><span class="p">)</span>
+<a id="__codelineno-11-24" name="__codelineno-11-24" href="#__codelineno-11-24"></a>    <span class="n">uprint</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Equation:&quot;</span><span class="p">)</span>
+<a id="__codelineno-11-25" name="__codelineno-11-25" href="#__codelineno-11-25"></a>    <span class="n">uprint</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">a</span><span class="si">}</span><span class="s2">x² + </span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s2">x + </span><span class="si">{</span><span class="n">c</span><span class="si">}</span><span class="s2"> = 0&quot;</span><span class="p">)</span>
+<a id="__codelineno-11-26" name="__codelineno-11-26" href="#__codelineno-11-26"></a>    <span class="n">delta</span> <span class="o">=</span> <span class="n">b</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">a</span> <span class="o">*</span> <span class="n">c</span>
+<a id="__codelineno-11-27" name="__codelineno-11-27" href="#__codelineno-11-27"></a>    <span class="k">if</span> <span class="n">delta</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+<a id="__codelineno-11-28" name="__codelineno-11-28" href="#__codelineno-11-28"></a>        <span class="k">return</span> <span class="kc">None</span>
+<a id="__codelineno-11-29" name="__codelineno-11-29" href="#__codelineno-11-29"></a>    <span class="n">x1</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">b</span> <span class="o">+</span> <span class="n">delta</span><span class="o">**</span><span class="mf">0.5</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">a</span><span class="p">)</span>
+<a id="__codelineno-11-30" name="__codelineno-11-30" href="#__codelineno-11-30"></a>    <span class="k">if</span> <span class="n">delta</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<a id="__codelineno-11-31" name="__codelineno-11-31" href="#__codelineno-11-31"></a>        <span class="k">return</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x1</span>
+<a id="__codelineno-11-32" name="__codelineno-11-32" href="#__codelineno-11-32"></a>    <span class="n">x2</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">b</span> <span class="o">-</span> <span class="n">delta</span><span class="o">**</span><span class="mf">0.5</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">a</span><span class="p">)</span>
+<a id="__codelineno-11-33" name="__codelineno-11-33" href="#__codelineno-11-33"></a>    <span class="k">return</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span>
+<a id="__codelineno-11-34" name="__codelineno-11-34" href="#__codelineno-11-34"></a>
+<a id="__codelineno-11-35" name="__codelineno-11-35" href="#__codelineno-11-35"></a>
+<a id="__codelineno-11-36" name="__codelineno-11-36" href="#__codelineno-11-36"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<a id="__codelineno-11-37" name="__codelineno-11-37" href="#__codelineno-11-37"></a>    <span class="n">window_config</span> <span class="o">=</span> <span class="n">FnExecuteWindowConfig</span><span class="p">(</span>
+<a id="__codelineno-11-38" name="__codelineno-11-38" href="#__codelineno-11-38"></a>        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Equation Solver&quot;</span><span class="p">,</span>
+<a id="__codelineno-11-39" name="__codelineno-11-39" href="#__codelineno-11-39"></a>        <span class="n">icon</span><span class="o">=</span><span class="s2">&quot;mdi6.function-variant&quot;</span><span class="p">,</span>
+<a id="__codelineno-11-40" name="__codelineno-11-40" href="#__codelineno-11-40"></a>        <span class="n">execute_button_text</span><span class="o">=</span><span class="s2">&quot;Solve&quot;</span><span class="p">,</span>
+<a id="__codelineno-11-41" name="__codelineno-11-41" href="#__codelineno-11-41"></a>        <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">350</span><span class="p">,</span> <span class="mi">550</span><span class="p">),</span>
+<a id="__codelineno-11-42" name="__codelineno-11-42" href="#__codelineno-11-42"></a>        <span class="n">document_dock_visible</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<a id="__codelineno-11-43" name="__codelineno-11-43" href="#__codelineno-11-43"></a>        <span class="n">output_dock_initial_size</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span>
+<a id="__codelineno-11-44" name="__codelineno-11-44" href="#__codelineno-11-44"></a>        <span class="n">show_function_result</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-11-45" name="__codelineno-11-45" href="#__codelineno-11-45"></a>        <span class="n">function_result_message</span><span class="o">=</span><span class="s2">&quot;roots: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">,</span>
+<a id="__codelineno-11-46" name="__codelineno-11-46" href="#__codelineno-11-46"></a>        <span class="n">default_parameter_group_name</span><span class="o">=</span><span class="s2">&quot;Equation Parameters&quot;</span><span class="p">,</span>
+<a id="__codelineno-11-47" name="__codelineno-11-47" href="#__codelineno-11-47"></a>    <span class="p">)</span>
+<a id="__codelineno-11-48" name="__codelineno-11-48" href="#__codelineno-11-48"></a>
+<a id="__codelineno-11-49" name="__codelineno-11-49" href="#__codelineno-11-49"></a>    <span class="n">adapter</span> <span class="o">=</span> <span class="n">GUIAdapter</span><span class="p">()</span>
+<a id="__codelineno-11-50" name="__codelineno-11-50" href="#__codelineno-11-50"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+<a id="__codelineno-11-51" name="__codelineno-11-51" href="#__codelineno-11-51"></a>        <span class="n">equation_solver_4</span><span class="p">,</span>
+<a id="__codelineno-11-52" name="__codelineno-11-52" href="#__codelineno-11-52"></a>        <span class="n">window_config</span><span class="o">=</span><span class="n">window_config</span><span class="p">,</span>
+<a id="__codelineno-11-53" name="__codelineno-11-53" href="#__codelineno-11-53"></a>        <span class="n">widget_configs</span><span class="o">=</span><span class="p">{</span>
+<a id="__codelineno-11-54" name="__codelineno-11-54" href="#__codelineno-11-54"></a>            <span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="n">FloatSpinBoxConfig</span><span class="p">(</span>
+<a id="__codelineno-11-55" name="__codelineno-11-55" href="#__codelineno-11-55"></a>                <span class="n">default_value</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+<a id="__codelineno-11-56" name="__codelineno-11-56" href="#__codelineno-11-56"></a>                <span class="n">decimals</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+<a id="__codelineno-11-57" name="__codelineno-11-57" href="#__codelineno-11-57"></a>                <span class="n">step</span><span class="o">=</span><span class="mf">0.00005</span><span class="p">,</span>
+<a id="__codelineno-11-58" name="__codelineno-11-58" href="#__codelineno-11-58"></a>            <span class="p">),</span>
+<a id="__codelineno-11-59" name="__codelineno-11-59" href="#__codelineno-11-59"></a>            <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="n">FloatSpinBoxConfig</span><span class="p">(</span><span class="n">decimals</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mf">0.00005</span><span class="p">),</span>
+<a id="__codelineno-11-60" name="__codelineno-11-60" href="#__codelineno-11-60"></a>            <span class="s2">&quot;c&quot;</span><span class="p">:</span> <span class="n">FloatSpinBoxConfig</span><span class="p">(</span><span class="n">decimals</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mf">0.00005</span><span class="p">),</span>
+<a id="__codelineno-11-61" name="__codelineno-11-61" href="#__codelineno-11-61"></a>        <span class="p">},</span>
+<a id="__codelineno-11-62" name="__codelineno-11-62" href="#__codelineno-11-62"></a>    <span class="p">)</span>
+<a id="__codelineno-11-63" name="__codelineno-11-63" href="#__codelineno-11-63"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre></div>
+<ul>
+<li>
+<p>使用配置类对象对控件进行配置，首先需要知道参数对应控件的控件配置类是什么，下面的链接展示了<code>参数数据类型</code>、<code>控件类型</code>、<code>控件配置对象类型</code>三者之间的映射关系，开发者若不清楚某个数据类型对应的<code>控件类型</code>或<code>控件配置对象类型</code>，可以参考该文档：<a href="../widget-map/"><strong>控件与参数数据类型</strong></a>。</p>
+</li>
+<li>
+<p>开发者可以阅读以下文档，以获取关于控件属性配置更为详细的说明：<a href="../widget-config/"><strong>配置控件属性</strong></a>。</p>
+</li>
+</ul>
+<h3 id="3_1">3、添加菜单</h3>
+<p>可以为窗口添加菜单栏，并向菜单栏添加菜单和菜单项，为菜单项设置事件回调。下面，在上述示例代码基础上，演示如何添加菜单并响应事件。</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="kn">from</span> <span class="nn">pyguiadapter.action</span> <span class="kn">import</span> <span class="n">Action</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter</span> <span class="kn">import</span> <span class="n">GUIAdapter</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter.uoutput</span> <span class="kn">import</span> <span class="n">uprint</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="kn">from</span> <span class="nn">pyguiadapter.exceptions</span> <span class="kn">import</span> <span class="n">ParameterError</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="kn">from</span> <span class="nn">pyguiadapter.menu</span> <span class="kn">import</span> <span class="n">Menu</span>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="kn">from</span> <span class="nn">pyguiadapter.utils</span> <span class="kn">import</span> <span class="n">messagebox</span>
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="kn">from</span> <span class="nn">pyguiadapter.widgets</span> <span class="kn">import</span> <span class="n">FloatSpinBoxConfig</span>
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="kn">from</span> <span class="nn">pyguiadapter.windows.fnexec</span> <span class="kn">import</span> <span class="n">FnExecuteWindowConfig</span><span class="p">,</span> <span class="n">FnExecuteWindow</span>
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>
+<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a>
+<a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a><span class="k">def</span> <span class="nf">equation_solver_5</span><span class="p">(</span>
+<a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a>    <span class="n">a</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">c</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
+<a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">tuple</span><span class="p">]:</span>
+<a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;A simple equation solver for equations like:</span>
+<a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a>
+<a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a><span class="sd">    **ax^2 + bx + c = 0** (a, b, c ∈ **R** and a ≠ 0)</span>
+<a id="__codelineno-12-19" name="__codelineno-12-19" href="#__codelineno-12-19"></a>
+<a id="__codelineno-12-20" name="__codelineno-12-20" href="#__codelineno-12-20"></a><span class="sd">    @param a: a ∈ R and a ≠ 0</span>
+<a id="__codelineno-12-21" name="__codelineno-12-21" href="#__codelineno-12-21"></a><span class="sd">    @param b: b ∈ R</span>
+<a id="__codelineno-12-22" name="__codelineno-12-22" href="#__codelineno-12-22"></a><span class="sd">    @param c: c ∈ R</span>
+<a id="__codelineno-12-23" name="__codelineno-12-23" href="#__codelineno-12-23"></a><span class="sd">    @return:</span>
+<a id="__codelineno-12-24" name="__codelineno-12-24" href="#__codelineno-12-24"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-12-25" name="__codelineno-12-25" href="#__codelineno-12-25"></a>    <span class="k">if</span> <span class="n">a</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<a id="__codelineno-12-26" name="__codelineno-12-26" href="#__codelineno-12-26"></a>        <span class="k">raise</span> <span class="n">ParameterError</span><span class="p">(</span><span class="n">parameter_name</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;a cannot be zero!&quot;</span><span class="p">)</span>
+<a id="__codelineno-12-27" name="__codelineno-12-27" href="#__codelineno-12-27"></a>    <span class="n">uprint</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Equation:&quot;</span><span class="p">)</span>
+<a id="__codelineno-12-28" name="__codelineno-12-28" href="#__codelineno-12-28"></a>    <span class="n">uprint</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">a</span><span class="si">}</span><span class="s2">x² + </span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s2">x + </span><span class="si">{</span><span class="n">c</span><span class="si">}</span><span class="s2"> = 0&quot;</span><span class="p">)</span>
+<a id="__codelineno-12-29" name="__codelineno-12-29" href="#__codelineno-12-29"></a>    <span class="n">delta</span> <span class="o">=</span> <span class="n">b</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">a</span> <span class="o">*</span> <span class="n">c</span>
+<a id="__codelineno-12-30" name="__codelineno-12-30" href="#__codelineno-12-30"></a>    <span class="k">if</span> <span class="n">delta</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+<a id="__codelineno-12-31" name="__codelineno-12-31" href="#__codelineno-12-31"></a>        <span class="k">return</span> <span class="kc">None</span>
+<a id="__codelineno-12-32" name="__codelineno-12-32" href="#__codelineno-12-32"></a>    <span class="n">x1</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">b</span> <span class="o">+</span> <span class="n">delta</span><span class="o">**</span><span class="mf">0.5</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">a</span><span class="p">)</span>
+<a id="__codelineno-12-33" name="__codelineno-12-33" href="#__codelineno-12-33"></a>    <span class="k">if</span> <span class="n">delta</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<a id="__codelineno-12-34" name="__codelineno-12-34" href="#__codelineno-12-34"></a>        <span class="k">return</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x1</span>
+<a id="__codelineno-12-35" name="__codelineno-12-35" href="#__codelineno-12-35"></a>    <span class="n">x2</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">b</span> <span class="o">-</span> <span class="n">delta</span><span class="o">**</span><span class="mf">0.5</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">a</span><span class="p">)</span>
+<a id="__codelineno-12-36" name="__codelineno-12-36" href="#__codelineno-12-36"></a>    <span class="k">return</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span>
+<a id="__codelineno-12-37" name="__codelineno-12-37" href="#__codelineno-12-37"></a>
+<a id="__codelineno-12-38" name="__codelineno-12-38" href="#__codelineno-12-38"></a>
+<a id="__codelineno-12-39" name="__codelineno-12-39" href="#__codelineno-12-39"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<a id="__codelineno-12-40" name="__codelineno-12-40" href="#__codelineno-12-40"></a>    <span class="n">window_config</span> <span class="o">=</span> <span class="n">FnExecuteWindowConfig</span><span class="p">(</span>
+<a id="__codelineno-12-41" name="__codelineno-12-41" href="#__codelineno-12-41"></a>        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Equation Solver&quot;</span><span class="p">,</span>
+<a id="__codelineno-12-42" name="__codelineno-12-42" href="#__codelineno-12-42"></a>        <span class="n">icon</span><span class="o">=</span><span class="s2">&quot;mdi6.function-variant&quot;</span><span class="p">,</span>
+<a id="__codelineno-12-43" name="__codelineno-12-43" href="#__codelineno-12-43"></a>        <span class="n">execute_button_text</span><span class="o">=</span><span class="s2">&quot;Solve&quot;</span><span class="p">,</span>
+<a id="__codelineno-12-44" name="__codelineno-12-44" href="#__codelineno-12-44"></a>        <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">350</span><span class="p">,</span> <span class="mi">450</span><span class="p">),</span>
+<a id="__codelineno-12-45" name="__codelineno-12-45" href="#__codelineno-12-45"></a>        <span class="n">document_dock_visible</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<a id="__codelineno-12-46" name="__codelineno-12-46" href="#__codelineno-12-46"></a>        <span class="n">show_function_result</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-12-47" name="__codelineno-12-47" href="#__codelineno-12-47"></a>        <span class="n">function_result_message</span><span class="o">=</span><span class="s2">&quot;roots: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">,</span>
+<a id="__codelineno-12-48" name="__codelineno-12-48" href="#__codelineno-12-48"></a>        <span class="n">default_parameter_group_name</span><span class="o">=</span><span class="s2">&quot;Equation Parameters&quot;</span><span class="p">,</span>
+<a id="__codelineno-12-49" name="__codelineno-12-49" href="#__codelineno-12-49"></a>        <span class="c1"># 隐藏`OutputDock`窗口</span>
+<a id="__codelineno-12-50" name="__codelineno-12-50" href="#__codelineno-12-50"></a>        <span class="n">output_dock_visible</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<a id="__codelineno-12-51" name="__codelineno-12-51" href="#__codelineno-12-51"></a>        <span class="c1"># 因为隐藏了`OutputDock`窗口，所以无需将函数调用结果及函数异常信息打印到输出浏览器中</span>
+<a id="__codelineno-12-52" name="__codelineno-12-52" href="#__codelineno-12-52"></a>        <span class="n">print_function_error</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<a id="__codelineno-12-53" name="__codelineno-12-53" href="#__codelineno-12-53"></a>        <span class="n">print_function_result</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<a id="__codelineno-12-54" name="__codelineno-12-54" href="#__codelineno-12-54"></a>    <span class="p">)</span>
+<a id="__codelineno-12-55" name="__codelineno-12-55" href="#__codelineno-12-55"></a>
+<a id="__codelineno-12-56" name="__codelineno-12-56" href="#__codelineno-12-56"></a>    <span class="k">def</span> <span class="nf">on_action_about</span><span class="p">(</span><span class="n">wind</span><span class="p">:</span> <span class="n">FnExecuteWindow</span><span class="p">,</span> <span class="n">action</span><span class="p">:</span> <span class="n">Action</span><span class="p">):</span>
+<a id="__codelineno-12-57" name="__codelineno-12-57" href="#__codelineno-12-57"></a>        <span class="n">messagebox</span><span class="o">.</span><span class="n">show_text_file</span><span class="p">(</span>
+<a id="__codelineno-12-58" name="__codelineno-12-58" href="#__codelineno-12-58"></a>            <span class="n">wind</span><span class="p">,</span>
+<a id="__codelineno-12-59" name="__codelineno-12-59" href="#__codelineno-12-59"></a>            <span class="n">text_file</span><span class="o">=</span><span class="s2">&quot;./about.html&quot;</span><span class="p">,</span>
+<a id="__codelineno-12-60" name="__codelineno-12-60" href="#__codelineno-12-60"></a>            <span class="n">text_format</span><span class="o">=</span><span class="s2">&quot;html&quot;</span><span class="p">,</span>
+<a id="__codelineno-12-61" name="__codelineno-12-61" href="#__codelineno-12-61"></a>            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;About&quot;</span><span class="p">,</span>
+<a id="__codelineno-12-62" name="__codelineno-12-62" href="#__codelineno-12-62"></a>        <span class="p">)</span>
+<a id="__codelineno-12-63" name="__codelineno-12-63" href="#__codelineno-12-63"></a>
+<a id="__codelineno-12-64" name="__codelineno-12-64" href="#__codelineno-12-64"></a>    <span class="n">action_about</span> <span class="o">=</span> <span class="n">Action</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">&quot;About&quot;</span><span class="p">,</span> <span class="n">on_triggered</span><span class="o">=</span><span class="n">on_action_about</span><span class="p">)</span>
+<a id="__codelineno-12-65" name="__codelineno-12-65" href="#__codelineno-12-65"></a>    <span class="n">menu_help</span> <span class="o">=</span> <span class="n">Menu</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Help&quot;</span><span class="p">,</span> <span class="n">actions</span><span class="o">=</span><span class="p">[</span><span class="n">action_about</span><span class="p">])</span>
+<a id="__codelineno-12-66" name="__codelineno-12-66" href="#__codelineno-12-66"></a>
+<a id="__codelineno-12-67" name="__codelineno-12-67" href="#__codelineno-12-67"></a>    <span class="n">adapter</span> <span class="o">=</span> <span class="n">GUIAdapter</span><span class="p">()</span>
+<a id="__codelineno-12-68" name="__codelineno-12-68" href="#__codelineno-12-68"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+<a id="__codelineno-12-69" name="__codelineno-12-69" href="#__codelineno-12-69"></a>        <span class="n">equation_solver_5</span><span class="p">,</span>
+<a id="__codelineno-12-70" name="__codelineno-12-70" href="#__codelineno-12-70"></a>        <span class="n">window_menus</span><span class="o">=</span><span class="p">[</span><span class="n">menu_help</span><span class="p">],</span>
+<a id="__codelineno-12-71" name="__codelineno-12-71" href="#__codelineno-12-71"></a>        <span class="n">window_config</span><span class="o">=</span><span class="n">window_config</span><span class="p">,</span>
+<a id="__codelineno-12-72" name="__codelineno-12-72" href="#__codelineno-12-72"></a>        <span class="n">widget_configs</span><span class="o">=</span><span class="p">{</span>
+<a id="__codelineno-12-73" name="__codelineno-12-73" href="#__codelineno-12-73"></a>            <span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="n">FloatSpinBoxConfig</span><span class="p">(</span>
+<a id="__codelineno-12-74" name="__codelineno-12-74" href="#__codelineno-12-74"></a>                <span class="n">default_value</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+<a id="__codelineno-12-75" name="__codelineno-12-75" href="#__codelineno-12-75"></a>                <span class="n">decimals</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+<a id="__codelineno-12-76" name="__codelineno-12-76" href="#__codelineno-12-76"></a>                <span class="n">step</span><span class="o">=</span><span class="mf">0.00005</span><span class="p">,</span>
+<a id="__codelineno-12-77" name="__codelineno-12-77" href="#__codelineno-12-77"></a>            <span class="p">),</span>
+<a id="__codelineno-12-78" name="__codelineno-12-78" href="#__codelineno-12-78"></a>            <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="n">FloatSpinBoxConfig</span><span class="p">(</span><span class="n">decimals</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mf">0.00005</span><span class="p">),</span>
+<a id="__codelineno-12-79" name="__codelineno-12-79" href="#__codelineno-12-79"></a>            <span class="s2">&quot;c&quot;</span><span class="p">:</span> <span class="n">FloatSpinBoxConfig</span><span class="p">(</span><span class="n">decimals</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mf">0.00005</span><span class="p">),</span>
+<a id="__codelineno-12-80" name="__codelineno-12-80" href="#__codelineno-12-80"></a>        <span class="p">},</span>
+<a id="__codelineno-12-81" name="__codelineno-12-81" href="#__codelineno-12-81"></a>    <span class="p">)</span>
+<a id="__codelineno-12-82" name="__codelineno-12-82" href="#__codelineno-12-82"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre></div>
+<p><strong>效果如下：</strong></p>
+<div style="text-align: center">
+    <a class="glightbox" href="/assets/window_menu_demo.gif" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/window_menu_demo.gif" /></a>
+</div>
+<p><strong>代码说明：</strong></p>
+<p>在上面的代码中，我们添加了一个动作（<code>Action</code>）：<code>action_about</code>，并为其指定了<code>triggered</code>事件响应函数：<code>on_action_about</code>，该函数将在动作被触发时调用。</p>
+<div style="text-align: center">
+ <a class="glightbox" href="/assets/l64.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/l64.png" /></a>
+</div>
+
+<p>在<code>action_about</code>的事件回调函数中，我们调用<code>pyguiadapter.utils.messagebox</code>模块中的<code>show_text_file()</code>函数，弹窗展示当前目录下的<code>about.html</code>文件：</p>
+<div style="text-align: center">
+ <a class="glightbox" href="/assets/l56.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/l56.png" /></a>
+</div>
+
+<p>然后，创建了一个<code>Menu</code>对象：<code>menu_help</code>，将其标题设置为"Help"，并将<code>action_about</code>添加到其<code>actions</code>中：</p>
+<div style="text-align: center">
+ <a class="glightbox" href="/assets/l65.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/l65.png" /></a>
+</div>
+
+<p>最后，将<code>menu_help</code>对象添加到<code>window_menus</code>中，这样便完成了创建和添加菜单的全过程：</p>
+<div style="text-align: center">
+ <a class="glightbox" href="/assets/l68.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/l68.png" /></a>
+</div>
+
+<blockquote>
+<ul>
+<li>所谓“动作”（<code>Action</code>），就是具有文字、图标等一系列属性，可以响应特定鼠标、快捷键事件的组件。它可以被添加到菜单、工具栏中，当其被添加到菜单中，其表现为菜单项；当其被添加到工具栏时，其表现为工具栏按钮。比如下图中红色方框标记的是同一组<code>Action</code>分别在菜单和工具栏中的样子。</li>
+</ul>
+<p><div style="text-align: center">
+ <a class="glightbox" href="/assets/actions_demo.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/actions_demo.png" /></a>
+</div></p>
+<ul>
+<li>可以通过鼠标单击或快捷键来“触发”动作。</li>
+</ul>
+</blockquote>
+<p>可以参考以下文档，获取关于窗口菜单栏与工具栏的详细说明：</p>
+<ul>
+<li><a href="../toolbar/"> 窗口工具栏</a></li>
+<li><a href="../menu/"> 窗口菜单栏 </a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(() => { lightbox.reload() });
+</script></body>
+</html>

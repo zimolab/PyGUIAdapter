@@ -1,0 +1,1774 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../icon_type/">
+      
+      
+        <link rel="next" href="../apis/pyguiadapter.window/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.41">
+    
+    
+      
+        <title>应用打包 - PyGUIAdapter Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+   <link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+    html.glightbox-open { overflow: initial; height: 100%; }
+    .gslide-title { margin-top: 0px; user-select: text; }
+    .gslide-desc { color: #666; user-select: text; }
+    .gslide-image img { background: white; }
+    .gscrollbar-fixer { padding-right: 15px; }
+    .gdesc-inner { font-size: 0.75rem; }
+    body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
+    body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
+    body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}</style> <script src="../../assets/javascripts/glightbox.min.js"></script></head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../" title="PyGUIAdapter Docs" class="md-header__button md-logo" aria-label="PyGUIAdapter Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            PyGUIAdapter Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              应用打包
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Select language">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../packaging/" hreflang="zh" class="md-select__link">
+              简体中文
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/zimolab/PyGUIAdapter" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../" title="PyGUIAdapter Docs" class="md-nav__button md-logo" aria-label="PyGUIAdapter Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    PyGUIAdapter Docs
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/zimolab/PyGUIAdapter" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    首页
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quickstart/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    快速开始
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../multiple-functions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    添加多个函数
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../widget-config/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    配置控件属性
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../widget-map/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    控件与参数数据类型
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../window/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    配置窗口属性
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../toolbar/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    窗口工具栏
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../menu/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    窗口菜单栏
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cancel/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    取消函数执行
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../progressbar/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    进度条
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user-interaction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    与用户交互
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../style/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    界面美化
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../custom-widget/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    自定义控件
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../utility/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    实用函数
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../icon_type/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    关于图标
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    应用打包
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    应用打包
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      （一）前言
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      （二）准备工作
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="（二）准备工作">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1pip" class="md-nav__link">
+    <span class="md-ellipsis">
+      1、使用pip
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2poetry" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、使用poetry
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      （三）开始打包
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="（三）开始打包">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      1、基础命令
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、打包资源（数据）文件
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2、打包资源（数据）文件">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      （1）第三方依赖中的资源文件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      （1）项目资源文件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      （3）关于文件路径的一些提示
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      （四）修改可执行文件名称、图标
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="（四）修改可执行文件名称、图标">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      1、修改可执行文件名
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、修改可执行文件的图标
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      （五）窗口模式
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      （六）单文件模式
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      （七）进一步压缩体积的方法
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="（七）进一步压缩体积的方法">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-strip" class="md-nav__link">
+    <span class="md-ellipsis">
+      1、使用--strip选项
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2upx" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、使用upx
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      （八）结语
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_17" >
+        
+          
+          <label class="md-nav__link" for="__nav_17" id="__nav_17_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    API参考
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_17_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_17">
+            <span class="md-nav__icon md-icon"></span>
+            API参考
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.window/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.window
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.action/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.action
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.toolbar/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.toolbar
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.menu/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.menu
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.adapter.uoutput/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.adapter.uoutput
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.adapter.uprogress/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.adapter.uprogress
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.adapter.udialog/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.adapter.udialog
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.adapter.uinput/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.adapter.uinput
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.textbrowser/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.textbrowser
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.windows/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.windows
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.windows.fnexec/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.windows.fnexec
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.windows.fnselect/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.windows.fnselect
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contribution/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    贡献
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../license/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    开源许可
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../changelog/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    版本历史
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      （一）前言
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      （二）准备工作
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="（二）准备工作">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1pip" class="md-nav__link">
+    <span class="md-ellipsis">
+      1、使用pip
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2poetry" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、使用poetry
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      （三）开始打包
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="（三）开始打包">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      1、基础命令
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、打包资源（数据）文件
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2、打包资源（数据）文件">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      （1）第三方依赖中的资源文件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      （1）项目资源文件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      （3）关于文件路径的一些提示
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      （四）修改可执行文件名称、图标
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="（四）修改可执行文件名称、图标">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      1、修改可执行文件名
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、修改可执行文件的图标
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      （五）窗口模式
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      （六）单文件模式
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      （七）进一步压缩体积的方法
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="（七）进一步压缩体积的方法">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-strip" class="md-nav__link">
+    <span class="md-ellipsis">
+      1、使用--strip选项
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2upx" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、使用upx
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      （八）结语
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+  <h1>应用打包</h1>
+
+<h2 id="_1">（一）前言</h2>
+<p>为了便于分发和部署，可以将开发好的应用打包成二进制可执行文件，这样用户可以在不安装Python解释器和相关程序库的环境下运行程序。笔者测试了<code>pyinstaller</code>打包工具，发现其可以应用进行打包，下面以一个具体的Demo项目为例，对使用<code>pyinstaller</code>打包进行讲解。本文中涉及的所有代码、资源文件、打包配置文件等均可以在以下目录中找到：</p>
+<ul>
+<li><a href="https://github.com/zimolab/PyGUIAdapter/tree/main/examples/packaging/">examples/packaging/</a></li>
+</ul>
+<p>此外，强烈建议开发者在python虚拟环境中对应用进行打包，这样可以避免将许多未用到的库和文件打包到最终的产物中，从而减少可执行文件的体积。</p>
+<h2 id="_2">（二）准备工作</h2>
+<p>首先，需要安装<code>pyinstaller</code>打包工具：</p>
+<h3 id="1pip">1、使用pip</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pip install pyinstaller
+</code></pre></div>
+<h3 id="2poetry">2、使用poetry</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>poetry<span class="w"> </span>add<span class="w"> </span>pyinstaller<span class="w"> </span>--group<span class="w"> </span>dev
+</code></pre></div>
+<p>安装过程中，可能会因为<code>python</code>版本问题，导致安装失败。提示信息大概如下：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>The current project&#39;s supported Python range (&gt;=3.8,&lt;4.0) is not compatible with some of the required packages Python requirement:
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  - pyinstaller requires Python &lt;3.14,&gt;=3.8, so it will not be satisfied for Python &gt;=3.14,&lt;4.0
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>Because no versions of pyinstaller match &gt;6.10.0,&lt;7.0.0
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a> and pyinstaller (6.10.0) requires Python &lt;3.14,&gt;=3.8, pyinstaller is forbidden.
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>So, because pyguiadapter depends on pyinstaller (^6.10.0), version solving failed.
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>  • Check your dependencies Python requirement: The Python requirement can be specified via the `python` or `markers` properties
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>    For pyinstaller, a possible solution would be to set the `python` property to &quot;&gt;=3.8,&lt;3.14&quot;
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>    https://python-poetry.org/docs/dependency-specification/#python-restricted-dependencies,
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>    https://python-poetry.org/docs/dependency-specification/#using-environment-markers
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>    https://python-poetry.org/docs/dependency-specification/#using-environment-markers   
+</code></pre></div>
+<p>此时，需要将<code>pyproject.toml</code>文件中<code>python</code>依赖项的版本设置到正确的范围，比如：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">...</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="k">[tool.poetry.dependencies]</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">python</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;^3.8, &lt;3.14&quot;</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="p">...</span>
+</code></pre></div>
+<p>然后再次运行<code>poetry add pyinstaller --group dev</code>。</p>
+<h2 id="_3">（三）开始打包</h2>
+<p>首先需要进入<a href="https://github.com/zimolab/PyGUIAdapter/tree/main/examples/packaging/">examples/packaging/</a>目录，以下命令行均在此目录下完成。</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nb">cd</span><span class="w"> </span>example/packaging/
+</code></pre></div>
+<h3 id="1">1、基础命令</h3>
+<p><code>pyinstaller</code>的命令语法如下：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>pyinstaller<span class="w"> </span><span class="o">[</span>options<span class="o">]</span><span class="w"> </span>script<span class="w"> </span><span class="o">[</span>script<span class="w"> </span>…<span class="o">]</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>specfile
+</code></pre></div>
+<p>首先，让我们尝试不加任何选项来打包我们的应用，在命令行下输入：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>pyinstaller<span class="w"> </span>app.py
+</code></pre></div>
+<p>不出意外，我们将看到类似下面的输出：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>...
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>20490 INFO: Fixing EXE headers
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>20566 INFO: Building EXE from EXE-00.toc completed successfully.
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>20569 INFO: checking COLLECT
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>20571 INFO: Building COLLECT COLLECT-00.toc
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>20786 INFO: Building COLLECT COLLECT-00.toc completed successfully.
+</code></pre></div>
+<p>这表明打包已经成功了，此时，<code>examples/packaging/</code>目录下会出现两个新的目录<code>build</code>和<code>dist</code>，以及一个新的文件<code>app.spec</code>：</p>
+<ul>
+<li><code>build/</code>：该目录用于存放打包过程中生成的一些中间文件，一般无需过多关注。</li>
+<li><code>dist/</code>：该目录用于存放打包的结果产物，我们需要的二进制可执行文件就将被放到这个命令下</li>
+<li><code>app.spec</code>：<code>*.spec</code>文件时打包配置文件，该文件记录了打包所使用的参数，运行打包命令后将自动生成该文件。后续可以直接输入<code>pyinstaller app.spec</code>命令打包应用，而无需每次都手动输入参数。</li>
+</ul>
+<div style="text-align: center;">
+    <a class="glightbox" href="/assets/packaging_1.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/packaging_1.png" /></a>
+</div>
+
+<p>现在让我们查看<code>dist</code>目录，里面包含一个名为<code>app</code>的子目录，最终的可执行文件就在该目录下。默认情况下，<code>pyinstaller</code>会生成一个可执行文件及一个<code>_internal/</code>目录：</p>
+<div style="text-align: center;">
+    <a class="glightbox" href="/assets/packaging_2.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/packaging_2.png" /></a>
+</div>
+
+<p><code>_internal/</code>目录下存放着这可执行文件运行时依赖的库和其他文件：</p>
+<div style="text-align:center">
+    <a class="glightbox" href="/assets/packaging_3.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/packaging_3.png" /></a>
+</div>
+
+<h3 id="2">2、打包资源（数据）文件</h3>
+<h4 id="1_1">（1）第三方依赖中的资源文件</h4>
+<p>现在，让我们运行<code>app.exe</code>，结果发现只有一个命令行窗口一闪而过，程序没有启动成功。这说明打包还存在一些问题，并没有真正成功。让我们通过命令行再次启动<code>app.exe</code>，尝试从其命令行输出中定位问题所在。</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="o">./</span><span class="n">dist</span><span class="o">/</span><span class="n">app</span><span class="o">/</span><span class="n">app</span><span class="o">.</span><span class="n">exe</span>
+</code></pre></div>
+<p>程序输出了大段的异常回溯信息，让我们截取其中关键的部分：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>Traceback (most recent call last):
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>  ...
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>  File &quot;yapf_third_party\_ylib2to3\pygram.py&quot;, line 29, in &lt;module&gt;
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>  File &quot;yapf_third_party\_ylib2to3\pgen2\driver.py&quot;, line 237, in load_grammar
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>  File &quot;pkgutil.py&quot;, line 637, in get_data
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>  File &quot;PyInstaller\loader\pyimod02_importers.py&quot;, line 509, in get_data
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>FileNotFoundError: [Errno 2] No such file or directory: &#39;...\\dist\\app\\_internal\\yapf_third_party\\_ylib2to3\\Grammar.txt&#39;
+</code></pre></div>
+<p>从异常信息中不难发现，一些程序运行所必须的文件没有被打包到<code>_internal/</code>目录下，具体而言，该文件被第三方包<code>yapf_third_party</code>引用。</p>
+<p><code>PyGUIAdapter</code>依赖<code>yapf</code>实现代码格式化功能，而<code>yapf</code>在内部依赖又了<code>yapf_third_party</code>。显然，目前<code>pyinstaller</code>还无法处理<code>yapf</code>这种依赖关系，无法自动收集并打包其所需的文件。为了处理类似的错误，我们可以手动指定需要收集的文件的包或模块，<code>pyinstanller</code>提供了以下选项：</p>
+<ul>
+<li><code>--hidden-import MODULENAME</code>或 <code>--hiddenimport MODULENAME</code><a href="https://pyinstaller.org/en/stable/usage.html#cmdoption-hidden-import"></a></li>
+</ul>
+<p>用于告诉<code>pyInstaller</code>在打包过程中包含那些可能没有被自动识别为依赖的额外python包，即那些通过<code>importlib</code>等方式隐式导入的包。</p>
+<ul>
+<li><code>--collect-submodules MODULENAME</code><a href="https://pyinstaller.org/en/stable/usage.html#cmdoption-collect-submodules"></a></li>
+</ul>
+<p>用于收集指定包或模块的所有子模块。</p>
+<ul>
+<li><code>--collect-data MODULENAME</code>或<code>--collect-datas MODULENAME</code><a href="https://pyinstaller.org/en/stable/usage.html#cmdoption-collect-data"></a></li>
+</ul>
+<p>用于收集指定包或模块下的数据文件。</p>
+<ul>
+<li><code>--collect-binaries MODULENAME</code><a href="https://pyinstaller.org/en/stable/usage.html#cmdoption-collect-binaries"></a></li>
+</ul>
+<p>用于收集指定包或模块下的二进制文件。</p>
+<ul>
+<li><code>--collect-all MODULENAME</code><a href="https://pyinstaller.org/en/stable/usage.html#cmdoption-collect-all"></a></li>
+</ul>
+<p>用于指定包或模块下的所有子模块、数据文件、二进制文件。</p>
+<p>现在，让我们手动指定需要收集资源文件的第三方依赖。除了<code>yapf_third_party</code>，还有<code>pyqcodeeditor</code>。</p>
+<blockquote>
+<p><a href=""><code>pyqcodeeditor</code></a>是作者移植的一个代码编辑器控件，<code>PyGUIAdapter</code>使用了该控件。<code>pyqcodeeditor</code>内置了一些用于定义语法和高亮规则的<code>json</code>文件，<code>pyinstaller</code>还没办法自动收集这些文件，因此也需要手动收集这些文件。</p>
+</blockquote>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="w"> </span>pyinstaller<span class="w"> </span>app.py<span class="w"> </span>--collect-data<span class="w"> </span>yapf_third_party<span class="w"> </span>--collect-data<span class="w"> </span>pyqcodeeditor<span class="w"> </span>-y<span class="w"> </span>--clean
+</code></pre></div>
+<p>这里使用了两个新的选项<code>-y</code>和<code>--clean</code>。其含义和用途如下：</p>
+<ul>
+<li><code>-y</code></li>
+</ul>
+<p>指定该选项后，如果存在之前生成的文件，直接进行覆盖，不会询问是否要移除它们。</p>
+<ul>
+<li><code>--clean</code></li>
+</ul>
+<p>清除缓存，并移除之前构建时产生的临时文件。</p>
+<p>打包完成后。可以发现，<code>yapf_third_party</code>和<code>pyqcodeeditor</code>中的资源文件打包到<code>_internal</code>目录下了。</p>
+<div style="text-align:center">
+    <a class="glightbox" href="/assets/packaging_4.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/packaging_4.png" /></a>
+</div>
+
+<p>让我们再次运行<code>app.exe</code>，已经可以正常显示程序界面了。</p>
+<div style="text-align:center">
+    <a class="glightbox" href="/assets/packaging_5.gif" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/packaging_5.gif" /></a>
+</div>
+<p><strong>小结：</strong>如果程序引用了一些第三方库，而<code>pyinstaller</code>目前还无法自动收集这些库或是其资源文件，开发者可以使用<code>--collect-xxx</code>选项手动包含需要的文件。</p>
+<h4 id="1_2">（1）项目资源文件</h4>
+<p>现在，我们的应用仍然存在一个小问题：当我们单击<code>Help</code>菜单下的<code>About</code>菜单项，本应弹出一个关于对话框，但是，什么都没有发生。</p>
+<div style="text-align:center">
+    <a class="glightbox" href="/assets/packaging_6.gif" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/packaging_6.gif" /></a>
+</div>
+
+<p>让我们从命令行输出中定位问题：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>Traceback (most recent call last):
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>  File &quot;pyguiadapter\window.py&quot;, line 361, in _on_triggered
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>  File &quot;app.py&quot;, line 40, in on_action_about
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>  File &quot;pyguiadapter\utils\messagebox.py&quot;, line 264, in show_text_file
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>  File &quot;pyguiadapter\utils\io.py&quot;, line 2, in read_text_file
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>FileNotFoundError: [Errno 2] No such file or directory: &#39;...\\dist\\app\\_internal\\about.html&#39;
+</code></pre></div>
+<p>非常清晰的错误消息：<code>app.py</code>的第<code>40行</code>用到了一个文件<code>about.html</code>，但该文件并不存在。</p>
+<div style="text-align:center">
+    <a class="glightbox" href="/assets/packaging_7.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/packaging_7.png" /></a>
+</div>
+
+<p><code>about.html</code>与<code>app.py</code>在同一目录下，<code>pyinstaller</code>在打包时却没有将<code>about.html</code>打包到<code>_internal</code>目录下，这就是问题的根源。因此，我们需要手动指定项目中哪些资源文件需要被打包到最终产物中。对此，<code>pyinstaller</code>提供了<code>--add-data</code>选项。</p>
+<blockquote>
+<p><code>--add-data SOURCE:DEST</code><a href="https://pyinstaller.org/en/stable/usage.html#cmdoption-add-data"></a></p>
+<p>Additional data files or directories containing data files to be added to the application. The argument value should be in form of “source:dest_dir”, where source is the path to file (or directory) to be collected, dest_dir is the destination directory relative to the top-level application directory, and both paths are separated by a colon (:). To put a file in the top-level application directory, use . as a dest_dir. This option can be used multiple times.</p>
+</blockquote>
+<p>让我们添加需要打包的文件，然后再次进行打包：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>pyinstaller<span class="w"> </span>app.py<span class="w">  </span>--collect-data<span class="w"> </span>yapf_third_party<span class="w"> </span>--collect-data<span class="w"> </span>pyqcodeeditor<span class="w"> </span>--add-data<span class="w"> </span><span class="s2">&quot;./about.html:./&quot;</span><span class="w"> </span>-y<span class="w"> </span>--clean
+</code></pre></div>
+<blockquote>
+<p><code>--add-data "./about.html:./"</code>的含义是：把<code>当前目录（./）</code>下的<code>about.html</code>文件打包到<code>目标产物的根目录(./)</code>下</p>
+<p>而在新版本的<code>pyinstaller</code>中，最终产物的根目录就是<code>_internal</code>目录。</p>
+</blockquote>
+<p>打包完成后，可以发现<code>about.html</code>已经被打包到<code>_internal</code>目录下了。</p>
+<div style="text-align:center">
+    <a class="glightbox" href="/assets/packaging_8.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/packaging_8.png" /></a>
+</div>
+
+<p>再次运行<code>app.exe</code>，现在终于可以正常弹出对话框了：</p>
+<div style="text-align:center">
+    <a class="glightbox" href="/assets/packaging_9.gif" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/packaging_9.gif" /></a>
+</div>
+
+<h4 id="3">（3）关于文件路径的一些提示</h4>
+<p>为了在程序打包后仍然可以访问到项目中的资源文件，需要在代码中必须非常小心的除了路径问题，尤其是采用<code>相对路径</code>时，源码状态下和打包状态下<code>相对路径</code>中<strong>“相对”</strong>的含义是不同的，具体而言，<strong>“相对”的起点</strong>不同。为了解决这个问题，一种可行的方法是，以<code>__file__</code>为起点对路径进行定位，本例中就是采用这种做法。</p>
+<div style="text-align:center">
+    <a class="glightbox" href="/assets/packaging_10.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/packaging_10.png" /></a>
+</div>
+
+<h2 id="_4">（四）修改可执行文件名称、图标</h2>
+<h3 id="1_3">1、修改可执行文件名</h3>
+<p>默认情况下，<code>pyinstaller</code>生成的二进制文件名称将与输入的源码文件名称一致。比如，在<code>windows</code>平台下，<code>app.py</code>打包后的二进制可执行文件名默认为<code>app.exe</code>。当然，<code>pyinstaller</code>允许我们指定可执行文件的名称，方法是使用<code>--name</code>选项。</p>
+<blockquote>
+<p><code>-n NAME</code>, <code>--name NAME</code><a href="https://pyinstaller.org/en/stable/usage.html#cmdoption-n"></a></p>
+<p>Name to assign to the bundled app and spec file (default: first script’s basename)</p>
+</blockquote>
+<p>现在，让我们把程序名称修改为<code>Equation-Solver</code>。</p>
+<p>首先，把之前生成的<code>dist</code>、<code>build</code>、<code>app.spec</code>文件删除。然后运行以下命令：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>pyinstaller<span class="w"> </span>app.py<span class="w"> </span>--name<span class="w"> </span><span class="s2">&quot;Equation-Solver&quot;</span><span class="w">  </span>--collect-data<span class="w"> </span>yapf_third_party<span class="w"> </span>--collect-data<span class="w"> </span>pyqcodeeditor<span class="w"> </span>--add-data<span class="w"> </span><span class="s2">&quot;./about.html:./&quot;</span><span class="w"> </span>-y<span class="w"> </span>--clean
+</code></pre></div>
+<p>打包完成后，重新生成了一个<code>.spec</code>文件，名称为<code>Equation-Solver.spec</code>。在<code>dist/Equation-Solver</code>目录下，生成了一个名为<code>Equation-Solver.exe</code>的可执行文件。</p>
+<div style="text-align:center">
+    <a class="glightbox" href="/assets/packaging_11.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/packaging_11.png" /></a>
+</div>
+
+<h3 id="2_1">2、修改可执行文件的图标</h3>
+<p><code>pyinstaller</code>生成的可执行文件具有一个默认的图标，我们可以将其替换成自己的图标，方法是使用<code>--icon</code>选项。</p>
+<blockquote>
+<p><code>-i &lt;FILE.ico or FILE.exe,ID or FILE.icns or Image or "NONE"&gt;</code>, <code>--icon &lt;FILE.ico or FILE.exe,ID or FILE.icns or Image or "NONE"&gt;</code><a href="https://pyinstaller.org/en/stable/usage.html#cmdoption-i"></a></p>
+<p>FILE.ico: apply the icon to a Windows executable. FILE.exe,ID: extract the icon with ID from an exe. FILE.icns: apply the icon to the .app bundle on Mac OS. If an image file is entered that isn’t in the platform format (ico on Windows, icns on Mac), PyInstaller tries to use Pillow to translate the icon into the correct format (if Pillow is installed). Use “NONE” to not apply any icon, thereby making the OS show some default (default: apply PyInstaller’s icon). This option can be used multiple times.</p>
+</blockquote>
+<p>首先，需要准备好图标文件（<code>.ico</code>或<code>.icns</code>格式），并将其放到<code>app.py</code>同目录下。</p>
+<div style="text-align:center">
+    <a class="glightbox" href="/assets/packaging_12.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/packaging_12.png" /></a>
+</div>
+
+<p>执行以下打包命令：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="w"> </span>pyinstaller<span class="w"> </span>app.py<span class="w"> </span>--name<span class="w"> </span><span class="s2">&quot;Equation-Solver&quot;</span><span class="w"> </span>--icon<span class="w"> </span><span class="s2">&quot;./icon.ico&quot;</span><span class="w">   </span>--collect-data<span class="w"> </span>yapf_third_party<span class="w"> </span>--collect-data<span class="w"> </span>pyqcodeeditor<span class="w"> </span>--add-data<span class="w"> </span><span class="s2">&quot;./about.html:./&quot;</span><span class="w"> </span>-y<span class="w"> </span>--clean
+</code></pre></div>
+<p>打包完成后，我们就得到了一个带自定义图标的可执行文件了：</p>
+<div style="text-align:center">
+    <a class="glightbox" href="/assets/packaging_13.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/packaging_13.png" /></a>
+</div>
+
+<h2 id="_5">（五）窗口模式</h2>
+<p><code>pyinstaller</code>打包应用程序的时候默认使用<code>-c</code>选项，因此打开生成的可执行文件时将同时打开一个控制台窗口作为其标准io。若要隐藏该窗口，可以使用<code>-w</code>选项。</p>
+<blockquote>
+<p><code>-w</code>, <code>--windowed</code>, <code>--noconsole</code><a href="https://pyinstaller.org/en/stable/usage.html#cmdoption-w"></a></p>
+<p>Windows and Mac OS X: do not provide a console window for standard i/o. On Mac OS this also triggers building a Mac OS .app bundle. On Windows this option is automatically set if the first script is a ‘.pyw’ file. This option is ignored on *NIX systems.</p>
+</blockquote>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>pyinstaller<span class="w"> </span>app.py<span class="w"> </span>-w<span class="w"> </span>--name<span class="w"> </span><span class="s2">&quot;Equation-Solver&quot;</span><span class="w"> </span>--icon<span class="w"> </span><span class="s2">&quot;./icon.ico&quot;</span><span class="w">   </span>--collect-data<span class="w"> </span>yapf_third_party<span class="w"> </span>--collect-data<span class="w"> </span>pyqcodeeditor<span class="w"> </span>--add-data<span class="w"> </span><span class="s2">&quot;./about.html:./&quot;</span><span class="w"> </span>-y<span class="w"> </span>--clean
+</code></pre></div>
+<h2 id="_6">（六）单文件模式</h2>
+<p><code>pyinstaller</code>在打包时，默认会生成一个可执行文件以及一个用于存放其他文件的目录（默认为<code>_internal</code>）。<code>pyinstaller</code>也支持将所有文件打包成单个可执行文件，方法是使用<code>-F</code>选项。</p>
+<blockquote>
+<p><code>-F</code>, <code>--onefile</code><a href="https://pyinstaller.org/en/stable/usage.html#cmdoption-F"></a></p>
+<p>Create a one-file bundled executable.</p>
+</blockquote>
+<p>首先，将<code>dist/</code>目录清空。然后执行下列命令。</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>pyinstaller<span class="w"> </span>app.py<span class="w"> </span>-F<span class="w"> </span>-w<span class="w"> </span>--name<span class="w"> </span><span class="s2">&quot;Equation-Solver&quot;</span><span class="w"> </span>--icon<span class="w"> </span><span class="s2">&quot;./icon.ico&quot;</span><span class="w">   </span>--collect-data<span class="w"> </span>yapf_third_party<span class="w"> </span>--collect-data<span class="w"> </span>pyqcodeeditor<span class="w"> </span>--add-data<span class="w"> </span><span class="s2">&quot;./about.html:./&quot;</span><span class="w"> </span>-y<span class="w"> </span>--clean
+</code></pre></div>
+<p>打包完成后，<code>dist/</code>目录下只有一个可执行文件，其他所有文件都被打包到这个文件中了。</p>
+<div style="text-align:center">
+    <a class="glightbox" href="/assets/packaging_14.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/packaging_14.png" /></a>
+</div>
+
+<p>现在只需要一个文件就可以完成程序的分发了。</p>
+<div style="text-align:center">
+    <a class="glightbox" href="/assets/packaging_15.gif" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/packaging_15.gif" /></a>
+</div>
+
+<p>相比多文件模式，单文件打包的优势主要包括以下两点：</p>
+<ul>
+<li>方便部署和分发</li>
+<li>总的体积更小</li>
+</ul>
+<p>不足在于应用启动的速度可能会稍慢一些（运行速度不受影响），但是一般不是很明显。</p>
+<p>就本示例来说，在启用单文件模式前，所有文件体积加起来有<code>114MB</code>左右，而采用单文件模式后，文件体积被压缩到<code>46.5MB</code>，可以说效果显著。</p>
+<h2 id="_7">（七）进一步压缩体积的方法</h2>
+<h3 id="1-strip">1、使用<code>--strip</code>选项</h3>
+<p>按照<code>pyinstaller</code>官方的说法，该选项可用于去除可执行文件和共享库中的符号表（在<code>Windows</code>下不推荐使用），这可能有助于减少生成文件的体积。</p>
+<blockquote>
+<p><code>-s</code>, <code>--strip</code><a href="https://pyinstaller.org/en/stable/usage.html#cmdoption-s"></a></p>
+<p>Apply a symbol-table strip to the executable and shared libs (not recommended for Windows)</p>
+</blockquote>
+<h3 id="2upx">2、使用<code>upx</code></h3>
+<p>笔者没有实际尝试这种方法，具体的方法可以参考<code>pyinstaller</code>的官方文档：<a href="https://pyinstaller.org/en/stable/usage.html#using-upx">Using Upx</a>。</p>
+<h2 id="_8">（八）结语</h2>
+<p><code>pyinstaller</code>提供了丰富的打包选项，本文仅仅对常用的几个选项进行一些说明和演示。开发者可以进一步阅读官方文档，了解更多细节了，打包过程中遇到的绝大多数问题都可以在其中找到解决方法，以下是<code>pyinstaller</code>官方文档的地址：<a href="https://pyinstaller.org/en/stable/index.html">PyInstaller Manual — PyInstaller 6.10.0 documentation</a>。</p>
+<p>这里，也贴出本次演示最终的<code>spec</code>文件，开发者可以在这个文件基础上进行修改，从而快速得到符合自己项目实际的打包配置文件。</p>
+<blockquote>
+<p><a href="https://github.com/zimolab/PyGUIAdapter/tree/main/examples/packaging/Equation-Solver.spec"><code>examples/packaging/Equation-Solver.spec</code></a></p>
+</blockquote>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="c1"># -*- mode: python ; coding: utf-8 -*-</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="kn">from</span> <span class="nn">PyInstaller.utils.hooks</span> <span class="kn">import</span> <span class="n">collect_data_files</span>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="n">datas</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;./about.html&#39;</span><span class="p">,</span> <span class="s1">&#39;./&#39;</span><span class="p">)]</span>
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="n">datas</span> <span class="o">+=</span> <span class="n">collect_data_files</span><span class="p">(</span><span class="s1">&#39;yapf_third_party&#39;</span><span class="p">)</span>
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="n">datas</span> <span class="o">+=</span> <span class="n">collect_data_files</span><span class="p">(</span><span class="s1">&#39;pyqcodeeditor&#39;</span><span class="p">)</span>
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>
+<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a><span class="n">a</span> <span class="o">=</span> <span class="n">Analysis</span><span class="p">(</span>
+<a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a>    <span class="p">[</span><span class="s1">&#39;app.py&#39;</span><span class="p">],</span>
+<a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a>    <span class="n">pathex</span><span class="o">=</span><span class="p">[],</span>
+<a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a>    <span class="n">binaries</span><span class="o">=</span><span class="p">[],</span>
+<a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a>    <span class="n">datas</span><span class="o">=</span><span class="n">datas</span><span class="p">,</span>
+<a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a>    <span class="n">hiddenimports</span><span class="o">=</span><span class="p">[],</span>
+<a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a>    <span class="n">hookspath</span><span class="o">=</span><span class="p">[],</span>
+<a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a>    <span class="n">hooksconfig</span><span class="o">=</span><span class="p">{},</span>
+<a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a>    <span class="n">runtime_hooks</span><span class="o">=</span><span class="p">[],</span>
+<a id="__codelineno-17-18" name="__codelineno-17-18" href="#__codelineno-17-18"></a>    <span class="n">excludes</span><span class="o">=</span><span class="p">[],</span>
+<a id="__codelineno-17-19" name="__codelineno-17-19" href="#__codelineno-17-19"></a>    <span class="n">noarchive</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<a id="__codelineno-17-20" name="__codelineno-17-20" href="#__codelineno-17-20"></a>    <span class="n">optimize</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<a id="__codelineno-17-21" name="__codelineno-17-21" href="#__codelineno-17-21"></a><span class="p">)</span>
+<a id="__codelineno-17-22" name="__codelineno-17-22" href="#__codelineno-17-22"></a><span class="n">pyz</span> <span class="o">=</span> <span class="n">PYZ</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">pure</span><span class="p">)</span>
+<a id="__codelineno-17-23" name="__codelineno-17-23" href="#__codelineno-17-23"></a>
+<a id="__codelineno-17-24" name="__codelineno-17-24" href="#__codelineno-17-24"></a><span class="n">exe</span> <span class="o">=</span> <span class="n">EXE</span><span class="p">(</span>
+<a id="__codelineno-17-25" name="__codelineno-17-25" href="#__codelineno-17-25"></a>    <span class="n">pyz</span><span class="p">,</span>
+<a id="__codelineno-17-26" name="__codelineno-17-26" href="#__codelineno-17-26"></a>    <span class="n">a</span><span class="o">.</span><span class="n">scripts</span><span class="p">,</span>
+<a id="__codelineno-17-27" name="__codelineno-17-27" href="#__codelineno-17-27"></a>    <span class="n">a</span><span class="o">.</span><span class="n">binaries</span><span class="p">,</span>
+<a id="__codelineno-17-28" name="__codelineno-17-28" href="#__codelineno-17-28"></a>    <span class="n">a</span><span class="o">.</span><span class="n">datas</span><span class="p">,</span>
+<a id="__codelineno-17-29" name="__codelineno-17-29" href="#__codelineno-17-29"></a>    <span class="p">[],</span>
+<a id="__codelineno-17-30" name="__codelineno-17-30" href="#__codelineno-17-30"></a>    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Equation-Solver&#39;</span><span class="p">,</span>
+<a id="__codelineno-17-31" name="__codelineno-17-31" href="#__codelineno-17-31"></a>    <span class="n">debug</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<a id="__codelineno-17-32" name="__codelineno-17-32" href="#__codelineno-17-32"></a>    <span class="n">bootloader_ignore_signals</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<a id="__codelineno-17-33" name="__codelineno-17-33" href="#__codelineno-17-33"></a>    <span class="n">strip</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<a id="__codelineno-17-34" name="__codelineno-17-34" href="#__codelineno-17-34"></a>    <span class="n">upx</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-17-35" name="__codelineno-17-35" href="#__codelineno-17-35"></a>    <span class="n">upx_exclude</span><span class="o">=</span><span class="p">[],</span>
+<a id="__codelineno-17-36" name="__codelineno-17-36" href="#__codelineno-17-36"></a>    <span class="n">runtime_tmpdir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-17-37" name="__codelineno-17-37" href="#__codelineno-17-37"></a>    <span class="n">console</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<a id="__codelineno-17-38" name="__codelineno-17-38" href="#__codelineno-17-38"></a>    <span class="n">disable_windowed_traceback</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<a id="__codelineno-17-39" name="__codelineno-17-39" href="#__codelineno-17-39"></a>    <span class="n">argv_emulation</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<a id="__codelineno-17-40" name="__codelineno-17-40" href="#__codelineno-17-40"></a>    <span class="n">target_arch</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-17-41" name="__codelineno-17-41" href="#__codelineno-17-41"></a>    <span class="n">codesign_identity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-17-42" name="__codelineno-17-42" href="#__codelineno-17-42"></a>    <span class="n">entitlements_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-17-43" name="__codelineno-17-43" href="#__codelineno-17-43"></a>    <span class="n">icon</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;icon.ico&#39;</span><span class="p">],</span>
+<a id="__codelineno-17-44" name="__codelineno-17-44" href="#__codelineno-17-44"></a><span class="p">)</span>
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(() => { lightbox.reload() });
+</script></body>
+</html>

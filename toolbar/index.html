@@ -1,0 +1,1619 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../window/">
+      
+      
+        <link rel="next" href="../menu/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.41">
+    
+    
+      
+        <title>窗口工具栏 - PyGUIAdapter Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.0253249f.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+   <link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+    html.glightbox-open { overflow: initial; height: 100%; }
+    .gslide-title { margin-top: 0px; user-select: text; }
+    .gslide-desc { color: #666; user-select: text; }
+    .gslide-image img { background: white; }
+    .gscrollbar-fixer { padding-right: 15px; }
+    .gdesc-inner { font-size: 0.75rem; }
+    body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
+    body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
+    body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}</style> <script src="../assets/javascripts/glightbox.min.js"></script></head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href=".." title="PyGUIAdapter Docs" class="md-header__button md-logo" aria-label="PyGUIAdapter Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            PyGUIAdapter Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              窗口工具栏
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="选择当前语言">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="zh" class="md-select__link">
+              简体中文
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../en/toolbar/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/zimolab/PyGUIAdapter" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="PyGUIAdapter Docs" class="md-nav__button md-logo" aria-label="PyGUIAdapter Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    PyGUIAdapter Docs
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/zimolab/PyGUIAdapter" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    首页
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quickstart/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    快速开始
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../multiple-functions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    添加多个函数
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../widget-config/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    配置控件属性
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../widget-map/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    控件与参数数据类型
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../window/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    配置窗口属性
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    窗口工具栏
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    窗口工具栏
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      （一）概述
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      （二）主要属性
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="（二）主要属性">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pyguiadapter.toolbar.ToolBar.actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      actions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pyguiadapter.toolbar.ToolBar.moveable" class="md-nav__link">
+    <span class="md-ellipsis">
+      moveable
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pyguiadapter.toolbar.ToolBar.floatable" class="md-nav__link">
+    <span class="md-ellipsis">
+      floatable
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pyguiadapter.toolbar.ToolBar.allowed_areas" class="md-nav__link">
+    <span class="md-ellipsis">
+      allowed_areas
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pyguiadapter.toolbar.ToolBar.initial_area" class="md-nav__link">
+    <span class="md-ellipsis">
+      initial_area
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pyguiadapter.toolbar.ToolBar.button_style" class="md-nav__link">
+    <span class="md-ellipsis">
+      button_style
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pyguiadapter.toolbar.ToolBar.icon_size" class="md-nav__link">
+    <span class="md-ellipsis">
+      icon_size
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      （三）示例
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../menu/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    窗口菜单栏
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cancel/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    取消函数执行
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../progressbar/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    进度条
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user-interaction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    与用户交互
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../style/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    界面美化
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../custom-widget/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    自定义控件
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../utility/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    实用函数
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../icon_type/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    关于图标
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../packaging/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    应用打包
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_17" >
+        
+          
+          <label class="md-nav__link" for="__nav_17" id="__nav_17_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    API参考
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_17_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_17">
+            <span class="md-nav__icon md-icon"></span>
+            API参考
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.window/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.window
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.action/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.action
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.toolbar/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.toolbar
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.menu/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.menu
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.adapter.uoutput/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.adapter.uoutput
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.adapter.uprogress/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.adapter.uprogress
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.adapter.udialog/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.adapter.udialog
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.adapter.uinput/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.adapter.uinput
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.textbrowser/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.textbrowser
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.windows/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.windows
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.windows.fnexec/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.windows.fnexec
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.windows.fnselect/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.windows.fnselect
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contribution/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    贡献
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../license/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    开源许可
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../changelog/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    版本历史
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      （一）概述
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      （二）主要属性
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="（二）主要属性">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pyguiadapter.toolbar.ToolBar.actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      actions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pyguiadapter.toolbar.ToolBar.moveable" class="md-nav__link">
+    <span class="md-ellipsis">
+      moveable
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pyguiadapter.toolbar.ToolBar.floatable" class="md-nav__link">
+    <span class="md-ellipsis">
+      floatable
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pyguiadapter.toolbar.ToolBar.allowed_areas" class="md-nav__link">
+    <span class="md-ellipsis">
+      allowed_areas
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pyguiadapter.toolbar.ToolBar.initial_area" class="md-nav__link">
+    <span class="md-ellipsis">
+      initial_area
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pyguiadapter.toolbar.ToolBar.button_style" class="md-nav__link">
+    <span class="md-ellipsis">
+      button_style
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pyguiadapter.toolbar.ToolBar.icon_size" class="md-nav__link">
+    <span class="md-ellipsis">
+      icon_size
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      （三）示例
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+  <h1>窗口工具栏</h1>
+
+<h2 id="_1">（一）概述</h2>
+<p><code>BaseWindow</code>的子类窗口均可添加工具栏，工具栏的典型外观如下图所示：</p>
+<div style="text-align: center">
+    <a class="glightbox" href="/assets/toolbar_1.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/toolbar_1.png" /></a>
+</div>
+
+<p>为<code>函数选择窗口</code>和<code>函数执行窗口</code>添加工具栏的具体方法，在<a href="../window/"><strong>配置窗口属性</strong></a>一章已经给出，这里不再赘述，本章节主要介绍工具栏本身的属性。</p>
+<p>工具栏（ToolBar）的属性由<a href="https://github.com/zimolab/PyGUIAdapter/tree/main/pyguiadapter/toolbar.py"><strong>ToolBar</strong></a>类定义，开发者可以通过以下方式导入该类：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span> <span class="nn">pyguiadapter.toolbar</span> <span class="kn">import</span> <span class="n">ToolBar</span>
+</code></pre></div>
+<p>通过<code>ToolBar</code>对象，开发者可以指定工具栏的初始位置、是否可拖动、是否可漂浮、动作按钮的大小和样式以及包含那些动作等。</p>
+<p>要查看<code>ToolBar</code>类中定义了哪些属性，可以参考以下文档：</p>
+<ul>
+<li><a href="../apis/pyguiadapter.toolbar/#pyguiadapter.toolbar.ToolBar"> pyguiadapter.toolbar.ToolBar</a></li>
+</ul>
+<h2 id="_2">（二）主要属性</h2>
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="pyguiadapter.toolbar.ToolBar.actions" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">actions</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Action</span><span class="p">,</span> <span class="n">Separator</span><span class="p">]]</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents first">
+
+        <p>要添加到工具栏中的动作（<code>Action</code>）或分隔符（<code>Separator</code>）列表。在工具栏中，动作<code>Action</code>以工具栏按钮的形式出现。</p>
+    </div>
+
+</div><p>工具栏上的动作<code>（Action）</code>可以设置图标（<code>icon</code>）、文字（<code>text</code>）、快捷键（<code>shortcut</code>）等属性，也可以设置<code>on_triggered</code>、<code>on_toggled</code>等事件监听器。关于<code>Action</code>可以参考以下文档：</p>
+<ul>
+<li><a href="../apis/pyguiadapter.action/#pyguiadapter.action.Action"><strong>pyguiadapter.action.Action</strong></a></li>
+</ul>
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="pyguiadapter.toolbar.ToolBar.moveable" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">moveable</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents first">
+
+        <p>工具栏是否可以移动。</p>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="pyguiadapter.toolbar.ToolBar.floatable" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">floatable</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents first">
+
+        <p>工具栏是否可以漂浮在主窗口之外。</p>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="pyguiadapter.toolbar.ToolBar.allowed_areas" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">allowed_areas</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ToolBarAreas</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents first">
+
+        <p>窗口上允许工具栏停靠的位置。</p>
+    </div>
+
+</div><p>可停靠区域可以使用单个<code>ToolBarArea</code>值，也可以是<code>ToolBarArea</code>的组合，例如：<code>TopToolBarArea | BottomToolBarArea</code>表示工具栏可以停靠在窗口的顶部或底部。</p>
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="pyguiadapter.toolbar.ToolBar.initial_area" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">initial_area</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ToolBarArea</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents first">
+
+        <p>工具栏在窗口上的初始位置。</p>
+    </div>
+
+</div><p>停靠区域通常使用以下常量指定：</p>
+<ul>
+<li>
+<p><code>TopToolBarArea</code>（在窗口顶部放置工具栏）</p>
+</li>
+<li>
+<p><code>BottomToolBarArea</code>（在窗口底部放置工具栏）</p>
+</li>
+<li>
+<p><code>LeftToolBarArea</code>（在窗口左侧放置工具栏）</p>
+</li>
+<li>
+<p><code>RightToolBarArea</code>（在窗口右侧放置工具栏）</p>
+</li>
+</ul>
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="pyguiadapter.toolbar.ToolBar.button_style" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">button_style</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ToolButtonStyle</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents first">
+
+        <p>工具栏按的样式。</p>
+    </div>
+
+</div><p>按钮样式主要包括以下值：</p>
+<ul>
+<li><code>ToolButtonIconOnly</code>（只显示图标）</li>
+<li><code>ToolButtonTextBesideIcon</code>（在图标旁显示文字，即<code>Action</code>对象的<code>text</code>属性）</li>
+<li><code>ToolButtonTextUnderIcon</code>（在图标下方显示文字，即<code>Action</code>对象的<code>text</code>属性）</li>
+<li><code>ToolButtonTextOnly</code>（只显示文字，即<code>Action</code>对象的<code>text</code>属性）</li>
+<li><code>ToolButtonFollowStyle</code>（遵循系统设置）</li>
+</ul>
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="pyguiadapter.toolbar.ToolBar.icon_size" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">icon_size</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">QSize</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents first">
+
+        <p>工具栏按钮的图标大小，</p>
+    </div>
+
+</div><h2 id="_3">（三）示例</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">import</span> <span class="nn">json</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="kn">from</span> <span class="nn">pyguiadapter.action</span> <span class="kn">import</span> <span class="n">Action</span><span class="p">,</span> <span class="n">Separator</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter</span> <span class="kn">import</span> <span class="n">GUIAdapter</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="kn">from</span> <span class="nn">pyguiadapter.toolbar</span> <span class="kn">import</span> <span class="p">(</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="n">ToolBar</span><span class="p">,</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="n">RightToolBarArea</span><span class="p">,</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="n">LeftToolBarArea</span><span class="p">,</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="n">ToolButtonTextUnderIcon</span><span class="p">,</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>    <span class="n">TopToolBarArea</span><span class="p">,</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="p">)</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="kn">from</span> <span class="nn">pyguiadapter.utils</span> <span class="kn">import</span> <span class="n">filedialog</span><span class="p">,</span> <span class="n">inputdialog</span><span class="p">,</span> <span class="n">messagebox</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="kn">from</span> <span class="nn">pyguiadapter.window</span> <span class="kn">import</span> <span class="n">SimpleWindowEventListener</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="kn">from</span> <span class="nn">pyguiadapter.windows.fnexec</span> <span class="kn">import</span> <span class="n">FnExecuteWindow</span>
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="k">def</span> <span class="nf">toolbar_example</span><span class="p">():</span>
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>    <span class="k">pass</span>
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>
+<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>
+<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="c1">###################Action Callbacks#########################</span>
+<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="k">def</span> <span class="nf">on_action_open</span><span class="p">(</span><span class="n">window</span><span class="p">:</span> <span class="n">FnExecuteWindow</span><span class="p">,</span> <span class="n">_</span><span class="p">:</span> <span class="n">Action</span><span class="p">):</span>
+<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;on_action_open()&quot;</span><span class="p">)</span>
+<a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>    <span class="n">ret</span> <span class="o">=</span> <span class="n">filedialog</span><span class="o">.</span><span class="n">get_open_file</span><span class="p">(</span>
+<a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>        <span class="n">parent</span><span class="o">=</span><span class="n">window</span><span class="p">,</span>
+<a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a>        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Open File&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a>        <span class="n">start_dir</span><span class="o">=</span><span class="s2">&quot;./&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a>        <span class="n">filters</span><span class="o">=</span><span class="s2">&quot;JSON files(*.json);;All files(*.*)&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a>    <span class="p">)</span>
+<a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a>    <span class="k">if</span> <span class="n">ret</span><span class="p">:</span>
+<a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a>        <span class="n">messagebox</span><span class="o">.</span><span class="n">show_info_message</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;File will be opened: </span><span class="si">{</span><span class="n">ret</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a>
+<a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a>
+<a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a><span class="k">def</span> <span class="nf">on_action_save</span><span class="p">(</span><span class="n">window</span><span class="p">:</span> <span class="n">FnExecuteWindow</span><span class="p">,</span> <span class="n">_</span><span class="p">:</span> <span class="n">Action</span><span class="p">):</span>
+<a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;on_action_save()&quot;</span><span class="p">)</span>
+<a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a>    <span class="n">ret</span> <span class="o">=</span> <span class="n">filedialog</span><span class="o">.</span><span class="n">get_save_file</span><span class="p">(</span>
+<a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a>        <span class="n">parent</span><span class="o">=</span><span class="n">window</span><span class="p">,</span>
+<a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a>        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Save File&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-39" name="__codelineno-1-39" href="#__codelineno-1-39"></a>        <span class="n">start_dir</span><span class="o">=</span><span class="s2">&quot;./&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-40" name="__codelineno-1-40" href="#__codelineno-1-40"></a>        <span class="n">filters</span><span class="o">=</span><span class="s2">&quot;JSON files(*.json);;All files(*.*)&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-41" name="__codelineno-1-41" href="#__codelineno-1-41"></a>    <span class="p">)</span>
+<a id="__codelineno-1-42" name="__codelineno-1-42" href="#__codelineno-1-42"></a>    <span class="k">if</span> <span class="n">ret</span><span class="p">:</span>
+<a id="__codelineno-1-43" name="__codelineno-1-43" href="#__codelineno-1-43"></a>        <span class="n">messagebox</span><span class="o">.</span><span class="n">show_info_message</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;File will be saved to: </span><span class="si">{</span><span class="n">ret</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-1-44" name="__codelineno-1-44" href="#__codelineno-1-44"></a>
+<a id="__codelineno-1-45" name="__codelineno-1-45" href="#__codelineno-1-45"></a>
+<a id="__codelineno-1-46" name="__codelineno-1-46" href="#__codelineno-1-46"></a><span class="k">def</span> <span class="nf">on_action_settings</span><span class="p">(</span><span class="n">window</span><span class="p">:</span> <span class="n">FnExecuteWindow</span><span class="p">,</span> <span class="n">_</span><span class="p">:</span> <span class="n">Action</span><span class="p">):</span>
+<a id="__codelineno-1-47" name="__codelineno-1-47" href="#__codelineno-1-47"></a>    <span class="n">default_settings</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-1-48" name="__codelineno-1-48" href="#__codelineno-1-48"></a>        <span class="s2">&quot;opt1&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+<a id="__codelineno-1-49" name="__codelineno-1-49" href="#__codelineno-1-49"></a>        <span class="s2">&quot;opt2&quot;</span><span class="p">:</span> <span class="s2">&quot;2&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-50" name="__codelineno-1-50" href="#__codelineno-1-50"></a>        <span class="s2">&quot;opt3&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-1-51" name="__codelineno-1-51" href="#__codelineno-1-51"></a>    <span class="p">}</span>
+<a id="__codelineno-1-52" name="__codelineno-1-52" href="#__codelineno-1-52"></a>    <span class="n">new_settings</span> <span class="o">=</span> <span class="n">inputdialog</span><span class="o">.</span><span class="n">input_json_object</span><span class="p">(</span>
+<a id="__codelineno-1-53" name="__codelineno-1-53" href="#__codelineno-1-53"></a>        <span class="n">parent</span><span class="o">=</span><span class="n">window</span><span class="p">,</span>
+<a id="__codelineno-1-54" name="__codelineno-1-54" href="#__codelineno-1-54"></a>        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Settings&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-55" name="__codelineno-1-55" href="#__codelineno-1-55"></a>        <span class="n">icon</span><span class="o">=</span><span class="s2">&quot;fa.cog&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-56" name="__codelineno-1-56" href="#__codelineno-1-56"></a>        <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">600</span><span class="p">,</span> <span class="mi">400</span><span class="p">),</span>
+<a id="__codelineno-1-57" name="__codelineno-1-57" href="#__codelineno-1-57"></a>        <span class="n">ok_button_text</span><span class="o">=</span><span class="s2">&quot;Save&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-58" name="__codelineno-1-58" href="#__codelineno-1-58"></a>        <span class="n">cancel_button_text</span><span class="o">=</span><span class="s2">&quot;Cancel&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-59" name="__codelineno-1-59" href="#__codelineno-1-59"></a>        <span class="n">initial_text</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">default_settings</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+<a id="__codelineno-1-60" name="__codelineno-1-60" href="#__codelineno-1-60"></a>        <span class="n">auto_indent</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-1-61" name="__codelineno-1-61" href="#__codelineno-1-61"></a>        <span class="n">indent_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+<a id="__codelineno-1-62" name="__codelineno-1-62" href="#__codelineno-1-62"></a>        <span class="n">auto_parentheses</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-1-63" name="__codelineno-1-63" href="#__codelineno-1-63"></a>        <span class="n">line_wrap_mode</span><span class="o">=</span><span class="n">inputdialog</span><span class="o">.</span><span class="n">LineWrapMode</span><span class="o">.</span><span class="n">WidgetWidth</span><span class="p">,</span>
+<a id="__codelineno-1-64" name="__codelineno-1-64" href="#__codelineno-1-64"></a>        <span class="n">line_wrap_width</span><span class="o">=</span><span class="mi">88</span><span class="p">,</span>
+<a id="__codelineno-1-65" name="__codelineno-1-65" href="#__codelineno-1-65"></a>    <span class="p">)</span>
+<a id="__codelineno-1-66" name="__codelineno-1-66" href="#__codelineno-1-66"></a>    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_settings</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+<a id="__codelineno-1-67" name="__codelineno-1-67" href="#__codelineno-1-67"></a>        <span class="n">messagebox</span><span class="o">.</span><span class="n">show_info_message</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;new settings: </span><span class="si">{</span><span class="n">new_settings</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-1-68" name="__codelineno-1-68" href="#__codelineno-1-68"></a>
+<a id="__codelineno-1-69" name="__codelineno-1-69" href="#__codelineno-1-69"></a>
+<a id="__codelineno-1-70" name="__codelineno-1-70" href="#__codelineno-1-70"></a><span class="k">def</span> <span class="nf">on_action_confirm_quit</span><span class="p">(</span><span class="n">window</span><span class="p">:</span> <span class="n">FnExecuteWindow</span><span class="p">,</span> <span class="n">_</span><span class="p">:</span> <span class="n">Action</span><span class="p">,</span> <span class="n">checked</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+<a id="__codelineno-1-71" name="__codelineno-1-71" href="#__codelineno-1-71"></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;on_action_confirm_close(): &quot;</span><span class="p">,</span> <span class="n">checked</span><span class="p">)</span>
+<a id="__codelineno-1-72" name="__codelineno-1-72" href="#__codelineno-1-72"></a>
+<a id="__codelineno-1-73" name="__codelineno-1-73" href="#__codelineno-1-73"></a>
+<a id="__codelineno-1-74" name="__codelineno-1-74" href="#__codelineno-1-74"></a><span class="k">def</span> <span class="nf">on_action_close</span><span class="p">(</span><span class="n">window</span><span class="p">:</span> <span class="n">FnExecuteWindow</span><span class="p">,</span> <span class="n">_</span><span class="p">:</span> <span class="n">Action</span><span class="p">):</span>
+<a id="__codelineno-1-75" name="__codelineno-1-75" href="#__codelineno-1-75"></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;on_action_close()&quot;</span><span class="p">)</span>
+<a id="__codelineno-1-76" name="__codelineno-1-76" href="#__codelineno-1-76"></a>    <span class="n">window</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<a id="__codelineno-1-77" name="__codelineno-1-77" href="#__codelineno-1-77"></a>
+<a id="__codelineno-1-78" name="__codelineno-1-78" href="#__codelineno-1-78"></a>
+<a id="__codelineno-1-79" name="__codelineno-1-79" href="#__codelineno-1-79"></a><span class="c1">###################~Action Callbacks#########################</span>
+<a id="__codelineno-1-80" name="__codelineno-1-80" href="#__codelineno-1-80"></a>
+<a id="__codelineno-1-81" name="__codelineno-1-81" href="#__codelineno-1-81"></a>
+<a id="__codelineno-1-82" name="__codelineno-1-82" href="#__codelineno-1-82"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<a id="__codelineno-1-83" name="__codelineno-1-83" href="#__codelineno-1-83"></a>    <span class="c1">###################Actions#############################</span>
+<a id="__codelineno-1-84" name="__codelineno-1-84" href="#__codelineno-1-84"></a>    <span class="n">action_open</span> <span class="o">=</span> <span class="n">Action</span><span class="p">(</span>
+<a id="__codelineno-1-85" name="__codelineno-1-85" href="#__codelineno-1-85"></a>        <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Open&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-86" name="__codelineno-1-86" href="#__codelineno-1-86"></a>        <span class="n">icon</span><span class="o">=</span><span class="s2">&quot;fa.folder-open&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-87" name="__codelineno-1-87" href="#__codelineno-1-87"></a>        <span class="n">on_triggered</span><span class="o">=</span><span class="n">on_action_open</span><span class="p">,</span>
+<a id="__codelineno-1-88" name="__codelineno-1-88" href="#__codelineno-1-88"></a>        <span class="n">shortcut</span><span class="o">=</span><span class="s2">&quot;Ctrl+O&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-89" name="__codelineno-1-89" href="#__codelineno-1-89"></a>    <span class="p">)</span>
+<a id="__codelineno-1-90" name="__codelineno-1-90" href="#__codelineno-1-90"></a>    <span class="n">action_save</span> <span class="o">=</span> <span class="n">Action</span><span class="p">(</span>
+<a id="__codelineno-1-91" name="__codelineno-1-91" href="#__codelineno-1-91"></a>        <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Save&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-92" name="__codelineno-1-92" href="#__codelineno-1-92"></a>        <span class="n">icon</span><span class="o">=</span><span class="s2">&quot;fa.save&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-93" name="__codelineno-1-93" href="#__codelineno-1-93"></a>        <span class="n">on_triggered</span><span class="o">=</span><span class="n">on_action_save</span><span class="p">,</span>
+<a id="__codelineno-1-94" name="__codelineno-1-94" href="#__codelineno-1-94"></a>        <span class="n">shortcut</span><span class="o">=</span><span class="s2">&quot;Ctrl+S&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-95" name="__codelineno-1-95" href="#__codelineno-1-95"></a>    <span class="p">)</span>
+<a id="__codelineno-1-96" name="__codelineno-1-96" href="#__codelineno-1-96"></a>
+<a id="__codelineno-1-97" name="__codelineno-1-97" href="#__codelineno-1-97"></a>    <span class="n">action_settings</span> <span class="o">=</span> <span class="n">Action</span><span class="p">(</span>
+<a id="__codelineno-1-98" name="__codelineno-1-98" href="#__codelineno-1-98"></a>        <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Settings&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-99" name="__codelineno-1-99" href="#__codelineno-1-99"></a>        <span class="n">icon</span><span class="o">=</span><span class="s2">&quot;fa.cog&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-100" name="__codelineno-1-100" href="#__codelineno-1-100"></a>        <span class="n">on_triggered</span><span class="o">=</span><span class="n">on_action_settings</span><span class="p">,</span>
+<a id="__codelineno-1-101" name="__codelineno-1-101" href="#__codelineno-1-101"></a>        <span class="n">shortcut</span><span class="o">=</span><span class="s2">&quot;Ctrl+,&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-102" name="__codelineno-1-102" href="#__codelineno-1-102"></a>    <span class="p">)</span>
+<a id="__codelineno-1-103" name="__codelineno-1-103" href="#__codelineno-1-103"></a>
+<a id="__codelineno-1-104" name="__codelineno-1-104" href="#__codelineno-1-104"></a>    <span class="n">action_quit</span> <span class="o">=</span> <span class="n">Action</span><span class="p">(</span>
+<a id="__codelineno-1-105" name="__codelineno-1-105" href="#__codelineno-1-105"></a>        <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Quit&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-106" name="__codelineno-1-106" href="#__codelineno-1-106"></a>        <span class="n">icon</span><span class="o">=</span><span class="s2">&quot;fa.power-off&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-107" name="__codelineno-1-107" href="#__codelineno-1-107"></a>        <span class="n">on_triggered</span><span class="o">=</span><span class="n">on_action_close</span><span class="p">,</span>
+<a id="__codelineno-1-108" name="__codelineno-1-108" href="#__codelineno-1-108"></a>        <span class="n">shortcut</span><span class="o">=</span><span class="s2">&quot;Ctrl+Q&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-109" name="__codelineno-1-109" href="#__codelineno-1-109"></a>    <span class="p">)</span>
+<a id="__codelineno-1-110" name="__codelineno-1-110" href="#__codelineno-1-110"></a>    <span class="n">action_confirm_quit</span> <span class="o">=</span> <span class="n">Action</span><span class="p">(</span>
+<a id="__codelineno-1-111" name="__codelineno-1-111" href="#__codelineno-1-111"></a>        <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Confirm Quit&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-112" name="__codelineno-1-112" href="#__codelineno-1-112"></a>        <span class="n">icon</span><span class="o">=</span><span class="s2">&quot;fa.question-circle&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-113" name="__codelineno-1-113" href="#__codelineno-1-113"></a>        <span class="n">checkable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-1-114" name="__codelineno-1-114" href="#__codelineno-1-114"></a>        <span class="n">checked</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<a id="__codelineno-1-115" name="__codelineno-1-115" href="#__codelineno-1-115"></a>        <span class="n">on_toggled</span><span class="o">=</span><span class="n">on_action_confirm_quit</span><span class="p">,</span>
+<a id="__codelineno-1-116" name="__codelineno-1-116" href="#__codelineno-1-116"></a>    <span class="p">)</span>
+<a id="__codelineno-1-117" name="__codelineno-1-117" href="#__codelineno-1-117"></a>    <span class="c1">###################~Actions#############################</span>
+<a id="__codelineno-1-118" name="__codelineno-1-118" href="#__codelineno-1-118"></a>
+<a id="__codelineno-1-119" name="__codelineno-1-119" href="#__codelineno-1-119"></a>    <span class="c1">####################ToolBar#############################</span>
+<a id="__codelineno-1-120" name="__codelineno-1-120" href="#__codelineno-1-120"></a>    <span class="n">toolbar</span> <span class="o">=</span> <span class="n">ToolBar</span><span class="p">(</span>
+<a id="__codelineno-1-121" name="__codelineno-1-121" href="#__codelineno-1-121"></a>        <span class="n">actions</span><span class="o">=</span><span class="p">[</span>
+<a id="__codelineno-1-122" name="__codelineno-1-122" href="#__codelineno-1-122"></a>            <span class="n">action_open</span><span class="p">,</span>
+<a id="__codelineno-1-123" name="__codelineno-1-123" href="#__codelineno-1-123"></a>            <span class="n">action_save</span><span class="p">,</span>
+<a id="__codelineno-1-124" name="__codelineno-1-124" href="#__codelineno-1-124"></a>            <span class="n">action_settings</span><span class="p">,</span>
+<a id="__codelineno-1-125" name="__codelineno-1-125" href="#__codelineno-1-125"></a>            <span class="n">Separator</span><span class="p">(),</span>
+<a id="__codelineno-1-126" name="__codelineno-1-126" href="#__codelineno-1-126"></a>            <span class="n">action_confirm_quit</span><span class="p">,</span>
+<a id="__codelineno-1-127" name="__codelineno-1-127" href="#__codelineno-1-127"></a>            <span class="n">action_quit</span><span class="p">,</span>
+<a id="__codelineno-1-128" name="__codelineno-1-128" href="#__codelineno-1-128"></a>        <span class="p">],</span>
+<a id="__codelineno-1-129" name="__codelineno-1-129" href="#__codelineno-1-129"></a>        <span class="n">moveable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-1-130" name="__codelineno-1-130" href="#__codelineno-1-130"></a>        <span class="n">floatable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-1-131" name="__codelineno-1-131" href="#__codelineno-1-131"></a>        <span class="n">initial_area</span><span class="o">=</span><span class="n">RightToolBarArea</span><span class="p">,</span>
+<a id="__codelineno-1-132" name="__codelineno-1-132" href="#__codelineno-1-132"></a>        <span class="n">allowed_areas</span><span class="o">=</span><span class="n">RightToolBarArea</span> <span class="o">|</span> <span class="n">LeftToolBarArea</span> <span class="o">|</span> <span class="n">TopToolBarArea</span><span class="p">,</span>
+<a id="__codelineno-1-133" name="__codelineno-1-133" href="#__codelineno-1-133"></a>        <span class="n">button_style</span><span class="o">=</span><span class="n">ToolButtonTextUnderIcon</span><span class="p">,</span>
+<a id="__codelineno-1-134" name="__codelineno-1-134" href="#__codelineno-1-134"></a>    <span class="p">)</span>
+<a id="__codelineno-1-135" name="__codelineno-1-135" href="#__codelineno-1-135"></a>    <span class="c1">###################~ToolBar#############################</span>
+<a id="__codelineno-1-136" name="__codelineno-1-136" href="#__codelineno-1-136"></a>
+<a id="__codelineno-1-137" name="__codelineno-1-137" href="#__codelineno-1-137"></a>    <span class="c1">################Window Event Listener###################</span>
+<a id="__codelineno-1-138" name="__codelineno-1-138" href="#__codelineno-1-138"></a>    <span class="k">def</span> <span class="nf">on_window_create</span><span class="p">(</span><span class="n">window</span><span class="p">:</span> <span class="n">FnExecuteWindow</span><span class="p">):</span>
+<a id="__codelineno-1-139" name="__codelineno-1-139" href="#__codelineno-1-139"></a>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;on_window_create()&quot;</span><span class="p">)</span>
+<a id="__codelineno-1-140" name="__codelineno-1-140" href="#__codelineno-1-140"></a>        <span class="c1"># make action_confirm_quit checked after the select window is created</span>
+<a id="__codelineno-1-141" name="__codelineno-1-141" href="#__codelineno-1-141"></a>        <span class="n">window</span><span class="o">.</span><span class="n">set_action_state</span><span class="p">(</span><span class="n">action_confirm_quit</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+<a id="__codelineno-1-142" name="__codelineno-1-142" href="#__codelineno-1-142"></a>
+<a id="__codelineno-1-143" name="__codelineno-1-143" href="#__codelineno-1-143"></a>    <span class="k">def</span> <span class="nf">on_window_close</span><span class="p">(</span><span class="n">window</span><span class="p">:</span> <span class="n">FnExecuteWindow</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<a id="__codelineno-1-144" name="__codelineno-1-144" href="#__codelineno-1-144"></a>        <span class="c1"># get the state of action_confirm_quit</span>
+<a id="__codelineno-1-145" name="__codelineno-1-145" href="#__codelineno-1-145"></a>        <span class="c1"># if it is checked, show a question message box to ask if the user really wants to close the window</span>
+<a id="__codelineno-1-146" name="__codelineno-1-146" href="#__codelineno-1-146"></a>        <span class="c1"># if it is not checked, return True to close the window directly.</span>
+<a id="__codelineno-1-147" name="__codelineno-1-147" href="#__codelineno-1-147"></a>        <span class="n">state</span> <span class="o">=</span> <span class="n">window</span><span class="o">.</span><span class="n">get_action_state</span><span class="p">(</span><span class="n">action_confirm_quit</span><span class="p">)</span>
+<a id="__codelineno-1-148" name="__codelineno-1-148" href="#__codelineno-1-148"></a>        <span class="k">if</span> <span class="n">state</span><span class="p">:</span>
+<a id="__codelineno-1-149" name="__codelineno-1-149" href="#__codelineno-1-149"></a>            <span class="c1"># access the</span>
+<a id="__codelineno-1-150" name="__codelineno-1-150" href="#__codelineno-1-150"></a>            <span class="n">ret</span> <span class="o">=</span> <span class="n">messagebox</span><span class="o">.</span><span class="n">show_question_message</span><span class="p">(</span>
+<a id="__codelineno-1-151" name="__codelineno-1-151" href="#__codelineno-1-151"></a>                <span class="n">window</span><span class="p">,</span>
+<a id="__codelineno-1-152" name="__codelineno-1-152" href="#__codelineno-1-152"></a>                <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Do you really want to close the window?&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-153" name="__codelineno-1-153" href="#__codelineno-1-153"></a>                <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Quit&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-154" name="__codelineno-1-154" href="#__codelineno-1-154"></a>                <span class="n">buttons</span><span class="o">=</span><span class="n">messagebox</span><span class="o">.</span><span class="n">Yes</span> <span class="o">|</span> <span class="n">messagebox</span><span class="o">.</span><span class="n">No</span><span class="p">,</span>
+<a id="__codelineno-1-155" name="__codelineno-1-155" href="#__codelineno-1-155"></a>            <span class="p">)</span>
+<a id="__codelineno-1-156" name="__codelineno-1-156" href="#__codelineno-1-156"></a>            <span class="k">return</span> <span class="n">ret</span> <span class="o">==</span> <span class="n">messagebox</span><span class="o">.</span><span class="n">Yes</span>
+<a id="__codelineno-1-157" name="__codelineno-1-157" href="#__codelineno-1-157"></a>        <span class="k">return</span> <span class="kc">True</span>
+<a id="__codelineno-1-158" name="__codelineno-1-158" href="#__codelineno-1-158"></a>
+<a id="__codelineno-1-159" name="__codelineno-1-159" href="#__codelineno-1-159"></a>    <span class="n">window_listener</span> <span class="o">=</span> <span class="n">SimpleWindowEventListener</span><span class="p">(</span>
+<a id="__codelineno-1-160" name="__codelineno-1-160" href="#__codelineno-1-160"></a>        <span class="n">on_create</span><span class="o">=</span><span class="n">on_window_create</span><span class="p">,</span> <span class="n">on_close</span><span class="o">=</span><span class="n">on_window_close</span>
+<a id="__codelineno-1-161" name="__codelineno-1-161" href="#__codelineno-1-161"></a>    <span class="p">)</span>
+<a id="__codelineno-1-162" name="__codelineno-1-162" href="#__codelineno-1-162"></a>    <span class="c1">#################Window Event Listener##################</span>
+<a id="__codelineno-1-163" name="__codelineno-1-163" href="#__codelineno-1-163"></a>
+<a id="__codelineno-1-164" name="__codelineno-1-164" href="#__codelineno-1-164"></a>    <span class="n">adapter</span> <span class="o">=</span> <span class="n">GUIAdapter</span><span class="p">()</span>
+<a id="__codelineno-1-165" name="__codelineno-1-165" href="#__codelineno-1-165"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+<a id="__codelineno-1-166" name="__codelineno-1-166" href="#__codelineno-1-166"></a>        <span class="n">toolbar_example</span><span class="p">,</span> <span class="n">window_toolbar</span><span class="o">=</span><span class="n">toolbar</span><span class="p">,</span> <span class="n">window_listener</span><span class="o">=</span><span class="n">window_listener</span>
+<a id="__codelineno-1-167" name="__codelineno-1-167" href="#__codelineno-1-167"></a>    <span class="p">)</span>
+<a id="__codelineno-1-168" name="__codelineno-1-168" href="#__codelineno-1-168"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre></div>
+<div style="text-align: center">
+    <a class="glightbox" href="/assets/toolbar_example.gif" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/toolbar_example.gif" /></a>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(() => { lightbox.reload() });
+</script></body>
+</html>
