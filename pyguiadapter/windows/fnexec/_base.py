@@ -394,3 +394,11 @@ class BaseFnExecuteWindow(BaseWindow, ExecuteStateListener):
     @abstractmethod
     def disable_parameter_widgets(self, disabled):
         pass
+
+    @abstractmethod
+    def get_parameter_values_of(self, group_name):
+        pass
+
+    @abstractmethod
+    def try_cancel_execution(self):
+        pass
