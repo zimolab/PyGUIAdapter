@@ -25,6 +25,14 @@ class FunctionExecutingError(RuntimeError):
     pass
 
 
+class FunctionNotCancellableError(RuntimeError):
+    pass
+
+
+class FunctionNotExecutingError(RuntimeError):
+    pass
+
+
 class ParameterAlreadyExistError(RuntimeError):
     def __init__(self, parameter_name: str):
         self._parameter_name: str = parameter_name
