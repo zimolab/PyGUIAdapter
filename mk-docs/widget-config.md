@@ -83,7 +83,7 @@ def f1(a: str, b: int, c: float):
 每种类型的控件都有一个与之关联的`控件配置类`，控件配置类中不仅定义了控件类的属性，而且包含控件类本身的信息，也就是说，通过`控件配置类`可以获取其关联的控件类（当然反过来也成立，通过控件类我们也可以访问到其关联的配置类）。
 
 <div style="text-align:center">
-    <img src="/assets/widget_config_relationship" />
+    <img src="/assets/widget_config_relationship.svg" />
 </div>
 
 > 例如，`IntSpinBox`控件类与其配置类`IntSpinBoxConfig`的关系如下：
