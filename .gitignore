@@ -12,5 +12,5 @@ poetry.lock
 .python-version
 *.whl
 /tools/tmp/*
-./site/*
-./docs/*
+/docs/
+/site/
