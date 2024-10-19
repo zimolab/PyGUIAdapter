@@ -51,6 +51,9 @@ if __name__ == "__main__":
         # 因为隐藏了`OutputDock`窗口，所以无需将函数调用结果及函数异常信息打印到输出浏览器中
         print_function_error=False,
         print_function_result=False,
+        # 隐藏清除按钮和清楚选框
+        clear_button_visible=False,
+        clear_checkbox_visible=False,
     )
 
     def on_action_about(wind: FnExecuteWindow, action: Action):
