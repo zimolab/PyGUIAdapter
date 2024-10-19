@@ -1,6 +1,3 @@
-from qtpy.QtWidgets import QApplication
-from qtpy.QtWidgets import QAction
-
 import qdarktheme
 
 from pyguiadapter.action import Action
@@ -13,22 +10,22 @@ def exclusive_action_example():
     pass
 
 
-def on_app_start(app: QApplication):
+def on_app_start(app):
     qdarktheme.setup_theme("auto")
 
 
-def on_action_auto(win: FnSelectWindow, action: QAction):
-    if action.isChecked():
+def on_action_auto(win: FnSelectWindow, action: Action, checked: bool):
+    if checked:
         qdarktheme.setup_theme("auto")
 
 
-def on_action_light(win: FnSelectWindow, action: QAction):
-    if action.isChecked():
+def on_action_light(win: FnSelectWindow, action: Action, checked: bool):
+    if checked:
         qdarktheme.setup_theme("light")
 
 
-def on_action_dark(win: FnSelectWindow, action: QAction):
-    if action.isChecked():
+def on_action_dark(win: FnSelectWindow, action: Action, checked: bool):
+    if checked:
         qdarktheme.setup_theme("dark")
 
 
