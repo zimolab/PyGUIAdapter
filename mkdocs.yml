@@ -29,6 +29,7 @@ nav:
     - pyguiadapter.toolbar: apis/pyguiadapter.toolbar.md
     - pyguiadapter.menu: apis/pyguiadapter.menu.md
     - pyguiadapter.adapter.uoutput: apis/pyguiadapter.adapter.uoutput.md
+    - pyguiadapter.adapter.uprogress: apis/pyguiadapter.adapter.uprogress.md
     - pyguiadapter.textbrowser: apis/pyguiadapter.textbrowser.md
     - pyguiadapter.windows: apis/pyguiadapter.windows.md
     - pyguiadapter.windows.fnexec: apis/pyguiadapter.windows.fnexec.md
