@@ -20,7 +20,11 @@ from ._output_area import OutputArea, ProgressBarConfig
 from ._parameter_area import ParameterArea
 from ...adapter import ucontext
 from ...bundle import FnBundle
-from ...exceptions import ParameterError
+from ...exceptions import (
+    ParameterError,
+    FunctionNotCancellableError,
+    FunctionNotExecutingError,
+)
 from ...executor import BaseFunctionExecutor
 from ...fn import FnInfo
 from ...paramwidget import (
@@ -158,7 +162,7 @@ class FnExecuteWindow(BaseFnExecuteWindow):
         self, config: Union[ProgressBarConfig, dict, None]
     ) -> None:
         """
-        更新进度条配置。
+        更新进度条配置
 
         Args:
             config: 进度条配置
@@ -172,7 +176,7 @@ class FnExecuteWindow(BaseFnExecuteWindow):
 
     def show_progressbar(self) -> None:
         """
-        显示进度条。
+        显示进度条
 
         Returns:
             无返回值
@@ -181,7 +185,7 @@ class FnExecuteWindow(BaseFnExecuteWindow):
 
     def hide_progressbar(self) -> None:
         """
-        隐藏进度条。
+        隐藏进度条
 
         Returns:
             无返回值
@@ -193,7 +197,7 @@ class FnExecuteWindow(BaseFnExecuteWindow):
         self, current_value: int, message: Optional[str] = None
     ) -> None:
         """
-        更新进度条进度。
+        更新进度条进度
 
         Args:
             current_value: 当前进度
@@ -208,7 +212,7 @@ class FnExecuteWindow(BaseFnExecuteWindow):
         self, text: str, html: bool = False, scroll_to_bottom: bool = True
     ) -> None:
         """
-        把文本追加到输出浏览器中。
+        把文本追加到输出浏览器中
 
         Args:
             text: 带输出的文本
@@ -224,7 +228,7 @@ class FnExecuteWindow(BaseFnExecuteWindow):
 
     def clear_output(self) -> None:
         """
-        清除输出浏览器内容。
+        清除输出浏览器内容
 
         Returns:
             无返回值
@@ -235,7 +239,7 @@ class FnExecuteWindow(BaseFnExecuteWindow):
         self, document: str, document_format: Literal["markdown", "html", "plaintext"]
     ) -> None:
         """
-        设置函数说明文档。
+        设置函数说明文档
 
         Args:
             document: 文档内容
@@ -252,7 +256,7 @@ class FnExecuteWindow(BaseFnExecuteWindow):
         config: Tuple[Type[BaseParameterWidget], BaseParameterWidgetConfig],
     ) -> None:
         """
-        添加一个新的函数参数。
+        添加一个新的函数参数
 
         Args:
             parameter_name: 要增加的函数参数名称
@@ -262,7 +266,7 @@ class FnExecuteWindow(BaseFnExecuteWindow):
             无返回值
 
         Raises:
-            ParameterError: 当参数为空、参数名称重复时将引发此异常。
+            ParameterError: 当参数为空、参数名称重复时将引发此异常
         """
         self._parameter_area.add_parameter(parameter_name, config)
 
@@ -271,7 +275,7 @@ class FnExecuteWindow(BaseFnExecuteWindow):
         configs: Dict[str, Tuple[Type[BaseParameterWidget], BaseParameterWidgetConfig]],
     ) -> None:
         """
-        增加一组新的函数参数。
+        增加一组新的函数参数
 
         Args:
             configs: 要增加的函数参数名称及其配置
@@ -280,7 +284,7 @@ class FnExecuteWindow(BaseFnExecuteWindow):
             无返回值
 
         Raises:
-            ParameterError: 当参数为空、参数名称重复时将引发此异常。
+            ParameterError: 当参数为空、参数名称重复时将引发此异常
         """
         self._parameter_area.add_parameters(configs)
 
@@ -288,7 +292,7 @@ class FnExecuteWindow(BaseFnExecuteWindow):
         self, parameter_name: str, ignore_unknown_parameter: bool = True
     ) -> None:
         """
-        移除指定参数控件。
+        移除指定参数控件
 
         Args:
             parameter_name: 要移除的指定参数名称
@@ -298,7 +302,7 @@ class FnExecuteWindow(BaseFnExecuteWindow):
             无返回值
 
         Raises:
-            ParameterNotFoundError: 当参数`parameter_name`不存在且`ignore_unknown_parameter`为`False`，将引发此异常。
+            ParameterNotFoundError: 当参数`parameter_name`不存在且`ignore_unknown_parameter`为`False`时，将引发此异常
         """
         self._parameter_area.remove_parameter(
             parameter_name, ignore_unknown_parameter=ignore_unknown_parameter
@@ -306,19 +310,19 @@ class FnExecuteWindow(BaseFnExecuteWindow):
 
     def has_parameter(self, parameter_name: str) -> bool:
         """
-        判断是否存在指定参数名称。
+        判断是否存在指定参数名称
 
         Args:
             parameter_name: 带判断的参数名称
 
         Returns:
-            存在指定参数时返回`True`，否则返回`False`。
+            存在指定参数时返回`True`，否则返回`False`
         """
         return self._parameter_area.has_parameter(parameter_name)
 
     def clear_parameters(self):
         """
-        清除所有参数。
+        清除所有参数
 
         Returns:
             无返回值
@@ -327,62 +331,78 @@ class FnExecuteWindow(BaseFnExecuteWindow):
 
     def get_parameter_value(self, parameter_name: str) -> Any:
         """
-        获取指定参数当前值。
+        获取指定参数当前值
 
         Args:
             parameter_name: 参数名称
 
         Returns:
-            返回当前值。
+            返回当前值
 
         Raises:
-            ParameterNotFoundError: 若指定参数不存在，则引发此异常。
-            ParameterError: 若无法从对应控件获取值，那么将引发此异常。
+            ParameterNotFoundError: 指定参数不存在时，将引发此异常
+            ParameterError: 无法从对应控件获取当前值时，将引发此异常
 
         """
         return self._parameter_area.get_parameter_value(parameter_name)
 
     def get_parameter_values(self) -> Dict[str, Any]:
         """
-        获取所有参数的当前值。
+        获取所有参数的当前值
 
         Returns:
-            以字典形式返回当前所有参数的值。
+            以字典形式返回当前所有参数的值
 
         Raises:
-            ParameterError: 若无法从对应控件获取值，那么将引发此异常。
+            ParameterError: 无法从对应控件获取某个参数的当前值时，将引发此异常
         """
         return self._parameter_area.get_parameter_values()
 
+    def get_parameter_values_of(self, group_name: str) -> Dict[str, Any]:
+        """
+        获取指定分组下所有参数当前值
+
+        Args:
+            group_name: 指定分组的名称
+
+        Returns:
+            返回指定分组下所有参数的名称和值
+
+        Raises:
+            ParameterNotFoundError: 当指定分组不存在时，引发此异常
+            ParameterError: 无法从对应控件获取某个参数的当前值时，将引发此异常
+        """
+        return self._parameter_area.get_parameter_values_of(group_name)
+
     def set_parameter_value(self, parameter_name: str, value: Any) -> None:
         """
-        设置参数当前值。
+        设置参数当前值
 
         Args:
             parameter_name: 参数名称
-            value: 要设置的值。
+            value: 要设置的值
 
         Returns:
             无返回值
 
         Raises:
-            ParameterNotFoundError: 若指定参数不存在，则引发此异常。
-            ParameterError: 若无法将值设置到对应的控件，那么将引发此异常。
+            ParameterNotFoundError: 若指定参数不存在，则引发此异常
+            ParameterError: 若无法将值设置到对应的控件，那么将引发此异常
         """
         self._parameter_area.set_parameter_value(parameter_name, value)
 
     def set_parameter_values(self, values: Dict[str, Any]) -> None:
         """
-        设置多个参数的当前值。
+        设置多个参数的当前值
 
         Args:
-            values: 要设置的参数名称和值。
+            values: 要设置的参数名称和值
 
         Returns:
-            无返回值。
+            无返回值
 
         Raises:
-            ParameterError: 若无法将值设置到对应的控件，那么将引发此异常。
+            ParameterError: 若无法将值设置到对应的控件，那么将引发此异常
         """
         self._parameter_area.clear_parameter_error(None)
         if not values:
@@ -390,9 +410,28 @@ class FnExecuteWindow(BaseFnExecuteWindow):
         self._parameter_area.set_parameter_values(values)
 
     def get_parameter_names(self) -> List[str]:
+        """
+        获取所有参数名称
+
+        Returns:
+            返回当前所有参数名称
+        """
         return self._parameter_area.get_parameter_names()
 
     def get_parameter_names_of(self, group_name: str) -> List[str]:
+        """
+        获取指定分组下的所有参数名称
+
+        Args:
+            group_name: 分组名称
+
+        Returns:
+            返回指定分组下的所有参数名称
+
+        Raises:
+            ParameterNotFoundError: 当指定分组不存在时，引发此异常
+
+        """
         return self._parameter_area.get_parameter_names_of(group_name)
 
     def set_output_dock_property(
@@ -402,7 +441,19 @@ class FnExecuteWindow(BaseFnExecuteWindow):
         visible: Optional[bool] = None,
         floating: Optional[bool] = None,
         area: Optional[DockWidgetArea] = None,
-    ):
+    ) -> None:
+        """
+        设置Output Dock的属性
+
+        Args:
+            title: 标题
+            visible: 是否显示
+            floating: 是否悬浮
+            area: 初始停靠区域
+
+        Returns:
+            无返回值
+        """
         if title is not None:
             self.set_output_dock_title(title)
         if visible is not None:
@@ -419,7 +470,19 @@ class FnExecuteWindow(BaseFnExecuteWindow):
         visible: Optional[bool] = None,
         floating: Optional[bool] = None,
         area: Optional[DockWidgetArea] = None,
-    ):
+    ) -> None:
+        """
+        设置Document Dock的属性
+
+        Args:
+            title: 标题
+            visible: 是否显示
+            floating: 是否悬浮
+            area: 初始停靠区域
+
+        Returns:
+            无返回值
+        """
         if title is not None:
             self.set_document_dock_title(title)
         if visible is not None:
@@ -429,142 +492,473 @@ class FnExecuteWindow(BaseFnExecuteWindow):
         if area is not None:
             self.set_document_dock_area(area)
 
-    def set_allowed_dock_areas(self, areas: Optional[DockWidgetAreas]):
+    def set_allowed_dock_areas(self, areas: Optional[DockWidgetAreas]) -> None:
+        """
+        设置停靠窗口允许停靠的区域
+
+        Args:
+            areas: 允许停靠的区域
+
+        Returns:
+            无返回值
+
+        """
         if areas is None:
             return
         self._document_dock.setAllowedAreas(areas)
         self._output_dock.setAllowedAreas(areas)
 
-    def set_output_dock_visible(self, visible: bool):
+    def set_output_dock_visible(self, visible: bool) -> None:
+        """
+        设置Output Dock是否显示
+
+        Args:
+            visible: 目标状态
+
+        Returns:
+            无返回值
+        """
         self._output_dock.setVisible(visible)
 
     def is_output_dock_visible(self) -> bool:
+        """
+        检查Output Dock是否显示
+
+        Returns:
+            返回当前显示状态
+        """
         return self._output_dock.isVisible()
 
-    def set_document_dock_visible(self, visible: bool):
+    def set_document_dock_visible(self, visible: bool) -> None:
+        """
+        设置Document Dock是否显示
+
+        Args:
+            visible: 目标状态
+
+        Returns:
+            无返回值
+        """
         self._document_dock.setVisible(visible)
 
     def is_document_dock_visible(self) -> bool:
+        """
+        检查Document Dock是否显示
+
+        Returns:
+            返回当前显示状态
+        """
         return self._document_dock.isVisible()
 
-    def set_document_dock_floating(self, floating: bool):
+    def set_document_dock_floating(self, floating: bool) -> None:
+        """
+        设置Document Dock是否悬浮
+
+        Args:
+            floating: 目标状态
+
+        Returns:
+            无返回值
+        """
         self._document_dock.setFloating(floating)
 
     def is_document_dock_floating(self) -> bool:
+        """
+        检查Document Dock是否悬浮
+
+        Returns:
+            返回当前悬浮状态
+        """
         return self._document_dock.isFloating()
 
-    def set_output_dock_floating(self, floating: bool):
+    def set_output_dock_floating(self, floating: bool) -> None:
+        """
+        设置Output Dock是否悬浮
+
+        Args:
+            floating: 目标状态
+
+        Returns:
+            无返回值
+        """
         self._output_dock.setFloating(floating)
 
     def is_output_dock_floating(self) -> bool:
+        """
+        检查Output Dock是否悬浮
+
+        Returns:
+            返回当前悬浮状态
+        """
         return self._output_dock.isFloating()
 
-    def set_document_dock_title(self, title: str):
+    def set_document_dock_title(self, title: str) -> None:
+        """
+        设置Document Dock标题
+
+        Args:
+            title: 标题
+
+        Returns:
+            无返回值
+        """
         if title is None:
             return
         self._document_dock.setWindowTitle(title)
 
     def get_document_dock_title(self) -> str:
+        """
+        获取Document Dock标题
+
+        Returns:
+            返回当前标题
+        """
         return self._document_dock.windowTitle()
 
     def get_document_dock_size(self) -> Tuple[int, int]:
+        """
+        获取Document Dock尺寸
+
+        Returns:
+            返回当前尺寸
+        """
         size = self._document_dock.size()
         return size.width(), size.height()
 
-    def set_output_dock_title(self, title: str):
+    def set_output_dock_title(self, title: str) -> None:
+        """
+        设置Output Dock标题
+
+        Args:
+            title: 标题
+
+        Returns:
+            无返回值
+        """
         if title is None:
             return
         self._output_dock.setWindowTitle(title)
 
     def get_output_dock_title(self) -> str:
+        """
+        获取Output Dock标题
+
+        Returns:
+            返回当前标题
+        """
         return self._output_dock.windowTitle()
 
-    def set_document_dock_area(self, area: DockWidgetArea):
+    def set_document_dock_area(self, area: DockWidgetArea) -> None:
+        """
+        设置Document Dock停靠区域
+
+        Args:
+            area: 目标停靠区域
+
+        Returns:
+            无返回值
+
+        """
         if not self._document_dock.isAreaAllowed(area):
             messagebox.show_warning_message(self, f"Invalid dock area: {area}")
             return
         self.addDockWidget(area, self._document_dock)
 
     def get_document_dock_area(self) -> DockWidgetArea:
+        """
+        获取Document Dock停靠区域
+
+        Returns:
+            返回当前停靠区域
+        """
         return self.dockWidgetArea(self._document_dock)
 
-    def set_output_dock_area(self, area: DockWidgetArea):
+    def set_output_dock_area(self, area: DockWidgetArea) -> None:
+        """
+        设置Output Dock停靠区域
+
+        Args:
+            area: 目标停靠区域
+
+        Returns:
+            无返回值
+
+        """
         if not self._output_dock.isAreaAllowed(area):
             messagebox.show_warning_message(self, f"Invalid dock area: {area}")
             return
         self.addDockWidget(area, self._output_dock)
 
     def get_output_dock_area(self) -> DockWidgetArea:
+        """
+        获取Output Dock停靠区域
+
+        Returns:
+            返回当前停靠区域
+        """
         return self.dockWidgetArea(self._output_dock)
 
     def get_output_dock_size(self) -> Tuple[int, int]:
+        """
+        获取Output Dock尺寸
+
+        Returns:
+            返回当前尺寸
+        """
         size = self._output_dock.size()
         return size.width(), size.height()
 
-    def resize_document_dock(self, size: Tuple[Optional[int], Optional[int]]):
+    def resize_document_dock(self, size: Tuple[Optional[int], Optional[int]]) -> None:
+        """
+        调整Document Dock尺寸
+
+        注意：停靠窗口的尺寸受到多种因素的影响，无法保证实际的尺寸与开发者设置的尺寸保持一致，尤其时多个停靠窗口停靠在同一区域时具体而言：
+
+        - 尺寸的调整受最小和最大尺寸的约束；
+        - 尺寸调整不会影响主窗口的大小；
+        - 在空间有限的情况下，将根据各个停靠窗口的相对大小占比进行可以利用空间的调整
+
+        Args:
+            size: 目标尺寸
+
+        Returns:
+            无返回值
+        """
         width, height = size
         if width:
             self.resizeDocks([self._document_dock], [width], Qt.Horizontal)
         if height:
             self.resizeDocks([self._document_dock], [height], Qt.Vertical)
 
-    def resize_output_dock(self, size: Tuple[Optional[int], Optional[int]]):
+    def resize_output_dock(self, size: Tuple[Optional[int], Optional[int]]) -> None:
+        """
+        调整Output Dock尺寸
+
+        注意：停靠窗口的尺寸受到多种因素的影响，无法保证实际的尺寸与开发者设置的尺寸保持一致，尤其时多个停靠窗口停靠在同一区域时具体而言：
+
+        - 尺寸的调整受最小和最大尺寸的约束；
+        - 尺寸调整不会影响主窗口的大小；
+        - 在空间有限的情况下，将根据各个停靠窗口的相对大小占比进行可以利用空间的调整
+
+        Args:
+            size: 目标尺寸
+
+        Returns:
+            无返回值
+        """
         width, height = size
         if width:
             self.resizeDocks([self._output_dock], [width], Qt.Horizontal)
         if height:
             self.resizeDocks([self._output_dock], [height], Qt.Vertical)
 
-    def tabify_docks(self):
+    def tabify_docks(self) -> None:
+        """
+        使所有Dock窗口选项卡化
+
+        注意：当前已悬浮的窗口不受影响
+
+        Returns:
+            无返回值
+        """
         self.tabifyDockWidget(self._document_dock, self._output_dock)
 
-    def set_statusbar_visible(self, visible: bool):
+    def set_statusbar_visible(self, visible: bool) -> None:
+        """
+        设置窗口状态栏是否可见
+
+        Args:
+            visible: 目标状态
+
+        Returns:
+            无返回值
+        """
         self.statusBar().setVisible(visible)
 
     def is_statusbar_visible(self) -> bool:
+        """
+        检查窗口状态栏是否可见
+
+        Returns:
+            返回状态栏当前状态
+        """
         return self.statusBar().isVisible()
 
-    def show_statusbar_message(self, message: str, timeout: int = 3000):
+    def show_statusbar_message(self, message: str, timeout: int = 3000) -> None:
+        """
+        设置状态栏消息
+
+        Args:
+            message: 消息文本
+            timeout: 显示的时长
+
+        Returns:
+            无返回值
+        """
         self.statusBar().showMessage(message, timeout)
 
-    def clear_statusbar_message(self):
+    def clear_statusbar_message(self) -> None:
+        """
+        清除状态栏消息
+
+        Returns:
+            无返回值
+        """
         self.statusBar().clearMessage()
 
-    def set_execute_button_text(self, text: str):
+    def set_execute_button_text(self, text: str) -> None:
+        """
+        设置执行按钮文本
+
+        Args:
+            text: 目标文本
+
+        Returns:
+            无返回值
+        """
         self._operation_area.set_execute_button_text(text)
 
-    def set_cancel_button_text(self, text: str):
+    def set_cancel_button_text(self, text: str) -> None:
+        """
+        设置取消按钮文本
+
+        Args:
+            text: 目标文本
+
+        Returns:
+            无返回值
+        """
         self._operation_area.set_cancel_button_text(text)
 
-    def set_clear_button_text(self, text: str):
+    def set_clear_button_text(self, text: str) -> None:
+        """
+        设置清除按钮文本
+
+        Args:
+            text: 目标文本
+
+        Returns:
+            无返回值
+        """
         self._operation_area.set_clear_button_text(text)
 
-    def set_clear_checkbox_text(self, text: str):
+    def set_clear_checkbox_text(self, text: str) -> None:
+        """
+        设置清除选项框文本
+
+        Args:
+            text: 目标文本
+
+        Returns:
+            无返回值
+        """
         self._operation_area.set_clear_checkbox_text(text)
 
     def set_clear_button_visible(self, visible: bool):
+        """
+        设置清除按钮是否可见
+
+        Args:
+            visible: 目标状态
+
+        Returns:
+            无返回值
+        """
         self._operation_area.set_clear_button_visible(visible)
 
-    def set_clear_checkbox_visible(self, visible: bool):
+    def set_clear_checkbox_visible(self, visible: bool) -> None:
+        """
+        设置清除选项框是否可见
+
+        Args:
+            visible: 目标状态
+
+        Returns:
+            无返回值
+        """
         self._operation_area.set_clear_checkbox_visible(visible)
 
-    def set_clear_checkbox_checked(self, checked: bool):
+    def set_clear_checkbox_checked(self, checked: bool) -> None:
+        """
+        设置清除选项框是否选中
+
+        Args:
+            checked: 目标状态
+
+        Returns:
+            无返回值
+        """
         self._operation_area.set_clear_checkbox_checked(checked)
 
     def is_clear_checkbox_checked(self) -> bool:
+        """
+        检查清除选项框是否选中
+
+        Returns:
+            返回当前状态
+        """
         return self._operation_area.is_clear_checkbox_checked()
 
     def is_function_executing(self) -> bool:
+        """
+        检查函数是否正在运行
+
+        Returns:
+            返回函数运行状态
+        """
         return self._executor.is_executing
 
     def is_function_cancelable(self) -> bool:
+        """
+        检查函数是否被设置为可取消函数
+
+        Returns:
+            返回函数是否可取消
+        """
         return self._executor.is_cancelled
 
-    def process_parameter_error(self, e: ParameterError):
+    def process_parameter_error(self, e: ParameterError) -> None:
+        """
+        使用内置逻辑处理ParameterError类型的异常
+
+        Args:
+            e: 异常对象
+
+        Returns:
+            无返回值
+        """
         self._parameter_area.process_parameter_error(e)
 
-    def disable_parameter_widgets(self, disabled):
+    def disable_parameter_widgets(self, disabled) -> None:
+        """
+        设置参数控件禁用/启用状态
+
+        Args:
+            disabled: 是否禁用
+
+        Returns:
+            无返回值
+        """
         self._parameter_area.disable_parameter_widgets(disabled)
+
+    def try_cancel_execution(self) -> None:
+        """
+        尝试取消函数执行
+
+        Returns:
+            无返回值
+
+        Raises:
+            FunctionNotCancellableError: 函数未被设置为可取消函数时，将引发此异常
+            FunctionNotExecutingError: 函数未处于正在执行中时，将引发此异常
+        """
+        self._config: FnExecuteWindowConfig
+        if not self._bundle.fn_info.cancelable:
+            raise FunctionNotCancellableError()
+        if not self._executor.is_executing:
+            raise FunctionNotExecutingError()
+        else:
+            self._executor.try_cancel()
 
     def before_execute(self, fn_info: FnInfo, arguments: Dict[str, Any]) -> None:
         self._config: FnExecuteWindowConfig
@@ -663,17 +1057,16 @@ class FnExecuteWindow(BaseFnExecuteWindow):
 
     def _on_cancel_button_clicked(self):
         self._config: FnExecuteWindowConfig
-        if not self._bundle.fn_info.cancelable:
+        try:
+            self.try_cancel_execution()
+        except FunctionNotCancellableError:
             messagebox.show_warning_message(
                 self, self._config.uncancelable_function_message
             )
-            return
-        if not self._executor.is_executing:
+        except FunctionNotExecutingError:
             messagebox.show_warning_message(
                 self, self._config.function_not_executing_message
             )
-        else:
-            self._executor.try_cancel()
 
     def _on_execute_button_clicked(self):
         self._config: FnExecuteWindowConfig
@@ -684,10 +1077,6 @@ class FnExecuteWindow(BaseFnExecuteWindow):
             return
         try:
             arguments = self.get_parameter_values()
-        # except FunctionExecutingError:
-        #     messagebox.show_warning_message(
-        #         self, self._config.function_executing_message
-        #     )
         except ParameterError as e:
             self._parameter_area.process_parameter_error(e)
         else:
@@ -695,10 +1084,4 @@ class FnExecuteWindow(BaseFnExecuteWindow):
 
     # noinspection PyMethodMayBeStatic
     def _on_clear_button_clicked(self):
-        # self._config: FnExecuteWindowConfig
-        # if self._executor.is_executing:
-        #     messagebox.show_warning_message(
-        #         self, self._config.function_executing_message
-        #     )
-        #     pass
         ucontext.clear_output()
