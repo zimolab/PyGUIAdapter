@@ -1291,7 +1291,7 @@
 </code></pre></div>
 <p>例如，在上面的函数<code>f1</code>中，参数<code>a</code>、<code>b</code>、<code>c</code>的类型分别被标注为<code>str</code>、<code>int</code>、<code>float</code>。在运行时，<code>PyGUIAdapter</code>将读取这一信息，分别为<code>a</code>、<code>b</code>、<code>c</code>生成<code>LineEdit</code>、<code>IntSpinBox</code>、<code>FloatSpinBox</code>，作为其输入控件。</p>
 <div style="text-align: center">
-    <a class="glightbox" href="/assets/snippet_f1.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/snippet_f1.png" /></a>
+    <a class="glightbox" href="../assets/snippet_f1.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/snippet_f1.png" /></a>
 </div>
 
 <p>在<code>PyGUIAdapter</code>内部，实现了一套映射机制，可以将特定的数据类型与特定的控件类型关联起来，在判断应当为某个函数参数生成何种类型的控件时，只需按图索骥即可。因此，正确地为函数的参数标注数据类型至关重要，对于<code>PyGUIAdapter</code>而言，函数参数的类型标注不是那种可有可、无锦上添花的东西！</p>
@@ -1301,7 +1301,7 @@
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a> <span class="k">pass</span>
 </code></pre></div>
 <p><div style="text-align: center">
-    <a class="glightbox" href="/assets/snippet_f2.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/snippet_f2.png" /></a>
+    <a class="glightbox" href="../assets/snippet_f2.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/snippet_f2.png" /></a>
 </div></p>
 <p>或者，可以通过文档字符串(<code>docstring</code>)中参数的描述推断其类型。比如在下面的代码片段中，使用文档字符串中描述了函数<code>f3()</code>各个参数的类型信息：</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">def</span> <span class="nf">f3</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
@@ -1319,7 +1319,7 @@
 <a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a> <span class="k">pass</span>
 </code></pre></div>
 <p><div style="text-align: center">
-    <a class="glightbox" href="/assets/snippet_f3.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/snippet_f3.png" /></a>
+    <a class="glightbox" href="../assets/snippet_f3.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/snippet_f3.png" /></a>
 </div></p>
 <p>但是，必须要指出的是，<strong>所谓的<code>“类型推断”</code>机制仅仅是一种辅助的手段，并不总是准确，也不保证可靠，通过类型标注语法准确、情形、无歧义地指明函数参数的类型，永远是更优的选择。</strong></p>
 </blockquote>
@@ -1335,7 +1335,7 @@
 <p>虽然<code>PyGUIAdapter</code>推荐开发者使用类型注解来确定函数参数的控件类型，但并不强制这么做。<code>PyGUIAdapter</code>提供了手动指定函数参数控件类型的方法。其中，最简单的一种方法是在调用<code>GUIAdapter.add()</code>函数时，通过<code>widget_configs</code>参数指定参数的<code>控件配置类</code>。</p>
 <p>每种类型的控件都有一个与之关联的<code>控件配置类</code>，控件配置类中不仅定义了控件类的属性，而且包含控件类本身的信息，也就是说，通过<code>控件配置类</code>可以获取其关联的控件类（当然反过来也成立，通过控件类我们也可以访问到其关联的配置类）。</p>
 <div style="text-align:center">
-    <a class="glightbox" href="/assets/widget_config_relationship.svg" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/widget_config_relationship.svg" /></a>
+    <a class="glightbox" href="../assets/widget_config_relationship.svg" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/widget_config_relationship.svg" /></a>
 </div>
 
 <blockquote>
@@ -1345,7 +1345,7 @@
 <li><code>IntSpinBoxConfig.target_widget_class()</code> == <code>IntSpinBox</code></li>
 </ul>
 <p><div style="text-align: center">
-   <a class="glightbox" href="/assets/snippet_2.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/snippet_2.png" /></a>
+   <a class="glightbox" href="../assets/snippet_2.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/snippet_2.png" /></a>
 </div></p>
 </blockquote>
 <p>这意味着，当开发者指定了某个参数的<code>控件配置类对象</code>，那么他实际上也就同时指定了该参数所使用的控件的类型。</p>
@@ -1369,7 +1369,7 @@
 <a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="n">adapter</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 </code></pre></div>
 <div style="text-align: center">
-   <a class="glightbox" href="/assets/snippet_3.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/snippet_3.png" /></a>
+   <a class="glightbox" href="../assets/snippet_3.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/snippet_3.png" /></a>
 </div>
 
 <p>除了在代码里指定参数的控件配置，也可以利用<code>PyGUIAdapter</code>提供了另一个机制做到这一点：<strong><code>PyGUIAdapter</code>将函数文档字符串（docstring）中<code>@params</code>标记与<code>@end</code>标记之间的文本块视为该函数的控件配置区，在该区域中，开发者可以使用TOML语法配置函数参数的控件类型及其属性。</strong></p>
@@ -1402,7 +1402,7 @@
 <a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a><span class="n">adapter</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 </code></pre></div>
 <div style="text-align: center">
-   <a class="glightbox" href="/assets/snippet_3_bar.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/snippet_3_bar.png" /></a>
+   <a class="glightbox" href="../assets/snippet_3_bar.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/snippet_3_bar.png" /></a>
 </div>
 
 <p>如果开发者在<code>@params-@end</code>中配置了参数的控件，同时又向<code>GUIAdapter.run()</code>传入了<code>widget_configs</code>，那么<code>PyGUIAdapter</code>会将两处配置合并，对于发生冲突的属性，将以<code>widget_configs</code>中设置的为准。</p>
@@ -1423,7 +1423,7 @@
 </blockquote>
 <p>控件的属性定义在控件对应的配置类中，其中，公共属性来自共同的父类（基类）<code>BaseParameterWidgetConfig</code>，而独有属性则在各配置类子类中定义。</p>
 <div style="text-align: center">
-   <a class="glightbox" href="/assets/widget_config_classes_uml.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/widget_config_classes_uml.png" /></a>
+   <a class="glightbox" href="../assets/widget_config_classes_uml.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/widget_config_classes_uml.png" /></a>
 </div>
 
 <p>对控件属性进行配置，可以实现更加精细化的控制，比如：设置数字输入的上下限，设置文本框的输入掩码等等。很多时候，合适的配置不仅可以提高用户体验，还可以增强程序的健壮性。</p>
@@ -1479,7 +1479,7 @@
 <a id="__codelineno-5-38" name="__codelineno-5-38" href="#__codelineno-5-38"></a><span class="n">adapter</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 </code></pre></div>
 <div style="text-align: center">
-   <a class="glightbox" href="/assets/snippet_4_foo.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/snippet_4_foo.png" /></a>
+   <a class="glightbox" href="../assets/snippet_4_foo.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/snippet_4_foo.png" /></a>
 </div>
 
 <h5 id="2">2、使用配置项字典</h5>
@@ -1518,7 +1518,7 @@
 <a id="__codelineno-6-32" name="__codelineno-6-32" href="#__codelineno-6-32"></a><span class="n">adapter</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 </code></pre></div>
 <div style="text-align: center">
-   <a class="glightbox" href="/assets/snippet_4_foo2.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/snippet_4_foo2.png" /></a>
+   <a class="glightbox" href="../assets/snippet_4_foo2.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/snippet_4_foo2.png" /></a>
 </div>
 
 <h4 id="params-end">（二）在<code>@params-@end</code>块中配置控件属性</h4>
@@ -1562,7 +1562,7 @@
 <a id="__codelineno-7-36" name="__codelineno-7-36" href="#__codelineno-7-36"></a><span class="n">adapter</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 </code></pre></div>
 <div style="text-align: center">
-   <a class="glightbox" href="/assets/snippet_6_f1.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/snippet_6_f1.png" /></a>
+   <a class="glightbox" href="../assets/snippet_6_f1.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/snippet_6_f1.png" /></a>
 </div>
 
 <p>也可以仅指定控件的属性，将控件的类型交由类型注解决定：</p>
@@ -1599,7 +1599,7 @@
 <a id="__codelineno-8-31" name="__codelineno-8-31" href="#__codelineno-8-31"></a><span class="n">adapter</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 </code></pre></div>
 <div style="text-align: center">
-   <a class="glightbox" href="/assets/snippet_6_f2.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/snippet_6_f2.png" /></a>
+   <a class="glightbox" href="../assets/snippet_6_f2.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/snippet_6_f2.png" /></a>
 </div>
 
 <h4 id="_6">（三）特殊控件属性</h4>
@@ -1623,7 +1623,7 @@
 <a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a><span class="n">adapter</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 </code></pre></div>
 <div style="text-align: center">
-   <a class="glightbox" href="/assets/snippet_5_f1.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/snippet_5_f1.png" /></a>
+   <a class="glightbox" href="../assets/snippet_5_f1.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/snippet_5_f1.png" /></a>
 </div>
 
 <h5 id="2default_value">2、default_value</h5>
@@ -1640,7 +1640,7 @@
 <a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="n">adapter</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 </code></pre></div>
 <div style="text-align: center">
-   <a class="glightbox" href="/assets/snippet_5_f2.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/snippet_5_f2.png" /></a>
+   <a class="glightbox" href="../assets/snippet_5_f2.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/snippet_5_f2.png" /></a>
 </div>
 
 <h5 id="3description">3、description</h5>
@@ -1664,7 +1664,7 @@
 <a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a><span class="n">adapter</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 </code></pre></div>
 <div style="text-align: center">
-   <a class="glightbox" href="/assets/snippet_5_f3.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/snippet_5_f3.png" /></a>
+   <a class="glightbox" href="../assets/snippet_5_f3.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/snippet_5_f3.png" /></a>
 </div>
 
 <h3 id="_7">三、总结</h3>

@@ -1469,7 +1469,7 @@
 </code></pre></div>
 <p><strong>界面效果如下：</strong></p>
 <div style="text-align:center">
-    <a class="glightbox" href="/assets/equation_solver.gif" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/equation_solver.gif" /></a>
+    <a class="glightbox" href="../assets/equation_solver.gif" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/equation_solver.gif" /></a>
 </div>
 
 <h2 id="_4">（四）一些说明</h2>
@@ -1502,29 +1502,29 @@
 </code></pre></div></p>
 <p>对于非法的函数参数值，开发者只需抛出<code>ParameterError</code>异常，即完成了参数的校验工作。<code>PyGUIAdapter</code>将自动完成的后续的工作，以合适的方式提醒用户，函数的某个参数输入了一个不合适的值。</p>
 <div style="text-align: center">
-    <a class="glightbox" href="/assets/handle_parameter_error.gif" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/handle_parameter_error.gif" /></a>
+    <a class="glightbox" href="../assets/handle_parameter_error.gif" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/handle_parameter_error.gif" /></a>
 </div>
 
 <p>事实上，<code>PyGUIAdapter</code>对于<code>ParameterError</code>的处理是更为一般的异常处理机制的一个特例。尽管<code>PyGUIAdapter</code>鼓励开发者尽可能预见程序可能发生的异常并提前规避它们，但客观上看程序的异常是无法完全消除的。对于函数中发生的异常，<code>PyGUIAdapter</code>的默认策略是：<strong>捕获它们，弹窗提醒用户，并在程序输出区域打印出异常信息。</strong> 这样的设计主要是<strong>为了增强程序的<code>健壮性</code>，防止未捕获的异常导致整个程序崩溃</strong>。</p>
 <h3 id="3">3、描述性信息</h3>
 <p>无论是命令行程序还是图形界面程序，为程序及其参数提供描述性文字都是非常有必要的一件事。这些文字一般被称为程序的<strong>帮助信息</strong>，对于<code>CLI</code>程序，一般使用<code>-h</code>或<code>--help</code>来获取其帮助信息，例如，下图是<code>pyhton -h</code>命令打印出的<code>Python</code>解释器程序的部分帮助信息。</p>
 <div style="text-align: center">
-    <a class="glightbox" href="/assets/cli_help.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/cli_help.png" /></a>
+    <a class="glightbox" href="../assets/cli_help.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/cli_help.png" /></a>
 </div>
 <p><code>PyGUIAdapter</code>同样支持为函数参数以及函数本身添加描述信息。</p>
 <p>对于函数参数，<code>PyGUIAdapter</code>在其输入控件的上方预留了用于显示描述信息的空间：</p>
 <div style="text-align: center">
-    <a class="glightbox" href="/assets/parameter_description.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/parameter_description.png" /></a>
+    <a class="glightbox" href="../assets/parameter_description.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/parameter_description.png" /></a>
 </div>
 
 <p>对于函数本身，<code>PyGUIAdapter</code>则提供了专门的<code>文档浏览器（Document Browser）</code>来展示其说明信息：</p>
 <div style="text-align: center">
-    <a class="glightbox" href="/assets/function_description.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/function_description.png" /></a>
+    <a class="glightbox" href="../assets/function_description.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/function_description.png" /></a>
 </div>
 
 <p>回看示例代码，似乎并没有通过特殊的方法添加这些信息，那么这些信息从何而来呢？仔细阅读代码，不难发现，这些信息实际上来自于函数的<code>文档字符串（docstring）</code>。</p>
 <div style="text-align: center">
-    <a class="glightbox" href="/assets/gui_description.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/gui_description.png" /></a>
+    <a class="glightbox" href="../assets/gui_description.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/gui_description.png" /></a>
 </div>
 
 <p><strong>“尽可能利用现有信息，降低开发者的学习和使用成本”</strong>是<code>PyGUIAdapter</code>的重要设计思想，因此它会自动从函数的<code>docstring</code>中提取函数和参数的描述信息，并将其显示在界面的正确位置。当然，这也要求开发者尽可能规范地编写函数的说明文档，考虑到不同的开发者可能习惯于不同的文档格式，<code>PyGUIAdapter</code>对多种常用的文档格式进行了支持，包括：</p>
@@ -1696,7 +1696,7 @@
 </ul>
 <p>对窗口属性的调整需要借助<code>窗口配置类</code>对象。对于函数执行窗口，其窗口配置类为<code>FnExecuteWindowConfig</code>，该类中定义了函数执行窗口的可配置属性，开发者可以通过以下方式对窗口进行配置：</p>
 <div style="text-align: center">
-    <a class="glightbox" href="/assets/how_to_config_exec_win.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/how_to_config_exec_win.png" /></a>
+    <a class="glightbox" href="../assets/how_to_config_exec_win.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/how_to_config_exec_win.png" /></a>
 </div>
 
 <p>完整代码如下：</p>
@@ -1753,7 +1753,7 @@
 </code></pre></div>
 <p>效果如下：</p>
 <div style="text-align: center">
-    <a class="glightbox" href="/assets/how_to_config_exec_win_result.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/how_to_config_exec_win_result.png" /></a>
+    <a class="glightbox" href="../assets/how_to_config_exec_win_result.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/how_to_config_exec_win_result.png" /></a>
 </div>
 
 <blockquote>
@@ -1762,12 +1762,12 @@
 <h3 id="2_1">2、配置控件属性</h3>
 <p>在目前的示例程序中，参数<code>a</code>、<code>b</code>、<code>c</code>的输入控件只能输入小数点后2位，且每次调整的步进值为1。</p>
 <div style="text-align: center">
-    <a class="glightbox" href="/assets/widget_config_before.gif" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/widget_config_before.gif" /></a>
+    <a class="glightbox" href="../assets/widget_config_before.gif" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/widget_config_before.gif" /></a>
 </div>
 
 <p>原因在于<code>float</code>类型对应的<code>FloatSpinBox</code>控件，其<code>step</code>（单次步进值）属性和<code>decimals</code>（小数点位数）属性分别被配置为<code>1.0</code>和<code>2</code>。开发者可以通过多种方式修改控件的默认属性配置，以达到改变控件的默认行为的目的。</p>
 <div style="text-align: center">
-    <a class="glightbox" href="/assets/floatspin_def_config.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/floatspin_def_config.png" /></a>
+    <a class="glightbox" href="../assets/floatspin_def_config.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/floatspin_def_config.png" /></a>
 </div>
 
 <p>现在我们将对上述示例做进一步修改，将参数<code>a</code>、<code>b</code>、<code>c</code>对应控件的<code>decimals</code>（小数点位数）配置为<code>5</code>，<code>step</code>（单次步进值）配置为<code>0.00005</code>。</p>
@@ -1780,7 +1780,7 @@
 </code></pre></div>
 <p>比如要配置上述示例中参数<code>a</code>、<code>b</code>、<code>c</code>对应控件的<code>step</code>属性和<code>decimals</code>属性，可以这样做：</p>
 <div style="text-align: center">
-    <a class="glightbox" href="/assets/params_config_block.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/params_config_block.png" /></a>
+    <a class="glightbox" href="../assets/params_config_block.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/params_config_block.png" /></a>
 </div>
 
 <p><strong>完整代码如下：</strong></p>
@@ -1869,7 +1869,7 @@
 <p>使用配置类对象时，开发者在函数签名中指定的参数的默认值将会被覆盖，可以通过配置类对象的<code>default_value</code>属性重新指定</p>
 </blockquote>
 <div style="text-align: center">
-    <a class="glightbox" href="/assets/widget_config_class_demo.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/widget_config_class_demo.png" /></a>
+    <a class="glightbox" href="../assets/widget_config_class_demo.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/widget_config_class_demo.png" /></a>
 </div>
 
 <p><strong>完整代码如下</strong></p>
@@ -2032,27 +2032,27 @@
 </code></pre></div>
 <p><strong>效果如下：</strong></p>
 <div style="text-align: center">
-    <a class="glightbox" href="/assets/window_menu_demo.gif" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/window_menu_demo.gif" /></a>
+    <a class="glightbox" href="../assets/window_menu_demo.gif" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/window_menu_demo.gif" /></a>
 </div>
 <p><strong>代码说明：</strong></p>
 <p>在上面的代码中，我们添加了一个动作（<code>Action</code>）：<code>action_about</code>，并为其指定了<code>triggered</code>事件响应函数：<code>on_action_about</code>，该函数将在动作被触发时调用。</p>
 <div style="text-align: center">
- <a class="glightbox" href="/assets/l64.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/l64.png" /></a>
+ <a class="glightbox" href="../assets/l64.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/l64.png" /></a>
 </div>
 
 <p>在<code>action_about</code>的事件回调函数中，我们调用<code>pyguiadapter.utils.messagebox</code>模块中的<code>show_text_file()</code>函数，弹窗展示当前目录下的<code>about.html</code>文件：</p>
 <div style="text-align: center">
- <a class="glightbox" href="/assets/l56.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/l56.png" /></a>
+ <a class="glightbox" href="../assets/l56.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/l56.png" /></a>
 </div>
 
 <p>然后，创建了一个<code>Menu</code>对象：<code>menu_help</code>，将其标题设置为"Help"，并将<code>action_about</code>添加到其<code>actions</code>中：</p>
 <div style="text-align: center">
- <a class="glightbox" href="/assets/l65.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/l65.png" /></a>
+ <a class="glightbox" href="../assets/l65.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/l65.png" /></a>
 </div>
 
 <p>最后，将<code>menu_help</code>对象添加到<code>window_menus</code>中，这样便完成了创建和添加菜单的全过程：</p>
 <div style="text-align: center">
- <a class="glightbox" href="/assets/l68.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/l68.png" /></a>
+ <a class="glightbox" href="../assets/l68.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/l68.png" /></a>
 </div>
 
 <blockquote>
@@ -2060,7 +2060,7 @@
 <li>所谓“动作”（<code>Action</code>），就是具有文字、图标等一系列属性，可以响应特定鼠标、快捷键事件的组件。它可以被添加到菜单、工具栏中，当其被添加到菜单中，其表现为菜单项；当其被添加到工具栏时，其表现为工具栏按钮。比如下图中红色方框标记的是同一组<code>Action</code>分别在菜单和工具栏中的样子。</li>
 </ul>
 <p><div style="text-align: center">
- <a class="glightbox" href="/assets/actions_demo.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/actions_demo.png" /></a>
+ <a class="glightbox" href="../assets/actions_demo.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/actions_demo.png" /></a>
 </div></p>
 <ul>
 <li>可以通过鼠标单击或快捷键来“触发”动作。</li>

@@ -1094,17 +1094,17 @@
 <h2 id="_1">（一）概述</h2>
 <p>开发者可以向 <code>GUIAdapter</code>实例中添加多个函数，在此情况下，<code>PyGUIAdapter</code>将显示一个<code>函数选择窗口（FnSelectWindow）</code>，并以列表的形式展现所有已添加的函数，供用户选择。在函数列表中，将显示函数图标与名称，开发者可以对图标与函数的显示名称进行自定义。同时，在<code>函数选择窗口（FnSelectWindow）</code>的右侧，将通过<code>文档浏览器（Document Browser）</code>显示当前选中函数的说明文档。</p>
 <div style="text-align:center">
-    <a class="glightbox" href="/assets/fn_select_wind.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/fn_select_wind.png" /></a>
+    <a class="glightbox" href="../assets/fn_select_wind.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/fn_select_wind.png" /></a>
 </div>
 
 <p>用户可通过双击函数列表中的条目或者点击<code>选择按钮（Select）</code>打开目标函数的执行窗口（<code>FnExecuteWindow</code>）。</p>
 <div style="text-align:center">
-    <a class="glightbox" href="/assets/fn_select_wind.gif" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/fn_select_wind.gif" /></a>
+    <a class="glightbox" href="../assets/fn_select_wind.gif" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/fn_select_wind.gif" /></a>
 </div>
 
 <p>同时，<code>PyGUIAdapter</code>支持函数分组功能，在函数较多时，使用该功能可以使界面更加简洁、直观。</p>
 <div style="text-align:center">
-    <a class="glightbox" href="/assets/fn_groups.gif" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/fn_groups.gif" /></a>
+    <a class="glightbox" href="../assets/fn_groups.gif" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/fn_groups.gif" /></a>
 </div>
 
 <p>下面，围绕<code>GUIAdapter.add()</code>函数对上面提到的功能进行详细说明。</p>
@@ -1145,7 +1145,7 @@
 <a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 </code></pre></div>
 <div style="text-align:center">
-    <a class="glightbox" href="/assets/fn_select_wind.gif" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/fn_select_wind.gif" /></a>
+    <a class="glightbox" href="../assets/fn_select_wind.gif" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/fn_select_wind.gif" /></a>
 </div>
 
 <p>所有添加到<code>GUIAdapter</code>实例中的函数都会显示在<code>函数选择窗口（FnSelectWindow）</code>左侧的函数列表中。函数列表将同时显示函数的名称及图标，如果没有显式地指定函数的图标和名称，<code>PyGUIAadpter</code>将使用默认的图标，显示的名称则为函数名。</p>
@@ -1187,7 +1187,7 @@
 <a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 </code></pre></div>
 <div style="text-align:center">
-    <a class="glightbox" href="/assets/custom_icon_and_name.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/custom_icon_and_name.png" /></a>
+    <a class="glightbox" href="../assets/custom_icon_and_name.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/custom_icon_and_name.png" /></a>
 </div>
 
 <blockquote>
@@ -1197,7 +1197,7 @@
 <p>在<code>函数选择窗口（FnSelectWindow）</code>和<code>函数执行窗口（FnExecuteWindow）</code>中均有专门的区域用于显示函数的说明文档，用于显示函数文档的组件被称为<code>文档浏览器（DocumentBrowser）</code>。</p>
 <p>默认情况下，<code>PyGUIAdapter</code>会自动提取函数文档字符串（<code>docstring</code>）中对于函数的描述（包括<code>long description</code>和<code>short description</code>，但一般不包括参数的描述部分和<code>@params...@end</code>块）作为说明文档，格式默认为<code>Markdown</code>。比如：</p>
 <div style="text-align:center">
-    <a class="glightbox" href="/assets/docstring_document.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/docstring_document.png" /></a>
+    <a class="glightbox" href="../assets/docstring_document.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/docstring_document.png" /></a>
 </div>
 
 <blockquote>
@@ -1238,7 +1238,7 @@
 </code></pre></div>
 <p>除了<code>markdown</code>，也可以将文档的格式指定为<code>html</code>或<code>plaintext</code>。比如：</p>
 <div style="text-align:center">
-    <a class="glightbox" href="/assets/html_docstring.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/html_docstring.png" /></a>
+    <a class="glightbox" href="../assets/html_docstring.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/html_docstring.png" /></a>
 </div>
 
 <blockquote></blockquote>
@@ -1279,7 +1279,7 @@
 </blockquote>
 <p>当然，如果开发者不想将大段文本放到函数的<code>docstring</code>中，也可以手动指定函数的说明文档，比如将外部文件作为说明文档：</p>
 <div style="text-align:center">
-    <a class="glightbox" href="/assets/html_document_file.gif" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/html_document_file.gif" /></a>
+    <a class="glightbox" href="../assets/html_document_file.gif" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/html_document_file.gif" /></a>
 </div>
 
 <blockquote>
@@ -1310,11 +1310,11 @@
 <p>开发者在调用<code>GUIAdapter.add()</code>方法添加函数时，可以通过<code>group</code>参数指定函数的分组，<code>PyGUIAdapter</code>会将相同<code>group</code>的函数聚合到一起；对于未指定<code>group</code>的函数，<code>PyGUIAdapter</code>则会将其放置在默认分组中，该分组的默认名称为<code>"Main Functions"</code>。</p>
 <p>比如下面这个示例，将函数按照功能分成了三组：编码器函数<code>Encoders</code>、解码器函数<code>Decoders</code>和其他函数（默认分组）<code>Main Functions</code>。</p>
 <div style="text-align:center">
-    <a class="glightbox" href="/assets/function_groups_2.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/function_groups_2.png" /></a>
+    <a class="glightbox" href="../assets/function_groups_2.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/function_groups_2.png" /></a>
 </div>
 
 <div style="text-align:center">
-    <a class="glightbox" href="/assets/function_groups.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/function_groups.png" /></a>
+    <a class="glightbox" href="../assets/function_groups.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/function_groups.png" /></a>
 </div>
 
 <blockquote>

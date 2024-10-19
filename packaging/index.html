@@ -1464,17 +1464,17 @@
 <li><code>app.spec</code>：<code>*.spec</code>文件时打包配置文件，该文件记录了打包所使用的参数，运行打包命令后将自动生成该文件。后续可以直接输入<code>pyinstaller app.spec</code>命令打包应用，而无需每次都手动输入参数。</li>
 </ul>
 <div style="text-align: center;">
-    <a class="glightbox" href="/assets/packaging_1.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/packaging_1.png" /></a>
+    <a class="glightbox" href="../assets/packaging_1.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/packaging_1.png" /></a>
 </div>
 
 <p>现在让我们查看<code>dist</code>目录，里面包含一个名为<code>app</code>的子目录，最终的可执行文件就在该目录下。默认情况下，<code>pyinstaller</code>会生成一个可执行文件及一个<code>_internal/</code>目录：</p>
 <div style="text-align: center;">
-    <a class="glightbox" href="/assets/packaging_2.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/packaging_2.png" /></a>
+    <a class="glightbox" href="../assets/packaging_2.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/packaging_2.png" /></a>
 </div>
 
 <p><code>_internal/</code>目录下存放着这可执行文件运行时依赖的库和其他文件：</p>
 <div style="text-align:center">
-    <a class="glightbox" href="/assets/packaging_3.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/packaging_3.png" /></a>
+    <a class="glightbox" href="../assets/packaging_3.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/packaging_3.png" /></a>
 </div>
 
 <h3 id="2">2、打包资源（数据）文件</h3>
@@ -1530,18 +1530,18 @@
 <p>清除缓存，并移除之前构建时产生的临时文件。</p>
 <p>打包完成后。可以发现，<code>yapf_third_party</code>和<code>pyqcodeeditor</code>中的资源文件打包到<code>_internal</code>目录下了。</p>
 <div style="text-align:center">
-    <a class="glightbox" href="/assets/packaging_4.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/packaging_4.png" /></a>
+    <a class="glightbox" href="../assets/packaging_4.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/packaging_4.png" /></a>
 </div>
 
 <p>让我们再次运行<code>app.exe</code>，已经可以正常显示程序界面了。</p>
 <div style="text-align:center">
-    <a class="glightbox" href="/assets/packaging_5.gif" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/packaging_5.gif" /></a>
+    <a class="glightbox" href="../assets/packaging_5.gif" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/packaging_5.gif" /></a>
 </div>
 <p><strong>小结：</strong>如果程序引用了一些第三方库，而<code>pyinstaller</code>目前还无法自动收集这些库或是其资源文件，开发者可以使用<code>--collect-xxx</code>选项手动包含需要的文件。</p>
 <h4 id="1_2">（1）项目资源文件</h4>
 <p>现在，我们的应用仍然存在一个小问题：当我们单击<code>Help</code>菜单下的<code>About</code>菜单项，本应弹出一个关于对话框，但是，什么都没有发生。</p>
 <div style="text-align:center">
-    <a class="glightbox" href="/assets/packaging_6.gif" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/packaging_6.gif" /></a>
+    <a class="glightbox" href="../assets/packaging_6.gif" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/packaging_6.gif" /></a>
 </div>
 
 <p>让我们从命令行输出中定位问题：</p>
@@ -1554,7 +1554,7 @@
 </code></pre></div>
 <p>非常清晰的错误消息：<code>app.py</code>的第<code>40行</code>用到了一个文件<code>about.html</code>，但该文件并不存在。</p>
 <div style="text-align:center">
-    <a class="glightbox" href="/assets/packaging_7.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/packaging_7.png" /></a>
+    <a class="glightbox" href="../assets/packaging_7.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/packaging_7.png" /></a>
 </div>
 
 <p><code>about.html</code>与<code>app.py</code>在同一目录下，<code>pyinstaller</code>在打包时却没有将<code>about.html</code>打包到<code>_internal</code>目录下，这就是问题的根源。因此，我们需要手动指定项目中哪些资源文件需要被打包到最终产物中。对此，<code>pyinstaller</code>提供了<code>--add-data</code>选项。</p>
@@ -1571,18 +1571,18 @@
 </blockquote>
 <p>打包完成后，可以发现<code>about.html</code>已经被打包到<code>_internal</code>目录下了。</p>
 <div style="text-align:center">
-    <a class="glightbox" href="/assets/packaging_8.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/packaging_8.png" /></a>
+    <a class="glightbox" href="../assets/packaging_8.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/packaging_8.png" /></a>
 </div>
 
 <p>再次运行<code>app.exe</code>，现在终于可以正常弹出对话框了：</p>
 <div style="text-align:center">
-    <a class="glightbox" href="/assets/packaging_9.gif" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/packaging_9.gif" /></a>
+    <a class="glightbox" href="../assets/packaging_9.gif" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/packaging_9.gif" /></a>
 </div>
 
 <h4 id="3">（3）关于文件路径的一些提示</h4>
 <p>为了在程序打包后仍然可以访问到项目中的资源文件，需要在代码中必须非常小心的除了路径问题，尤其是采用<code>相对路径</code>时，源码状态下和打包状态下<code>相对路径</code>中<strong>“相对”</strong>的含义是不同的，具体而言，<strong>“相对”的起点</strong>不同。为了解决这个问题，一种可行的方法是，以<code>__file__</code>为起点对路径进行定位，本例中就是采用这种做法。</p>
 <div style="text-align:center">
-    <a class="glightbox" href="/assets/packaging_10.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/packaging_10.png" /></a>
+    <a class="glightbox" href="../assets/packaging_10.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/packaging_10.png" /></a>
 </div>
 
 <h2 id="_4">（四）修改可执行文件名称、图标</h2>
@@ -1598,7 +1598,7 @@
 </code></pre></div>
 <p>打包完成后，重新生成了一个<code>.spec</code>文件，名称为<code>Equation-Solver.spec</code>。在<code>dist/Equation-Solver</code>目录下，生成了一个名为<code>Equation-Solver.exe</code>的可执行文件。</p>
 <div style="text-align:center">
-    <a class="glightbox" href="/assets/packaging_11.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/packaging_11.png" /></a>
+    <a class="glightbox" href="../assets/packaging_11.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/packaging_11.png" /></a>
 </div>
 
 <h3 id="2_1">2、修改可执行文件的图标</h3>
@@ -1609,7 +1609,7 @@
 </blockquote>
 <p>首先，需要准备好图标文件（<code>.ico</code>或<code>.icns</code>格式），并将其放到<code>app.py</code>同目录下。</p>
 <div style="text-align:center">
-    <a class="glightbox" href="/assets/packaging_12.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/packaging_12.png" /></a>
+    <a class="glightbox" href="../assets/packaging_12.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/packaging_12.png" /></a>
 </div>
 
 <p>执行以下打包命令：</p>
@@ -1617,7 +1617,7 @@
 </code></pre></div>
 <p>打包完成后，我们就得到了一个带自定义图标的可执行文件了：</p>
 <div style="text-align:center">
-    <a class="glightbox" href="/assets/packaging_13.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/packaging_13.png" /></a>
+    <a class="glightbox" href="../assets/packaging_13.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/packaging_13.png" /></a>
 </div>
 
 <h2 id="_5">（五）窗口模式</h2>
@@ -1639,12 +1639,12 @@
 </code></pre></div>
 <p>打包完成后，<code>dist/</code>目录下只有一个可执行文件，其他所有文件都被打包到这个文件中了。</p>
 <div style="text-align:center">
-    <a class="glightbox" href="/assets/packaging_14.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/packaging_14.png" /></a>
+    <a class="glightbox" href="../assets/packaging_14.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/packaging_14.png" /></a>
 </div>
 
 <p>现在只需要一个文件就可以完成程序的分发了。</p>
 <div style="text-align:center">
-    <a class="glightbox" href="/assets/packaging_15.gif" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="/assets/packaging_15.gif" /></a>
+    <a class="glightbox" href="../assets/packaging_15.gif" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/packaging_15.gif" /></a>
 </div>
 
 <p>相比多文件模式，单文件打包的优势主要包括以下两点：</p>
