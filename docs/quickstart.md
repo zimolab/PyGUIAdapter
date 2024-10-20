@@ -221,7 +221,7 @@ if __name__ == "__main__":
 
 `uprint()`函数的用法基本上同内置函数`print()`保持一致，其原型如下：
 
-::: pyguiadapter.adapter.ucontext.uprint
+::: pyguiadapter.adapter.uoutput.uprint
     options:
         heading_level: 4
         show_source: false
