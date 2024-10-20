@@ -1,3 +1,11 @@
+"""
+@Time    : 2024.10.20
+@File    : _ui.py
+@Author  : zimolab
+@Project : PyGUIAdapter
+@Desc    : 一些UI相关的工具函数
+"""
+
 import os.path
 import warnings
 from typing import Literal, Tuple, Union, Optional
