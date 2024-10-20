@@ -1,3 +1,11 @@
+"""
+@Time    : 2024.10.20
+@File    : adapter.py
+@Author  : zimolab
+@Project : PyGUIAdapter
+@Desc    : 定义了GUI适配器类GUIAdapter，负责管理函数和启动GUI应用。
+"""
+
 import sys
 import warnings
 from collections import OrderedDict
@@ -69,7 +77,6 @@ class GUIAdapter(object):
             adapter.add(foo)
             adapter.run()
             ```
-
         """
         self._hdpi_mode: bool = hdpi_mode
         self._global_stylesheet: Optional[str] = global_stylesheet
@@ -102,24 +109,28 @@ class GUIAdapter(object):
         window_listener: Optional[BaseWindowEventListener] = None,
         window_toolbar: Optional[ToolBar] = None,
         window_menus: Optional[List[Union[Menu, Separator]]] = None,
-    ):
+    ) -> None:
         """
-        添加函数。将函数添加到当前`GUIAdapter`实例中。
-        :param fn: 待添加的函数。一般的Python的函数均可的添加到`GUIAdapter`实例中。限制：不支持含义`position-only`参数的函数。
-        :param display_name: 函数显示的名称。该名称将显示在`函数选择窗口`的函数列表中或者作为`函数执行窗口`的窗口标题。若未指定，则使用函数名。
-        :param group: 函数的分组。若未指定，则将函数添加到缺省分组中。
-        :param icon: 函数显示的图标。该图标将显示在`函数选择窗口`的函数列表中，若未指定，这使用默认图标。
-        :param document: 函数的文档。该文档将显示在`函数选择窗口`和`函数执行窗口`的`文档浏览器`区域。
-        :param document_format: 函数文档的格式。支持：`markdown`、`html`、`plaintext`。默认为`markdown`。
-        :param cancelable: 指示函数是否可取消。
-        :param on_execute_result:
-        :param on_execute_error:
-        :param widget_configs:
-        :param window_config:
-        :param window_listener:
-        :param window_toolbar:
-        :param window_menus:
-        :return:
+        添加一个函数。
+
+        Args:
+            fn: 待添加的函数。
+            display_name: 函数的显示名称。如果不指定，则使用函数的名称。
+            group: 函数所属的分组。如果不指定，则将函数添加到默认分组。
+            icon: 函数的图标。可以为文件路径，也可使用QtAwesome支持的图标名称。
+            document: 函数的说明文档。若不指定，则尝试提取函数的docstring作为文档。
+            document_format: 函数说明文档的格式。可以为"markdown"、"html"或"plaintext"。
+            cancelable: 函数是否可取消。
+            on_execute_result: 执行函数成功后的回调函数。
+            on_execute_error: 执行函数失败后的回调函数。
+            widget_configs: 函数参数控件配置。键为参数名，值为参数控件配置。
+            window_config: 窗口配置。
+            window_listener: 窗口事件监听器。
+            window_toolbar: 窗口的工具栏。
+            window_menus: 窗口菜单列表。
+
+        Returns:
+            无返回值
         """
         # create the FnInfo from the function and given arguments
         fn_info = self._fn_parser.parse_fn_info(
@@ -158,18 +169,36 @@ class GUIAdapter(object):
         )
         self._bundles[fn] = bundle
 
-    def remove(self, fn: Callable):
+    def remove(self, fn: Callable) -> None:
+        """
+        移除一个已添加的函数。
+
+        Args:
+            fn: 待移除的函数。
+
+        Returns:
+            无返回值
+        """
         if fn in self._bundles:
             del self._bundles[fn]
 
     def exists(self, fn: Callable) -> bool:
+        """
+        判断函数是否已添加。
+
+        Args:
+            fn: 目标函数
+
+        Returns:
+            函数是否已添加
+        """
         return fn in self._bundles
 
-    def get_bundle(self, fn: Callable) -> Optional[FnBundle]:
-        return self._bundles.get(fn, None)
-
-    def clear_bundles(self):
-        self._bundles.clear()
+    # def get_bundle(self, fn: Callable) -> Optional[FnBundle]:
+    #     return self._bundles.get(fn, None)
+    #
+    # def clear_bundles(self):
+    #     self._bundles.clear()
 
     def run(
         self,
@@ -180,7 +209,21 @@ class GUIAdapter(object):
         select_window_listener: Optional[BaseWindowEventListener] = None,
         select_window_toolbar: Optional[ToolBar] = None,
         select_window_menus: Optional[List[Union[Menu, Separator]]] = None,
-    ):
+    ) -> None:
+        """
+        启动GUI应用。
+
+        Args:
+            argv: 传递给QApplication的命令行参数。
+            show_select_window: 是否强制显示函数选择窗口，当添加的函数数量大于1时，默认显示。
+            select_window_config: 函数选择窗口配置。
+            select_window_listener: 函数选择窗口事件监听器。
+            select_window_toolbar: 函数选择窗口的工具栏。
+            select_window_menus: 函数选择窗口菜单列表。
+
+        Returns:
+            无返回值
+        """
         if self._application is None:
             self._start_application(argv)
         # noinspection PyProtectedMember
