@@ -18,7 +18,8 @@
 import time
 
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.adapter.ucontext import uprint, is_function_cancelled
+from pyguiadapter.adapter.ucontext import is_function_cancelled
+from pyguiadapter.adapter.uoutput import uprint
 from pyguiadapter.windows.fnexec import FnExecuteWindowConfig
 
 
@@ -57,6 +58,6 @@ if __name__ == "__main__":
 效果如下：
 
 <div style="text-align: center">
-    <img src="../assets/cancellable_function.gif"
+    <img src="../assets/cancellable_function.gif" />
 </div>
 

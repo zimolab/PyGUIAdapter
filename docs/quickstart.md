@@ -216,10 +216,6 @@ if __name__ == "__main__":
 
 > 可以通过以下方式导入`uprint()`函数：
 > ```python
-> from pyguiadapter.adapter.ucontext import uprint
-> ```
-> 或者，从`pyguiadapter.adapter.uoutput`导入：
-> ```python
 > from pyguiadapter.adapter.uoutput import uprint
 > ```
 

@@ -51,7 +51,7 @@ show_question_messagebox()
 ```python
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.adapter import udialog
-from pyguiadapter.adapter.ucontext import uprint
+from pyguiadapter.adapter.uoutput import uprint
 from pyguiadapter.extend_types import text_t
 from pyguiadapter.utils import messagebox
 
@@ -234,7 +234,7 @@ from qtpy.QtWidgets import QWidget, QVBoxLayout, QLabel, QDialogButtonBox
 
 from pyguiadapter.adapter import GUIAdapter, BaseCustomDialog
 from pyguiadapter.adapter import udialog
-from pyguiadapter.adapter.ucontext import uprint
+from pyguiadapter.adapter.uoutput import uprint
 from pyguiadapter.exceptions import ParameterError
 
 
@@ -375,7 +375,7 @@ if __name__ == "__main__":
 ```python
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.adapter import uinput
-from pyguiadapter.adapter.ucontext import uprint
+from pyguiadapter.adapter.uoutput import uprint
 from pyguiadapter.extend_types import choices_t
 
 
@@ -865,7 +865,7 @@ from qtpy.QtWidgets import QWidget, QLineEdit, QTextEdit, QDateEdit
 from qtpy.uic import loadUi
 
 from pyguiadapter.adapter import uinput, GUIAdapter
-from pyguiadapter.adapter.ucontext import uprint
+from pyguiadapter.adapter.uoutput import uprint
 from pyguiadapter.extend_types import text_t
 from pyguiadapter.utils import IconType
 from pyguiadapter.utils.inputdialog import UniversalInputDialog
