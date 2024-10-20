@@ -1,6 +1,6 @@
 site_name: PyGUIAdapter Docs
 repo_url: https://github.com/zimolab/PyGUIAdapter
-docs_dir: ./mk-docs/
+docs_dir: ./docs/
 
 theme:
   name: material
