@@ -1,12 +1,15 @@
 """
-该模块主要实现了消息打印功能，开发者可以在函数中使用该模块提供的函数和类，向函数窗口中打印消息。
+@Time    : 2024.10.20
+@File    : uoutput.py
+@Author  : zimolab
+@Project : PyGUIAdapter
+@Desc    : 提供信息打印相关的功能
 """
 
 import dataclasses
 import os.path
 from typing import Optional, Union, Dict, Any
 
-from .ucontext import uprint
 from ..constants.color import (
     COLOR_INFO,
     COLOR_DEBUG,
@@ -15,8 +18,45 @@ from ..constants.color import (
     COLOR_CRITICAL,
 )
 from ..utils import io, to_base64
+from . import ucontext
 
 _MSG_TMPL = "<p><pre style='color:{color}'>{msg}</pre></p>"
+
+
+# noinspection SpellCheckingInspection
+def uprint(
+    *args: Any,
+    sep: str = " ",
+    end: str = "\n",
+    html: bool = False,
+    scroll_to_bottom: bool = True,
+) -> None:
+    """打印信息到输出浏览器
+
+    Args:
+        *args: 要打印的信息
+        sep: 每条信息之间的分隔字符串
+        end: 添加到最后一条信息后面的字符串
+        html: 要打印的信息是否为`html`格式
+        scroll_to_bottom: 打印信息后是否将`输出浏览器`滚动到最底部
+
+    Returns:
+        无返回值
+
+    """
+    text = sep.join([str(arg) for arg in args]) + end
+    # noinspection PyUnresolvedReferences,PyProtectedMember
+    ucontext._context.sig_uprint.emit(text, html, scroll_to_bottom)
+
+
+def clear_output() -> None:
+    """清除`输出浏览器`中所有内容
+
+    Returns:
+        无返回值
+    """
+    # noinspection PyUnresolvedReferences,PyProtectedMember
+    ucontext._context.sig_clear_output.emit()
 
 
 @dataclasses.dataclass
