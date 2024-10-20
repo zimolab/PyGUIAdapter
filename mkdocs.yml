@@ -28,6 +28,7 @@ nav:
     - pyguiadapter.action: apis/pyguiadapter.action.md
     - pyguiadapter.toolbar: apis/pyguiadapter.toolbar.md
     - pyguiadapter.menu: apis/pyguiadapter.menu.md
+    - pyguiadapter.toast: apis/pyguiadapter.toast.md
     - pyguiadapter.adapter.adapter: apis/pyguiadapter.adapter.adapter.md
     - pyguiadapter.adapter.ucontext: apis/pyguiadapter.adapter.ucontext.md
     - pyguiadapter.adapter.uoutput: apis/pyguiadapter.adapter.uoutput.md
