@@ -11,7 +11,10 @@ nav:
   - 快速开始: quickstart.md
   - 添加多个函数: multiple-functions.md
   - 配置控件属性: widget-config.md
-  - 控件与参数数据类型: widget-map.md
+  - 参数与控件:
+      - 控件类型映射表: widget-map.md
+      - 基础类型与控件: basic-types.md
+      - 扩展类型与控件: extended-types.md
   - 配置窗口属性: window.md
   - 窗口工具栏: toolbar.md
   - 窗口菜单栏: menu.md
@@ -42,6 +45,9 @@ nav:
     - pyguiadapter.windows: apis/pyguiadapter.windows.md
     - pyguiadapter.windows.fnexec: apis/pyguiadapter.windows.fnexec.md
     - pyguiadapter.windows.fnselect: apis/pyguiadapter.windows.fnselect.md
+    - pyguiadapter.paramwidget: apis/pyguiadapter.paramwidget.md
+    - pyguiadapter.widgets.common: apis/pyguiadapter.widgets.common.md
+    - pyguiadapter.widgets.intspin: apis/pyguiadapter.widgets.intspin.md
   - 贡献: contribution.md
   - 开源许可: license.md
   - 版本历史: changelog.md
