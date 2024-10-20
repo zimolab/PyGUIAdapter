@@ -22,15 +22,32 @@ from ..paramwidget import BaseParameterWidgetConfig, BaseParameterWidget
 
 @dataclasses.dataclass(frozen=True)
 class CommonParameterWidgetConfig(BaseParameterWidgetConfig):
+    """
+    通用参数控件配置类。继承自 `BaseParameterWidgetConfig` 类。是所有通用参数控件的配置基类。
+    """
 
     set_default_value_on_init: bool = True
+    """
+    是否在控件初始化时设置默认值。默认为 `True`。
+    """
+
     hide_default_value_checkbox: bool = True
+    """是否隐藏默认值复选框。当default_value为None时，此选项无效，默认值复选框始终显示。"""
+
     set_deepcopy: bool = True
     get_deepcopy: bool = True
+
     description_font_size: Optional[int] = FONT_SMALL
+    """控件描述文本字体大小。默认为 `FONT_SMALL`。"""
+
     description_color: Optional[str] = COLOR_REGULAR_TEXT
+    """控件描述文本颜色。默认为 `COLOR_REGULAR_TEXT`。"""
+
     parameter_error_font_size: Optional[int] = FONT_SMALL
+    """ParameterError文本字体大小。默认为 `FONT_SMALL`。"""
+
     parameter_error_color: Optional[str] = COLOR_FATAL
+    """ParameterError文本颜色。默认为 `COLOR_FATAL`。"""
 
     @classmethod
     def target_widget_class(cls) -> Type["CommonParameterWidget"]:
@@ -280,7 +297,7 @@ class CommonParameterWidget(BaseParameterWidget):
     def _check_set_value(self, value: Any) -> bool:
         if value is None and self.default_value is not None:
             raise ValueError(
-                f"None value is not allowed unless the default value is None(default_value={self.default_value})"
+                f"None value is not allowed unless the default_value is None(default_value={self.default_value})"
             )
         if value is None and self.default_value is None:
             self._use_default_value()
