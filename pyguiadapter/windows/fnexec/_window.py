@@ -19,6 +19,7 @@ from ._operation_area import OperationArea
 from ._output_area import OutputArea, ProgressBarConfig
 from ._parameter_area import ParameterArea
 from ...adapter import ucontext
+from ...adapter import uoutput
 from ...bundle import FnBundle
 from ...exceptions import (
     ParameterError,
@@ -1084,4 +1085,4 @@ class FnExecuteWindow(BaseFnExecuteWindow):
 
     # noinspection PyMethodMayBeStatic
     def _on_clear_button_clicked(self):
-        ucontext.clear_output()
+        uoutput.clear_output()
