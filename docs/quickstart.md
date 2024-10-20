@@ -234,7 +234,7 @@ if __name__ == "__main__":
 除了`uprint()`，`pyguiadapter.adapter.uoutput`还实现了许多用于输出信息的函数，借助这些函数，开发者可以输出格式更加丰富的内容，可以查看以下文档获取更多信息：[pyguiadapter.adapter.uoutput](apis/pyguiadapter.adapter.uoutput.md)
 
 
-## （五）、示例进阶
+## （五）示例进阶
 
 `PyGUIAdapter`的高度灵活性体现在允许开发者对生成的界面进行配置，开发者不仅可以配置窗口的属性和外观，而且可以对函数每个参数对应的控件进行精细化的调整，改变其默认的行为。
 
