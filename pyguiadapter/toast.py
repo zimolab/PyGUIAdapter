@@ -1,3 +1,11 @@
+"""
+@Time    : 2024.10.20
+@File    : toast.py
+@Author  : zimolab
+@Project : PyGUIAdapter
+@Desc    : 实现了简单的toast提示框
+"""
+
 import dataclasses
 from typing import Optional, Union, Tuple, Dict, Sequence
 

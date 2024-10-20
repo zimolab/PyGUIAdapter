@@ -1,3 +1,11 @@
+"""
+@Time    : 2024.10.20
+@File    : udialog.py
+@Author  : zimolab
+@Project : PyGUIAdapter
+@Desc    : 提供对话框相关的功能
+"""
+
 from concurrent.futures import Future
 from typing import Any, Literal, Tuple, Type, Optional, Union
 

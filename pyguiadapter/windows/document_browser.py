@@ -1,3 +1,11 @@
+"""
+@Time    : 2024.10.20
+@File    : document_browser.py
+@Author  : zimolab
+@Project : PyGUIAdapter
+@Desc    : 文档浏览器类的实现
+"""
+
 import dataclasses
 from typing import Optional
 

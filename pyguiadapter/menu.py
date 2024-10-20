@@ -1,3 +1,11 @@
+"""
+@Time    : 2024.10.20
+@File    : menu.py
+@Author  : zimolab
+@Project : PyGUIAdapter
+@Desc    : 定义菜单配置类
+"""
+
 import dataclasses
 from typing import List, Union
 

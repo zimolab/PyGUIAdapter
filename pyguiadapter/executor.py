@@ -1,3 +1,11 @@
+"""
+@Time    : 2024.10.20
+@File    : executor.py
+@Author  : zimolab
+@Project : PyGUIAdapter
+@Desc    : 定义了函数执行器的抽象基类，所有函数执行器都应该继承自该类并实现相应抽象方法。
+"""
+
 from abc import abstractmethod
 from typing import Any, Dict, Optional
 

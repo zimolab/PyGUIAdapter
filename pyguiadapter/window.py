@@ -1,3 +1,11 @@
+"""
+@Time    : 2024.10.20
+@File    : window.py
+@Author  : zimolab
+@Project : PyGUIAdapter
+@Desc    : 定义了窗口基类，实现了窗口基本的外观和逻辑，并且实现了一些公共的接口方法。
+"""
+
 import dataclasses
 from abc import abstractmethod
 from concurrent.futures import Future

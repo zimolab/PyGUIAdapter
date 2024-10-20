@@ -1,3 +1,11 @@
+"""
+@Time    : 2024.10.20
+@File    : textbrowser.py
+@Author  : zimolab
+@Project : PyGUIAdapter
+@Desc    : 实现了通用文本浏览器控件及其配置类。
+"""
+
 import dataclasses
 from typing import Optional, Sequence, Union
 

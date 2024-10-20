@@ -1,3 +1,11 @@
+"""
+@Time    : 2024.10.20
+@File    : thread.py
+@Author  : zimolab
+@Project : PyGUIAdapter
+@Desc    : 实现了基于线程的函数执行器，是目前的默认实现。
+"""
+
 import threading
 import traceback
 from collections import OrderedDict

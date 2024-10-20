@@ -1,3 +1,12 @@
+"""
+@Time    : 2024.10.20
+@File    : exceptions.py
+@Author  : zimolab
+@Project : PyGUIAdapter
+@Desc    : 自定义异常类。
+"""
+
+
 class ParameterError(Exception):
     def __init__(self, parameter_name: str, message: str):
         self._parameter_name: str = parameter_name

@@ -1,3 +1,11 @@
+"""
+@Time    : 2024.10.20
+@File    : uprogress.py
+@Author  : zimolab
+@Project : PyGUIAdapter
+@Desc    : 提供进度条相关的功能
+"""
+
 from typing import Literal, Optional
 
 from .ucontext import _context

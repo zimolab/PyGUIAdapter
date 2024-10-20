@@ -1,3 +1,11 @@
+"""
+@Time    : 2024.10.20
+@File    : fn.py
+@Author  : zimolab
+@Project : PyGUIAdapter
+@Desc    : 对函数进行了抽象和建模。仅限内部使用。
+"""
+
 import dataclasses
 from typing import Callable, Literal, Any, Dict, List, Type, Optional, ForwardRef
 
