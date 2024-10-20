@@ -60,6 +60,7 @@ class GUIAdapter(object):
     ):
         """
         `GUIAdapter`构造函数。用于创建`GUIAdapter`实例。
+
         Args:
             hdpi_mode: 启用高DPI模式。某些Qt版本上，该参数不生效。
             global_stylesheet: 应用全局样式。可以为样式表字符串，也可以为一个返回全局样式表字符串的函数。

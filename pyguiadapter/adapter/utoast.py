@@ -44,7 +44,7 @@ def show_toast(
     clear: bool = False,
 ) -> None:
     """
-    显示toast消息
+    展示toast消息。
 
     Args:
         message: toast消息内容
@@ -60,7 +60,7 @@ def show_toast(
 
 def clear_toasts() -> None:
     """
-    清除所有已发出的toast消息。
+    清除所有toast消息。
 
     Returns:
         无返回值
