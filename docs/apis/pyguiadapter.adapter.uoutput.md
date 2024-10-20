@@ -1,4 +1,14 @@
 ## 模块级方法
+::: pyguiadapter.adapter.uoutput.uprint
+    options:
+        heading_level: 3
+        show_root_full_path: false
+
+::: pyguiadapter.adapter.uoutput.clear_output
+    options:
+        heading_level: 3
+        show_root_full_path: false
+
 ::: pyguiadapter.adapter.uoutput.print_image
     options:
         heading_level: 3
