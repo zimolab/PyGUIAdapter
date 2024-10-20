@@ -39,7 +39,7 @@ class FnExecuteWindowConfig(BaseWindowConfig):
     title: Optional[str] = None
     """窗口标题。"""
 
-    size: Union[Tuple[int, int], QSize] = (1024, 768)
+    size: Union[Tuple[int, int], QSize] = (800, 600)
     """窗口大小。"""
 
     execute_button_text: str = "Execute"
@@ -81,7 +81,7 @@ class FnExecuteWindowConfig(BaseWindowConfig):
     output_dock_initial_area: DockWidgetArea = BottomDockWidgetArea
     """`Output停靠窗口`的初始停靠区域。"""
 
-    output_dock_initial_size: Tuple[Optional[int], Optional[int]] = (None, 230)
+    output_dock_initial_size: Tuple[Optional[int], Optional[int]] = (None, 150)
     """`Output停靠窗口`的初始大小，格式为`(width, height)`，可以只设置其中一个维度，另一个不需要设置的维度置为`None`即可。"""
 
     document_dock_visible: bool = True
@@ -96,7 +96,7 @@ class FnExecuteWindowConfig(BaseWindowConfig):
     document_dock_initial_area: DockWidgetArea = RightDockWidgetArea
     """`Document停靠窗口`的初始停靠区域。"""
 
-    document_dock_initial_size: Tuple[Optional[int], Optional[int]] = (614, None)
+    document_dock_initial_size: Tuple[Optional[int], Optional[int]] = (450, None)
     """`Document停靠窗口`的初始大小，格式为`(width, height)`，可以只设置其中一个维度，另一个不需要设置的维度置为`None`即可。"""
 
     output_browser_config: Optional[OutputBrowserConfig] = None
