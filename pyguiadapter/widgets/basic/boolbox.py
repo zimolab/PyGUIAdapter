@@ -9,6 +9,10 @@ from ...utils import IconType, get_icon, type_check
 
 @dataclasses.dataclass(frozen=True)
 class BoolBoxConfig(CommonParameterWidgetConfig):
+    """
+    BoolBox控件的配置类。
+    """
+
     default_value: Optional[bool] = False
     true_text: str = "True"
     false_text: str = "False"
