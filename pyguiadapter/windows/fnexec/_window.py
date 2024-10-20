@@ -64,7 +64,10 @@ class FnExecuteWindow(BaseFnExecuteWindow):
             self.add_parameters(self._bundle.widget_configs)
         except Exception as e:
             messagebox.show_exception_messagebox(
-                self, e, "Error when initializing parameters widgets", detail=True
+                self,
+                exception=e,
+                message="failed to create parameter widget: ",
+                detail=True,
             )
             exit(-1)
         # noinspection PyProtectedMember
@@ -911,7 +914,7 @@ class FnExecuteWindow(BaseFnExecuteWindow):
 
     def is_function_cancelable(self) -> bool:
         """
-        检查函数是否被设置为可取消函数
+        检查函数是否为可取消函数
 
         Returns:
             返回函数是否可取消
