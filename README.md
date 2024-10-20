@@ -7,7 +7,7 @@
 
 
 <div style="text-align: center;">
-    <img src="mk-docs/assets/hello_world.png" />
+    <img src="docs/assets/hello_world.png" />
 </div>
 
 
@@ -62,7 +62,7 @@ if __name__ == "__main__":
 ```
 
 <div style="text-align:center">
-    <img src="docs/images/process_integers.gif" />
+    <img src="docs/assets/process_integers.gif" />
 </div>
 
 
@@ -203,7 +203,7 @@ if __name__ == "__main__":
 **界面效果如下：**
 
 <div style="text-align:center">
-    <img src="docs/images/equation_solver.gif" />
+    <img src="docs/assets/equation_solver.gif" />
 </div>
 
 
