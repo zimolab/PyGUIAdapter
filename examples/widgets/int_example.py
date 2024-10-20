@@ -1,22 +1,27 @@
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.adapter.uoutput import uprint
+from pyguiadapter.widgets import IntSpinBoxConfig
 
 
-def int_example(int_arg1: int, int_arg2: int, int_arg3: int = 100) -> int:
+def int_example(arg1: int, arg2: int, arg3: int = 100) -> int:
     """
-    example for **int** and **IntSpinBox**
-    @param int_arg1: min_value=-100, max_value=100, step=2
-    @param int_arg2: max_value = 999, prefix="$"
-    @param int_arg3: suffix = "(hex)", display_integer_base=16
+    A simple example for **int** and **IntSpinBox**
+
+    @param arg1: description for arg1
+    @param arg2: description for arg2
+    @param arg3: description for arg3
+
     @return:
 
     @params
-    [int_arg1]
+    # parameter widget config for arg1
+    [arg1]
     default_value = -100
     min_value = -100
     max_value = 100
 
-    [int_arg2]
+    # parameter widget config for arg2
+    [arg2]
     default_value = 1000
     max_value = 999
     prefix = "$"
@@ -24,10 +29,10 @@ def int_example(int_arg1: int, int_arg2: int, int_arg3: int = 100) -> int:
     @end
 
     """
-    uprint("int_arg1:", int_arg1)
-    uprint("int_arg2:", int_arg2)
-    uprint("int_arg3:", int_arg3)
-    return int_arg1 + int_arg2 + int_arg3
+    uprint("arg1:", arg1)
+    uprint("arg2:", arg2)
+    uprint("arg3:", arg3)
+    return arg1 + arg2 + arg3
 
 
 if __name__ == "__main__":
@@ -35,10 +40,10 @@ if __name__ == "__main__":
     adapter.add(
         int_example,
         widget_configs={
-            "int_arg3": {
-                "suffix": "(hex)",
-                "display_integer_base": 16,
-            }
+            # parameter config for arg3
+            "arg3": IntSpinBoxConfig(
+                default_value=100, min_value=0, max_value=1000, step=10, prefix="$"
+            )
         },
     )
     adapter.run()

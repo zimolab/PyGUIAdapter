@@ -55,6 +55,10 @@ class CommonParameterWidgetConfig(BaseParameterWidgetConfig):
 
 
 class CommonParameterWidget(BaseParameterWidget):
+    """
+    通用参数控件基类。继承自 `BaseParameterWidget` 类。为所有参数控件定义了基本的布局和整体外观。目前内置控件均继承自此类。
+    """
+
     ConfigClass: Type[CommonParameterWidgetConfig] = NotImplemented
 
     def __init__(
@@ -180,6 +184,12 @@ class CommonParameterWidget(BaseParameterWidget):
     @property
     @abstractmethod
     def value_widget(self) -> QWidget:
+        """
+        返回“值控件”。此为抽象方法，必须在子类中实现。
+
+        Returns:
+            控件示例。
+        """
         pass
 
     @property
@@ -261,11 +271,26 @@ class CommonParameterWidget(BaseParameterWidget):
         self.parameter_error_label.setHidden(True)
 
     @abstractmethod
-    def set_value_to_widget(self, value: Any):
+    def set_value_to_widget(self, value: Any) -> None:
+        """
+        将用户传入的值设置到“值控件”中。此为抽象方法，必须在子类中实现。
+
+        Args:
+            value: 用户传入的值
+
+        Returns:
+            无返回值
+        """
         pass
 
     @abstractmethod
     def get_value_from_widget(self) -> Any:
+        """
+        从“值控件”中获取用户当前输入的值。此为抽象方法，必须在子类中实现。
+
+        Returns:
+            用户当前输入的值
+        """
         pass
 
     def on_parameter_error(self, parameter_name: str, error: Any):
