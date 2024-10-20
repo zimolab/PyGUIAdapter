@@ -1,3 +1,11 @@
+"""
+@Time    : 2024.10.20
+@File    : uclipboard.py
+@Author  : zimolab
+@Project : PyGUIAdapter
+@Desc    : 提供了访问系统剪贴板的相关接口
+"""
+
 from concurrent.futures import Future
 
 from typing import Optional
@@ -15,12 +23,26 @@ from .ucontext import _context
 
 
 def get_text() -> Optional[str]:
+    """
+    获取系统剪贴板中的文本内容。
+
+    Returns:
+        系统剪贴板中当前文本，如果剪贴板为空则返回None。
+    """
     future = Future()
     _context.sig_clipboard_operation.emit(future, CLIPBOARD_GET_TEXT, None)
     return future.result()
 
 
-def set_text(text: str):
+def set_text(text: str) -> None:
+    """
+    设置系统剪贴板中当前文本。
+
+    Args:
+        text: 要设置的文本
+    Returns:
+        无返回值
+    """
     future = Future()
     _context.sig_clipboard_operation.emit(future, CLIPBOARD_SET_TEXT, text)
     return future.result()
