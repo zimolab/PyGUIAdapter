@@ -1,3 +1,11 @@
+"""
+@Time    : 2024.10.20
+@File    : action.py
+@Author  : zimolab
+@Project : PyGUIAdapter
+@Desc    : 定义了动作（`Action`）配置类、分割符（`Separator`）类以及相关常量。
+"""
+
 import dataclasses
 from typing import Optional, Callable, ForwardRef
 
