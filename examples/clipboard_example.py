@@ -1,8 +1,6 @@
-import time
-
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.adapter.ucontext import uprint, is_function_cancelled
 from pyguiadapter.adapter import uclipboard
+from pyguiadapter.adapter.uoutput import uprint
 from pyguiadapter.extend_types import text_t
 
 

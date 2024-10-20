@@ -1,5 +1,5 @@
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.adapter.ucontext import uprint
+from pyguiadapter.adapter.uoutput import uprint
 from pyguiadapter.extend_types import color_hex_t
 from pyguiadapter.widgets import ColorHexPickerConfig
 

@@ -1,7 +1,7 @@
 from typing import List
 
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.adapter.ucontext import uprint
+from pyguiadapter.adapter.uoutput import uprint
 
 
 def list_example(arg1: list, arg2: List, arg3: list):
