@@ -19,26 +19,58 @@ from .utils import move_window
 DEFAULT_POSITION = (0.5, 0.9)
 
 TextAlignment = Union[Qt.AlignmentFlag, int]
+"""文字对齐方式"""
+
 AlignCenter = Qt.AlignVCenter | Qt.AlignHCenter
+"""居中对齐"""
+
 AlignLeft = Qt.AlignLeft | Qt.AlignVCenter
+"""左对齐"""
+
 AlignRight = Qt.AlignRight | Qt.AlignVCenter
+"""右对齐"""
 
 
 @dataclasses.dataclass(frozen=True)
 class ToastConfig(object):
+    """
+    Toast控件配置类
+    """
+
     opacity: float = 0.9
+    """不透明度"""
+
     background_color: str = COLOR_TOAST_BACKGROUND_CLASSIC
+    """背景颜色"""
+
     text_color: str = COLOR_TOAST_TEXT_CLASSIC
+    """文字颜色"""
+
     text_padding: int = 50
+    """文字边距"""
+
     text_alignment: Optional[TextAlignment] = None
+    """文字对齐方式"""
+
     font_family: Union[Sequence[str], str] = FONT_FAMILY
+    """字体"""
+
     font_size: Optional[int] = FONT_HUGE
+    """字体大小"""
+
     position: Optional[Tuple[Union[int, float, None], Union[int, float, None]]] = (
         DEFAULT_POSITION
     )
+    """显示位置，可以使用百分比或绝对坐标，比如`(0.5, 0.5)`表示在屏幕中心显示，`(100, 100)`表示在屏幕坐标x=100 y=100处显示"""
+
     fixed_size: Optional[Tuple[int, int]] = None
+    """固定尺寸"""
+
     fade_out: Optional[int] = None
+    """淡出时间"""
+
     styles: Optional[Dict[str, str]] = None
+    """额外样式"""
 
 
 class ToastWidget(QLabel):
