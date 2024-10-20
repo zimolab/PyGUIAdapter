@@ -80,7 +80,7 @@ class BaseWindowEventListener(object):
         """
         return True
 
-    def on_destroy(self, window: "BaseWindow"):
+    def on_destroy(self, window: "BaseWindow") -> None:
         """
         事件回调函数，在窗口销毁后调用（注意：在该函数回调后，还将回调一次`on_hide()`）。
 
@@ -92,7 +92,7 @@ class BaseWindowEventListener(object):
         """
         pass
 
-    def on_hide(self, window: "BaseWindow"):
+    def on_hide(self, window: "BaseWindow") -> None:
         """
         事件回调函数，在窗口被隐藏后调用（注意：在`on_destroy()`被回调后，此函数将被回调）。
 
@@ -104,7 +104,7 @@ class BaseWindowEventListener(object):
         """
         pass
 
-    def on_show(self, window: "BaseWindow"):
+    def on_show(self, window: "BaseWindow") -> None:
         """
         事件回调函数，在窗口显示后调用。
 
@@ -237,7 +237,7 @@ class BaseWindow(QMainWindow):
         self.set_font(self._config.font_family, self._config.font_size)
         self.set_stylesheet(self._config.stylesheet)
 
-    def set_title(self, title: str):
+    def set_title(self, title: str) -> None:
         """
         设置窗口标题。
 
@@ -260,7 +260,7 @@ class BaseWindow(QMainWindow):
         """
         return self.windowTitle()
 
-    def set_icon(self, icon: IconType):
+    def set_icon(self, icon: IconType) -> None:
         """
         设置窗口图标。
 
@@ -274,7 +274,7 @@ class BaseWindow(QMainWindow):
         icon = get_icon(icon) or QIcon()
         self.setWindowIcon(icon)
 
-    def set_always_on_top(self, enabled: bool):
+    def set_always_on_top(self, enabled: bool) -> None:
         """
         设置窗口是否总是置顶。
 
@@ -299,7 +299,7 @@ class BaseWindow(QMainWindow):
         """
         return bool(self.windowFlags() & Qt.WindowStaysOnTopHint)
 
-    def set_size(self, size: Union[Tuple[int, int], QSize]):
+    def set_size(self, size: Union[Tuple[int, int], QSize]) -> None:
         """
         设置窗口尺寸。
 
@@ -326,7 +326,7 @@ class BaseWindow(QMainWindow):
         size = self.size()
         return size.width(), size.height()
 
-    def set_position(self, position: Optional[Tuple[int, int]]):
+    def set_position(self, position: Optional[Tuple[int, int]]) -> None:
         """
         设置窗口在屏幕上的位置。
 
@@ -354,7 +354,7 @@ class BaseWindow(QMainWindow):
         pos = self.pos()
         return pos.x(), pos.y()
 
-    def set_font(self, font_family: Union[str, Sequence[str]], font_size: int):
+    def set_font(self, font_family: Union[str, Sequence[str]], font_size: int) -> None:
         """
         设置窗口字体。
 
@@ -408,7 +408,7 @@ class BaseWindow(QMainWindow):
         """
         return self.font().families()
 
-    def set_stylesheet(self, stylesheet: Optional[str]):
+    def set_stylesheet(self, stylesheet: Optional[str]) -> None:
         """
         为窗口设置样式表（QSS）格式。
 
@@ -574,7 +574,7 @@ class BaseWindow(QMainWindow):
         return clipboard.text()
 
     @staticmethod
-    def set_clipboard_text(text: str):
+    def set_clipboard_text(text: str) -> None:
         """
         设置剪贴板内容。
 
@@ -661,7 +661,7 @@ class BaseWindow(QMainWindow):
         duration: int = 2000,
         config: Optional[ToastConfig] = None,
         clear: bool = False,
-    ):
+    ) -> None:
         """
         显示一条toast消息。
 
@@ -682,7 +682,7 @@ class BaseWindow(QMainWindow):
         self.sig_clear_toasts.connect(toast.finish)
         toast.start()
 
-    def clear_toasts(self):
+    def clear_toasts(self) -> None:
         """
         清除之前发出的toast消息。
 
