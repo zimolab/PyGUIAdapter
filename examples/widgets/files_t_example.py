@@ -1,7 +1,7 @@
 import os.path
 
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.adapter.ucontext import uprint
+from pyguiadapter.adapter.uoutput import uprint
 from pyguiadapter.widgets import MultiFileSelectConfig
 from pyguiadapter.extend_types import files_t
 

@@ -2,7 +2,8 @@ import time
 
 from pyguiadapter.adapter import GUIAdapter, udialog
 from pyguiadapter.adapter import uprogress
-from pyguiadapter.adapter.ucontext import is_function_cancelled, uprint
+from pyguiadapter.adapter.ucontext import is_function_cancelled
+from pyguiadapter.adapter.uoutput import uprint
 
 
 def progressbar_example(total: int = 100, delay: float = 0.5):

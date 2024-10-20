@@ -6,7 +6,7 @@ from qtpy.QtWidgets import QWidget, QVBoxLayout, QLabel, QDialogButtonBox
 
 from pyguiadapter.adapter import GUIAdapter, BaseCustomDialog
 from pyguiadapter.adapter import udialog
-from pyguiadapter.adapter.ucontext import uprint
+from pyguiadapter.adapter.uoutput import uprint
 from pyguiadapter.exceptions import ParameterError
 
 

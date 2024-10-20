@@ -1,6 +1,6 @@
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.adapter import uinput
-from pyguiadapter.adapter.ucontext import uprint
+from pyguiadapter.adapter.uoutput import uprint
 from pyguiadapter.extend_types import choices_t
 
 

@@ -1,3 +1,12 @@
+"""
+@Time    : 2024.10.20
+@File    : extend_types.py
+@Author  : zimolab
+@Project : PyGUIAdapter
+@Desc    : 定义了一些语义化类型。
+"""
+
+
 # noinspection PyPep8Naming
 class text_t(str):
     pass

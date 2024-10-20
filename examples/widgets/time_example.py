@@ -3,7 +3,7 @@ from datetime import time
 from qtpy.QtCore import QTime
 
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.adapter.ucontext import uprint
+from pyguiadapter.adapter.uoutput import uprint
 from pyguiadapter.widgets import TimeEditConfig
 
 

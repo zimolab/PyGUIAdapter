@@ -1,11 +1,9 @@
 from pyguiadapter.adapter import GUIAdapter
+from pyguiadapter.adapter.uoutput import uprint
+from pyguiadapter.extend_types import color_tuple_t
 from pyguiadapter.widgets import (
-    ColorPickerConfig,
-    ColorTuplePicker,
     ColorTuplePickerConfig,
 )
-from pyguiadapter.adapter.ucontext import uprint
-from pyguiadapter.extend_types import color_tuple_t
 
 
 def color_tuple_t_example(

@@ -1,6 +1,6 @@
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.adapter import udialog
-from pyguiadapter.adapter.ucontext import uprint
+from pyguiadapter.adapter.uoutput import uprint
 from pyguiadapter.extend_types import text_t
 from pyguiadapter.utils import messagebox
 

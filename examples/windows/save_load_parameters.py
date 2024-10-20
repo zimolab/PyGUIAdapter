@@ -4,7 +4,7 @@ from typing import Any, Dict
 
 from pyguiadapter.action import Action
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.adapter.ucontext import uprint
+from pyguiadapter.adapter.uoutput import uprint
 from pyguiadapter.exceptions import ParameterError
 from pyguiadapter.extend_types import color_t, json_obj_t
 from pyguiadapter.menu import Menu

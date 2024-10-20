@@ -1,7 +1,8 @@
 import time
 
 from pyguiadapter.adapter import GUIAdapter
-from pyguiadapter.adapter.ucontext import uprint, is_function_cancelled
+from pyguiadapter.adapter.ucontext import is_function_cancelled
+from pyguiadapter.adapter.uoutput import uprint
 from pyguiadapter.windows.fnexec import FnExecuteWindowConfig
 
 

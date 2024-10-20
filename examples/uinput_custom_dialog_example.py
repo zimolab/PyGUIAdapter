@@ -6,7 +6,7 @@ from qtpy.QtWidgets import QWidget, QLineEdit, QTextEdit, QDateEdit
 from qtpy.uic import loadUi
 
 from pyguiadapter.adapter import uinput, GUIAdapter
-from pyguiadapter.adapter.ucontext import uprint
+from pyguiadapter.adapter.uoutput import uprint
 from pyguiadapter.extend_types import text_t
 from pyguiadapter.utils import IconType
 from pyguiadapter.utils.inputdialog import UniversalInputDialog
