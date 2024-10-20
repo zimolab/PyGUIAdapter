@@ -1,3 +1,11 @@
+"""
+@Time    : 2024.10.20
+@File    : inputdialog.py
+@Author  : zimolab
+@Project : PyGUIAdapter
+@Desc    : 输入对话框相关的工具函数
+"""
+
 import ast
 import json
 from abc import abstractmethod
@@ -29,7 +37,13 @@ from ._ui import to_qcolor, convert_color, IconType
 from .dialog import BaseCustomDialog
 from .messagebox import show_critical_message
 
+# 输入控件的回显模式
+# 常量别名，方便开发者直接导入使用
 EchoMode = QLineEdit.EchoMode
+PasswordEchoMode = EchoMode.Password
+PasswordEchoOnEdit = EchoMode.PasswordEchoOnEdit
+NormalEchoMode = EchoMode.Normal
+NoEcho = EchoMode.NoEcho
 
 
 def input_integer(
@@ -41,6 +55,21 @@ def input_integer(
     max_value: int = 2147483647,
     step: int = 1,
 ) -> Optional[int]:
+    """
+    弹出一个整数输入对话框，并返回输入的整数值。
+
+    Args:
+        parent: 父窗口
+        title: 对话框标题
+        label: 提示标签
+        value: 初始值
+        min_value: 最大值
+        max_value: 最小值
+        step: 单次增加的步长
+
+    Returns:
+        输入的整数值，如果用户取消输入则返回 None。
+    """
     ret_val, ok = QInputDialog.getInt(
         parent, title, label, value, min_value, max_value, step
     )
@@ -59,6 +88,22 @@ def input_float(
     decimals: int = 3,
     step: float = 1.0,
 ) -> Optional[float]:
+    """
+    弹出一个浮点数输入对话框，并返回输入的浮点数值。
+
+    Args:
+        parent: 父窗口
+        title: 对话框标题
+        label: 提示标签
+        value: 初始值
+        min_value: 最小值
+        max_value: 最大值
+        decimals: 小数位数
+        step: 单次增加的步长
+
+    Returns:
+        输入的浮点数值，如果用户取消输入则返回 None。
+    """
     value = float(value)
     min_value = float(min_value)
     max_value = float(max_value)
@@ -84,6 +129,18 @@ def input_text(
     label: str = "",
     text: str = "",
 ):
+    """
+    弹出一个多行文本输入对话框，并返回输入的文本。
+
+    Args:
+        parent: 父窗口
+        title: 对话框标题
+        label: 提示标签
+        text:  初始文本
+
+    Returns:
+        输入的文本，如果用户取消输入则返回 None。
+    """
     text, ok = QInputDialog.getMultiLineText(parent, title, label, text)
     if not ok:
         return None
@@ -97,6 +154,19 @@ def input_string(
     echo: Optional[EchoMode] = None,
     text: str = "",
 ) -> Optional[str]:
+    """
+    弹出一个单行文本输入对话框，并返回输入的文本。
+
+    Args:
+        parent: 父窗口
+        title: 对话框标题
+        label: 提示标签
+        echo:  回显模式，默认为 None，即使用 QLineEdit.Normal 回显模式
+        text:  初始文本
+
+    Returns:
+        输入的文本，如果用户取消输入则返回 None。
+    """
     if echo is None:
         echo = EchoMode.Normal
     text, ok = QInputDialog.getText(parent, title, label, echo, text)
@@ -113,6 +183,20 @@ def select_item(
     current: int = 0,
     editable: bool = False,
 ) -> Optional[str]:
+    """
+    弹出一个选项列表对话框，并返回用户选择的选项。
+
+    Args:
+        parent: 父窗口
+        items: 选项列表
+        title: 对话框标题
+        label: 提示标签
+        current: 当前选择的选项索引
+        editable: 是否允许编辑
+
+    Returns:
+        用户选择的选项，如果用户取消输入则返回 None。
+    """
     ret_val, ok = QInputDialog.getItem(
         parent, title, label, items, current, editable=editable
     )
@@ -129,6 +213,19 @@ def input_color(
     return_type: Literal["tuple", "str", "QColor"] = "str",
 ) -> Union[Tuple[int, int, int], Tuple[int, int, int], str, QColor, None]:
     initial = to_qcolor(initial)
+    """
+    弹出一个颜色选择对话框，并返回用户选择的颜色。
+
+    Args:
+        parent: 父窗口
+        initial: 初始颜色，可以是 QColor 对象，也可以是字符串表示的颜色值，也可以是元组表示的颜色值
+        title: 对话框标题
+        alpha_channel: 是否显示 alpha 通道
+        return_type: 返回值类型，可以是 "tuple"，"str"，"QColor" 之一
+
+    Returns:
+        用户选择的颜色，如果用户取消输入则返回 None。
+    """
     if alpha_channel:
         ret_val = QColorDialog.getColor(
             initial, parent, title, options=QColorDialog.ShowAlphaChannel
@@ -144,6 +241,10 @@ LineWrapMode = QTextEdit.LineWrapMode
 
 
 class UniversalInputDialog(BaseCustomDialog):
+    """
+    通用输入对话框基类，用于实现自定义输入对话框。
+    """
+
     def __init__(
         self,
         parent: Optional[QWidget],
@@ -154,6 +255,17 @@ class UniversalInputDialog(BaseCustomDialog):
         cancel_button_text: Optional[str] = "Cancel",
         **kwargs,
     ):
+        """
+        构造函数，创建自定义输入对话框。
+        Args:
+            parent:  父窗口
+            title:  对话框标题
+            icon:  对话框图标
+            size:  对话框大小
+            ok_button_text: 确定按钮文本
+            cancel_button_text:  取消按钮文本
+            **kwargs:  其他参数
+        """
         super().__init__(parent, **kwargs)
         self._title = title or ""
         self._icon = icon
@@ -186,6 +298,12 @@ class UniversalInputDialog(BaseCustomDialog):
 
     @abstractmethod
     def create_main_widget(self) -> QWidget:
+        """
+        创建主部件，子类必须实现。
+
+        Returns:
+            主部件
+        """
         pass
 
     def _setup_buttons(self):
@@ -213,14 +331,34 @@ class UniversalInputDialog(BaseCustomDialog):
 
     @abstractmethod
     def get_result(self) -> Any:
+        """
+        获取输入结果，子类必须实现。
+
+        Returns:
+            输入结果
+        """
         pass
 
     @classmethod
     def new_instance(cls, parent: QWidget, **kwargs) -> "UniversalInputDialog":
+        """
+        创建新的实例。
+
+        Args:
+            parent: 父窗口
+            **kwargs: 构造函数参数
+
+        Returns:
+            新的实例
+        """
         return super().new_instance(parent, **kwargs)
 
 
 class CodeEditDialog(UniversalInputDialog):
+    """
+    代码编辑器输入对话框。
+    """
+
     def __init__(
         self,
         parent: Optional[QWidget],
@@ -239,6 +377,26 @@ class CodeEditDialog(UniversalInputDialog):
         font_size: Optional[int] = None,
         **kwargs,
     ):
+        """
+        构造函数。
+
+        Args:
+            parent: 父窗口
+            title:  对话框标题
+            icon:  对话框图标
+            size:  对话框大小
+            ok_button_text: 确定按钮文本
+            cancel_button_text:  取消按钮文本
+            initial_text:  初始文本
+            auto_indent:  自动缩进
+            indent_size:  缩进大小
+            auto_parentheses:  自动括号匹配
+            line_wrap_mode:  换行模式
+            line_wrap_width:  换行宽度
+            font_family:  字体
+            font_size:  字体大小
+            **kwargs:  其他参数
+        """
         self._initial_text = initial_text
         self._auto_indent = auto_indent
         self._indent_size = indent_size
@@ -282,11 +440,14 @@ class CodeEditDialog(UniversalInputDialog):
         return main_widget
 
     def get_result(self) -> str:
-        assert self._main_widget is not None
         return self._main_widget.toPlainText()
 
 
 class ObjectInputDialog(CodeEditDialog):
+    """
+    对象输入对话框基类。
+    """
+
     def __init__(
         self,
         parent: Optional[QWidget],
@@ -305,6 +466,26 @@ class ObjectInputDialog(CodeEditDialog):
         font_size: Optional[int] = None,
         **kwargs,
     ):
+        """
+        构造函数。
+
+        Args:
+            parent: 父窗口
+            title:  对话框标题
+            icon:  对话框图标
+            size:  对话框大小
+            ok_button_text: 确定按钮文本
+            cancel_button_text:  取消按钮文本
+            initial_text:  初始文本
+            auto_indent:  自动缩进
+            indent_size:  缩进大小
+            auto_parentheses:  自动括号匹配
+            line_wrap_mode:  换行模式
+            line_wrap_width:  换行宽度
+            font_family:  字体
+            font_size:  字体大小
+            **kwargs:  其他参数
+        """
         super().__init__(
             parent,
             title,
@@ -326,6 +507,12 @@ class ObjectInputDialog(CodeEditDialog):
 
     @abstractmethod
     def get_object(self) -> Any:
+        """
+        获取输入的对象。子类必须实现。
+
+        Returns:
+            输入的对象。
+        """
         pass
 
     def on_accept(self):
@@ -338,11 +525,14 @@ class ObjectInputDialog(CodeEditDialog):
             self.accept()
 
     def get_result(self) -> Any:
-        assert self._main_widget is not None
         return self._current_value
 
 
 class JsonInputDialog(ObjectInputDialog):
+    """
+    JSON 输入对话框，从用户输入的 JSON 文本获得 Python 对象。
+    """
+
     def create_main_widget(self) -> QCodeEditor:
         editor = super().create_main_widget()
         highlighter = QJSONHighlighter(editor)
@@ -350,6 +540,15 @@ class JsonInputDialog(ObjectInputDialog):
         return editor
 
     def get_object(self) -> Any:
+        """
+        获取输入的 JSON 对象。
+
+        Returns:
+            输入的 JSON 对象。
+
+        Raises:
+            Exception: 输入的文本不是合法的 JSON 文本时抛出异常。
+        """
         editor = cast(QCodeEditor, self._main_widget)
         text = editor.toPlainText()
         if text.strip() == "":
@@ -360,6 +559,10 @@ class JsonInputDialog(ObjectInputDialog):
 
 
 class PyLiteralInputDialog(ObjectInputDialog):
+    """
+    Python 字面量输入对话框，从用户输入的python字面量代码获得 Python 对象（使用ast.literal_eval()）。
+    """
+
     def create_main_widget(self) -> QCodeEditor:
         editor = super().create_main_widget()
         highlighter = QPythonHighlighter(editor)
@@ -367,6 +570,15 @@ class PyLiteralInputDialog(ObjectInputDialog):
         return editor
 
     def get_object(self) -> Any:
+        """
+        获取输入的 Python 字面量对象。
+
+        Returns:
+            输入的 Python 字面量对象。
+
+        Raises:
+              Exception: 输入的文本不是合法的python字面量代码时抛出异常。
+        """
         editor = cast(QCodeEditor, self._main_widget)
         text = editor.toPlainText()
         if text.strip() == "":
@@ -393,6 +605,32 @@ def input_json_object(
     font_size: Optional[int] = None,
     **kwargs,
 ) -> Any:
+    """
+    弹出一个 JSON 输入对话框，并返回用户输入的 JSON 对象。
+
+    Args:
+        parent:  父窗口
+        title:  对话框标题
+        icon:  对话框图标
+        size:  对话框大小
+        ok_button_text: 确定按钮文本
+        cancel_button_text:  取消按钮文本
+        initial_text:  初始文本
+        auto_indent:  自动缩进
+        indent_size:  缩进大小
+        auto_parentheses:  自动括号匹配
+        line_wrap_mode:  换行模式
+        line_wrap_width:  换行宽度
+        font_family:  字体
+        font_size:  字体大小
+        **kwargs:  其他参数
+
+    Returns:
+        用户输入的 JSON 对象，如果用户取消输入则返回 None。
+
+    Raises:
+        Exception: 输入的文本不是合法的 JSON 文本时抛出异常。
+    """
     return JsonInputDialog.show_and_get_result(
         parent,
         title=title,
@@ -429,6 +667,32 @@ def input_py_literal(
     font_size: Optional[int] = None,
     **kwargs,
 ) -> PyLiteralType:
+    """
+    弹出一个 Python 字面量输入对话框，并返回用户输入的 Python 字面量对象。
+
+    Args:
+        parent:  父窗口
+        title:  对话框标题
+        icon:  对话框图标
+        size:  对话框大小
+        ok_button_text: 确定按钮文本
+        cancel_button_text:  取消按钮文本
+        initial_text:  初始文本
+        auto_indent:  自动缩进
+        indent_size:  缩进大小
+        auto_parentheses:  自动括号匹配
+        line_wrap_mode:  换行模式
+        line_wrap_width:  换行宽度
+        font_family:  字体
+        font_size:  字体大小
+        **kwargs:  其他参数
+
+    Returns:
+        用户输入的 Python 字面量对象，如果用户取消输入则返回 None。
+
+    Raises:
+        Exception: 输入的文本不是合法的python字面量代码时抛出异常。
+    """
     return PyLiteralInputDialog.show_and_get_result(
         parent,
         title=title,
@@ -451,4 +715,15 @@ def input_py_literal(
 def get_custom_input(
     parent: QWidget, input_dialog_class: Type[UniversalInputDialog], **input_dialog_args
 ) -> Any:
+    """
+    弹出一个自定义输入对话框，并返回用户输入的对象。
+
+    Args:
+        parent:  父窗口
+        input_dialog_class:  自定义输入对话框类
+        **input_dialog_args:  自定义输入对话框构造函数参数
+
+    Returns:
+        用户输入的对象，如果用户取消输入则返回 None。
+    """
     return input_dialog_class.show_and_get_result(parent, **input_dialog_args)
