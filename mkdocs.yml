@@ -28,10 +28,15 @@ nav:
     - pyguiadapter.action: apis/pyguiadapter.action.md
     - pyguiadapter.toolbar: apis/pyguiadapter.toolbar.md
     - pyguiadapter.menu: apis/pyguiadapter.menu.md
+    - pyguiadapter.adapter.adapter: apis/pyguiadapter.adapter.adapter.md
+    - pyguiadapter.adapter.ucontext: apis/pyguiadapter.adapter.ucontext.md
     - pyguiadapter.adapter.uoutput: apis/pyguiadapter.adapter.uoutput.md
+    - pyguiadapter.adapter.uinput: apis/pyguiadapter.adapter.uinput.md
     - pyguiadapter.adapter.uprogress: apis/pyguiadapter.adapter.uprogress.md
     - pyguiadapter.adapter.udialog: apis/pyguiadapter.adapter.udialog.md
-    - pyguiadapter.adapter.uinput: apis/pyguiadapter.adapter.uinput.md
+    - pyguiadapter.adapter.ubeep: apis/pyguiadapter.adapter.ubeep.md
+    - pyguiadapter.adapter.utoast: apis/pyguiadapter.adapter.utoast.md
+    - pyguiadapter.adapter.uclipboard: apis/pyguiadapter.adapter.uclipboard.md
     - pyguiadapter.textbrowser: apis/pyguiadapter.textbrowser.md
     - pyguiadapter.windows: apis/pyguiadapter.windows.md
     - pyguiadapter.windows.fnexec: apis/pyguiadapter.windows.fnexec.md
