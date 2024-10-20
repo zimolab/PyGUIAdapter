@@ -1,3 +1,11 @@
+"""
+@Time    : 2024.10.20
+@File    : _core.py
+@Author  : zimolab
+@Project : PyGUIAdapter
+@Desc    : 一些重要的工具函数和类型定义
+"""
+
 import ast
 import base64
 import hashlib
