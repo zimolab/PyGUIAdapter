@@ -20,9 +20,9 @@
 
 ### 3、窗口事件监听
 
-窗口的创建、显示、关闭、销毁、隐藏均被视为一种事件，开发者可以监听这些事件，并在这些事件发生时执行特定的代码。对窗口事件的监听，需要通过[`BaseWindowEventListener`]({{main_branch}}/pyguiadapter/window.py)对象来完成，开发者可以子类化该类，或者使用一个它的一个现成的子类[`SimpleWindowEventListener`]({{main_branch}}/pyguiadapter/window.py)。
+窗口的创建、显示、关闭、销毁、隐藏均被视为一种事件，开发者可以监听这些事件，并在这些事件发生时执行特定的代码。对窗口事件的监听，需要通过[`BaseWindowEventListener`]({{main_branch}}/pyguiadapter/window.py)对象来完成，开发者可以子类化该类，或者使用一个它的一个现成子类[`SimpleWindowEventListener`]({{main_branch}}/pyguiadapter/window.py)。
 
-可以参考以下文档获取窗口事件的详细信息：
+可以参考以下文档获取窗口事件监听器的详细信息：
 
 - [`pyguiadapter.window.BaseWindowEventListener`](apis/pyguiadapter.window.md#pyguiadapter.window.BaseWindowEventListener)
 - [`pyguiadapter.window.SimpleWindowEventListener`](apis/pyguiadapter.window.md#pyguiadapter.window.SimpleWindowEventListener)
@@ -688,6 +688,96 @@ if __name__ == "__main__":
 <div style="text-align: center">
     <img src="../assets/window_event_example_2_output.png" />
 </div>
+
+
+除了可以使用[`BaseWindowEventListener`](apis/pyguiadapter.window.md#pyguiadapter.window.BaseWindowEventListener)或[`SimpleWindowEventListener`](apis/pyguiadapter.window.md#pyguiadapter.window.SimpleWindowEventListener)对函数执行窗口的事件进行监听，还可以使用函数执行窗口专用的事件监听器类：`FnExecuteWindowEventListener`或`SimpleFnExecuteWindowEventListener`。除了可以监听一般的窗口事件，它们还能对函数执行状态进行监听，包括：
+
+- 函数开始执行，此时将会回调`on_execute_start()`
+- 函数正常返回，此时将会回调`on_execute_result()`
+- 函数执行过程中发生异常，函数未正常返回，此时将回调`on_execute_error()`
+- 函数执行完毕，此时将会回调`on_execute_finish()`，由于不管函数是否正常返回，其最终都会回到该状态， 因此，可以保证在`on_execute_result()`或`on_execute_error()`回调之后`on_execute_finish()`一定会被回调
+
+
+
+在上述事件回调函数中，比较特殊的是`on_execute_result()`和`on_execute_error()`。这两个回调函数返回一个`bool`值，其作用是告诉`PyGUIAdapter`是否要对函数的返回值或异常执行默认的处理逻辑。若返回`True`，则`PyGUIAdapter`将在函数返回或发生异常后执行默认的操作，比如打印或弹窗显示返回值或异常信息。若返回`False`，则表示开发者已经在回调函数中完成了对函数返回值/异常处理，无需`PyGUIAdapter`再次进行处理。
+
+开发者可以查看以下文档，获取`FnExecuteWindowEventListener`或`SimpleFnExecuteWindowEventListener`的详细信息：
+
+- [`FnExecuteWindowEventListener`](apis/pyguiadapter.windows.fnexec.md#pyguiadapter.windows.fnexec.FnExecuteWindowEventListener)
+- [`SimpleFnExecuteWindowEventListener`](apis/pyguiadapter.windows.fnexec.md#pyguiadapter.windows.fnexec.SimpleFnExecuteWindowEventListener)
+
+
+
+下面是一个简单的示例：
+
+```python
+from pyguiadapter.adapter import GUIAdapter
+from pyguiadapter.utils import messagebox
+from pyguiadapter.windows.fnexec import (
+    FnExecuteWindow,
+    SimpleFnExecuteWindowEventListener,
+)
+
+
+def on_execute_start(window: FnExecuteWindow):
+    print("on_execute_start()")
+
+
+def on_execute_result(window: FnExecuteWindow, result) -> bool:
+    print(f"on_execute_result(): {result}")
+    messagebox.show_info_message(window, message=f"Result: {result}", title="Result")
+    return False
+
+
+def on_execute_error(window: FnExecuteWindow, error) -> bool:
+    print(f"on_execute_error(): {error}")
+    messagebox.show_exception_messagebox(window, error)
+    return False
+
+
+def on_execute_finish(window: FnExecuteWindow):
+    print("on_execute_finish()")
+
+
+def event_example_3(a: int = 1, b: int = 1):
+    return a / b
+
+
+if __name__ == "__main__":
+    event_listener = SimpleFnExecuteWindowEventListener(
+        on_execute_start=on_execute_start,
+        on_execute_result=on_execute_result,
+        on_execute_error=on_execute_error,
+        on_execute_finish=on_execute_finish,
+    )
+    adapter = GUIAdapter()
+    adapter.add(event_example_3, window_listener=event_listener)
+    adapter.run()
+```
+
+注意到，在本示例中，`on_execute_result()`和`on_execute_error()`回调函数均返回了`False`。
+
+<div style="text-align: center">
+    <img src="../assets/fn_execute_window_event_1.png" />
+</div>
+
+这表示将由开发者自行处理函数返回结果或函数执行异常，而不会执行默认的处理逻辑，具体而言，`PyGUIAdapter`将不会把函数执行结果或函数异常信息打印到输出浏览器中。
+
+下面是该程序的运行效果：
+
+（1）当函数正常返回时
+
+<div style="text-align: center">
+    <img src="../assets/fn_execute_window_event_2.png" />
+</div>
+
+（2）当函数发生异常时
+
+<div style="text-align: center">
+    <img src="../assets/fn_execute_window_event_3.png" />
+</div>
+
+
 
 ### 4、添加菜单和工具栏
 

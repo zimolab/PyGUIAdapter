@@ -10,11 +10,25 @@
         show_root_full_path: false
         show_source: true
 
+:::pyguiadapter.windows.fnexec.FnExecuteWindowEventListener
+    options:
+        heading_level: 3
+        show_root_full_path: false
+        show_source: false
+        
+        
+:::pyguiadapter.windows.fnexec.SimpleFnExecuteWindowEventListener
+    options:
+        heading_level: 3
+        show_root_full_path: false
+        show_source: false
+
 ::: pyguiadapter.windows.fnexec.FnExecuteWindow
     options:
         heading_level: 3
         show_root_full_path: false
         show_source: false
+
 ---
 
 ## 类型与常量
