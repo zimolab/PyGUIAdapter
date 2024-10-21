@@ -158,7 +158,24 @@ if __name__ == "__main__":
     ...
 ```
 
-对于非法的函数参数值，开发者只需抛出`ParameterError`异常，即完成了参数的校验工作。`PyGUIAdapter`将自动完成的后续的工作，以合适的方式提醒用户，函数的某个参数输入了一个不合适的值。
+对于非法的函数参数值，开发者只需抛出`ParameterError`异常，即完成了参数的校验工作。`PyGUIAdapter`将自动完成的后续的工作——以合适的方式提醒用户，函数的某个参数输入了一个不合适的值。
+
+当然，开发者如果偏爱所谓的“Validator”模式，或者想要复用某些校验逻辑，也可以轻松实现：
+
+```python
+def non_zero_validator(parameter_name: str, value: Union[int, float]):
+    if not isinstance(value, (int, float)):
+        raise ParameterError(parameter_name, message="must be a number!")
+        
+    if value == 0:
+        raise ParameterError(parameter_name, message="cannot be zero!")
+
+
+def your_function(a: int, b: int, c: float):
+    non_zero_validator("a", a)
+    non_zero_validator("b", b)
+    non_zero_validator("c", c)
+```
 
 <div style="text-align: center">
     <img src="../assets/handle_parameter_error.gif" />
