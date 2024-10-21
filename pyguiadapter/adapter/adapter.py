@@ -12,7 +12,6 @@ from collections import OrderedDict
 from typing import (
     Literal,
     Dict,
-    Any,
     Type,
     Tuple,
     List,
@@ -100,8 +99,6 @@ class GUIAdapter(object):
         document: Optional[str] = None,
         document_format: Literal["markdown", "html", "plaintext"] = "markdown",
         cancelable: bool = False,
-        on_execute_result: Callable[[Any], None] = None,
-        on_execute_error: Callable[[Exception], None] = None,
         *,
         widget_configs: Optional[
             Dict[str, Union[BaseParameterWidgetConfig, dict]]
@@ -122,8 +119,6 @@ class GUIAdapter(object):
             document: 函数的说明文档。若不指定，则尝试提取函数的docstring作为文档。
             document_format: 函数说明文档的格式。可以为"markdown"、"html"或"plaintext"。
             cancelable: 函数是否可取消。
-            on_execute_result: 执行函数成功后的回调函数。
-            on_execute_error: 执行函数失败后的回调函数。
             widget_configs: 函数参数控件配置。键为参数名，值为参数控件配置。
             window_config: 窗口配置。
             window_listener: 窗口事件监听器。
@@ -165,8 +160,6 @@ class GUIAdapter(object):
             window_listener=window_listener,
             window_toolbar=window_toolbar,
             window_menus=window_menus,
-            on_execute_result=on_execute_result,
-            on_execute_error=on_execute_error,
         )
         self._bundles[fn] = bundle
 

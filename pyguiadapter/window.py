@@ -154,30 +154,30 @@ class SimpleWindowEventListener(BaseWindowEventListener):
         self._on_close_callback = on_close
         self._on_destroy_callback = on_destroy
 
-    def on_create(self, window: "BaseWindow"):
+    def on_create(self, window: "BaseWindow") -> None:
         if self._on_create_callback:
             return self._on_create_callback(window)
-        super().on_create(window)
+        return super().on_create(window)
 
     def on_close(self, window: "BaseWindow") -> bool:
         if self._on_close_callback:
             return self._on_close_callback(window)
         return super().on_close(window)
 
-    def on_destroy(self, window: "BaseWindow"):
+    def on_destroy(self, window: "BaseWindow") -> None:
         if self._on_destroy_callback:
             return self._on_destroy_callback(window)
-        super().on_destroy(window)
+        return super().on_destroy(window)
 
-    def on_hide(self, window: "BaseWindow"):
+    def on_hide(self, window: "BaseWindow") -> None:
         if self._on_hide_callback:
             return self._on_hide_callback(window)
-        super().on_hide(window)
+        return super().on_hide(window)
 
-    def on_show(self, window: "BaseWindow"):
+    def on_show(self, window: "BaseWindow") -> None:
         if self._on_show_callback:
             return self._on_show_callback(window)
-        super().on_show(window)
+        return super().on_show(window)
 
 
 class BaseWindow(QMainWindow):

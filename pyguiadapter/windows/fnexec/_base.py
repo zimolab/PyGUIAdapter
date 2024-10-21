@@ -1,6 +1,6 @@
 import dataclasses
 from abc import abstractmethod
-from typing import Tuple, Dict, Union, Type, Optional, Literal
+from typing import Tuple, Dict, Union, Type, Optional, Literal, Any, Callable
 
 from qtpy.QtCore import QSize, Qt
 
@@ -14,7 +14,11 @@ from ...paramwidget import (
     BaseParameterWidgetConfig,
 )
 from ...utils import IconType
-from ...window import BaseWindow, BaseWindowConfig
+from ...window import (
+    BaseWindow,
+    BaseWindowConfig,
+    BaseWindowEventListener,
+)
 
 DEFAULT_EXECUTOR_CLASS = ThreadFunctionExecutor
 
@@ -402,3 +406,142 @@ class BaseFnExecuteWindow(BaseWindow, ExecuteStateListener):
     @abstractmethod
     def try_cancel_execution(self):
         pass
+
+
+class FnExecuteWindowEventListener(BaseWindowEventListener):
+    def on_execute_start(self, window: BaseFnExecuteWindow) -> None:
+        """
+        在函数执行开始时回调。
+
+        Args:
+            window: 当前窗口实例
+
+        Returns:
+            无返回值
+        """
+        pass
+
+    def on_execute_result(self, window: BaseFnExecuteWindow, result: Any) -> bool:
+        """
+        在函数执行成功（函数返回）时回调。
+
+        Args:
+            window: 当前窗口实例
+            result: 函数的返回值
+
+        Returns:
+            如果返回`True`，则允许`PyGUIAdapter`执行默认的后续操作，比如打印函数结果或弹窗显示函数结果等，否则阻止执行默认操作。默认返回`True`。
+        """
+        return True
+
+    def on_execute_error(self, window: BaseFnExecuteWindow, error: Exception) -> bool:
+        """
+        在函数执行失败（函数抛出异常）时回调。
+
+        Args:
+            window: 当前窗口实例
+            error: 函数抛出的异常
+
+        Returns:
+            如果返回`True`，则允许`PyGUIAdapter`执行默认的后续操作，比如打印函数异常或弹窗显示函数异常等，否则阻止执行默认操作。默认返回`True`。
+        """
+        return True
+
+    def on_execute_finish(self, window: BaseFnExecuteWindow) -> None:
+        """
+        在函数执行结束时回调，无论函数执行是否成功，该回调函数都会被调用。
+
+        Args:
+            window: 当前窗口实例
+
+        Returns:
+            无返回值
+        """
+        pass
+
+
+class SimpleFnExecuteWindowEventListener(FnExecuteWindowEventListener):
+    """
+    一个简单的`FnExecuteWindowEventListener`实现，方便不喜欢子类化方式的开发者使用。
+    """
+
+    def __init__(
+        self,
+        on_create: Callable[[BaseFnExecuteWindow], None] = None,
+        on_show: Callable[[BaseFnExecuteWindow], None] = None,
+        on_hide: Callable[[BaseFnExecuteWindow], None] = None,
+        on_close: Callable[[BaseFnExecuteWindow], bool] = None,
+        on_destroy: Callable[[BaseFnExecuteWindow], None] = None,
+        on_execute_start: Callable[[BaseFnExecuteWindow], None] = None,
+        on_execute_result: Callable[[BaseFnExecuteWindow, Any], bool] = None,
+        on_execute_error: Callable[[BaseFnExecuteWindow, Exception], bool] = None,
+        on_execute_finish: Callable[[BaseFnExecuteWindow], None] = None,
+    ):
+        """
+        构造函数。
+
+        Args:
+            on_create: `on_create`回调函数
+            on_show:  `on_show`回调函数
+            on_hide:  `on_hide`回调函数
+            on_close:  `on_close`回调函数
+            on_destroy: `on_destroy`回调函数
+            on_execute_start: `on_execute_start`回调函数
+            on_execute_result: `on_execute_result`回调函数
+            on_execute_error:  `on_execute_error`回调函数
+            on_execute_finish:  `on_execute_finish`回调函数
+        """
+        self._on_create = on_create
+        self._on_show = on_show
+        self._on_hide = on_hide
+        self._on_close = on_close
+        self._on_destroy = on_destroy
+        self._on_execute_start = on_execute_start
+        self._on_execute_result = on_execute_result
+        self._on_execute_error = on_execute_error
+        self._on_execute_finish = on_execute_finish
+
+    def on_create(self, window: BaseFnExecuteWindow) -> None:
+        if self._on_create is not None:
+            return self._on_create(window)
+        return super().on_create(window)
+
+    def on_show(self, window: BaseFnExecuteWindow) -> None:
+        if self._on_show is not None:
+            return self._on_show(window)
+        return super().on_show(window)
+
+    def on_hide(self, window: BaseFnExecuteWindow) -> None:
+        if self._on_hide is not None:
+            return self._on_hide(window)
+        return super().on_hide(window)
+
+    def on_close(self, window: BaseFnExecuteWindow) -> bool:
+        if self._on_close is not None:
+            return self._on_close(window)
+        return super().on_close(window)
+
+    def on_destroy(self, window: BaseFnExecuteWindow) -> None:
+        if self._on_destroy is not None:
+            return self._on_destroy(window)
+        super().on_destroy(window)
+
+    def on_execute_start(self, window: BaseFnExecuteWindow) -> None:
+        if self._on_execute_start is not None:
+            return self._on_execute_start(window)
+        return super().on_execute_start(window)
+
+    def on_execute_result(self, window: BaseFnExecuteWindow, result: Any) -> bool:
+        if self._on_execute_result is not None:
+            return self._on_execute_result(window, result)
+        return super().on_execute_result(window, result)
+
+    def on_execute_error(self, window: BaseFnExecuteWindow, error: Exception) -> bool:
+        if self._on_execute_error is not None:
+            return self._on_execute_error(window, error)
+        return super().on_execute_error(window, error)
+
+    def on_execute_finish(self, window: BaseFnExecuteWindow) -> None:
+        if self._on_execute_finish is not None:
+            return self._on_execute_finish(window)
+        return super().on_execute_finish(window)

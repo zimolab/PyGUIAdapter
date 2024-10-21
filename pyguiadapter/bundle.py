@@ -28,5 +28,3 @@ class FnBundle(object):
     window_listener: Optional[BaseWindowEventListener]
     window_toolbar: Optional[ToolBar]
     window_menus: Optional[List[Union[Menu, Separator]]]
-    on_execute_result: Optional[Callable[[Any, Dict[str, Any]], None]] = None
-    on_execute_error: Optional[Callable[[Exception, Dict[str, Any]], None]] = None

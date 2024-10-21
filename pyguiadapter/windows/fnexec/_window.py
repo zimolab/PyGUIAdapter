@@ -11,6 +11,7 @@ from ._base import (
     BaseFnExecuteWindow,
     DEFAULT_EXECUTOR_CLASS,
     FnExecuteWindowConfig,
+    FnExecuteWindowEventListener,
     DockWidgetArea,
     DockWidgetAreas,
 )
@@ -972,13 +973,14 @@ class FnExecuteWindow(BaseFnExecuteWindow):
         self._operation_area.set_execute_button_enabled(False)
         if self._config.disable_widgets_on_execute:
             self._parameter_area.disable_parameter_widgets(True)
-        # self._operation_area.set_clear_button_enabled(False)
         self._operation_area.set_cancel_button_enabled(False)
         self._parameter_area.clear_parameter_error(None)
 
     def on_execute_start(self, fn_info: FnInfo, arguments: Dict[str, Any]) -> None:
         super().on_execute_start(fn_info, arguments)
         self._operation_area.set_cancel_button_enabled(True)
+        if isinstance(self._bundle.window_listener, FnExecuteWindowEventListener):
+            self._bundle.window_listener.on_execute_start(self)
 
     def on_execute_finish(self, fn_info: FnInfo, arguments: Dict[str, Any]) -> None:
         self._config: FnExecuteWindowConfig
@@ -986,16 +988,24 @@ class FnExecuteWindow(BaseFnExecuteWindow):
         self._operation_area.set_execute_button_enabled(True)
         if self._config.disable_widgets_on_execute:
             self._parameter_area.disable_parameter_widgets(False)
-        # self._operation_area.set_clear_button_enabled(True)
         self._operation_area.set_cancel_button_enabled(False)
+
+        if isinstance(self._bundle.window_listener, FnExecuteWindowEventListener):
+            self._bundle.window_listener.on_execute_finish(self)
 
     def on_execute_result(
         self, fn_info: FnInfo, arguments: Dict[str, Any], result: Any
     ) -> None:
         self._config: FnExecuteWindowConfig
-        if callable(self._bundle.on_execute_result):
-            self._bundle.on_execute_result(result, arguments.copy())
-            return
+        # if callable(self._bundle.on_execute_result):
+        #     self._bundle.on_execute_result(result, arguments.copy())
+        #     return
+        if isinstance(self._bundle.window_listener, FnExecuteWindowEventListener):
+            should_continue = self._bundle.window_listener.on_execute_result(
+                self, result
+            )
+            if not should_continue:
+                return
 
         result_str = self._config.function_result_message.format(result)
 
@@ -1012,15 +1022,22 @@ class FnExecuteWindow(BaseFnExecuteWindow):
     ):
 
         self._config: FnExecuteWindowConfig
+
+        if isinstance(self._bundle.window_listener, FnExecuteWindowEventListener):
+            should_continue = self._bundle.window_listener.on_execute_error(self, error)
+            if not should_continue:
+                del error
+                return
+
         if isinstance(error, ParameterError):
             self._parameter_area.process_parameter_error(error)
             del error
             return
 
-        if callable(self._bundle.on_execute_error):
-            self._bundle.on_execute_error(error, arguments.copy())
-            del error
-            return
+        # if callable(self._bundle.on_execute_error):
+        #     self._bundle.on_execute_error(error, arguments.copy())
+        #     del error
+        #     return
 
         error_type = type(error).__name__
         error_msg = self._config.function_error_message.format(error_type, str(error))
