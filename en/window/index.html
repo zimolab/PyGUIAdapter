@@ -1680,8 +1680,8 @@
 <p>窗口的属性，如标题、图标、大小、位置、字体、样式等，均由窗口的配置类定义，<a href="https://github.com/zimolab/PyGUIAdapter/tree/main/pyguiadapter/window.py"><code>BaseWindowConfig</code></a>是所有窗口配置类的父类，定义了一组所有窗口均适用的共同属性，可以参考这个文档<a href="../apis/pyguiadapter.window/#pyguiadapter.window.BaseWindowConfig"><code>pyguiadapter.window.BaseWindowConfig</code></a>以获取这些属性的详细信息。</p>
 <p><code>BaseWindow</code>的子类窗口通常继承<code>BaseWindowConfig</code>实现专用的窗口配置类，并覆盖<code>BaseWindowConfig</code>中某些属性的默认值或添加专门适用于子类窗口的新属性。</p>
 <h3 id="3">3、窗口事件监听</h3>
-<p>窗口的创建、显示、关闭、销毁、隐藏均被视为一种事件，开发者可以监听这些事件，并在这些事件发生时执行特定的代码。对窗口事件的监听，需要通过<a href="https://github.com/zimolab/PyGUIAdapter/tree/main/pyguiadapter/window.py"><code>BaseWindowEventListener</code></a>对象来完成，开发者可以子类化该类，或者使用一个它的一个现成的子类<a href="https://github.com/zimolab/PyGUIAdapter/tree/main/pyguiadapter/window.py"><code>SimpleWindowEventListener</code></a>。</p>
-<p>可以参考以下文档获取窗口事件的详细信息：</p>
+<p>窗口的创建、显示、关闭、销毁、隐藏均被视为一种事件，开发者可以监听这些事件，并在这些事件发生时执行特定的代码。对窗口事件的监听，需要通过<a href="https://github.com/zimolab/PyGUIAdapter/tree/main/pyguiadapter/window.py"><code>BaseWindowEventListener</code></a>对象来完成，开发者可以子类化该类，或者使用一个它的一个现成子类<a href="https://github.com/zimolab/PyGUIAdapter/tree/main/pyguiadapter/window.py"><code>SimpleWindowEventListener</code></a>。</p>
+<p>可以参考以下文档获取窗口事件监听器的详细信息：</p>
 <ul>
 <li><a href="../apis/pyguiadapter.window/#pyguiadapter.window.BaseWindowEventListener"><code>pyguiadapter.window.BaseWindowEventListener</code></a></li>
 <li><a href="../apis/pyguiadapter.window/#pyguiadapter.window.SimpleWindowEventListener"><code>pyguiadapter.window.SimpleWindowEventListener</code></a></li>
@@ -2270,164 +2270,238 @@
     <a class="glightbox" href="../assets/window_event_example_2_output.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/window_event_example_2_output.png" /></a>
 </div>
 
+<p>除了可以使用<a href="../apis/pyguiadapter.window/#pyguiadapter.window.BaseWindowEventListener"><code>BaseWindowEventListener</code></a>或<a href="../apis/pyguiadapter.window/#pyguiadapter.window.SimpleWindowEventListener"><code>SimpleWindowEventListener</code></a>对函数执行窗口的事件进行监听，还可以使用函数执行窗口专用的事件监听器类：<code>FnExecuteWindowEventListener</code>或<code>SimpleFnExecuteWindowEventListener</code>。除了可以监听一般的窗口事件，它们还能对函数执行状态进行监听，包括：</p>
+<ul>
+<li>函数开始执行，此时将会回调<code>on_execute_start()</code></li>
+<li>函数正常返回，此时将会回调<code>on_execute_result()</code></li>
+<li>函数执行过程中发生异常，函数未正常返回，此时将回调<code>on_execute_error()</code></li>
+<li>函数执行完毕，此时将会回调<code>on_execute_finish()</code>，由于不管函数是否正常返回，其最终都会回到该状态， 因此，可以保证在<code>on_execute_result()</code>或<code>on_execute_error()</code>回调之后<code>on_execute_finish()</code>一定会被回调</li>
+</ul>
+<p>在上述事件回调函数中，比较特殊的是<code>on_execute_result()</code>和<code>on_execute_error()</code>。这两个回调函数返回一个<code>bool</code>值，其作用是告诉<code>PyGUIAdapter</code>是否要对函数的返回值或异常执行默认的处理逻辑。若返回<code>True</code>，则<code>PyGUIAdapter</code>将在函数返回或发生异常后执行默认的操作，比如打印或弹窗显示返回值或异常信息。若返回<code>False</code>，则表示开发者已经在回调函数中完成了对函数返回值/异常处理，无需<code>PyGUIAdapter</code>再次进行处理。</p>
+<p>开发者可以查看以下文档，获取<code>FnExecuteWindowEventListener</code>或<code>SimpleFnExecuteWindowEventListener</code>的详细信息：</p>
+<ul>
+<li><a href="../apis/pyguiadapter.windows.fnexec/#pyguiadapter.windows.fnexec.FnExecuteWindowEventListener"><code>FnExecuteWindowEventListener</code></a></li>
+<li><a href="../apis/pyguiadapter.windows.fnexec/#pyguiadapter.windows.fnexec.SimpleFnExecuteWindowEventListener"><code>SimpleFnExecuteWindowEventListener</code></a></li>
+</ul>
+<p>下面是一个简单的示例：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter</span> <span class="kn">import</span> <span class="n">GUIAdapter</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="kn">from</span> <span class="nn">pyguiadapter.utils</span> <span class="kn">import</span> <span class="n">messagebox</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="kn">from</span> <span class="nn">pyguiadapter.windows.fnexec</span> <span class="kn">import</span> <span class="p">(</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>    <span class="n">FnExecuteWindow</span><span class="p">,</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>    <span class="n">SimpleFnExecuteWindowEventListener</span><span class="p">,</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="p">)</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="k">def</span> <span class="nf">on_execute_start</span><span class="p">(</span><span class="n">window</span><span class="p">:</span> <span class="n">FnExecuteWindow</span><span class="p">):</span>
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;on_execute_start()&quot;</span><span class="p">)</span>
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a>
+<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="k">def</span> <span class="nf">on_execute_result</span><span class="p">(</span><span class="n">window</span><span class="p">:</span> <span class="n">FnExecuteWindow</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;on_execute_result(): </span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a>    <span class="n">messagebox</span><span class="o">.</span><span class="n">show_info_message</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Result: </span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Result&quot;</span><span class="p">)</span>
+<a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a>    <span class="k">return</span> <span class="kc">False</span>
+<a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a>
+<a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a>
+<a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a><span class="k">def</span> <span class="nf">on_execute_error</span><span class="p">(</span><span class="n">window</span><span class="p">:</span> <span class="n">FnExecuteWindow</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<a id="__codelineno-10-20" name="__codelineno-10-20" href="#__codelineno-10-20"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;on_execute_error(): </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-10-21" name="__codelineno-10-21" href="#__codelineno-10-21"></a>    <span class="n">messagebox</span><span class="o">.</span><span class="n">show_exception_messagebox</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span>
+<a id="__codelineno-10-22" name="__codelineno-10-22" href="#__codelineno-10-22"></a>    <span class="k">return</span> <span class="kc">False</span>
+<a id="__codelineno-10-23" name="__codelineno-10-23" href="#__codelineno-10-23"></a>
+<a id="__codelineno-10-24" name="__codelineno-10-24" href="#__codelineno-10-24"></a>
+<a id="__codelineno-10-25" name="__codelineno-10-25" href="#__codelineno-10-25"></a><span class="k">def</span> <span class="nf">on_execute_finish</span><span class="p">(</span><span class="n">window</span><span class="p">:</span> <span class="n">FnExecuteWindow</span><span class="p">):</span>
+<a id="__codelineno-10-26" name="__codelineno-10-26" href="#__codelineno-10-26"></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;on_execute_finish()&quot;</span><span class="p">)</span>
+<a id="__codelineno-10-27" name="__codelineno-10-27" href="#__codelineno-10-27"></a>
+<a id="__codelineno-10-28" name="__codelineno-10-28" href="#__codelineno-10-28"></a>
+<a id="__codelineno-10-29" name="__codelineno-10-29" href="#__codelineno-10-29"></a><span class="k">def</span> <span class="nf">event_example_3</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+<a id="__codelineno-10-30" name="__codelineno-10-30" href="#__codelineno-10-30"></a>    <span class="k">return</span> <span class="n">a</span> <span class="o">/</span> <span class="n">b</span>
+<a id="__codelineno-10-31" name="__codelineno-10-31" href="#__codelineno-10-31"></a>
+<a id="__codelineno-10-32" name="__codelineno-10-32" href="#__codelineno-10-32"></a>
+<a id="__codelineno-10-33" name="__codelineno-10-33" href="#__codelineno-10-33"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<a id="__codelineno-10-34" name="__codelineno-10-34" href="#__codelineno-10-34"></a>    <span class="n">event_listener</span> <span class="o">=</span> <span class="n">SimpleFnExecuteWindowEventListener</span><span class="p">(</span>
+<a id="__codelineno-10-35" name="__codelineno-10-35" href="#__codelineno-10-35"></a>        <span class="n">on_execute_start</span><span class="o">=</span><span class="n">on_execute_start</span><span class="p">,</span>
+<a id="__codelineno-10-36" name="__codelineno-10-36" href="#__codelineno-10-36"></a>        <span class="n">on_execute_result</span><span class="o">=</span><span class="n">on_execute_result</span><span class="p">,</span>
+<a id="__codelineno-10-37" name="__codelineno-10-37" href="#__codelineno-10-37"></a>        <span class="n">on_execute_error</span><span class="o">=</span><span class="n">on_execute_error</span><span class="p">,</span>
+<a id="__codelineno-10-38" name="__codelineno-10-38" href="#__codelineno-10-38"></a>        <span class="n">on_execute_finish</span><span class="o">=</span><span class="n">on_execute_finish</span><span class="p">,</span>
+<a id="__codelineno-10-39" name="__codelineno-10-39" href="#__codelineno-10-39"></a>    <span class="p">)</span>
+<a id="__codelineno-10-40" name="__codelineno-10-40" href="#__codelineno-10-40"></a>    <span class="n">adapter</span> <span class="o">=</span> <span class="n">GUIAdapter</span><span class="p">()</span>
+<a id="__codelineno-10-41" name="__codelineno-10-41" href="#__codelineno-10-41"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">event_example_3</span><span class="p">,</span> <span class="n">window_listener</span><span class="o">=</span><span class="n">event_listener</span><span class="p">)</span>
+<a id="__codelineno-10-42" name="__codelineno-10-42" href="#__codelineno-10-42"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre></div>
+<p>注意到，在本示例中，<code>on_execute_result()</code>和<code>on_execute_error()</code>回调函数均返回了<code>False</code>。</p>
+<div style="text-align: center">
+    <a class="glightbox" href="../assets/fn_execute_window_event_1.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/fn_execute_window_event_1.png" /></a>
+</div>
+
+<p>这表示将由开发者自行处理函数返回结果或函数执行异常，而不会执行默认的处理逻辑，具体而言，<code>PyGUIAdapter</code>将不会把函数执行结果或函数异常信息打印到输出浏览器中。</p>
+<p>下面是该程序的运行效果：</p>
+<p>（1）当函数正常返回时</p>
+<div style="text-align: center">
+    <a class="glightbox" href="../assets/fn_execute_window_event_2.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/fn_execute_window_event_2.png" /></a>
+</div>
+
+<p>（2）当函数发生异常时</p>
+<div style="text-align: center">
+    <a class="glightbox" href="../assets/fn_execute_window_event_3.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/fn_execute_window_event_3.png" /></a>
+</div>
+
 <h3 id="4_1">4、添加菜单和工具栏</h3>
 <p>开发者可以为<code>FnExecuteWindow</code>添加工具栏和菜单栏，具体方法如下：</p>
 <div style="text-align: center">
     <a class="glightbox" href="../assets/fn_execute_window_add_menus_toolbar.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/fn_execute_window_add_menus_toolbar.png" /></a>
 </div>
 
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kn">from</span> <span class="nn">pyguiadapter.action</span> <span class="kn">import</span> <span class="n">Action</span><span class="p">,</span> <span class="n">Separator</span>
-<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter</span> <span class="kn">import</span> <span class="n">GUIAdapter</span>
-<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="kn">from</span> <span class="nn">pyguiadapter.menu</span> <span class="kn">import</span> <span class="n">Menu</span>
-<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="kn">from</span> <span class="nn">pyguiadapter.toolbar</span> <span class="kn">import</span> <span class="n">ToolBar</span>
-<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="kn">from</span> <span class="nn">pyguiadapter.windows.fnexec</span> <span class="kn">import</span> <span class="n">FnExecuteWindow</span>
-<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="kn">from</span> <span class="nn">pyguiadapter.utils</span> <span class="kn">import</span> <span class="n">messagebox</span><span class="p">,</span> <span class="n">filedialog</span>
-<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>
-<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>
-<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="k">def</span> <span class="nf">on_action_about</span><span class="p">(</span><span class="n">window</span><span class="p">:</span> <span class="n">FnExecuteWindow</span><span class="p">,</span> <span class="n">_</span><span class="p">:</span> <span class="n">Action</span><span class="p">):</span>
-<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>    <span class="n">messagebox</span><span class="o">.</span><span class="n">show_info_message</span><span class="p">(</span>
-<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>        <span class="n">parent</span><span class="o">=</span><span class="n">window</span><span class="p">,</span>
-<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a>        <span class="n">message</span><span class="o">=</span><span class="s2">&quot;This is an example of toolbar and menu with custom actions.&quot;</span><span class="p">,</span>
-<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a>        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;About&quot;</span><span class="p">,</span>
-<a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a>    <span class="p">)</span>
-<a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a>
-<a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a>
-<a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a><span class="k">def</span> <span class="nf">on_action_close</span><span class="p">(</span><span class="n">window</span><span class="p">:</span> <span class="n">FnExecuteWindow</span><span class="p">,</span> <span class="n">_</span><span class="p">:</span> <span class="n">Action</span><span class="p">):</span>
-<a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a>    <span class="n">ret</span> <span class="o">=</span> <span class="n">messagebox</span><span class="o">.</span><span class="n">show_question_message</span><span class="p">(</span>
-<a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a>        <span class="n">window</span><span class="p">,</span> <span class="s2">&quot;Are you sure you want to quit?&quot;</span><span class="p">,</span> <span class="n">buttons</span><span class="o">=</span><span class="n">messagebox</span><span class="o">.</span><span class="n">Yes</span> <span class="o">|</span> <span class="n">messagebox</span><span class="o">.</span><span class="n">No</span>
-<a id="__codelineno-10-20" name="__codelineno-10-20" href="#__codelineno-10-20"></a>    <span class="p">)</span>
-<a id="__codelineno-10-21" name="__codelineno-10-21" href="#__codelineno-10-21"></a>    <span class="k">if</span> <span class="n">ret</span> <span class="o">==</span> <span class="n">messagebox</span><span class="o">.</span><span class="n">Yes</span><span class="p">:</span>
-<a id="__codelineno-10-22" name="__codelineno-10-22" href="#__codelineno-10-22"></a>        <span class="n">window</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-<a id="__codelineno-10-23" name="__codelineno-10-23" href="#__codelineno-10-23"></a>
-<a id="__codelineno-10-24" name="__codelineno-10-24" href="#__codelineno-10-24"></a>
-<a id="__codelineno-10-25" name="__codelineno-10-25" href="#__codelineno-10-25"></a><span class="k">def</span> <span class="nf">on_action_open</span><span class="p">(</span><span class="n">window</span><span class="p">:</span> <span class="n">FnExecuteWindow</span><span class="p">,</span> <span class="n">_</span><span class="p">:</span> <span class="n">Action</span><span class="p">):</span>
-<a id="__codelineno-10-26" name="__codelineno-10-26" href="#__codelineno-10-26"></a>    <span class="n">ret</span> <span class="o">=</span> <span class="n">filedialog</span><span class="o">.</span><span class="n">get_open_file</span><span class="p">(</span>
-<a id="__codelineno-10-27" name="__codelineno-10-27" href="#__codelineno-10-27"></a>        <span class="n">window</span><span class="p">,</span>
-<a id="__codelineno-10-28" name="__codelineno-10-28" href="#__codelineno-10-28"></a>        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Open File&quot;</span><span class="p">,</span>
-<a id="__codelineno-10-29" name="__codelineno-10-29" href="#__codelineno-10-29"></a>        <span class="n">start_dir</span><span class="o">=</span><span class="s2">&quot;./&quot;</span><span class="p">,</span>
-<a id="__codelineno-10-30" name="__codelineno-10-30" href="#__codelineno-10-30"></a>        <span class="n">filters</span><span class="o">=</span><span class="s2">&quot;JSON files(*.json);;Python files(*.py);;All files(*.*)&quot;</span><span class="p">,</span>
-<a id="__codelineno-10-31" name="__codelineno-10-31" href="#__codelineno-10-31"></a>    <span class="p">)</span>
-<a id="__codelineno-10-32" name="__codelineno-10-32" href="#__codelineno-10-32"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">ret</span><span class="p">:</span>
-<a id="__codelineno-10-33" name="__codelineno-10-33" href="#__codelineno-10-33"></a>        <span class="k">return</span>
-<a id="__codelineno-10-34" name="__codelineno-10-34" href="#__codelineno-10-34"></a>    <span class="n">messagebox</span><span class="o">.</span><span class="n">show_info_message</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;File will be opened: </span><span class="si">{</span><span class="n">ret</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<a id="__codelineno-10-35" name="__codelineno-10-35" href="#__codelineno-10-35"></a>
-<a id="__codelineno-10-36" name="__codelineno-10-36" href="#__codelineno-10-36"></a>
-<a id="__codelineno-10-37" name="__codelineno-10-37" href="#__codelineno-10-37"></a><span class="k">def</span> <span class="nf">on_action_save</span><span class="p">(</span><span class="n">window</span><span class="p">:</span> <span class="n">FnExecuteWindow</span><span class="p">,</span> <span class="n">_</span><span class="p">:</span> <span class="n">Action</span><span class="p">):</span>
-<a id="__codelineno-10-38" name="__codelineno-10-38" href="#__codelineno-10-38"></a>    <span class="n">ret</span> <span class="o">=</span> <span class="n">filedialog</span><span class="o">.</span><span class="n">get_save_file</span><span class="p">(</span>
-<a id="__codelineno-10-39" name="__codelineno-10-39" href="#__codelineno-10-39"></a>        <span class="n">window</span><span class="p">,</span>
-<a id="__codelineno-10-40" name="__codelineno-10-40" href="#__codelineno-10-40"></a>        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Save File&quot;</span><span class="p">,</span>
-<a id="__codelineno-10-41" name="__codelineno-10-41" href="#__codelineno-10-41"></a>        <span class="n">start_dir</span><span class="o">=</span><span class="s2">&quot;./&quot;</span><span class="p">,</span>
-<a id="__codelineno-10-42" name="__codelineno-10-42" href="#__codelineno-10-42"></a>        <span class="n">filters</span><span class="o">=</span><span class="s2">&quot;JSON files(*.json);;All files(*.*)&quot;</span><span class="p">,</span>
-<a id="__codelineno-10-43" name="__codelineno-10-43" href="#__codelineno-10-43"></a>    <span class="p">)</span>
-<a id="__codelineno-10-44" name="__codelineno-10-44" href="#__codelineno-10-44"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">ret</span><span class="p">:</span>
-<a id="__codelineno-10-45" name="__codelineno-10-45" href="#__codelineno-10-45"></a>        <span class="k">return</span>
-<a id="__codelineno-10-46" name="__codelineno-10-46" href="#__codelineno-10-46"></a>    <span class="n">messagebox</span><span class="o">.</span><span class="n">show_info_message</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;File will be saved: </span><span class="si">{</span><span class="n">ret</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<a id="__codelineno-10-47" name="__codelineno-10-47" href="#__codelineno-10-47"></a>
-<a id="__codelineno-10-48" name="__codelineno-10-48" href="#__codelineno-10-48"></a>
-<a id="__codelineno-10-49" name="__codelineno-10-49" href="#__codelineno-10-49"></a><span class="k">def</span> <span class="nf">on_action_auto_theme</span><span class="p">(</span><span class="n">window</span><span class="p">:</span> <span class="n">FnExecuteWindow</span><span class="p">,</span> <span class="n">_</span><span class="p">:</span> <span class="n">Action</span><span class="p">,</span> <span class="n">checked</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
-<a id="__codelineno-10-50" name="__codelineno-10-50" href="#__codelineno-10-50"></a>    <span class="k">if</span> <span class="n">checked</span><span class="p">:</span>
-<a id="__codelineno-10-51" name="__codelineno-10-51" href="#__codelineno-10-51"></a>        <span class="n">messagebox</span><span class="o">.</span><span class="n">show_info_message</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="s2">&quot;Auto theme is selected.&quot;</span><span class="p">)</span>
-<a id="__codelineno-10-52" name="__codelineno-10-52" href="#__codelineno-10-52"></a>
-<a id="__codelineno-10-53" name="__codelineno-10-53" href="#__codelineno-10-53"></a>
-<a id="__codelineno-10-54" name="__codelineno-10-54" href="#__codelineno-10-54"></a><span class="k">def</span> <span class="nf">on_action_light_theme</span><span class="p">(</span><span class="n">window</span><span class="p">:</span> <span class="n">FnExecuteWindow</span><span class="p">,</span> <span class="n">_</span><span class="p">:</span> <span class="n">Action</span><span class="p">,</span> <span class="n">checked</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
-<a id="__codelineno-10-55" name="__codelineno-10-55" href="#__codelineno-10-55"></a>    <span class="k">if</span> <span class="n">checked</span><span class="p">:</span>
-<a id="__codelineno-10-56" name="__codelineno-10-56" href="#__codelineno-10-56"></a>        <span class="n">messagebox</span><span class="o">.</span><span class="n">show_info_message</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="s2">&quot;Light theme is selected.&quot;</span><span class="p">)</span>
-<a id="__codelineno-10-57" name="__codelineno-10-57" href="#__codelineno-10-57"></a>
-<a id="__codelineno-10-58" name="__codelineno-10-58" href="#__codelineno-10-58"></a>
-<a id="__codelineno-10-59" name="__codelineno-10-59" href="#__codelineno-10-59"></a><span class="k">def</span> <span class="nf">on_action_dark_theme</span><span class="p">(</span><span class="n">window</span><span class="p">:</span> <span class="n">FnExecuteWindow</span><span class="p">,</span> <span class="n">_</span><span class="p">:</span> <span class="n">Action</span><span class="p">,</span> <span class="n">checked</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
-<a id="__codelineno-10-60" name="__codelineno-10-60" href="#__codelineno-10-60"></a>    <span class="k">if</span> <span class="n">checked</span><span class="p">:</span>
-<a id="__codelineno-10-61" name="__codelineno-10-61" href="#__codelineno-10-61"></a>        <span class="n">messagebox</span><span class="o">.</span><span class="n">show_info_message</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="s2">&quot;Dark theme is selected.&quot;</span><span class="p">)</span>
-<a id="__codelineno-10-62" name="__codelineno-10-62" href="#__codelineno-10-62"></a>
-<a id="__codelineno-10-63" name="__codelineno-10-63" href="#__codelineno-10-63"></a>
-<a id="__codelineno-10-64" name="__codelineno-10-64" href="#__codelineno-10-64"></a><span class="n">action_about</span> <span class="o">=</span> <span class="n">Action</span><span class="p">(</span>
-<a id="__codelineno-10-65" name="__codelineno-10-65" href="#__codelineno-10-65"></a>    <span class="n">text</span><span class="o">=</span><span class="s2">&quot;About&quot;</span><span class="p">,</span>
-<a id="__codelineno-10-66" name="__codelineno-10-66" href="#__codelineno-10-66"></a>    <span class="n">icon</span><span class="o">=</span><span class="s2">&quot;fa.info-circle&quot;</span><span class="p">,</span>
-<a id="__codelineno-10-67" name="__codelineno-10-67" href="#__codelineno-10-67"></a>    <span class="n">on_triggered</span><span class="o">=</span><span class="n">on_action_about</span><span class="p">,</span>
-<a id="__codelineno-10-68" name="__codelineno-10-68" href="#__codelineno-10-68"></a><span class="p">)</span>
-<a id="__codelineno-10-69" name="__codelineno-10-69" href="#__codelineno-10-69"></a>
-<a id="__codelineno-10-70" name="__codelineno-10-70" href="#__codelineno-10-70"></a><span class="n">action_open</span> <span class="o">=</span> <span class="n">Action</span><span class="p">(</span>
-<a id="__codelineno-10-71" name="__codelineno-10-71" href="#__codelineno-10-71"></a>    <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Open&quot;</span><span class="p">,</span>
-<a id="__codelineno-10-72" name="__codelineno-10-72" href="#__codelineno-10-72"></a>    <span class="n">icon</span><span class="o">=</span><span class="s2">&quot;fa.folder-open&quot;</span><span class="p">,</span>
-<a id="__codelineno-10-73" name="__codelineno-10-73" href="#__codelineno-10-73"></a>    <span class="n">shortcut</span><span class="o">=</span><span class="s2">&quot;Ctrl+O&quot;</span><span class="p">,</span>
-<a id="__codelineno-10-74" name="__codelineno-10-74" href="#__codelineno-10-74"></a>    <span class="n">on_triggered</span><span class="o">=</span><span class="n">on_action_open</span><span class="p">,</span>
-<a id="__codelineno-10-75" name="__codelineno-10-75" href="#__codelineno-10-75"></a><span class="p">)</span>
-<a id="__codelineno-10-76" name="__codelineno-10-76" href="#__codelineno-10-76"></a>
-<a id="__codelineno-10-77" name="__codelineno-10-77" href="#__codelineno-10-77"></a><span class="n">action_save</span> <span class="o">=</span> <span class="n">Action</span><span class="p">(</span>
-<a id="__codelineno-10-78" name="__codelineno-10-78" href="#__codelineno-10-78"></a>    <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Save&quot;</span><span class="p">,</span>
-<a id="__codelineno-10-79" name="__codelineno-10-79" href="#__codelineno-10-79"></a>    <span class="n">icon</span><span class="o">=</span><span class="s2">&quot;fa.save&quot;</span><span class="p">,</span>
-<a id="__codelineno-10-80" name="__codelineno-10-80" href="#__codelineno-10-80"></a>    <span class="n">shortcut</span><span class="o">=</span><span class="s2">&quot;Ctrl+S&quot;</span><span class="p">,</span>
-<a id="__codelineno-10-81" name="__codelineno-10-81" href="#__codelineno-10-81"></a>    <span class="n">on_triggered</span><span class="o">=</span><span class="n">on_action_save</span><span class="p">,</span>
-<a id="__codelineno-10-82" name="__codelineno-10-82" href="#__codelineno-10-82"></a><span class="p">)</span>
-<a id="__codelineno-10-83" name="__codelineno-10-83" href="#__codelineno-10-83"></a>
-<a id="__codelineno-10-84" name="__codelineno-10-84" href="#__codelineno-10-84"></a><span class="n">action_close</span> <span class="o">=</span> <span class="n">Action</span><span class="p">(</span>
-<a id="__codelineno-10-85" name="__codelineno-10-85" href="#__codelineno-10-85"></a>    <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Quit&quot;</span><span class="p">,</span>
-<a id="__codelineno-10-86" name="__codelineno-10-86" href="#__codelineno-10-86"></a>    <span class="n">icon</span><span class="o">=</span><span class="s2">&quot;fa.close&quot;</span><span class="p">,</span>
-<a id="__codelineno-10-87" name="__codelineno-10-87" href="#__codelineno-10-87"></a>    <span class="n">shortcut</span><span class="o">=</span><span class="s2">&quot;Ctrl+Q&quot;</span><span class="p">,</span>
-<a id="__codelineno-10-88" name="__codelineno-10-88" href="#__codelineno-10-88"></a>    <span class="n">on_triggered</span><span class="o">=</span><span class="n">on_action_close</span><span class="p">,</span>
-<a id="__codelineno-10-89" name="__codelineno-10-89" href="#__codelineno-10-89"></a><span class="p">)</span>
-<a id="__codelineno-10-90" name="__codelineno-10-90" href="#__codelineno-10-90"></a>
-<a id="__codelineno-10-91" name="__codelineno-10-91" href="#__codelineno-10-91"></a><span class="n">action_auto_them</span> <span class="o">=</span> <span class="n">Action</span><span class="p">(</span>
-<a id="__codelineno-10-92" name="__codelineno-10-92" href="#__codelineno-10-92"></a>    <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Auto&quot;</span><span class="p">,</span>
-<a id="__codelineno-10-93" name="__codelineno-10-93" href="#__codelineno-10-93"></a>    <span class="n">checkable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-<a id="__codelineno-10-94" name="__codelineno-10-94" href="#__codelineno-10-94"></a>    <span class="n">checked</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-<a id="__codelineno-10-95" name="__codelineno-10-95" href="#__codelineno-10-95"></a>    <span class="n">on_toggled</span><span class="o">=</span><span class="n">on_action_auto_theme</span><span class="p">,</span>
-<a id="__codelineno-10-96" name="__codelineno-10-96" href="#__codelineno-10-96"></a><span class="p">)</span>
-<a id="__codelineno-10-97" name="__codelineno-10-97" href="#__codelineno-10-97"></a>
-<a id="__codelineno-10-98" name="__codelineno-10-98" href="#__codelineno-10-98"></a><span class="n">action_light_theme</span> <span class="o">=</span> <span class="n">Action</span><span class="p">(</span>
-<a id="__codelineno-10-99" name="__codelineno-10-99" href="#__codelineno-10-99"></a>    <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Light&quot;</span><span class="p">,</span>
-<a id="__codelineno-10-100" name="__codelineno-10-100" href="#__codelineno-10-100"></a>    <span class="n">checkable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-<a id="__codelineno-10-101" name="__codelineno-10-101" href="#__codelineno-10-101"></a>    <span class="n">on_toggled</span><span class="o">=</span><span class="n">on_action_light_theme</span><span class="p">,</span>
-<a id="__codelineno-10-102" name="__codelineno-10-102" href="#__codelineno-10-102"></a><span class="p">)</span>
-<a id="__codelineno-10-103" name="__codelineno-10-103" href="#__codelineno-10-103"></a>
-<a id="__codelineno-10-104" name="__codelineno-10-104" href="#__codelineno-10-104"></a><span class="n">action_dark_theme</span> <span class="o">=</span> <span class="n">Action</span><span class="p">(</span>
-<a id="__codelineno-10-105" name="__codelineno-10-105" href="#__codelineno-10-105"></a>    <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Dark&quot;</span><span class="p">,</span>
-<a id="__codelineno-10-106" name="__codelineno-10-106" href="#__codelineno-10-106"></a>    <span class="n">checkable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-<a id="__codelineno-10-107" name="__codelineno-10-107" href="#__codelineno-10-107"></a>    <span class="n">on_toggled</span><span class="o">=</span><span class="n">on_action_dark_theme</span><span class="p">,</span>
-<a id="__codelineno-10-108" name="__codelineno-10-108" href="#__codelineno-10-108"></a><span class="p">)</span>
-<a id="__codelineno-10-109" name="__codelineno-10-109" href="#__codelineno-10-109"></a>
-<a id="__codelineno-10-110" name="__codelineno-10-110" href="#__codelineno-10-110"></a><span class="n">submenu_theme</span> <span class="o">=</span> <span class="n">Menu</span><span class="p">(</span>
-<a id="__codelineno-10-111" name="__codelineno-10-111" href="#__codelineno-10-111"></a>    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Theme&quot;</span><span class="p">,</span>
-<a id="__codelineno-10-112" name="__codelineno-10-112" href="#__codelineno-10-112"></a>    <span class="n">actions</span><span class="o">=</span><span class="p">[</span><span class="n">action_auto_them</span><span class="p">,</span> <span class="n">action_light_theme</span><span class="p">,</span> <span class="n">action_dark_theme</span><span class="p">],</span>
-<a id="__codelineno-10-113" name="__codelineno-10-113" href="#__codelineno-10-113"></a>    <span class="n">exclusive</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-<a id="__codelineno-10-114" name="__codelineno-10-114" href="#__codelineno-10-114"></a><span class="p">)</span>
-<a id="__codelineno-10-115" name="__codelineno-10-115" href="#__codelineno-10-115"></a><span class="n">menu_file</span> <span class="o">=</span> <span class="n">Menu</span><span class="p">(</span>
-<a id="__codelineno-10-116" name="__codelineno-10-116" href="#__codelineno-10-116"></a>    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;File&quot;</span><span class="p">,</span>
-<a id="__codelineno-10-117" name="__codelineno-10-117" href="#__codelineno-10-117"></a>    <span class="n">actions</span><span class="o">=</span><span class="p">[</span>
-<a id="__codelineno-10-118" name="__codelineno-10-118" href="#__codelineno-10-118"></a>        <span class="n">action_open</span><span class="p">,</span>
-<a id="__codelineno-10-119" name="__codelineno-10-119" href="#__codelineno-10-119"></a>        <span class="n">action_save</span><span class="p">,</span>
-<a id="__codelineno-10-120" name="__codelineno-10-120" href="#__codelineno-10-120"></a>        <span class="n">Separator</span><span class="p">(),</span>
-<a id="__codelineno-10-121" name="__codelineno-10-121" href="#__codelineno-10-121"></a>        <span class="n">action_close</span><span class="p">,</span>
-<a id="__codelineno-10-122" name="__codelineno-10-122" href="#__codelineno-10-122"></a>        <span class="n">Separator</span><span class="p">(),</span>
-<a id="__codelineno-10-123" name="__codelineno-10-123" href="#__codelineno-10-123"></a>        <span class="n">submenu_theme</span><span class="p">,</span>
-<a id="__codelineno-10-124" name="__codelineno-10-124" href="#__codelineno-10-124"></a>    <span class="p">],</span>
-<a id="__codelineno-10-125" name="__codelineno-10-125" href="#__codelineno-10-125"></a><span class="p">)</span>
-<a id="__codelineno-10-126" name="__codelineno-10-126" href="#__codelineno-10-126"></a><span class="n">menu_help</span> <span class="o">=</span> <span class="n">Menu</span><span class="p">(</span>
-<a id="__codelineno-10-127" name="__codelineno-10-127" href="#__codelineno-10-127"></a>    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Help&quot;</span><span class="p">,</span>
-<a id="__codelineno-10-128" name="__codelineno-10-128" href="#__codelineno-10-128"></a>    <span class="n">actions</span><span class="o">=</span><span class="p">[</span><span class="n">action_about</span><span class="p">],</span>
-<a id="__codelineno-10-129" name="__codelineno-10-129" href="#__codelineno-10-129"></a><span class="p">)</span>
-<a id="__codelineno-10-130" name="__codelineno-10-130" href="#__codelineno-10-130"></a>
-<a id="__codelineno-10-131" name="__codelineno-10-131" href="#__codelineno-10-131"></a>
-<a id="__codelineno-10-132" name="__codelineno-10-132" href="#__codelineno-10-132"></a><span class="k">def</span> <span class="nf">menu_toolbar_example</span><span class="p">(</span><span class="n">arg1</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">arg2</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">arg3</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
-<a id="__codelineno-10-133" name="__codelineno-10-133" href="#__codelineno-10-133"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-10-134" name="__codelineno-10-134" href="#__codelineno-10-134"></a><span class="sd">    This example shows how to add and config toolbar and menus to the window.</span>
-<a id="__codelineno-10-135" name="__codelineno-10-135" href="#__codelineno-10-135"></a><span class="sd">    @param arg1:</span>
-<a id="__codelineno-10-136" name="__codelineno-10-136" href="#__codelineno-10-136"></a><span class="sd">    @param arg2:</span>
-<a id="__codelineno-10-137" name="__codelineno-10-137" href="#__codelineno-10-137"></a><span class="sd">    @param arg3:</span>
-<a id="__codelineno-10-138" name="__codelineno-10-138" href="#__codelineno-10-138"></a><span class="sd">    @return:</span>
-<a id="__codelineno-10-139" name="__codelineno-10-139" href="#__codelineno-10-139"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-10-140" name="__codelineno-10-140" href="#__codelineno-10-140"></a>    <span class="k">pass</span>
-<a id="__codelineno-10-141" name="__codelineno-10-141" href="#__codelineno-10-141"></a>
-<a id="__codelineno-10-142" name="__codelineno-10-142" href="#__codelineno-10-142"></a>
-<a id="__codelineno-10-143" name="__codelineno-10-143" href="#__codelineno-10-143"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-<a id="__codelineno-10-144" name="__codelineno-10-144" href="#__codelineno-10-144"></a>    <span class="n">adapter</span> <span class="o">=</span> <span class="n">GUIAdapter</span><span class="p">()</span>
-<a id="__codelineno-10-145" name="__codelineno-10-145" href="#__codelineno-10-145"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
-<a id="__codelineno-10-146" name="__codelineno-10-146" href="#__codelineno-10-146"></a>        <span class="n">menu_toolbar_example</span><span class="p">,</span>
-<a id="__codelineno-10-147" name="__codelineno-10-147" href="#__codelineno-10-147"></a>        <span class="n">window_menus</span><span class="o">=</span><span class="p">[</span><span class="n">menu_file</span><span class="p">,</span> <span class="n">menu_help</span><span class="p">],</span>
-<a id="__codelineno-10-148" name="__codelineno-10-148" href="#__codelineno-10-148"></a>        <span class="n">window_toolbar</span><span class="o">=</span><span class="n">ToolBar</span><span class="p">(</span>
-<a id="__codelineno-10-149" name="__codelineno-10-149" href="#__codelineno-10-149"></a>            <span class="n">actions</span><span class="o">=</span><span class="p">[</span><span class="n">action_open</span><span class="p">,</span> <span class="n">action_save</span><span class="p">,</span> <span class="n">Separator</span><span class="p">(),</span> <span class="n">action_close</span><span class="p">]</span>
-<a id="__codelineno-10-150" name="__codelineno-10-150" href="#__codelineno-10-150"></a>        <span class="p">),</span>
-<a id="__codelineno-10-151" name="__codelineno-10-151" href="#__codelineno-10-151"></a>    <span class="p">)</span>
-<a id="__codelineno-10-152" name="__codelineno-10-152" href="#__codelineno-10-152"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="kn">from</span> <span class="nn">pyguiadapter.action</span> <span class="kn">import</span> <span class="n">Action</span><span class="p">,</span> <span class="n">Separator</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter</span> <span class="kn">import</span> <span class="n">GUIAdapter</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="kn">from</span> <span class="nn">pyguiadapter.menu</span> <span class="kn">import</span> <span class="n">Menu</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="kn">from</span> <span class="nn">pyguiadapter.toolbar</span> <span class="kn">import</span> <span class="n">ToolBar</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="kn">from</span> <span class="nn">pyguiadapter.windows.fnexec</span> <span class="kn">import</span> <span class="n">FnExecuteWindow</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="kn">from</span> <span class="nn">pyguiadapter.utils</span> <span class="kn">import</span> <span class="n">messagebox</span><span class="p">,</span> <span class="n">filedialog</span>
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="k">def</span> <span class="nf">on_action_about</span><span class="p">(</span><span class="n">window</span><span class="p">:</span> <span class="n">FnExecuteWindow</span><span class="p">,</span> <span class="n">_</span><span class="p">:</span> <span class="n">Action</span><span class="p">):</span>
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>    <span class="n">messagebox</span><span class="o">.</span><span class="n">show_info_message</span><span class="p">(</span>
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>        <span class="n">parent</span><span class="o">=</span><span class="n">window</span><span class="p">,</span>
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a>        <span class="n">message</span><span class="o">=</span><span class="s2">&quot;This is an example of toolbar and menu with custom actions.&quot;</span><span class="p">,</span>
+<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a>        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;About&quot;</span><span class="p">,</span>
+<a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a>    <span class="p">)</span>
+<a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a>
+<a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a>
+<a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a><span class="k">def</span> <span class="nf">on_action_close</span><span class="p">(</span><span class="n">window</span><span class="p">:</span> <span class="n">FnExecuteWindow</span><span class="p">,</span> <span class="n">_</span><span class="p">:</span> <span class="n">Action</span><span class="p">):</span>
+<a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a>    <span class="n">ret</span> <span class="o">=</span> <span class="n">messagebox</span><span class="o">.</span><span class="n">show_question_message</span><span class="p">(</span>
+<a id="__codelineno-11-19" name="__codelineno-11-19" href="#__codelineno-11-19"></a>        <span class="n">window</span><span class="p">,</span> <span class="s2">&quot;Are you sure you want to quit?&quot;</span><span class="p">,</span> <span class="n">buttons</span><span class="o">=</span><span class="n">messagebox</span><span class="o">.</span><span class="n">Yes</span> <span class="o">|</span> <span class="n">messagebox</span><span class="o">.</span><span class="n">No</span>
+<a id="__codelineno-11-20" name="__codelineno-11-20" href="#__codelineno-11-20"></a>    <span class="p">)</span>
+<a id="__codelineno-11-21" name="__codelineno-11-21" href="#__codelineno-11-21"></a>    <span class="k">if</span> <span class="n">ret</span> <span class="o">==</span> <span class="n">messagebox</span><span class="o">.</span><span class="n">Yes</span><span class="p">:</span>
+<a id="__codelineno-11-22" name="__codelineno-11-22" href="#__codelineno-11-22"></a>        <span class="n">window</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<a id="__codelineno-11-23" name="__codelineno-11-23" href="#__codelineno-11-23"></a>
+<a id="__codelineno-11-24" name="__codelineno-11-24" href="#__codelineno-11-24"></a>
+<a id="__codelineno-11-25" name="__codelineno-11-25" href="#__codelineno-11-25"></a><span class="k">def</span> <span class="nf">on_action_open</span><span class="p">(</span><span class="n">window</span><span class="p">:</span> <span class="n">FnExecuteWindow</span><span class="p">,</span> <span class="n">_</span><span class="p">:</span> <span class="n">Action</span><span class="p">):</span>
+<a id="__codelineno-11-26" name="__codelineno-11-26" href="#__codelineno-11-26"></a>    <span class="n">ret</span> <span class="o">=</span> <span class="n">filedialog</span><span class="o">.</span><span class="n">get_open_file</span><span class="p">(</span>
+<a id="__codelineno-11-27" name="__codelineno-11-27" href="#__codelineno-11-27"></a>        <span class="n">window</span><span class="p">,</span>
+<a id="__codelineno-11-28" name="__codelineno-11-28" href="#__codelineno-11-28"></a>        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Open File&quot;</span><span class="p">,</span>
+<a id="__codelineno-11-29" name="__codelineno-11-29" href="#__codelineno-11-29"></a>        <span class="n">start_dir</span><span class="o">=</span><span class="s2">&quot;./&quot;</span><span class="p">,</span>
+<a id="__codelineno-11-30" name="__codelineno-11-30" href="#__codelineno-11-30"></a>        <span class="n">filters</span><span class="o">=</span><span class="s2">&quot;JSON files(*.json);;Python files(*.py);;All files(*.*)&quot;</span><span class="p">,</span>
+<a id="__codelineno-11-31" name="__codelineno-11-31" href="#__codelineno-11-31"></a>    <span class="p">)</span>
+<a id="__codelineno-11-32" name="__codelineno-11-32" href="#__codelineno-11-32"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">ret</span><span class="p">:</span>
+<a id="__codelineno-11-33" name="__codelineno-11-33" href="#__codelineno-11-33"></a>        <span class="k">return</span>
+<a id="__codelineno-11-34" name="__codelineno-11-34" href="#__codelineno-11-34"></a>    <span class="n">messagebox</span><span class="o">.</span><span class="n">show_info_message</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;File will be opened: </span><span class="si">{</span><span class="n">ret</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-11-35" name="__codelineno-11-35" href="#__codelineno-11-35"></a>
+<a id="__codelineno-11-36" name="__codelineno-11-36" href="#__codelineno-11-36"></a>
+<a id="__codelineno-11-37" name="__codelineno-11-37" href="#__codelineno-11-37"></a><span class="k">def</span> <span class="nf">on_action_save</span><span class="p">(</span><span class="n">window</span><span class="p">:</span> <span class="n">FnExecuteWindow</span><span class="p">,</span> <span class="n">_</span><span class="p">:</span> <span class="n">Action</span><span class="p">):</span>
+<a id="__codelineno-11-38" name="__codelineno-11-38" href="#__codelineno-11-38"></a>    <span class="n">ret</span> <span class="o">=</span> <span class="n">filedialog</span><span class="o">.</span><span class="n">get_save_file</span><span class="p">(</span>
+<a id="__codelineno-11-39" name="__codelineno-11-39" href="#__codelineno-11-39"></a>        <span class="n">window</span><span class="p">,</span>
+<a id="__codelineno-11-40" name="__codelineno-11-40" href="#__codelineno-11-40"></a>        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Save File&quot;</span><span class="p">,</span>
+<a id="__codelineno-11-41" name="__codelineno-11-41" href="#__codelineno-11-41"></a>        <span class="n">start_dir</span><span class="o">=</span><span class="s2">&quot;./&quot;</span><span class="p">,</span>
+<a id="__codelineno-11-42" name="__codelineno-11-42" href="#__codelineno-11-42"></a>        <span class="n">filters</span><span class="o">=</span><span class="s2">&quot;JSON files(*.json);;All files(*.*)&quot;</span><span class="p">,</span>
+<a id="__codelineno-11-43" name="__codelineno-11-43" href="#__codelineno-11-43"></a>    <span class="p">)</span>
+<a id="__codelineno-11-44" name="__codelineno-11-44" href="#__codelineno-11-44"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">ret</span><span class="p">:</span>
+<a id="__codelineno-11-45" name="__codelineno-11-45" href="#__codelineno-11-45"></a>        <span class="k">return</span>
+<a id="__codelineno-11-46" name="__codelineno-11-46" href="#__codelineno-11-46"></a>    <span class="n">messagebox</span><span class="o">.</span><span class="n">show_info_message</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;File will be saved: </span><span class="si">{</span><span class="n">ret</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-11-47" name="__codelineno-11-47" href="#__codelineno-11-47"></a>
+<a id="__codelineno-11-48" name="__codelineno-11-48" href="#__codelineno-11-48"></a>
+<a id="__codelineno-11-49" name="__codelineno-11-49" href="#__codelineno-11-49"></a><span class="k">def</span> <span class="nf">on_action_auto_theme</span><span class="p">(</span><span class="n">window</span><span class="p">:</span> <span class="n">FnExecuteWindow</span><span class="p">,</span> <span class="n">_</span><span class="p">:</span> <span class="n">Action</span><span class="p">,</span> <span class="n">checked</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+<a id="__codelineno-11-50" name="__codelineno-11-50" href="#__codelineno-11-50"></a>    <span class="k">if</span> <span class="n">checked</span><span class="p">:</span>
+<a id="__codelineno-11-51" name="__codelineno-11-51" href="#__codelineno-11-51"></a>        <span class="n">messagebox</span><span class="o">.</span><span class="n">show_info_message</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="s2">&quot;Auto theme is selected.&quot;</span><span class="p">)</span>
+<a id="__codelineno-11-52" name="__codelineno-11-52" href="#__codelineno-11-52"></a>
+<a id="__codelineno-11-53" name="__codelineno-11-53" href="#__codelineno-11-53"></a>
+<a id="__codelineno-11-54" name="__codelineno-11-54" href="#__codelineno-11-54"></a><span class="k">def</span> <span class="nf">on_action_light_theme</span><span class="p">(</span><span class="n">window</span><span class="p">:</span> <span class="n">FnExecuteWindow</span><span class="p">,</span> <span class="n">_</span><span class="p">:</span> <span class="n">Action</span><span class="p">,</span> <span class="n">checked</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+<a id="__codelineno-11-55" name="__codelineno-11-55" href="#__codelineno-11-55"></a>    <span class="k">if</span> <span class="n">checked</span><span class="p">:</span>
+<a id="__codelineno-11-56" name="__codelineno-11-56" href="#__codelineno-11-56"></a>        <span class="n">messagebox</span><span class="o">.</span><span class="n">show_info_message</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="s2">&quot;Light theme is selected.&quot;</span><span class="p">)</span>
+<a id="__codelineno-11-57" name="__codelineno-11-57" href="#__codelineno-11-57"></a>
+<a id="__codelineno-11-58" name="__codelineno-11-58" href="#__codelineno-11-58"></a>
+<a id="__codelineno-11-59" name="__codelineno-11-59" href="#__codelineno-11-59"></a><span class="k">def</span> <span class="nf">on_action_dark_theme</span><span class="p">(</span><span class="n">window</span><span class="p">:</span> <span class="n">FnExecuteWindow</span><span class="p">,</span> <span class="n">_</span><span class="p">:</span> <span class="n">Action</span><span class="p">,</span> <span class="n">checked</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+<a id="__codelineno-11-60" name="__codelineno-11-60" href="#__codelineno-11-60"></a>    <span class="k">if</span> <span class="n">checked</span><span class="p">:</span>
+<a id="__codelineno-11-61" name="__codelineno-11-61" href="#__codelineno-11-61"></a>        <span class="n">messagebox</span><span class="o">.</span><span class="n">show_info_message</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="s2">&quot;Dark theme is selected.&quot;</span><span class="p">)</span>
+<a id="__codelineno-11-62" name="__codelineno-11-62" href="#__codelineno-11-62"></a>
+<a id="__codelineno-11-63" name="__codelineno-11-63" href="#__codelineno-11-63"></a>
+<a id="__codelineno-11-64" name="__codelineno-11-64" href="#__codelineno-11-64"></a><span class="n">action_about</span> <span class="o">=</span> <span class="n">Action</span><span class="p">(</span>
+<a id="__codelineno-11-65" name="__codelineno-11-65" href="#__codelineno-11-65"></a>    <span class="n">text</span><span class="o">=</span><span class="s2">&quot;About&quot;</span><span class="p">,</span>
+<a id="__codelineno-11-66" name="__codelineno-11-66" href="#__codelineno-11-66"></a>    <span class="n">icon</span><span class="o">=</span><span class="s2">&quot;fa.info-circle&quot;</span><span class="p">,</span>
+<a id="__codelineno-11-67" name="__codelineno-11-67" href="#__codelineno-11-67"></a>    <span class="n">on_triggered</span><span class="o">=</span><span class="n">on_action_about</span><span class="p">,</span>
+<a id="__codelineno-11-68" name="__codelineno-11-68" href="#__codelineno-11-68"></a><span class="p">)</span>
+<a id="__codelineno-11-69" name="__codelineno-11-69" href="#__codelineno-11-69"></a>
+<a id="__codelineno-11-70" name="__codelineno-11-70" href="#__codelineno-11-70"></a><span class="n">action_open</span> <span class="o">=</span> <span class="n">Action</span><span class="p">(</span>
+<a id="__codelineno-11-71" name="__codelineno-11-71" href="#__codelineno-11-71"></a>    <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Open&quot;</span><span class="p">,</span>
+<a id="__codelineno-11-72" name="__codelineno-11-72" href="#__codelineno-11-72"></a>    <span class="n">icon</span><span class="o">=</span><span class="s2">&quot;fa.folder-open&quot;</span><span class="p">,</span>
+<a id="__codelineno-11-73" name="__codelineno-11-73" href="#__codelineno-11-73"></a>    <span class="n">shortcut</span><span class="o">=</span><span class="s2">&quot;Ctrl+O&quot;</span><span class="p">,</span>
+<a id="__codelineno-11-74" name="__codelineno-11-74" href="#__codelineno-11-74"></a>    <span class="n">on_triggered</span><span class="o">=</span><span class="n">on_action_open</span><span class="p">,</span>
+<a id="__codelineno-11-75" name="__codelineno-11-75" href="#__codelineno-11-75"></a><span class="p">)</span>
+<a id="__codelineno-11-76" name="__codelineno-11-76" href="#__codelineno-11-76"></a>
+<a id="__codelineno-11-77" name="__codelineno-11-77" href="#__codelineno-11-77"></a><span class="n">action_save</span> <span class="o">=</span> <span class="n">Action</span><span class="p">(</span>
+<a id="__codelineno-11-78" name="__codelineno-11-78" href="#__codelineno-11-78"></a>    <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Save&quot;</span><span class="p">,</span>
+<a id="__codelineno-11-79" name="__codelineno-11-79" href="#__codelineno-11-79"></a>    <span class="n">icon</span><span class="o">=</span><span class="s2">&quot;fa.save&quot;</span><span class="p">,</span>
+<a id="__codelineno-11-80" name="__codelineno-11-80" href="#__codelineno-11-80"></a>    <span class="n">shortcut</span><span class="o">=</span><span class="s2">&quot;Ctrl+S&quot;</span><span class="p">,</span>
+<a id="__codelineno-11-81" name="__codelineno-11-81" href="#__codelineno-11-81"></a>    <span class="n">on_triggered</span><span class="o">=</span><span class="n">on_action_save</span><span class="p">,</span>
+<a id="__codelineno-11-82" name="__codelineno-11-82" href="#__codelineno-11-82"></a><span class="p">)</span>
+<a id="__codelineno-11-83" name="__codelineno-11-83" href="#__codelineno-11-83"></a>
+<a id="__codelineno-11-84" name="__codelineno-11-84" href="#__codelineno-11-84"></a><span class="n">action_close</span> <span class="o">=</span> <span class="n">Action</span><span class="p">(</span>
+<a id="__codelineno-11-85" name="__codelineno-11-85" href="#__codelineno-11-85"></a>    <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Quit&quot;</span><span class="p">,</span>
+<a id="__codelineno-11-86" name="__codelineno-11-86" href="#__codelineno-11-86"></a>    <span class="n">icon</span><span class="o">=</span><span class="s2">&quot;fa.close&quot;</span><span class="p">,</span>
+<a id="__codelineno-11-87" name="__codelineno-11-87" href="#__codelineno-11-87"></a>    <span class="n">shortcut</span><span class="o">=</span><span class="s2">&quot;Ctrl+Q&quot;</span><span class="p">,</span>
+<a id="__codelineno-11-88" name="__codelineno-11-88" href="#__codelineno-11-88"></a>    <span class="n">on_triggered</span><span class="o">=</span><span class="n">on_action_close</span><span class="p">,</span>
+<a id="__codelineno-11-89" name="__codelineno-11-89" href="#__codelineno-11-89"></a><span class="p">)</span>
+<a id="__codelineno-11-90" name="__codelineno-11-90" href="#__codelineno-11-90"></a>
+<a id="__codelineno-11-91" name="__codelineno-11-91" href="#__codelineno-11-91"></a><span class="n">action_auto_them</span> <span class="o">=</span> <span class="n">Action</span><span class="p">(</span>
+<a id="__codelineno-11-92" name="__codelineno-11-92" href="#__codelineno-11-92"></a>    <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Auto&quot;</span><span class="p">,</span>
+<a id="__codelineno-11-93" name="__codelineno-11-93" href="#__codelineno-11-93"></a>    <span class="n">checkable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-11-94" name="__codelineno-11-94" href="#__codelineno-11-94"></a>    <span class="n">checked</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-11-95" name="__codelineno-11-95" href="#__codelineno-11-95"></a>    <span class="n">on_toggled</span><span class="o">=</span><span class="n">on_action_auto_theme</span><span class="p">,</span>
+<a id="__codelineno-11-96" name="__codelineno-11-96" href="#__codelineno-11-96"></a><span class="p">)</span>
+<a id="__codelineno-11-97" name="__codelineno-11-97" href="#__codelineno-11-97"></a>
+<a id="__codelineno-11-98" name="__codelineno-11-98" href="#__codelineno-11-98"></a><span class="n">action_light_theme</span> <span class="o">=</span> <span class="n">Action</span><span class="p">(</span>
+<a id="__codelineno-11-99" name="__codelineno-11-99" href="#__codelineno-11-99"></a>    <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Light&quot;</span><span class="p">,</span>
+<a id="__codelineno-11-100" name="__codelineno-11-100" href="#__codelineno-11-100"></a>    <span class="n">checkable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-11-101" name="__codelineno-11-101" href="#__codelineno-11-101"></a>    <span class="n">on_toggled</span><span class="o">=</span><span class="n">on_action_light_theme</span><span class="p">,</span>
+<a id="__codelineno-11-102" name="__codelineno-11-102" href="#__codelineno-11-102"></a><span class="p">)</span>
+<a id="__codelineno-11-103" name="__codelineno-11-103" href="#__codelineno-11-103"></a>
+<a id="__codelineno-11-104" name="__codelineno-11-104" href="#__codelineno-11-104"></a><span class="n">action_dark_theme</span> <span class="o">=</span> <span class="n">Action</span><span class="p">(</span>
+<a id="__codelineno-11-105" name="__codelineno-11-105" href="#__codelineno-11-105"></a>    <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Dark&quot;</span><span class="p">,</span>
+<a id="__codelineno-11-106" name="__codelineno-11-106" href="#__codelineno-11-106"></a>    <span class="n">checkable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-11-107" name="__codelineno-11-107" href="#__codelineno-11-107"></a>    <span class="n">on_toggled</span><span class="o">=</span><span class="n">on_action_dark_theme</span><span class="p">,</span>
+<a id="__codelineno-11-108" name="__codelineno-11-108" href="#__codelineno-11-108"></a><span class="p">)</span>
+<a id="__codelineno-11-109" name="__codelineno-11-109" href="#__codelineno-11-109"></a>
+<a id="__codelineno-11-110" name="__codelineno-11-110" href="#__codelineno-11-110"></a><span class="n">submenu_theme</span> <span class="o">=</span> <span class="n">Menu</span><span class="p">(</span>
+<a id="__codelineno-11-111" name="__codelineno-11-111" href="#__codelineno-11-111"></a>    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Theme&quot;</span><span class="p">,</span>
+<a id="__codelineno-11-112" name="__codelineno-11-112" href="#__codelineno-11-112"></a>    <span class="n">actions</span><span class="o">=</span><span class="p">[</span><span class="n">action_auto_them</span><span class="p">,</span> <span class="n">action_light_theme</span><span class="p">,</span> <span class="n">action_dark_theme</span><span class="p">],</span>
+<a id="__codelineno-11-113" name="__codelineno-11-113" href="#__codelineno-11-113"></a>    <span class="n">exclusive</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-11-114" name="__codelineno-11-114" href="#__codelineno-11-114"></a><span class="p">)</span>
+<a id="__codelineno-11-115" name="__codelineno-11-115" href="#__codelineno-11-115"></a><span class="n">menu_file</span> <span class="o">=</span> <span class="n">Menu</span><span class="p">(</span>
+<a id="__codelineno-11-116" name="__codelineno-11-116" href="#__codelineno-11-116"></a>    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;File&quot;</span><span class="p">,</span>
+<a id="__codelineno-11-117" name="__codelineno-11-117" href="#__codelineno-11-117"></a>    <span class="n">actions</span><span class="o">=</span><span class="p">[</span>
+<a id="__codelineno-11-118" name="__codelineno-11-118" href="#__codelineno-11-118"></a>        <span class="n">action_open</span><span class="p">,</span>
+<a id="__codelineno-11-119" name="__codelineno-11-119" href="#__codelineno-11-119"></a>        <span class="n">action_save</span><span class="p">,</span>
+<a id="__codelineno-11-120" name="__codelineno-11-120" href="#__codelineno-11-120"></a>        <span class="n">Separator</span><span class="p">(),</span>
+<a id="__codelineno-11-121" name="__codelineno-11-121" href="#__codelineno-11-121"></a>        <span class="n">action_close</span><span class="p">,</span>
+<a id="__codelineno-11-122" name="__codelineno-11-122" href="#__codelineno-11-122"></a>        <span class="n">Separator</span><span class="p">(),</span>
+<a id="__codelineno-11-123" name="__codelineno-11-123" href="#__codelineno-11-123"></a>        <span class="n">submenu_theme</span><span class="p">,</span>
+<a id="__codelineno-11-124" name="__codelineno-11-124" href="#__codelineno-11-124"></a>    <span class="p">],</span>
+<a id="__codelineno-11-125" name="__codelineno-11-125" href="#__codelineno-11-125"></a><span class="p">)</span>
+<a id="__codelineno-11-126" name="__codelineno-11-126" href="#__codelineno-11-126"></a><span class="n">menu_help</span> <span class="o">=</span> <span class="n">Menu</span><span class="p">(</span>
+<a id="__codelineno-11-127" name="__codelineno-11-127" href="#__codelineno-11-127"></a>    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Help&quot;</span><span class="p">,</span>
+<a id="__codelineno-11-128" name="__codelineno-11-128" href="#__codelineno-11-128"></a>    <span class="n">actions</span><span class="o">=</span><span class="p">[</span><span class="n">action_about</span><span class="p">],</span>
+<a id="__codelineno-11-129" name="__codelineno-11-129" href="#__codelineno-11-129"></a><span class="p">)</span>
+<a id="__codelineno-11-130" name="__codelineno-11-130" href="#__codelineno-11-130"></a>
+<a id="__codelineno-11-131" name="__codelineno-11-131" href="#__codelineno-11-131"></a>
+<a id="__codelineno-11-132" name="__codelineno-11-132" href="#__codelineno-11-132"></a><span class="k">def</span> <span class="nf">menu_toolbar_example</span><span class="p">(</span><span class="n">arg1</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">arg2</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">arg3</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+<a id="__codelineno-11-133" name="__codelineno-11-133" href="#__codelineno-11-133"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-11-134" name="__codelineno-11-134" href="#__codelineno-11-134"></a><span class="sd">    This example shows how to add and config toolbar and menus to the window.</span>
+<a id="__codelineno-11-135" name="__codelineno-11-135" href="#__codelineno-11-135"></a><span class="sd">    @param arg1:</span>
+<a id="__codelineno-11-136" name="__codelineno-11-136" href="#__codelineno-11-136"></a><span class="sd">    @param arg2:</span>
+<a id="__codelineno-11-137" name="__codelineno-11-137" href="#__codelineno-11-137"></a><span class="sd">    @param arg3:</span>
+<a id="__codelineno-11-138" name="__codelineno-11-138" href="#__codelineno-11-138"></a><span class="sd">    @return:</span>
+<a id="__codelineno-11-139" name="__codelineno-11-139" href="#__codelineno-11-139"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-11-140" name="__codelineno-11-140" href="#__codelineno-11-140"></a>    <span class="k">pass</span>
+<a id="__codelineno-11-141" name="__codelineno-11-141" href="#__codelineno-11-141"></a>
+<a id="__codelineno-11-142" name="__codelineno-11-142" href="#__codelineno-11-142"></a>
+<a id="__codelineno-11-143" name="__codelineno-11-143" href="#__codelineno-11-143"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<a id="__codelineno-11-144" name="__codelineno-11-144" href="#__codelineno-11-144"></a>    <span class="n">adapter</span> <span class="o">=</span> <span class="n">GUIAdapter</span><span class="p">()</span>
+<a id="__codelineno-11-145" name="__codelineno-11-145" href="#__codelineno-11-145"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+<a id="__codelineno-11-146" name="__codelineno-11-146" href="#__codelineno-11-146"></a>        <span class="n">menu_toolbar_example</span><span class="p">,</span>
+<a id="__codelineno-11-147" name="__codelineno-11-147" href="#__codelineno-11-147"></a>        <span class="n">window_menus</span><span class="o">=</span><span class="p">[</span><span class="n">menu_file</span><span class="p">,</span> <span class="n">menu_help</span><span class="p">],</span>
+<a id="__codelineno-11-148" name="__codelineno-11-148" href="#__codelineno-11-148"></a>        <span class="n">window_toolbar</span><span class="o">=</span><span class="n">ToolBar</span><span class="p">(</span>
+<a id="__codelineno-11-149" name="__codelineno-11-149" href="#__codelineno-11-149"></a>            <span class="n">actions</span><span class="o">=</span><span class="p">[</span><span class="n">action_open</span><span class="p">,</span> <span class="n">action_save</span><span class="p">,</span> <span class="n">Separator</span><span class="p">(),</span> <span class="n">action_close</span><span class="p">]</span>
+<a id="__codelineno-11-150" name="__codelineno-11-150" href="#__codelineno-11-150"></a>        <span class="p">),</span>
+<a id="__codelineno-11-151" name="__codelineno-11-151" href="#__codelineno-11-151"></a>    <span class="p">)</span>
+<a id="__codelineno-11-152" name="__codelineno-11-152" href="#__codelineno-11-152"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 </code></pre></div>
 <p>效果如下：</p>
 <div style="text-align: center">
@@ -2443,223 +2517,223 @@
 <p>下面，通过一些示例来说明这些接口的使用。</p>
 <h4 id="1_3">（1）示例：加载和保存当前参数</h4>
 <p>下面结合菜单的使用，实现参数的保存和加载的效果。</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="kn">import</span> <span class="nn">json</span>
-<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>
-<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span>
-<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>
-<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="kn">from</span> <span class="nn">pyguiadapter.action</span> <span class="kn">import</span> <span class="n">Action</span>
-<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter</span> <span class="kn">import</span> <span class="n">GUIAdapter</span>
-<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter.uoutput</span> <span class="kn">import</span> <span class="n">uprint</span>
-<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="kn">from</span> <span class="nn">pyguiadapter.exceptions</span> <span class="kn">import</span> <span class="n">ParameterError</span>
-<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="kn">from</span> <span class="nn">pyguiadapter.extend_types</span> <span class="kn">import</span> <span class="n">color_t</span>
-<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="kn">from</span> <span class="nn">pyguiadapter.menu</span> <span class="kn">import</span> <span class="n">Menu</span>
-<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="kn">from</span> <span class="nn">pyguiadapter.utils</span> <span class="kn">import</span> <span class="n">messagebox</span><span class="p">,</span> <span class="n">filedialog</span>
-<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a><span class="kn">from</span> <span class="nn">pyguiadapter.windows.fnexec</span> <span class="kn">import</span> <span class="n">FnExecuteWindow</span>
-<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a>
-<a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a>
-<a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a><span class="k">def</span> <span class="nf">simple_load_save_example</span><span class="p">(</span>
-<a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a>    <span class="n">arg1</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-<a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a>    <span class="n">arg2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-<a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a>    <span class="n">arg3</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
-<a id="__codelineno-11-19" name="__codelineno-11-19" href="#__codelineno-11-19"></a>    <span class="n">arg4</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-<a id="__codelineno-11-20" name="__codelineno-11-20" href="#__codelineno-11-20"></a>    <span class="n">arg5</span><span class="p">:</span> <span class="n">color_t</span><span class="p">,</span>
-<a id="__codelineno-11-21" name="__codelineno-11-21" href="#__codelineno-11-21"></a><span class="p">):</span>
-<a id="__codelineno-11-22" name="__codelineno-11-22" href="#__codelineno-11-22"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-11-23" name="__codelineno-11-23" href="#__codelineno-11-23"></a><span class="sd">    This example shows how to save current parameter values to a json file and load a parameter values from a json file.</span>
-<a id="__codelineno-11-24" name="__codelineno-11-24" href="#__codelineno-11-24"></a><span class="sd">    @param arg1:</span>
-<a id="__codelineno-11-25" name="__codelineno-11-25" href="#__codelineno-11-25"></a><span class="sd">    @param arg2:</span>
-<a id="__codelineno-11-26" name="__codelineno-11-26" href="#__codelineno-11-26"></a><span class="sd">    @param arg3:</span>
-<a id="__codelineno-11-27" name="__codelineno-11-27" href="#__codelineno-11-27"></a><span class="sd">    @param arg4:</span>
-<a id="__codelineno-11-28" name="__codelineno-11-28" href="#__codelineno-11-28"></a><span class="sd">    @param arg5:</span>
-<a id="__codelineno-11-29" name="__codelineno-11-29" href="#__codelineno-11-29"></a><span class="sd">    @return:</span>
-<a id="__codelineno-11-30" name="__codelineno-11-30" href="#__codelineno-11-30"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-11-31" name="__codelineno-11-31" href="#__codelineno-11-31"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg1=&quot;</span><span class="p">,</span> <span class="n">arg1</span><span class="p">)</span>
-<a id="__codelineno-11-32" name="__codelineno-11-32" href="#__codelineno-11-32"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg2=&quot;</span><span class="p">,</span> <span class="n">arg2</span><span class="p">)</span>
-<a id="__codelineno-11-33" name="__codelineno-11-33" href="#__codelineno-11-33"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg3=&quot;</span><span class="p">,</span> <span class="n">arg3</span><span class="p">)</span>
-<a id="__codelineno-11-34" name="__codelineno-11-34" href="#__codelineno-11-34"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg4=&quot;</span><span class="p">,</span> <span class="n">arg4</span><span class="p">)</span>
-<a id="__codelineno-11-35" name="__codelineno-11-35" href="#__codelineno-11-35"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg5=&quot;</span><span class="p">,</span> <span class="n">arg5</span><span class="p">)</span>
-<a id="__codelineno-11-36" name="__codelineno-11-36" href="#__codelineno-11-36"></a>
-<a id="__codelineno-11-37" name="__codelineno-11-37" href="#__codelineno-11-37"></a>
-<a id="__codelineno-11-38" name="__codelineno-11-38" href="#__codelineno-11-38"></a><span class="k">def</span> <span class="nf">on_save_params</span><span class="p">(</span><span class="n">window</span><span class="p">:</span> <span class="n">FnExecuteWindow</span><span class="p">,</span> <span class="n">_</span><span class="p">:</span> <span class="n">Action</span><span class="p">):</span>
-<a id="__codelineno-11-39" name="__codelineno-11-39" href="#__codelineno-11-39"></a>    <span class="c1"># Step 1: obtain current parameter values from widgets</span>
-<a id="__codelineno-11-40" name="__codelineno-11-40" href="#__codelineno-11-40"></a>    <span class="c1">#</span>
-<a id="__codelineno-11-41" name="__codelineno-11-41" href="#__codelineno-11-41"></a>    <span class="c1"># if the current input in the widgets of some parameter is invalid, the get_parameter_values() method may raise a</span>
-<a id="__codelineno-11-42" name="__codelineno-11-42" href="#__codelineno-11-42"></a>    <span class="c1"># exception. A good practice is to catch the exception and handle it properly:</span>
-<a id="__codelineno-11-43" name="__codelineno-11-43" href="#__codelineno-11-43"></a>    <span class="c1">#  - for ParameterError, the FnExecuteWindow has a builtin logic to deal with it, so just call the</span>
-<a id="__codelineno-11-44" name="__codelineno-11-44" href="#__codelineno-11-44"></a>    <span class="c1">#  process_parameter_error() method and let the window do the job.</span>
-<a id="__codelineno-11-45" name="__codelineno-11-45" href="#__codelineno-11-45"></a>    <span class="c1">#</span>
-<a id="__codelineno-11-46" name="__codelineno-11-46" href="#__codelineno-11-46"></a>    <span class="c1">#  - for other exceptions, we need handle it by ourselves. Here we choose to show the exception message with a</span>
-<a id="__codelineno-11-47" name="__codelineno-11-47" href="#__codelineno-11-47"></a>    <span class="c1">#  message box to the user.</span>
-<a id="__codelineno-11-48" name="__codelineno-11-48" href="#__codelineno-11-48"></a>
-<a id="__codelineno-11-49" name="__codelineno-11-49" href="#__codelineno-11-49"></a>    <span class="k">try</span><span class="p">:</span>
-<a id="__codelineno-11-50" name="__codelineno-11-50" href="#__codelineno-11-50"></a>        <span class="n">params</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">window</span><span class="o">.</span><span class="n">get_parameter_values</span><span class="p">()</span>
-<a id="__codelineno-11-51" name="__codelineno-11-51" href="#__codelineno-11-51"></a>    <span class="k">except</span> <span class="n">ParameterError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-<a id="__codelineno-11-52" name="__codelineno-11-52" href="#__codelineno-11-52"></a>        <span class="n">window</span><span class="o">.</span><span class="n">process_parameter_error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-<a id="__codelineno-11-53" name="__codelineno-11-53" href="#__codelineno-11-53"></a>        <span class="k">return</span>
-<a id="__codelineno-11-54" name="__codelineno-11-54" href="#__codelineno-11-54"></a>    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-<a id="__codelineno-11-55" name="__codelineno-11-55" href="#__codelineno-11-55"></a>        <span class="n">messagebox</span><span class="o">.</span><span class="n">show_exception_messagebox</span><span class="p">(</span>
-<a id="__codelineno-11-56" name="__codelineno-11-56" href="#__codelineno-11-56"></a>            <span class="n">window</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Unable to get the parameters: &quot;</span>
-<a id="__codelineno-11-57" name="__codelineno-11-57" href="#__codelineno-11-57"></a>        <span class="p">)</span>
-<a id="__codelineno-11-58" name="__codelineno-11-58" href="#__codelineno-11-58"></a>        <span class="k">return</span>
-<a id="__codelineno-11-59" name="__codelineno-11-59" href="#__codelineno-11-59"></a>
-<a id="__codelineno-11-60" name="__codelineno-11-60" href="#__codelineno-11-60"></a>    <span class="c1"># Step2: serialize the parameter values and save them to a json file</span>
-<a id="__codelineno-11-61" name="__codelineno-11-61" href="#__codelineno-11-61"></a>    <span class="c1">#</span>
-<a id="__codelineno-11-62" name="__codelineno-11-62" href="#__codelineno-11-62"></a>    <span class="c1"># In this example, because we don&#39;t use any complex types, we can use simply json.dump() to do the serialization.</span>
-<a id="__codelineno-11-63" name="__codelineno-11-63" href="#__codelineno-11-63"></a>    <span class="c1"># However, If your function contains parameters of complex types, such as list, tuple, set, dict, enum, then</span>
-<a id="__codelineno-11-64" name="__codelineno-11-64" href="#__codelineno-11-64"></a>    <span class="c1"># serialization and deserialization must be considered very carefully.</span>
-<a id="__codelineno-11-65" name="__codelineno-11-65" href="#__codelineno-11-65"></a>    <span class="c1">#</span>
-<a id="__codelineno-11-66" name="__codelineno-11-66" href="#__codelineno-11-66"></a>    <span class="n">save_file</span> <span class="o">=</span> <span class="n">filedialog</span><span class="o">.</span><span class="n">get_save_file</span><span class="p">(</span>
-<a id="__codelineno-11-67" name="__codelineno-11-67" href="#__codelineno-11-67"></a>        <span class="n">window</span><span class="p">,</span> <span class="s2">&quot;Save Parameters&quot;</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="s2">&quot;JSON files(*.json)&quot;</span>
-<a id="__codelineno-11-68" name="__codelineno-11-68" href="#__codelineno-11-68"></a>    <span class="p">)</span>
-<a id="__codelineno-11-69" name="__codelineno-11-69" href="#__codelineno-11-69"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">save_file</span><span class="p">:</span>
-<a id="__codelineno-11-70" name="__codelineno-11-70" href="#__codelineno-11-70"></a>        <span class="k">return</span>
-<a id="__codelineno-11-71" name="__codelineno-11-71" href="#__codelineno-11-71"></a>    <span class="k">try</span><span class="p">:</span>
-<a id="__codelineno-11-72" name="__codelineno-11-72" href="#__codelineno-11-72"></a>        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">save_file</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-<a id="__codelineno-11-73" name="__codelineno-11-73" href="#__codelineno-11-73"></a>            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
-<a id="__codelineno-11-74" name="__codelineno-11-74" href="#__codelineno-11-74"></a>    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-<a id="__codelineno-11-75" name="__codelineno-11-75" href="#__codelineno-11-75"></a>        <span class="n">messagebox</span><span class="o">.</span><span class="n">show_exception_messagebox</span><span class="p">(</span>
-<a id="__codelineno-11-76" name="__codelineno-11-76" href="#__codelineno-11-76"></a>            <span class="n">window</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Unable to save the parameters: &quot;</span>
-<a id="__codelineno-11-77" name="__codelineno-11-77" href="#__codelineno-11-77"></a>        <span class="p">)</span>
-<a id="__codelineno-11-78" name="__codelineno-11-78" href="#__codelineno-11-78"></a>    <span class="k">else</span><span class="p">:</span>
-<a id="__codelineno-11-79" name="__codelineno-11-79" href="#__codelineno-11-79"></a>        <span class="n">messagebox</span><span class="o">.</span><span class="n">show_info_message</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="s2">&quot;Parameters have been saved!&quot;</span><span class="p">)</span>
-<a id="__codelineno-11-80" name="__codelineno-11-80" href="#__codelineno-11-80"></a>
-<a id="__codelineno-11-81" name="__codelineno-11-81" href="#__codelineno-11-81"></a>
-<a id="__codelineno-11-82" name="__codelineno-11-82" href="#__codelineno-11-82"></a><span class="k">def</span> <span class="nf">on_load_params</span><span class="p">(</span><span class="n">window</span><span class="p">:</span> <span class="n">FnExecuteWindow</span><span class="p">,</span> <span class="n">_</span><span class="p">:</span> <span class="n">Action</span><span class="p">):</span>
-<a id="__codelineno-11-83" name="__codelineno-11-83" href="#__codelineno-11-83"></a>    <span class="c1"># Step 1: load the parameter values from a json file</span>
-<a id="__codelineno-11-84" name="__codelineno-11-84" href="#__codelineno-11-84"></a>    <span class="n">file</span> <span class="o">=</span> <span class="n">filedialog</span><span class="o">.</span><span class="n">get_open_file</span><span class="p">(</span>
-<a id="__codelineno-11-85" name="__codelineno-11-85" href="#__codelineno-11-85"></a>        <span class="n">window</span><span class="p">,</span> <span class="s2">&quot;Load Parameters&quot;</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="s2">&quot;JSON files(*.json)&quot;</span>
-<a id="__codelineno-11-86" name="__codelineno-11-86" href="#__codelineno-11-86"></a>    <span class="p">)</span>
-<a id="__codelineno-11-87" name="__codelineno-11-87" href="#__codelineno-11-87"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">file</span><span class="p">:</span>
-<a id="__codelineno-11-88" name="__codelineno-11-88" href="#__codelineno-11-88"></a>        <span class="k">return</span>
-<a id="__codelineno-11-89" name="__codelineno-11-89" href="#__codelineno-11-89"></a>    <span class="k">try</span><span class="p">:</span>
-<a id="__codelineno-11-90" name="__codelineno-11-90" href="#__codelineno-11-90"></a>        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-<a id="__codelineno-11-91" name="__codelineno-11-91" href="#__codelineno-11-91"></a>            <span class="n">params</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-<a id="__codelineno-11-92" name="__codelineno-11-92" href="#__codelineno-11-92"></a>    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-<a id="__codelineno-11-93" name="__codelineno-11-93" href="#__codelineno-11-93"></a>        <span class="n">messagebox</span><span class="o">.</span><span class="n">show_exception_messagebox</span><span class="p">(</span>
-<a id="__codelineno-11-94" name="__codelineno-11-94" href="#__codelineno-11-94"></a>            <span class="n">window</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Unable to load the parameters: &quot;</span>
-<a id="__codelineno-11-95" name="__codelineno-11-95" href="#__codelineno-11-95"></a>        <span class="p">)</span>
-<a id="__codelineno-11-96" name="__codelineno-11-96" href="#__codelineno-11-96"></a>        <span class="k">return</span>
-<a id="__codelineno-11-97" name="__codelineno-11-97" href="#__codelineno-11-97"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-<a id="__codelineno-11-98" name="__codelineno-11-98" href="#__codelineno-11-98"></a>        <span class="n">messagebox</span><span class="o">.</span><span class="n">show_critical_message</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Invalid parameters format!&quot;</span><span class="p">)</span>
-<a id="__codelineno-11-99" name="__codelineno-11-99" href="#__codelineno-11-99"></a>        <span class="k">return</span>
-<a id="__codelineno-11-100" name="__codelineno-11-100" href="#__codelineno-11-100"></a>
-<a id="__codelineno-11-101" name="__codelineno-11-101" href="#__codelineno-11-101"></a>    <span class="c1"># Step2: set the parameter values to the widgets</span>
-<a id="__codelineno-11-102" name="__codelineno-11-102" href="#__codelineno-11-102"></a>    <span class="k">try</span><span class="p">:</span>
-<a id="__codelineno-11-103" name="__codelineno-11-103" href="#__codelineno-11-103"></a>        <span class="n">window</span><span class="o">.</span><span class="n">set_parameter_values</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
-<a id="__codelineno-11-104" name="__codelineno-11-104" href="#__codelineno-11-104"></a>    <span class="k">except</span> <span class="n">ParameterError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-<a id="__codelineno-11-105" name="__codelineno-11-105" href="#__codelineno-11-105"></a>        <span class="n">window</span><span class="o">.</span><span class="n">process_parameter_error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-<a id="__codelineno-11-106" name="__codelineno-11-106" href="#__codelineno-11-106"></a>        <span class="k">return</span>
-<a id="__codelineno-11-107" name="__codelineno-11-107" href="#__codelineno-11-107"></a>    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-<a id="__codelineno-11-108" name="__codelineno-11-108" href="#__codelineno-11-108"></a>        <span class="n">messagebox</span><span class="o">.</span><span class="n">show_exception_messagebox</span><span class="p">(</span>
-<a id="__codelineno-11-109" name="__codelineno-11-109" href="#__codelineno-11-109"></a>            <span class="n">window</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Unable to set the parameters: &quot;</span>
-<a id="__codelineno-11-110" name="__codelineno-11-110" href="#__codelineno-11-110"></a>        <span class="p">)</span>
-<a id="__codelineno-11-111" name="__codelineno-11-111" href="#__codelineno-11-111"></a>    <span class="k">else</span><span class="p">:</span>
-<a id="__codelineno-11-112" name="__codelineno-11-112" href="#__codelineno-11-112"></a>        <span class="n">messagebox</span><span class="o">.</span><span class="n">show_info_message</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="s2">&quot;Parameters have been loaded!&quot;</span><span class="p">)</span>
-<a id="__codelineno-11-113" name="__codelineno-11-113" href="#__codelineno-11-113"></a>
-<a id="__codelineno-11-114" name="__codelineno-11-114" href="#__codelineno-11-114"></a>
-<a id="__codelineno-11-115" name="__codelineno-11-115" href="#__codelineno-11-115"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-<a id="__codelineno-11-116" name="__codelineno-11-116" href="#__codelineno-11-116"></a>    <span class="n">action_save_params</span> <span class="o">=</span> <span class="n">Action</span><span class="p">(</span>
-<a id="__codelineno-11-117" name="__codelineno-11-117" href="#__codelineno-11-117"></a>        <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Save Parameters&quot;</span><span class="p">,</span>
-<a id="__codelineno-11-118" name="__codelineno-11-118" href="#__codelineno-11-118"></a>        <span class="n">icon</span><span class="o">=</span><span class="s2">&quot;fa.save&quot;</span><span class="p">,</span>
-<a id="__codelineno-11-119" name="__codelineno-11-119" href="#__codelineno-11-119"></a>        <span class="n">shortcut</span><span class="o">=</span><span class="s2">&quot;Ctrl+S&quot;</span><span class="p">,</span>
-<a id="__codelineno-11-120" name="__codelineno-11-120" href="#__codelineno-11-120"></a>        <span class="n">on_triggered</span><span class="o">=</span><span class="n">on_save_params</span><span class="p">,</span>
-<a id="__codelineno-11-121" name="__codelineno-11-121" href="#__codelineno-11-121"></a>    <span class="p">)</span>
-<a id="__codelineno-11-122" name="__codelineno-11-122" href="#__codelineno-11-122"></a>
-<a id="__codelineno-11-123" name="__codelineno-11-123" href="#__codelineno-11-123"></a>    <span class="n">action_load_params</span> <span class="o">=</span> <span class="n">Action</span><span class="p">(</span>
-<a id="__codelineno-11-124" name="__codelineno-11-124" href="#__codelineno-11-124"></a>        <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Load Parameters&quot;</span><span class="p">,</span>
-<a id="__codelineno-11-125" name="__codelineno-11-125" href="#__codelineno-11-125"></a>        <span class="n">icon</span><span class="o">=</span><span class="s2">&quot;fa.folder-open&quot;</span><span class="p">,</span>
-<a id="__codelineno-11-126" name="__codelineno-11-126" href="#__codelineno-11-126"></a>        <span class="n">shortcut</span><span class="o">=</span><span class="s2">&quot;Ctrl+L&quot;</span><span class="p">,</span>
-<a id="__codelineno-11-127" name="__codelineno-11-127" href="#__codelineno-11-127"></a>        <span class="n">on_triggered</span><span class="o">=</span><span class="n">on_load_params</span><span class="p">,</span>
-<a id="__codelineno-11-128" name="__codelineno-11-128" href="#__codelineno-11-128"></a>    <span class="p">)</span>
-<a id="__codelineno-11-129" name="__codelineno-11-129" href="#__codelineno-11-129"></a>
-<a id="__codelineno-11-130" name="__codelineno-11-130" href="#__codelineno-11-130"></a>    <span class="n">menu</span> <span class="o">=</span> <span class="n">Menu</span><span class="p">(</span>
-<a id="__codelineno-11-131" name="__codelineno-11-131" href="#__codelineno-11-131"></a>        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;File&quot;</span><span class="p">,</span>
-<a id="__codelineno-11-132" name="__codelineno-11-132" href="#__codelineno-11-132"></a>        <span class="n">actions</span><span class="o">=</span><span class="p">[</span><span class="n">action_save_params</span><span class="p">,</span> <span class="n">action_load_params</span><span class="p">],</span>
-<a id="__codelineno-11-133" name="__codelineno-11-133" href="#__codelineno-11-133"></a>    <span class="p">)</span>
-<a id="__codelineno-11-134" name="__codelineno-11-134" href="#__codelineno-11-134"></a>
-<a id="__codelineno-11-135" name="__codelineno-11-135" href="#__codelineno-11-135"></a>    <span class="n">adapter</span> <span class="o">=</span> <span class="n">GUIAdapter</span><span class="p">()</span>
-<a id="__codelineno-11-136" name="__codelineno-11-136" href="#__codelineno-11-136"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">simple_load_save_example</span><span class="p">,</span> <span class="n">window_menus</span><span class="o">=</span><span class="p">[</span><span class="n">menu</span><span class="p">])</span>
-<a id="__codelineno-11-137" name="__codelineno-11-137" href="#__codelineno-11-137"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="kn">import</span> <span class="nn">json</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="kn">from</span> <span class="nn">pyguiadapter.action</span> <span class="kn">import</span> <span class="n">Action</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter</span> <span class="kn">import</span> <span class="n">GUIAdapter</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter.uoutput</span> <span class="kn">import</span> <span class="n">uprint</span>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="kn">from</span> <span class="nn">pyguiadapter.exceptions</span> <span class="kn">import</span> <span class="n">ParameterError</span>
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="kn">from</span> <span class="nn">pyguiadapter.extend_types</span> <span class="kn">import</span> <span class="n">color_t</span>
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="kn">from</span> <span class="nn">pyguiadapter.menu</span> <span class="kn">import</span> <span class="n">Menu</span>
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a><span class="kn">from</span> <span class="nn">pyguiadapter.utils</span> <span class="kn">import</span> <span class="n">messagebox</span><span class="p">,</span> <span class="n">filedialog</span>
+<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a><span class="kn">from</span> <span class="nn">pyguiadapter.windows.fnexec</span> <span class="kn">import</span> <span class="n">FnExecuteWindow</span>
+<a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a>
+<a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a>
+<a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a><span class="k">def</span> <span class="nf">simple_load_save_example</span><span class="p">(</span>
+<a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a>    <span class="n">arg1</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+<a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a>    <span class="n">arg2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a>    <span class="n">arg3</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+<a id="__codelineno-12-19" name="__codelineno-12-19" href="#__codelineno-12-19"></a>    <span class="n">arg4</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<a id="__codelineno-12-20" name="__codelineno-12-20" href="#__codelineno-12-20"></a>    <span class="n">arg5</span><span class="p">:</span> <span class="n">color_t</span><span class="p">,</span>
+<a id="__codelineno-12-21" name="__codelineno-12-21" href="#__codelineno-12-21"></a><span class="p">):</span>
+<a id="__codelineno-12-22" name="__codelineno-12-22" href="#__codelineno-12-22"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-12-23" name="__codelineno-12-23" href="#__codelineno-12-23"></a><span class="sd">    This example shows how to save current parameter values to a json file and load a parameter values from a json file.</span>
+<a id="__codelineno-12-24" name="__codelineno-12-24" href="#__codelineno-12-24"></a><span class="sd">    @param arg1:</span>
+<a id="__codelineno-12-25" name="__codelineno-12-25" href="#__codelineno-12-25"></a><span class="sd">    @param arg2:</span>
+<a id="__codelineno-12-26" name="__codelineno-12-26" href="#__codelineno-12-26"></a><span class="sd">    @param arg3:</span>
+<a id="__codelineno-12-27" name="__codelineno-12-27" href="#__codelineno-12-27"></a><span class="sd">    @param arg4:</span>
+<a id="__codelineno-12-28" name="__codelineno-12-28" href="#__codelineno-12-28"></a><span class="sd">    @param arg5:</span>
+<a id="__codelineno-12-29" name="__codelineno-12-29" href="#__codelineno-12-29"></a><span class="sd">    @return:</span>
+<a id="__codelineno-12-30" name="__codelineno-12-30" href="#__codelineno-12-30"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-12-31" name="__codelineno-12-31" href="#__codelineno-12-31"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg1=&quot;</span><span class="p">,</span> <span class="n">arg1</span><span class="p">)</span>
+<a id="__codelineno-12-32" name="__codelineno-12-32" href="#__codelineno-12-32"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg2=&quot;</span><span class="p">,</span> <span class="n">arg2</span><span class="p">)</span>
+<a id="__codelineno-12-33" name="__codelineno-12-33" href="#__codelineno-12-33"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg3=&quot;</span><span class="p">,</span> <span class="n">arg3</span><span class="p">)</span>
+<a id="__codelineno-12-34" name="__codelineno-12-34" href="#__codelineno-12-34"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg4=&quot;</span><span class="p">,</span> <span class="n">arg4</span><span class="p">)</span>
+<a id="__codelineno-12-35" name="__codelineno-12-35" href="#__codelineno-12-35"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg5=&quot;</span><span class="p">,</span> <span class="n">arg5</span><span class="p">)</span>
+<a id="__codelineno-12-36" name="__codelineno-12-36" href="#__codelineno-12-36"></a>
+<a id="__codelineno-12-37" name="__codelineno-12-37" href="#__codelineno-12-37"></a>
+<a id="__codelineno-12-38" name="__codelineno-12-38" href="#__codelineno-12-38"></a><span class="k">def</span> <span class="nf">on_save_params</span><span class="p">(</span><span class="n">window</span><span class="p">:</span> <span class="n">FnExecuteWindow</span><span class="p">,</span> <span class="n">_</span><span class="p">:</span> <span class="n">Action</span><span class="p">):</span>
+<a id="__codelineno-12-39" name="__codelineno-12-39" href="#__codelineno-12-39"></a>    <span class="c1"># Step 1: obtain current parameter values from widgets</span>
+<a id="__codelineno-12-40" name="__codelineno-12-40" href="#__codelineno-12-40"></a>    <span class="c1">#</span>
+<a id="__codelineno-12-41" name="__codelineno-12-41" href="#__codelineno-12-41"></a>    <span class="c1"># if the current input in the widgets of some parameter is invalid, the get_parameter_values() method may raise a</span>
+<a id="__codelineno-12-42" name="__codelineno-12-42" href="#__codelineno-12-42"></a>    <span class="c1"># exception. A good practice is to catch the exception and handle it properly:</span>
+<a id="__codelineno-12-43" name="__codelineno-12-43" href="#__codelineno-12-43"></a>    <span class="c1">#  - for ParameterError, the FnExecuteWindow has a builtin logic to deal with it, so just call the</span>
+<a id="__codelineno-12-44" name="__codelineno-12-44" href="#__codelineno-12-44"></a>    <span class="c1">#  process_parameter_error() method and let the window do the job.</span>
+<a id="__codelineno-12-45" name="__codelineno-12-45" href="#__codelineno-12-45"></a>    <span class="c1">#</span>
+<a id="__codelineno-12-46" name="__codelineno-12-46" href="#__codelineno-12-46"></a>    <span class="c1">#  - for other exceptions, we need handle it by ourselves. Here we choose to show the exception message with a</span>
+<a id="__codelineno-12-47" name="__codelineno-12-47" href="#__codelineno-12-47"></a>    <span class="c1">#  message box to the user.</span>
+<a id="__codelineno-12-48" name="__codelineno-12-48" href="#__codelineno-12-48"></a>
+<a id="__codelineno-12-49" name="__codelineno-12-49" href="#__codelineno-12-49"></a>    <span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-12-50" name="__codelineno-12-50" href="#__codelineno-12-50"></a>        <span class="n">params</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">window</span><span class="o">.</span><span class="n">get_parameter_values</span><span class="p">()</span>
+<a id="__codelineno-12-51" name="__codelineno-12-51" href="#__codelineno-12-51"></a>    <span class="k">except</span> <span class="n">ParameterError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<a id="__codelineno-12-52" name="__codelineno-12-52" href="#__codelineno-12-52"></a>        <span class="n">window</span><span class="o">.</span><span class="n">process_parameter_error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+<a id="__codelineno-12-53" name="__codelineno-12-53" href="#__codelineno-12-53"></a>        <span class="k">return</span>
+<a id="__codelineno-12-54" name="__codelineno-12-54" href="#__codelineno-12-54"></a>    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<a id="__codelineno-12-55" name="__codelineno-12-55" href="#__codelineno-12-55"></a>        <span class="n">messagebox</span><span class="o">.</span><span class="n">show_exception_messagebox</span><span class="p">(</span>
+<a id="__codelineno-12-56" name="__codelineno-12-56" href="#__codelineno-12-56"></a>            <span class="n">window</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Unable to get the parameters: &quot;</span>
+<a id="__codelineno-12-57" name="__codelineno-12-57" href="#__codelineno-12-57"></a>        <span class="p">)</span>
+<a id="__codelineno-12-58" name="__codelineno-12-58" href="#__codelineno-12-58"></a>        <span class="k">return</span>
+<a id="__codelineno-12-59" name="__codelineno-12-59" href="#__codelineno-12-59"></a>
+<a id="__codelineno-12-60" name="__codelineno-12-60" href="#__codelineno-12-60"></a>    <span class="c1"># Step2: serialize the parameter values and save them to a json file</span>
+<a id="__codelineno-12-61" name="__codelineno-12-61" href="#__codelineno-12-61"></a>    <span class="c1">#</span>
+<a id="__codelineno-12-62" name="__codelineno-12-62" href="#__codelineno-12-62"></a>    <span class="c1"># In this example, because we don&#39;t use any complex types, we can use simply json.dump() to do the serialization.</span>
+<a id="__codelineno-12-63" name="__codelineno-12-63" href="#__codelineno-12-63"></a>    <span class="c1"># However, If your function contains parameters of complex types, such as list, tuple, set, dict, enum, then</span>
+<a id="__codelineno-12-64" name="__codelineno-12-64" href="#__codelineno-12-64"></a>    <span class="c1"># serialization and deserialization must be considered very carefully.</span>
+<a id="__codelineno-12-65" name="__codelineno-12-65" href="#__codelineno-12-65"></a>    <span class="c1">#</span>
+<a id="__codelineno-12-66" name="__codelineno-12-66" href="#__codelineno-12-66"></a>    <span class="n">save_file</span> <span class="o">=</span> <span class="n">filedialog</span><span class="o">.</span><span class="n">get_save_file</span><span class="p">(</span>
+<a id="__codelineno-12-67" name="__codelineno-12-67" href="#__codelineno-12-67"></a>        <span class="n">window</span><span class="p">,</span> <span class="s2">&quot;Save Parameters&quot;</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="s2">&quot;JSON files(*.json)&quot;</span>
+<a id="__codelineno-12-68" name="__codelineno-12-68" href="#__codelineno-12-68"></a>    <span class="p">)</span>
+<a id="__codelineno-12-69" name="__codelineno-12-69" href="#__codelineno-12-69"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">save_file</span><span class="p">:</span>
+<a id="__codelineno-12-70" name="__codelineno-12-70" href="#__codelineno-12-70"></a>        <span class="k">return</span>
+<a id="__codelineno-12-71" name="__codelineno-12-71" href="#__codelineno-12-71"></a>    <span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-12-72" name="__codelineno-12-72" href="#__codelineno-12-72"></a>        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">save_file</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<a id="__codelineno-12-73" name="__codelineno-12-73" href="#__codelineno-12-73"></a>            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+<a id="__codelineno-12-74" name="__codelineno-12-74" href="#__codelineno-12-74"></a>    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<a id="__codelineno-12-75" name="__codelineno-12-75" href="#__codelineno-12-75"></a>        <span class="n">messagebox</span><span class="o">.</span><span class="n">show_exception_messagebox</span><span class="p">(</span>
+<a id="__codelineno-12-76" name="__codelineno-12-76" href="#__codelineno-12-76"></a>            <span class="n">window</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Unable to save the parameters: &quot;</span>
+<a id="__codelineno-12-77" name="__codelineno-12-77" href="#__codelineno-12-77"></a>        <span class="p">)</span>
+<a id="__codelineno-12-78" name="__codelineno-12-78" href="#__codelineno-12-78"></a>    <span class="k">else</span><span class="p">:</span>
+<a id="__codelineno-12-79" name="__codelineno-12-79" href="#__codelineno-12-79"></a>        <span class="n">messagebox</span><span class="o">.</span><span class="n">show_info_message</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="s2">&quot;Parameters have been saved!&quot;</span><span class="p">)</span>
+<a id="__codelineno-12-80" name="__codelineno-12-80" href="#__codelineno-12-80"></a>
+<a id="__codelineno-12-81" name="__codelineno-12-81" href="#__codelineno-12-81"></a>
+<a id="__codelineno-12-82" name="__codelineno-12-82" href="#__codelineno-12-82"></a><span class="k">def</span> <span class="nf">on_load_params</span><span class="p">(</span><span class="n">window</span><span class="p">:</span> <span class="n">FnExecuteWindow</span><span class="p">,</span> <span class="n">_</span><span class="p">:</span> <span class="n">Action</span><span class="p">):</span>
+<a id="__codelineno-12-83" name="__codelineno-12-83" href="#__codelineno-12-83"></a>    <span class="c1"># Step 1: load the parameter values from a json file</span>
+<a id="__codelineno-12-84" name="__codelineno-12-84" href="#__codelineno-12-84"></a>    <span class="n">file</span> <span class="o">=</span> <span class="n">filedialog</span><span class="o">.</span><span class="n">get_open_file</span><span class="p">(</span>
+<a id="__codelineno-12-85" name="__codelineno-12-85" href="#__codelineno-12-85"></a>        <span class="n">window</span><span class="p">,</span> <span class="s2">&quot;Load Parameters&quot;</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="s2">&quot;JSON files(*.json)&quot;</span>
+<a id="__codelineno-12-86" name="__codelineno-12-86" href="#__codelineno-12-86"></a>    <span class="p">)</span>
+<a id="__codelineno-12-87" name="__codelineno-12-87" href="#__codelineno-12-87"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">file</span><span class="p">:</span>
+<a id="__codelineno-12-88" name="__codelineno-12-88" href="#__codelineno-12-88"></a>        <span class="k">return</span>
+<a id="__codelineno-12-89" name="__codelineno-12-89" href="#__codelineno-12-89"></a>    <span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-12-90" name="__codelineno-12-90" href="#__codelineno-12-90"></a>        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<a id="__codelineno-12-91" name="__codelineno-12-91" href="#__codelineno-12-91"></a>            <span class="n">params</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<a id="__codelineno-12-92" name="__codelineno-12-92" href="#__codelineno-12-92"></a>    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<a id="__codelineno-12-93" name="__codelineno-12-93" href="#__codelineno-12-93"></a>        <span class="n">messagebox</span><span class="o">.</span><span class="n">show_exception_messagebox</span><span class="p">(</span>
+<a id="__codelineno-12-94" name="__codelineno-12-94" href="#__codelineno-12-94"></a>            <span class="n">window</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Unable to load the parameters: &quot;</span>
+<a id="__codelineno-12-95" name="__codelineno-12-95" href="#__codelineno-12-95"></a>        <span class="p">)</span>
+<a id="__codelineno-12-96" name="__codelineno-12-96" href="#__codelineno-12-96"></a>        <span class="k">return</span>
+<a id="__codelineno-12-97" name="__codelineno-12-97" href="#__codelineno-12-97"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+<a id="__codelineno-12-98" name="__codelineno-12-98" href="#__codelineno-12-98"></a>        <span class="n">messagebox</span><span class="o">.</span><span class="n">show_critical_message</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Invalid parameters format!&quot;</span><span class="p">)</span>
+<a id="__codelineno-12-99" name="__codelineno-12-99" href="#__codelineno-12-99"></a>        <span class="k">return</span>
+<a id="__codelineno-12-100" name="__codelineno-12-100" href="#__codelineno-12-100"></a>
+<a id="__codelineno-12-101" name="__codelineno-12-101" href="#__codelineno-12-101"></a>    <span class="c1"># Step2: set the parameter values to the widgets</span>
+<a id="__codelineno-12-102" name="__codelineno-12-102" href="#__codelineno-12-102"></a>    <span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-12-103" name="__codelineno-12-103" href="#__codelineno-12-103"></a>        <span class="n">window</span><span class="o">.</span><span class="n">set_parameter_values</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+<a id="__codelineno-12-104" name="__codelineno-12-104" href="#__codelineno-12-104"></a>    <span class="k">except</span> <span class="n">ParameterError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<a id="__codelineno-12-105" name="__codelineno-12-105" href="#__codelineno-12-105"></a>        <span class="n">window</span><span class="o">.</span><span class="n">process_parameter_error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+<a id="__codelineno-12-106" name="__codelineno-12-106" href="#__codelineno-12-106"></a>        <span class="k">return</span>
+<a id="__codelineno-12-107" name="__codelineno-12-107" href="#__codelineno-12-107"></a>    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<a id="__codelineno-12-108" name="__codelineno-12-108" href="#__codelineno-12-108"></a>        <span class="n">messagebox</span><span class="o">.</span><span class="n">show_exception_messagebox</span><span class="p">(</span>
+<a id="__codelineno-12-109" name="__codelineno-12-109" href="#__codelineno-12-109"></a>            <span class="n">window</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Unable to set the parameters: &quot;</span>
+<a id="__codelineno-12-110" name="__codelineno-12-110" href="#__codelineno-12-110"></a>        <span class="p">)</span>
+<a id="__codelineno-12-111" name="__codelineno-12-111" href="#__codelineno-12-111"></a>    <span class="k">else</span><span class="p">:</span>
+<a id="__codelineno-12-112" name="__codelineno-12-112" href="#__codelineno-12-112"></a>        <span class="n">messagebox</span><span class="o">.</span><span class="n">show_info_message</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="s2">&quot;Parameters have been loaded!&quot;</span><span class="p">)</span>
+<a id="__codelineno-12-113" name="__codelineno-12-113" href="#__codelineno-12-113"></a>
+<a id="__codelineno-12-114" name="__codelineno-12-114" href="#__codelineno-12-114"></a>
+<a id="__codelineno-12-115" name="__codelineno-12-115" href="#__codelineno-12-115"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<a id="__codelineno-12-116" name="__codelineno-12-116" href="#__codelineno-12-116"></a>    <span class="n">action_save_params</span> <span class="o">=</span> <span class="n">Action</span><span class="p">(</span>
+<a id="__codelineno-12-117" name="__codelineno-12-117" href="#__codelineno-12-117"></a>        <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Save Parameters&quot;</span><span class="p">,</span>
+<a id="__codelineno-12-118" name="__codelineno-12-118" href="#__codelineno-12-118"></a>        <span class="n">icon</span><span class="o">=</span><span class="s2">&quot;fa.save&quot;</span><span class="p">,</span>
+<a id="__codelineno-12-119" name="__codelineno-12-119" href="#__codelineno-12-119"></a>        <span class="n">shortcut</span><span class="o">=</span><span class="s2">&quot;Ctrl+S&quot;</span><span class="p">,</span>
+<a id="__codelineno-12-120" name="__codelineno-12-120" href="#__codelineno-12-120"></a>        <span class="n">on_triggered</span><span class="o">=</span><span class="n">on_save_params</span><span class="p">,</span>
+<a id="__codelineno-12-121" name="__codelineno-12-121" href="#__codelineno-12-121"></a>    <span class="p">)</span>
+<a id="__codelineno-12-122" name="__codelineno-12-122" href="#__codelineno-12-122"></a>
+<a id="__codelineno-12-123" name="__codelineno-12-123" href="#__codelineno-12-123"></a>    <span class="n">action_load_params</span> <span class="o">=</span> <span class="n">Action</span><span class="p">(</span>
+<a id="__codelineno-12-124" name="__codelineno-12-124" href="#__codelineno-12-124"></a>        <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Load Parameters&quot;</span><span class="p">,</span>
+<a id="__codelineno-12-125" name="__codelineno-12-125" href="#__codelineno-12-125"></a>        <span class="n">icon</span><span class="o">=</span><span class="s2">&quot;fa.folder-open&quot;</span><span class="p">,</span>
+<a id="__codelineno-12-126" name="__codelineno-12-126" href="#__codelineno-12-126"></a>        <span class="n">shortcut</span><span class="o">=</span><span class="s2">&quot;Ctrl+L&quot;</span><span class="p">,</span>
+<a id="__codelineno-12-127" name="__codelineno-12-127" href="#__codelineno-12-127"></a>        <span class="n">on_triggered</span><span class="o">=</span><span class="n">on_load_params</span><span class="p">,</span>
+<a id="__codelineno-12-128" name="__codelineno-12-128" href="#__codelineno-12-128"></a>    <span class="p">)</span>
+<a id="__codelineno-12-129" name="__codelineno-12-129" href="#__codelineno-12-129"></a>
+<a id="__codelineno-12-130" name="__codelineno-12-130" href="#__codelineno-12-130"></a>    <span class="n">menu</span> <span class="o">=</span> <span class="n">Menu</span><span class="p">(</span>
+<a id="__codelineno-12-131" name="__codelineno-12-131" href="#__codelineno-12-131"></a>        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;File&quot;</span><span class="p">,</span>
+<a id="__codelineno-12-132" name="__codelineno-12-132" href="#__codelineno-12-132"></a>        <span class="n">actions</span><span class="o">=</span><span class="p">[</span><span class="n">action_save_params</span><span class="p">,</span> <span class="n">action_load_params</span><span class="p">],</span>
+<a id="__codelineno-12-133" name="__codelineno-12-133" href="#__codelineno-12-133"></a>    <span class="p">)</span>
+<a id="__codelineno-12-134" name="__codelineno-12-134" href="#__codelineno-12-134"></a>
+<a id="__codelineno-12-135" name="__codelineno-12-135" href="#__codelineno-12-135"></a>    <span class="n">adapter</span> <span class="o">=</span> <span class="n">GUIAdapter</span><span class="p">()</span>
+<a id="__codelineno-12-136" name="__codelineno-12-136" href="#__codelineno-12-136"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">simple_load_save_example</span><span class="p">,</span> <span class="n">window_menus</span><span class="o">=</span><span class="p">[</span><span class="n">menu</span><span class="p">])</span>
+<a id="__codelineno-12-137" name="__codelineno-12-137" href="#__codelineno-12-137"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 </code></pre></div>
 <p><strong>需要说明的是</strong>，上面演示的只是比较简单的情形，函数只包含一些简单类型的参数，因此可以（几乎）可以直接使用<code>json</code>对<code>get_parameter_values()</code>获取到的值进行序列化和反序列化。然而，一旦包含更为复杂的类型，例如<code>dict</code>、<code>list</code>、<code>tuple</code>、<code>set</code>、<code>Enum</code>等，那么就需要认真考虑序列化和反序列化的问题了。当然，方案有很多，如<code>pickle</code>、<code>jsonpickle</code>等，具体的做法一定是和具体的场景结合起来的，这里无法展开，仅仅是做一个提示。</p>
 <p>另外，在以上代码中，有很大一部分是在做异常处理，这一方面这是为了说明异常处理的重要性，另一方面也是为了演示如何运用<code>utils</code>包提供的实用函数。</p>
 <p><strong>关于<code>ParameterError</code></strong>：出现这类异常主要是因为从控件获取/设置参数值时遇到了非法的输入。因为这种错误比较常见，所以<code>FnExecuteWindow</code>为其内建了一套处理流程，当捕获到此类异常时，如无需进行特别处理，开发者可以直接调用<code>process_parameter_error()</code>。</p>
 <h4 id="2dock">（2）示例：调整Dock窗口（隐藏/显示/调整位置......）</h4>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="kn">from</span> <span class="nn">pyguiadapter.action</span> <span class="kn">import</span> <span class="n">Action</span><span class="p">,</span> <span class="n">Separator</span>
-<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter</span> <span class="kn">import</span> <span class="n">GUIAdapter</span>
-<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="kn">from</span> <span class="nn">pyguiadapter.menu</span> <span class="kn">import</span> <span class="n">Menu</span>
-<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="kn">from</span> <span class="nn">pyguiadapter.windows.fnexec</span> <span class="kn">import</span> <span class="p">(</span>
-<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>    <span class="n">FnExecuteWindow</span><span class="p">,</span>
-<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>    <span class="n">BottomDockWidgetArea</span><span class="p">,</span>
-<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="p">)</span>
-<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>
-<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>
-<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="k">def</span> <span class="nf">dock_operation_example</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>    <span class="k">pass</span>
-<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a>
-<a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a>
-<a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a><span class="k">def</span> <span class="nf">on_toggle_document_dock</span><span class="p">(</span><span class="n">win</span><span class="p">:</span> <span class="n">FnExecuteWindow</span><span class="p">,</span> <span class="n">action</span><span class="p">:</span> <span class="n">Action</span><span class="p">):</span>
-<a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a>    <span class="n">win</span><span class="o">.</span><span class="n">set_document_dock_property</span><span class="p">(</span><span class="n">visible</span><span class="o">=</span><span class="ow">not</span> <span class="n">win</span><span class="o">.</span><span class="n">is_document_dock_visible</span><span class="p">())</span>
-<a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a>
-<a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a>
-<a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a><span class="k">def</span> <span class="nf">on_toggle_output_dock</span><span class="p">(</span><span class="n">win</span><span class="p">:</span> <span class="n">FnExecuteWindow</span><span class="p">,</span> <span class="n">action</span><span class="p">:</span> <span class="n">Action</span><span class="p">):</span>
-<a id="__codelineno-12-19" name="__codelineno-12-19" href="#__codelineno-12-19"></a>    <span class="n">win</span><span class="o">.</span><span class="n">set_output_dock_property</span><span class="p">(</span><span class="n">visible</span><span class="o">=</span><span class="ow">not</span> <span class="n">win</span><span class="o">.</span><span class="n">is_output_dock_visible</span><span class="p">())</span>
-<a id="__codelineno-12-20" name="__codelineno-12-20" href="#__codelineno-12-20"></a>
-<a id="__codelineno-12-21" name="__codelineno-12-21" href="#__codelineno-12-21"></a>
-<a id="__codelineno-12-22" name="__codelineno-12-22" href="#__codelineno-12-22"></a><span class="k">def</span> <span class="nf">on_tabify_docks</span><span class="p">(</span><span class="n">win</span><span class="p">:</span> <span class="n">FnExecuteWindow</span><span class="p">,</span> <span class="n">action</span><span class="p">:</span> <span class="n">Action</span><span class="p">):</span>
-<a id="__codelineno-12-23" name="__codelineno-12-23" href="#__codelineno-12-23"></a>    <span class="n">win</span><span class="o">.</span><span class="n">tabify_docks</span><span class="p">()</span>
-<a id="__codelineno-12-24" name="__codelineno-12-24" href="#__codelineno-12-24"></a>
-<a id="__codelineno-12-25" name="__codelineno-12-25" href="#__codelineno-12-25"></a>
-<a id="__codelineno-12-26" name="__codelineno-12-26" href="#__codelineno-12-26"></a><span class="k">def</span> <span class="nf">on_move_output_area</span><span class="p">(</span><span class="n">win</span><span class="p">:</span> <span class="n">FnExecuteWindow</span><span class="p">,</span> <span class="n">action</span><span class="p">:</span> <span class="n">Action</span><span class="p">):</span>
-<a id="__codelineno-12-27" name="__codelineno-12-27" href="#__codelineno-12-27"></a>    <span class="k">if</span> <span class="n">win</span><span class="o">.</span><span class="n">is_output_dock_floating</span><span class="p">():</span>
-<a id="__codelineno-12-28" name="__codelineno-12-28" href="#__codelineno-12-28"></a>        <span class="n">win</span><span class="o">.</span><span class="n">set_output_dock_property</span><span class="p">(</span><span class="n">floating</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<a id="__codelineno-12-29" name="__codelineno-12-29" href="#__codelineno-12-29"></a>    <span class="n">win</span><span class="o">.</span><span class="n">set_output_dock_property</span><span class="p">(</span><span class="n">area</span><span class="o">=</span><span class="n">BottomDockWidgetArea</span><span class="p">)</span>
-<a id="__codelineno-12-30" name="__codelineno-12-30" href="#__codelineno-12-30"></a>
-<a id="__codelineno-12-31" name="__codelineno-12-31" href="#__codelineno-12-31"></a>
-<a id="__codelineno-12-32" name="__codelineno-12-32" href="#__codelineno-12-32"></a><span class="k">def</span> <span class="nf">on_float_output_dock</span><span class="p">(</span><span class="n">win</span><span class="p">:</span> <span class="n">FnExecuteWindow</span><span class="p">,</span> <span class="n">action</span><span class="p">:</span> <span class="n">Action</span><span class="p">):</span>
-<a id="__codelineno-12-33" name="__codelineno-12-33" href="#__codelineno-12-33"></a>    <span class="n">win</span><span class="o">.</span><span class="n">set_output_dock_property</span><span class="p">(</span><span class="n">floating</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<a id="__codelineno-12-34" name="__codelineno-12-34" href="#__codelineno-12-34"></a>
-<a id="__codelineno-12-35" name="__codelineno-12-35" href="#__codelineno-12-35"></a>
-<a id="__codelineno-12-36" name="__codelineno-12-36" href="#__codelineno-12-36"></a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-<a id="__codelineno-12-37" name="__codelineno-12-37" href="#__codelineno-12-37"></a>    <span class="n">action_document_dock</span> <span class="o">=</span> <span class="n">Action</span><span class="p">(</span>
-<a id="__codelineno-12-38" name="__codelineno-12-38" href="#__codelineno-12-38"></a>        <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Toggle Document Dock&quot;</span><span class="p">,</span>
-<a id="__codelineno-12-39" name="__codelineno-12-39" href="#__codelineno-12-39"></a>        <span class="n">on_triggered</span><span class="o">=</span><span class="n">on_toggle_document_dock</span><span class="p">,</span>
-<a id="__codelineno-12-40" name="__codelineno-12-40" href="#__codelineno-12-40"></a>    <span class="p">)</span>
-<a id="__codelineno-12-41" name="__codelineno-12-41" href="#__codelineno-12-41"></a>    <span class="n">action_output_dock</span> <span class="o">=</span> <span class="n">Action</span><span class="p">(</span>
-<a id="__codelineno-12-42" name="__codelineno-12-42" href="#__codelineno-12-42"></a>        <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Toggle Output Dock&quot;</span><span class="p">,</span>
-<a id="__codelineno-12-43" name="__codelineno-12-43" href="#__codelineno-12-43"></a>        <span class="n">on_triggered</span><span class="o">=</span><span class="n">on_toggle_output_dock</span><span class="p">,</span>
-<a id="__codelineno-12-44" name="__codelineno-12-44" href="#__codelineno-12-44"></a>    <span class="p">)</span>
-<a id="__codelineno-12-45" name="__codelineno-12-45" href="#__codelineno-12-45"></a>    <span class="n">action_tabify_docks</span> <span class="o">=</span> <span class="n">Action</span><span class="p">(</span>
-<a id="__codelineno-12-46" name="__codelineno-12-46" href="#__codelineno-12-46"></a>        <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Tabify Docks&quot;</span><span class="p">,</span>
-<a id="__codelineno-12-47" name="__codelineno-12-47" href="#__codelineno-12-47"></a>        <span class="n">on_triggered</span><span class="o">=</span><span class="n">on_tabify_docks</span><span class="p">,</span>
-<a id="__codelineno-12-48" name="__codelineno-12-48" href="#__codelineno-12-48"></a>    <span class="p">)</span>
-<a id="__codelineno-12-49" name="__codelineno-12-49" href="#__codelineno-12-49"></a>    <span class="n">action_move_output_area</span> <span class="o">=</span> <span class="n">Action</span><span class="p">(</span>
-<a id="__codelineno-12-50" name="__codelineno-12-50" href="#__codelineno-12-50"></a>        <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Move Output Area&quot;</span><span class="p">,</span>
-<a id="__codelineno-12-51" name="__codelineno-12-51" href="#__codelineno-12-51"></a>        <span class="n">on_triggered</span><span class="o">=</span><span class="n">on_move_output_area</span><span class="p">,</span>
-<a id="__codelineno-12-52" name="__codelineno-12-52" href="#__codelineno-12-52"></a>    <span class="p">)</span>
-<a id="__codelineno-12-53" name="__codelineno-12-53" href="#__codelineno-12-53"></a>    <span class="n">action_float_output_dock</span> <span class="o">=</span> <span class="n">Action</span><span class="p">(</span>
-<a id="__codelineno-12-54" name="__codelineno-12-54" href="#__codelineno-12-54"></a>        <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Float Output Dock&quot;</span><span class="p">,</span>
-<a id="__codelineno-12-55" name="__codelineno-12-55" href="#__codelineno-12-55"></a>        <span class="n">on_triggered</span><span class="o">=</span><span class="n">on_float_output_dock</span><span class="p">,</span>
-<a id="__codelineno-12-56" name="__codelineno-12-56" href="#__codelineno-12-56"></a>    <span class="p">)</span>
-<a id="__codelineno-12-57" name="__codelineno-12-57" href="#__codelineno-12-57"></a>    <span class="n">menu_views</span> <span class="o">=</span> <span class="n">Menu</span><span class="p">(</span>
-<a id="__codelineno-12-58" name="__codelineno-12-58" href="#__codelineno-12-58"></a>        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Views&quot;</span><span class="p">,</span>
-<a id="__codelineno-12-59" name="__codelineno-12-59" href="#__codelineno-12-59"></a>        <span class="n">actions</span><span class="o">=</span><span class="p">[</span>
-<a id="__codelineno-12-60" name="__codelineno-12-60" href="#__codelineno-12-60"></a>            <span class="n">action_document_dock</span><span class="p">,</span>
-<a id="__codelineno-12-61" name="__codelineno-12-61" href="#__codelineno-12-61"></a>            <span class="n">action_output_dock</span><span class="p">,</span>
-<a id="__codelineno-12-62" name="__codelineno-12-62" href="#__codelineno-12-62"></a>            <span class="n">Separator</span><span class="p">(),</span>
-<a id="__codelineno-12-63" name="__codelineno-12-63" href="#__codelineno-12-63"></a>            <span class="n">action_tabify_docks</span><span class="p">,</span>
-<a id="__codelineno-12-64" name="__codelineno-12-64" href="#__codelineno-12-64"></a>            <span class="n">action_move_output_area</span><span class="p">,</span>
-<a id="__codelineno-12-65" name="__codelineno-12-65" href="#__codelineno-12-65"></a>            <span class="n">action_float_output_dock</span><span class="p">,</span>
-<a id="__codelineno-12-66" name="__codelineno-12-66" href="#__codelineno-12-66"></a>        <span class="p">],</span>
-<a id="__codelineno-12-67" name="__codelineno-12-67" href="#__codelineno-12-67"></a>    <span class="p">)</span>
-<a id="__codelineno-12-68" name="__codelineno-12-68" href="#__codelineno-12-68"></a>    <span class="c1">##########</span>
-<a id="__codelineno-12-69" name="__codelineno-12-69" href="#__codelineno-12-69"></a>    <span class="n">adapter</span> <span class="o">=</span> <span class="n">GUIAdapter</span><span class="p">()</span>
-<a id="__codelineno-12-70" name="__codelineno-12-70" href="#__codelineno-12-70"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">dock_operation_example</span><span class="p">,</span> <span class="n">window_menus</span><span class="o">=</span><span class="p">[</span><span class="n">menu_views</span><span class="p">])</span>
-<a id="__codelineno-12-71" name="__codelineno-12-71" href="#__codelineno-12-71"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
-<a id="__codelineno-12-72" name="__codelineno-12-72" href="#__codelineno-12-72"></a>
-<a id="__codelineno-12-73" name="__codelineno-12-73" href="#__codelineno-12-73"></a>
-<a id="__codelineno-12-74" name="__codelineno-12-74" href="#__codelineno-12-74"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-<a id="__codelineno-12-75" name="__codelineno-12-75" href="#__codelineno-12-75"></a>    <span class="n">main</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="kn">from</span> <span class="nn">pyguiadapter.action</span> <span class="kn">import</span> <span class="n">Action</span><span class="p">,</span> <span class="n">Separator</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter</span> <span class="kn">import</span> <span class="n">GUIAdapter</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="kn">from</span> <span class="nn">pyguiadapter.menu</span> <span class="kn">import</span> <span class="n">Menu</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="kn">from</span> <span class="nn">pyguiadapter.windows.fnexec</span> <span class="kn">import</span> <span class="p">(</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>    <span class="n">FnExecuteWindow</span><span class="p">,</span>
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>    <span class="n">BottomDockWidgetArea</span><span class="p">,</span>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="p">)</span>
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>
+<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="k">def</span> <span class="nf">dock_operation_example</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a>    <span class="k">pass</span>
+<a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a>
+<a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a>
+<a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a><span class="k">def</span> <span class="nf">on_toggle_document_dock</span><span class="p">(</span><span class="n">win</span><span class="p">:</span> <span class="n">FnExecuteWindow</span><span class="p">,</span> <span class="n">action</span><span class="p">:</span> <span class="n">Action</span><span class="p">):</span>
+<a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a>    <span class="n">win</span><span class="o">.</span><span class="n">set_document_dock_property</span><span class="p">(</span><span class="n">visible</span><span class="o">=</span><span class="ow">not</span> <span class="n">win</span><span class="o">.</span><span class="n">is_document_dock_visible</span><span class="p">())</span>
+<a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a>
+<a id="__codelineno-13-17" name="__codelineno-13-17" href="#__codelineno-13-17"></a>
+<a id="__codelineno-13-18" name="__codelineno-13-18" href="#__codelineno-13-18"></a><span class="k">def</span> <span class="nf">on_toggle_output_dock</span><span class="p">(</span><span class="n">win</span><span class="p">:</span> <span class="n">FnExecuteWindow</span><span class="p">,</span> <span class="n">action</span><span class="p">:</span> <span class="n">Action</span><span class="p">):</span>
+<a id="__codelineno-13-19" name="__codelineno-13-19" href="#__codelineno-13-19"></a>    <span class="n">win</span><span class="o">.</span><span class="n">set_output_dock_property</span><span class="p">(</span><span class="n">visible</span><span class="o">=</span><span class="ow">not</span> <span class="n">win</span><span class="o">.</span><span class="n">is_output_dock_visible</span><span class="p">())</span>
+<a id="__codelineno-13-20" name="__codelineno-13-20" href="#__codelineno-13-20"></a>
+<a id="__codelineno-13-21" name="__codelineno-13-21" href="#__codelineno-13-21"></a>
+<a id="__codelineno-13-22" name="__codelineno-13-22" href="#__codelineno-13-22"></a><span class="k">def</span> <span class="nf">on_tabify_docks</span><span class="p">(</span><span class="n">win</span><span class="p">:</span> <span class="n">FnExecuteWindow</span><span class="p">,</span> <span class="n">action</span><span class="p">:</span> <span class="n">Action</span><span class="p">):</span>
+<a id="__codelineno-13-23" name="__codelineno-13-23" href="#__codelineno-13-23"></a>    <span class="n">win</span><span class="o">.</span><span class="n">tabify_docks</span><span class="p">()</span>
+<a id="__codelineno-13-24" name="__codelineno-13-24" href="#__codelineno-13-24"></a>
+<a id="__codelineno-13-25" name="__codelineno-13-25" href="#__codelineno-13-25"></a>
+<a id="__codelineno-13-26" name="__codelineno-13-26" href="#__codelineno-13-26"></a><span class="k">def</span> <span class="nf">on_move_output_area</span><span class="p">(</span><span class="n">win</span><span class="p">:</span> <span class="n">FnExecuteWindow</span><span class="p">,</span> <span class="n">action</span><span class="p">:</span> <span class="n">Action</span><span class="p">):</span>
+<a id="__codelineno-13-27" name="__codelineno-13-27" href="#__codelineno-13-27"></a>    <span class="k">if</span> <span class="n">win</span><span class="o">.</span><span class="n">is_output_dock_floating</span><span class="p">():</span>
+<a id="__codelineno-13-28" name="__codelineno-13-28" href="#__codelineno-13-28"></a>        <span class="n">win</span><span class="o">.</span><span class="n">set_output_dock_property</span><span class="p">(</span><span class="n">floating</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<a id="__codelineno-13-29" name="__codelineno-13-29" href="#__codelineno-13-29"></a>    <span class="n">win</span><span class="o">.</span><span class="n">set_output_dock_property</span><span class="p">(</span><span class="n">area</span><span class="o">=</span><span class="n">BottomDockWidgetArea</span><span class="p">)</span>
+<a id="__codelineno-13-30" name="__codelineno-13-30" href="#__codelineno-13-30"></a>
+<a id="__codelineno-13-31" name="__codelineno-13-31" href="#__codelineno-13-31"></a>
+<a id="__codelineno-13-32" name="__codelineno-13-32" href="#__codelineno-13-32"></a><span class="k">def</span> <span class="nf">on_float_output_dock</span><span class="p">(</span><span class="n">win</span><span class="p">:</span> <span class="n">FnExecuteWindow</span><span class="p">,</span> <span class="n">action</span><span class="p">:</span> <span class="n">Action</span><span class="p">):</span>
+<a id="__codelineno-13-33" name="__codelineno-13-33" href="#__codelineno-13-33"></a>    <span class="n">win</span><span class="o">.</span><span class="n">set_output_dock_property</span><span class="p">(</span><span class="n">floating</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<a id="__codelineno-13-34" name="__codelineno-13-34" href="#__codelineno-13-34"></a>
+<a id="__codelineno-13-35" name="__codelineno-13-35" href="#__codelineno-13-35"></a>
+<a id="__codelineno-13-36" name="__codelineno-13-36" href="#__codelineno-13-36"></a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<a id="__codelineno-13-37" name="__codelineno-13-37" href="#__codelineno-13-37"></a>    <span class="n">action_document_dock</span> <span class="o">=</span> <span class="n">Action</span><span class="p">(</span>
+<a id="__codelineno-13-38" name="__codelineno-13-38" href="#__codelineno-13-38"></a>        <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Toggle Document Dock&quot;</span><span class="p">,</span>
+<a id="__codelineno-13-39" name="__codelineno-13-39" href="#__codelineno-13-39"></a>        <span class="n">on_triggered</span><span class="o">=</span><span class="n">on_toggle_document_dock</span><span class="p">,</span>
+<a id="__codelineno-13-40" name="__codelineno-13-40" href="#__codelineno-13-40"></a>    <span class="p">)</span>
+<a id="__codelineno-13-41" name="__codelineno-13-41" href="#__codelineno-13-41"></a>    <span class="n">action_output_dock</span> <span class="o">=</span> <span class="n">Action</span><span class="p">(</span>
+<a id="__codelineno-13-42" name="__codelineno-13-42" href="#__codelineno-13-42"></a>        <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Toggle Output Dock&quot;</span><span class="p">,</span>
+<a id="__codelineno-13-43" name="__codelineno-13-43" href="#__codelineno-13-43"></a>        <span class="n">on_triggered</span><span class="o">=</span><span class="n">on_toggle_output_dock</span><span class="p">,</span>
+<a id="__codelineno-13-44" name="__codelineno-13-44" href="#__codelineno-13-44"></a>    <span class="p">)</span>
+<a id="__codelineno-13-45" name="__codelineno-13-45" href="#__codelineno-13-45"></a>    <span class="n">action_tabify_docks</span> <span class="o">=</span> <span class="n">Action</span><span class="p">(</span>
+<a id="__codelineno-13-46" name="__codelineno-13-46" href="#__codelineno-13-46"></a>        <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Tabify Docks&quot;</span><span class="p">,</span>
+<a id="__codelineno-13-47" name="__codelineno-13-47" href="#__codelineno-13-47"></a>        <span class="n">on_triggered</span><span class="o">=</span><span class="n">on_tabify_docks</span><span class="p">,</span>
+<a id="__codelineno-13-48" name="__codelineno-13-48" href="#__codelineno-13-48"></a>    <span class="p">)</span>
+<a id="__codelineno-13-49" name="__codelineno-13-49" href="#__codelineno-13-49"></a>    <span class="n">action_move_output_area</span> <span class="o">=</span> <span class="n">Action</span><span class="p">(</span>
+<a id="__codelineno-13-50" name="__codelineno-13-50" href="#__codelineno-13-50"></a>        <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Move Output Area&quot;</span><span class="p">,</span>
+<a id="__codelineno-13-51" name="__codelineno-13-51" href="#__codelineno-13-51"></a>        <span class="n">on_triggered</span><span class="o">=</span><span class="n">on_move_output_area</span><span class="p">,</span>
+<a id="__codelineno-13-52" name="__codelineno-13-52" href="#__codelineno-13-52"></a>    <span class="p">)</span>
+<a id="__codelineno-13-53" name="__codelineno-13-53" href="#__codelineno-13-53"></a>    <span class="n">action_float_output_dock</span> <span class="o">=</span> <span class="n">Action</span><span class="p">(</span>
+<a id="__codelineno-13-54" name="__codelineno-13-54" href="#__codelineno-13-54"></a>        <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Float Output Dock&quot;</span><span class="p">,</span>
+<a id="__codelineno-13-55" name="__codelineno-13-55" href="#__codelineno-13-55"></a>        <span class="n">on_triggered</span><span class="o">=</span><span class="n">on_float_output_dock</span><span class="p">,</span>
+<a id="__codelineno-13-56" name="__codelineno-13-56" href="#__codelineno-13-56"></a>    <span class="p">)</span>
+<a id="__codelineno-13-57" name="__codelineno-13-57" href="#__codelineno-13-57"></a>    <span class="n">menu_views</span> <span class="o">=</span> <span class="n">Menu</span><span class="p">(</span>
+<a id="__codelineno-13-58" name="__codelineno-13-58" href="#__codelineno-13-58"></a>        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Views&quot;</span><span class="p">,</span>
+<a id="__codelineno-13-59" name="__codelineno-13-59" href="#__codelineno-13-59"></a>        <span class="n">actions</span><span class="o">=</span><span class="p">[</span>
+<a id="__codelineno-13-60" name="__codelineno-13-60" href="#__codelineno-13-60"></a>            <span class="n">action_document_dock</span><span class="p">,</span>
+<a id="__codelineno-13-61" name="__codelineno-13-61" href="#__codelineno-13-61"></a>            <span class="n">action_output_dock</span><span class="p">,</span>
+<a id="__codelineno-13-62" name="__codelineno-13-62" href="#__codelineno-13-62"></a>            <span class="n">Separator</span><span class="p">(),</span>
+<a id="__codelineno-13-63" name="__codelineno-13-63" href="#__codelineno-13-63"></a>            <span class="n">action_tabify_docks</span><span class="p">,</span>
+<a id="__codelineno-13-64" name="__codelineno-13-64" href="#__codelineno-13-64"></a>            <span class="n">action_move_output_area</span><span class="p">,</span>
+<a id="__codelineno-13-65" name="__codelineno-13-65" href="#__codelineno-13-65"></a>            <span class="n">action_float_output_dock</span><span class="p">,</span>
+<a id="__codelineno-13-66" name="__codelineno-13-66" href="#__codelineno-13-66"></a>        <span class="p">],</span>
+<a id="__codelineno-13-67" name="__codelineno-13-67" href="#__codelineno-13-67"></a>    <span class="p">)</span>
+<a id="__codelineno-13-68" name="__codelineno-13-68" href="#__codelineno-13-68"></a>    <span class="c1">##########</span>
+<a id="__codelineno-13-69" name="__codelineno-13-69" href="#__codelineno-13-69"></a>    <span class="n">adapter</span> <span class="o">=</span> <span class="n">GUIAdapter</span><span class="p">()</span>
+<a id="__codelineno-13-70" name="__codelineno-13-70" href="#__codelineno-13-70"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">dock_operation_example</span><span class="p">,</span> <span class="n">window_menus</span><span class="o">=</span><span class="p">[</span><span class="n">menu_views</span><span class="p">])</span>
+<a id="__codelineno-13-71" name="__codelineno-13-71" href="#__codelineno-13-71"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+<a id="__codelineno-13-72" name="__codelineno-13-72" href="#__codelineno-13-72"></a>
+<a id="__codelineno-13-73" name="__codelineno-13-73" href="#__codelineno-13-73"></a>
+<a id="__codelineno-13-74" name="__codelineno-13-74" href="#__codelineno-13-74"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<a id="__codelineno-13-75" name="__codelineno-13-75" href="#__codelineno-13-75"></a>    <span class="n">main</span><span class="p">()</span>
 </code></pre></div>
 
 

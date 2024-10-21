@@ -1530,7 +1530,7 @@
 
 
 <h4 id="pyguiadapter.adapter.GUIAdapter.add" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">add</span><span class="p">(</span><span class="n">fn</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">display_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">group</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">icon</span><span class="p">:</span> <span class="n">IconType</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">document</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">document_format</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;markdown&#39;</span><span class="p">,</span> <span class="s1">&#39;html&#39;</span><span class="p">,</span> <span class="s1">&#39;plaintext&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;markdown&#39;</span><span class="p">,</span> <span class="n">cancelable</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">on_execute_result</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">on_execute_error</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="ne">Exception</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">widget_configs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">BaseParameterWidgetConfig</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">window_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">FnExecuteWindowConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">window_listener</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">BaseWindowEventListener</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">window_toolbar</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ToolBar</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">window_menus</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Menu</span><span class="p">,</span> <span class="n">Separator</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">add</span><span class="p">(</span><span class="n">fn</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">display_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">group</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">icon</span><span class="p">:</span> <span class="n">IconType</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">document</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">document_format</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;markdown&#39;</span><span class="p">,</span> <span class="s1">&#39;html&#39;</span><span class="p">,</span> <span class="s1">&#39;plaintext&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;markdown&#39;</span><span class="p">,</span> <span class="n">cancelable</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">widget_configs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">BaseParameterWidgetConfig</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">window_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">FnExecuteWindowConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">window_listener</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">BaseWindowEventListener</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">window_toolbar</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ToolBar</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">window_menus</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Menu</span><span class="p">,</span> <span class="n">Separator</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
 
 </h4>
 
@@ -1647,34 +1647,6 @@
             </td>
             <td>
                   <code>False</code>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td><code>on_execute_result</code></td>
-            <td>
-                  <code><span title="typing.Callable">Callable</span>[[<span title="typing.Any">Any</span>], None]</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>执行函数成功后的回调函数。</p>
-              </div>
-            </td>
-            <td>
-                  <code>None</code>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td><code>on_execute_error</code></td>
-            <td>
-                  <code><span title="typing.Callable">Callable</span>[[Exception], None]</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>执行函数失败后的回调函数。</p>
-              </div>
-            </td>
-            <td>
-                  <code>None</code>
             </td>
           </tr>
           <tr class="doc-section-item">
