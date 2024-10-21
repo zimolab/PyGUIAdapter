@@ -111,7 +111,7 @@ def show_question_message(
     parent: QWidget,
     message: str,
     title: str = "Question",
-    buttons: Union[int, StandardButton, None] = None,
+    buttons: Union[int, StandardButton, None] = Yes | No,
 ) -> Union[int, StandardButton]:
     """
     显示询问消息对话框。
