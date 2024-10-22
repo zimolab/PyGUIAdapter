@@ -3,7 +3,7 @@ import dataclasses
 from qtpy.QtWidgets import QWidget
 from typing import Type, Optional, Any
 
-from .literaledit import PyLiteralEdit, PyLiteralEditConfig, PyLiteralType
+from .pyliteraledit import PyLiteralEdit, PyLiteralEditConfig, PyLiteralType
 from ... import utils
 from ...fn import ParameterInfo
 from ...utils import type_check
