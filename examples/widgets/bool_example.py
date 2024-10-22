@@ -46,8 +46,6 @@ if __name__ == "__main__":
         default_value=True,
         true_text="true",
         false_text="false",
-        true_icon="fa.toggle-on",
-        false_icon="fa.toggle-off",
         vertical=False,
     )
 

@@ -24,7 +24,7 @@ def str_example(
     [str_arg1]
     # override the default value of str_arg1 defined in the function signature
     default_value = "123456"
-    clear_button_enabled = true
+    clear_button = true
     max_length = 5
     frame = false
 
@@ -53,13 +53,13 @@ if __name__ == "__main__":
     str_arg4_conf = LineEditConfig(
         # override the default value of str_arg4 defined in the function signature
         default_value="this is a readonly text",
-        readonly=True,
-        echo_mode=LineEdit.EchoMode.Password,
+        readonly=False,
+        echo_mode=LineEdit.PasswordEchoOnEditMode,
     )
 
     str_arg5_conf = {
         "validator": r"^[a-zA-Z0-9]+$",
-        "alignment": LineEdit.Alignment.AlignRight,
+        "alignment": LineEdit.AlignCenter,
     }
 
     adapter = GUIAdapter()

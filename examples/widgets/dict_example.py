@@ -16,10 +16,9 @@ def dict_example(
     arg1: dict, arg2: Dict, arg3: MutableMapping, arg4: Mapping, arg5: User
 ):
     """
-    example for **DictEdit** for **dict-like** types
+    example for **DictEdit** for **dict** types
 
     @params
-
     [arg1]
     default_value = {a=1,b=2,c="3"}
 
