@@ -14,11 +14,22 @@ class BoolBoxConfig(CommonParameterWidgetConfig):
     """
 
     default_value: Optional[bool] = False
+    """控件的默认值。"""
+
     true_text: str = "True"
+    """值为True的选项文本"""
+
     false_text: str = "False"
+    """值为False的选项文本"""
+
     true_icon: IconType = None
+    """值为True的选项图标"""
+
     false_icon: IconType = None
+    """值为False的选项图标"""
+
     vertical: bool = False
+    """是否为垂直布局"""
 
     @classmethod
     def target_widget_class(cls) -> Type["BoolBox"]:
