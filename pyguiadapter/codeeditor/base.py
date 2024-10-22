@@ -44,14 +44,13 @@ WordWrapMode = QTextOption.WrapMode
 class CodeEditorConfig(BaseWindowConfig):
     title: Optional[str] = None
     untitled_filename: Optional[str] = None
-    use_default_menus: bool = True
-    use_default_toolbar: bool = True
     highlighter: Optional[Type[QStyleSyntaxHighlighter]] = None
     highlighter_args: Union[dict, list, tuple, None] = None
     completer: Optional[QCompleter] = None
     auto_indent: bool = True
     auto_parentheses: bool = True
     text_font_size: Optional[int] = None
+    text_font_family: Optional[str] = None
     tab_size: int = DEFAULT_TAB_SIZE
     tab_replace: bool = True
     initial_text: str = ""
@@ -76,9 +75,12 @@ class CodeEditorConfig(BaseWindowConfig):
     save_failed_message: Optional[str] = None
     format_failed_message: Optional[str] = None
 
-    exclude_default_menus: Tuple[str] = ()
-    exclude_default_menu_actions: Tuple[Tuple[str, str], ...] = ()
-    exclude_default_toolbar_actions: Tuple[str, ...] = ()
+    use_default_menus: bool = True
+    excluded_menus: Tuple[str] = ()
+    excluded_menu_actions: Tuple[Tuple[str, str], ...] = ()
+
+    use_default_toolbar: bool = True
+    excluded_toolbar_actions: Tuple[str, ...] = ()
 
     no_file_mode: bool = False
 
@@ -106,6 +108,7 @@ class BaseCodeEditorWindow(BaseWindow):
         self.set_auto_parentheses_enabled(self._config.auto_parentheses)
         self.set_tab_replace(self._config.tab_size, self._config.tab_replace)
         self.set_text_font_size(self._config.text_font_size)
+        self.set_text_font_family(self._config.text_font_family)
         self.set_line_wrap_mode(self._config.line_wrap_mode)
         self.set_line_wrap_width(self._config.line_wrap_width)
         self.set_word_wrap_mode(self._config.word_wrap_mode)
@@ -200,8 +203,8 @@ class BaseCodeEditorWindow(BaseWindow):
         current_highlighter = self._current_highlighter()
         if current_highlighter is not None:
             current_highlighter.setDocument(None)
-            self._update_current_highlighter(None)
             current_highlighter.deleteLater()
+            self._update_current_highlighter(None)
         current_highlighter = create_highlighter(highlighter, args)
         if current_highlighter is not None:
             current_highlighter.setParent(self)
@@ -238,6 +241,11 @@ class BaseCodeEditorWindow(BaseWindow):
         if size <= 0:
             raise ValueError(f"invalid size: {size}")
         self._editor.setFontPointSize(size)
+
+    def set_text_font_family(self, family: Optional[str]):
+        if family is None or family.strip() == "":
+            return
+        self._editor.setFontFamily(family)
 
     def get_text_font_size(self) -> Optional[int]:
         return self._editor.fontSize()
