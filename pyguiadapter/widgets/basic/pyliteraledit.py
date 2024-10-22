@@ -5,20 +5,35 @@ from pyqcodeeditor.highlighters import QPythonHighlighter
 from qtpy.QtWidgets import QWidget
 from typing import Type, Optional, Any
 
-from .base import BaseCodeEdit, BaseCodeEditConfig
+from .base import BaseCodeEdit, BaseCodeEditConfig, StandaloneCodeEditorConfig
 from ...codeeditor import PythonFormatter
 from ...utils import PyLiteralType, type_check
-
-FILE_FILTERS = (
-    "Python files (*.py);;Text files(*.txt);;Text files(*.text);;All files (*.*)"
-)
 
 
 @dataclasses.dataclass(frozen=True)
 class PyLiteralEditConfig(BaseCodeEditConfig):
+    """PyLiteralEdit的配置类"""
+
     default_value: PyLiteralType = ""
+    """控件的默认值"""
+
+    editor_height: Optional[int] = None
+    """inplace编辑器的高度"""
+
+    editor_width: Optional[int] = None
+    """inplace编辑器的宽度"""
+
+    standalone_editor: bool = True
+    """是否使用独立（standalone）编辑器窗口"""
+
+    standalone_editor_button: str = "Edit Python Literal"
+    """standalone编辑器窗口打开按钮的文本"""
+
+    standalone_editor_config: StandaloneCodeEditorConfig = StandaloneCodeEditorConfig()
+    """standalone编辑器配置"""
+
     initial_text: str = ""
-    file_filters: str = FILE_FILTERS
+
     # DON'T CHANGE THE VALUES BELOW
     highlighter: Type[QPythonHighlighter] = QPythonHighlighter
     formatter: QPythonHighlighter = PythonFormatter()

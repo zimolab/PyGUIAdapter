@@ -3,13 +3,33 @@ import dataclasses
 from qtpy.QtWidgets import QWidget
 from typing import Type, Optional, Any
 
+from .base import StandaloneCodeEditorConfig
 from .pyliteraledit import PyLiteralEdit, PyLiteralEditConfig, PyLiteralType
 from ...utils import type_check
 
 
 @dataclasses.dataclass(frozen=True)
 class ListEditConfig(PyLiteralEditConfig):
+    """ListEdit的配置类"""
+
     default_value: Optional[list] = dataclasses.field(default_factory=list)
+    """控件的默认值"""
+
+    editor_height: Optional[int] = None
+    """inplace编辑器的高度"""
+
+    editor_width: Optional[int] = None
+    """inplace编辑器的宽度"""
+
+    standalone_editor: bool = True
+    """是否启用独立（standalone）代码编辑器"""
+
+    standalone_editor_button: bool = "Edit List"
+    """standalone编辑器启动按钮文本"""
+
+    standalone_editor_config: StandaloneCodeEditorConfig = StandaloneCodeEditorConfig()
+    """standalone编辑器配置"""
+
     initial_text: str = "[]"
 
     @classmethod

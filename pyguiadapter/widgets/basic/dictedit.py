@@ -3,6 +3,7 @@ import dataclasses
 from qtpy.QtWidgets import QWidget
 from typing import Type, Optional, Any
 
+from .base import StandaloneCodeEditorConfig
 from .pyliteraledit import PyLiteralEdit, PyLiteralEditConfig, PyLiteralType
 from ... import utils
 from ...fn import ParameterInfo
@@ -11,7 +12,26 @@ from ...utils import type_check
 
 @dataclasses.dataclass(frozen=True)
 class DictEditConfig(PyLiteralEditConfig):
+    """DictEdit的配置类"""
+
     default_value: Optional[dict] = dataclasses.field(default_factory=dict)
+    """控件的默认值"""
+
+    editor_height: Optional[int] = None
+    """inplace编辑器的高度"""
+
+    editor_width: Optional[int] = None
+    """inplace编辑器的宽度"""
+
+    standalone_editor: bool = True
+    """是否启用独立（standalone）代码编辑器"""
+
+    standalone_editor_button: bool = "Edit Dict"
+    """standalone编辑器启动按钮文本"""
+
+    standalone_editor_config: StandaloneCodeEditorConfig = StandaloneCodeEditorConfig()
+    """standalone编辑器配置"""
+
     initial_text: str = "{}"
 
     @classmethod
