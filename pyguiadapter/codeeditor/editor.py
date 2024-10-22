@@ -24,13 +24,13 @@ class CodeEditorWindow(BaseCodeEditorWindow):
         config = config or CodeEditorConfig()
 
         if config.use_default_menus and not menus:
-            exclude_menus = config.exclude_default_menus
+            exclude_menus = config.excluded_menus
             _menus = {
                 menu.title: dataclasses.replace(menu)
                 for menu in DEFAULT_MENUS
                 if menu.title not in exclude_menus
             }
-            exclude_menu_actions = config.exclude_default_menu_actions
+            exclude_menu_actions = config.excluded_menu_actions
 
             for menu_title, exclude_action in exclude_menu_actions:
                 menu = _menus.get(menu_title, None)
@@ -41,7 +41,7 @@ class CodeEditorWindow(BaseCodeEditorWindow):
 
         if config.use_default_toolbar and not toolbar:
             toolbar = DEFAULT_TOOLBAR
-            exclude_toolbar_actions = config.exclude_default_toolbar_actions
+            exclude_toolbar_actions = config.excluded_toolbar_actions
             for exclude_action in exclude_toolbar_actions:
                 toolbar.remove_action(exclude_action)
 
