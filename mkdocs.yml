@@ -48,6 +48,19 @@ nav:
     - pyguiadapter.paramwidget: apis/pyguiadapter.paramwidget.md
     - pyguiadapter.widgets.common: apis/pyguiadapter.widgets.common.md
     - pyguiadapter.widgets.intspin: apis/pyguiadapter.widgets.intspin.md
+    - pyguiadapter.widgets.floatspin: apis/pyguiadapter.widgets.floatspin.md
+    - pyguiadapter.widgets.boolbox: apis/pyguiadapter.widgets.boolbox.md
+    - pyguiadapter.widgets.listedit: apis/pyguiadapter.widgets.listedit.md
+    - pyguiadapter.widgets.tupleedit: apis/pyguiadapter.widgets.tupleedit.md
+    - pyguiadapter.widgets.dictedit: apis/pyguiadapter.widgets.dictedit.md
+    - pyguiadapter.widgets.setedit: apis/pyguiadapter.widgets.setedit.md
+    - pyguiadapter.widgets.enumselect: apis/pyguiadapter.widgets.enumselect.md
+    - pyguiadapter.widgets.lineedit: apis/pyguiadapter.widgets.lineedit.md
+    - pyguiadapter.widgets.exclusivechoice: apis/pyguiadapter.widgets.exclusivechoice.md
+    - pyguiadapter.widgets.datetimeedit: apis/pyguiadapter.widgets.datetimeedit.md
+    - pyguiadapter.widgets.dateedit: apis/pyguiadapter.widgets.dateedit.md
+    - pyguiadapter.widgets.timeedit: apis/pyguiadapter.widgets.timeedit.md
+    - pyguiadapter.widgets.pyliteraledit: apis/pyguiadapter.widgets.pyliteraledit.md
   - 贡献: contribution.md
   - 开源许可: license.md
   - 版本历史: changelog.md
