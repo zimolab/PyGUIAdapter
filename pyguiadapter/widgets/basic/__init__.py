@@ -1,3 +1,4 @@
+from .base import StandaloneCodeEditorConfig
 from .intspin import IntSpinBoxConfig, IntSpinBox
 from .boolbox import BoolBoxConfig, BoolBox
 from .floatspin import FloatSpinBoxConfig, FloatSpinBox
@@ -51,4 +52,5 @@ __all__ = [
     "BaseCodeEdit",
     "BaseCodeEditConfig",
     "BaseCodeFormatter",
+    "StandaloneCodeEditorConfig",
 ]
