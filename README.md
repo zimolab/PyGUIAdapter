@@ -206,11 +206,42 @@ if __name__ == "__main__":
     <img src="docs/assets/equation_solver.gif" />
 </div>
 
+**3、限制条件**
 
+`PyGUIAdapter`几乎可以将任意的Python函数转换成图形用户界面，但也存在一些限制条件：
+
+- 不支持`lambda`函数和一些内置函数
+- 不支持参数列表带有`Positional-Only`参数的函数，如:
+```python
+def foo(a: int, b: int, /, c: int, d: int):
+    pass
+```
+
+可能还有一些其他未知的限制，当然，不用担心，经过大量的测试，普通的python函数基本都可以无缝转化为图形用户界面。
+
+对应不能直接转换的情形，也可以通过非常简单的方式解决，将函数包装一层即可，比如:
+
+```python
+
+def foo(a: int, b: int, /, c: int, d: int):
+    pass
+
+
+def foo_wrapper(a: int, b: int, c: int, d: int):
+    return foo(a, b, c, d)
+
+if __name__ == "__main__":
+    from pyguiadapter.adapter import GUIAdapter
+    adapter = GUIAdapter()
+    adapter.add(foo_wrapper)
+    adapter.run()
+```
 
 ## 五、文档
 
-`PyGUIAdapter`还提供了许多高级特性，开发者可以阅读[文档](https://zimolab.github.io/PyGUIAdapter/#/README)，了解`PyGUIAdapter`的高级用法。
+`PyGUIAdapter`还提供了许多高级特性，开发者可以阅读文档，了解`PyGUIAdapter`的进阶用法。以下是文档地址：
+
+- [PyGUIAdapter文档](https://zimolab.github.io/PyGUIAdapter/)
 
 ## 六、示例代码
 
