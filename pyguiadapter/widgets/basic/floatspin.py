@@ -14,12 +14,25 @@ from ...widgets.common import (
 @dataclasses.dataclass(frozen=True)
 class FloatSpinBoxConfig(CommonParameterWidgetConfig):
     default_value: Optional[float] = 0.0
+    """控件的默认值"""
+
     min_value: float = -2147483648.0
+    """最小值"""
+
     max_value: float = 2147483647.0
+    """最大值"""
+
     step: Optional[float] = 1.0
+    """单次调整的步长"""
+
     decimals: Optional[int] = 2
+    """小数点后显示的位数"""
+
     prefix: str = ""
+    """前缀"""
+
     suffix: str = ""
+    """后缀"""
 
     @classmethod
     def target_widget_class(cls) -> Type["FloatSpinBox"]:
