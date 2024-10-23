@@ -1,15 +1,29 @@
 from datetime import time
 
-from qtpy.QtCore import QTime
-
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.adapter.uoutput import uprint
-from pyguiadapter.widgets import TimeEditConfig
+from pyguiadapter.widgets import TimeEditConfig, TimeEdit
+from pyguiadapter.widgets.basic.datetimeedit import TimeSpec
 
 
 def time_example(arg1: time, arg2: time, arg3: time):
     """
-    example for type **time** and **TimeEdit** widget
+    This is an example for **TimeEdit** and **datetime.time** type.
+
+    Args:
+        arg1: description of arg1
+        arg2: description of arg2
+        arg3: description of arg3
+
+    Returns:
+        None
+
+    @params
+    [arg3]
+    label = "Argument 3"
+    display_format = "HH小时mm分ss秒"
+
+    @end
     """
     uprint("arg1:", arg1)
     uprint("arg2:", arg2)
@@ -21,20 +35,17 @@ if __name__ == "__main__":
         default_value=time(hour=12, minute=30),
         max_time=time(hour=23, minute=59),
         min_time=time(hour=0, minute=0),
+        time_spec=TimeSpec.UTC,
     )
     arg2_conf = TimeEditConfig(
         default_value=time(hour=20, minute=30),
         max_time=time(hour=23, minute=59),
         min_time=time(hour=12, minute=0),
+        alignment=TimeEdit.AlignCenter,
     )
-    arg3_conf = TimeEditConfig(default_value=QTime().currentTime())
     adapter = GUIAdapter()
     adapter.add(
         time_example,
-        widget_configs={
-            "arg1": arg1_conf,
-            "arg2": arg2_conf,
-            "arg3": arg3_conf,
-        },
+        widget_configs={"arg1": arg1_conf, "arg2": arg2_conf},
     )
     adapter.run()

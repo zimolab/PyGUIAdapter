@@ -5,9 +5,17 @@ from pyguiadapter.adapter.uoutput import uprint
 from pyguiadapter.widgets import PyLiteralEditConfig
 
 
-def any_example(arg1: Any, arg2: object, arg3: Union[int, str]):
+def py_literal_example(arg1: Any, arg2: object, arg3: Union[int, str]):
     """
-    example of **PyLiteralEdit** for **Any**, **object**, **Union** types
+    This is an example of **PyLiteralEdit** widget and **Any**, **object**, **Union** types
+
+    Args:
+        arg1: description of arg1
+        arg2: description of arg2
+        arg3: description of arg3
+
+    Returns:
+        None
     """
     uprint("arg1: ", arg1, f", type={type(arg1)}")
     uprint("arg2: ", arg2, f", type={type(arg2)}")
@@ -16,7 +24,7 @@ def any_example(arg1: Any, arg2: object, arg3: Union[int, str]):
 
 if __name__ == "__main__":
     # PyLiteralEdit support the PyLiteralType, which is a Union of:
-    # bool, int, float, bytes, str, list, tuple, dict, set
+    # bool, int, float, bytes, str, list, tuple, dict, set and NoneType.
 
     arg1_config = PyLiteralEditConfig(
         default_value=[1, 2, 3, 4],
@@ -29,7 +37,7 @@ if __name__ == "__main__":
     )
     adapter = GUIAdapter()
     adapter.add(
-        any_example,
+        py_literal_example,
         widget_configs={
             "arg1": arg1_config,
             "arg2": arg2_config,

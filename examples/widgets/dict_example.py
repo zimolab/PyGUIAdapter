@@ -16,7 +16,17 @@ def dict_example(
     arg1: dict, arg2: Dict, arg3: MutableMapping, arg4: Mapping, arg5: User
 ):
     """
-    example for **DictEdit** for **dict** types
+    This is an example for **DictEdit** widget and **dict** types.
+
+    Args:
+        arg1: description of arg1
+        arg2: description of arg2
+        arg3: description of arg3
+        arg4: description of arg4
+        arg5: description of arg5
+
+    Returns:
+        None
 
     @params
     [arg1]
@@ -27,7 +37,6 @@ def dict_example(
 
     @end
     """
-    uprint(id(arg1))
     uprint("arg1: ", arg1)
     uprint("arg2: ", arg2)
     uprint("arg3: ", arg3)

@@ -31,7 +31,17 @@ def literal_example(
     arg4: MyObj = my_objects[0],
 ):
     """
-    example for type **typing.Literal**
+    This is an example for **ExclusiveChoiceBox** widget and **Literal** type hint.
+
+    Args:
+        arg1: description of arg1
+        arg2: description of arg2
+        arg3: description of arg3
+        arg4: description of arg4
+
+    Returns:
+        None
+
     @params
     [arg3]
     columns = 2

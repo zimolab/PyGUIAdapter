@@ -7,7 +7,15 @@ from pyguiadapter.widgets import SetEditConfig
 
 def set_example(arg1: set, arg2: Set, arg3: MutableSet):
     """
-    example for **SetEdit** for **set** types
+    This is an example for **SetEdit** for **set** types.
+
+    Args:
+        arg1: description of arg1.
+        arg2: description of arg2.
+        arg3: description of arg3.
+
+    Returns:
+        None.
     """
     uprint("arg1: ", arg1)
     uprint("arg2: ", arg2)
