@@ -12,26 +12,37 @@ from ..common import (
 from ...utils import type_check
 
 Alignment = Qt.AlignmentFlag
-ButtonSymbols = QDateEdit.ButtonSymbols
-CorrectionMode = QDateEdit.CorrectionMode
 TimeSpec = Qt.TimeSpec
 
 
 @dataclasses.dataclass(frozen=True)
 class DateEditConfig(CommonParameterWidgetConfig):
+    """DateEdit的配置类。"""
+
     default_value: Union[date, QDate, None] = date.today()
+    """控件的默认值"""
+
     min_date: Union[date, QDate, None] = None
+    """控件的最小日期"""
+
     max_date: Union[date, QDate, None] = None
+    """控件的最大日期"""
+
     display_format: Optional[str] = None
+    """日期的显示格式，可以参考Qt官方文档：
+    [displayFormat](https://doc.qt.io/qtforpython-5/PySide2/QtWidgets/QDateTimeEdit.html#PySide2.QtWidgets.PySide2.QtWidgets.QDateTimeEdit.displayFormat)
+    """
+
     time_spec: Optional[TimeSpec] = None
-    wrapping: bool = False
-    frame: bool = True
+    """时间日期标准，可以参考Qt官方文档:
+    [TimeSpec](https://doc.qt.io/qtforpython-5/PySide2/QtCore/Qt.html#PySide2.QtCore.PySide2.QtCore.Qt.TimeSpec)
+    """
+
     alignment: Alignment = Qt.AlignLeft | Qt.AlignVCenter
-    button_symbols: Optional[ButtonSymbols] = None
-    correction_mode: Optional[CorrectionMode] = None
-    keyboard_tracking: bool = True
-    accelerated: bool = False
+    """对齐方式，可选值有：AlignLeft、AlignRight、AlignCenter、AlignJustify等。"""
+
     calendar_popup: bool = False
+    """是否显示日历弹窗"""
 
     @classmethod
     def target_widget_class(cls) -> Type["DateEdit"]:
@@ -40,6 +51,30 @@ class DateEditConfig(CommonParameterWidgetConfig):
 
 class DateEdit(CommonParameterWidget):
     ConfigClass = DateEditConfig
+
+    AlignLeft = Qt.AlignLeft
+    """对齐方式：左对齐"""
+
+    AlignRight = Qt.AlignRight
+    """对齐方式：右对齐"""
+
+    AlignCenter = Qt.AlignCenter
+    """对齐方式：居中对齐"""
+
+    AlignJustify = Qt.AlignJustify
+    """对齐方式：两端对齐"""
+
+    LocalTime = Qt.LocalTime
+    """时间日期的标准：本地时间"""
+
+    UTC = Qt.UTC
+    """时间日期的标准：UTC"""
+
+    OffsetFromUTC = Qt.OffsetFromUTC
+    """时间日期的标准：OffsetFromUTC"""
+
+    TimeZone = Qt.TimeZone
+    """时间日期的标准：TimeZone"""
 
     def __init__(
         self,
@@ -66,16 +101,7 @@ class DateEdit(CommonParameterWidget):
 
             if self._config.time_spec is not None:
                 self._value_widget.setTimeSpec(self._config.time_spec)
-
-            self._value_widget.setWrapping(self._config.wrapping)
-            self._value_widget.setFrame(self._config.frame)
             self._value_widget.setAlignment(self._config.alignment)
-            if self._config.button_symbols is not None:
-                self._value_widget.setButtonSymbols(self._config.button_symbols)
-            if self._config.correction_mode is not None:
-                self._value_widget.setCorrectionMode(self._config.correction_mode)
-            self._value_widget.setKeyboardTracking(self._config.keyboard_tracking)
-            self._value_widget.setAccelerated(self._config.accelerated)
             self._value_widget.setCalendarPopup(self._config.calendar_popup)
         return self._value_widget
 

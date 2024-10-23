@@ -27,15 +27,34 @@ class _FIRST_OPTION:
 
 @dataclasses.dataclass(frozen=True)
 class ExclusiveChoiceBoxConfig(CommonParameterWidgetConfig):
+    """ExclusiveChoiceBox的配置类。"""
+
     default_value: Any = _FIRST_OPTION
+    """默认选项。`_FIRST_OPTION`是一个特殊值，表示选择选项列表中的第一个选项。"""
+
     choices: Optional[List[Any]] = None
+    """选项列表"""
+
     columns: int = 1
+    """选项列数"""
+
     show_type_icon: bool = False
+    """是否显示选项类型图标"""
+
     int_icon: IconType = "mdi6.alpha-i-circle"
+    """整数类型选项的图标"""
+
     bool_icon: str = "mdi6.alpha-b-circle"
+    """布尔类型选项的图标"""
+
     str_icon: str = "mdi6.alpha-s-box"
+    """字符串类型选项的图标"""
+
     object_icon: str_icon = "mdi6.alpha-o-box"
+    """对象类型选项的图标"""
+
     icon_size: Union[Tuple[int, int], int, QSize, None] = None
+    """选项图标大小"""
 
     @classmethod
     def target_widget_class(cls) -> Type["ExclusiveChoiceBox"]:

@@ -13,10 +13,18 @@ from ...utils import IconType, get_icon, get_size, is_subclass_of, type_check
 
 @dataclasses.dataclass(frozen=True)
 class EnumSelectConfig(CommonParameterWidgetConfig):
+    """EnumSelect的配置类"""
+
     default_value: Union[Enum, str, int, None] = 0
-    enum_class: Optional[Type[Enum]] = None
+    """默认的枚举值，可以为枚举类对象、枚举对象的名称或者是选项的索引"""
+
     icons: Optional[Dict[Union[Enum, str], IconType]] = None
+    """选项的图标，需提供枚举对象（或枚举对象的名称）到图标的映射"""
+
     icon_size: Union[int, Tuple[int, int], QSize, None] = None
+    """选项图标的大小"""
+
+    enum_class: Optional[Type[Enum]] = None
 
     @classmethod
     def target_widget_class(cls) -> Type["EnumSelect"]:
@@ -59,6 +67,9 @@ class EnumSelect(CommonParameterWidget):
             return
 
         icon = icons.get(name, None)
+        if not icon:
+            icon = icons.get(value, None)
+
         if not icon:
             self._value_widget.addItem(name, value)
             return
