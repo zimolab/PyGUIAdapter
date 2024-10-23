@@ -45,6 +45,12 @@ def get_icon(src: IconType, *args, **kwargs) -> Optional[QIcon]:
         raise ValueError(f"invalid icon type: {type(src)}")
 
 
+def qta_icon(icon_name: str, **kwargs) -> Union[str, Tuple[str, dict]]:
+    if not kwargs:
+        return icon_name
+    return icon_name, kwargs
+
+
 # noinspection SpellCheckingInspection
 def set_textbrowser_content(
     textbrowser: QTextBrowser,
