@@ -111,11 +111,11 @@ class BaseCodeEditConfig(CommonParameterWidgetConfig):
     text_font_family: Optional[str] = None
     """inplace编辑器字体"""
 
-    editor_height: Optional[int] = EDITOR_HEIGHT
-    """inplace编辑器高度"""
-
-    editor_width: Optional[int] = EDITOR_WIDTH
+    width: Optional[int] = EDITOR_WIDTH
     """inplace编辑器宽度"""
+
+    height: Optional[int] = EDITOR_HEIGHT
+    """inplace编辑器高度"""
 
     line_wrap_mode: LineWrapMode = LineWrapMode.WidgetWidth
     """inplace编辑器行折叠模式"""
@@ -207,15 +207,15 @@ class BaseCodeEdit(CommonParameterWidget):
             # if config.min_width and config.min_width > 0:
             #     self._inplace_editor.setMinimumWidth(config.min_width)
 
-            if config.editor_height is not None and config.editor_height >= 0:
-                if config.editor_height == 0:
+            if config.height is not None and config.height >= 0:
+                if config.height == 0:
                     self._inplace_editor.setVisible(False)
-                self._inplace_editor.setFixedHeight(config.editor_height)
+                self._inplace_editor.setFixedHeight(config.height)
 
-            if config.editor_width is not None and config.editor_width >= 0:
-                if config.editor_width == 0:
+            if config.width is not None and config.width >= 0:
+                if config.width == 0:
                     self._inplace_editor.setVisible(False)
-                self._inplace_editor.setFixedWidth(config.editor_width)
+                self._inplace_editor.setFixedWidth(config.width)
 
             self._inplace_editor.setPlainText(config.initial_text or "")
 
