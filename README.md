@@ -7,7 +7,7 @@
 
 
 <div style="text-align: center;">
-    <img src="docs/assets/hello_world.png" />
+    <img src="https://zimolab.github.io/PyGUIAdapter/assets/hello_world.png" />
 </div>
 
 
@@ -62,7 +62,7 @@ if __name__ == "__main__":
 ```
 
 <div style="text-align:center">
-    <img src="docs/assets/process_integers.gif" />
+    <img src="https://zimolab.github.io/PyGUIAdapter/assets/process_integers.gif" />
 </div>
 
 
@@ -203,7 +203,7 @@ if __name__ == "__main__":
 **界面效果如下：**
 
 <div style="text-align:center">
-    <img src="docs/assets/equation_solver.gif" />
+    <img src="https://zimolab.github.io/PyGUIAdapter/assets/equation_solver.gif" />
 </div>
 
 **3、限制条件**
@@ -269,14 +269,3 @@ if __name__ == "__main__":
 - `pyqcodeeditor`
 
 - `yapf`
-
-  
-
-
-## 九、一些无关紧要的话
-
-目前，`PyGUIAdapter`的整体架构设计已经基本稳定，主要功能也已基本实现。现在主要进行的工作是文档的编写、进一步的测试、bug的修复和一些小的改进。尤其是文档的编写占据了我大量的时间和精力，有时感觉写文档比写代码要困难的多，脑子里有很多想法，总是无法用语言精准的描述出来。第一次写一个相对完整的项目，也不知道怎么去设计文档的整体框架，一切都只能从头学起，从docsify到mkdocs，这个过程中倒也学到了很多东西。好在只要肯花时间，总是会有些收获，好与不好且另说，`PyGUIAdapter`总算有了一个比较完整的文档。
-
-由于我本身的工作和编程没什么关系，写代码纯属个人爱好，因此只能在业余时间去维护这个项目，从提交记录来看，除了周末，基本上都是每天6点过后提交代码。一个人的精力始终有限，很难保证不会出什么错漏，因此欢迎提出issue或者建议。
-
-下一步，主要的想法是进一步完善文档（包括把它翻译成英文），编写更多用例，添加新的功能，进一步优化性能......此外，我还想将这个项目移植到`tkinter/ttk`上，从而摆脱对qt的依赖。要做的事情很多，时间总是不够，一步步来吧。
