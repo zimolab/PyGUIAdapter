@@ -31,31 +31,87 @@ GridStyle = Qt.PenStyle
 
 @dataclasses.dataclass(frozen=True)
 class PlainDictEditConfig(CommonParameterWidgetConfig):
+    """PlainDictEdit的配置类"""
+
     default_value: Optional[Dict[str, Any]] = dataclasses.field(default_factory=dict)
+    """默认值"""
+
     edit_button_text: str = "Edit"
+    """编辑按钮文本"""
+
     add_button_text: str = "Add"
+    """添加按钮文本"""
+
     remove_button_text: str = "Remove"
+    """移除按钮文本"""
+
     clear_button_text: str = "Clear"
+    """清空按钮文本"""
+
     key_header: str = "Key"
+    """键值对中键的表头文本"""
+
     value_header: str = "Value"
+    """键值对中值的表头文本"""
+
     show_grid: bool = True
+    """是否显示网格线"""
+
     grid_style: GridStyle = GridStyle.SolidLine
+    """网格线样式"""
+
     alternating_row_colors: bool = True
+    """是否交替显示行颜色"""
+
     text_elide_mode: TextElideMode = TextElideMode.ElideRight
+    """文本省略模式"""
+
     corner_button_enabled: bool = True
+    """是否显示边角按钮"""
+
     vertical_header_visible: bool = False
+    """是否显示垂直表头"""
+
     horizontal_header_visible: bool = True
+    """是否显示水平表头"""
+
     min_height: int = 260
+
     confirm_remove: bool = True
+    """是否在移除数据时弹出确认对话框"""
+
     warning_dialog_title: str = "Warning"
-    no_item_message: str = "No item has been added!"
-    no_selection_message: str = "No item selected!"
+    """警告对话框标题"""
+
     confirm_dialog_title: str = "Confirm"
-    remove_item_message: str = "Are you sure to remove the selected item(s)?"
-    clear_items_message: str = "Are you sure to clear all items?"
+    """确认对话框标题"""
+
+    no_items_message: str = "No item has been added!"
+    """没有添加项时的提示信息"""
+
+    no_selection_message: str = "No item selected!"
+    """没有选择项时的提示信息"""
+
+    confirm_remove_message: str = "Are you sure to remove the selected item(s)?"
+    """移除项时的确认对话框信息"""
+
+    confirm_clear_message: str = "Are you sure to clear all items?"
+    """清空项时的确认对话框信息"""
+
     edit_item_title: str = "Edit - {}"
+    """编辑项对话框标题，{}将被替换为当前项的键"""
+
     add_item_title: str = "Add Item"
+    """添加项对话框标题"""
+
     editor_size: Tuple[int, int] = (500, 400)
+    """编辑/添加项对话框大小"""
+
+    width: Optional[int] = None
+    """表格最小宽度"""
+
+    height: Optional[int] = 200
+    """表格最小高度"""
 
     @classmethod
     def target_widget_class(cls) -> Type["PlainDictEdit"]:
@@ -88,12 +144,15 @@ class PlainDictEdit(CommonParameterWidget):
             self._value_widget = QWidget(self)
             layout_main = QVBoxLayout()
             layout_main.setContentsMargins(0, 0, 0, 0)
-            layout_main.setSpacing(0)
+            layout_main.setSpacing(2)
             self._value_widget.setLayout(layout_main)
 
             self._table_view = QTableView(self._value_widget)
-            if self._config.min_height > 0:
-                self._table_view.setMinimumHeight(self._config.min_height)
+            if self._config.height is not None and self._config.height > 0:
+                self._table_view.setMinimumHeight(self._config.height)
+            if self._config.width is not None and self._config.width > 0:
+                self._table_view.setMinimumWidth(self._config.width)
+            self._table_view.setSortingEnabled(False)
             self._table_view.setDragEnabled(False)
             self._table_view.setTextElideMode(self._config.text_elide_mode)
             self._table_view.setAlternatingRowColors(
@@ -231,7 +290,7 @@ class PlainDictEdit(CommonParameterWidget):
             ret = utils.show_question_message(
                 self,
                 title=self._config.confirm_dialog_title,
-                message=self._config.remove_item_message,
+                message=self._config.confirm_remove_message,
                 buttons=utils.StandardButton.Yes | utils.StandardButton.No,
             )
             if ret != utils.StandardButton.Yes:
@@ -286,7 +345,7 @@ class PlainDictEdit(CommonParameterWidget):
             utils.show_info_message(
                 self,
                 title=self._config.warning_dialog_title,
-                message=self._config.no_item_message,
+                message=self._config.no_items_message,
             )
             return
         if not self._config.confirm_remove:
@@ -295,7 +354,7 @@ class PlainDictEdit(CommonParameterWidget):
         ret = utils.show_question_message(
             self,
             title=self._config.confirm_dialog_title,
-            message=self._config.clear_items_message,
+            message=self._config.confirm_clear_message,
             buttons=utils.StandardButton.Yes | utils.StandardButton.No,
         )
         if ret == utils.StandardButton.Yes:

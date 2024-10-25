@@ -14,32 +14,91 @@ TextElideMode = Qt.TextElideMode
 
 @dataclasses.dataclass(frozen=True)
 class StringListEditConfig(CommonParameterWidgetConfig):
+    """StringListEdit的配置类。"""
+
     default_value: Optional[List[str]] = dataclasses.field(default_factory=list)
+    """默认值"""
+
     empty_string_strategy: Literal["keep_all", "keep_one", "remove_all"] = "remove_all"
+    """对待列表中空字符串的策略，keep_all表示保留所有空字符串，keep_one表示只保留第一个空字符串，remove_all表示删除所有空字符串"""
+
     add_file: bool = True
+    """是否开启添加文件路径功能"""
+
     add_dir: bool = True
+    """是否开启添加文件夹路径功能"""
+
     file_filters: str = ""
+    """文件过滤器，用于文件对话框"""
+
     start_dir: str = ""
+    """起始路径，用于文件对话框"""
+
     normalize_path: bool = True
+    """是否将路径规范化"""
+
     add_button_text: str = "Add"
+    """添加按钮文本"""
+
     remove_button_text: str = "Remove"
+    """移除按钮文本"""
+
     clear_button_text: str = "Clear"
+    """清空按钮文本"""
+
     add_string_hint: str = "Add Text"
+    """添加字符串的提示"""
+
     add_file_hint: str = "Add File"
+    """添加文件路径的提示"""
+
     add_dir_hint: str = "Add Directory"
+    """添加文件夹路径的提示"""
+
     file_dialog_title: str = "Select File"
+    """添加文件对话框标题"""
+
     dir_dialog_title: str = "Select Directory"
+    """添加文件夹对话框标题"""
+
     confirm_dialog_title: str = "Confirm"
+    """确认对话框标题"""
+
     warning_dialog_title: str = "Warning"
-    remove_confirm_message: str = "Are you sure to remove the selected item(s)?"
-    clear_confirm_message: str = "Are you sure to clear all of the items?"
-    no_selection_message: str = "No items are selected!"
-    min_height: int = 230
-    drag_enabled: bool = True
-    wrapping: bool = False
-    text_elide_mode: TextElideMode = TextElideMode.ElideLeft
-    alternating_row_colors: bool = True
+    """警告对话框标题"""
+
     confirm_remove: bool = True
+    """是否显示移除确认对话框"""
+
+    confirm_clear: bool = True
+    """是否显示清空确认对话框"""
+
+    remove_confirm_message: str = "Are you sure to remove the selected item(s)?"
+    """移除确认对话框消息"""
+
+    clear_confirm_message: str = "Are you sure to clear all of the items?"
+    """清空确认对话框消息"""
+
+    no_selection_message: str = "No items are selected!"
+    """未选择任何项的提示"""
+
+    drag_enabled: bool = True
+    """是否允许拖拽"""
+
+    wrapping: bool = False
+    """是否允许换行"""
+
+    text_elide_mode: TextElideMode = TextElideMode.ElideLeft
+    """文本省略模式"""
+
+    alternating_row_colors: bool = True
+    """是否使用交替行颜色"""
+
+    width: Optional[int] = None
+    """表格的最小宽度"""
+
+    height: Optional[int] = 230
+    """表格的最小高度"""
 
     @classmethod
     def target_widget_class(cls) -> Type["StringListEdit"]:
@@ -75,8 +134,12 @@ class StringListEdit(CommonParameterWidget):
             self._value_widget.setLayout(layout_main)
 
             self._list_view = QListView(self._value_widget)
-            if self._config.min_height > 0:
-                self._list_view.setMinimumHeight(self._config.min_height)
+            if self._config.height is not None and self._config.height > 0:
+                self._list_view.setMinimumHeight(self._config.height)
+
+            if self._config.width is not None and self._config.width > 0:
+                self._list_view.setMinimumWidth(self._config.width)
+
             if self._config.drag_enabled:
                 self._list_view.setDragDropMode(QListView.InternalMove)
                 self._list_view.setDefaultDropAction(Qt.DropAction.TargetMoveAction)

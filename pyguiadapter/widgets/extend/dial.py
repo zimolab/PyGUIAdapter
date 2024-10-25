@@ -10,21 +10,55 @@ from ...utils import type_check
 
 @dataclasses.dataclass(frozen=True)
 class DialConfig(CommonParameterWidgetConfig):
+    """Dial的配置类。"""
+
     default_value: Optional[int] = 0
+    """控件的默认值"""
+
     min_value: int = 0
+    """最小值"""
+
     max_value: int = 100
+    """最大值"""
+
     notch_target: Optional[float] = None
+    """缺口之间的目标像素数"""
+
     notches_visible: bool = True
+    """是否显示缺口"""
+
     wrapping: bool = False
+    """是否循环"""
+
     single_step: int = 1
+    """单次调整的步长"""
+
     page_step: Optional[int] = None
+    """使用PageUp/PageDown键时调整的步长"""
+
     tracking: bool = True
+    """是否跟踪鼠标"""
+
     inverted_controls: bool = False
+    """是否启用反转控制"""
+
     inverted_appearance: bool = False
+    """是否启用反转外观"""
+
     show_value_label: bool = True
+    """是否显示值标签"""
+
     prefix: str = ""
+    """值标签的前缀"""
+
     suffix: str = ""
-    min_height: int = 120
+    """值标签的后缀"""
+
+    height: Optional[int] = 120
+    """控件的高度"""
+
+    width: Optional[int] = None
+    """控件的宽度"""
 
     @classmethod
     def target_widget_class(cls) -> Type["Dial"]:
@@ -51,8 +85,11 @@ class Dial(CommonParameterWidget):
         if self._value_widget is None:
             self._value_widget = QWidget(self)
             self._dial = QDial(self._value_widget)
-            if self._config.min_height:
-                self._value_widget.setMinimumHeight(self._config.min_height)
+
+            if self._config.height:
+                self._value_widget.setFixedHeight(self._config.height)
+            if self._config.width:
+                self._value_widget.setFixedWidth(self._config.width)
 
             layout = QVBoxLayout()
             self._value_widget.setLayout(layout)

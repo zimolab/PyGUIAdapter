@@ -79,9 +79,6 @@ class ColorLabel(QLabel):
             text_color = get_inverted_color(self._color)
             text_color.setAlpha(255)
             props += f"color: {text_color.name()};"
-            # display_text = self._color.name()
-            # if self._alpha_channel:
-            #     display_text += f"\nalpha: {self._color.alpha()}"
             display_text = convert_color(self._color, "str", self._alpha_channel)
             self.setText(display_text)
 
@@ -94,13 +91,28 @@ class ColorLabel(QLabel):
 
 @dataclasses.dataclass(frozen=True)
 class ColorPickerConfig(CommonParameterWidgetConfig):
+    """ColorPicker的配置类"""
+
     default_value: Optional[ColorType] = "white"
+    """默认颜色值，可以为颜色名称，RGB（或RGBA）字符串，QColor，或颜色元组（列表）"""
+
     initial_color: ColorType = "white"
+
     alpha_channel: bool = True
+    """是否显示Alpha通道"""
+
     display_color_name: bool = True
-    min_height: int = 45
-    max_height: int = 45
+    """颜色标签上是否显示颜色名称"""
+
+    width: Optional[int] = None
+    """颜色标签的宽度"""
+
+    height: Optional[int] = 45
+    """颜色标签的高度"""
+
     return_type: Literal["tuple", "QColor", "str"] = "tuple"
+    """返回值类型，即从控件获取值时得到的值的类型，可以为“tuple”（返回RGB或RGBA元组），“QColor”（返回QColor对象），
+    或“str”（返回RGB或RGBA十六进制字符串）"""
 
     @classmethod
     def target_widget_class(cls) -> Type["ColorPicker"]:
@@ -137,8 +149,10 @@ class ColorPicker(CommonParameterWidget):
                 self._config.initial_color,
                 self._config.display_color_name,
             )
-            self._value_widget.setMinimumHeight(self._config.min_height)
-            self._value_widget.setMaximumHeight(self._config.max_height)
+            if self._config.width is not None:
+                self._value_widget.setFixedWidth(self._config.width)
+            if self._config.height is not None:
+                self._value_widget.setFixedHeight(self._config.height)
         return self._value_widget
 
     def set_value_to_widget(self, value: ColorType):
@@ -152,17 +166,8 @@ class ColorPicker(CommonParameterWidget):
         )
 
 
-@dataclasses.dataclass(frozen=True)
-class ColorTuplePickerConfig(ColorPickerConfig):
-    return_type = "tuple"
-
-    @classmethod
-    def target_widget_class(cls) -> Type["ColorTuplePicker"]:
-        return ColorTuplePicker
-
-
 class ColorTuplePicker(ColorPicker):
-    ConfigClass = ColorTuplePickerConfig
+    ConfigClass = ColorPickerConfig
 
     def __init__(
         self,
@@ -174,17 +179,8 @@ class ColorTuplePicker(ColorPicker):
         super().__init__(parent, parameter_name, config)
 
 
-@dataclasses.dataclass(frozen=True)
-class ColorHexPickerConfig(ColorPickerConfig):
-    return_type = "str"
-
-    @classmethod
-    def target_widget_class(cls) -> Type["ColorHexPicker"]:
-        return ColorHexPicker
-
-
 class ColorHexPicker(ColorPicker):
-    ConfigClass = ColorHexPickerConfig
+    ConfigClass = ColorPickerConfig
 
     def __init__(
         self,

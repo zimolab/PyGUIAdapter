@@ -17,10 +17,10 @@ class DictEditConfig(PyLiteralEditConfig):
     default_value: Optional[dict] = dataclasses.field(default_factory=dict)
     """控件的默认值"""
 
-    editor_height: Optional[int] = None
+    height: Optional[int] = None
     """inplace编辑器的高度"""
 
-    editor_width: Optional[int] = None
+    width: Optional[int] = None
     """inplace编辑器的宽度"""
 
     standalone_editor: bool = True

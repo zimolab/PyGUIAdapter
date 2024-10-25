@@ -14,14 +14,34 @@ WrapMode = QTextOption.WrapMode
 
 @dataclasses.dataclass(frozen=True)
 class TextEditConfig(CommonParameterWidgetConfig):
+    """TextEdit的配置类"""
+
     default_value: Optional[str] = ""
+    """控件的默认值"""
+
     placeholder: str = ""
+    """控件的占位符"""
+
     accept_rich_text: bool = False
+    """是否接受富文本"""
+
     auto_formatting: Optional[AutoFormatting] = None
-    line_wrap: LineWrapMode = LineWrapMode.WidgetWidth
-    line_wrap_column_or_width: int = 88
-    word_wrap: Optional[WrapMode] = None
-    min_height: Optional[int] = 200
+    """是否自动格式化"""
+
+    line_wrap_mode: LineWrapMode = LineWrapMode.WidgetWidth
+    """自动换行模式"""
+
+    line_wrap_width: int = 88
+    """自动换行宽度"""
+
+    word_wrap_mode: Optional[WrapMode] = None
+    """单词换行模式"""
+
+    height: Optional[int] = 200
+    """控件高度"""
+
+    width: Optional[int] = None
+    """控件宽度"""
 
     @classmethod
     def target_widget_class(cls) -> Type["TextEdit"]:
@@ -30,6 +50,33 @@ class TextEditConfig(CommonParameterWidgetConfig):
 
 class TextEdit(CommonParameterWidget):
     ConfigClass = TextEditConfig
+
+    NoLineWrap = LineWrapMode.NoWrap
+    """换行模式：不自动换行"""
+
+    WidgetWidth = LineWrapMode.WidgetWidth
+    """换行模式：根据控件宽度自动换行"""
+
+    FixedColumnWidth = LineWrapMode.FixedColumnWidth
+    """换行模式：固定列宽换行"""
+
+    FixedPixelWidth = LineWrapMode.FixedPixelWidth
+    """换行模式：固定像素宽换行"""
+
+    NoWordWrap = WrapMode.NoWrap
+    """单词换行模式：不换行"""
+
+    WordWrap = WrapMode.WordWrap
+    """单词换行模式：根据单词自动换行"""
+
+    ManualWordWrap = WrapMode.ManualWrap
+    """单词换行模式：手动换行"""
+
+    WordWrapAnywhere = WrapMode.WrapAnywhere
+    """单词换行模式：任意位置换行"""
+
+    WordWrapAtWordBoundaryOrAnywhere = WrapMode.WrapAtWordBoundaryOrAnywhere
+    """单词换行模式：单词边界或任意位置换行"""
 
     def __init__(
         self,
@@ -51,24 +98,27 @@ class TextEdit(CommonParameterWidget):
             if auto_formatting is not None:
                 self._value_widget.setAutoFormatting(auto_formatting)
 
-            line_wrap = self._config.line_wrap
+            line_wrap = self._config.line_wrap_mode
             if line_wrap is not None:
                 self._value_widget.setLineWrapMode(line_wrap)
 
             if (
                 line_wrap == LineWrapMode.FixedColumnWidth
                 or line_wrap == LineWrapMode.WidgetWidth
-            ) and self._config.line_wrap_column_or_width > 0:
+            ) and self._config.line_wrap_width > 0:
                 self._value_widget.setLineWrapColumnOrWidth(
-                    self._config.line_wrap_column_or_width
+                    self._config.line_wrap_width
                 )
 
-            word_wrap = self._config.word_wrap
+            word_wrap = self._config.word_wrap_mode
             if word_wrap is not None:
                 self._value_widget.setWordWrapMode(word_wrap)
 
-            if self._config.min_height is not None and self._config.min_height > 0:
-                self._value_widget.setMinimumHeight(self._config.min_height)
+            if self._config.height is not None and self._config.height > 0:
+                self._value_widget.setFixedHeight(self._config.height)
+
+            if self._config.width is not None and self._config.width > 0:
+                self._value_widget.setFixedWidth(self._config.width)
 
         return self._value_widget
 

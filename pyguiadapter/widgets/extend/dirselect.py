@@ -10,12 +10,25 @@ from ...utils import type_check
 
 @dataclasses.dataclass(frozen=True)
 class DirSelectConfig(CommonParameterWidgetConfig):
+    """DirSelect的配置类。"""
+
     default_value: Optional[str] = ""
+    """默认值"""
+
     placeholder: str = ""
-    dialog_title: str = ""
+    """占位符文字"""
+
     start_dir: str = ""
+    """起始目录"""
+
+    dialog_title: str = ""
+    """文件对话框标题"""
+
     select_button_text: str = "..."
+    """选择按钮文字"""
+
     clear_button: bool = False
+    """是否显示清除按钮"""
 
     @classmethod
     def target_widget_class(cls) -> Type["DirSelect"]:

@@ -5,22 +5,43 @@ from typing import Type, Any, Optional
 from pyqcodeeditor.highlighters import QJSONHighlighter
 from qtpy.QtWidgets import QWidget
 
-from ..basic.base import BaseCodeEdit, BaseCodeEditConfig
+from ..basic.base import BaseCodeEdit, BaseCodeEditConfig, StandaloneCodeEditorConfig
 from ...codeeditor import JsonFormatter
 
 JSON_FILE_FILTERS = (
     "JSON files (*.json);;Text files(*.txt);;Text files(*.text);;All files (*.*)"
 )
-INDENT_SIZE = 4
 
 
 @dataclasses.dataclass(frozen=True)
 class JsonEditConfig(BaseCodeEditConfig):
-    default_value: Any = dataclasses.field(default_factory=dict)
+    """JsonEdit的配置类。"""
+
+    default_value: Optional[Any] = dataclasses.field(default_factory=set)
+    """控件的默认值"""
+
+    height: Optional[int] = 230
+    """inplace编辑器的高度"""
+
+    width: Optional[int] = None
+    """inplace编辑器的宽度"""
+
+    standalone_editor: bool = True
+    """是否启用独立（standalone）代码编辑器"""
+
+    standalone_editor_button: bool = "Edit Json"
+    """standalone编辑器启动按钮文本"""
+
+    standalone_editor_config: StandaloneCodeEditorConfig = StandaloneCodeEditorConfig()
+    """standalone编辑器配置"""
+
+    indent_size: int = 2
+    """json格式化缩进大小"""
+
+    initial_text: str = "{}"
+
     highlighter: Type[QJSONHighlighter] = QJSONHighlighter
-    indent_size: int = INDENT_SIZE
     formatter: JsonFormatter = dataclasses.field(default_factory=JsonFormatter)
-    file_filters: str = JSON_FILE_FILTERS
 
     @classmethod
     def target_widget_class(cls) -> Type["JsonEdit"]:
