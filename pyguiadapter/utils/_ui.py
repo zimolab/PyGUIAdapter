@@ -144,7 +144,20 @@ def to_qcolor(color: Union[str, tuple, list, QColor]) -> QColor:
         c.setRgb(*color)
         return c
     if isinstance(color, str):
-        return QColor(color)
+        alpha = None
+        if len(color) >= 9:
+            try:
+                print(color[7:9], int(color[7:9], 16))
+                alpha = int(color[7:9], 16)
+            except ValueError:
+                raise ValueError(
+                    f"unable to parse alpha channel from color string: {color}"
+                )
+            color = color[:7]
+        c = QColor(color)
+        if alpha is not None:
+            c.setAlpha(alpha)
+        return c
 
     raise ValueError(f"invalid color type: {type(color)}")
 
