@@ -12,19 +12,46 @@ TickPosition = QSlider.TickPosition
 
 @dataclasses.dataclass(frozen=True)
 class SliderConfig(CommonParameterWidgetConfig):
+    """Slider的配置类"""
+
     default_value: Optional[int] = 0
+    """控件的默认值"""
+
     min_value: int = 0
+    """最小值"""
+
     max_value: int = 100
+    """最大值"""
+
     single_step: int = 1
+    """单次滑动的步长"""
+
     page_step: Optional[int] = None
+    """PageUp/PageDown按键按下时调整的步长"""
+
     tick_interval: Optional[int] = None
+    """刻度间隔"""
+
     tick_position: TickPosition = TickPosition.TicksBothSides
+    """刻度位置"""
+
     tracking: bool = True
+    """是否跟踪鼠标"""
+
     inverted_controls: bool = False
+    """是否启用反转控制"""
+
     inverted_appearance: bool = False
+    """是否显示反转外观"""
+
     show_value_label: bool = True
+    """是否显示值标签"""
+
     prefix: str = ""
+    """值前缀"""
+
     suffix: str = ""
+    """值后缀"""
 
     @classmethod
     def target_widget_class(cls) -> Type["Slider"]:
@@ -33,6 +60,24 @@ class SliderConfig(CommonParameterWidgetConfig):
 
 class Slider(CommonParameterWidget):
     ConfigClass = SliderConfig
+
+    NoTicks = TickPosition.NoTicks
+    """刻度位置：不显示刻度"""
+
+    TickBothSides = TickPosition.TicksBothSides
+    """刻度位置：两侧显示刻度"""
+
+    TicksAbove = TickPosition.TicksAbove
+    """刻度位置：上方显示刻度"""
+
+    TicksBelow = TickPosition.TicksBelow
+    """刻度位置：下方显示刻度"""
+
+    TicksLeft = TickPosition.TicksLeft
+    """刻度位置：左侧显示刻度"""
+
+    TicksRight = TickPosition.TicksRight
+    """刻度位置：右侧显示刻度"""
 
     def __init__(
         self,

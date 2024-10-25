@@ -19,9 +19,16 @@ class _DataWrap(object):
 
 @dataclasses.dataclass(frozen=True)
 class ChoiceBoxConfig(CommonParameterWidgetConfig):
+    """ChoiceBox的配置类"""
+
     default_value: Optional[Any] = _FIRST_ITEM
+    """默认选项，`_FIRST_ITEM`是一个特殊值，表示选择选项列表中的第一个"""
+
     choices: Union[Dict[str, Any], List[Any]] = dataclasses.field(default_factory=list)
+    """选项列表，可以是字典或列表。为字典时，键值对的键为显示文本，值为实际值；为列表时，对每个元素调用`str()`，以其返回值作为显示文本，元素本身作为实际值。"""
+
     editable: bool = False
+    """是否允许编辑"""
 
     @classmethod
     def target_widget_class(cls) -> Type["ChoiceBox"]:

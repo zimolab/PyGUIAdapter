@@ -18,11 +18,18 @@ class _CheckBox(QCheckBox):
 
 @dataclasses.dataclass(frozen=True)
 class MultiChoiceBoxConfig(CommonParameterWidgetConfig):
+    """MultiChoiceBox的配置类。"""
+
     default_value: Optional[Sequence[Any]] = dataclasses.field(default_factory=list)
+    """默认选中的值"""
+
     choices: Union[Sequence[Any], Dict[str, Any]] = dataclasses.field(
         default_factory=list
     )
+    """可选项列表。为字典时，将键值对的键作为显示文本，键值对的值作为实际的值；否则，对每个选项调用str()，将返回值作为显示文本，选项本身作为实际的值。"""
+
     columns: int = 1
+    """选项的列数"""
 
     @classmethod
     def target_widget_class(cls) -> Type["MultiChoiceBox"]:

@@ -10,14 +10,31 @@ from ...utils import type_check
 
 @dataclasses.dataclass(frozen=True)
 class FileSelectConfig(CommonParameterWidgetConfig):
+    """FileSelect的配置类。"""
+
     default_value: Optional[str] = ""
+    """默认值"""
+
     placeholder: str = ""
+    """占位符文字"""
+
     dialog_title: str = ""
+    """文件对话框标题"""
+
     start_dir: str = ""
+    """文件对话框起始路径"""
+
     filters: str = ""
+    """文件对话框的文件过滤器"""
+
     save_file: bool = False
+    """是否为保存文件对话框"""
+
     select_button_text: str = "..."
+    """选择按钮文字"""
+
     clear_button: bool = False
+    """是否显示清除按钮"""
 
     @classmethod
     def target_widget_class(cls) -> Type["FileSelect"]:
@@ -65,14 +82,31 @@ class FileSelect(CommonParameterWidget):
 
 @dataclasses.dataclass(frozen=True)
 class MultiFileSelectConfig(CommonParameterWidgetConfig):
+    """MultiFileSelect的配置类。"""
+
     default_value: Union[Sequence[str], str, type(None)] = ()
+    """默认值"""
+
     placeholder: str = ""
+    """占位符文字"""
+
     dialog_title: str = ""
+    """文件对话框标题"""
+
     start_dir: str = ""
+    """文件对话框起始路径"""
+
     filters: str = ""
+    """文件对话框的文件过滤器"""
+
     file_separator: str = ";;"
+    """文件分隔符"""
+
     select_button_text: str = "..."
+    """选择按钮文字"""
+
     clear_button: bool = False
+    """是否显示清除按钮"""
 
     @classmethod
     def target_widget_class(cls) -> Type["MultiFileSelect"]:
