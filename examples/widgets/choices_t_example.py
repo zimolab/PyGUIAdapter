@@ -24,7 +24,7 @@ class MyObject(object):
 
 def choices_t_example(arg1: choices_t, arg2: choices_t, arg3: choices_t):
     """
-    example for type **choices_t** and **MultiChoiceBox** widget
+    This is an example for type **choices_t** type hint and **MultiChoiceBox** widget.
 
     @param arg1: description for arg1
     @param arg2: description for arg2
@@ -32,8 +32,8 @@ def choices_t_example(arg1: choices_t, arg2: choices_t, arg3: choices_t):
 
     @params
     [arg1]
-    default_value = [2,3]
-    choices = [1,2,3,4]
+    default_value = ["opt1", "opt2"]
+    choices = ["opt1", "opt2", "opt3", "opt4", "opt5"]
     @end
     """
     uprint("arg1:", arg1)
@@ -43,26 +43,18 @@ def choices_t_example(arg1: choices_t, arg2: choices_t, arg3: choices_t):
 
 if __name__ == "__main__":
     arg2_conf = MultiChoiceBoxConfig(
-        choices=[MyObject("foo"), MyObject("bar"), MyObject("baz")],
-        # make sure MyObject will not be deep copied when set to the widget or get from the widget
-        get_deepcopy=False,
-        set_deepcopy=False,
+        choices=[MyObject("foo"), MyObject("bar"), MyObject("baz")]
     )
     arg3_conf = MultiChoiceBoxConfig(
-        default_value=("opt3",),
-        choices=(
-            "opt1",
-            "opt2",
-            "opt3",
-            "opt4",
-            "opt5",
-            "opt6",
-            "opt7",
-            "opt8",
-            "opt9",
-            "opt10",
-        ),
-        columns=3,
+        default_value=(1, 2, 3),
+        choices={
+            "Option 1": 1,
+            "Option 2": 2,
+            "Option 3": 3,
+            "Option 4": 4,
+            "Option 5": 5,
+        },
+        columns=2,
     )
     adapter = GUIAdapter()
     adapter.add(

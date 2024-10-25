@@ -9,7 +9,7 @@ def int_slider_t_example(
     arg1: int_slider_t, arg2: int_slider_t, arg3: int_slider_t = 100
 ) -> int:
     """
-    example for **int_slider_t** and **Slider** widget
+    This is an example for **int_slider_t** type hint and **Slider** widget.
 
     @param arg1: description for arg1
     @param arg2: description for arg2
@@ -32,7 +32,6 @@ def int_slider_t_example(
     inverted_appearance = true
 
     @end
-
     """
     uprint("arg1:", arg1)
     uprint("arg2:", arg2)
@@ -43,12 +42,13 @@ def int_slider_t_example(
 if __name__ == "__main__":
 
     arg3_conf = SliderConfig(
-        # this will override the default_value defined in the function signature
         default_value=-99,
         min_value=-100,
         max_value=100,
         tick_position=TickPosition.TicksAbove,
         tick_interval=2,
+        single_step=1,
+        page_step=10,
         suffix=" mv",
     )
 

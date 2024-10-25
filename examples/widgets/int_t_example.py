@@ -6,7 +6,7 @@ from pyguiadapter.widgets import IntLineEditConfig
 
 def int_t_example(arg1: int_t, arg2: int_t, arg3: int_t = 100) -> int:
     """
-    example for **int_t** and **IntLineEdit**
+    This is an example for **int_t** type hint and **IntLineEdit** widget.
 
     @param arg1: description for arg1
     @param arg2: description for arg2
@@ -24,8 +24,10 @@ def int_t_example(arg1: int_t, arg2: int_t, arg3: int_t = 100) -> int:
     empty_value = -1
 
     @end
-
     """
+    assert isinstance(arg1, int)
+    assert isinstance(arg2, int)
+    assert isinstance(arg3, int)
     uprint("arg1:", arg1)
     uprint("arg2:", arg2)
     uprint("arg3:", arg3)
@@ -35,11 +37,12 @@ def int_t_example(arg1: int_t, arg2: int_t, arg3: int_t = 100) -> int:
 if __name__ == "__main__":
 
     arg3_conf = IntLineEditConfig(
-        # this will override the default_value defined in the function signature
         default_value=-99,
         min_value=-100,
         max_value=100,
-        empty_value=-1,
+        empty_value=None,
+        placeholder="Enter a number",
+        clear_button=True,
     )
 
     adapter = GUIAdapter()

@@ -8,7 +8,7 @@ def int_dial_t_example(
     arg1: int_dial_t, arg2: int_dial_t, arg3: int_dial_t = 100
 ) -> int:
     """
-    example for **int_dial_t** and **Dial** widget
+    This is an example for **int_dial_t** type hint and **Dial** widget.
 
     @param arg1: description for arg1
     @param arg2: description for arg2
@@ -41,7 +41,6 @@ def int_dial_t_example(
 if __name__ == "__main__":
 
     arg3_conf = DialConfig(
-        # this will override the default_value defined in the function signature
         default_value=-99,
         min_value=-100,
         max_value=100,
@@ -49,8 +48,5 @@ if __name__ == "__main__":
     )
 
     adapter = GUIAdapter()
-    adapter.add(
-        int_dial_t_example,
-        widget_configs={"arg3": arg3_conf},
-    )
+    adapter.add(int_dial_t_example, widget_configs={"arg3": arg3_conf})
     adapter.run()

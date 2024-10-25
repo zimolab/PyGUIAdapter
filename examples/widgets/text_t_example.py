@@ -6,7 +6,7 @@ from pyguiadapter.widgets import TextEditConfig
 
 def text_t_example(arg1: text_t, arg2: text_t, arg3: text_t = "foo") -> str:
     """
-    example for **text_t** and **TextEdit**
+    This is an example for **text_t** type hint and **TextEdit** widget.
 
     @param arg1: description for arg1
     @param arg2: description for arg2
@@ -17,14 +17,14 @@ def text_t_example(arg1: text_t, arg2: text_t, arg3: text_t = "foo") -> str:
     [arg1]
     default_value = "Hello World"
 
-
     [arg2]
     default_value = "你好，世界！"
 
-
     @end
-
     """
+    assert isinstance(arg1, str)
+    assert isinstance(arg2, str)
+    assert isinstance(arg3, str)
     uprint("arg1:", arg1)
     uprint("arg2:", arg2)
     uprint("arg3:", arg3)
@@ -34,7 +34,6 @@ def text_t_example(arg1: text_t, arg2: text_t, arg3: text_t = "foo") -> str:
 if __name__ == "__main__":
 
     arg3_conf = TextEditConfig(
-        # this will override the default_value defined in the function signature
         default_value="bar",
         placeholder="Please input some text here!",
     )

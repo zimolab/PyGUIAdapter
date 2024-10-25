@@ -10,7 +10,7 @@ def string_list_t_example(
     arg3: string_list_t,
 ):
     """
-    example for type **string_list_t** and **StringListEdit** widget
+    This is an example for type **string_list_t** type hint and **StringListEdit** widget.
 
     @param arg1: description for arg1
     @param arg2: description for arg2

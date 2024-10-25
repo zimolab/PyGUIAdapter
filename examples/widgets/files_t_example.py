@@ -8,7 +8,7 @@ from pyguiadapter.extend_types import files_t
 
 def files_t_example(arg1: files_t, arg2: files_t, arg3: files_t):
     """
-    example for type **files_t** and **MultiFileSelect** widget
+    This is an example for type **files_t** type hint and **MultiFileSelect** widget.
 
     @param arg1: description for arg1
     @param arg2: description for arg2

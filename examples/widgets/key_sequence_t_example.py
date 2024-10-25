@@ -1,14 +1,16 @@
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.adapter.uoutput import uprint
 from pyguiadapter.extend_types import key_sequence_t
-from pyguiadapter.widgets import KeySequenceEditConfig, KeySequenceFormat
+from pyguiadapter.widgets import KeySequenceEditConfig, KeySequenceEdit
 
 
 def key_sequence_t_example(
-    arg1: key_sequence_t, arg2: key_sequence_t, arg3: key_sequence_t = "Ctrl+Q"
+    arg1: key_sequence_t,
+    arg2: key_sequence_t,
+    arg3: key_sequence_t,
 ):
     """
-    example for type **key_sequence_t** and **KeySequenceEdit** widget
+    This is an example for type **key_sequence_t** type hint and **KeySequenceEdit** widget.
 
     @param arg1: description for arg1
     @param arg2: description for arg2
@@ -29,14 +31,12 @@ if __name__ == "__main__":
     arg2_conf = KeySequenceEditConfig(default_value="Ctrl+Alt+D")
 
     arg3_conf = KeySequenceEditConfig(
-        default_value="Ctrl+Alt+D", key_sequence_format=KeySequenceFormat.NativeText
+        default_value="Ctrl+Shift+T",
+        key_sequence_format=KeySequenceEdit.PortableText,
+        return_type="list",
     )
     adapter = GUIAdapter()
     adapter.add(
-        key_sequence_t_example,
-        widget_configs={
-            "arg2": arg2_conf,
-            "arg3": arg3_conf,
-        },
+        key_sequence_t_example, widget_configs={"arg2": arg2_conf, "arg3": arg3_conf}
     )
     adapter.run()

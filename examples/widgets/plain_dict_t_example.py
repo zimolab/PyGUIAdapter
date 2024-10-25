@@ -6,7 +6,7 @@ from pyguiadapter.extend_types import plain_dict_t
 
 def plain_dict_t_example(arg1: plain_dict_t, arg2: plain_dict_t, arg3: plain_dict_t):
     """
-    example for type **plain_dict_t** and **PlainDictEdit** widget
+    This is an example for type **plain_dict_t** type hint and **PlainDictEdit** widget.
 
     @param arg1: description for arg1
     @param arg2: description for arg2

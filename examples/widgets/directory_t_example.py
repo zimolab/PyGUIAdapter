@@ -8,7 +8,7 @@ from pyguiadapter.widgets import DirSelectConfig
 
 def directory_t_example(arg1: directory_t, arg2: directory_t, arg3: dir_t):
     """
-    example for type **directory_t** and **DirSelect** widget
+    This is an example for type **directory_t**(**dir_t**) type hint and **DirSelect** widget.
 
     @param arg1: description for arg1
     @param arg2: description for arg2

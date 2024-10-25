@@ -6,7 +6,7 @@ from pyguiadapter.widgets import FloatLineEditConfig
 
 def float_t_example(arg1: float_t, arg2: float_t, arg3: float_t = 100) -> float:
     """
-    example for **float_t** and **IntLineEdit**
+    This is an example for **float_t** type hint and **FloatLineEdit** widget.
 
     @param arg1: description for arg1
     @param arg2: description for arg2
@@ -38,13 +38,14 @@ def float_t_example(arg1: float_t, arg2: float_t, arg3: float_t = 100) -> float:
 if __name__ == "__main__":
 
     arg3_conf = FloatLineEditConfig(
-        # this will override the default_value defined in the function signature
         default_value=-0.00005,
         min_value=-100.0,
         max_value=100.0,
-        empty_value=-1,
+        empty_value=None,
         decimals=5,
         scientific_notation=True,
+        clear_button=True,
+        placeholder="Enter a float value",
     )
 
     adapter = GUIAdapter()
