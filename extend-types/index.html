@@ -9,6 +9,10 @@
       
       
       
+        <link rel="prev" href="../basic-types/">
+      
+      
+        <link rel="next" href="../window/">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
@@ -16,7 +20,7 @@
     
     
       
-        <title>Extend types - PyGUIAdapter Docs</title>
+        <title>扩展类型与控件 - PyGUIAdapter Docs</title>
       
     
     
@@ -68,6 +72,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#text_t" class="md-skip">
+          跳转至
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -100,7 +109,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Extend types
+              扩展类型与控件
             
           </span>
         </div>
@@ -320,17 +329,19 @@
       
   
   
+    
   
   
+  
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
         
           
           <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
@@ -344,7 +355,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             参数与控件
@@ -397,10 +408,28 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../extended-types.md" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    扩展类型与控件
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -409,6 +438,831 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#text_t" class="md-nav__link">
+    <span class="md-ellipsis">
+      （一）text_t类型
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="（一）text_t类型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#0" class="md-nav__link">
+    <span class="md-ellipsis">
+      0、说明
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      1、默认控件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、可配置属性
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      3、示例
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#int_t" class="md-nav__link">
+    <span class="md-ellipsis">
+      （二）int_t类型
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="（二）int_t类型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#0_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      0、说明
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      1、默认控件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、可配置属性
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      3、示例
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#float_t" class="md-nav__link">
+    <span class="md-ellipsis">
+      （三）float_t类型
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="（三）float_t类型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#0_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      0、说明
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      1、默认控件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、可配置属性
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      3、示例
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#int_slider_t" class="md-nav__link">
+    <span class="md-ellipsis">
+      （四）int_slider_t类型
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="（四）int_slider_t类型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#0_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      0、说明
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      1、默认控件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、可配置属性
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      3、示例
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#int_dial_t" class="md-nav__link">
+    <span class="md-ellipsis">
+      （五）int_dial_t类型
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="（五）int_dial_t类型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#0_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      0、说明
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      1、默认控件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、可配置属性
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      3、示例
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#colot_hex_t" class="md-nav__link">
+    <span class="md-ellipsis">
+      （六）colot_hex_t类型
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="（六）colot_hex_t类型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#0_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      0、说明
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      1、默认控件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、可配置属性
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      3、示例
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#colot_tuple_t" class="md-nav__link">
+    <span class="md-ellipsis">
+      （七）colot_tuple_t类型
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="（七）colot_tuple_t类型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      1、默认控件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、可配置属性
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      3、示例
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#choice_t" class="md-nav__link">
+    <span class="md-ellipsis">
+      （八）choice_t类型
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="（八）choice_t类型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#0_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      0、说明
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      1、默认控件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、可配置属性
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      3、示例
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#choices_t" class="md-nav__link">
+    <span class="md-ellipsis">
+      （九）choices_t类型
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="（九）choices_t类型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#0_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      0、说明
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      1、默认控件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、可配置属性
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      3、示例
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key_sequence_t" class="md-nav__link">
+    <span class="md-ellipsis">
+      （十）key_sequence_t类型
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="（十）key_sequence_t类型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#0_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      0、说明
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      1、默认控件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、可配置属性
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      3、示例
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#plain_dict_t" class="md-nav__link">
+    <span class="md-ellipsis">
+      （十一）plain_dict_t类型
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="（十一）plain_dict_t类型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#0_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      0、说明
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      1、默认控件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、可配置属性
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      3、示例
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#string_list_t" class="md-nav__link">
+    <span class="md-ellipsis">
+      （十二）string_list_t类型
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="（十二）string_list_t类型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#0_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      0、说明
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      1、默认控件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、可配置属性
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      3、示例
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#json_obj_t" class="md-nav__link">
+    <span class="md-ellipsis">
+      （十三）json_obj_t类型
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="（十三）json_obj_t类型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#0_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      0、说明
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      1、默认控件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、可配置属性
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      3、示例
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#directory_tdir_t" class="md-nav__link">
+    <span class="md-ellipsis">
+      （十四）directory_t、dir_t类型
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="（十四）directory_t、dir_t类型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#0_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      0、说明
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      1、默认控件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、可配置属性
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      3、示例
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#file_t" class="md-nav__link">
+    <span class="md-ellipsis">
+      （十五）file_t类型
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="（十五）file_t类型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#0_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      0、说明
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      1、默认控件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、可配置属性
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      3、示例
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#files_t" class="md-nav__link">
+    <span class="md-ellipsis">
+      （十六）files_t类型
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="（十六）files_t类型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#0_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      0、说明
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      1、默认控件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、可配置属性
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      3、示例
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1390,6 +2244,279 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.widgets.intedit/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.widgets.intedit
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.widgets.floatedit/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.widgets.floatedit
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.widgets.choicebox/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.widgets.choicebox
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.widgets.colorpicker/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.widgets.colorpicker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.widgets.dial/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.widgets.dial
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.widgets.dirselect/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.widgets.dirselect
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.widgets.fileselect/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.widgets.fileselect
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.widgets.jsonedit/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.widgets.jsonedit
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.widgets.keysequenceedit/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.widgets.keysequenceedit
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.widgets.multichoice/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.widgets.multichoice
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.widgets.plaindict/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.widgets.plaindict
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.widgets.stringlist/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.widgets.stringlist
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.widgets.textedit/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.widgets.textedit
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1475,6 +2602,821 @@
   
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#text_t" class="md-nav__link">
+    <span class="md-ellipsis">
+      （一）text_t类型
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="（一）text_t类型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#0" class="md-nav__link">
+    <span class="md-ellipsis">
+      0、说明
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      1、默认控件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、可配置属性
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      3、示例
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#int_t" class="md-nav__link">
+    <span class="md-ellipsis">
+      （二）int_t类型
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="（二）int_t类型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#0_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      0、说明
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      1、默认控件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、可配置属性
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      3、示例
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#float_t" class="md-nav__link">
+    <span class="md-ellipsis">
+      （三）float_t类型
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="（三）float_t类型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#0_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      0、说明
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      1、默认控件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、可配置属性
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      3、示例
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#int_slider_t" class="md-nav__link">
+    <span class="md-ellipsis">
+      （四）int_slider_t类型
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="（四）int_slider_t类型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#0_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      0、说明
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      1、默认控件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、可配置属性
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      3、示例
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#int_dial_t" class="md-nav__link">
+    <span class="md-ellipsis">
+      （五）int_dial_t类型
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="（五）int_dial_t类型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#0_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      0、说明
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      1、默认控件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、可配置属性
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      3、示例
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#colot_hex_t" class="md-nav__link">
+    <span class="md-ellipsis">
+      （六）colot_hex_t类型
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="（六）colot_hex_t类型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#0_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      0、说明
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      1、默认控件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、可配置属性
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      3、示例
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#colot_tuple_t" class="md-nav__link">
+    <span class="md-ellipsis">
+      （七）colot_tuple_t类型
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="（七）colot_tuple_t类型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      1、默认控件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、可配置属性
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      3、示例
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#choice_t" class="md-nav__link">
+    <span class="md-ellipsis">
+      （八）choice_t类型
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="（八）choice_t类型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#0_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      0、说明
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      1、默认控件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、可配置属性
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      3、示例
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#choices_t" class="md-nav__link">
+    <span class="md-ellipsis">
+      （九）choices_t类型
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="（九）choices_t类型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#0_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      0、说明
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      1、默认控件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、可配置属性
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      3、示例
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key_sequence_t" class="md-nav__link">
+    <span class="md-ellipsis">
+      （十）key_sequence_t类型
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="（十）key_sequence_t类型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#0_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      0、说明
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      1、默认控件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、可配置属性
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      3、示例
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#plain_dict_t" class="md-nav__link">
+    <span class="md-ellipsis">
+      （十一）plain_dict_t类型
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="（十一）plain_dict_t类型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#0_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      0、说明
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      1、默认控件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、可配置属性
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      3、示例
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#string_list_t" class="md-nav__link">
+    <span class="md-ellipsis">
+      （十二）string_list_t类型
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="（十二）string_list_t类型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#0_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      0、说明
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      1、默认控件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、可配置属性
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      3、示例
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#json_obj_t" class="md-nav__link">
+    <span class="md-ellipsis">
+      （十三）json_obj_t类型
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="（十三）json_obj_t类型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#0_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      0、说明
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      1、默认控件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、可配置属性
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      3、示例
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#directory_tdir_t" class="md-nav__link">
+    <span class="md-ellipsis">
+      （十四）directory_t、dir_t类型
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="（十四）directory_t、dir_t类型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#0_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      0、说明
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      1、默认控件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、可配置属性
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      3、示例
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#file_t" class="md-nav__link">
+    <span class="md-ellipsis">
+      （十五）file_t类型
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="（十五）file_t类型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#0_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      0、说明
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      1、默认控件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、可配置属性
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      3、示例
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#files_t" class="md-nav__link">
+    <span class="md-ellipsis">
+      （十六）files_t类型
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="（十六）files_t类型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#0_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      0、说明
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      1、默认控件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、可配置属性
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      3、示例
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -1491,9 +3433,1110 @@
   
 
 
-  <h1>Extend types</h1>
+  <h1>扩展类型与控件</h1>
 
+<h2 id="text_t">（一）<code>text_t</code>类型</h2>
+<h3 id="0">0、说明</h3>
+<p><code>str</code>类型的扩展类型，语义上代表长文本（多行文本）。</p>
+<h3 id="1">1、默认控件</h3>
+<ul>
+<li><a href="../apis/pyguiadapter.widgets.textedit/"><code>TextEdit</code></a></li>
+<li>外观</li>
+</ul>
+<div style="text-align: center">
+    <a class="glightbox" href="../assets/text_t.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/text_t.png" /></a>
+</div>
 
+<h3 id="2">2、可配置属性</h3>
+<p>参见配置类：<a href="../apis/pyguiadapter.widgets.textedit/#pyguiadapter.widgets.TextEditConfig"><code>TextEditConfig</code></a></p>
+<h3 id="3">3、示例</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter</span> <span class="kn">import</span> <span class="n">GUIAdapter</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter.uoutput</span> <span class="kn">import</span> <span class="n">uprint</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="kn">from</span> <span class="nn">pyguiadapter.extend_types</span> <span class="kn">import</span> <span class="n">text_t</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="kn">from</span> <span class="nn">pyguiadapter.widgets</span> <span class="kn">import</span> <span class="n">TextEditConfig</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">def</span> <span class="nf">text_t_example</span><span class="p">(</span><span class="n">arg1</span><span class="p">:</span> <span class="n">text_t</span><span class="p">,</span> <span class="n">arg2</span><span class="p">:</span> <span class="n">text_t</span><span class="p">,</span> <span class="n">arg3</span><span class="p">:</span> <span class="n">text_t</span> <span class="o">=</span> <span class="s2">&quot;foo&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="sd">    This is an example for **text_t** type hint and **TextEdit** widget.</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="sd">    @param arg1: description for arg1</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="sd">    @param arg2: description for arg2</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="sd">    @param arg3: description for arg3</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="sd">    @return:</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="sd">    @params</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="sd">    [arg1]</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="sd">    default_value = &quot;Hello World&quot;</span>
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="sd">    [arg2]</span>
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="sd">    default_value = &quot;你好，世界！&quot;</span>
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>
+<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="sd">    @end</span>
+<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg1</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg2</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg3</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg1:&quot;</span><span class="p">,</span> <span class="n">arg1</span><span class="p">)</span>
+<a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg2:&quot;</span><span class="p">,</span> <span class="n">arg2</span><span class="p">)</span>
+<a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg3:&quot;</span><span class="p">,</span> <span class="n">arg3</span><span class="p">)</span>
+<a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a>    <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">;</span><span class="si">{}</span><span class="s2">;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">arg1</span><span class="p">,</span> <span class="n">arg2</span><span class="p">,</span> <span class="n">arg3</span><span class="p">)</span>
+<a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a>
+<a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a>
+<a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a>
+<a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a>    <span class="n">arg3_conf</span> <span class="o">=</span> <span class="n">TextEditConfig</span><span class="p">(</span>
+<a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a>        <span class="n">default_value</span><span class="o">=</span><span class="s2">&quot;bar&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a>        <span class="n">placeholder</span><span class="o">=</span><span class="s2">&quot;Please input some text here!&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-39" name="__codelineno-0-39" href="#__codelineno-0-39"></a>    <span class="p">)</span>
+<a id="__codelineno-0-40" name="__codelineno-0-40" href="#__codelineno-0-40"></a>
+<a id="__codelineno-0-41" name="__codelineno-0-41" href="#__codelineno-0-41"></a>    <span class="n">adapter</span> <span class="o">=</span> <span class="n">GUIAdapter</span><span class="p">()</span>
+<a id="__codelineno-0-42" name="__codelineno-0-42" href="#__codelineno-0-42"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+<a id="__codelineno-0-43" name="__codelineno-0-43" href="#__codelineno-0-43"></a>        <span class="n">text_t_example</span><span class="p">,</span>
+<a id="__codelineno-0-44" name="__codelineno-0-44" href="#__codelineno-0-44"></a>        <span class="n">widget_configs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;arg3&quot;</span><span class="p">:</span> <span class="n">arg3_conf</span><span class="p">},</span>
+<a id="__codelineno-0-45" name="__codelineno-0-45" href="#__codelineno-0-45"></a>    <span class="p">)</span>
+<a id="__codelineno-0-46" name="__codelineno-0-46" href="#__codelineno-0-46"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre></div>
+<div style="text-align: center">
+    <a class="glightbox" href="../assets/textedit_example.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/textedit_example.png" /></a>
+</div>
+
+<hr />
+<h2 id="int_t">（二）<code>int_t</code>类型</h2>
+<h3 id="0_1">0、说明</h3>
+<p><code>int</code>类型的扩展类型，用于提供<code>LineEdit</code>形式的输入控件。</p>
+<h3 id="1_1">1、默认控件</h3>
+<ul>
+<li><a href="../apis/pyguiadapter.widgets.intedit/"><code>IntLineEdit</code></a></li>
+<li>外观</li>
+</ul>
+<div style="text-align: center">
+    <a class="glightbox" href="../assets/int_t.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/int_t.png" /></a>
+</div>
+
+<h3 id="2_1">2、可配置属性</h3>
+<p>参见配置类：<a href="../apis/pyguiadapter.widgets.intedit/#pyguiadapter.widgets.IntLineEditConfig"><code>IntLineEditConfig</code></a></p>
+<h3 id="3_1">3、示例</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter</span> <span class="kn">import</span> <span class="n">GUIAdapter</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter.uoutput</span> <span class="kn">import</span> <span class="n">uprint</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="kn">from</span> <span class="nn">pyguiadapter.extend_types</span> <span class="kn">import</span> <span class="n">int_t</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="kn">from</span> <span class="nn">pyguiadapter.widgets</span> <span class="kn">import</span> <span class="n">IntLineEditConfig</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="k">def</span> <span class="nf">int_t_example</span><span class="p">(</span><span class="n">arg1</span><span class="p">:</span> <span class="n">int_t</span><span class="p">,</span> <span class="n">arg2</span><span class="p">:</span> <span class="n">int_t</span><span class="p">,</span> <span class="n">arg3</span><span class="p">:</span> <span class="n">int_t</span> <span class="o">=</span> <span class="mi">100</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="sd">    This is an example for **int_t** type hint and **IntLineEdit** widget.</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="sd">    @param arg1: description for arg1</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="sd">    @param arg2: description for arg2</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="sd">    @param arg3: description for arg3</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="sd">    @return:</span>
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="sd">    @params</span>
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="sd">    [arg1]</span>
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="sd">    default_value = -100</span>
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="sd">    min_value = -100</span>
+<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="sd">    max_value = 100</span>
+<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>
+<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="sd">    [arg2]</span>
+<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="sd">    max_value = 999</span>
+<a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a><span class="sd">    empty_value = -1</span>
+<a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>
+<a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a><span class="sd">    @end</span>
+<a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a>    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg1</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+<a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a>    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg2</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+<a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a>    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg3</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+<a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg1:&quot;</span><span class="p">,</span> <span class="n">arg1</span><span class="p">)</span>
+<a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg2:&quot;</span><span class="p">,</span> <span class="n">arg2</span><span class="p">)</span>
+<a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg3:&quot;</span><span class="p">,</span> <span class="n">arg3</span><span class="p">)</span>
+<a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a>    <span class="k">return</span> <span class="n">arg1</span> <span class="o">+</span> <span class="n">arg2</span> <span class="o">+</span> <span class="n">arg3</span>
+<a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a>
+<a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a>
+<a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a>
+<a id="__codelineno-1-39" name="__codelineno-1-39" href="#__codelineno-1-39"></a>    <span class="n">arg3_conf</span> <span class="o">=</span> <span class="n">IntLineEditConfig</span><span class="p">(</span>
+<a id="__codelineno-1-40" name="__codelineno-1-40" href="#__codelineno-1-40"></a>        <span class="n">default_value</span><span class="o">=-</span><span class="mi">99</span><span class="p">,</span>
+<a id="__codelineno-1-41" name="__codelineno-1-41" href="#__codelineno-1-41"></a>        <span class="n">min_value</span><span class="o">=-</span><span class="mi">100</span><span class="p">,</span>
+<a id="__codelineno-1-42" name="__codelineno-1-42" href="#__codelineno-1-42"></a>        <span class="n">max_value</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+<a id="__codelineno-1-43" name="__codelineno-1-43" href="#__codelineno-1-43"></a>        <span class="n">empty_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-1-44" name="__codelineno-1-44" href="#__codelineno-1-44"></a>        <span class="n">placeholder</span><span class="o">=</span><span class="s2">&quot;Enter a number&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-45" name="__codelineno-1-45" href="#__codelineno-1-45"></a>        <span class="n">clear_button</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-1-46" name="__codelineno-1-46" href="#__codelineno-1-46"></a>    <span class="p">)</span>
+<a id="__codelineno-1-47" name="__codelineno-1-47" href="#__codelineno-1-47"></a>
+<a id="__codelineno-1-48" name="__codelineno-1-48" href="#__codelineno-1-48"></a>    <span class="n">adapter</span> <span class="o">=</span> <span class="n">GUIAdapter</span><span class="p">()</span>
+<a id="__codelineno-1-49" name="__codelineno-1-49" href="#__codelineno-1-49"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+<a id="__codelineno-1-50" name="__codelineno-1-50" href="#__codelineno-1-50"></a>        <span class="n">int_t_example</span><span class="p">,</span>
+<a id="__codelineno-1-51" name="__codelineno-1-51" href="#__codelineno-1-51"></a>        <span class="n">widget_configs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;arg3&quot;</span><span class="p">:</span> <span class="n">arg3_conf</span><span class="p">},</span>
+<a id="__codelineno-1-52" name="__codelineno-1-52" href="#__codelineno-1-52"></a>    <span class="p">)</span>
+<a id="__codelineno-1-53" name="__codelineno-1-53" href="#__codelineno-1-53"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre></div>
+<div style="text-align: center">
+    <a class="glightbox" href="../assets/intlineedit_example.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/intlineedit_example.png" /></a>
+</div>
+
+<hr />
+<h2 id="float_t">（三）<code>float_t</code>类型</h2>
+<h3 id="0_2">0、说明</h3>
+<p><code>float</code>类型的扩展类型，用于提供<code>LineEdit</code>形式的输入控件。</p>
+<h3 id="1_2">1、默认控件</h3>
+<ul>
+<li><a href="../apis/pyguiadapter.widgets.floatedit/"><code>FloatLineEdit</code></a></li>
+<li>外观</li>
+</ul>
+<div style="text-align: center">
+    <a class="glightbox" href="../assets/float_t.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/float_t.png" /></a>
+</div>
+
+<h3 id="2_2">2、可配置属性</h3>
+<p>参见配置类：<a href="../apis/pyguiadapter.widgets.floatedit/#pyguiadapter.widgets.FloatLineEditConfig"><code>FloatLineEditConfig</code></a></p>
+<h3 id="3_2">3、示例</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter</span> <span class="kn">import</span> <span class="n">GUIAdapter</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter.uoutput</span> <span class="kn">import</span> <span class="n">uprint</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="kn">from</span> <span class="nn">pyguiadapter.extend_types</span> <span class="kn">import</span> <span class="n">float_t</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="kn">from</span> <span class="nn">pyguiadapter.widgets</span> <span class="kn">import</span> <span class="n">FloatLineEditConfig</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="k">def</span> <span class="nf">float_t_example</span><span class="p">(</span><span class="n">arg1</span><span class="p">:</span> <span class="n">float_t</span><span class="p">,</span> <span class="n">arg2</span><span class="p">:</span> <span class="n">float_t</span><span class="p">,</span> <span class="n">arg3</span><span class="p">:</span> <span class="n">float_t</span> <span class="o">=</span> <span class="mi">100</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="sd">    This is an example for **float_t** type hint and **FloatLineEdit** widget.</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="sd">    @param arg1: description for arg1</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="sd">    @param arg2: description for arg2</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="sd">    @param arg3: description for arg3</span>
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="sd">    @return:</span>
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="sd">    @params</span>
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="sd">    [arg1]</span>
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="sd">    default_value = -100.0</span>
+<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="sd">    min_value = -100.0</span>
+<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="sd">    max_value = 100.0</span>
+<a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a>
+<a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a><span class="sd">    [arg2]</span>
+<a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a><span class="sd">    default_value = 99999999.0</span>
+<a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a><span class="sd">    max_value = 99999999.0</span>
+<a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a><span class="sd">    empty_value = -1.0</span>
+<a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a><span class="sd">    decimals = 3</span>
+<a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a><span class="sd">    scientific_notation = true</span>
+<a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a>
+<a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a><span class="sd">    @end</span>
+<a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a>
+<a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-2-32" name="__codelineno-2-32" href="#__codelineno-2-32"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg1:&quot;</span><span class="p">,</span> <span class="n">arg1</span><span class="p">)</span>
+<a id="__codelineno-2-33" name="__codelineno-2-33" href="#__codelineno-2-33"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg2:&quot;</span><span class="p">,</span> <span class="n">arg2</span><span class="p">)</span>
+<a id="__codelineno-2-34" name="__codelineno-2-34" href="#__codelineno-2-34"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg3:&quot;</span><span class="p">,</span> <span class="n">arg3</span><span class="p">)</span>
+<a id="__codelineno-2-35" name="__codelineno-2-35" href="#__codelineno-2-35"></a>    <span class="k">return</span> <span class="n">arg1</span> <span class="o">+</span> <span class="n">arg2</span> <span class="o">+</span> <span class="n">arg3</span>
+<a id="__codelineno-2-36" name="__codelineno-2-36" href="#__codelineno-2-36"></a>
+<a id="__codelineno-2-37" name="__codelineno-2-37" href="#__codelineno-2-37"></a>
+<a id="__codelineno-2-38" name="__codelineno-2-38" href="#__codelineno-2-38"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<a id="__codelineno-2-39" name="__codelineno-2-39" href="#__codelineno-2-39"></a>
+<a id="__codelineno-2-40" name="__codelineno-2-40" href="#__codelineno-2-40"></a>    <span class="n">arg3_conf</span> <span class="o">=</span> <span class="n">FloatLineEditConfig</span><span class="p">(</span>
+<a id="__codelineno-2-41" name="__codelineno-2-41" href="#__codelineno-2-41"></a>        <span class="n">default_value</span><span class="o">=-</span><span class="mf">0.00005</span><span class="p">,</span>
+<a id="__codelineno-2-42" name="__codelineno-2-42" href="#__codelineno-2-42"></a>        <span class="n">min_value</span><span class="o">=-</span><span class="mf">100.0</span><span class="p">,</span>
+<a id="__codelineno-2-43" name="__codelineno-2-43" href="#__codelineno-2-43"></a>        <span class="n">max_value</span><span class="o">=</span><span class="mf">100.0</span><span class="p">,</span>
+<a id="__codelineno-2-44" name="__codelineno-2-44" href="#__codelineno-2-44"></a>        <span class="n">empty_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-2-45" name="__codelineno-2-45" href="#__codelineno-2-45"></a>        <span class="n">decimals</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+<a id="__codelineno-2-46" name="__codelineno-2-46" href="#__codelineno-2-46"></a>        <span class="n">scientific_notation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-2-47" name="__codelineno-2-47" href="#__codelineno-2-47"></a>        <span class="n">clear_button</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-2-48" name="__codelineno-2-48" href="#__codelineno-2-48"></a>        <span class="n">placeholder</span><span class="o">=</span><span class="s2">&quot;Enter a float value&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-49" name="__codelineno-2-49" href="#__codelineno-2-49"></a>    <span class="p">)</span>
+<a id="__codelineno-2-50" name="__codelineno-2-50" href="#__codelineno-2-50"></a>
+<a id="__codelineno-2-51" name="__codelineno-2-51" href="#__codelineno-2-51"></a>    <span class="n">adapter</span> <span class="o">=</span> <span class="n">GUIAdapter</span><span class="p">()</span>
+<a id="__codelineno-2-52" name="__codelineno-2-52" href="#__codelineno-2-52"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+<a id="__codelineno-2-53" name="__codelineno-2-53" href="#__codelineno-2-53"></a>        <span class="n">float_t_example</span><span class="p">,</span>
+<a id="__codelineno-2-54" name="__codelineno-2-54" href="#__codelineno-2-54"></a>        <span class="n">widget_configs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;arg3&quot;</span><span class="p">:</span> <span class="n">arg3_conf</span><span class="p">},</span>
+<a id="__codelineno-2-55" name="__codelineno-2-55" href="#__codelineno-2-55"></a>    <span class="p">)</span>
+<a id="__codelineno-2-56" name="__codelineno-2-56" href="#__codelineno-2-56"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre></div>
+<div style="text-align: center">
+    <a class="glightbox" href="../assets/floatlineedit_example.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/floatlineedit_example.png" /></a>
+</div>
+
+<hr />
+<h2 id="int_slider_t">（四）<code>int_slider_t</code>类型</h2>
+<h3 id="0_3">0、说明</h3>
+<p><code>int</code>类型的扩展类型，用于提供<code>Slider（滑动条）</code>形式的输入控件。</p>
+<h3 id="1_3">1、默认控件</h3>
+<ul>
+<li><a href="../apis/pyguiadapter.widgets.slider/"><code>Slider</code></a></li>
+<li>外观</li>
+</ul>
+<div style="text-align: center">
+    <a class="glightbox" href="../assets/int_slider_t.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/int_slider_t.png" /></a>
+</div>
+
+<h3 id="2_3">2、可配置属性</h3>
+<p>参见配置类：<a href="../apis/pyguiadapter.widgets.slider/#pyguiadapter.widgets.SliderConfig"><code>SliderConfig</code></a></p>
+<h3 id="3_3">3、示例</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter</span> <span class="kn">import</span> <span class="n">GUIAdapter</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter.uoutput</span> <span class="kn">import</span> <span class="n">uprint</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="kn">from</span> <span class="nn">pyguiadapter.extend_types</span> <span class="kn">import</span> <span class="n">int_slider_t</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="kn">from</span> <span class="nn">pyguiadapter.widgets</span> <span class="kn">import</span> <span class="n">SliderConfig</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="kn">from</span> <span class="nn">pyguiadapter.widgets.extend.slider</span> <span class="kn">import</span> <span class="n">TickPosition</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="k">def</span> <span class="nf">int_slider_t_example</span><span class="p">(</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>    <span class="n">arg1</span><span class="p">:</span> <span class="n">int_slider_t</span><span class="p">,</span> <span class="n">arg2</span><span class="p">:</span> <span class="n">int_slider_t</span><span class="p">,</span> <span class="n">arg3</span><span class="p">:</span> <span class="n">int_slider_t</span> <span class="o">=</span> <span class="mi">100</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="sd">    This is an example for **int_slider_t** type hint and **Slider** widget.</span>
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="sd">    @param arg1: description for arg1</span>
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="sd">    @param arg2: description for arg2</span>
+<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="sd">    @param arg3: description for arg3</span>
+<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="sd">    @return:</span>
+<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>
+<a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="sd">    @params</span>
+<a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a><span class="sd">    [arg1]</span>
+<a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="sd">    default_value = -100</span>
+<a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a><span class="sd">    min_value = -100</span>
+<a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a><span class="sd">    max_value = 100</span>
+<a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a>
+<a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a><span class="sd">    [arg2]</span>
+<a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a><span class="sd">    max_value = 999</span>
+<a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a><span class="sd">    single_step = 2</span>
+<a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a><span class="sd">    tracking = false</span>
+<a id="__codelineno-3-29" name="__codelineno-3-29" href="#__codelineno-3-29"></a><span class="sd">    prefix = &quot;count: &quot;</span>
+<a id="__codelineno-3-30" name="__codelineno-3-30" href="#__codelineno-3-30"></a><span class="sd">    tick_interval = 10</span>
+<a id="__codelineno-3-31" name="__codelineno-3-31" href="#__codelineno-3-31"></a><span class="sd">    inverted_controls = true</span>
+<a id="__codelineno-3-32" name="__codelineno-3-32" href="#__codelineno-3-32"></a><span class="sd">    inverted_appearance = true</span>
+<a id="__codelineno-3-33" name="__codelineno-3-33" href="#__codelineno-3-33"></a>
+<a id="__codelineno-3-34" name="__codelineno-3-34" href="#__codelineno-3-34"></a><span class="sd">    @end</span>
+<a id="__codelineno-3-35" name="__codelineno-3-35" href="#__codelineno-3-35"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-3-36" name="__codelineno-3-36" href="#__codelineno-3-36"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg1:&quot;</span><span class="p">,</span> <span class="n">arg1</span><span class="p">)</span>
+<a id="__codelineno-3-37" name="__codelineno-3-37" href="#__codelineno-3-37"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg2:&quot;</span><span class="p">,</span> <span class="n">arg2</span><span class="p">)</span>
+<a id="__codelineno-3-38" name="__codelineno-3-38" href="#__codelineno-3-38"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg3:&quot;</span><span class="p">,</span> <span class="n">arg3</span><span class="p">)</span>
+<a id="__codelineno-3-39" name="__codelineno-3-39" href="#__codelineno-3-39"></a>    <span class="k">return</span> <span class="n">arg1</span> <span class="o">+</span> <span class="n">arg2</span> <span class="o">+</span> <span class="n">arg3</span>
+<a id="__codelineno-3-40" name="__codelineno-3-40" href="#__codelineno-3-40"></a>
+<a id="__codelineno-3-41" name="__codelineno-3-41" href="#__codelineno-3-41"></a>
+<a id="__codelineno-3-42" name="__codelineno-3-42" href="#__codelineno-3-42"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<a id="__codelineno-3-43" name="__codelineno-3-43" href="#__codelineno-3-43"></a>
+<a id="__codelineno-3-44" name="__codelineno-3-44" href="#__codelineno-3-44"></a>    <span class="n">arg3_conf</span> <span class="o">=</span> <span class="n">SliderConfig</span><span class="p">(</span>
+<a id="__codelineno-3-45" name="__codelineno-3-45" href="#__codelineno-3-45"></a>        <span class="n">default_value</span><span class="o">=-</span><span class="mi">99</span><span class="p">,</span>
+<a id="__codelineno-3-46" name="__codelineno-3-46" href="#__codelineno-3-46"></a>        <span class="n">min_value</span><span class="o">=-</span><span class="mi">100</span><span class="p">,</span>
+<a id="__codelineno-3-47" name="__codelineno-3-47" href="#__codelineno-3-47"></a>        <span class="n">max_value</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+<a id="__codelineno-3-48" name="__codelineno-3-48" href="#__codelineno-3-48"></a>        <span class="n">tick_position</span><span class="o">=</span><span class="n">TickPosition</span><span class="o">.</span><span class="n">TicksAbove</span><span class="p">,</span>
+<a id="__codelineno-3-49" name="__codelineno-3-49" href="#__codelineno-3-49"></a>        <span class="n">tick_interval</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<a id="__codelineno-3-50" name="__codelineno-3-50" href="#__codelineno-3-50"></a>        <span class="n">single_step</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<a id="__codelineno-3-51" name="__codelineno-3-51" href="#__codelineno-3-51"></a>        <span class="n">page_step</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+<a id="__codelineno-3-52" name="__codelineno-3-52" href="#__codelineno-3-52"></a>        <span class="n">suffix</span><span class="o">=</span><span class="s2">&quot; mv&quot;</span><span class="p">,</span>
+<a id="__codelineno-3-53" name="__codelineno-3-53" href="#__codelineno-3-53"></a>    <span class="p">)</span>
+<a id="__codelineno-3-54" name="__codelineno-3-54" href="#__codelineno-3-54"></a>
+<a id="__codelineno-3-55" name="__codelineno-3-55" href="#__codelineno-3-55"></a>    <span class="n">adapter</span> <span class="o">=</span> <span class="n">GUIAdapter</span><span class="p">()</span>
+<a id="__codelineno-3-56" name="__codelineno-3-56" href="#__codelineno-3-56"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+<a id="__codelineno-3-57" name="__codelineno-3-57" href="#__codelineno-3-57"></a>        <span class="n">int_slider_t_example</span><span class="p">,</span>
+<a id="__codelineno-3-58" name="__codelineno-3-58" href="#__codelineno-3-58"></a>        <span class="n">widget_configs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;arg3&quot;</span><span class="p">:</span> <span class="n">arg3_conf</span><span class="p">},</span>
+<a id="__codelineno-3-59" name="__codelineno-3-59" href="#__codelineno-3-59"></a>    <span class="p">)</span>
+<a id="__codelineno-3-60" name="__codelineno-3-60" href="#__codelineno-3-60"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre></div>
+<div style="text-align: center">
+    <a class="glightbox" href="../assets/int_slider_t_example.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/int_slider_t_example.png" /></a>
+</div>
+
+<hr />
+<h2 id="int_dial_t">（五）<code>int_dial_t</code>类型</h2>
+<h3 id="0_4">0、说明</h3>
+<p><code>int</code>类型的扩展类型，用于提供<code>Dial（拨号盘）</code>形式的输入控件。</p>
+<h3 id="1_4">1、默认控件</h3>
+<ul>
+<li><a href="../apis/pyguiadapter.widgets.dial/"><code>Dial</code></a></li>
+<li>外观</li>
+</ul>
+<div style="text-align: center">
+    <a class="glightbox" href="../assets/int_dial_t.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/int_dial_t.png" /></a>
+</div>
+
+<h3 id="2_4">2、可配置属性</h3>
+<p>参见配置类：<a href="../apis/pyguiadapter.widgets.dial/#pyguiadapter.widgets.DialConfig"><code>DialConfig</code></a></p>
+<h3 id="3_4">3、示例</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter</span> <span class="kn">import</span> <span class="n">GUIAdapter</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter.uoutput</span> <span class="kn">import</span> <span class="n">uprint</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="kn">from</span> <span class="nn">pyguiadapter.extend_types</span> <span class="kn">import</span> <span class="n">int_dial_t</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="kn">from</span> <span class="nn">pyguiadapter.widgets</span> <span class="kn">import</span> <span class="n">DialConfig</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="k">def</span> <span class="nf">int_dial_t_example</span><span class="p">(</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    <span class="n">arg1</span><span class="p">:</span> <span class="n">int_dial_t</span><span class="p">,</span> <span class="n">arg2</span><span class="p">:</span> <span class="n">int_dial_t</span><span class="p">,</span> <span class="n">arg3</span><span class="p">:</span> <span class="n">int_dial_t</span> <span class="o">=</span> <span class="mi">100</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="sd">    This is an example for **int_dial_t** type hint and **Dial** widget.</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="sd">    @param arg1: description for arg1</span>
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="sd">    @param arg2: description for arg2</span>
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="sd">    @param arg3: description for arg3</span>
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="sd">    @return:</span>
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="sd">    @params</span>
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="sd">    [arg1]</span>
+<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a><span class="sd">    default_value = -100</span>
+<a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a><span class="sd">    min_value = -100</span>
+<a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a><span class="sd">    max_value = 100</span>
+<a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a>
+<a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a><span class="sd">    [arg2]</span>
+<a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a><span class="sd">    max_value = 999</span>
+<a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a><span class="sd">    single_step = 2</span>
+<a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a><span class="sd">    tracking = false</span>
+<a id="__codelineno-4-28" name="__codelineno-4-28" href="#__codelineno-4-28"></a><span class="sd">    prefix = &quot;count: &quot;</span>
+<a id="__codelineno-4-29" name="__codelineno-4-29" href="#__codelineno-4-29"></a><span class="sd">    inverted_controls = true</span>
+<a id="__codelineno-4-30" name="__codelineno-4-30" href="#__codelineno-4-30"></a><span class="sd">    inverted_appearance = true</span>
+<a id="__codelineno-4-31" name="__codelineno-4-31" href="#__codelineno-4-31"></a>
+<a id="__codelineno-4-32" name="__codelineno-4-32" href="#__codelineno-4-32"></a><span class="sd">    @end</span>
+<a id="__codelineno-4-33" name="__codelineno-4-33" href="#__codelineno-4-33"></a>
+<a id="__codelineno-4-34" name="__codelineno-4-34" href="#__codelineno-4-34"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-4-35" name="__codelineno-4-35" href="#__codelineno-4-35"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg1:&quot;</span><span class="p">,</span> <span class="n">arg1</span><span class="p">)</span>
+<a id="__codelineno-4-36" name="__codelineno-4-36" href="#__codelineno-4-36"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg2:&quot;</span><span class="p">,</span> <span class="n">arg2</span><span class="p">)</span>
+<a id="__codelineno-4-37" name="__codelineno-4-37" href="#__codelineno-4-37"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg3:&quot;</span><span class="p">,</span> <span class="n">arg3</span><span class="p">)</span>
+<a id="__codelineno-4-38" name="__codelineno-4-38" href="#__codelineno-4-38"></a>    <span class="k">return</span> <span class="n">arg1</span> <span class="o">+</span> <span class="n">arg2</span> <span class="o">+</span> <span class="n">arg3</span>
+<a id="__codelineno-4-39" name="__codelineno-4-39" href="#__codelineno-4-39"></a>
+<a id="__codelineno-4-40" name="__codelineno-4-40" href="#__codelineno-4-40"></a>
+<a id="__codelineno-4-41" name="__codelineno-4-41" href="#__codelineno-4-41"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<a id="__codelineno-4-42" name="__codelineno-4-42" href="#__codelineno-4-42"></a>
+<a id="__codelineno-4-43" name="__codelineno-4-43" href="#__codelineno-4-43"></a>    <span class="n">arg3_conf</span> <span class="o">=</span> <span class="n">DialConfig</span><span class="p">(</span>
+<a id="__codelineno-4-44" name="__codelineno-4-44" href="#__codelineno-4-44"></a>        <span class="n">default_value</span><span class="o">=-</span><span class="mi">99</span><span class="p">,</span>
+<a id="__codelineno-4-45" name="__codelineno-4-45" href="#__codelineno-4-45"></a>        <span class="n">min_value</span><span class="o">=-</span><span class="mi">100</span><span class="p">,</span>
+<a id="__codelineno-4-46" name="__codelineno-4-46" href="#__codelineno-4-46"></a>        <span class="n">max_value</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+<a id="__codelineno-4-47" name="__codelineno-4-47" href="#__codelineno-4-47"></a>        <span class="n">suffix</span><span class="o">=</span><span class="s2">&quot; mv&quot;</span><span class="p">,</span>
+<a id="__codelineno-4-48" name="__codelineno-4-48" href="#__codelineno-4-48"></a>    <span class="p">)</span>
+<a id="__codelineno-4-49" name="__codelineno-4-49" href="#__codelineno-4-49"></a>
+<a id="__codelineno-4-50" name="__codelineno-4-50" href="#__codelineno-4-50"></a>    <span class="n">adapter</span> <span class="o">=</span> <span class="n">GUIAdapter</span><span class="p">()</span>
+<a id="__codelineno-4-51" name="__codelineno-4-51" href="#__codelineno-4-51"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">int_dial_t_example</span><span class="p">,</span> <span class="n">widget_configs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;arg3&quot;</span><span class="p">:</span> <span class="n">arg3_conf</span><span class="p">})</span>
+<a id="__codelineno-4-52" name="__codelineno-4-52" href="#__codelineno-4-52"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre></div>
+<div style="text-align: center">
+    <a class="glightbox" href="../assets/int_dial_t_example.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/int_dial_t_example.png" /></a>
+</div>
+
+<hr />
+<h2 id="colot_hex_t">（六）<code>colot_hex_t</code>类型</h2>
+<h3 id="0_5">0、说明</h3>
+<p><code>str</code>类型的扩展类型，语义上代表颜色值（十六进制字符串）。可以表示RGB颜色值，如<code>#FFFFFF</code>；也可以表示RGBA颜色值，如<code>#FFFFFF80</code>。</p>
+<h3 id="1_5">1、默认控件</h3>
+<ul>
+<li><a href="../apis/pyguiadapter.widgets.colorpicker/"><code>ColorHexPicker</code></a></li>
+<li>外观</li>
+</ul>
+<div style="text-align: center">
+    <a class="glightbox" href="../assets/color_t.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/color_t.png" /></a>
+</div>
+
+<h3 id="2_5">2、可配置属性</h3>
+<p>参见配置类：<a href="../apis/pyguiadapter.widgets.colorpicker/#pyguiadapter.widgets.ColorPickerConfig"><code>ColorPickerConfig</code></a></p>
+<h3 id="3_5">3、示例</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter</span> <span class="kn">import</span> <span class="n">GUIAdapter</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter.uoutput</span> <span class="kn">import</span> <span class="n">uprint</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="kn">from</span> <span class="nn">pyguiadapter.extend_types</span> <span class="kn">import</span> <span class="n">color_hex_t</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="kn">from</span> <span class="nn">pyguiadapter.widgets</span> <span class="kn">import</span> <span class="n">ColorPickerConfig</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="k">def</span> <span class="nf">color_hex_t_example</span><span class="p">(</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>    <span class="n">arg1</span><span class="p">:</span> <span class="n">color_hex_t</span><span class="p">,</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>    <span class="n">arg2</span><span class="p">:</span> <span class="n">color_hex_t</span><span class="p">,</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>    <span class="n">arg3</span><span class="p">:</span> <span class="n">color_hex_t</span> <span class="o">=</span> <span class="s2">&quot;red&quot;</span><span class="p">,</span>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="p">):</span>
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="sd">    This is an example for type **color_hex_t** type hint and **ColorPicker** widget.</span>
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="sd">    @param arg1: description for arg1</span>
+<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="sd">    @param arg2: description for arg2</span>
+<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="sd">    @param arg3: description for arg3</span>
+<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>
+<a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a><span class="sd">    @params</span>
+<a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a><span class="sd">    [arg1]</span>
+<a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a><span class="sd">    default_value = &quot;#aaffbb&quot;</span>
+<a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a><span class="sd">    alpha_channel = false</span>
+<a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a><span class="sd">    @end</span>
+<a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg1:&quot;</span><span class="p">,</span> <span class="n">arg1</span><span class="p">)</span>
+<a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg2:&quot;</span><span class="p">,</span> <span class="n">arg2</span><span class="p">)</span>
+<a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg3:&quot;</span><span class="p">,</span> <span class="n">arg3</span><span class="p">)</span>
+<a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a>
+<a id="__codelineno-5-29" name="__codelineno-5-29" href="#__codelineno-5-29"></a>
+<a id="__codelineno-5-30" name="__codelineno-5-30" href="#__codelineno-5-30"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<a id="__codelineno-5-31" name="__codelineno-5-31" href="#__codelineno-5-31"></a>    <span class="n">arg2_conf</span> <span class="o">=</span> <span class="n">ColorPickerConfig</span><span class="p">(</span><span class="n">default_value</span><span class="o">=</span><span class="s2">&quot;#effeedff&quot;</span><span class="p">,</span> <span class="n">alpha_channel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<a id="__codelineno-5-32" name="__codelineno-5-32" href="#__codelineno-5-32"></a>    <span class="n">arg3_conf</span> <span class="o">=</span> <span class="n">ColorPickerConfig</span><span class="p">(</span><span class="n">display_color_name</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<a id="__codelineno-5-33" name="__codelineno-5-33" href="#__codelineno-5-33"></a>    <span class="n">adapter</span> <span class="o">=</span> <span class="n">GUIAdapter</span><span class="p">()</span>
+<a id="__codelineno-5-34" name="__codelineno-5-34" href="#__codelineno-5-34"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+<a id="__codelineno-5-35" name="__codelineno-5-35" href="#__codelineno-5-35"></a>        <span class="n">color_hex_t_example</span><span class="p">,</span> <span class="n">widget_configs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;arg2&quot;</span><span class="p">:</span> <span class="n">arg2_conf</span><span class="p">,</span> <span class="s2">&quot;arg3&quot;</span><span class="p">:</span> <span class="n">arg3_conf</span><span class="p">}</span>
+<a id="__codelineno-5-36" name="__codelineno-5-36" href="#__codelineno-5-36"></a>    <span class="p">)</span>
+<a id="__codelineno-5-37" name="__codelineno-5-37" href="#__codelineno-5-37"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre></div>
+<div style="text-align: center">
+    <a class="glightbox" href="../assets/color_hex_t_example.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/color_hex_t_example.png" /></a>
+</div>
+
+<hr />
+<h2 id="colot_tuple_t">（七）<code>colot_tuple_t</code>类型</h2>
+<h3 id="1_6">1、默认控件</h3>
+<ul>
+<li><a href="../apis/pyguiadapter.widgets.colorpicker/"><code>ColorPicker</code></a></li>
+<li>外观</li>
+</ul>
+<div style="text-align: center">
+    <a class="glightbox" href="../assets/color_t.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/color_t.png" /></a>
+</div>
+
+<h3 id="2_6">2、可配置属性</h3>
+<p>参见配置类：<a href="../apis/pyguiadapter.widgets.colorpicker/#pyguiadapter.widgets.ColorPickerConfig"><code>ColorPickerConfig</code></a></p>
+<h3 id="3_6">3、示例</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter</span> <span class="kn">import</span> <span class="n">GUIAdapter</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter.uoutput</span> <span class="kn">import</span> <span class="n">uprint</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="kn">from</span> <span class="nn">pyguiadapter.extend_types</span> <span class="kn">import</span> <span class="n">color_tuple_t</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="kn">from</span> <span class="nn">pyguiadapter.widgets</span> <span class="kn">import</span> <span class="n">ColorPickerConfig</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="k">def</span> <span class="nf">color_tuple_t_example</span><span class="p">(</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>    <span class="n">arg1</span><span class="p">:</span> <span class="n">color_tuple_t</span><span class="p">,</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>    <span class="n">arg2</span><span class="p">:</span> <span class="n">color_tuple_t</span><span class="p">,</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>    <span class="n">arg3</span><span class="p">:</span> <span class="n">color_tuple_t</span> <span class="o">=</span> <span class="p">(</span><span class="mi">125</span><span class="p">,</span> <span class="mi">230</span><span class="p">,</span> <span class="mi">156</span><span class="p">),</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="p">):</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="sd">    This is an example for type **color_tuple_t** type hint and **ColorPicker** widget.</span>
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>
+<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="sd">    @param arg1: description for arg1</span>
+<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="sd">    @param arg2: description for arg2</span>
+<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="sd">    @param arg3: description for arg3</span>
+<a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a>
+<a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a><span class="sd">    @params</span>
+<a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a><span class="sd">    [arg1]</span>
+<a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a><span class="sd">    default_value = [255,0, 126]</span>
+<a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a><span class="sd">    alpha_channel = false</span>
+<a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a><span class="sd">    @end</span>
+<a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-6-25" name="__codelineno-6-25" href="#__codelineno-6-25"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg1:&quot;</span><span class="p">,</span> <span class="n">arg1</span><span class="p">)</span>
+<a id="__codelineno-6-26" name="__codelineno-6-26" href="#__codelineno-6-26"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg2:&quot;</span><span class="p">,</span> <span class="n">arg2</span><span class="p">)</span>
+<a id="__codelineno-6-27" name="__codelineno-6-27" href="#__codelineno-6-27"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg3:&quot;</span><span class="p">,</span> <span class="n">arg3</span><span class="p">)</span>
+<a id="__codelineno-6-28" name="__codelineno-6-28" href="#__codelineno-6-28"></a>
+<a id="__codelineno-6-29" name="__codelineno-6-29" href="#__codelineno-6-29"></a>
+<a id="__codelineno-6-30" name="__codelineno-6-30" href="#__codelineno-6-30"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<a id="__codelineno-6-31" name="__codelineno-6-31" href="#__codelineno-6-31"></a>    <span class="n">arg2_conf</span> <span class="o">=</span> <span class="n">ColorPickerConfig</span><span class="p">(</span><span class="n">default_value</span><span class="o">=</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="n">alpha_channel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<a id="__codelineno-6-32" name="__codelineno-6-32" href="#__codelineno-6-32"></a>    <span class="n">arg3_conf</span> <span class="o">=</span> <span class="n">ColorPickerConfig</span><span class="p">(</span><span class="n">display_color_name</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<a id="__codelineno-6-33" name="__codelineno-6-33" href="#__codelineno-6-33"></a>    <span class="n">adapter</span> <span class="o">=</span> <span class="n">GUIAdapter</span><span class="p">()</span>
+<a id="__codelineno-6-34" name="__codelineno-6-34" href="#__codelineno-6-34"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+<a id="__codelineno-6-35" name="__codelineno-6-35" href="#__codelineno-6-35"></a>        <span class="n">color_tuple_t_example</span><span class="p">,</span> <span class="n">widget_configs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;arg2&quot;</span><span class="p">:</span> <span class="n">arg2_conf</span><span class="p">,</span> <span class="s2">&quot;arg3&quot;</span><span class="p">:</span> <span class="n">arg3_conf</span><span class="p">}</span>
+<a id="__codelineno-6-36" name="__codelineno-6-36" href="#__codelineno-6-36"></a>    <span class="p">)</span>
+<a id="__codelineno-6-37" name="__codelineno-6-37" href="#__codelineno-6-37"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre></div>
+<div style="text-align: center">
+    <a class="glightbox" href="../assets/color_tuple_t_example.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/color_tuple_t_example.png" /></a>
+</div>
+
+<hr />
+<h2 id="choice_t">（八）<code>choice_t</code>类型</h2>
+<h3 id="0_6">0、说明</h3>
+<p><code>object</code>类型的扩展类型，语义上代表一组确定对象中的一个对象，提供<code>ComboBox（下拉列表）</code>形式的输入控件，用于从一组可选项中选择任意一个选项。可选项可以是可以实现了<code>__hash__</code>和<code>__eq__</code>方法的任何对象，包括但不限于字符串、数字等。</p>
+<h3 id="1_7">1、默认控件</h3>
+<ul>
+<li><a href="../apis/pyguiadapter.widgets.choicebox/"><code>ChoiceBox</code></a></li>
+<li>外观</li>
+</ul>
+<div style="text-align: center">
+    <a class="glightbox" href="../assets/choice_t.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/choice_t.png" /></a>
+</div>
+
+<h3 id="2_7">2、可配置属性</h3>
+<p>参见配置类：<a href="../apis/pyguiadapter.widgets.choicebox/#pyguiadapter.widgets.ChoiceBoxConfig"><code>ChoiceBoxConfig</code></a></p>
+<h3 id="3_7">3、示例</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter</span> <span class="kn">import</span> <span class="n">GUIAdapter</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter.uoutput</span> <span class="kn">import</span> <span class="n">uprint</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="kn">from</span> <span class="nn">pyguiadapter.extend_types</span> <span class="kn">import</span> <span class="n">choice_t</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="kn">from</span> <span class="nn">pyguiadapter.widgets</span> <span class="kn">import</span> <span class="n">ChoiceBoxConfig</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="k">class</span> <span class="nc">MyObject</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">MyObject</span><span class="p">):</span>
+<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>            <span class="k">return</span> <span class="kc">False</span>
+<a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">name</span>
+<a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>
+<a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a>    <span class="k">def</span> <span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a>        <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a>
+<a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a>    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a>        <span class="c1"># this method is very important</span>
+<a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a>        <span class="c1"># the return value will be displayed as the ChoiceBox&#39;s item</span>
+<a id="__codelineno-7-22" name="__codelineno-7-22" href="#__codelineno-7-22"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+<a id="__codelineno-7-23" name="__codelineno-7-23" href="#__codelineno-7-23"></a>
+<a id="__codelineno-7-24" name="__codelineno-7-24" href="#__codelineno-7-24"></a>
+<a id="__codelineno-7-25" name="__codelineno-7-25" href="#__codelineno-7-25"></a><span class="k">def</span> <span class="nf">choice_t_example</span><span class="p">(</span><span class="n">arg1</span><span class="p">:</span> <span class="n">choice_t</span><span class="p">,</span> <span class="n">arg2</span><span class="p">:</span> <span class="n">choice_t</span><span class="p">,</span> <span class="n">arg3</span><span class="p">:</span> <span class="n">choice_t</span><span class="p">):</span>
+<a id="__codelineno-7-26" name="__codelineno-7-26" href="#__codelineno-7-26"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-7-27" name="__codelineno-7-27" href="#__codelineno-7-27"></a><span class="sd">    This is an example for type **choice_t** type hint and **ChoiceBox** widget.</span>
+<a id="__codelineno-7-28" name="__codelineno-7-28" href="#__codelineno-7-28"></a>
+<a id="__codelineno-7-29" name="__codelineno-7-29" href="#__codelineno-7-29"></a><span class="sd">    @param arg1: description for arg1</span>
+<a id="__codelineno-7-30" name="__codelineno-7-30" href="#__codelineno-7-30"></a><span class="sd">    @param arg2: description for arg2</span>
+<a id="__codelineno-7-31" name="__codelineno-7-31" href="#__codelineno-7-31"></a><span class="sd">    @param arg3: description for arg3</span>
+<a id="__codelineno-7-32" name="__codelineno-7-32" href="#__codelineno-7-32"></a><span class="sd">    @return:</span>
+<a id="__codelineno-7-33" name="__codelineno-7-33" href="#__codelineno-7-33"></a>
+<a id="__codelineno-7-34" name="__codelineno-7-34" href="#__codelineno-7-34"></a><span class="sd">    @params</span>
+<a id="__codelineno-7-35" name="__codelineno-7-35" href="#__codelineno-7-35"></a><span class="sd">    [arg1]</span>
+<a id="__codelineno-7-36" name="__codelineno-7-36" href="#__codelineno-7-36"></a><span class="sd">    # choices can be a list of numbers</span>
+<a id="__codelineno-7-37" name="__codelineno-7-37" href="#__codelineno-7-37"></a><span class="sd">    choices = {&quot;A&quot;=1, &quot;B&quot;=2, &quot;C&quot;=3}</span>
+<a id="__codelineno-7-38" name="__codelineno-7-38" href="#__codelineno-7-38"></a>
+<a id="__codelineno-7-39" name="__codelineno-7-39" href="#__codelineno-7-39"></a><span class="sd">    @end</span>
+<a id="__codelineno-7-40" name="__codelineno-7-40" href="#__codelineno-7-40"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-7-41" name="__codelineno-7-41" href="#__codelineno-7-41"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg1:&quot;</span><span class="p">,</span> <span class="n">arg1</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;, type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">arg1</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-7-42" name="__codelineno-7-42" href="#__codelineno-7-42"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg2:&quot;</span><span class="p">,</span> <span class="n">arg2</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;, type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">arg2</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-7-43" name="__codelineno-7-43" href="#__codelineno-7-43"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg3:&quot;</span><span class="p">,</span> <span class="n">arg3</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;, type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">arg3</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-7-44" name="__codelineno-7-44" href="#__codelineno-7-44"></a>
+<a id="__codelineno-7-45" name="__codelineno-7-45" href="#__codelineno-7-45"></a>
+<a id="__codelineno-7-46" name="__codelineno-7-46" href="#__codelineno-7-46"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<a id="__codelineno-7-47" name="__codelineno-7-47" href="#__codelineno-7-47"></a>    <span class="n">arg2_conf</span> <span class="o">=</span> <span class="n">ChoiceBoxConfig</span><span class="p">(</span>
+<a id="__codelineno-7-48" name="__codelineno-7-48" href="#__codelineno-7-48"></a>        <span class="n">default_value</span><span class="o">=</span><span class="s2">&quot;opt2&quot;</span><span class="p">,</span>
+<a id="__codelineno-7-49" name="__codelineno-7-49" href="#__codelineno-7-49"></a>        <span class="c1"># choices can be a list of strings</span>
+<a id="__codelineno-7-50" name="__codelineno-7-50" href="#__codelineno-7-50"></a>        <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;opt1&quot;</span><span class="p">,</span> <span class="s2">&quot;opt2&quot;</span><span class="p">,</span> <span class="s2">&quot;opt3&quot;</span><span class="p">,</span> <span class="s2">&quot;opt4&quot;</span><span class="p">],</span>
+<a id="__codelineno-7-51" name="__codelineno-7-51" href="#__codelineno-7-51"></a>        <span class="n">editable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-7-52" name="__codelineno-7-52" href="#__codelineno-7-52"></a>    <span class="p">)</span>
+<a id="__codelineno-7-53" name="__codelineno-7-53" href="#__codelineno-7-53"></a>
+<a id="__codelineno-7-54" name="__codelineno-7-54" href="#__codelineno-7-54"></a>    <span class="n">obj1</span> <span class="o">=</span> <span class="n">MyObject</span><span class="p">(</span><span class="s2">&quot;apple&quot;</span><span class="p">)</span>
+<a id="__codelineno-7-55" name="__codelineno-7-55" href="#__codelineno-7-55"></a>    <span class="n">obj2</span> <span class="o">=</span> <span class="n">MyObject</span><span class="p">(</span><span class="s2">&quot;banana&quot;</span><span class="p">)</span>
+<a id="__codelineno-7-56" name="__codelineno-7-56" href="#__codelineno-7-56"></a>    <span class="n">obj3</span> <span class="o">=</span> <span class="n">MyObject</span><span class="p">(</span><span class="s2">&quot;orange&quot;</span><span class="p">)</span>
+<a id="__codelineno-7-57" name="__codelineno-7-57" href="#__codelineno-7-57"></a>
+<a id="__codelineno-7-58" name="__codelineno-7-58" href="#__codelineno-7-58"></a>    <span class="n">arg3_conf</span> <span class="o">=</span> <span class="n">ChoiceBoxConfig</span><span class="p">(</span>
+<a id="__codelineno-7-59" name="__codelineno-7-59" href="#__codelineno-7-59"></a>        <span class="n">default_value</span><span class="o">=</span><span class="n">obj2</span><span class="p">,</span>
+<a id="__codelineno-7-60" name="__codelineno-7-60" href="#__codelineno-7-60"></a>        <span class="c1"># choices can be a list of objects which have implemented __eq__ and __hash__ methods</span>
+<a id="__codelineno-7-61" name="__codelineno-7-61" href="#__codelineno-7-61"></a>        <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="n">obj1</span><span class="p">,</span> <span class="n">obj2</span><span class="p">,</span> <span class="n">obj3</span><span class="p">],</span>
+<a id="__codelineno-7-62" name="__codelineno-7-62" href="#__codelineno-7-62"></a>    <span class="p">)</span>
+<a id="__codelineno-7-63" name="__codelineno-7-63" href="#__codelineno-7-63"></a>
+<a id="__codelineno-7-64" name="__codelineno-7-64" href="#__codelineno-7-64"></a>    <span class="n">adapter</span> <span class="o">=</span> <span class="n">GUIAdapter</span><span class="p">()</span>
+<a id="__codelineno-7-65" name="__codelineno-7-65" href="#__codelineno-7-65"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">choice_t_example</span><span class="p">,</span> <span class="n">widget_configs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;arg2&quot;</span><span class="p">:</span> <span class="n">arg2_conf</span><span class="p">,</span> <span class="s2">&quot;arg3&quot;</span><span class="p">:</span> <span class="n">arg3_conf</span><span class="p">})</span>
+<a id="__codelineno-7-66" name="__codelineno-7-66" href="#__codelineno-7-66"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre></div>
+<div style="text-align: center">
+    <a class="glightbox" href="../assets/choice_t_example.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/choice_t_example.png" /></a>
+</div>
+
+<hr />
+<h2 id="choices_t">（九）<code>choices_t</code>类型</h2>
+<h3 id="0_7">0、说明</h3>
+<p><code>list</code>类型的扩展类型，语义上代表一组可选项中的多个对象，提供一组<code>CheckBox（复选框）</code>作为输入控件，用于从一组可选项中选择多个选项。可选项可以是可以实现了<code>__hash__</code>和<code>__eq__</code>方法的任何对象，包括但不限于字符串、数字等。</p>
+<h3 id="1_8">1、默认控件</h3>
+<ul>
+<li><a href="../apis/pyguiadapter.widgets.multichoice/"><code>MultiChoiceBox</code></a></li>
+<li>外观</li>
+</ul>
+<div style="text-align: center">
+    <a class="glightbox" href="../assets/choices_t.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/choices_t.png" /></a>
+</div>
+
+<h3 id="2_8">2、可配置属性</h3>
+<p>参见配置类：<a href="../apis/pyguiadapter.widgets.multichoice/#pyguiadapter.widgets.MultiChoiceBoxConfig"><code>MultiChoiceBoxConfig</code></a></p>
+<h3 id="3_8">3、示例</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter</span> <span class="kn">import</span> <span class="n">GUIAdapter</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter.uoutput</span> <span class="kn">import</span> <span class="n">uprint</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="kn">from</span> <span class="nn">pyguiadapter.extend_types</span> <span class="kn">import</span> <span class="n">choices_t</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="kn">from</span> <span class="nn">pyguiadapter.widgets</span> <span class="kn">import</span> <span class="n">MultiChoiceBoxConfig</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="k">class</span> <span class="nc">MyObject</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">MyObject</span><span class="p">):</span>
+<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>            <span class="k">return</span> <span class="kc">False</span>
+<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">name</span>
+<a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a>
+<a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a>    <span class="k">def</span> <span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a>        <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a>
+<a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a>    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a>        <span class="c1"># this method is very important</span>
+<a id="__codelineno-8-21" name="__codelineno-8-21" href="#__codelineno-8-21"></a>        <span class="c1"># the return value will be displayed as the ChoiceBox&#39;s item</span>
+<a id="__codelineno-8-22" name="__codelineno-8-22" href="#__codelineno-8-22"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+<a id="__codelineno-8-23" name="__codelineno-8-23" href="#__codelineno-8-23"></a>
+<a id="__codelineno-8-24" name="__codelineno-8-24" href="#__codelineno-8-24"></a>
+<a id="__codelineno-8-25" name="__codelineno-8-25" href="#__codelineno-8-25"></a><span class="k">def</span> <span class="nf">choices_t_example</span><span class="p">(</span><span class="n">arg1</span><span class="p">:</span> <span class="n">choices_t</span><span class="p">,</span> <span class="n">arg2</span><span class="p">:</span> <span class="n">choices_t</span><span class="p">,</span> <span class="n">arg3</span><span class="p">:</span> <span class="n">choices_t</span><span class="p">):</span>
+<a id="__codelineno-8-26" name="__codelineno-8-26" href="#__codelineno-8-26"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-8-27" name="__codelineno-8-27" href="#__codelineno-8-27"></a><span class="sd">    This is an example for type **choices_t** type hint and **MultiChoiceBox** widget.</span>
+<a id="__codelineno-8-28" name="__codelineno-8-28" href="#__codelineno-8-28"></a>
+<a id="__codelineno-8-29" name="__codelineno-8-29" href="#__codelineno-8-29"></a><span class="sd">    @param arg1: description for arg1</span>
+<a id="__codelineno-8-30" name="__codelineno-8-30" href="#__codelineno-8-30"></a><span class="sd">    @param arg2: description for arg2</span>
+<a id="__codelineno-8-31" name="__codelineno-8-31" href="#__codelineno-8-31"></a><span class="sd">    @param arg3: description for arg3</span>
+<a id="__codelineno-8-32" name="__codelineno-8-32" href="#__codelineno-8-32"></a>
+<a id="__codelineno-8-33" name="__codelineno-8-33" href="#__codelineno-8-33"></a><span class="sd">    @params</span>
+<a id="__codelineno-8-34" name="__codelineno-8-34" href="#__codelineno-8-34"></a><span class="sd">    [arg1]</span>
+<a id="__codelineno-8-35" name="__codelineno-8-35" href="#__codelineno-8-35"></a><span class="sd">    default_value = [&quot;opt1&quot;, &quot;opt2&quot;]</span>
+<a id="__codelineno-8-36" name="__codelineno-8-36" href="#__codelineno-8-36"></a><span class="sd">    choices = [&quot;opt1&quot;, &quot;opt2&quot;, &quot;opt3&quot;, &quot;opt4&quot;, &quot;opt5&quot;]</span>
+<a id="__codelineno-8-37" name="__codelineno-8-37" href="#__codelineno-8-37"></a><span class="sd">    @end</span>
+<a id="__codelineno-8-38" name="__codelineno-8-38" href="#__codelineno-8-38"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-8-39" name="__codelineno-8-39" href="#__codelineno-8-39"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg1:&quot;</span><span class="p">,</span> <span class="n">arg1</span><span class="p">)</span>
+<a id="__codelineno-8-40" name="__codelineno-8-40" href="#__codelineno-8-40"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg2:&quot;</span><span class="p">,</span> <span class="n">arg2</span><span class="p">)</span>
+<a id="__codelineno-8-41" name="__codelineno-8-41" href="#__codelineno-8-41"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg3:&quot;</span><span class="p">,</span> <span class="n">arg3</span><span class="p">)</span>
+<a id="__codelineno-8-42" name="__codelineno-8-42" href="#__codelineno-8-42"></a>
+<a id="__codelineno-8-43" name="__codelineno-8-43" href="#__codelineno-8-43"></a>
+<a id="__codelineno-8-44" name="__codelineno-8-44" href="#__codelineno-8-44"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<a id="__codelineno-8-45" name="__codelineno-8-45" href="#__codelineno-8-45"></a>    <span class="n">arg2_conf</span> <span class="o">=</span> <span class="n">MultiChoiceBoxConfig</span><span class="p">(</span>
+<a id="__codelineno-8-46" name="__codelineno-8-46" href="#__codelineno-8-46"></a>        <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="n">MyObject</span><span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">),</span> <span class="n">MyObject</span><span class="p">(</span><span class="s2">&quot;bar&quot;</span><span class="p">),</span> <span class="n">MyObject</span><span class="p">(</span><span class="s2">&quot;baz&quot;</span><span class="p">)]</span>
+<a id="__codelineno-8-47" name="__codelineno-8-47" href="#__codelineno-8-47"></a>    <span class="p">)</span>
+<a id="__codelineno-8-48" name="__codelineno-8-48" href="#__codelineno-8-48"></a>    <span class="n">arg3_conf</span> <span class="o">=</span> <span class="n">MultiChoiceBoxConfig</span><span class="p">(</span>
+<a id="__codelineno-8-49" name="__codelineno-8-49" href="#__codelineno-8-49"></a>        <span class="n">default_value</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+<a id="__codelineno-8-50" name="__codelineno-8-50" href="#__codelineno-8-50"></a>        <span class="n">choices</span><span class="o">=</span><span class="p">{</span>
+<a id="__codelineno-8-51" name="__codelineno-8-51" href="#__codelineno-8-51"></a>            <span class="s2">&quot;Option 1&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+<a id="__codelineno-8-52" name="__codelineno-8-52" href="#__codelineno-8-52"></a>            <span class="s2">&quot;Option 2&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+<a id="__codelineno-8-53" name="__codelineno-8-53" href="#__codelineno-8-53"></a>            <span class="s2">&quot;Option 3&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+<a id="__codelineno-8-54" name="__codelineno-8-54" href="#__codelineno-8-54"></a>            <span class="s2">&quot;Option 4&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+<a id="__codelineno-8-55" name="__codelineno-8-55" href="#__codelineno-8-55"></a>            <span class="s2">&quot;Option 5&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+<a id="__codelineno-8-56" name="__codelineno-8-56" href="#__codelineno-8-56"></a>        <span class="p">},</span>
+<a id="__codelineno-8-57" name="__codelineno-8-57" href="#__codelineno-8-57"></a>        <span class="n">columns</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<a id="__codelineno-8-58" name="__codelineno-8-58" href="#__codelineno-8-58"></a>    <span class="p">)</span>
+<a id="__codelineno-8-59" name="__codelineno-8-59" href="#__codelineno-8-59"></a>    <span class="n">adapter</span> <span class="o">=</span> <span class="n">GUIAdapter</span><span class="p">()</span>
+<a id="__codelineno-8-60" name="__codelineno-8-60" href="#__codelineno-8-60"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+<a id="__codelineno-8-61" name="__codelineno-8-61" href="#__codelineno-8-61"></a>        <span class="n">choices_t_example</span><span class="p">,</span> <span class="n">widget_configs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;arg2&quot;</span><span class="p">:</span> <span class="n">arg2_conf</span><span class="p">,</span> <span class="s2">&quot;arg3&quot;</span><span class="p">:</span> <span class="n">arg3_conf</span><span class="p">}</span>
+<a id="__codelineno-8-62" name="__codelineno-8-62" href="#__codelineno-8-62"></a>    <span class="p">)</span>
+<a id="__codelineno-8-63" name="__codelineno-8-63" href="#__codelineno-8-63"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre></div>
+<div style="text-align: center">
+    <a class="glightbox" href="../assets/choices_t_example.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/choices_t_example.png" /></a>
+</div>
+
+<hr />
+<h2 id="key_sequence_t">（十）<code>key_sequence_t</code>类型</h2>
+<h3 id="0_8">0、说明</h3>
+<p><code>str</code>或<code>List[str]</code>类型的扩展类型（从控件获取的值是<code>str</code>类型还是<code>List[str]</code>类型，由<code>KeySequenceEditConfig</code>的<code>return_type</code>属性决定），语义上代表按键序列。</p>
+<h3 id="1_9">1、默认控件</h3>
+<ul>
+<li><a href="../apis/pyguiadapter.widgets.keysequenceedit/"><code>KeySequenceEdit</code></a></li>
+<li>外观</li>
+</ul>
+<div style="text-align: center">
+    <a class="glightbox" href="../assets/key_sequence_t.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/key_sequence_t.png" /></a>
+</div>
+
+<h3 id="2_9">2、可配置属性</h3>
+<p>参见配置类：<a href="../apis/pyguiadapter.widgets.keysequenceedit/#pyguiadapter.widgets.KeySequenceEditConfig"><code>KeySequenceEditConfig</code></a></p>
+<h3 id="3_9">3、示例</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter</span> <span class="kn">import</span> <span class="n">GUIAdapter</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter.uoutput</span> <span class="kn">import</span> <span class="n">uprint</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="kn">from</span> <span class="nn">pyguiadapter.extend_types</span> <span class="kn">import</span> <span class="n">key_sequence_t</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="kn">from</span> <span class="nn">pyguiadapter.widgets</span> <span class="kn">import</span> <span class="n">KeySequenceEditConfig</span><span class="p">,</span> <span class="n">KeySequenceEdit</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="k">def</span> <span class="nf">key_sequence_t_example</span><span class="p">(</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>    <span class="n">arg1</span><span class="p">:</span> <span class="n">key_sequence_t</span><span class="p">,</span>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>    <span class="n">arg2</span><span class="p">:</span> <span class="n">key_sequence_t</span><span class="p">,</span>
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>    <span class="n">arg3</span><span class="p">:</span> <span class="n">key_sequence_t</span><span class="p">,</span>
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="p">):</span>
+<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="sd">    This is an example for type **key_sequence_t** type hint and **KeySequenceEdit** widget.</span>
+<a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a>
+<a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a><span class="sd">    @param arg1: description for arg1</span>
+<a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a><span class="sd">    @param arg2: description for arg2</span>
+<a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a><span class="sd">    @param arg3: description for arg3</span>
+<a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a>
+<a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a><span class="sd">    @params</span>
+<a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a><span class="sd">    [arg1]</span>
+<a id="__codelineno-9-21" name="__codelineno-9-21" href="#__codelineno-9-21"></a><span class="sd">    default_value = &quot;Ctrl+Shift+V&quot;</span>
+<a id="__codelineno-9-22" name="__codelineno-9-22" href="#__codelineno-9-22"></a>
+<a id="__codelineno-9-23" name="__codelineno-9-23" href="#__codelineno-9-23"></a><span class="sd">    @end</span>
+<a id="__codelineno-9-24" name="__codelineno-9-24" href="#__codelineno-9-24"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-9-25" name="__codelineno-9-25" href="#__codelineno-9-25"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg1:&quot;</span><span class="p">,</span> <span class="n">arg1</span><span class="p">)</span>
+<a id="__codelineno-9-26" name="__codelineno-9-26" href="#__codelineno-9-26"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg2:&quot;</span><span class="p">,</span> <span class="n">arg2</span><span class="p">)</span>
+<a id="__codelineno-9-27" name="__codelineno-9-27" href="#__codelineno-9-27"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg3:&quot;</span><span class="p">,</span> <span class="n">arg3</span><span class="p">)</span>
+<a id="__codelineno-9-28" name="__codelineno-9-28" href="#__codelineno-9-28"></a>
+<a id="__codelineno-9-29" name="__codelineno-9-29" href="#__codelineno-9-29"></a>
+<a id="__codelineno-9-30" name="__codelineno-9-30" href="#__codelineno-9-30"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<a id="__codelineno-9-31" name="__codelineno-9-31" href="#__codelineno-9-31"></a>    <span class="n">arg2_conf</span> <span class="o">=</span> <span class="n">KeySequenceEditConfig</span><span class="p">(</span><span class="n">default_value</span><span class="o">=</span><span class="s2">&quot;Ctrl+Alt+D&quot;</span><span class="p">)</span>
+<a id="__codelineno-9-32" name="__codelineno-9-32" href="#__codelineno-9-32"></a>
+<a id="__codelineno-9-33" name="__codelineno-9-33" href="#__codelineno-9-33"></a>    <span class="n">arg3_conf</span> <span class="o">=</span> <span class="n">KeySequenceEditConfig</span><span class="p">(</span>
+<a id="__codelineno-9-34" name="__codelineno-9-34" href="#__codelineno-9-34"></a>        <span class="n">default_value</span><span class="o">=</span><span class="s2">&quot;Ctrl+Shift+T&quot;</span><span class="p">,</span>
+<a id="__codelineno-9-35" name="__codelineno-9-35" href="#__codelineno-9-35"></a>        <span class="n">key_sequence_format</span><span class="o">=</span><span class="n">KeySequenceEdit</span><span class="o">.</span><span class="n">PortableText</span><span class="p">,</span>
+<a id="__codelineno-9-36" name="__codelineno-9-36" href="#__codelineno-9-36"></a>        <span class="n">return_type</span><span class="o">=</span><span class="s2">&quot;list&quot;</span><span class="p">,</span>
+<a id="__codelineno-9-37" name="__codelineno-9-37" href="#__codelineno-9-37"></a>    <span class="p">)</span>
+<a id="__codelineno-9-38" name="__codelineno-9-38" href="#__codelineno-9-38"></a>    <span class="n">adapter</span> <span class="o">=</span> <span class="n">GUIAdapter</span><span class="p">()</span>
+<a id="__codelineno-9-39" name="__codelineno-9-39" href="#__codelineno-9-39"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+<a id="__codelineno-9-40" name="__codelineno-9-40" href="#__codelineno-9-40"></a>        <span class="n">key_sequence_t_example</span><span class="p">,</span> <span class="n">widget_configs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;arg2&quot;</span><span class="p">:</span> <span class="n">arg2_conf</span><span class="p">,</span> <span class="s2">&quot;arg3&quot;</span><span class="p">:</span> <span class="n">arg3_conf</span><span class="p">}</span>
+<a id="__codelineno-9-41" name="__codelineno-9-41" href="#__codelineno-9-41"></a>    <span class="p">)</span>
+<a id="__codelineno-9-42" name="__codelineno-9-42" href="#__codelineno-9-42"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre></div>
+<div style="text-align: center">
+    <a class="glightbox" href="../assets/key_sequence_t_example.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/key_sequence_t_example.png" /></a>
+</div>
+
+<hr />
+<h2 id="plain_dict_t">（十一）<code>plain_dict_t</code>类型</h2>
+<h3 id="0_9">0、说明</h3>
+<p><code>dict</code>类型的扩展类型，语义上代表一个普通字典，所谓普通字典是指键值对类型满足：key:str -&gt; value: Union[str,int,float,bool,list,dict,None]的字典。</p>
+<h3 id="1_10">1、默认控件</h3>
+<ul>
+<li><a href="../apis/pyguiadapter.widgets.plaindict/"><code>PlainDictEdit</code></a></li>
+<li>外观</li>
+</ul>
+<div style="text-align: center">
+    <a class="glightbox" href="../assets/plain_dict_t.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/plain_dict_t.png" /></a>
+</div>
+
+<h3 id="2_10">2、可配置属性</h3>
+<p>参见配置类：<a href="../apis/pyguiadapter.widgets.plaindict/#pyguiadapter.widgets.PlainDictEditConfig"><code>PlainDictEditConfig</code></a></p>
+<h3 id="3_10">3、示例</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter</span> <span class="kn">import</span> <span class="n">GUIAdapter</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter.uoutput</span> <span class="kn">import</span> <span class="n">uprint</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="kn">from</span> <span class="nn">pyguiadapter.widgets</span> <span class="kn">import</span> <span class="n">PlainDictEditConfig</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="kn">from</span> <span class="nn">pyguiadapter.extend_types</span> <span class="kn">import</span> <span class="n">plain_dict_t</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="k">def</span> <span class="nf">plain_dict_t_example</span><span class="p">(</span><span class="n">arg1</span><span class="p">:</span> <span class="n">plain_dict_t</span><span class="p">,</span> <span class="n">arg2</span><span class="p">:</span> <span class="n">plain_dict_t</span><span class="p">,</span> <span class="n">arg3</span><span class="p">:</span> <span class="n">plain_dict_t</span><span class="p">):</span>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="sd">    This is an example for type **plain_dict_t** type hint and **PlainDictEdit** widget.</span>
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="sd">    @param arg1: description for arg1</span>
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="sd">    @param arg2: description for arg2</span>
+<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="sd">    @param arg3: description for arg3</span>
+<a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a>
+<a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a><span class="sd">    @params</span>
+<a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a><span class="sd">    [arg3]</span>
+<a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a><span class="sd">    default_value = {key1=1,key2=&quot;value&quot;,key3=true,key4=[1,2,3.0]}</span>
+<a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a><span class="sd">    @end</span>
+<a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a>
+<a id="__codelineno-10-20" name="__codelineno-10-20" href="#__codelineno-10-20"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-10-21" name="__codelineno-10-21" href="#__codelineno-10-21"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg1:&quot;</span><span class="p">,</span> <span class="n">arg1</span><span class="p">,</span> <span class="s2">&quot;type: &quot;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">arg1</span><span class="p">))</span>
+<a id="__codelineno-10-22" name="__codelineno-10-22" href="#__codelineno-10-22"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg2:&quot;</span><span class="p">,</span> <span class="n">arg2</span><span class="p">,</span> <span class="s2">&quot;type: &quot;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">arg2</span><span class="p">))</span>
+<a id="__codelineno-10-23" name="__codelineno-10-23" href="#__codelineno-10-23"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg3:&quot;</span><span class="p">,</span> <span class="n">arg3</span><span class="p">,</span> <span class="s2">&quot;type: &quot;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">arg3</span><span class="p">))</span>
+<a id="__codelineno-10-24" name="__codelineno-10-24" href="#__codelineno-10-24"></a>
+<a id="__codelineno-10-25" name="__codelineno-10-25" href="#__codelineno-10-25"></a>
+<a id="__codelineno-10-26" name="__codelineno-10-26" href="#__codelineno-10-26"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<a id="__codelineno-10-27" name="__codelineno-10-27" href="#__codelineno-10-27"></a>    <span class="n">arg1_conf</span> <span class="o">=</span> <span class="n">PlainDictEditConfig</span><span class="p">(</span>
+<a id="__codelineno-10-28" name="__codelineno-10-28" href="#__codelineno-10-28"></a>        <span class="n">default_value</span><span class="o">=</span><span class="p">{</span>
+<a id="__codelineno-10-29" name="__codelineno-10-29" href="#__codelineno-10-29"></a>            <span class="s2">&quot;key1&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+<a id="__codelineno-10-30" name="__codelineno-10-30" href="#__codelineno-10-30"></a>            <span class="s2">&quot;key2&quot;</span><span class="p">:</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-31" name="__codelineno-10-31" href="#__codelineno-10-31"></a>            <span class="s2">&quot;key3&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-10-32" name="__codelineno-10-32" href="#__codelineno-10-32"></a>            <span class="s2">&quot;key4&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">],</span>
+<a id="__codelineno-10-33" name="__codelineno-10-33" href="#__codelineno-10-33"></a>            <span class="s2">&quot;key5&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-10-34" name="__codelineno-10-34" href="#__codelineno-10-34"></a>            <span class="s2">&quot;key6&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;key7&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
+<a id="__codelineno-10-35" name="__codelineno-10-35" href="#__codelineno-10-35"></a>        <span class="p">}</span>
+<a id="__codelineno-10-36" name="__codelineno-10-36" href="#__codelineno-10-36"></a>    <span class="p">)</span>
+<a id="__codelineno-10-37" name="__codelineno-10-37" href="#__codelineno-10-37"></a>    <span class="n">arg2_conf</span> <span class="o">=</span> <span class="n">PlainDictEditConfig</span><span class="p">(</span>
+<a id="__codelineno-10-38" name="__codelineno-10-38" href="#__codelineno-10-38"></a>        <span class="n">default_value</span><span class="o">=</span><span class="p">{</span>
+<a id="__codelineno-10-39" name="__codelineno-10-39" href="#__codelineno-10-39"></a>            <span class="s2">&quot;Content-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-40" name="__codelineno-10-40" href="#__codelineno-10-40"></a>            <span class="s2">&quot;Authorization&quot;</span><span class="p">:</span> <span class="s2">&quot;Bearer token123&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-41" name="__codelineno-10-41" href="#__codelineno-10-41"></a>        <span class="p">},</span>
+<a id="__codelineno-10-42" name="__codelineno-10-42" href="#__codelineno-10-42"></a>        <span class="n">key_header</span><span class="o">=</span><span class="s2">&quot;Header&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-43" name="__codelineno-10-43" href="#__codelineno-10-43"></a>        <span class="n">value_header</span><span class="o">=</span><span class="s2">&quot;Value&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-44" name="__codelineno-10-44" href="#__codelineno-10-44"></a>        <span class="n">vertical_header_visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-10-45" name="__codelineno-10-45" href="#__codelineno-10-45"></a>    <span class="p">)</span>
+<a id="__codelineno-10-46" name="__codelineno-10-46" href="#__codelineno-10-46"></a>    <span class="n">adapter</span> <span class="o">=</span> <span class="n">GUIAdapter</span><span class="p">()</span>
+<a id="__codelineno-10-47" name="__codelineno-10-47" href="#__codelineno-10-47"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+<a id="__codelineno-10-48" name="__codelineno-10-48" href="#__codelineno-10-48"></a>        <span class="n">plain_dict_t_example</span><span class="p">,</span> <span class="n">widget_configs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;arg1&quot;</span><span class="p">:</span> <span class="n">arg1_conf</span><span class="p">,</span> <span class="s2">&quot;arg2&quot;</span><span class="p">:</span> <span class="n">arg2_conf</span><span class="p">}</span>
+<a id="__codelineno-10-49" name="__codelineno-10-49" href="#__codelineno-10-49"></a>    <span class="p">)</span>
+<a id="__codelineno-10-50" name="__codelineno-10-50" href="#__codelineno-10-50"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre></div>
+<div style="text-align: center">
+    <a class="glightbox" href="../assets/plain_dict_t_example.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/plain_dict_t_example.png" /></a>
+</div>
+
+<hr />
+<h2 id="string_list_t">（十二）<code>string_list_t</code>类型</h2>
+<h3 id="0_10">0、说明</h3>
+<p><code>List[str]</code>类型的扩展类型，语义上代表一个字符串列表。</p>
+<h3 id="1_11">1、默认控件</h3>
+<ul>
+<li><a href="../apis/pyguiadapter.widgets.stringlist/"><code>StringListEdit</code></a></li>
+<li>外观</li>
+</ul>
+<div style="text-align: center">
+    <a class="glightbox" href="../assets/string_list_t.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/string_list_t.png" /></a>
+</div>
+
+<h3 id="2_11">2、可配置属性</h3>
+<p>参见配置类：<a href="../apis/pyguiadapter.widgets.stringlist/#pyguiadapter.widgets.StringListEditConfig"><code>StringListEditConfig</code></a></p>
+<h3 id="3_11">3、示例</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter</span> <span class="kn">import</span> <span class="n">GUIAdapter</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter.uoutput</span> <span class="kn">import</span> <span class="n">uprint</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="kn">from</span> <span class="nn">pyguiadapter.widgets</span> <span class="kn">import</span> <span class="n">StringListEditConfig</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="kn">from</span> <span class="nn">pyguiadapter.extend_types</span> <span class="kn">import</span> <span class="n">string_list_t</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="k">def</span> <span class="nf">string_list_t_example</span><span class="p">(</span>
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>    <span class="n">arg1</span><span class="p">:</span> <span class="n">string_list_t</span><span class="p">,</span>
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>    <span class="n">arg2</span><span class="p">:</span> <span class="n">string_list_t</span><span class="p">,</span>
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>    <span class="n">arg3</span><span class="p">:</span> <span class="n">string_list_t</span><span class="p">,</span>
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="p">):</span>
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a><span class="sd">    This is an example for type **string_list_t** type hint and **StringListEdit** widget.</span>
+<a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a>
+<a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a><span class="sd">    @param arg1: description for arg1</span>
+<a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a><span class="sd">    @param arg2: description for arg2</span>
+<a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a><span class="sd">    @param arg3: description for arg3</span>
+<a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a>
+<a id="__codelineno-11-19" name="__codelineno-11-19" href="#__codelineno-11-19"></a><span class="sd">    @params</span>
+<a id="__codelineno-11-20" name="__codelineno-11-20" href="#__codelineno-11-20"></a><span class="sd">    [arg1]</span>
+<a id="__codelineno-11-21" name="__codelineno-11-21" href="#__codelineno-11-21"></a><span class="sd">    default_value = [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;]</span>
+<a id="__codelineno-11-22" name="__codelineno-11-22" href="#__codelineno-11-22"></a><span class="sd">    add_file = true</span>
+<a id="__codelineno-11-23" name="__codelineno-11-23" href="#__codelineno-11-23"></a><span class="sd">    add_dir = false</span>
+<a id="__codelineno-11-24" name="__codelineno-11-24" href="#__codelineno-11-24"></a><span class="sd">    file_filters = &quot;Python files(*.py);;Text files(*.txt)&quot;</span>
+<a id="__codelineno-11-25" name="__codelineno-11-25" href="#__codelineno-11-25"></a>
+<a id="__codelineno-11-26" name="__codelineno-11-26" href="#__codelineno-11-26"></a><span class="sd">    @end</span>
+<a id="__codelineno-11-27" name="__codelineno-11-27" href="#__codelineno-11-27"></a>
+<a id="__codelineno-11-28" name="__codelineno-11-28" href="#__codelineno-11-28"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-11-29" name="__codelineno-11-29" href="#__codelineno-11-29"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg1:&quot;</span><span class="p">,</span> <span class="n">arg1</span><span class="p">)</span>
+<a id="__codelineno-11-30" name="__codelineno-11-30" href="#__codelineno-11-30"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg2:&quot;</span><span class="p">,</span> <span class="n">arg2</span><span class="p">)</span>
+<a id="__codelineno-11-31" name="__codelineno-11-31" href="#__codelineno-11-31"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg3:&quot;</span><span class="p">,</span> <span class="n">arg3</span><span class="p">)</span>
+<a id="__codelineno-11-32" name="__codelineno-11-32" href="#__codelineno-11-32"></a>
+<a id="__codelineno-11-33" name="__codelineno-11-33" href="#__codelineno-11-33"></a>
+<a id="__codelineno-11-34" name="__codelineno-11-34" href="#__codelineno-11-34"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<a id="__codelineno-11-35" name="__codelineno-11-35" href="#__codelineno-11-35"></a>    <span class="n">arg2_conf</span> <span class="o">=</span> <span class="n">StringListEditConfig</span><span class="p">(</span><span class="n">add_file</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">add_dir</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<a id="__codelineno-11-36" name="__codelineno-11-36" href="#__codelineno-11-36"></a>    <span class="n">arg3_conf</span> <span class="o">=</span> <span class="n">StringListEditConfig</span><span class="p">(</span><span class="n">add_file</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">add_dir</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<a id="__codelineno-11-37" name="__codelineno-11-37" href="#__codelineno-11-37"></a>    <span class="n">adapter</span> <span class="o">=</span> <span class="n">GUIAdapter</span><span class="p">()</span>
+<a id="__codelineno-11-38" name="__codelineno-11-38" href="#__codelineno-11-38"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+<a id="__codelineno-11-39" name="__codelineno-11-39" href="#__codelineno-11-39"></a>        <span class="n">string_list_t_example</span><span class="p">,</span> <span class="n">widget_configs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;arg2&quot;</span><span class="p">:</span> <span class="n">arg2_conf</span><span class="p">,</span> <span class="s2">&quot;arg3&quot;</span><span class="p">:</span> <span class="n">arg3_conf</span><span class="p">}</span>
+<a id="__codelineno-11-40" name="__codelineno-11-40" href="#__codelineno-11-40"></a>    <span class="p">)</span>
+<a id="__codelineno-11-41" name="__codelineno-11-41" href="#__codelineno-11-41"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre></div>
+<div style="text-align: center">
+    <a class="glightbox" href="../assets/string_list_t_example.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/string_list_t_example.png" /></a>
+</div>
+
+<hr />
+<h2 id="json_obj_t">（十三）<code>json_obj_t</code>类型</h2>
+<h3 id="0_11">0、说明</h3>
+<p><code>Union[str,int,float,bool,list,dict,None]</code>类型的扩展类型，语义上代表一个JSON对象。</p>
+<h3 id="1_12">1、默认控件</h3>
+<ul>
+<li><a href="../apis/pyguiadapter.widgets.jsonedit/"><code>JsonEdit</code></a></li>
+<li>外观</li>
+</ul>
+<div style="text-align: center">
+    <a class="glightbox" href="../assets/json_obj_t.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/json_obj_t.png" /></a>
+</div>
+
+<h3 id="2_12">2、可配置属性</h3>
+<p>参见配置类：<a href="../apis/pyguiadapter.widgets.jsonedit/#pyguiadapter.widgets.JsonEditConfig"><code>JsonEditConfig</code></a></p>
+<h3 id="3_12">3、示例</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter</span> <span class="kn">import</span> <span class="n">GUIAdapter</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter.uoutput</span> <span class="kn">import</span> <span class="n">uprint</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="kn">from</span> <span class="nn">pyguiadapter.widgets</span> <span class="kn">import</span> <span class="n">JsonEditConfig</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="kn">from</span> <span class="nn">pyguiadapter.extend_types</span> <span class="kn">import</span> <span class="n">json_obj_t</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="k">def</span> <span class="nf">json_obj_t_example</span><span class="p">(</span><span class="n">arg1</span><span class="p">:</span> <span class="n">json_obj_t</span><span class="p">,</span> <span class="n">arg2</span><span class="p">:</span> <span class="n">json_obj_t</span><span class="p">,</span> <span class="n">arg3</span><span class="p">:</span> <span class="n">json_obj_t</span><span class="p">):</span>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="sd">    This is an example for type **json_obj_t** type hint and **JsonEdit** widget.</span>
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a><span class="sd">    @param arg1: description for arg1</span>
+<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a><span class="sd">    @param arg2: description for arg2</span>
+<a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a><span class="sd">    @param arg3: description for arg3</span>
+<a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a>
+<a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a><span class="sd">    @params</span>
+<a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a><span class="sd">    [arg3]</span>
+<a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a><span class="sd">    default_value = true</span>
+<a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a>
+<a id="__codelineno-12-19" name="__codelineno-12-19" href="#__codelineno-12-19"></a><span class="sd">    @end</span>
+<a id="__codelineno-12-20" name="__codelineno-12-20" href="#__codelineno-12-20"></a>
+<a id="__codelineno-12-21" name="__codelineno-12-21" href="#__codelineno-12-21"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-12-22" name="__codelineno-12-22" href="#__codelineno-12-22"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg1:&quot;</span><span class="p">,</span> <span class="n">arg1</span><span class="p">,</span> <span class="s2">&quot;type: &quot;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">arg1</span><span class="p">))</span>
+<a id="__codelineno-12-23" name="__codelineno-12-23" href="#__codelineno-12-23"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg2:&quot;</span><span class="p">,</span> <span class="n">arg2</span><span class="p">,</span> <span class="s2">&quot;type: &quot;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">arg2</span><span class="p">))</span>
+<a id="__codelineno-12-24" name="__codelineno-12-24" href="#__codelineno-12-24"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg3:&quot;</span><span class="p">,</span> <span class="n">arg3</span><span class="p">,</span> <span class="s2">&quot;type: &quot;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">arg3</span><span class="p">))</span>
+<a id="__codelineno-12-25" name="__codelineno-12-25" href="#__codelineno-12-25"></a>
+<a id="__codelineno-12-26" name="__codelineno-12-26" href="#__codelineno-12-26"></a>
+<a id="__codelineno-12-27" name="__codelineno-12-27" href="#__codelineno-12-27"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<a id="__codelineno-12-28" name="__codelineno-12-28" href="#__codelineno-12-28"></a>    <span class="n">arg1_conf</span> <span class="o">=</span> <span class="n">JsonEditConfig</span><span class="p">(</span><span class="n">default_value</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}])</span>
+<a id="__codelineno-12-29" name="__codelineno-12-29" href="#__codelineno-12-29"></a>    <span class="n">arg2_conf</span> <span class="o">=</span> <span class="n">JsonEditConfig</span><span class="p">(</span>
+<a id="__codelineno-12-30" name="__codelineno-12-30" href="#__codelineno-12-30"></a>        <span class="n">default_value</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span>
+<a id="__codelineno-12-31" name="__codelineno-12-31" href="#__codelineno-12-31"></a>        <span class="c1"># height=0 or width=0 will make the inplace editor hidden.</span>
+<a id="__codelineno-12-32" name="__codelineno-12-32" href="#__codelineno-12-32"></a>        <span class="n">height</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<a id="__codelineno-12-33" name="__codelineno-12-33" href="#__codelineno-12-33"></a>        <span class="n">width</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<a id="__codelineno-12-34" name="__codelineno-12-34" href="#__codelineno-12-34"></a>    <span class="p">)</span>
+<a id="__codelineno-12-35" name="__codelineno-12-35" href="#__codelineno-12-35"></a>    <span class="n">adapter</span> <span class="o">=</span> <span class="n">GUIAdapter</span><span class="p">()</span>
+<a id="__codelineno-12-36" name="__codelineno-12-36" href="#__codelineno-12-36"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+<a id="__codelineno-12-37" name="__codelineno-12-37" href="#__codelineno-12-37"></a>        <span class="n">json_obj_t_example</span><span class="p">,</span> <span class="n">widget_configs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;arg1&quot;</span><span class="p">:</span> <span class="n">arg1_conf</span><span class="p">,</span> <span class="s2">&quot;arg2&quot;</span><span class="p">:</span> <span class="n">arg2_conf</span><span class="p">}</span>
+<a id="__codelineno-12-38" name="__codelineno-12-38" href="#__codelineno-12-38"></a>    <span class="p">)</span>
+<a id="__codelineno-12-39" name="__codelineno-12-39" href="#__codelineno-12-39"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre></div>
+<div style="text-align: center">
+    <a class="glightbox" href="../assets/json_obj_t_example.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/json_obj_t_example.png" /></a>
+</div>
+
+<hr />
+<h2 id="directory_tdir_t">（十四）<code>directory_t</code>、<code>dir_t</code>类型</h2>
+<h3 id="0_12">0、说明</h3>
+<p><code>str</code>类型的扩展类型，语义上代表一个目录路径。</p>
+<h3 id="1_13">1、默认控件</h3>
+<ul>
+<li><a href="../apis/pyguiadapter.widgets.dirselect/"><code>DirSelect</code></a></li>
+<li>外观</li>
+</ul>
+<div style="text-align: center">
+    <a class="glightbox" href="../assets/directory_t.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/directory_t.png" /></a>
+</div>
+
+<h3 id="2_13">2、可配置属性</h3>
+<p>参见配置类：<a href="../apis/pyguiadapter.widgets.dirselect/#pyguiadapter.widgets.PyLiteralEditConfig"><code>DirSelectConfig</code></a></p>
+<h3 id="3_13">3、示例</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="kn">import</span> <span class="nn">os.path</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter</span> <span class="kn">import</span> <span class="n">GUIAdapter</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter.uoutput</span> <span class="kn">import</span> <span class="n">uprint</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="kn">from</span> <span class="nn">pyguiadapter.extend_types</span> <span class="kn">import</span> <span class="n">directory_t</span><span class="p">,</span> <span class="n">dir_t</span>
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="kn">from</span> <span class="nn">pyguiadapter.widgets</span> <span class="kn">import</span> <span class="n">DirSelectConfig</span>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="k">def</span> <span class="nf">directory_t_example</span><span class="p">(</span><span class="n">arg1</span><span class="p">:</span> <span class="n">directory_t</span><span class="p">,</span> <span class="n">arg2</span><span class="p">:</span> <span class="n">directory_t</span><span class="p">,</span> <span class="n">arg3</span><span class="p">:</span> <span class="n">dir_t</span><span class="p">):</span>
+<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a><span class="sd">    This is an example for type **directory_t**(**dir_t**) type hint and **DirSelect** widget.</span>
+<a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a>
+<a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a><span class="sd">    @param arg1: description for arg1</span>
+<a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a><span class="sd">    @param arg2: description for arg2</span>
+<a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a><span class="sd">    @param arg3: description for arg3</span>
+<a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a>
+<a id="__codelineno-13-17" name="__codelineno-13-17" href="#__codelineno-13-17"></a><span class="sd">    @params</span>
+<a id="__codelineno-13-18" name="__codelineno-13-18" href="#__codelineno-13-18"></a><span class="sd">    [arg3]</span>
+<a id="__codelineno-13-19" name="__codelineno-13-19" href="#__codelineno-13-19"></a><span class="sd">    placeholder = &quot;select path&quot;</span>
+<a id="__codelineno-13-20" name="__codelineno-13-20" href="#__codelineno-13-20"></a><span class="sd">    dialog_title = &quot;Select Dir&quot;</span>
+<a id="__codelineno-13-21" name="__codelineno-13-21" href="#__codelineno-13-21"></a><span class="sd">    @end</span>
+<a id="__codelineno-13-22" name="__codelineno-13-22" href="#__codelineno-13-22"></a>
+<a id="__codelineno-13-23" name="__codelineno-13-23" href="#__codelineno-13-23"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-13-24" name="__codelineno-13-24" href="#__codelineno-13-24"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg1:&quot;</span><span class="p">,</span> <span class="n">arg1</span><span class="p">)</span>
+<a id="__codelineno-13-25" name="__codelineno-13-25" href="#__codelineno-13-25"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg2:&quot;</span><span class="p">,</span> <span class="n">arg2</span><span class="p">)</span>
+<a id="__codelineno-13-26" name="__codelineno-13-26" href="#__codelineno-13-26"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg3:&quot;</span><span class="p">,</span> <span class="n">arg3</span><span class="p">)</span>
+<a id="__codelineno-13-27" name="__codelineno-13-27" href="#__codelineno-13-27"></a>
+<a id="__codelineno-13-28" name="__codelineno-13-28" href="#__codelineno-13-28"></a>
+<a id="__codelineno-13-29" name="__codelineno-13-29" href="#__codelineno-13-29"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<a id="__codelineno-13-30" name="__codelineno-13-30" href="#__codelineno-13-30"></a>    <span class="n">arg1_conf</span> <span class="o">=</span> <span class="n">DirSelectConfig</span><span class="p">(</span>
+<a id="__codelineno-13-31" name="__codelineno-13-31" href="#__codelineno-13-31"></a>        <span class="n">placeholder</span><span class="o">=</span><span class="s2">&quot;select save path&quot;</span><span class="p">,</span>
+<a id="__codelineno-13-32" name="__codelineno-13-32" href="#__codelineno-13-32"></a>        <span class="n">dialog_title</span><span class="o">=</span><span class="s2">&quot;Select Save Path&quot;</span><span class="p">,</span>
+<a id="__codelineno-13-33" name="__codelineno-13-33" href="#__codelineno-13-33"></a>    <span class="p">)</span>
+<a id="__codelineno-13-34" name="__codelineno-13-34" href="#__codelineno-13-34"></a>    <span class="n">arg2_conf</span> <span class="o">=</span> <span class="n">DirSelectConfig</span><span class="p">(</span>
+<a id="__codelineno-13-35" name="__codelineno-13-35" href="#__codelineno-13-35"></a>        <span class="n">default_value</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)),</span>
+<a id="__codelineno-13-36" name="__codelineno-13-36" href="#__codelineno-13-36"></a>        <span class="n">start_dir</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s2">&quot;~&quot;</span><span class="p">),</span>
+<a id="__codelineno-13-37" name="__codelineno-13-37" href="#__codelineno-13-37"></a>        <span class="n">clear_button</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-13-38" name="__codelineno-13-38" href="#__codelineno-13-38"></a>    <span class="p">)</span>
+<a id="__codelineno-13-39" name="__codelineno-13-39" href="#__codelineno-13-39"></a>    <span class="n">adapter</span> <span class="o">=</span> <span class="n">GUIAdapter</span><span class="p">()</span>
+<a id="__codelineno-13-40" name="__codelineno-13-40" href="#__codelineno-13-40"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+<a id="__codelineno-13-41" name="__codelineno-13-41" href="#__codelineno-13-41"></a>        <span class="n">directory_t_example</span><span class="p">,</span> <span class="n">widget_configs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;arg1&quot;</span><span class="p">:</span> <span class="n">arg1_conf</span><span class="p">,</span> <span class="s2">&quot;arg2&quot;</span><span class="p">:</span> <span class="n">arg2_conf</span><span class="p">}</span>
+<a id="__codelineno-13-42" name="__codelineno-13-42" href="#__codelineno-13-42"></a>    <span class="p">)</span>
+<a id="__codelineno-13-43" name="__codelineno-13-43" href="#__codelineno-13-43"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre></div>
+<div style="text-align: center">
+    <a class="glightbox" href="../assets/directory_t_example.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/directory_t_example.png" /></a>
+</div>
+
+<hr />
+<h2 id="file_t">（十五）<code>file_t</code>类型</h2>
+<h3 id="0_13">0、说明</h3>
+<p><code>str</code>类型的扩展类型，语义上代表一个文件路径。</p>
+<h3 id="1_14">1、默认控件</h3>
+<ul>
+<li><a href="../apis/pyguiadapter.widgets.fileselect/"><code>FileSelect</code></a></li>
+<li>外观</li>
+</ul>
+<div style="text-align: center">
+    <a class="glightbox" href="../assets/file_t.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/file_t.png" /></a>
+</div>
+
+<h3 id="2_14">2、可配置属性</h3>
+<p>参见配置类：<a href="../apis/pyguiadapter.widgets.fileselect/#pyguiadapter.widgets.DirSelectConfig"><code>FileSelectConfig</code></a></p>
+<h3 id="3_14">3、示例</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="kn">import</span> <span class="nn">os.path</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter</span> <span class="kn">import</span> <span class="n">GUIAdapter</span>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter.uoutput</span> <span class="kn">import</span> <span class="n">uprint</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="kn">from</span> <span class="nn">pyguiadapter.widgets</span> <span class="kn">import</span> <span class="n">FileSelectConfig</span>
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="kn">from</span> <span class="nn">pyguiadapter.extend_types</span> <span class="kn">import</span> <span class="n">file_t</span>
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>
+<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="k">def</span> <span class="nf">file_t_example</span><span class="p">(</span><span class="n">arg1</span><span class="p">:</span> <span class="n">file_t</span><span class="p">,</span> <span class="n">arg2</span><span class="p">:</span> <span class="n">file_t</span><span class="p">,</span> <span class="n">arg3</span><span class="p">:</span> <span class="n">file_t</span><span class="p">):</span>
+<a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a><span class="sd">    This is an example for type **file_t** type hint and **FileSelect** widget.</span>
+<a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a>
+<a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a><span class="sd">    @param arg1: description for arg1</span>
+<a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a><span class="sd">    @param arg2: description for arg2</span>
+<a id="__codelineno-14-15" name="__codelineno-14-15" href="#__codelineno-14-15"></a><span class="sd">    @param arg3: description for arg3</span>
+<a id="__codelineno-14-16" name="__codelineno-14-16" href="#__codelineno-14-16"></a>
+<a id="__codelineno-14-17" name="__codelineno-14-17" href="#__codelineno-14-17"></a><span class="sd">    @params</span>
+<a id="__codelineno-14-18" name="__codelineno-14-18" href="#__codelineno-14-18"></a><span class="sd">    [arg3]</span>
+<a id="__codelineno-14-19" name="__codelineno-14-19" href="#__codelineno-14-19"></a><span class="sd">    placeholder = &quot;input save path here&quot;</span>
+<a id="__codelineno-14-20" name="__codelineno-14-20" href="#__codelineno-14-20"></a><span class="sd">    save_file = true</span>
+<a id="__codelineno-14-21" name="__codelineno-14-21" href="#__codelineno-14-21"></a><span class="sd">    dialog_title = &quot;Save File&quot;</span>
+<a id="__codelineno-14-22" name="__codelineno-14-22" href="#__codelineno-14-22"></a><span class="sd">    @end</span>
+<a id="__codelineno-14-23" name="__codelineno-14-23" href="#__codelineno-14-23"></a>
+<a id="__codelineno-14-24" name="__codelineno-14-24" href="#__codelineno-14-24"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-14-25" name="__codelineno-14-25" href="#__codelineno-14-25"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg1:&quot;</span><span class="p">,</span> <span class="n">arg1</span><span class="p">)</span>
+<a id="__codelineno-14-26" name="__codelineno-14-26" href="#__codelineno-14-26"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg2:&quot;</span><span class="p">,</span> <span class="n">arg2</span><span class="p">)</span>
+<a id="__codelineno-14-27" name="__codelineno-14-27" href="#__codelineno-14-27"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg3:&quot;</span><span class="p">,</span> <span class="n">arg3</span><span class="p">)</span>
+<a id="__codelineno-14-28" name="__codelineno-14-28" href="#__codelineno-14-28"></a>
+<a id="__codelineno-14-29" name="__codelineno-14-29" href="#__codelineno-14-29"></a>
+<a id="__codelineno-14-30" name="__codelineno-14-30" href="#__codelineno-14-30"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<a id="__codelineno-14-31" name="__codelineno-14-31" href="#__codelineno-14-31"></a>    <span class="n">arg1_conf</span> <span class="o">=</span> <span class="n">FileSelectConfig</span><span class="p">(</span>
+<a id="__codelineno-14-32" name="__codelineno-14-32" href="#__codelineno-14-32"></a>        <span class="n">placeholder</span><span class="o">=</span><span class="s2">&quot;input file path here&quot;</span><span class="p">,</span>
+<a id="__codelineno-14-33" name="__codelineno-14-33" href="#__codelineno-14-33"></a>        <span class="n">filters</span><span class="o">=</span><span class="s2">&quot;Text files(*.txt);;All files(*.*)&quot;</span><span class="p">,</span>
+<a id="__codelineno-14-34" name="__codelineno-14-34" href="#__codelineno-14-34"></a>        <span class="n">dialog_title</span><span class="o">=</span><span class="s2">&quot;Open File&quot;</span><span class="p">,</span>
+<a id="__codelineno-14-35" name="__codelineno-14-35" href="#__codelineno-14-35"></a>    <span class="p">)</span>
+<a id="__codelineno-14-36" name="__codelineno-14-36" href="#__codelineno-14-36"></a>    <span class="n">arg2_conf</span> <span class="o">=</span> <span class="n">FileSelectConfig</span><span class="p">(</span>
+<a id="__codelineno-14-37" name="__codelineno-14-37" href="#__codelineno-14-37"></a>        <span class="n">default_value</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span>
+<a id="__codelineno-14-38" name="__codelineno-14-38" href="#__codelineno-14-38"></a>        <span class="n">start_dir</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s2">&quot;~&quot;</span><span class="p">),</span>
+<a id="__codelineno-14-39" name="__codelineno-14-39" href="#__codelineno-14-39"></a>        <span class="n">clear_button</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-14-40" name="__codelineno-14-40" href="#__codelineno-14-40"></a>    <span class="p">)</span>
+<a id="__codelineno-14-41" name="__codelineno-14-41" href="#__codelineno-14-41"></a>    <span class="n">adapter</span> <span class="o">=</span> <span class="n">GUIAdapter</span><span class="p">()</span>
+<a id="__codelineno-14-42" name="__codelineno-14-42" href="#__codelineno-14-42"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">file_t_example</span><span class="p">,</span> <span class="n">widget_configs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;arg1&quot;</span><span class="p">:</span> <span class="n">arg1_conf</span><span class="p">,</span> <span class="s2">&quot;arg2&quot;</span><span class="p">:</span> <span class="n">arg2_conf</span><span class="p">})</span>
+<a id="__codelineno-14-43" name="__codelineno-14-43" href="#__codelineno-14-43"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre></div>
+<div style="text-align: center">
+    <a class="glightbox" href="../assets/file_t_example.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/file_t_example.png" /></a>
+</div>
+
+<hr />
+<h2 id="files_t">（十六）<code>files_t</code>类型</h2>
+<h3 id="0_14">0、说明</h3>
+<p><code>List[str]</code>类型的扩展类型，语义上代表一个文件路径列表。</p>
+<h3 id="1_15">1、默认控件</h3>
+<ul>
+<li><a href="../apis/pyguiadapter.widgets.fileselect/#pyguiadapter.widgets.MultiFileSelect"><code>MultiFileSelect</code></a></li>
+<li>外观</li>
+</ul>
+<div style="text-align: center">
+    <a class="glightbox" href="../assets/files_t.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/files_t.png" /></a>
+</div>
+
+<h3 id="2_15">2、可配置属性</h3>
+<p>参见配置类：<a href="../apis/pyguiadapter.widgets.fileselect/#pyguiadapter.widgets.MultiFileSelectConfig"><code>MultiFileSelectConfig</code></a></p>
+<h3 id="3_15">3、示例</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="kn">import</span> <span class="nn">os.path</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter</span> <span class="kn">import</span> <span class="n">GUIAdapter</span>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter.uoutput</span> <span class="kn">import</span> <span class="n">uprint</span>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="kn">from</span> <span class="nn">pyguiadapter.widgets</span> <span class="kn">import</span> <span class="n">MultiFileSelectConfig</span>
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="kn">from</span> <span class="nn">pyguiadapter.extend_types</span> <span class="kn">import</span> <span class="n">files_t</span>
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>
+<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a><span class="k">def</span> <span class="nf">files_t_example</span><span class="p">(</span><span class="n">arg1</span><span class="p">:</span> <span class="n">files_t</span><span class="p">,</span> <span class="n">arg2</span><span class="p">:</span> <span class="n">files_t</span><span class="p">,</span> <span class="n">arg3</span><span class="p">:</span> <span class="n">files_t</span><span class="p">):</span>
+<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a><span class="sd">    This is an example for type **files_t** type hint and **MultiFileSelect** widget.</span>
+<a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a>
+<a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a><span class="sd">    @param arg1: description for arg1</span>
+<a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a><span class="sd">    @param arg2: description for arg2</span>
+<a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a><span class="sd">    @param arg3: description for arg3</span>
+<a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a>
+<a id="__codelineno-15-17" name="__codelineno-15-17" href="#__codelineno-15-17"></a><span class="sd">    @params</span>
+<a id="__codelineno-15-18" name="__codelineno-15-18" href="#__codelineno-15-18"></a><span class="sd">    [arg3]</span>
+<a id="__codelineno-15-19" name="__codelineno-15-19" href="#__codelineno-15-19"></a><span class="sd">    placeholder = &quot;select files&quot;</span>
+<a id="__codelineno-15-20" name="__codelineno-15-20" href="#__codelineno-15-20"></a><span class="sd">    @end</span>
+<a id="__codelineno-15-21" name="__codelineno-15-21" href="#__codelineno-15-21"></a>
+<a id="__codelineno-15-22" name="__codelineno-15-22" href="#__codelineno-15-22"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-15-23" name="__codelineno-15-23" href="#__codelineno-15-23"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg1:&quot;</span><span class="p">,</span> <span class="n">arg1</span><span class="p">)</span>
+<a id="__codelineno-15-24" name="__codelineno-15-24" href="#__codelineno-15-24"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg2:&quot;</span><span class="p">,</span> <span class="n">arg2</span><span class="p">)</span>
+<a id="__codelineno-15-25" name="__codelineno-15-25" href="#__codelineno-15-25"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg3:&quot;</span><span class="p">,</span> <span class="n">arg3</span><span class="p">)</span>
+<a id="__codelineno-15-26" name="__codelineno-15-26" href="#__codelineno-15-26"></a>
+<a id="__codelineno-15-27" name="__codelineno-15-27" href="#__codelineno-15-27"></a>
+<a id="__codelineno-15-28" name="__codelineno-15-28" href="#__codelineno-15-28"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<a id="__codelineno-15-29" name="__codelineno-15-29" href="#__codelineno-15-29"></a>    <span class="n">arg1_conf</span> <span class="o">=</span> <span class="n">MultiFileSelectConfig</span><span class="p">(</span>
+<a id="__codelineno-15-30" name="__codelineno-15-30" href="#__codelineno-15-30"></a>        <span class="n">default_value</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">),</span>
+<a id="__codelineno-15-31" name="__codelineno-15-31" href="#__codelineno-15-31"></a>        <span class="n">placeholder</span><span class="o">=</span><span class="s2">&quot;input files here&quot;</span><span class="p">,</span>
+<a id="__codelineno-15-32" name="__codelineno-15-32" href="#__codelineno-15-32"></a>        <span class="n">filters</span><span class="o">=</span><span class="s2">&quot;Text files(*.txt);;All files(*.*)&quot;</span><span class="p">,</span>
+<a id="__codelineno-15-33" name="__codelineno-15-33" href="#__codelineno-15-33"></a>        <span class="n">dialog_title</span><span class="o">=</span><span class="s2">&quot;Open Files&quot;</span><span class="p">,</span>
+<a id="__codelineno-15-34" name="__codelineno-15-34" href="#__codelineno-15-34"></a>    <span class="p">)</span>
+<a id="__codelineno-15-35" name="__codelineno-15-35" href="#__codelineno-15-35"></a>    <span class="n">arg2_conf</span> <span class="o">=</span> <span class="n">MultiFileSelectConfig</span><span class="p">(</span>
+<a id="__codelineno-15-36" name="__codelineno-15-36" href="#__codelineno-15-36"></a>        <span class="n">default_value</span><span class="o">=</span><span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)],</span>
+<a id="__codelineno-15-37" name="__codelineno-15-37" href="#__codelineno-15-37"></a>        <span class="n">start_dir</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s2">&quot;~&quot;</span><span class="p">),</span>
+<a id="__codelineno-15-38" name="__codelineno-15-38" href="#__codelineno-15-38"></a>        <span class="n">clear_button</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-15-39" name="__codelineno-15-39" href="#__codelineno-15-39"></a>    <span class="p">)</span>
+<a id="__codelineno-15-40" name="__codelineno-15-40" href="#__codelineno-15-40"></a>    <span class="n">adapter</span> <span class="o">=</span> <span class="n">GUIAdapter</span><span class="p">()</span>
+<a id="__codelineno-15-41" name="__codelineno-15-41" href="#__codelineno-15-41"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">files_t_example</span><span class="p">,</span> <span class="n">widget_configs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;arg1&quot;</span><span class="p">:</span> <span class="n">arg1_conf</span><span class="p">,</span> <span class="s2">&quot;arg2&quot;</span><span class="p">:</span> <span class="n">arg2_conf</span><span class="p">})</span>
+<a id="__codelineno-15-42" name="__codelineno-15-42" href="#__codelineno-15-42"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre></div>
+<div style="text-align: center">
+    <a class="glightbox" href="../assets/files_t_example.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/files_t_example.png" /></a>
+</div>
 
 
 

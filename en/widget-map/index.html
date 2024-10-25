@@ -482,7 +482,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../extended-types.md" class="md-nav__link">
+      <a href="../extend-types/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1472,6 +1472,279 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.widgets.intedit/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.widgets.intedit
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.widgets.floatedit/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.widgets.floatedit
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.widgets.choicebox/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.widgets.choicebox
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.widgets.colorpicker/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.widgets.colorpicker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.widgets.dial/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.widgets.dial
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.widgets.dirselect/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.widgets.dirselect
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.widgets.fileselect/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.widgets.fileselect
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.widgets.jsonedit/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.widgets.jsonedit
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.widgets.keysequenceedit/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.widgets.keysequenceedit
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.widgets.multichoice/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.widgets.multichoice
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.widgets.plaindict/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.widgets.plaindict
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.widgets.stringlist/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.widgets.stringlist
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.widgets.textedit/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.widgets.textedit
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1730,10 +2003,16 @@
 </tbody>
 </table>
 <h3 id="_2">（二）语义化类型（扩展类型）及其控件</h3>
-<p><code>语义化类型</code>是从Python内置类型中扩展而来的类型，可以看作对应内置类型的<code>“别名”</code>，在使用上与对应内置类型没有区别。其主要作用在于，提供区别于对应内置类型的控件，以满足特定场景下的输入需求。比如<code>int_slider_t</code>是内置<code>int</code>类型的语义化类型（扩展类型），在使用上与<code>int</code>类型完全一致，但它提供了一个类似滑动条的输入控件，而不是<code>IntSpinBox</code>。通过合理使用语义化类型，开发者可以构建出界面更加丰富，用户交互体验更佳的应用程序。</p>
-<p>以下是<code>PyGUIAdapter</code>提供的语义化类型及其对应的控件类型列表。开发者可以跳转到对应的页面，查看控件的用法和使用示例。</p>
+<p><code>语义化类型</code>是从内置类型中扩展而来的类型，很多时候，可以看作是对应内置类型的<code>“别名”</code>，在使用上与对应内置类型没有区别。</p>
+<p>语义化类型（扩展类型）的主要作用在于，提供区别于对应内置类型默认控件的专用控件，以满足特定场景下的输入需求。比如<code>int_slider_t</code>是<code>int</code>类型的语义化类型（扩展类型），在使用上与<code>int</code>类型一致，但它对应的输入控件是一个<code>Slider</code>（滑动条），而不是一个<code>SpinBox</code>。</p>
+<p>通过合理使用语义化类型（扩展类型），开发者可以构建出界面更加丰富，用户交互体验更加良好的应用程序。以下是<code>PyGUIAdapter</code>提供的语义化类型（扩展类型）及其对应的控件。</p>
 <blockquote>
-<p><code>PyGUIAdapter</code>提供的语义化类型在：<a href="">pyguiadapter/types</a>中定义。</p>
+<p>所有的语义化类型（扩展类型）均在<a href="https://github.com/zimolab/PyGUIAdapter/tree/main/pyguiadapter/extend_types.py"><code>pyguiadapter.extend_types</code></a>模块中定义，可以通过以下方式导入：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span> <span class="nn">pyguiadapter.extend_types</span> <span class="kn">import</span> <span class="n">TYPE_NAME</span>
+</code></pre></div>
+<p>其中，<code>TYPE_NAME</code>是需要导入的类型名称。比如，对于<code>int_slider_t</code>，可以通过如下方式导入：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span> <span class="nn">pyguiadapter.extend_types</span> <span class="kn">import</span> <span class="n">int_slider_t</span>
+</code></pre></div>
 </blockquote>
 <table>
 <thead>
@@ -1747,106 +2026,106 @@
 </thead>
 <tbody>
 <tr>
-<td style="text-align: center;"><a href="widgets/int_t.md"><code>IntLineEdit</code></a></td>
-<td style="text-align: center;"><code>IntLineEditConfig</code></td>
+<td style="text-align: center;"><a href="../apis/pyguiadapter.widgets.intedit/"><code>IntLineEdit</code></a></td>
+<td style="text-align: center;"><a href="../apis/pyguiadapter.widgets.intedit/#pyguiadapter.widgets.IntLineEditConfig"><code>IntLineEditConfig</code></a></td>
 <td style="text-align: center;"><code>int_t</code></td>
-<td style="text-align: center;"><code>int_t</code>扩展自<code>int</code>，可以看作是<code>int</code>类型的别名。<code>PyGUIAdapter</code>为该类型提供了一个单行文本输入框样式的输入组件，但于与一般单行文本输入框标题，该类型的输入组件只允许用户输入整数文本。</td>
+<td style="text-align: center;"><code>int_t</code>扩展自<code>int</code>，可以看作是<code>int</code>类型的别名。<code>PyGUIAdapter</code>为该类型提供了一个单行文本输入框样式的输入组件，但于与一般单行文本输入框，该类型的输入组件只允许用户输入整数文本。</td>
 <td style="text-align: center;"><a class="glightbox" href="../assets/int_t.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="" src="../assets/int_t.png" /></a></td>
 </tr>
 <tr>
-<td style="text-align: center;"><a href="widgets/float_t.md"><code>FloatLineEdit</code></a></td>
-<td style="text-align: center;"><code>FloatLineEditConfig</code></td>
+<td style="text-align: center;"><a href="../apis/pyguiadapter.widgets.floatedit/"><code>FloatLineEdit</code></a></td>
+<td style="text-align: center;"><a href="../apis/pyguiadapter.widgets.floatedit/#pyguiadapter.widgets.FloatLineEditConfig"><code>FloatLineEditConfig</code></a></td>
 <td style="text-align: center;"><code>float_t</code></td>
 <td style="text-align: center;"><code>float_t</code>扩展自<code>float</code>，可以看作是<code>float</code>类型的别名。<code>PyGUIAdapter</code>为该类型提供了一个单行文本输入框样式的输入组件，但于与一般单行文本输入框标题，该类型的输入组件只允许用户输入浮点数文本。</td>
 <td style="text-align: center;"><a class="glightbox" href="../assets/float_t.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="" src="../assets/float_t.png" /></a></td>
 </tr>
 <tr>
-<td style="text-align: center;"><a href="widgets/text_t.md"><code>TextEdit</code></a></td>
-<td style="text-align: center;"><code>TextEditConfig</code></td>
+<td style="text-align: center;"><a href="../apis/pyguiadapter.widgets.textedit/"><code>TextEdit</code></a></td>
+<td style="text-align: center;"><a href="../apis/pyguiadapter.widgets.textedit/#pyguiadapter.widgets.TextEditConfig"><code>TextEditConfig</code></a></td>
 <td style="text-align: center;"><code>text_t</code></td>
 <td style="text-align: center;"><code>text_t</code>扩展自<code>str</code>，可以看作是<code>str</code>类型的别名。<code>PyGUIAdapter</code>为该类型提供了一个多行文本输入框，允许用户输入多行文本。</td>
 <td style="text-align: center;"><a class="glightbox" href="../assets/text_t.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="" src="../assets/text_t.png" /></a></td>
 </tr>
 <tr>
-<td style="text-align: center;"><a href="widgets/int_slider_t.md"><code>Slider</code></a></td>
-<td style="text-align: center;"><code>SliderConfig</code></td>
+<td style="text-align: center;"><a href="../apis/pyguiadapter.widgets.slider/"><code>Slider</code></a></td>
+<td style="text-align: center;"><a href="../apis/pyguiadapter.widgets.slider/#pyguiadapter.widgets.SliderConfig"><code>SliderConfig</code></a></td>
 <td style="text-align: center;"><code>int_slider_t</code></td>
-<td style="text-align: center;"><code>int_slider_t</code>扩展自<code>int</code>，可以看作是<code>int</code>类型的别名。与其他<code>int</code>不同，<code>PyGUIAdapter</code>为该类型提供了滑动块形式的输入控件。</td>
+<td style="text-align: center;"><code>int_slider_t</code>扩展自<code>int</code>，可以看作是<code>int</code>类型的别名。与其他<code>int</code>不同，<code>PyGUIAdapter</code>为该类型提供了滑动条形式的输入控件。</td>
 <td style="text-align: center;"><a class="glightbox" href="../assets/int_slider_t.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="" src="../assets/int_slider_t.png" /></a></td>
 </tr>
 <tr>
-<td style="text-align: center;"><a href="widgets/int_dial_t.md"><code>Dial</code></a></td>
-<td style="text-align: center;"><code>DialConfig</code></td>
+<td style="text-align: center;"><a href="../apis/pyguiadapter.widgets.dial/"><code>Dial</code></a></td>
+<td style="text-align: center;"><a href="../apis/pyguiadapter.widgets.dial/#pyguiadapter.widgets.DialConfig"><code>DialConfig</code></a></td>
 <td style="text-align: center;"><code>int_dial_t</code></td>
 <td style="text-align: center;"><code>int_dial_t</code>扩展自<code>int</code>，可以看作是<code>int</code>类型的别名。与其他<code>int</code>不同，<code>PyGUIAdapter</code>为该类型提供了刻度盘形式的输入控件。</td>
 <td style="text-align: center;"><a class="glightbox" href="../assets/int_dial_t.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="" src="../assets/int_dial_t.png" /></a></td>
 </tr>
 <tr>
-<td style="text-align: center;"><a href="widgets/color_t.md"><code>ColorPicker</code></a></td>
-<td style="text-align: center;"><code>ColorPickerConfig</code></td>
-<td style="text-align: center;"><code>color_t</code></td>
+<td style="text-align: center;"><a href="../apis/pyguiadapter.widgets.colorpicker/"><code>ColorPicker</code></a></td>
+<td style="text-align: center;"><a href="../apis/pyguiadapter.widgets.colorpicker/#pyguiadapter.widgets.ColorPickerConfig"><code>ColorPickerConfig</code></a></td>
+<td style="text-align: center;"><code>color_t、color_hex_t、color_tuple_t</code></td>
 <td style="text-align: center;"><code>color_t</code>扩展自<code>object</code>，代表颜色类型的数据，实际支持的类型包括<code>tuple</code>（3元素或4元素元组）、<code>str</code>、<code>QColor</code>，发者可以选择颜色的表示方式。<code>PyGUIAdapter</code>为该类型提供了一个颜色选择器。</td>
 <td style="text-align: center;"><a class="glightbox" href="../assets/color_t.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="" src="../assets/color_t.png" /></a></td>
 </tr>
 <tr>
-<td style="text-align: center;"><a href="widgets/choice_t.md"><code>ChoiceBox</code></a></td>
-<td style="text-align: center;"><code>ChoiceBoxConfig</code></td>
+<td style="text-align: center;"><a href="../apis/pyguiadapter.widgets.choicebox/"><code>ChoiceBox</code></a></td>
+<td style="text-align: center;"><a href="../apis/pyguiadapter.widgets.choicebox/#pyguiadapter.widgets.ChoiceBoxConfig"><code>ChoiceBoxConfig</code></a></td>
 <td style="text-align: center;"><code>choice_t</code></td>
 <td style="text-align: center;">该类型扩展自<code>object</code>，<code>PyGUIAdapter</code>为该类型提供了一个下拉选择框，用户可以从一组选项中选择其中一个。</td>
 <td style="text-align: center;"><a class="glightbox" href="../assets/choice_t.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="" src="../assets/choice_t.png" /></a></td>
 </tr>
 <tr>
-<td style="text-align: center;"><a href="widgets/choices_t.md"><code>MultiChoiceBox</code></a></td>
-<td style="text-align: center;"><code>MultiChoiceBoxConfig</code></td>
+<td style="text-align: center;"><a href="../apis/pyguiadapter.widgets.multichoice/"><code>MultiChoiceBox</code></a></td>
+<td style="text-align: center;"><a href="../apis/pyguiadapter.widgets.multichoice/#pyguiadapter.widgets.MultiChoiceBoxConfig"><code>MultiChoiceBoxConfig</code></a></td>
 <td style="text-align: center;"><code>choices_t</code></td>
 <td style="text-align: center;">该类型扩展自<code>list</code>，用于从一组对象中选择多个对象。</td>
 <td style="text-align: center;"><a class="glightbox" href="../assets/choices_t.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="" src="../assets/choices_t.png" /></a></td>
 </tr>
 <tr>
-<td style="text-align: center;"><a href="widgets/key_sequence_t.md"><code>KeySequenceEdit</code></a></td>
-<td style="text-align: center;"><code>KeySequenceEditConfig</code></td>
+<td style="text-align: center;"><a href="../apis/pyguiadapter.widgets.keysequenceedit/"><code>KeySequenceEdit</code></a></td>
+<td style="text-align: center;"><a href="../apis/pyguiadapter.widgets.keysequenceedit/#pyguiadapter.widgets.KeySequenceEditConfig"><code>KeySequenceEditConfig</code></a></td>
 <td style="text-align: center;"><code>key_sequence_t</code></td>
 <td style="text-align: center;"><code>key_sequence_t</code>扩展自<code>str</code>，代表快捷键。</td>
 <td style="text-align: center;"><a class="glightbox" href="../assets/key_sequence_t.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="" src="../assets/key_sequence_t.png" /></a></td>
 </tr>
 <tr>
-<td style="text-align: center;"><a href="widgets/plain_dict_t.md"><code>PlainDictEdit</code></a></td>
-<td style="text-align: center;"><code>PlainDictEditConfig</code></td>
+<td style="text-align: center;"><a href="../apis/pyguiadapter.widgets.plaindict/"><code>PlainDictEdit</code></a></td>
+<td style="text-align: center;"><a href="../apis/pyguiadapter.widgets.plaindict/#pyguiadapter.widgets.PlainDictEditConfig"><code>PlainDictEditConfig</code></a></td>
 <td style="text-align: center;"><code>plain_dict_t</code></td>
 <td style="text-align: center;"><code>plain_dict_t</code>类型扩展自<code>dict</code>，用于<code>Dict[key, int|bool|float|str|list|dict]</code>类型数据的输入。</td>
 <td style="text-align: center;"><a class="glightbox" href="../assets/plain_dict_t.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="" src="../assets/plain_dict_t.png" /></a></td>
 </tr>
 <tr>
-<td style="text-align: center;"><a href="widgets/string_list_t.md"><code>StringListEdit</code></a></td>
-<td style="text-align: center;"><code>StringListEditConfig</code></td>
+<td style="text-align: center;"><a href="../apis/pyguiadapter.widgets.stringlist/"><code>StringListEdit</code></a></td>
+<td style="text-align: center;"><a href="../apis/pyguiadapter.widgets.stringlist/#pyguiadapter.widgets.StringListEditConfig"><code>StringListEditConfig</code></a></td>
 <td style="text-align: center;"><code>string_list_t</code></td>
 <td style="text-align: center;"><code>string_list_t</code>扩展自<code>list</code>，用于<code>List[str]</code>类型数据的输入。</td>
 <td style="text-align: center;"><a class="glightbox" href="../assets/string_list_t.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="" src="../assets/string_list_t.png" /></a></td>
 </tr>
 <tr>
-<td style="text-align: center;"><a href="widgets/json_obj_t"><code>JsonEdit</code></a></td>
-<td style="text-align: center;"><code>JsonEditConfig</code></td>
+<td style="text-align: center;"><a href="apis/pyguiadapter.widgets.jsoneditor.md"><code>JsonEdit</code></a></td>
+<td style="text-align: center;"><a href="apis/pyguiadapter.widgets.jsoneditor.md#pyguiadapter.widgets.JsonEditConfig"><code>JsonEditConfig</code></a></td>
 <td style="text-align: center;"><code>json_obj_t</code></td>
 <td style="text-align: center;"><code>json_obj_t</code>扩展自<code>object</code>，用于json类型数据的输入。用户在控件上输入的文本将通过<code>json.loads</code>转换为对应的Python对象。</td>
 <td style="text-align: center;"><a class="glightbox" href="../assets/json_obj_t.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="" src="../assets/json_obj_t.png" /></a></td>
 </tr>
 <tr>
-<td style="text-align: center;"><a href="widgets/directory_t.md"><code>DirSelect</code></a></td>
-<td style="text-align: center;"><code>DirSelectConfig</code></td>
+<td style="text-align: center;"><a href="../apis/pyguiadapter.widgets.dirselect/"><code>DirSelect</code></a></td>
+<td style="text-align: center;"><a href="../apis/pyguiadapter.widgets.dirselect/#pyguiadapter.widgets.PyLiteralEditConfig"><code>DirSelectConfig</code></a></td>
 <td style="text-align: center;"><code>directory_t</code>、<code>dir_t</code></td>
 <td style="text-align: center;"><code>directory_t</code>扩展自<code>str</code>，代表一个目录路径，<code>PyGUIAdapter</code>为该类型提供了一个文件选择对话框用于选择目录。</td>
 <td style="text-align: center;"><a class="glightbox" href="../assets/directory_t.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="" src="../assets/directory_t.png" /></a></td>
 </tr>
 <tr>
-<td style="text-align: center;"><a href="widgets/file_t.md"><code>FileSelect</code></a></td>
-<td style="text-align: center;"><code>FileSelectConfig</code></td>
+<td style="text-align: center;"><a href="../apis/pyguiadapter.widgets.fileselect/"><code>FileSelect</code></a></td>
+<td style="text-align: center;"><a href="../apis/pyguiadapter.widgets.fileselect/#pyguiadapter.widgets.DirSelectConfig"><code>FileSelectConfig</code></a></td>
 <td style="text-align: center;"><code>file_t</code></td>
 <td style="text-align: center;"><code>file</code>扩展自<code>str</code>，代表一个文件路径，<code>PyGUIAdapter</code>为该类型提供了一个文件选择对话框用于选择文件。</td>
 <td style="text-align: center;"><a class="glightbox" href="../assets/file_t.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="" src="../assets/file_t.png" /></a></td>
 </tr>
 <tr>
-<td style="text-align: center;"><a href="widgets/files_t.md"><code>MultiFileSelect</code></a></td>
-<td style="text-align: center;"><code>MultiFileSelectConfig</code></td>
+<td style="text-align: center;"><a href="../apis/pyguiadapter.widgets.fileselect/"><code>MultiFileSelect</code></a></td>
+<td style="text-align: center;"><a href="../apis/pyguiadapter.widgets.fileselect/#pyguiadapter.widgets.MultiFileSelectConfig"><code>MultiFileSelectConfig</code></a></td>
 <td style="text-align: center;"><code>files_t</code></td>
 <td style="text-align: center;"><code>files</code>扩展自<code>list</code>，代表一组文件路径，<code>PyGUIAdapter</code>为该类型提供了一个文件选择对话框用于选择多个文件。</td>
 <td style="text-align: center;"><a class="glightbox" href="../assets/files_t.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="" src="../assets/files_t.png" /></a></td>
