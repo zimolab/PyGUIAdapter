@@ -7,9 +7,7 @@ from .colorpicker import (
     ColorPicker,
     ColorPickerConfig,
     ColorTuplePicker,
-    ColorTuplePickerConfig,
     ColorHexPicker,
-    ColorHexPickerConfig,
 )
 from .keysequenceedit import KeySequenceEdit, KeySequenceEditConfig, KeySequenceFormat
 from .stringlist import StringListEdit, StringListEditConfig
@@ -23,7 +21,7 @@ from .fileselect import (
 from .dirselect import DirSelectConfig, DirSelect
 from .intedit import IntLineEditConfig, IntLineEdit
 from .floatedit import FloatLineEditConfig, FloatLineEdit
-from .jsoneditor import JsonEditConfig, JsonEdit
+from .jsonedit import JsonEditConfig, JsonEdit
 from .textedit import TextEdit, TextEditConfig
 
 __all__ = [
@@ -47,9 +45,6 @@ __all__ = [
     "ColorTuplePicker",
     "ColorHexPicker",
     "ColorPickerConfig",
-    "ColorTuplePickerConfig",
-    "ColorHexPickerConfig",
-    "ColorType",
     "KeySequenceEditConfig",
     "KeySequenceEdit",
     "KeySequenceFormat",
