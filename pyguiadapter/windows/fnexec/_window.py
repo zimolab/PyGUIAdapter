@@ -934,7 +934,7 @@ class FnExecuteWindow(BaseFnExecuteWindow):
         """
         self._parameter_area.process_parameter_error(e)
 
-    def disable_parameter_widgets(self, disabled) -> None:
+    def disable_parameter_widgets(self, disabled: bool) -> None:
         """
         设置参数控件禁用/启用状态
 
