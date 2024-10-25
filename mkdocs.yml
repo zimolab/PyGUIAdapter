@@ -14,7 +14,7 @@ nav:
   - 参数与控件:
       - 控件类型映射表: widget-map.md
       - 基础类型与控件: basic-types.md
-      - 扩展类型与控件: extended-types.md
+      - 扩展类型与控件: extend-types.md
   - 配置窗口属性: window.md
   - 窗口工具栏: toolbar.md
   - 窗口菜单栏: menu.md
@@ -61,6 +61,19 @@ nav:
     - pyguiadapter.widgets.dateedit: apis/pyguiadapter.widgets.dateedit.md
     - pyguiadapter.widgets.timeedit: apis/pyguiadapter.widgets.timeedit.md
     - pyguiadapter.widgets.pyliteraledit: apis/pyguiadapter.widgets.pyliteraledit.md
+    - pyguiadapter.widgets.intedit: apis/pyguiadapter.widgets.intedit.md
+    - pyguiadapter.widgets.floatedit: apis/pyguiadapter.widgets.floatedit.md
+    - pyguiadapter.widgets.choicebox: apis/pyguiadapter.widgets.choicebox.md
+    - pyguiadapter.widgets.colorpicker: apis/pyguiadapter.widgets.colorpicker.md
+    - pyguiadapter.widgets.dial: apis/pyguiadapter.widgets.dial.md
+    - pyguiadapter.widgets.dirselect: apis/pyguiadapter.widgets.dirselect.md
+    - pyguiadapter.widgets.fileselect: apis/pyguiadapter.widgets.fileselect.md
+    - pyguiadapter.widgets.jsonedit: apis/pyguiadapter.widgets.jsonedit.md
+    - pyguiadapter.widgets.keysequenceedit: apis/pyguiadapter.widgets.keysequenceedit.md
+    - pyguiadapter.widgets.multichoice: apis/pyguiadapter.widgets.multichoice.md
+    - pyguiadapter.widgets.plaindict: apis/pyguiadapter.widgets.plaindict.md
+    - pyguiadapter.widgets.stringlist: apis/pyguiadapter.widgets.stringlist.md
+    - pyguiadapter.widgets.textedit: apis/pyguiadapter.widgets.textedit.md
   - 贡献: contribution.md
   - 开源许可: license.md
   - 版本历史: changelog.md
