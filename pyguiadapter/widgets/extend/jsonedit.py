@@ -32,7 +32,9 @@ class JsonEditConfig(BaseCodeEditConfig):
     standalone_editor_button: bool = "Edit Json"
     """standalone编辑器启动按钮文本"""
 
-    standalone_editor_config: StandaloneCodeEditorConfig = StandaloneCodeEditorConfig()
+    standalone_editor_config: StandaloneCodeEditorConfig = dataclasses.field(
+        default_factory=StandaloneCodeEditorConfig
+    )
     """standalone编辑器配置"""
 
     indent_size: int = 2

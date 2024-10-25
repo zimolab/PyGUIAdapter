@@ -135,7 +135,9 @@ class BaseCodeEditConfig(CommonParameterWidgetConfig):
     standalone_editor_button: str = STANDALONE_EDITOR_BUTTON
     """standalone编辑器窗口打开按钮的文本"""
 
-    standalone_editor_config: StandaloneCodeEditorConfig = StandaloneCodeEditorConfig()
+    standalone_editor_config: StandaloneCodeEditorConfig = dataclasses.field(
+        default_factory=StandaloneCodeEditorConfig
+    )
     """standalone编辑器配置"""
 
     # 以下属性同时适用于inplace和standalone编辑器

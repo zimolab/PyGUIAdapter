@@ -29,7 +29,9 @@ class PyLiteralEditConfig(BaseCodeEditConfig):
     standalone_editor_button: str = "Edit Python Literal"
     """standalone编辑器窗口打开按钮的文本"""
 
-    standalone_editor_config: StandaloneCodeEditorConfig = StandaloneCodeEditorConfig()
+    standalone_editor_config: StandaloneCodeEditorConfig = dataclasses.field(
+        default_factory=StandaloneCodeEditorConfig
+    )
     """standalone编辑器配置"""
 
     initial_text: str = ""

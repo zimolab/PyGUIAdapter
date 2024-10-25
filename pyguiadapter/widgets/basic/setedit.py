@@ -27,7 +27,9 @@ class SetEditConfig(PyLiteralEditConfig):
     standalone_editor_button: bool = "Edit Set"
     """standalone编辑器启动按钮文本"""
 
-    standalone_editor_config: StandaloneCodeEditorConfig = StandaloneCodeEditorConfig()
+    standalone_editor_config: StandaloneCodeEditorConfig = dataclasses.field(
+        default_factory=StandaloneCodeEditorConfig
+    )
     """standalone编辑器配置"""
 
     initial_text: str = "{}"
