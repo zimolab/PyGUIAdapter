@@ -55,6 +55,15 @@ class BaseWindowConfig(object):
     font_size: Optional[int] = None
     """窗口字体的大小（px）"""
 
+    close_button: bool = True
+    """是否显示关闭按钮"""
+
+    minimize_button: bool = True
+    """是否显示最小化按钮"""
+
+    maximize_button: bool = True
+    """是否显示最大化按钮"""
+
     stylesheet: Optional[str] = None
     """窗口的样式表（QSS格式）"""
 
@@ -236,7 +245,7 @@ class BaseWindow(QMainWindow):
     def apply_configs(self):
         if self._config is None:
             return
-
+        self._apply_window_flags()
         self.set_title(self._config.title)
         self.set_icon(self._config.icon)
         self.set_size(self._config.size)
@@ -892,3 +901,20 @@ class BaseWindow(QMainWindow):
     @abstractmethod
     def _create_ui(self):
         pass
+
+    def _apply_window_flags(self):
+        flags = self.windowFlags()
+        if self._config.close_button:
+            flags |= Qt.WindowCloseButtonHint
+        else:
+            flags &= ~Qt.WindowCloseButtonHint
+        if self._config.minimize_button:
+            flags |= Qt.WindowMinimizeButtonHint
+        else:
+            flags &= ~Qt.WindowMinimizeButtonHint
+
+        if self._config.maximize_button:
+            flags |= Qt.WindowMaximizeButtonHint
+        else:
+            flags &= ~Qt.WindowMaximizeButtonHint
+        self.setWindowFlags(flags)
