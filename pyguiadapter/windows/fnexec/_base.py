@@ -103,10 +103,14 @@ class FnExecuteWindowConfig(BaseWindowConfig):
     document_dock_initial_size: Tuple[Optional[int], Optional[int]] = (450, None)
     """`Document停靠窗口`的初始大小，格式为`(width, height)`，可以只设置其中一个维度，另一个不需要设置的维度置为`None`即可。"""
 
-    output_browser_config: Optional[OutputBrowserConfig] = None
+    output_browser_config: Optional[OutputBrowserConfig] = dataclasses.field(
+        default_factory=OutputBrowserConfig
+    )
     """`输出浏览器`的配置。"""
 
-    document_browser_config: Optional[DocumentBrowserConfig] = None
+    document_browser_config: Optional[DocumentBrowserConfig] = dataclasses.field(
+        default_factory=DocumentBrowserConfig
+    )
     """`文档浏览器`的配置。"""
 
     default_parameter_group_name: str = "Main Parameters"

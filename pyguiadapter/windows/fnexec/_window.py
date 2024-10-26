@@ -148,6 +148,9 @@ class FnExecuteWindow(BaseFnExecuteWindow):
             self._bundle.fn_info.document, self._bundle.fn_info.document_format
         )
 
+        self._document_area.on_parameter_anchor_clicked(self.scroll_to_parameter)
+        self._document_area.on_group_anchor_clicked(self.activate_parameter_group)
+
         self.set_output_dock_property(
             title=self._config.output_dock_title,
             visible=self._config.output_dock_visible,
@@ -964,6 +967,32 @@ class FnExecuteWindow(BaseFnExecuteWindow):
             raise FunctionNotExecutingError()
         else:
             self._executor.try_cancel()
+
+    def activate_parameter_group(self, group_name: str) -> None:
+        """
+        激活展开指定参数分组。
+
+        Args:
+            group_name: 参数分组名称
+
+        Returns:
+            无返回值
+        """
+        if group_name == "":
+            group_name = None
+        self._parameter_area.activate_parameter_group(group_name)
+
+    def scroll_to_parameter(self, parameter_name: str):
+        """
+        滚动到指定参数的位置。
+
+        Args:
+            parameter_name: 参数名称
+
+        Returns:
+            无返回值
+        """
+        self._parameter_area.scroll_to_parameter(parameter_name)
 
     def before_execute(self, fn_info: FnInfo, arguments: Dict[str, Any]) -> None:
         self._config: FnExecuteWindowConfig
