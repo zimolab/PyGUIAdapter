@@ -301,10 +301,12 @@ class BaseWindow(QMainWindow):
         Returns:
             无返回值
         """
+        flags = self.windowFlags()
         if enabled:
-            self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
+            flags |= Qt.WindowStaysOnTopHint
         else:
-            self.setWindowFlags(self.windowFlags() & ~Qt.WindowStaysOnTopHint)
+            flags &= Qt.WindowStaysOnTopHint
+        self.setWindowFlags(flags)
 
     def is_always_on_top(self) -> bool:
         """
