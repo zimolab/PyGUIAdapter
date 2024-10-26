@@ -2,7 +2,19 @@ from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.widgets import IntSpinBoxConfig
 
 
-def parameter_anchor_example(a: int, b: int, c: int, d: int, e: int, f: int):
+def parameter_anchor_example(
+    a: int,
+    b: int,
+    c: int,
+    d: int,
+    e: int,
+    f: int,
+    h: int,
+    i: int,
+    j: int,
+    k: int,
+    l: int,
+):
     """
     This example show how to use parameter anchor.
     <br>
@@ -19,6 +31,15 @@ def parameter_anchor_example(a: int, b: int, c: int, d: int, e: int, f: int):
     <br>
     <a href="#param=f">click to jump to parameter f.</a>
     <br>
+    <a href="#param=h">click to jump to parameter h.</a>
+    <br>
+    <a href="#param=i">click to jump to parameter i.</a>
+    <br>
+    <a href="#param=j">click to jump to parameter j.</a>
+    <br>
+    <a href="#param=k">click to jump to parameter k.</a>
+    <br>
+    <a href="#param=l">click to jump to parameter l.</a>
     <h3>Group Anchors</h3>
     <a href="#group=">click to jump to default group</a>
     <br>
@@ -35,6 +56,11 @@ def parameter_anchor_example(a: int, b: int, c: int, d: int, e: int, f: int):
         d: description of d.
         e: description of e.
         f: description of f.
+        l: description of l.
+        k: description of k.
+        j: description of j.
+        i: description of i.
+        h: description of h.
     Returns:
     """
     pass
