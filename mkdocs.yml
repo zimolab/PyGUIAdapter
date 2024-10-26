@@ -66,6 +66,7 @@ nav:
     - pyguiadapter.widgets.choicebox: apis/pyguiadapter.widgets.choicebox.md
     - pyguiadapter.widgets.colorpicker: apis/pyguiadapter.widgets.colorpicker.md
     - pyguiadapter.widgets.dial: apis/pyguiadapter.widgets.dial.md
+    - pyguiadapter.widgets.slider: apis/pyguiadapter.widgets.slider.md
     - pyguiadapter.widgets.dirselect: apis/pyguiadapter.widgets.dirselect.md
     - pyguiadapter.widgets.fileselect: apis/pyguiadapter.widgets.fileselect.md
     - pyguiadapter.widgets.jsonedit: apis/pyguiadapter.widgets.jsonedit.md

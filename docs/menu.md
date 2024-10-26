@@ -240,7 +240,7 @@ if __name__ == "__main__":
 
 ### 2、示例2：通过互斥菜单项实现主题切换效果
 
-以下示例用到了第三方库[`PyQtDarkTheme`]([5yutan5/PyQtDarkTheme: A flat dark theme for PySide and PyQt. (github.com)](https://github.com/5yutan5/PyQtDarkTheme))，运行该示例需先安装该库，可以参考这篇文档：[**界面美化**](style.md)。
+以下示例用到了第三方库[`PyQtDarkTheme`](https://github.com/5yutan5/PyQtDarkTheme)，运行该示例需先安装该库，可以参考这篇文档：[**界面美化**](style.md)。
 
 ```python
 import qdarktheme
