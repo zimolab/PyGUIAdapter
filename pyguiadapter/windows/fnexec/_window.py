@@ -325,7 +325,7 @@ class FnExecuteWindow(BaseFnExecuteWindow):
         """
         return self._parameter_area.has_parameter(parameter_name)
 
-    def clear_parameters(self):
+    def clear_parameters(self) -> None:
         """
         清除所有参数
 
@@ -859,7 +859,7 @@ class FnExecuteWindow(BaseFnExecuteWindow):
         """
         self._operation_area.set_clear_checkbox_text(text)
 
-    def set_clear_button_visible(self, visible: bool):
+    def set_clear_button_visible(self, visible: bool) -> None:
         """
         设置清除按钮是否可见
 
