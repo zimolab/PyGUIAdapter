@@ -620,13 +620,14 @@ class MyObject(object):
         return self.name
 
 
-def choice_t_example(arg1: choice_t, arg2: choice_t, arg3: choice_t):
+def choice_t_example(arg1: choice_t, arg2: choice_t, arg3: choice_t, arg4: choice_t):
     """
     This is an example for type **choice_t** type hint and **ChoiceBox** widget.
 
     @param arg1: description for arg1
     @param arg2: description for arg2
     @param arg3: description for arg3
+    @param arg4: description for arg4
     @return:
 
     @params
@@ -639,6 +640,7 @@ def choice_t_example(arg1: choice_t, arg2: choice_t, arg3: choice_t):
     uprint("arg1:", arg1, f", type: {type(arg1)}")
     uprint("arg2:", arg2, f", type: {type(arg2)}")
     uprint("arg3:", arg3, f", type: {type(arg3)}")
+    uprint("arg4:", arg4, f", type: {type(arg4)}")
 
 
 if __name__ == "__main__":
@@ -659,8 +661,18 @@ if __name__ == "__main__":
         choices=[obj1, obj2, obj3],
     )
 
+    arg4_conf = ChoiceBoxConfig(
+        # choices can be a list of numbers
+        choices={"A": 1, "B": 2, "C": 3},
+        editable=True,
+        add_user_input=False,
+    )
+
     adapter = GUIAdapter()
-    adapter.add(choice_t_example, widget_configs={"arg2": arg2_conf, "arg3": arg3_conf})
+    adapter.add(
+        choice_t_example,
+        widget_configs={"arg2": arg2_conf, "arg3": arg3_conf, "arg4": arg4_conf},
+    )
     adapter.run()
 ```
 
