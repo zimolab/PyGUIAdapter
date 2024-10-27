@@ -1,19 +1,22 @@
+from datetime import datetime, date, time
+
 from pyguiadapter.adapter import GUIAdapter
+from pyguiadapter.extend_types import string_list_t
 from pyguiadapter.widgets import IntSpinBoxConfig
 
 
 def parameter_anchor_example(
     a: int,
-    b: int,
-    c: int,
-    d: int,
-    e: int,
-    f: int,
-    h: int,
-    i: int,
-    j: int,
-    k: int,
-    l: int,
+    b: float,
+    c: bool,
+    d: str,
+    e: datetime,
+    f: date,
+    h: time,
+    i: list,
+    j: tuple,
+    k: dict,
+    l: string_list_t,
 ):
     """
     This example show how to use parameter anchor.
