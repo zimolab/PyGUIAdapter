@@ -7,13 +7,13 @@
 """
 
 import dataclasses
-from typing import Type, Tuple, Dict, Callable, Any, Optional, List, Union
+from typing import Type, Tuple, Dict, Optional, List, Union
 
 from .action import Separator
-from .menu import Menu
-from .toolbar import ToolBar
 from .fn import FnInfo
+from .menu import Menu
 from .paramwidget import BaseParameterWidget, BaseParameterWidgetConfig
+from .toolbar import ToolBar
 from .window import BaseWindowEventListener
 from .windows.fnexec import FnExecuteWindowConfig
 
