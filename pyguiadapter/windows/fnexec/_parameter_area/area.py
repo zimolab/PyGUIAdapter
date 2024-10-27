@@ -103,8 +103,14 @@ class ParameterArea(BaseParameterArea):
     def activate_parameter_group(self, group_name: Optional[str]) -> bool:
         return self._groupbox.active_parameter_group(group_name)
 
-    def scroll_to_parameter(self, parameter_name: str, x: int = 50, y: int = 50):
-        self._groupbox.scroll_to_parameter(parameter_name, x, y)
+    def scroll_to_parameter(
+        self,
+        parameter_name: str,
+        x: int = 50,
+        y: int = 50,
+        highlight_effect: bool = False,
+    ):
+        self._groupbox.scroll_to_parameter(parameter_name, x, y, highlight_effect)
 
     def get_parameter_value(self, parameter_name: str) -> Any:
         return self._groupbox.get_parameter_value(parameter_name)

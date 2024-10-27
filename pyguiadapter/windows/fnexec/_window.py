@@ -982,17 +982,26 @@ class FnExecuteWindow(BaseFnExecuteWindow):
             group_name = None
         self._parameter_area.activate_parameter_group(group_name)
 
-    def scroll_to_parameter(self, parameter_name: str):
+    def scroll_to_parameter(
+        self,
+        parameter_name: str,
+        x: int = 50,
+        y: int = 50,
+        highlight_effect: bool = True,
+    ):
         """
         滚动到指定参数的位置。
 
         Args:
             parameter_name: 参数名称
+            x: 滚动的X坐标偏移值
+            y: 滚动的Y坐标偏移值
+            highlight_effect: 是否对指定控件显示高亮效果
 
         Returns:
             无返回值
         """
-        self._parameter_area.scroll_to_parameter(parameter_name)
+        self._parameter_area.scroll_to_parameter(parameter_name, x, y, highlight_effect)
 
     def before_execute(self, fn_info: FnInfo, arguments: Dict[str, Any]) -> None:
         self._config: FnExecuteWindowConfig

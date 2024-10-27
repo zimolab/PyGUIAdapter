@@ -15,6 +15,7 @@ from .._base import FnExecuteWindowConfig
 from ....exceptions import ParameterAlreadyExistError, ParameterNotFoundError
 from ....paramwidget import BaseParameterWidget, BaseParameterWidgetConfig
 from ....utils import get_icon
+from ....widgets import CommonParameterWidget
 
 
 class ParameterGroupPage(BaseParameterPage):
@@ -42,11 +43,19 @@ class ParameterGroupPage(BaseParameterPage):
             0, 0, QSizePolicy.Minimum, QSizePolicy.Expanding
         )
 
-    def scroll_to(self, parameter_name: str, x: int = 50, y: int = 50) -> None:
+    def scroll_to(
+        self,
+        parameter_name: str,
+        x: int = 50,
+        y: int = 50,
+        highlight_effect: bool = False,
+    ) -> None:
         widget = self.get_parameter_widget(parameter_name)
         if widget is None:
             return
         self._param_scrollarea.ensureWidgetVisible(widget, x, y)
+        if highlight_effect and isinstance(widget, CommonParameterWidget):
+            widget.play_highlight_effect()
 
     def upsert_parameter_widget(
         self,
@@ -328,13 +337,19 @@ class ParameterGroupBox(BaseParameterGroupBox):
             return True
         return False
 
-    def scroll_to_parameter(self, parameter_name: str, x: int = 50, y: int = 50):
+    def scroll_to_parameter(
+        self,
+        parameter_name: str,
+        x: int = 50,
+        y: int = 50,
+        highlight_effect: bool = False,
+    ):
         group, widget = self._get_group_and_widget(parameter_name)
         if group is None or widget is None:
             return
         if not self.active_parameter_group(group_name=group.group_name):
             return
-        group.scroll_to(parameter_name, x, y)
+        group.scroll_to(parameter_name, x, y, highlight_effect=highlight_effect)
 
     def disable_parameter_widgets(self, disabled: bool):
         for page in self._group_pages.values():

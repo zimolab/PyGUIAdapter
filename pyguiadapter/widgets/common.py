@@ -1,9 +1,10 @@
 import copy
 import dataclasses
 from abc import abstractmethod
-from typing import Any, Type, Optional
+from typing import Any, Type, Optional, Tuple, Sequence
 
-from qtpy.QtCore import Qt
+from qtpy.QtCore import Qt, QPropertyAnimation, QEasingCurve
+from qtpy.QtGui import QColor
 from qtpy.QtWidgets import (
     QWidget,
     QVBoxLayout,
@@ -12,12 +13,26 @@ from qtpy.QtWidgets import (
     QCheckBox,
     QSpacerItem,
     QSizePolicy,
+    QGraphicsEffect,
+    QGraphicsDropShadowEffect,
 )
 
 from ..constants.color import COLOR_FATAL, COLOR_REGULAR_TEXT
 from ..constants.font import FONT_SMALL
 from ..exceptions import ParameterError
 from ..paramwidget import BaseParameterWidgetConfig, BaseParameterWidget
+
+DEFAULT_HIGHLIGHT_EFFECT_PROPERTIES = {
+    "BlurRadius": 10,
+    "Color": QColor("#ff0000"),
+    "XOffset": 0.3,
+    "YOffset": 0.3,
+    "Enabled": False,
+}
+
+
+def _default_highlight_effect_properties() -> dict:
+    return DEFAULT_HIGHLIGHT_EFFECT_PROPERTIES
 
 
 @dataclasses.dataclass(frozen=True)
@@ -49,6 +64,17 @@ class CommonParameterWidgetConfig(BaseParameterWidgetConfig):
     parameter_error_color: Optional[str] = COLOR_FATAL
     """ParameterError文本颜色。默认为 `COLOR_FATAL`。"""
 
+    highlight_effect: bool = True
+    """是否启用高亮效果。当启用高亮效果时，允许开发者高亮显示该控件。"""
+
+    effect_class: Optional[Type[QGraphicsEffect]] = QGraphicsDropShadowEffect
+    """高亮效果类。默认为 `QGraphicsDropShadowEffect`。"""
+
+    effect_properties: Optional[dict] = dataclasses.field(
+        default_factory=_default_highlight_effect_properties
+    )
+    """高亮效果属性。默认为 `None`。"""
+
     @classmethod
     def target_widget_class(cls) -> Type["CommonParameterWidget"]:
         return CommonParameterWidget
@@ -75,21 +101,37 @@ class CommonParameterWidget(BaseParameterWidget):
         self._layout_main.setSpacing(0)
         self.setLayout(self._layout_main)
 
-        self._groupbox_container = QGroupBox(self)
-        self._groupbox_container.setTitle(self.label)
+        self._groupbox_outline = QGroupBox(self)
+        self._groupbox_outline.setTitle(self.label)
         self._layout_container = QVBoxLayout()
-        self._groupbox_container.setLayout(self._layout_container)
-        self._layout_main.addWidget(self._groupbox_container)
+        self._groupbox_outline.setLayout(self._layout_container)
+        self._layout_main.addWidget(self._groupbox_outline)
 
-        self._label_description = None
-        self._checkbox_default_value = None
-        self._label_parameter_error = None
+        self._label_description: Optional[QLabel] = None
+        self._checkbox_default_value: Optional[QCheckBox] = None
+        self._label_parameter_error: Optional[QLabel] = None
+
+        self._highlight_animation: Optional[QPropertyAnimation] = None
+        self._highlight_effect: Optional[QGraphicsEffect] = None
+        if self._config.highlight_effect:
+            self._highlight_effect = self._create_highlight_effect()
+            self._highlight_animation = QPropertyAnimation(
+                self._highlight_effect, b"blurRadius"
+            )
+            self._highlight_animation.setParent(self)
+            # noinspection PyUnresolvedReferences
+            self._highlight_animation.finished.connect(
+                self._on_highlight_effect_finished
+            )
 
         self.__build_flag: bool = False
 
     def build(self):
         if self.__build_flag:
             return self
+        if self._highlight_effect:
+            self.setGraphicsEffect(self._highlight_effect)
+
         if self.description:
             self._layout_container.addWidget(self.description_label)
         self._layout_container.addWidget(self.value_widget)
@@ -137,7 +179,7 @@ class CommonParameterWidget(BaseParameterWidget):
     def label(self, value: str):
         if self.label == value:
             return
-        self._groupbox_container.setTitle(value)
+        self._groupbox_outline.setTitle(value)
         # noinspection PyUnresolvedReferences
         super(CommonParameterWidget, CommonParameterWidget).label.__set__(self, value)
 
@@ -197,7 +239,7 @@ class CommonParameterWidget(BaseParameterWidget):
         if self._label_description is not None:
             return self._label_description
 
-        self._label_description = QLabel(self._groupbox_container)
+        self._label_description = QLabel(self._groupbox_outline)
 
         self._label_description.setWordWrap(True)
         self._label_description.setAlignment(
@@ -222,7 +264,7 @@ class CommonParameterWidget(BaseParameterWidget):
     def default_value_checkbox(self) -> QCheckBox:
         if self._checkbox_default_value is not None:
             return self._checkbox_default_value
-        self._checkbox_default_value = QCheckBox(self._groupbox_container)
+        self._checkbox_default_value = QCheckBox(self._groupbox_outline)
         self._checkbox_default_value.setText(
             self.default_value_description.format(str(self.default_value))
         )
@@ -244,7 +286,7 @@ class CommonParameterWidget(BaseParameterWidget):
     def parameter_error_label(self) -> QLabel:
         if self._label_parameter_error is not None:
             return self._label_parameter_error
-        self._label_parameter_error = QLabel(self._groupbox_container)
+        self._label_parameter_error = QLabel(self._groupbox_outline)
         self._label_parameter_error.setWordWrap(True)
         self._label_parameter_error.setAlignment(
             Qt.AlignLeading | Qt.AlignLeft | Qt.AlignTop
@@ -302,6 +344,49 @@ class CommonParameterWidget(BaseParameterWidget):
     def on_clear_parameter_error(self, parameter_name: Optional[str]):
         if parameter_name is None or parameter_name == self.parameter_name:
             self.clear_parameter_error()
+
+    def play_highlight_effect(
+        self,
+        duration: int = 500,
+        start_value: float = 10.0,
+        end_value: float = 5,
+        key_values: Optional[Sequence[Tuple[float, Any]]] = ((0.5, 0.5),),
+        easing_curve: QEasingCurve = QEasingCurve.InOutBounce,
+    ):
+        if not self._highlight_effect:
+            return
+        if not self._highlight_animation:
+            return
+        self._highlight_effect.setEnabled(True)
+        self._highlight_animation.stop()
+        self._highlight_animation.setDuration(duration)
+        self._highlight_animation.setStartValue(start_value)
+        self._highlight_animation.setEndValue(end_value)
+
+        if key_values:
+            for key_time, key_value in key_values:
+                self._highlight_animation.setKeyValueAt(key_time, key_value)
+
+        self._highlight_animation.setEasingCurve(easing_curve)
+        self._highlight_animation.start()
+
+    def _create_highlight_effect(self) -> Optional[QGraphicsEffect]:
+        ## MAKE SURE THIS METHOD MUST BE CALLED ONCE
+        if not self._config.highlight_effect:
+            return None
+        effect = QGraphicsDropShadowEffect(self)
+        properties = self._config.effect_properties or {}
+        for prop_name, prop_value in properties.items():
+            prop_name = "set" + prop_name
+            setter = getattr(effect, prop_name, None)
+            if setter is not None and callable(setter):
+                setter(prop_value)
+            else:
+                raise ValueError(f"invalid highlight effect property: {prop_name}")
+        return effect
+
+    def _on_highlight_effect_finished(self):
+        self._highlight_effect.setEnabled(False)
 
     def _default_value_used(self) -> bool:
         if self.default_value_checkbox.isHidden():

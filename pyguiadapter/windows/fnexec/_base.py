@@ -443,7 +443,13 @@ class BaseFnExecuteWindow(BaseWindow, ExecuteStateListener):
         pass
 
     @abstractmethod
-    def scroll_to_parameter(self, parameter_name: str) -> None:
+    def scroll_to_parameter(
+        self,
+        parameter_name: str,
+        x: int = 50,
+        y: int = 50,
+        highlight_effect: bool = True,
+    ) -> None:
         pass
 
     @abstractmethod

@@ -5,10 +5,12 @@ from qtpy.QtCore import Signal
 from qtpy.QtGui import QIcon
 from qtpy.QtWidgets import QWidget, QToolBox
 
+from ....exceptions import ParameterError
 from ....paramwidget import BaseParameterWidget, BaseParameterWidgetConfig
 
 
 class BaseParameterPage(QWidget):
+
     def __init__(self, parent: "BaseParameterGroupBox", group_name: str):
         assert isinstance(parent, BaseParameterGroupBox)
         self._parent: BaseParameterGroupBox = parent
@@ -23,7 +25,13 @@ class BaseParameterPage(QWidget):
         return self._group_name
 
     @abstractmethod
-    def scroll_to(self, parameter_name: str, x: int = 50, y: int = 50):
+    def scroll_to(
+        self,
+        parameter_name: str,
+        x: int = 50,
+        y: int = 50,
+        highlight_effect: bool = False,
+    ) -> None:
         pass
 
     @abstractmethod
@@ -202,7 +210,13 @@ class BaseParameterGroupBox(QToolBox):
         pass
 
     @abstractmethod
-    def scroll_to_parameter(self, parameter_name: str, x: int = 50, y: int = 50):
+    def scroll_to_parameter(
+        self,
+        parameter_name: str,
+        x: int = 50,
+        y: int = 50,
+        highlight_effect: bool = True,
+    ) -> None:
         pass
 
     def notify_parameter_error(self, parameter_name: str, error: Any):
@@ -311,7 +325,13 @@ class BaseParameterArea(QWidget):
         pass
 
     @abstractmethod
-    def scroll_to_parameter(self, parameter_name: str, x: int = 50, y: int = 50):
+    def scroll_to_parameter(
+        self,
+        parameter_name: str,
+        x: int = 50,
+        y: int = 50,
+        highlight_effect: bool = False,
+    ):
         pass
 
     @abstractmethod
@@ -319,7 +339,7 @@ class BaseParameterArea(QWidget):
         pass
 
     @abstractmethod
-    def process_parameter_error(self, e):
+    def process_parameter_error(self, e: ParameterError):
         pass
 
     @abstractmethod
