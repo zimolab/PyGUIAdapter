@@ -245,7 +245,6 @@ class BaseWindow(QMainWindow):
     def apply_configs(self):
         if self._config is None:
             return
-        self._apply_window_flags()
         self.set_title(self._config.title)
         self.set_icon(self._config.icon)
         self.set_size(self._config.size)
@@ -253,6 +252,7 @@ class BaseWindow(QMainWindow):
         self.set_always_on_top(self._config.always_on_top)
         self.set_font(self._config.font_family, self._config.font_size)
         self.set_stylesheet(self._config.stylesheet)
+        self._apply_window_flags()
 
     def set_title(self, title: str) -> None:
         """
@@ -305,7 +305,7 @@ class BaseWindow(QMainWindow):
         if enabled:
             flags |= Qt.WindowStaysOnTopHint
         else:
-            flags &= Qt.WindowStaysOnTopHint
+            flags &= ~Qt.WindowStaysOnTopHint
         self.setWindowFlags(flags)
 
     def is_always_on_top(self) -> bool:
