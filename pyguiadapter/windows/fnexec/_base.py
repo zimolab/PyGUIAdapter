@@ -1,10 +1,10 @@
 import dataclasses
 from abc import abstractmethod
-from typing import Tuple, Dict, Union, Type, Optional, Literal, Any, Callable
+from typing import Tuple, Dict, Union, Type, Optional, Literal, Any, Callable, List
 
 from qtpy.QtCore import QSize, Qt
 
-from ._output_area import OutputBrowserConfig
+from ._output_area import OutputBrowserConfig, ProgressBarConfig
 from ..document_browser import DocumentBrowserConfig
 from ...exceptions import ParameterError
 from ...executor import ExecuteStateListener
@@ -172,203 +172,234 @@ class BaseFnExecuteWindow(BaseWindow, ExecuteStateListener):
         pass
 
     @abstractmethod
-    def update_progressbar_config(self, config):
+    def update_progressbar_config(
+        self, config: Union[ProgressBarConfig, dict, None]
+    ) -> None:
         pass
 
     @abstractmethod
-    def show_progressbar(self):
+    def show_progressbar(self) -> None:
         pass
 
     @abstractmethod
-    def hide_progressbar(self):
+    def hide_progressbar(self) -> None:
         pass
 
     @abstractmethod
-    def update_progress(self, current_value, message):
+    def update_progress(
+        self, current_value: int, message: Optional[str] = None
+    ) -> None:
         pass
 
     @abstractmethod
-    def append_output(self, text, html, scroll_to_bottom):
+    def append_output(
+        self, text: str, html: bool = False, scroll_to_bottom: bool = True
+    ) -> None:
         pass
 
     @abstractmethod
-    def clear_output(self):
+    def clear_output(self) -> None:
         pass
 
     @abstractmethod
-    def set_document(self, document, document_format):
+    def set_document(
+        self, document: str, document_format: Literal["markdown", "html", "plaintext"]
+    ) -> None:
         pass
 
     @abstractmethod
-    def add_parameter(self, parameter_name, config):
+    def add_parameter(
+        self,
+        parameter_name: str,
+        config: Tuple[Type[BaseParameterWidget], BaseParameterWidgetConfig],
+    ) -> None:
         pass
 
     @abstractmethod
-    def add_parameters(self, configs):
+    def add_parameters(
+        self,
+        configs: Dict[str, Tuple[Type[BaseParameterWidget], BaseParameterWidgetConfig]],
+    ) -> None:
         pass
 
     @abstractmethod
-    def remove_parameter(self, parameter_name, safe_remove):
+    def remove_parameter(
+        self, parameter_name: str, ignore_unknown_parameter: bool = True
+    ) -> None:
         pass
 
     @abstractmethod
-    def has_parameter(self, parameter_name) -> bool:
+    def has_parameter(self, parameter_name: str) -> bool:
         pass
 
     @abstractmethod
-    def clear_parameters(self):
+    def clear_parameters(self) -> None:
         pass
 
     @abstractmethod
-    def get_parameter_value(self, parameter_name):
+    def get_parameter_value(self, parameter_name: str) -> Any:
         pass
 
     @abstractmethod
-    def get_parameter_values(self):
+    def get_parameter_values(self) -> Dict[str, Any]:
         pass
 
     @abstractmethod
-    def set_parameter_value(self, parameter_name, value):
+    def set_parameter_value(self, parameter_name: str, value: Any) -> None:
         pass
 
     @abstractmethod
-    def set_parameter_values(self, values):
+    def set_parameter_values(self, values: Dict[str, Any]) -> None:
         pass
 
     @abstractmethod
-    def set_output_dock_property(self, title, visible, floating, area):
+    def set_output_dock_property(
+        self,
+        *,
+        title: Optional[str] = None,
+        visible: Optional[bool] = None,
+        floating: Optional[bool] = None,
+        area: Optional[DockWidgetArea] = None,
+    ) -> None:
         pass
 
     @abstractmethod
-    def set_document_dock_property(self, title, visible, floating, area):
+    def set_document_dock_property(
+        self,
+        *,
+        title: Optional[str] = None,
+        visible: Optional[bool] = None,
+        floating: Optional[bool] = None,
+        area: Optional[DockWidgetArea] = None,
+    ) -> None:
         pass
 
     @abstractmethod
-    def set_allowed_dock_areas(self, areas):
+    def set_allowed_dock_areas(self, areas: Optional[DockWidgetAreas]) -> None:
         pass
 
     @abstractmethod
-    def set_output_dock_visible(self, visible):
+    def set_output_dock_visible(self, visible: bool) -> None:
         pass
 
     @abstractmethod
-    def is_output_dock_visible(self):
+    def is_output_dock_visible(self) -> bool:
         pass
 
     @abstractmethod
-    def set_document_dock_visible(self, visible):
+    def set_document_dock_visible(self, visible: bool) -> None:
         pass
 
     @abstractmethod
-    def is_document_dock_visible(self):
+    def is_document_dock_visible(self) -> bool:
         pass
 
     @abstractmethod
-    def set_document_dock_floating(self, floating):
+    def set_document_dock_floating(self, floating: bool) -> None:
         pass
 
     @abstractmethod
-    def is_document_dock_floating(self):
+    def is_document_dock_floating(self) -> bool:
         pass
 
     @abstractmethod
-    def set_output_dock_floating(self, floating):
+    def set_output_dock_floating(self, floating: bool) -> None:
         pass
 
     @abstractmethod
-    def is_output_dock_floating(self):
+    def is_output_dock_floating(self) -> bool:
         pass
 
     @abstractmethod
-    def set_document_dock_title(self, title):
+    def set_document_dock_title(self, title: str) -> None:
         pass
 
     @abstractmethod
-    def get_document_dock_title(self):
+    def get_document_dock_title(self) -> str:
         pass
 
     @abstractmethod
-    def set_output_dock_title(self, title):
+    def set_output_dock_title(self, title: str) -> None:
         pass
 
     @abstractmethod
-    def get_output_dock_title(self):
+    def get_output_dock_title(self) -> str:
         pass
 
     @abstractmethod
-    def set_document_dock_area(self, area):
+    def set_document_dock_area(self, area: DockWidgetArea) -> None:
         pass
 
     @abstractmethod
-    def get_document_dock_area(self):
+    def get_document_dock_area(self) -> DockWidgetArea:
         pass
 
     @abstractmethod
-    def set_output_dock_area(self, area):
+    def set_output_dock_area(self, area: DockWidgetArea) -> None:
         pass
 
     @abstractmethod
-    def get_output_dock_area(self):
+    def get_output_dock_area(self) -> DockWidgetArea:
         pass
 
     @abstractmethod
-    def resize_document_dock(self, size):
+    def resize_document_dock(self, size: Tuple[Optional[int], Optional[int]]) -> None:
         pass
 
     @abstractmethod
-    def resize_output_dock(self, size):
+    def resize_output_dock(self, size: Tuple[Optional[int], Optional[int]]) -> None:
         pass
 
     @abstractmethod
-    def tabify_docks(self):
+    def tabify_docks(self) -> None:
         pass
 
     @abstractmethod
-    def set_statusbar_visible(self, visible):
+    def set_statusbar_visible(self, visible: bool) -> None:
         pass
 
     @abstractmethod
-    def is_statusbar_visible(self):
+    def is_statusbar_visible(self) -> bool:
         pass
 
     @abstractmethod
-    def show_statusbar_message(self, message, timeout):
+    def show_statusbar_message(self, message: str, timeout: int) -> None:
         pass
 
     @abstractmethod
-    def clear_statusbar_message(self):
+    def clear_statusbar_message(self) -> None:
         pass
 
     @abstractmethod
-    def set_execute_button_text(self, text):
+    def set_execute_button_text(self, text: str) -> None:
         pass
 
     @abstractmethod
-    def set_cancel_button_text(self, text):
+    def set_cancel_button_text(self, text: str) -> None:
         pass
 
     @abstractmethod
-    def set_clear_button_text(self, text):
+    def set_clear_button_text(self, text: str) -> None:
         pass
 
     @abstractmethod
-    def set_clear_checkbox_text(self, text):
+    def set_clear_checkbox_text(self, text: str) -> None:
         pass
 
     @abstractmethod
-    def set_clear_button_visible(self, visible):
+    def set_clear_button_visible(self, visible: bool) -> None:
         pass
 
     @abstractmethod
-    def set_clear_checkbox_visible(self, visible):
+    def set_clear_checkbox_visible(self, visible: bool) -> None:
         pass
 
     @abstractmethod
-    def set_clear_checkbox_checked(self, checked):
+    def set_clear_checkbox_checked(self, checked: bool) -> None:
         pass
 
     @abstractmethod
-    def is_clear_checkbox_checked(self):
+    def is_clear_checkbox_checked(self) -> bool:
         pass
 
     @abstractmethod
@@ -380,35 +411,43 @@ class BaseFnExecuteWindow(BaseWindow, ExecuteStateListener):
         pass
 
     @abstractmethod
-    def process_parameter_error(self, e: ParameterError):
+    def process_parameter_error(self, e: ParameterError) -> None:
         pass
 
     @abstractmethod
-    def get_parameter_names(self):
+    def get_parameter_names(self) -> List[str]:
         pass
 
     @abstractmethod
-    def get_parameter_names_of(self, group_name):
+    def get_parameter_names_of(self, group_name: str) -> List[str]:
         pass
 
     @abstractmethod
-    def get_document_dock_size(self):
+    def get_document_dock_size(self) -> Tuple[int, int]:
         pass
 
     @abstractmethod
-    def get_output_dock_size(self):
+    def get_output_dock_size(self) -> Tuple[int, int]:
         pass
 
     @abstractmethod
-    def disable_parameter_widgets(self, disabled):
+    def disable_parameter_widgets(self, disabled: bool) -> None:
         pass
 
     @abstractmethod
-    def get_parameter_values_of(self, group_name):
+    def get_parameter_values_of(self, group_name: str) -> Dict[str, Any]:
         pass
 
     @abstractmethod
-    def try_cancel_execution(self):
+    def try_cancel_execution(self) -> bool:
+        pass
+
+    @abstractmethod
+    def scroll_to_parameter(self, parameter_name: str) -> None:
+        pass
+
+    @abstractmethod
+    def activate_parameter_group(self, group_name: str) -> None:
         pass
 
 
