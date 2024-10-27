@@ -1,5 +1,5 @@
 """
-@Time    : 2024.10.20
+@Time    : 2024.10.27
 @File    : bundle.py
 @Author  : zimolab
 @Project : PyGUIAdapter
