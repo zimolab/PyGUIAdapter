@@ -3,7 +3,8 @@ import dataclasses
 from abc import abstractmethod
 from typing import Any, Type, Optional, Tuple, Sequence
 
-from qtpy.QtCore import Qt, QPropertyAnimation, QEasingCurve
+from qtpy.QtCore import Qt, QPropertyAnimation, QEasingCurve, QMimeData, QUrl
+from qtpy.QtGui import QDragEnterEvent, QDropEvent
 from qtpy.QtGui import QColor
 from qtpy.QtWidgets import (
     QWidget,
@@ -75,6 +76,9 @@ class CommonParameterWidgetConfig(BaseParameterWidgetConfig):
     )
     """高亮效果属性。默认为 `None`。"""
 
+    drag_n_drop: bool = False
+    """是否启用拖放功能。默认为 `False`。"""
+
     @classmethod
     def target_widget_class(cls) -> Type["CommonParameterWidget"]:
         return CommonParameterWidget
@@ -129,8 +133,12 @@ class CommonParameterWidget(BaseParameterWidget):
     def build(self):
         if self.__build_flag:
             return self
+
         if self._highlight_effect:
             self.setGraphicsEffect(self._highlight_effect)
+
+        if self.config.drag_n_drop:
+            self._enable_drag_n_drop()
 
         if self.description:
             self._layout_container.addWidget(self.description_label)
@@ -369,6 +377,34 @@ class CommonParameterWidget(BaseParameterWidget):
 
         self._highlight_animation.setEasingCurve(easing_curve)
         self._highlight_animation.start()
+
+    def dragEnterEvent(self, event: QDragEnterEvent):
+        if not self._config.drag_n_drop:
+            event.ignore()
+            return
+        accepted = self.on_drag(event.mimeData())
+        if accepted:
+            event.acceptProposedAction()
+        else:
+            event.ignore()
+
+    def dropEvent(self, event: QDropEvent):
+        if not self._config.drag_n_drop:
+            event.ignore()
+            return
+        mime_data = event.mimeData()
+        urls = mime_data.urls()
+        event.acceptProposedAction()
+        self.on_drop(urls, mime_data)
+
+    def on_drag(self, mime_data: QMimeData) -> bool:
+        pass
+
+    def on_drop(self, urls: Sequence[QUrl], mime_data: QMimeData):
+        pass
+
+    def _enable_drag_n_drop(self):
+        self.setAcceptDrops(True)
 
     def _create_highlight_effect(self) -> Optional[QGraphicsEffect]:
         ## MAKE SURE THIS METHOD MUST BE CALLED ONCE
