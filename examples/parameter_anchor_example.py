@@ -3,6 +3,8 @@ from datetime import datetime, date, time
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.extend_types import string_list_t
 from pyguiadapter.widgets import IntSpinBoxConfig
+from pyguiadapter.windows import DocumentBrowserConfig
+from pyguiadapter.windows.fnexec import FnExecuteWindowConfig
 
 
 def parameter_anchor_example(
@@ -78,5 +80,10 @@ if __name__ == "__main__":
         parameter_anchor_example,
         document_format="html",
         widget_configs={"a": a_conf, "b": b_conf, "c": c_conf},
+        window_config=FnExecuteWindowConfig(
+            document_browser_config=DocumentBrowserConfig(
+                parameter_anchor=True, group_anchor=True
+            )
+        ),
     )
     adapter.run()

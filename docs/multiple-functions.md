@@ -121,13 +121,15 @@ if __name__ == "__main__":
 
 在`函数选择窗口（FnSelectWindow）`和`函数执行窗口（FnExecuteWindow）`中均有专门的区域用于显示函数的说明文档，用于显示函数文档的组件被称为`文档浏览器（DocumentBrowser）`。
 
+### 1、`docstring`作为说明文档
+
 默认情况下，`PyGUIAdapter`会自动提取函数文档字符串（`docstring`）中对于函数的描述（包括`long description`和`short description`，但一般不包括参数的描述部分和`@params...@end`块）作为说明文档，格式默认为`Markdown`。比如：
 
 <div style="text-align:center">
     <img src="../assets/docstring_document.png" />
 </div>
 
-> [examples/html_docstring__document_example.py]({{main_branch}}/examples/html_docstring__document_example.py)
+> [examples/html_docstring_document_example.py]({{main_branch}}/examples/html_docstring_document_example.py)
 
 ```python
 from pyguiadapter.adapter import GUIAdapter
@@ -210,9 +212,9 @@ if __name__ == "__main__":
 
 > 提示：`文档浏览器`对`html`的支持有限，仅支持`html4`的子集，具体可以参考Qt官方文档的说明：[Supported HTML Subset | Qt GUI 5.15.17](https://doc.qt.io/qt-5/richtext-html-subset.html#table-cell-attributes)
 
+### 2、手动设置说明文档内容
 
-
-当然，如果开发者不想将大段文本放到函数的`docstring`中，也可以手动指定函数的说明文档，比如将外部文件作为说明文档：
+如果开发者不想将大段文本放到函数的`docstring`中，也可以手动指定函数的说明文档，比如将外部文件作为说明文档：
 
 <div style="text-align:center">
     <img src="../assets/html_document_file.gif" />
@@ -240,6 +242,147 @@ if __name__ == "__main__":
     adapter = GUIAdapter()
     html_doc = utils.read_text_file("document.html")
     adapter.add(function_3, document=html_doc, document_format="html")
+    adapter.run()
+```
+
+
+
+### 3、说明文档中的特殊“锚点”链接
+
+在函数的说明文档中，存在两种特殊的”锚点“链接，一种是**”Parameter锚点（parameter anchor）“**，另一种是**Group锚点（group anchor）**，这两种锚点链接的作用是与指定的函数参数或函数参数分组相锚定，在用户点击这些链接时快速导航到指定参数控件或参数分组，具体来讲：
+
+对于**Parameter锚点（parameter anchor）**，`PyGUIAdapter`首先会查找对应参数的控件位于哪个函数分组，然后展开其所在的函数分组，接着调整滚动条位置，确保该参数控件对用户可见，然后高亮显示该控件。效果如图所示：
+
+
+
+<div style="text-align">
+    <img src="../assets/parameter_anchor_example.gif" />
+</div>
+
+
+
+对于**Group锚点（group anchor）**，`PyGUIAdapter`则会在用户点击锚点链接时展开对于的函数分组。效果如下图所示：
+
+
+
+<div style="text-align">
+    <img src="../assets/group_anchor_example.gif" />
+</div>
+
+
+
+在函数参数非常多时，**Parameter锚点（parameter anchor）**与**Group锚点（group anchor）**非常有用。开发者在函数说明文档中描述参数时，可以使用这些锚点以帮助用户快速定位到对应的控件，这大大增加了程序的易用性。
+
+
+
+**Parameter锚点（parameter anchor）**与**Group锚点（group anchor）**特性默认是关闭的，需要在`FnExecuteWindowConfig`中开启，方法如下：
+
+
+
+<div style="text-align">
+    <img src="../assets/enable_parm_group_anchor.png" />
+</div>
+
+
+
+以下是一个完整的例子：
+
+> 源码以及函数文档的路径
+>
+> - 源码：[examples/anchors_in_document.py]({{main_branch}}/examples/anchors_in_document.py)
+> - 函数文档：[examples/anchors_in_document.md]({{main_branch}}/examples/anchors_in_document.md)
+
+```python
+import os
+
+from pyguiadapter.adapter import GUIAdapter
+from pyguiadapter.utils import read_text_file
+from pyguiadapter.windows import DocumentBrowserConfig
+from pyguiadapter.windows.fnexec import FnExecuteWindowConfig
+
+DOCUMENT_PATH = os.path.join(os.path.dirname(__file__), "anchors_in_document.md")
+
+
+def anchors_in_document(
+    a: str,
+    b: str,
+    c: str,
+    d: str,
+    e: str,
+    f: str,
+    g: str,
+    h: str,
+    i: str,
+    j: str,
+    k: str,
+    l: str,
+    m: str,
+    n: str,
+    o: str,
+    p: str,
+):
+    """
+    This is an example demonstrating how to use parameter anchors and group anchors in the document of function.
+
+    Args:
+        a: description of parameter a.
+        b: description of parameter b.
+        c: description of parameter c.
+        d: description of parameter d.
+        e: description of parameter e.
+        f: description of parameter f.
+        g: description of parameter g.
+        h: description of parameter h.
+        i: description of parameter i.
+        j: description of parameter j.
+        k: description of parameter k.
+        l: description of parameter l.
+        m: description of parameter m.
+        n: description of parameter n.
+        o: description of parameter o.
+        p: description of parameter p.
+    """
+    pass
+
+
+if __name__ == "__main__":
+
+    widget_configs = {
+        # parameters in Group-A
+        "a": {"group": "Group-A"},
+        "b": {"group": "Group-A"},
+        "c": {"group": "Group-A"},
+        "d": {"group": "Group-A"},
+        # parameters in Group-B
+        "e": {"group": "Group-B"},
+        "f": {"group": "Group-B"},
+        "g": {"group": "Group-B"},
+        "h": {"group": "Group-B"},
+        # parameters in Group-C
+        "i": {"group": "Group-C"},
+        "j": {"group": "Group-C"},
+        "k": {"group": "Group-C"},
+        "l": {"group": "Group-C"},
+        # parameters in default group
+        "m": {"group": None},
+        "n": {"group": None},
+        "o": {"group": None},
+        "p": {"group": None},
+    }
+
+    document = read_text_file(DOCUMENT_PATH)
+    adapter = GUIAdapter()
+    adapter.add(
+        anchors_in_document,
+        document=document,
+        document_format="markdown",
+        widget_configs=widget_configs,
+        window_config=FnExecuteWindowConfig(
+            document_browser_config=DocumentBrowserConfig(
+                parameter_anchor=True, group_anchor=True
+            )
+        ),
+    )
     adapter.run()
 ```
 
