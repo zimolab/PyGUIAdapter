@@ -10,6 +10,10 @@ from ... import utils
 from ...utils import type_check
 
 TextElideMode = Qt.TextElideMode
+ElideLeft = TextElideMode.ElideLeft
+ElideMiddle = TextElideMode.ElideMiddle
+ElideRight = TextElideMode.ElideRight
+ElideNone = TextElideMode.ElideNone
 
 
 @dataclasses.dataclass(frozen=True)
@@ -238,9 +242,9 @@ class StringListEdit(CommonParameterWidget):
                 self,
                 message=self._config.remove_confirm_message,
                 title=self._config.warning_dialog_title,
-                buttons=utils.StandardButton.Yes | utils.StandardButton.No,
+                buttons=utils.Yes | utils.No,
             )
-            if ret == utils.StandardButton.No:
+            if ret == utils.No:
                 return
         for index in selected:
             self._model.removeRow(index.row())
@@ -255,9 +259,9 @@ class StringListEdit(CommonParameterWidget):
                 self,
                 message=self._config.clear_confirm_message,
                 title=self._config.warning_dialog_title,
-                buttons=utils.StandardButton.Yes | utils.StandardButton.No,
+                buttons=utils.Yes | utils.No,
             )
-            if ret == utils.StandardButton.No:
+            if ret == utils.No:
                 return
         self._clear_items()
 
