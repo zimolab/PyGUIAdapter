@@ -1690,6 +1690,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.widgets.slider/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.widgets.slider
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../apis/pyguiadapter.widgets.dirselect/" class="md-nav__link">
         
   
@@ -2149,7 +2170,7 @@
 </blockquote>
 <p>当然，如果开发者需要将某个复杂的自定义数据类型作为参数，而内置的控件又无法满足需求，那么<code>PyGUIAdapter</code>也提供了<code>自定义控件</code>接口，并且允许开发者在自定义数据类型与自定义控件之间建立映射关系，这意味着，开发者可以像使用内置控件一样使用自定义控件。</p>
 <blockquote>
-<p>关于如何实现自定义控件，可以参考：<a href="widgets/custom_widget.md">这篇文档</a>。</p>
+<p>关于如何实现自定义控件，可以参考：<a href="../custom-widget/">这篇文档</a>。</p>
 </blockquote>
 <h4 id="_3">（二）例外规则：手动指定参数的控件类型</h4>
 <p>虽然<code>PyGUIAdapter</code>推荐开发者使用类型注解来确定函数参数的控件类型，但并不强制这么做。<code>PyGUIAdapter</code>提供了手动指定函数参数控件类型的方法。其中，最简单的一种方法是在调用<code>GUIAdapter.add()</code>函数时，通过<code>widget_configs</code>参数指定参数的<code>控件配置类</code>。</p>

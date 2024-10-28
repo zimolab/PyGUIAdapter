@@ -1059,6 +1059,48 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="DocumentBrowserConfig">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pyguiadapter.windows.DocumentBrowserConfig.group_anchor" class="md-nav__link">
+    <span class="md-ellipsis">
+      group_anchor
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pyguiadapter.windows.DocumentBrowserConfig.group_anchor_pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      group_anchor_pattern
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pyguiadapter.windows.DocumentBrowserConfig.parameter_anchor" class="md-nav__link">
+    <span class="md-ellipsis">
+      parameter_anchor
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pyguiadapter.windows.DocumentBrowserConfig.parameter_anchor_pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      parameter_anchor_pattern
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -1560,6 +1602,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../pyguiadapter.widgets.slider/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.widgets.slider
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../pyguiadapter.widgets.dirselect/" class="md-nav__link">
         
   
@@ -1819,6 +1882,48 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="DocumentBrowserConfig">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pyguiadapter.windows.DocumentBrowserConfig.group_anchor" class="md-nav__link">
+    <span class="md-ellipsis">
+      group_anchor
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pyguiadapter.windows.DocumentBrowserConfig.group_anchor_pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      group_anchor_pattern
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pyguiadapter.windows.DocumentBrowserConfig.parameter_anchor" class="md-nav__link">
+    <span class="md-ellipsis">
+      parameter_anchor
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pyguiadapter.windows.DocumentBrowserConfig.parameter_anchor_pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      parameter_anchor_pattern
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -1865,19 +1970,43 @@
 
               <details class="quote">
                 <summary>Source code in <code>pyguiadapter\windows\document_browser.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-18">18</a></span>
-<span class="normal"><a href="#__codelineno-0-19">19</a></span>
-<span class="normal"><a href="#__codelineno-0-20">20</a></span>
-<span class="normal"><a href="#__codelineno-0-21">21</a></span>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-21">21</a></span>
 <span class="normal"><a href="#__codelineno-0-22">22</a></span>
 <span class="normal"><a href="#__codelineno-0-23">23</a></span>
-<span class="normal"><a href="#__codelineno-0-24">24</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-18" name="__codelineno-0-18"></a><span class="nd">@dataclasses</span><span class="o">.</span><span class="n">dataclass</span>
-<a id="__codelineno-0-19" name="__codelineno-0-19"></a><span class="k">class</span> <span class="nc">DocumentBrowserConfig</span><span class="p">(</span><span class="n">TextBrowserConfig</span><span class="p">):</span>
-<a id="__codelineno-0-20" name="__codelineno-0-20"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;文档浏览器配置类。&quot;&quot;&quot;</span>
-<a id="__codelineno-0-21" name="__codelineno-0-21"></a>
-<a id="__codelineno-0-22" name="__codelineno-0-22"></a>    <span class="n">text_color</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">COLOR_PRIMARY_TEXT</span>
-<a id="__codelineno-0-23" name="__codelineno-0-23"></a>    <span class="n">background_color</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">COLOR_PAGE_BACKGROUND</span>
-<a id="__codelineno-0-24" name="__codelineno-0-24"></a>    <span class="n">line_wrap_mode</span><span class="p">:</span> <span class="n">LineWrapMode</span> <span class="o">=</span> <span class="n">LineWrapMode</span><span class="o">.</span><span class="n">WidgetWidth</span>
+<span class="normal"><a href="#__codelineno-0-24">24</a></span>
+<span class="normal"><a href="#__codelineno-0-25">25</a></span>
+<span class="normal"><a href="#__codelineno-0-26">26</a></span>
+<span class="normal"><a href="#__codelineno-0-27">27</a></span>
+<span class="normal"><a href="#__codelineno-0-28">28</a></span>
+<span class="normal"><a href="#__codelineno-0-29">29</a></span>
+<span class="normal"><a href="#__codelineno-0-30">30</a></span>
+<span class="normal"><a href="#__codelineno-0-31">31</a></span>
+<span class="normal"><a href="#__codelineno-0-32">32</a></span>
+<span class="normal"><a href="#__codelineno-0-33">33</a></span>
+<span class="normal"><a href="#__codelineno-0-34">34</a></span>
+<span class="normal"><a href="#__codelineno-0-35">35</a></span>
+<span class="normal"><a href="#__codelineno-0-36">36</a></span>
+<span class="normal"><a href="#__codelineno-0-37">37</a></span>
+<span class="normal"><a href="#__codelineno-0-38">38</a></span>
+<span class="normal"><a href="#__codelineno-0-39">39</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-21" name="__codelineno-0-21"></a><span class="nd">@dataclasses</span><span class="o">.</span><span class="n">dataclass</span>
+<a id="__codelineno-0-22" name="__codelineno-0-22"></a><span class="k">class</span> <span class="nc">DocumentBrowserConfig</span><span class="p">(</span><span class="n">TextBrowserConfig</span><span class="p">):</span>
+<a id="__codelineno-0-23" name="__codelineno-0-23"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;文档浏览器配置类。&quot;&quot;&quot;</span>
+<a id="__codelineno-0-24" name="__codelineno-0-24"></a>
+<a id="__codelineno-0-25" name="__codelineno-0-25"></a>    <span class="n">text_color</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">COLOR_PRIMARY_TEXT</span>
+<a id="__codelineno-0-26" name="__codelineno-0-26"></a>    <span class="n">background_color</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">COLOR_PAGE_BACKGROUND</span>
+<a id="__codelineno-0-27" name="__codelineno-0-27"></a>    <span class="n">line_wrap_mode</span><span class="p">:</span> <span class="n">LineWrapMode</span> <span class="o">=</span> <span class="n">LineWrapMode</span><span class="o">.</span><span class="n">WidgetWidth</span>
+<a id="__codelineno-0-28" name="__codelineno-0-28"></a>
+<a id="__codelineno-0-29" name="__codelineno-0-29"></a>    <span class="n">parameter_anchor</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<a id="__codelineno-0-30" name="__codelineno-0-30"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;是否启用参数锚点。当启用时，用户点击文档中的参数锚点，会自动跳转到对应的参数控件处。&quot;&quot;&quot;</span>
+<a id="__codelineno-0-31" name="__codelineno-0-31"></a>
+<a id="__codelineno-0-32" name="__codelineno-0-32"></a>    <span class="n">parameter_anchor_pattern</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^#\s*param\s*=\s*([\w]+)\s*$&quot;</span>
+<a id="__codelineno-0-33" name="__codelineno-0-33"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;参数锚点的格式。默认格式为：#param=参数名。&quot;&quot;&quot;</span>
+<a id="__codelineno-0-34" name="__codelineno-0-34"></a>
+<a id="__codelineno-0-35" name="__codelineno-0-35"></a>    <span class="n">group_anchor</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<a id="__codelineno-0-36" name="__codelineno-0-36"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;是否启用参数分组锚点。当启用时，用户点击文档中的参数分组锚点，会自动展开对应的参数分组。&quot;&quot;&quot;</span>
+<a id="__codelineno-0-37" name="__codelineno-0-37"></a>
+<a id="__codelineno-0-38" name="__codelineno-0-38"></a>    <span class="n">group_anchor_pattern</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^#\s*group\s*=\s*([\w\W\s]*)\s*$&quot;</span>
+<a id="__codelineno-0-39" name="__codelineno-0-39"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;参数分组锚点的格式。默认格式为：#group=分组名。&quot;&quot;&quot;</span>
 </code></pre></div></td></tr></table></div>
               </details>
 
@@ -1890,6 +2019,94 @@
 
 
 
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="pyguiadapter.windows.DocumentBrowserConfig.group_anchor" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">group_anchor</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>是否启用参数分组锚点。当启用时，用户点击文档中的参数分组锚点，会自动展开对应的参数分组。</p>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="pyguiadapter.windows.DocumentBrowserConfig.group_anchor_pattern" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">group_anchor_pattern</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;^#</span><span class="se">\\</span><span class="s1">s*group</span><span class="se">\\</span><span class="s1">s*=</span><span class="se">\\</span><span class="s1">s*([</span><span class="se">\\</span><span class="s1">w</span><span class="se">\\</span><span class="s1">W</span><span class="se">\\</span><span class="s1">s]*)</span><span class="se">\\</span><span class="s1">s*$&#39;</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>参数分组锚点的格式。默认格式为：#group=分组名。</p>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="pyguiadapter.windows.DocumentBrowserConfig.parameter_anchor" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">parameter_anchor</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>是否启用参数锚点。当启用时，用户点击文档中的参数锚点，会自动跳转到对应的参数控件处。</p>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="pyguiadapter.windows.DocumentBrowserConfig.parameter_anchor_pattern" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">parameter_anchor_pattern</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;^#</span><span class="se">\\</span><span class="s1">s*param</span><span class="se">\\</span><span class="s1">s*=</span><span class="se">\\</span><span class="s1">s*([</span><span class="se">\\</span><span class="s1">w]+)</span><span class="se">\\</span><span class="s1">s*$&#39;</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>参数锚点的格式。默认格式为：#param=参数名。</p>
+    </div>
+
+</div>
 
 
 
