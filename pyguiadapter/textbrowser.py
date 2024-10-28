@@ -1,5 +1,5 @@
 """
-@Time    : 2024.10.20
+@Time    : 2024.10.28
 @File    : textbrowser.py
 @Author  : zimolab
 @Project : PyGUIAdapter
@@ -7,8 +7,11 @@
 """
 
 import dataclasses
+import webbrowser
 from typing import Optional, Sequence, Union
+from urllib.parse import unquote
 
+from qtpy.QtCore import QUrl
 from qtpy.QtGui import QTextOption, QColor, QPalette, QTextCursor
 from qtpy.QtWidgets import QTextBrowser, QWidget
 
@@ -67,6 +70,8 @@ class TextBrowser(QTextBrowser):
         super().__init__(parent)
         self._apply_config()
 
+        self.anchorClicked.connect(self.on_url_clicked)
+
     def move_cursor_to_end(self):
         cursor = self.textCursor()
         cursor.clearSelection()
@@ -111,8 +116,20 @@ class TextBrowser(QTextBrowser):
             self.setLineWrapColumnOrWidth(self._config.line_wrap_width)
         self.setWordWrapMode(self._config.word_wrap_mode)
 
-        self.setOpenLinks(self._config.open_external_links)
+        self.setOpenLinks(False)
         self.setOpenExternalLinks(self._config.open_external_links)
 
         if self._config.stylesheet:
             self.setStyleSheet(self._config.stylesheet)
+
+    def on_url_clicked(self, url: QUrl):
+        if not url or not url.isValid() or url.isEmpty():
+            return
+
+        if url.isRelative():
+            self.doSetSource(url)
+            return
+
+        if self._config.open_external_links:
+            url_ = unquote(url.toString())
+            webbrowser.open(url_)

@@ -26,16 +26,16 @@ class DocumentBrowserConfig(TextBrowserConfig):
     background_color: str = COLOR_PAGE_BACKGROUND
     line_wrap_mode: LineWrapMode = LineWrapMode.WidgetWidth
 
-    parameter_anchor: bool = True
+    parameter_anchor: bool = False
     """是否启用参数锚点。当启用时，用户点击文档中的参数锚点，会自动跳转到对应的参数控件处。"""
 
     parameter_anchor_pattern: str = r"^#\s*param\s*=\s*([\w]+)\s*$"
     """参数锚点的格式。默认格式为：#param=参数名。"""
 
-    group_anchor: bool = True
+    group_anchor: bool = False
     """是否启用参数分组锚点。当启用时，用户点击文档中的参数分组锚点，会自动展开对应的参数分组。"""
 
-    group_anchor_pattern: str = r"^#\s*group\s*=\s*([\w\s]*)\s*$"
+    group_anchor_pattern: str = r"^#\s*group\s*=\s*([\w\W\s]*)\s*$"
     """参数分组锚点的格式。默认格式为：#group=分组名。"""
 
 
@@ -51,37 +51,45 @@ class DocumentBrowser(TextBrowser):
         config = config or DocumentBrowserConfig()
         super().__init__(parent, config)
 
-        if config.parameter_anchor:
-            self.anchorClicked.connect(self._anchor_clicked)
-
-    def _anchor_clicked(self, anchor: QUrl):
+    def on_url_clicked(self, url: QUrl):
         self._config: DocumentBrowserConfig
-        if not self._config.parameter_anchor and not self._config.group_anchor:
+        if not url or url.isEmpty() or (not url.isValid()) or (not url.isRelative()):
+            super().on_url_clicked(url)
             return
-        anchor_str = unquote(anchor.toString()).strip()
-        del anchor
-        if self._process_parameter_anchor(anchor_str):
-            return
-        self._process_group_anchor(anchor_str)
 
-    def _process_parameter_anchor(self, anchor_str: str) -> bool:
+        processed = False
+        url_str = unquote(url.toString())
+
+        if self._config.parameter_anchor:
+            processed = self._process_parameter_anchor(url_str)
+        if processed:
+            return
+
+        if self._config.group_anchor:
+            processed = self._process_group_anchor(url_str)
+        if processed:
+            return
+
+        super().on_url_clicked(url)
+
+    def _process_parameter_anchor(self, url: str) -> bool:
         self._config: DocumentBrowserConfig
         param_pattern = self._config.parameter_anchor_pattern
         if not param_pattern:
             return False
-        match = re.match(param_pattern, anchor_str)
+        match = re.match(param_pattern, url)
         if not match:
             return False
         param_name = match.group(1).strip()
         self.sig_parameter_anchor_clicked.emit(param_name)
         return True
 
-    def _process_group_anchor(self, anchor_str: str) -> bool:
+    def _process_group_anchor(self, url: str) -> bool:
         self._config: DocumentBrowserConfig
         group_pattern = self._config.group_anchor_pattern
         if not group_pattern:
             return False
-        match = re.match(group_pattern, anchor_str)
+        match = re.match(group_pattern, url)
         if not match:
             return False
         group_name = match.group(1)
