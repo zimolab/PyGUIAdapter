@@ -13,6 +13,7 @@ import inspect
 import re
 import traceback
 import warnings
+from fnmatch import fnmatch, fnmatchcase
 from io import StringIO
 from typing import List, Set, Tuple, Any, Union, Optional, Type
 
@@ -177,3 +178,39 @@ def type_check(value: Any, allowed_types: Tuple[Type[Any], ...], allow_none: boo
 
 def to_base64(data: Union[bytes, str]) -> str:
     return base64.b64encode(data).decode()
+
+
+def get_file_filter_pattern(filter_str: str) -> Optional[str]:
+    p = r"^.*\s*\(\s*([\w\W]+)\s*\)\s*$"
+    match = re.match(p, filter_str)
+    if not match:
+        return None
+    return match.group(1).strip()
+
+
+def match_file_filters(
+    filters: str, file_path: str, case_sensitive: bool = False
+) -> Tuple[bool, Optional[str]]:
+    filters = [
+        get_file_filter_pattern(f)
+        for f in filters.strip().split(";")
+        if f.strip() != ""
+    ]
+
+    matched = False
+    filter_pattern = None
+    for filter_pattern in filters:
+        if not filter_pattern:
+            continue
+
+        if not case_sensitive:
+            matched = fnmatch(file_path, filter_pattern)
+            if matched:
+                break
+        else:
+            matched = fnmatchcase(file_path, filter_pattern)
+            if matched:
+                break
+    if not matched:
+        return False, None
+    return True, filter_pattern
