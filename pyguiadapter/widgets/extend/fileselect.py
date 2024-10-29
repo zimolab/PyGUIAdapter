@@ -1,13 +1,20 @@
 import dataclasses
 import os
-from typing import Type, Any, List, Tuple, Set, Optional, Union, Sequence
+from typing import Type, Any, List, Tuple, Set, Optional, Union, Sequence, Callable
 
 from qtpy.QtCore import QMimeData, QUrl
 from qtpy.QtWidgets import QWidget
 
 from ._path import PathSelectWidget
 from ..common import CommonParameterWidgetConfig, CommonParameterWidget
-from ...utils import type_check
+from ...utils import type_check, match_file_filters
+
+
+def _default_dnd_filter(filters: str, file_path: str) -> bool:
+    if not filters:
+        return True
+    matched, filter_pattern = match_file_filters(filters, file_path)
+    return matched
 
 
 @dataclasses.dataclass(frozen=True)
@@ -40,6 +47,13 @@ class FileSelectConfig(CommonParameterWidgetConfig):
 
     drag_n_drop: bool = True
     """是否启用文件拖放功能"""
+
+    drag_n_drop_filter: Optional[Callable[[str, str], bool]] = _default_dnd_filter
+    """文件拖放功能的过滤函数。该函数应接收两个参数：文件过滤器（即本类的`filters`属性）和拖放的文件路径。
+    若返回True，则表示该文件可以被拖放；否则，则表示该文件不能被拖放。该属性也可以设置为None，表示不对拖放文件进行过滤。
+    默认情况下，该函数使用`_default_dnd_filter`函数进行过滤，该函数会将待拖放的文件的文件名与文件过滤器进行匹配，若命中任意文件过滤器，则返回True，
+    否则返回False。比如，若文件过滤器为'Text files (*.txt);;Python files (*.py)', 则文件'hello.txt'可以被拖放，因为其命中了'Text files (*.txt)';
+    文件'hello.py'也可以被拖放，因为其命中了'Python files (*.py)'；文件'hello.png'则不能被拖放，因为其没有命中任何文件过滤器。"""
 
     normalize_path: bool = False
     """是否将路径标准化。若设置为True，则在获取路径时，将使用os.path.normpath()函数进行标准化"""
@@ -100,6 +114,7 @@ class FileSelect(CommonParameterWidget):
         return value
 
     def on_drag(self, mime_data: QMimeData) -> bool:
+        self._config: FileSelectConfig
         if not mime_data.hasUrls():
             return False
         urls = mime_data.urls()
@@ -108,6 +123,8 @@ class FileSelect(CommonParameterWidget):
             return False
         if not os.path.isfile(file_path):
             return False
+        if self._config.drag_n_drop_filter:
+            return self._config.drag_n_drop_filter(self._config.filters, file_path)
         return True
 
     def on_drop(self, urls: List[QUrl], mime_data: QMimeData):
@@ -152,6 +169,13 @@ class MultiFileSelectConfig(CommonParameterWidgetConfig):
 
     drag_n_drop: bool = True
     """是否启用文件拖放功能"""
+
+    drag_n_drop_filter: Optional[Callable[[str, str], bool]] = _default_dnd_filter
+    """文件拖放功能的过滤函数。该函数应接收两个参数：文件过滤器（即本类的`filters`属性）和拖放的文件路径。
+    若返回True，则表示该文件可以被拖放；否则，则表示该文件不能被拖放。该属性也可以设置为None，表示不对拖放文件进行过滤。
+    默认情况下，该函数使用`_default_dnd_filter`函数进行过滤，该函数会将待拖放的文件的文件名与文件过滤器进行匹配，若命中任意文件过滤器，则返回True，
+    否则返回False。比如，若文件过滤器为'Text files (*.txt);;Python files (*.py)', 则文件'hello.txt'可以被拖放，因为其命中了'Text files (*.txt)';
+    文件'hello.py'也可以被拖放，因为其命中了'Python files (*.py)'；文件'hello.png'则不能被拖放，因为其没有命中任何文件过滤器。"""
 
     normalize_path: bool = False
     """是否将路径标准化。若设置为True，则在获取路径时，将使用os.path.normpath()函数进行标准化"""
@@ -232,5 +256,11 @@ class MultiFileSelect(CommonParameterWidget):
             self._norm_path(f)
             for f in (url.toLocalFile() for url in urls)
             if os.path.isfile(f)
+            and (
+                self._config.drag_n_drop_filter is None
+                or self._config.drag_n_drop_filter(self._config.filters, f) is True
+            )
         ]
+        if not paths:
+            return
         self.set_value(paths)
