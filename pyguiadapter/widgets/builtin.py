@@ -37,6 +37,7 @@ from .extend import (
     DirSelect,
     FileSelect,
     MultiFileSelect,
+    FileListEdit,
 )
 from ..parser.typenames import (
     TYPE_STR,
@@ -79,6 +80,7 @@ from ..extend_types import (
     string_list_t,
     plain_dict_t,
     color_t,
+    file_list_t,
 )
 
 TYPE_TEXT = text_t.__name__
@@ -104,6 +106,7 @@ TYPE_COLOR_T = color_t.__name__
 TYPE_KEY_SEQUENCE_T = key_sequence_t.__name__
 TYPE_STRING_LIST_T = string_list_t.__name__
 TYPE_PLAIN_DICT_T = plain_dict_t.__name__
+TYPE_FILE_LIST_T = file_list_t.__name__
 
 
 BUILTIN_WIDGETS_MAP = {
@@ -150,6 +153,7 @@ BUILTIN_WIDGETS_MAP = {
     TYPE_KEY_SEQUENCE_T: KeySequenceEdit,
     TYPE_STRING_LIST_T: StringListEdit,
     TYPE_PLAIN_DICT_T: PlainDictEdit,
+    TYPE_FILE_LIST_T: FileListEdit,
 }
 
 # noinspection PyProtectedMember
