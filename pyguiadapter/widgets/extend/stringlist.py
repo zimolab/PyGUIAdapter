@@ -10,10 +10,7 @@ from ... import utils
 from ...utils import type_check
 
 TextElideMode = Qt.TextElideMode
-ElideLeft = TextElideMode.ElideLeft
-ElideMiddle = TextElideMode.ElideMiddle
-ElideRight = TextElideMode.ElideRight
-ElideNone = TextElideMode.ElideNone
+"""文本省略模式"""
 
 
 @dataclasses.dataclass(frozen=True)
@@ -77,10 +74,10 @@ class StringListEditConfig(CommonParameterWidgetConfig):
     confirm_clear: bool = True
     """是否显示清空确认对话框"""
 
-    remove_confirm_message: str = "Are you sure to remove the selected item(s)?"
+    remove_confirm_message: str = "Are you sure to remove the selected item?"
     """移除确认对话框消息"""
 
-    clear_confirm_message: str = "Are you sure to clear all of the items?"
+    clear_confirm_message: str = "Are you sure to remove all items?"
     """清空确认对话框消息"""
 
     no_selection_message: str = "No items are selected!"
@@ -92,7 +89,7 @@ class StringListEditConfig(CommonParameterWidgetConfig):
     wrapping: bool = False
     """是否允许换行"""
 
-    text_elide_mode: TextElideMode = TextElideMode.ElideLeft
+    text_elide_mode: Optional[TextElideMode] = TextElideMode.ElideNone
     """文本省略模式"""
 
     alternating_row_colors: bool = True
@@ -111,6 +108,18 @@ class StringListEditConfig(CommonParameterWidgetConfig):
 
 class StringListEdit(CommonParameterWidget):
     ConfigClass = StringListEditConfig
+
+    ElideLeft = TextElideMode.ElideLeft
+    """文本省略模式：省略左边"""
+
+    ElideMiddle = TextElideMode.ElideMiddle
+    """文本省略模式：省略中间"""
+
+    ElideRight = TextElideMode.ElideRight
+    """文本省略模式：省略右边"""
+
+    ElideNone = TextElideMode.ElideNone
+    """文本省略模式：不省略"""
 
     def __init__(
         self,
@@ -147,10 +156,19 @@ class StringListEdit(CommonParameterWidget):
             if self._config.drag_enabled:
                 self._list_view.setDragDropMode(QListView.InternalMove)
                 self._list_view.setDefaultDropAction(Qt.DropAction.TargetMoveAction)
-                self._list_view.setMovement(QListView.Snap)
                 self._list_view.setDragDropOverwriteMode(False)
+
             self._list_view.setWrapping(self._config.wrapping)
-            self._list_view.setTextElideMode(self._config.text_elide_mode)
+
+            if self._config.text_elide_mode is not None:
+                self._list_view.setTextElideMode(self._config.text_elide_mode)
+                if self._config.text_elide_mode == TextElideMode.ElideNone:
+                    self._list_view.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+                else:
+                    self._list_view.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+            else:
+                self._list_view.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+
             self._list_view.setAlternatingRowColors(self._config.alternating_row_colors)
 
             self._model = QStringListModel(self._value_widget)

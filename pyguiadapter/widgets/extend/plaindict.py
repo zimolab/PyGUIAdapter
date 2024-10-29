@@ -26,7 +26,10 @@ from ...codeeditor import JsonFormatter
 from ...utils import type_check
 
 TextElideMode = Qt.TextElideMode
+"""文本省略模式"""
+
 GridStyle = Qt.PenStyle
+"""网格线样式"""
 
 
 @dataclasses.dataclass(frozen=True)
@@ -57,13 +60,13 @@ class PlainDictEditConfig(CommonParameterWidgetConfig):
     show_grid: bool = True
     """是否显示网格线"""
 
-    grid_style: GridStyle = GridStyle.SolidLine
+    grid_style: Optional[GridStyle] = GridStyle.SolidLine
     """网格线样式"""
 
     alternating_row_colors: bool = True
     """是否交替显示行颜色"""
 
-    text_elide_mode: TextElideMode = TextElideMode.ElideRight
+    text_elide_mode: Optional[TextElideMode] = TextElideMode.ElideRight
     """文本省略模式"""
 
     corner_button_enabled: bool = True
@@ -92,10 +95,10 @@ class PlainDictEditConfig(CommonParameterWidgetConfig):
     no_selection_message: str = "No item selected!"
     """没有选择项时的提示信息"""
 
-    confirm_remove_message: str = "Are you sure to remove the selected item(s)?"
+    confirm_remove_message: str = "Are you sure to remove the selected item?"
     """移除项时的确认对话框信息"""
 
-    confirm_clear_message: str = "Are you sure to clear all items?"
+    confirm_clear_message: str = "Are you sure to remove all items?"
     """清空项时的确认对话框信息"""
 
     edit_item_title: str = "Edit - {}"
@@ -120,6 +123,33 @@ class PlainDictEditConfig(CommonParameterWidgetConfig):
 
 class PlainDictEdit(CommonParameterWidget):
     ConfigClass = PlainDictEditConfig
+
+    ElideLeft = TextElideMode.ElideLeft
+    """文本省略模式：省略左边"""
+
+    ElideMiddle = TextElideMode.ElideMiddle
+    """文本省略模式：省略中间"""
+
+    ElideRight = TextElideMode.ElideRight
+    """文本省略模式：省略右边"""
+
+    ElideNone = TextElideMode.ElideNone
+    """文本省略模式：不省略"""
+
+    SolidLine = GridStyle.SolidLine
+    """网格线样式：实线"""
+
+    DashLine = GridStyle.DashLine
+    """网格线样式：虚线"""
+
+    DotLine = GridStyle.DotLine
+    """网格线样式：点线"""
+
+    DashDotLine = GridStyle.DashDotLine
+    """网格线样式：点划线"""
+
+    NoGridLine = GridStyle.NoPen
+    """网格线样式：无线"""
 
     def __init__(
         self,
@@ -154,12 +184,18 @@ class PlainDictEdit(CommonParameterWidget):
                 self._table_view.setMinimumWidth(self._config.width)
             self._table_view.setSortingEnabled(False)
             self._table_view.setDragEnabled(False)
-            self._table_view.setTextElideMode(self._config.text_elide_mode)
+
+            if self._config.text_elide_mode is not None:
+                self._table_view.setTextElideMode(self._config.text_elide_mode)
+
             self._table_view.setAlternatingRowColors(
                 self._config.alternating_row_colors
             )
-            self._table_view.setShowGrid(self._config.show_grid)
-            self._table_view.setGridStyle(self._config.grid_style)
+
+            if self._config.grid_style is not None:
+                self._table_view.setShowGrid(self._config.show_grid)
+                self._table_view.setGridStyle(self._config.grid_style)
+
             self._table_view.setCornerButtonEnabled(self._config.corner_button_enabled)
             self._table_view.verticalHeader().setVisible(
                 self._config.vertical_header_visible
