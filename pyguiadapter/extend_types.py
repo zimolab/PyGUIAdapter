@@ -93,3 +93,8 @@ class plain_dict_t(dict):
 # noinspection PyPep8Naming
 class json_obj_t(object):
     pass
+
+
+# noinspection PyPep8Naming
+class file_list_t(list):
+    pass
