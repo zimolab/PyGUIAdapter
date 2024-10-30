@@ -166,8 +166,19 @@ class ColorPicker(CommonParameterWidget):
         )
 
 
+@dataclasses.dataclass(frozen=True)
+class ColorTuplePickerConfig(ColorPickerConfig):
+    """ColorTuplePicker的配置类"""
+
+    return_type = "tuple"
+
+    @classmethod
+    def target_widget_class(cls) -> Type["ColorTuplePicker"]:
+        return ColorTuplePicker
+
+
 class ColorTuplePicker(ColorPicker):
-    ConfigClass = ColorPickerConfig
+    ConfigClass = ColorTuplePickerConfig
 
     def __init__(
         self,
@@ -179,8 +190,19 @@ class ColorTuplePicker(ColorPicker):
         super().__init__(parent, parameter_name, config)
 
 
+@dataclasses.dataclass(frozen=True)
+class ColorHexPickerConfig(ColorPickerConfig):
+    """ColorHexPicker的配置类"""
+
+    return_type = "str"
+
+    @classmethod
+    def target_widget_class(cls) -> Type["ColorHexPicker"]:
+        return ColorHexPicker
+
+
 class ColorHexPicker(ColorPicker):
-    ConfigClass = ColorPickerConfig
+    ConfigClass = ColorHexPickerConfig
 
     def __init__(
         self,
