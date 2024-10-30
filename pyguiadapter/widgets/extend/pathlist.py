@@ -70,6 +70,7 @@ class PathEditDialog(QDialog):
         current_value: str,
         config: Optional[PathEditDialogConfig] = None,
     ):
+
         super().__init__(parent)
 
         self._config = config or PathEditDialogConfig()
@@ -125,9 +126,9 @@ class PathEditDialog(QDialog):
     def _on_add_file(self):
         file_path = utils.get_open_file(
             self,
-            self._file_dialog_title,
-            self._start_dir,
-            self._file_filters,
+            self._config.file_dialog_title,
+            self._config.start_dir,
+            self._config.file_filters,
         )
         if not file_path:
             return
@@ -136,8 +137,8 @@ class PathEditDialog(QDialog):
     def _on_add_dir(self):
         dir_path = utils.get_existing_directory(
             self,
-            self._dir_dialog_title,
-            self._start_dir,
+            self._config.dir_dialog_title,
+            self._config.start_dir,
         )
         if not dir_path:
             return
@@ -256,6 +257,8 @@ class PathListEditConfig(CommonParameterWidgetConfig):
 
 
 class PathListEdit(CommonParameterWidget):
+    """路径列表控件，可以用于存放多个路径，支持文件和目录。"""
+
     ConfigClass = PathListEditConfig
 
     ElideLeft = TextElideMode.ElideLeft
@@ -551,7 +554,22 @@ class PathListEdit(CommonParameterWidget):
         del edit_dialog
 
 
+@dataclasses.dataclass(frozen=True)
+class FileListEditConfig(PathListEditConfig):
+    """文件列表控件的配置"""
+
+    add_files = True
+    add_dirs = False
+
+    def target_widget_class(self) -> Type["FileListEdit"]:
+        return FileListEdit
+
+
 class FileListEdit(PathListEdit):
+    """文件列表控件，继承自`PathListEdit`，用于存放文件路径。"""
+
+    ConfigClass = FileListEditConfig
+
     def __init__(
         self, parent: Optional[QWidget], parameter_name: str, config: PathListEditConfig
     ):
@@ -563,7 +581,23 @@ def _is_directory(_: str, path: str) -> bool:
     return os.path.isdir(path)
 
 
+@dataclasses.dataclass(frozen=True)
+class DirectoryListEditConfig(PathListEditConfig):
+    """文件列表控件的配置"""
+
+    add_files = False
+    add_dirs = True
+    file_filters = ""
+
+    def target_widget_class(self) -> Type["DirectoryListEdit"]:
+        return DirectoryListEdit
+
+
 class DirectoryListEdit(PathListEdit):
+    """目录列表控件，继承自`PathListEdit`，用于存放目录路径。"""
+
+    ConfigClass = DirectoryListEditConfig
+
     def __init__(
         self, parent: Optional[QWidget], parameter_name: str, config: PathListEditConfig
     ):

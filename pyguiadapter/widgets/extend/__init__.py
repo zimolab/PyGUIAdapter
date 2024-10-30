@@ -23,7 +23,15 @@ from .intedit import IntLineEditConfig, IntLineEdit
 from .floatedit import FloatLineEditConfig, FloatLineEdit
 from .jsonedit import JsonEditConfig, JsonEdit
 from .textedit import TextEdit, TextEditConfig
-from .pathlist import PathListEdit, PathListEditConfig, FileListEdit, DirectoryListEdit
+from .pathlist import (
+    PathListEdit,
+    PathListEditConfig,
+    FileListEdit,
+    DirectoryListEdit,
+    PathEditDialogConfig,
+    FileListEditConfig,
+    DirectoryListEditConfig,
+)
 
 __all__ = [
     "IntLineEdit",
@@ -63,4 +71,7 @@ __all__ = [
     "FileListEdit",
     "DirectoryListEdit",
     "PathListEditConfig",
+    "PathEditDialogConfig",
+    "FileListEditConfig",
+    "DirectoryListEditConfig",
 ]
