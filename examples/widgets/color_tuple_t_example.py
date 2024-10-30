@@ -1,7 +1,7 @@
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.adapter.uoutput import uprint
 from pyguiadapter.extend_types import color_tuple_t
-from pyguiadapter.widgets import ColorPickerConfig
+from pyguiadapter.widgets import ColorTuplePickerConfig
 
 
 def color_tuple_t_example(
@@ -28,8 +28,10 @@ def color_tuple_t_example(
 
 
 if __name__ == "__main__":
-    arg2_conf = ColorPickerConfig(default_value=(25, 25, 25, 255), alpha_channel=True)
-    arg3_conf = ColorPickerConfig(display_color_name=False)
+    arg2_conf = ColorTuplePickerConfig(
+        default_value=(25, 25, 25, 255), alpha_channel=True
+    )
+    arg3_conf = ColorTuplePickerConfig(display_color_name=False)
     adapter = GUIAdapter()
     adapter.add(
         color_tuple_t_example, widget_configs={"arg2": arg2_conf, "arg3": arg3_conf}
