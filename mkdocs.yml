@@ -75,6 +75,7 @@ nav:
     - pyguiadapter.widgets.plaindict: apis/pyguiadapter.widgets.plaindict.md
     - pyguiadapter.widgets.stringlist: apis/pyguiadapter.widgets.stringlist.md
     - pyguiadapter.widgets.textedit: apis/pyguiadapter.widgets.textedit.md
+    - pyguiadapter.widgets.pathlist: apis/pyguiadapter.widgets.pathlist.md
   - 贡献: contribution.md
   - 开源许可: license.md
   - 版本历史: changelog.md

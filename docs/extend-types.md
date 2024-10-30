@@ -1307,3 +1307,232 @@ if __name__ == "__main__":
 <div style="text-align: center">
     <img src="../assets/files_t_example.png" />
 </div>
+
+---
+
+## （十七）`path_list_t`类型
+
+### 0、说明
+`List[str]`类型的扩展类型，语义上代表一个路径列表，支持添加文件路径和文件夹路径。
+
+### 1、默认控件
+
+- [`PathListEdit`](apis/pyguiadapter.widgets.pathlist.md#pyguiadapter.widgets.PathListEdit)
+- 外观
+
+<div style="text-align: center">
+    <img src="../assets/path_list_t.png" />
+</div>
+
+
+
+### 2、可配置属性
+
+参见配置类：[`PathListEditConfig`](apis/pyguiadapter.widgets.pathlist.md#pyguiadapter.widgets.PathListEditConfig)
+
+### 3、示例
+
+```python
+from pyguiadapter.adapter import GUIAdapter
+from pyguiadapter.adapter.uoutput import uprint
+from pyguiadapter.extend_types import path_list_t
+from pyguiadapter.widgets import PathListEdit, PathListEditConfig
+
+
+def path_list_t_example(arg1: path_list_t, arg2: path_list_t, arg3: path_list_t):
+    """
+    This is an example for **path_list_t** type hint and **PathListEdit** widget.
+
+    Args:
+        arg1: description of arg1
+        arg2: description of arg2
+        arg3: description of arg3
+
+    Returns:
+    """
+    uprint(arg1)
+    uprint(arg2)
+    uprint(arg3)
+
+
+if __name__ == "__main__":
+    adapter = GUIAdapter()
+    adapter.add(
+        path_list_t_example,
+        widget_configs={
+            "arg1": PathListEditConfig(
+                add_files=True,
+                add_dirs=True,
+                file_filters="Python Files (*.py);;Json Files (*.json)",
+                text_elide_mode=PathListEdit.ElideNone,
+                drag_n_drop=True,
+            ),
+            "arg2": PathListEditConfig(
+                add_files=True,
+                add_dirs=False,
+                file_filters="Python Files (*.py);;Json Files (*.json)",
+                text_elide_mode=PathListEdit.ElideRight,
+                drag_n_drop=True,
+            ),
+            "arg3": PathListEditConfig(
+                add_files=False,
+                add_dirs=True,
+                text_elide_mode=PathListEdit.ElideLeft,
+                drag_n_drop=True,
+            ),
+        },
+    )
+    adapter.run()
+```
+
+<div style="text-align: center">
+    <img src="../assets/path_list_t_example.gif" />
+</div>
+
+---
+
+## （十八）`file_list_t`类型
+
+### 0、说明
+`List[str]`类型的扩展类型，语义上代表一个路径列表，支持添加文件路径。
+
+### 1、默认控件
+
+- [`FileListEdit`](apis/pyguiadapter.widgets.pathlist.md#pyguiadapter.widgets.FileListEdit)
+- 外观
+
+<div style="text-align: center">
+    <img src="../assets/file_list_t.png" />
+</div>
+
+
+
+### 2、可配置属性
+
+参见配置类：[`FileListEditConfig`](apis/pyguiadapter.widgets.pathlist.md#pyguiadapter.widgets.FileListEditConfig)
+
+### 3、示例
+
+```python
+from pyguiadapter.adapter import GUIAdapter
+from pyguiadapter.adapter.uoutput import uprint
+from pyguiadapter.extend_types import file_list_t
+from pyguiadapter.widgets import FileListEditConfig, FileListEdit
+
+
+def file_list_t_example(arg1: file_list_t, arg2: file_list_t, arg3: file_list_t):
+    """
+    This is an example for **file_list_t** type hint and **FileListEdit** widget.
+
+    Args:
+        arg1: description of arg1
+        arg2: description of arg2
+        arg3: description of arg3
+
+    Returns:
+    """
+    uprint(arg1)
+    uprint(arg2)
+    uprint(arg3)
+
+
+if __name__ == "__main__":
+    adapter = GUIAdapter()
+    adapter.add(
+        file_list_t_example,
+        widget_configs={
+            "arg1": FileListEditConfig(
+                file_filters="Python Files (*.py);;Json Files (*.json)",
+                text_elide_mode=FileListEdit.ElideNone,
+                drag_n_drop=True,
+            ),
+            "arg2": FileListEditConfig(
+                file_filters="Python Files (*.py);;Json Files (*.json)",
+                text_elide_mode=FileListEdit.ElideRight,
+                drag_n_drop=True,
+            ),
+            "arg3": FileListEditConfig(
+                text_elide_mode=FileListEdit.ElideLeft,
+                drag_n_drop=True,
+            ),
+        },
+    )
+    adapter.run()
+```
+
+<div style="text-align: center">
+    <img src="../assets/file_list_t_example.gif" />
+</div>
+
+---
+
+## （十九）`dir_list_t`类型
+
+### 0、说明
+`List[str]`类型的扩展类型，语义上代表一个路径列表，支持添加文件夹路径。
+
+### 1、默认控件
+
+- [`DirectoryListEdit`](apis/pyguiadapter.widgets.pathlist.md#pyguiadapter.widgets.DirectoryListEdit)
+- 外观
+
+<div style="text-align: center">
+    <img src="../assets/dir_list_t.png" />
+</div>
+
+
+
+### 2、可配置属性
+
+参见配置类：[`DirectoryListEditConfig`](apis/pyguiadapter.widgets.pathlist.md#pyguiadapter.widgets.DirectoryListEditConfig)
+
+### 3、示例
+
+```python
+from pyguiadapter.adapter import GUIAdapter
+from pyguiadapter.adapter.uoutput import uprint
+from pyguiadapter.extend_types import dir_list_t
+from pyguiadapter.widgets import DirectoryListEditConfig, DirectoryListEdit
+
+
+def dir_list_t_example(arg1: dir_list_t, arg2: dir_list_t, arg3: dir_list_t):
+    """
+    This is an example for **dir_list_t** type hint and **DirectoryListEdit** widget.
+
+    Args:
+        arg1: description of arg1
+        arg2: description of arg2
+        arg3: description of arg3
+
+    Returns:
+    """
+    uprint(arg1)
+    uprint(arg2)
+    uprint(arg3)
+
+
+if __name__ == "__main__":
+    adapter = GUIAdapter()
+    adapter.add(
+        dir_list_t_example,
+        widget_configs={
+            "arg1": DirectoryListEditConfig(
+                text_elide_mode=DirectoryListEdit.ElideNone,
+                drag_n_drop=True,
+            ),
+            "arg2": DirectoryListEditConfig(
+                text_elide_mode=DirectoryListEdit.ElideRight,
+                drag_n_drop=True,
+            ),
+            "arg3": DirectoryListEditConfig(
+                text_elide_mode=DirectoryListEdit.ElideLeft,
+                drag_n_drop=True,
+            ),
+        },
+    )
+    adapter.run()
+```
+
+<div style="text-align: center">
+    <img src="../assets/dir_list_t_example.gif" />
+</div>
