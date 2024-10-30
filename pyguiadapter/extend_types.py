@@ -96,5 +96,15 @@ class json_obj_t(object):
 
 
 # noinspection PyPep8Naming
+class path_list_t(list):
+    pass
+
+
+# noinspection PyPep8Naming
 class file_list_t(list):
+    pass
+
+
+# noinspection PyPep8Naming
+class dir_list_t(list):
     pass

@@ -25,33 +25,57 @@ TextElideMode = Qt.TextElideMode
 """文本省略模式"""
 
 
+@dataclasses.dataclass(frozen=True)
+class PathEditDialogConfig(object):
+    """PathEditDialog的配置类。"""
+
+    title: str = "Edit Path"
+    """对话框标题"""
+
+    select_file: bool = True
+    """是否开启选择文件功能"""
+
+    select_dir: bool = True
+    """是否开启选择目录功能"""
+
+    select_file_button_text: str = "File"
+    """选择文件按钮文本"""
+
+    select_dir_button_text: str = "Directory"
+    """选择目录按钮文本"""
+
+    cancel_button_text: str = "Cancel"
+    """取消按钮文本"""
+
+    confirm_button_text: str = "Confirm"
+    """确认按钮文本"""
+
+    file_dialog_title: str = "Select File"
+    """文件对话框标题"""
+
+    dir_dialog_title: str = "Select Directory"
+    """目录对话框标题"""
+
+    file_filters: str = ""
+    """文件过滤器"""
+
+    start_dir: str = ""
+    """起始路径"""
+
+
 class PathEditDialog(QDialog):
     def __init__(
         self,
         parent: QWidget,
         current_value: str,
-        select_file: bool,
-        select_dir: bool,
-        file_filters: str,
-        start_dir: str,
-        *,
-        title: str = "Edit Path",
-        select_file_button_text: str = "File",
-        select_dir_button_text: str = "Directory",
-        cancel_button_text: str = "Cancel",
-        confirm_button_text: str = "Confirm",
-        file_dialog_title: str = "Select File",
-        dir_dialog_title: str = "Select Directory",
+        config: Optional[PathEditDialogConfig] = None,
     ):
         super().__init__(parent)
 
-        self._file_dialog_title = file_dialog_title
-        self._dir_dialog_title = dir_dialog_title
-        self._file_filters = file_filters
-        self._start_dir = start_dir
+        self._config = config or PathEditDialogConfig()
         self._current_value = current_value
 
-        self.setWindowTitle(title)
+        self.setWindowTitle(self._config.title)
         self.setModal(True)
         self.resize(450, 150)
 
@@ -67,27 +91,31 @@ class PathEditDialog(QDialog):
         button_layout.addSpacerItem(
             QSpacerItem(0, 0, QSizePolicy.Expanding, QSizePolicy.Minimum)
         )
-        if select_file:
-            self._add_file_button = QPushButton(select_file_button_text, self)
+        if self._config.select_file:
+            self._add_file_button = QPushButton(
+                self._config.select_file_button_text, self
+            )
             # noinspection PyUnresolvedReferences
             self._add_file_button.clicked.connect(self._on_add_file)
             button_layout.addWidget(self._add_file_button)
 
-        if select_dir:
-            self._add_dir_button = QPushButton(select_dir_button_text, self)
+        if self._config.select_dir:
+            self._add_dir_button = QPushButton(
+                self._config.select_dir_button_text, self
+            )
             # noinspection PyUnresolvedReferences
             self._add_dir_button.clicked.connect(self._on_add_dir)
             button_layout.addWidget(self._add_dir_button)
 
-        self._cancel_button = QPushButton(cancel_button_text, self)
-        # noinspection PyUnresolvedReferences
-        self._cancel_button.clicked.connect(self.close)
-        button_layout.addWidget(self._cancel_button)
-
-        self._confirm_button = QPushButton(confirm_button_text, self)
+        self._confirm_button = QPushButton(self._config.confirm_button_text, self)
         # noinspection PyUnresolvedReferences
         self._confirm_button.clicked.connect(self._on_confirm)
         button_layout.addWidget(self._confirm_button)
+
+        self._cancel_button = QPushButton(self._config.cancel_button_text, self)
+        # noinspection PyUnresolvedReferences
+        self._cancel_button.clicked.connect(self.close)
+        button_layout.addWidget(self._cancel_button)
 
         layout.addLayout(button_layout)
         layout.addSpacerItem(
@@ -125,8 +153,8 @@ class PathEditDialog(QDialog):
 
 
 @dataclasses.dataclass(frozen=True)
-class FileListEditConfig(CommonParameterWidgetConfig):
-    """StringListEdit的配置类。"""
+class PathListEditConfig(CommonParameterWidgetConfig):
+    """PathListEdit的配置类。"""
 
     default_value: Optional[List[str]] = dataclasses.field(default_factory=list)
     """默认值"""
@@ -219,16 +247,16 @@ class FileListEditConfig(CommonParameterWidgetConfig):
     否则返回False。比如，若文件过滤器为'Text files (*.txt);;Python files (*.py)', 则文件'hello.txt'可以被拖放，因为其命中了'Text files (*.txt)';
     文件'hello.py'也可以被拖放，因为其命中了'Python files (*.py)'；文件'hello.png'则不能被拖放，因为其没有命中任何文件过滤器。"""
 
-    basename_only: bool = False
-    """是否只显示文件名（全路径将以tooltip形式显示）"""
+    path_edit_dialog_config: Optional[PathEditDialogConfig] = None
+    """编辑路径对话框的配置"""
 
     @classmethod
-    def target_widget_class(cls) -> Type["FileListEdit"]:
-        return FileListEdit
+    def target_widget_class(cls) -> Type["PathListEdit"]:
+        return PathListEdit
 
 
-class FileListEdit(CommonParameterWidget):
-    ConfigClass = FileListEditConfig
+class PathListEdit(CommonParameterWidget):
+    ConfigClass = PathListEditConfig
 
     ElideLeft = TextElideMode.ElideLeft
     """文本省略模式：省略左边"""
@@ -246,7 +274,7 @@ class FileListEdit(CommonParameterWidget):
         self,
         parent: Optional[QWidget],
         parameter_name: str,
-        config: FileListEditConfig,
+        config: PathListEditConfig,
     ):
         self._value_widget: Optional[QWidget] = None
         self._list_view: Optional[QListView] = None
@@ -260,7 +288,7 @@ class FileListEdit(CommonParameterWidget):
 
     @property
     def value_widget(self) -> QWidget:
-        self._config: FileListEditConfig
+        self._config: PathListEditConfig
         if self._value_widget is None:
             self._value_widget = QWidget(self)
             layout_main = QVBoxLayout()
@@ -351,7 +379,7 @@ class FileListEdit(CommonParameterWidget):
         self._append_items(value)
 
     def get_value_from_widget(self) -> List[str]:
-        self._config: FileListEditConfig
+        self._config: PathListEditConfig
         string_list = self._model.stringList()
         if self._config.empty_string_strategy == "keep_all":
             return [str(item) for item in string_list]
@@ -368,7 +396,7 @@ class FileListEdit(CommonParameterWidget):
         return True
 
     def on_drop(self, urls: List[QUrl], mime_data: QMimeData):
-        self._config: FileListEditConfig
+        self._config: PathListEditConfig
         if not urls:
             return
         paths = [
@@ -384,7 +412,7 @@ class FileListEdit(CommonParameterWidget):
         self._append_items(paths)
 
     def _on_remove_item(self):
-        self._config: FileListEditConfig
+        self._config: PathListEditConfig
         selected = self._list_view.selectedIndexes()
         if not selected:
             utils.show_warning_message(
@@ -406,7 +434,7 @@ class FileListEdit(CommonParameterWidget):
             self._model.removeRow(index.row())
 
     def _on_clear_items(self):
-        self._config: FileListEditConfig
+        self._config: PathListEditConfig
         count = self._model.rowCount()
         if count <= 0:
             return
@@ -422,7 +450,7 @@ class FileListEdit(CommonParameterWidget):
         self._clear_items()
 
     def _on_add_files(self):
-        self._config: FileListEditConfig
+        self._config: PathListEditConfig
         paths = utils.get_open_files(
             self,
             title=self._config.file_dialog_title,
@@ -432,10 +460,10 @@ class FileListEdit(CommonParameterWidget):
         if not paths:
             return
         for path in paths:
-            self._append_item(path, edit=False, set_current=False)
+            self._append_item(path, edit=False, set_current=True)
 
     def _on_add_dirs(self):
-        self._config: FileListEditConfig
+        self._config: PathListEditConfig
         path = utils.get_existing_directory(
             self,
             title=self._config.file_dialog_title,
@@ -443,14 +471,14 @@ class FileListEdit(CommonParameterWidget):
         )
         if not path:
             return
-        self._append_item(path, edit=False, set_current=False)
+        self._append_item(path, edit=False, set_current=True)
 
     def _clear_items(self):
         self._model.removeRows(0, self._model.rowCount())
         self._model.setStringList([])
 
     def _append_item(self, item: str, edit: bool = False, set_current: bool = False):
-        self._config: FileListEditConfig
+        self._config: PathListEditConfig
         if item is None:
             item = ""
 
@@ -492,21 +520,23 @@ class FileListEdit(CommonParameterWidget):
         return ret
 
     def _on_double_clicked(self, index: QModelIndex):
-        self._config: FileListEditConfig
+        self._config: PathListEditConfig
         if not index or not index.isValid():
             return
         current_value = self._model.data(index, Qt.DisplayRole)
 
+        if self._config.path_edit_dialog_config is None:
+            dialog_config = PathEditDialogConfig(
+                select_dir=self._config.add_dirs,
+                select_file=self._config.add_files,
+                file_filters=self._config.file_filters,
+                start_dir=self._config.start_dir,
+            )
+        else:
+            dialog_config = self._config.path_edit_dialog_config
+
         edit_dialog = PathEditDialog(
-            self,
-            current_value=current_value,
-            select_file=self._config.add_files,
-            select_dir=self._config.add_dirs,
-            file_filters=self._config.file_filters,
-            start_dir=self._config.start_dir,
-            title="Edit Path",
-            file_dialog_title=self._config.file_dialog_title,
-            dir_dialog_title=self._config.dir_dialog_title,
+            self, current_value=current_value, config=dialog_config
         )
         ret = edit_dialog.exec_()
         if ret == QDialog.Accepted:
@@ -519,3 +549,25 @@ class FileListEdit(CommonParameterWidget):
                 self._model.setData(index, new_value)
         edit_dialog.deleteLater()
         del edit_dialog
+
+
+class FileListEdit(PathListEdit):
+    def __init__(
+        self, parent: Optional[QWidget], parameter_name: str, config: PathListEditConfig
+    ):
+        config = dataclasses.replace(config, add_files=True, add_dirs=False)
+        super().__init__(parent, parameter_name, config)
+
+
+def _is_directory(_: str, path: str) -> bool:
+    return os.path.isdir(path)
+
+
+class DirectoryListEdit(PathListEdit):
+    def __init__(
+        self, parent: Optional[QWidget], parameter_name: str, config: PathListEditConfig
+    ):
+        config = dataclasses.replace(
+            config, add_files=False, add_dirs=True, drag_n_drop_filter=_is_directory
+        )
+        super().__init__(parent, parameter_name, config)
