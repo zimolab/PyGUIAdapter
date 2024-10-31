@@ -1538,3 +1538,72 @@ if __name__ == "__main__":
 <div style="text-align: center">
     <img src="../assets/dir_list_t_example.gif" />
 </div>
+
+---
+
+## （二十）`font_t`类型
+
+### 0、说明
+`str`类型的扩展类型，语义上代表一个字体名称，提供下拉框供用户选择当前系统已安装字体。
+
+### 1、默认控件
+
+- [`FontSelect`](apis/pyguiadapter.widgets.fontselect.md#pyguiadapter.widgets.FontSelect)
+- 外观
+
+<div style="text-align: center">
+    <img src="../assets/font_t.png" />
+</div>
+
+
+
+### 2、可配置属性
+
+参见配置类：[`FontSelectConfig`](apis/pyguiadapter.widgets.fontselect.md#pyguiadapter.widgets.FontSelectConfig)
+
+### 3、示例
+
+```python
+from pyguiadapter.adapter import GUIAdapter
+from pyguiadapter.adapter.uoutput import uprint
+from pyguiadapter.extend_types import font_t
+from pyguiadapter.widgets import FontSelectConfig, FontSelect
+
+
+def font_t_example(arg1: font_t, arg2: font_t, arg3: font_t):
+    """
+    This is an example for **font_t** type hint and **FontSelect** widget.
+
+    Args:
+        arg1: description of arg1.
+        arg2: description of arg2.
+        arg3: description of arg3.
+    """
+    uprint("arg1: ", arg1)
+    uprint("arg2: ", arg2)
+    uprint("arg3: ", arg3)
+
+
+if __name__ == "__main__":
+    adapter = GUIAdapter()
+    adapter.add(
+        font_t_example,
+        widget_configs={
+            "arg1": FontSelectConfig(
+                default_value="Arial",
+                font_filters=FontSelect.MonospacedFonts,
+            ),
+            "arg2": FontSelectConfig(
+                font_filters=FontSelect.ProportionalFonts,
+            ),
+            "arg3": FontSelectConfig(
+                font_filters=FontSelect.MonospacedFonts | FontSelect.ProportionalFonts,
+            ),
+        },
+    )
+    adapter.run()
+```
+
+<div style="text-align: center">
+    <img src="../assets/font_t_example.png" />
+</div>
