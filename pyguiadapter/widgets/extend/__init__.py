@@ -34,6 +34,8 @@ from .pathlist import (
     FileListEditConfig,
     DirectoryListEditConfig,
 )
+from .fontselect import FontSelect, FontSelectConfig
+
 
 __all__ = [
     "IntLineEdit",
@@ -78,4 +80,6 @@ __all__ = [
     "PathEditDialogConfig",
     "FileListEditConfig",
     "DirectoryListEditConfig",
+    "FontSelect",
+    "FontSelectConfig",
 ]
