@@ -40,6 +40,7 @@ from .extend import (
     PathListEdit,
     FileListEdit,
     DirectoryListEdit,
+    FontSelect,
 )
 from ..parser.typenames import (
     TYPE_STR,
@@ -85,6 +86,7 @@ from ..extend_types import (
     path_list_t,
     file_list_t,
     dir_list_t,
+    font_t,
 )
 
 TYPE_TEXT = text_t.__name__
@@ -113,6 +115,7 @@ TYPE_PLAIN_DICT_T = plain_dict_t.__name__
 TYPE_PATH_LIST_T = path_list_t.__name__
 TYPE_FILE_LIST_T = file_list_t.__name__
 TYPE_DIR_LIST_T = dir_list_t.__name__
+TYPE_FONT_T = font_t.__name__
 
 
 BUILTIN_WIDGETS_MAP = {
@@ -162,6 +165,7 @@ BUILTIN_WIDGETS_MAP = {
     TYPE_PATH_LIST_T: PathListEdit,
     TYPE_FILE_LIST_T: FileListEdit,
     TYPE_DIR_LIST_T: DirectoryListEdit,
+    TYPE_FONT_T: FontSelect,
 }
 
 # noinspection PyProtectedMember

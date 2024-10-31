@@ -108,3 +108,8 @@ class file_list_t(list):
 # noinspection PyPep8Naming
 class dir_list_t(list):
     pass
+
+
+# noinspection PyPep8Naming
+class font_t(str):
+    pass
