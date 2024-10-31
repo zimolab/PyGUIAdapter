@@ -16,7 +16,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.41">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.40">
     
     
       
@@ -24,7 +24,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.0253249f.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.8c3ca2c6.min.css">
       
       
 
@@ -1412,6 +1412,57 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#font_t" class="md-nav__link">
+    <span class="md-ellipsis">
+      （二十）font_t类型
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="（二十）font_t类型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#0_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      0、说明
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      1、默认控件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、可配置属性
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      3、示例
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2712,6 +2763,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apis/pyguiadapter.widgets.fontselect/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.widgets.fontselect
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -3751,6 +3823,57 @@
         
           <li class="md-nav__item">
   <a href="#3_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      3、示例
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#font_t" class="md-nav__link">
+    <span class="md-ellipsis">
+      （二十）font_t类型
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="（二十）font_t类型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#0_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      0、说明
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      1、默认控件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、可配置属性
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_19" class="md-nav__link">
     <span class="md-ellipsis">
       3、示例
     </span>
@@ -5099,6 +5222,65 @@
     <a class="glightbox" href="../assets/dir_list_t_example.gif" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/dir_list_t_example.gif" /></a>
 </div>
 
+<hr />
+<h2 id="font_t">（二十）<code>font_t</code>类型</h2>
+<h3 id="0_18">0、说明</h3>
+<p><code>str</code>类型的扩展类型，语义上代表一个字体名称，提供下拉框供用户选择当前系统已安装字体。</p>
+<h3 id="1_19">1、默认控件</h3>
+<ul>
+<li><a href="../apis/pyguiadapter.widgets.fontselect/#pyguiadapter.widgets.FontSelect"><code>FontSelect</code></a></li>
+<li>外观</li>
+</ul>
+<div style="text-align: center">
+    <a class="glightbox" href="../assets/font_t.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/font_t.png" /></a>
+</div>
+
+<h3 id="2_19">2、可配置属性</h3>
+<p>参见配置类：<a href="../apis/pyguiadapter.widgets.fontselect/#pyguiadapter.widgets.FontSelectConfig"><code>FontSelectConfig</code></a></p>
+<h3 id="3_19">3、示例</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter</span> <span class="kn">import</span> <span class="n">GUIAdapter</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="kn">from</span> <span class="nn">pyguiadapter.adapter.uoutput</span> <span class="kn">import</span> <span class="n">uprint</span>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="kn">from</span> <span class="nn">pyguiadapter.extend_types</span> <span class="kn">import</span> <span class="n">font_t</span>
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="kn">from</span> <span class="nn">pyguiadapter.widgets</span> <span class="kn">import</span> <span class="n">FontSelectConfig</span><span class="p">,</span> <span class="n">FontSelect</span>
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="k">def</span> <span class="nf">font_t_example</span><span class="p">(</span><span class="n">arg1</span><span class="p">:</span> <span class="n">font_t</span><span class="p">,</span> <span class="n">arg2</span><span class="p">:</span> <span class="n">font_t</span><span class="p">,</span> <span class="n">arg3</span><span class="p">:</span> <span class="n">font_t</span><span class="p">):</span>
+<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a><span class="sd">    This is an example for **font_t** type hint and **FontSelect** widget.</span>
+<a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a>
+<a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a><span class="sd">    Args:</span>
+<a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a><span class="sd">        arg1: description of arg1.</span>
+<a id="__codelineno-19-13" name="__codelineno-19-13" href="#__codelineno-19-13"></a><span class="sd">        arg2: description of arg2.</span>
+<a id="__codelineno-19-14" name="__codelineno-19-14" href="#__codelineno-19-14"></a><span class="sd">        arg3: description of arg3.</span>
+<a id="__codelineno-19-15" name="__codelineno-19-15" href="#__codelineno-19-15"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-19-16" name="__codelineno-19-16" href="#__codelineno-19-16"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg1: &quot;</span><span class="p">,</span> <span class="n">arg1</span><span class="p">)</span>
+<a id="__codelineno-19-17" name="__codelineno-19-17" href="#__codelineno-19-17"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg2: &quot;</span><span class="p">,</span> <span class="n">arg2</span><span class="p">)</span>
+<a id="__codelineno-19-18" name="__codelineno-19-18" href="#__codelineno-19-18"></a>    <span class="n">uprint</span><span class="p">(</span><span class="s2">&quot;arg3: &quot;</span><span class="p">,</span> <span class="n">arg3</span><span class="p">)</span>
+<a id="__codelineno-19-19" name="__codelineno-19-19" href="#__codelineno-19-19"></a>
+<a id="__codelineno-19-20" name="__codelineno-19-20" href="#__codelineno-19-20"></a>
+<a id="__codelineno-19-21" name="__codelineno-19-21" href="#__codelineno-19-21"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<a id="__codelineno-19-22" name="__codelineno-19-22" href="#__codelineno-19-22"></a>    <span class="n">adapter</span> <span class="o">=</span> <span class="n">GUIAdapter</span><span class="p">()</span>
+<a id="__codelineno-19-23" name="__codelineno-19-23" href="#__codelineno-19-23"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+<a id="__codelineno-19-24" name="__codelineno-19-24" href="#__codelineno-19-24"></a>        <span class="n">font_t_example</span><span class="p">,</span>
+<a id="__codelineno-19-25" name="__codelineno-19-25" href="#__codelineno-19-25"></a>        <span class="n">widget_configs</span><span class="o">=</span><span class="p">{</span>
+<a id="__codelineno-19-26" name="__codelineno-19-26" href="#__codelineno-19-26"></a>            <span class="s2">&quot;arg1&quot;</span><span class="p">:</span> <span class="n">FontSelectConfig</span><span class="p">(</span>
+<a id="__codelineno-19-27" name="__codelineno-19-27" href="#__codelineno-19-27"></a>                <span class="n">default_value</span><span class="o">=</span><span class="s2">&quot;Arial&quot;</span><span class="p">,</span>
+<a id="__codelineno-19-28" name="__codelineno-19-28" href="#__codelineno-19-28"></a>                <span class="n">font_filters</span><span class="o">=</span><span class="n">FontSelect</span><span class="o">.</span><span class="n">MonospacedFonts</span><span class="p">,</span>
+<a id="__codelineno-19-29" name="__codelineno-19-29" href="#__codelineno-19-29"></a>            <span class="p">),</span>
+<a id="__codelineno-19-30" name="__codelineno-19-30" href="#__codelineno-19-30"></a>            <span class="s2">&quot;arg2&quot;</span><span class="p">:</span> <span class="n">FontSelectConfig</span><span class="p">(</span>
+<a id="__codelineno-19-31" name="__codelineno-19-31" href="#__codelineno-19-31"></a>                <span class="n">font_filters</span><span class="o">=</span><span class="n">FontSelect</span><span class="o">.</span><span class="n">ProportionalFonts</span><span class="p">,</span>
+<a id="__codelineno-19-32" name="__codelineno-19-32" href="#__codelineno-19-32"></a>            <span class="p">),</span>
+<a id="__codelineno-19-33" name="__codelineno-19-33" href="#__codelineno-19-33"></a>            <span class="s2">&quot;arg3&quot;</span><span class="p">:</span> <span class="n">FontSelectConfig</span><span class="p">(</span>
+<a id="__codelineno-19-34" name="__codelineno-19-34" href="#__codelineno-19-34"></a>                <span class="n">font_filters</span><span class="o">=</span><span class="n">FontSelect</span><span class="o">.</span><span class="n">MonospacedFonts</span> <span class="o">|</span> <span class="n">FontSelect</span><span class="o">.</span><span class="n">ProportionalFonts</span><span class="p">,</span>
+<a id="__codelineno-19-35" name="__codelineno-19-35" href="#__codelineno-19-35"></a>            <span class="p">),</span>
+<a id="__codelineno-19-36" name="__codelineno-19-36" href="#__codelineno-19-36"></a>        <span class="p">},</span>
+<a id="__codelineno-19-37" name="__codelineno-19-37" href="#__codelineno-19-37"></a>    <span class="p">)</span>
+<a id="__codelineno-19-38" name="__codelineno-19-38" href="#__codelineno-19-38"></a>    <span class="n">adapter</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre></div>
+<div style="text-align: center">
+    <a class="glightbox" href="../assets/font_t_example.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="../assets/font_t_example.png" /></a>
+</div>
+
 
 
 
@@ -5147,7 +5329,7 @@
     <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.83f73b43.min.js"></script>
+      <script src="../assets/javascripts/bundle.525ec568.min.js"></script>
       
     
   <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});

@@ -2,980 +2,994 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
     <url>
         <loc>None./</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="None"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/"/>
     </url>
     <url>
         <loc>Nonebasic-types/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Nonebasic-types/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/basic-types/"/>
     </url>
     <url>
         <loc>Nonecancel/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Nonecancel/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/cancel/"/>
     </url>
     <url>
         <loc>Nonechangelog/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Nonechangelog/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/changelog/"/>
     </url>
     <url>
         <loc>Nonecontribution/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Nonecontribution/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/contribution/"/>
     </url>
     <url>
         <loc>Nonecustom-widget/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Nonecustom-widget/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/custom-widget/"/>
     </url>
     <url>
         <loc>Noneextend-types/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneextend-types/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/extend-types/"/>
     </url>
     <url>
         <loc>Noneicon_type/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneicon_type/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/icon_type/"/>
     </url>
     <url>
         <loc>Nonelicense/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Nonelicense/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/license/"/>
     </url>
     <url>
         <loc>Nonemenu/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Nonemenu/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/menu/"/>
     </url>
     <url>
         <loc>Nonemultiple-functions/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Nonemultiple-functions/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/multiple-functions/"/>
     </url>
     <url>
         <loc>Nonepackaging/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Nonepackaging/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/packaging/"/>
     </url>
     <url>
         <loc>Noneprogressbar/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneprogressbar/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/progressbar/"/>
     </url>
     <url>
         <loc>Nonequickstart/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Nonequickstart/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/quickstart/"/>
     </url>
     <url>
         <loc>Nonestyle/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Nonestyle/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/style/"/>
     </url>
     <url>
         <loc>Nonetoolbar/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Nonetoolbar/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/toolbar/"/>
     </url>
     <url>
         <loc>Noneuser-interaction/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneuser-interaction/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/user-interaction/"/>
     </url>
     <url>
         <loc>Noneutility/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneutility/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/utility/"/>
     </url>
     <url>
         <loc>Nonewidget-config/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Nonewidget-config/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/widget-config/"/>
     </url>
     <url>
         <loc>Nonewidget-map/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Nonewidget-map/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/widget-map/"/>
     </url>
     <url>
         <loc>Nonewindow/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Nonewindow/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/window/"/>
     </url>
     <url>
         <loc>Noneapis/pyguiadapter.action/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.action/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.action/"/>
     </url>
     <url>
         <loc>Noneapis/pyguiadapter.adapter.adapter/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.adapter.adapter/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.adapter.adapter/"/>
     </url>
     <url>
         <loc>Noneapis/pyguiadapter.adapter.ubeep/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.adapter.ubeep/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.adapter.ubeep/"/>
     </url>
     <url>
         <loc>Noneapis/pyguiadapter.adapter.uclipboard/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.adapter.uclipboard/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.adapter.uclipboard/"/>
     </url>
     <url>
         <loc>Noneapis/pyguiadapter.adapter.ucontext/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.adapter.ucontext/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.adapter.ucontext/"/>
     </url>
     <url>
         <loc>Noneapis/pyguiadapter.adapter.udialog/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.adapter.udialog/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.adapter.udialog/"/>
     </url>
     <url>
         <loc>Noneapis/pyguiadapter.adapter.uinput/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.adapter.uinput/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.adapter.uinput/"/>
     </url>
     <url>
         <loc>Noneapis/pyguiadapter.adapter.uoutput/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.adapter.uoutput/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.adapter.uoutput/"/>
     </url>
     <url>
         <loc>Noneapis/pyguiadapter.adapter.uprogress/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.adapter.uprogress/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.adapter.uprogress/"/>
     </url>
     <url>
         <loc>Noneapis/pyguiadapter.adapter.utoast/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.adapter.utoast/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.adapter.utoast/"/>
     </url>
     <url>
         <loc>Noneapis/pyguiadapter.menu/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.menu/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.menu/"/>
     </url>
     <url>
         <loc>Noneapis/pyguiadapter.paramwidget/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.paramwidget/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.paramwidget/"/>
     </url>
     <url>
         <loc>Noneapis/pyguiadapter.textbrowser/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.textbrowser/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.textbrowser/"/>
     </url>
     <url>
         <loc>Noneapis/pyguiadapter.toast/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.toast/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.toast/"/>
     </url>
     <url>
         <loc>Noneapis/pyguiadapter.toolbar/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.toolbar/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.toolbar/"/>
     </url>
     <url>
         <loc>Noneapis/pyguiadapter.widgets.boolbox/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.boolbox/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.boolbox/"/>
     </url>
     <url>
         <loc>Noneapis/pyguiadapter.widgets.choicebox/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.choicebox/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.choicebox/"/>
     </url>
     <url>
         <loc>Noneapis/pyguiadapter.widgets.colorpicker/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.colorpicker/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.colorpicker/"/>
     </url>
     <url>
         <loc>Noneapis/pyguiadapter.widgets.common/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.common/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.common/"/>
     </url>
     <url>
         <loc>Noneapis/pyguiadapter.widgets.dateedit/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.dateedit/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.dateedit/"/>
     </url>
     <url>
         <loc>Noneapis/pyguiadapter.widgets.datetimeedit/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.datetimeedit/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.datetimeedit/"/>
     </url>
     <url>
         <loc>Noneapis/pyguiadapter.widgets.dial/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.dial/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.dial/"/>
     </url>
     <url>
         <loc>Noneapis/pyguiadapter.widgets.dictedit/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.dictedit/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.dictedit/"/>
     </url>
     <url>
         <loc>Noneapis/pyguiadapter.widgets.dirselect/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.dirselect/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.dirselect/"/>
     </url>
     <url>
         <loc>Noneapis/pyguiadapter.widgets.enumselect/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.enumselect/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.enumselect/"/>
     </url>
     <url>
         <loc>Noneapis/pyguiadapter.widgets.exclusivechoice/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.exclusivechoice/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.exclusivechoice/"/>
     </url>
     <url>
         <loc>Noneapis/pyguiadapter.widgets.fileselect/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.fileselect/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.fileselect/"/>
     </url>
     <url>
         <loc>Noneapis/pyguiadapter.widgets.floatedit/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.floatedit/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.floatedit/"/>
     </url>
     <url>
         <loc>Noneapis/pyguiadapter.widgets.floatspin/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.floatspin/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.floatspin/"/>
     </url>
     <url>
+        <loc>Noneapis/pyguiadapter.widgets.fontselect/</loc>
+        <lastmod>2024-10-31</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.fontselect/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.fontselect/"/>
+    </url>
+    <url>
         <loc>Noneapis/pyguiadapter.widgets.intedit/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.intedit/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.intedit/"/>
     </url>
     <url>
         <loc>Noneapis/pyguiadapter.widgets.intspin/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.intspin/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.intspin/"/>
     </url>
     <url>
         <loc>Noneapis/pyguiadapter.widgets.jsonedit/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.jsonedit/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.jsonedit/"/>
     </url>
     <url>
         <loc>Noneapis/pyguiadapter.widgets.keysequenceedit/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.keysequenceedit/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.keysequenceedit/"/>
     </url>
     <url>
         <loc>Noneapis/pyguiadapter.widgets.lineedit/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.lineedit/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.lineedit/"/>
     </url>
     <url>
         <loc>Noneapis/pyguiadapter.widgets.listedit/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.listedit/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.listedit/"/>
     </url>
     <url>
         <loc>Noneapis/pyguiadapter.widgets.multichoice/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.multichoice/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.multichoice/"/>
     </url>
     <url>
         <loc>Noneapis/pyguiadapter.widgets.pathlist/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.pathlist/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.pathlist/"/>
     </url>
     <url>
         <loc>Noneapis/pyguiadapter.widgets.plaindict/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.plaindict/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.plaindict/"/>
     </url>
     <url>
         <loc>Noneapis/pyguiadapter.widgets.pyliteraledit/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.pyliteraledit/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.pyliteraledit/"/>
     </url>
     <url>
         <loc>Noneapis/pyguiadapter.widgets.setedit/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.setedit/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.setedit/"/>
     </url>
     <url>
         <loc>Noneapis/pyguiadapter.widgets.slider/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.slider/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.slider/"/>
     </url>
     <url>
         <loc>Noneapis/pyguiadapter.widgets.stringlist/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.stringlist/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.stringlist/"/>
     </url>
     <url>
         <loc>Noneapis/pyguiadapter.widgets.textedit/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.textedit/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.textedit/"/>
     </url>
     <url>
         <loc>Noneapis/pyguiadapter.widgets.timeedit/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.timeedit/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.timeedit/"/>
     </url>
     <url>
         <loc>Noneapis/pyguiadapter.widgets.tupleedit/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.tupleedit/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.tupleedit/"/>
     </url>
     <url>
         <loc>Noneapis/pyguiadapter.window/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.window/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.window/"/>
     </url>
     <url>
         <loc>Noneapis/pyguiadapter.windows.fnexec/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.windows.fnexec/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.windows.fnexec/"/>
     </url>
     <url>
         <loc>Noneapis/pyguiadapter.windows.fnselect/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.windows.fnselect/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.windows.fnselect/"/>
     </url>
     <url>
         <loc>Noneapis/pyguiadapter.windows/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.windows/"/>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.windows/"/>
     </url>
     <url>
         <loc>Noneen/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="None"/>
     </url>
     <url>
         <loc>Noneen/basic-types/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/basic-types/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Nonebasic-types/"/>
     </url>
     <url>
         <loc>Noneen/cancel/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/cancel/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Nonecancel/"/>
     </url>
     <url>
         <loc>Noneen/changelog/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/changelog/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Nonechangelog/"/>
     </url>
     <url>
         <loc>Noneen/contribution/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/contribution/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Nonecontribution/"/>
     </url>
     <url>
         <loc>Noneen/custom-widget/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/custom-widget/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Nonecustom-widget/"/>
     </url>
     <url>
         <loc>Noneen/extend-types/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/extend-types/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneextend-types/"/>
     </url>
     <url>
         <loc>Noneen/icon_type/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/icon_type/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneicon_type/"/>
     </url>
     <url>
         <loc>Noneen/license/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/license/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Nonelicense/"/>
     </url>
     <url>
         <loc>Noneen/menu/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/menu/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Nonemenu/"/>
     </url>
     <url>
         <loc>Noneen/multiple-functions/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/multiple-functions/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Nonemultiple-functions/"/>
     </url>
     <url>
         <loc>Noneen/packaging/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/packaging/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Nonepackaging/"/>
     </url>
     <url>
         <loc>Noneen/progressbar/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/progressbar/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneprogressbar/"/>
     </url>
     <url>
         <loc>Noneen/quickstart/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/quickstart/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Nonequickstart/"/>
     </url>
     <url>
         <loc>Noneen/style/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/style/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Nonestyle/"/>
     </url>
     <url>
         <loc>Noneen/toolbar/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/toolbar/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Nonetoolbar/"/>
     </url>
     <url>
         <loc>Noneen/user-interaction/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/user-interaction/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneuser-interaction/"/>
     </url>
     <url>
         <loc>Noneen/utility/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/utility/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneutility/"/>
     </url>
     <url>
         <loc>Noneen/widget-config/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/widget-config/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Nonewidget-config/"/>
     </url>
     <url>
         <loc>Noneen/widget-map/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/widget-map/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Nonewidget-map/"/>
     </url>
     <url>
         <loc>Noneen/window/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/window/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Nonewindow/"/>
     </url>
     <url>
         <loc>Noneen/apis/pyguiadapter.action/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.action/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.action/"/>
     </url>
     <url>
         <loc>Noneen/apis/pyguiadapter.adapter.adapter/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.adapter.adapter/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.adapter.adapter/"/>
     </url>
     <url>
         <loc>Noneen/apis/pyguiadapter.adapter.ubeep/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.adapter.ubeep/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.adapter.ubeep/"/>
     </url>
     <url>
         <loc>Noneen/apis/pyguiadapter.adapter.uclipboard/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.adapter.uclipboard/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.adapter.uclipboard/"/>
     </url>
     <url>
         <loc>Noneen/apis/pyguiadapter.adapter.ucontext/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.adapter.ucontext/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.adapter.ucontext/"/>
     </url>
     <url>
         <loc>Noneen/apis/pyguiadapter.adapter.udialog/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.adapter.udialog/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.adapter.udialog/"/>
     </url>
     <url>
         <loc>Noneen/apis/pyguiadapter.adapter.uinput/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.adapter.uinput/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.adapter.uinput/"/>
     </url>
     <url>
         <loc>Noneen/apis/pyguiadapter.adapter.uoutput/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.adapter.uoutput/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.adapter.uoutput/"/>
     </url>
     <url>
         <loc>Noneen/apis/pyguiadapter.adapter.uprogress/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.adapter.uprogress/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.adapter.uprogress/"/>
     </url>
     <url>
         <loc>Noneen/apis/pyguiadapter.adapter.utoast/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.adapter.utoast/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.adapter.utoast/"/>
     </url>
     <url>
         <loc>Noneen/apis/pyguiadapter.menu/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.menu/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.menu/"/>
     </url>
     <url>
         <loc>Noneen/apis/pyguiadapter.paramwidget/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.paramwidget/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.paramwidget/"/>
     </url>
     <url>
         <loc>Noneen/apis/pyguiadapter.textbrowser/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.textbrowser/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.textbrowser/"/>
     </url>
     <url>
         <loc>Noneen/apis/pyguiadapter.toast/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.toast/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.toast/"/>
     </url>
     <url>
         <loc>Noneen/apis/pyguiadapter.toolbar/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.toolbar/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.toolbar/"/>
     </url>
     <url>
         <loc>Noneen/apis/pyguiadapter.widgets.boolbox/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.boolbox/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.boolbox/"/>
     </url>
     <url>
         <loc>Noneen/apis/pyguiadapter.widgets.choicebox/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.choicebox/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.choicebox/"/>
     </url>
     <url>
         <loc>Noneen/apis/pyguiadapter.widgets.colorpicker/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.colorpicker/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.colorpicker/"/>
     </url>
     <url>
         <loc>Noneen/apis/pyguiadapter.widgets.common/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.common/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.common/"/>
     </url>
     <url>
         <loc>Noneen/apis/pyguiadapter.widgets.dateedit/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.dateedit/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.dateedit/"/>
     </url>
     <url>
         <loc>Noneen/apis/pyguiadapter.widgets.datetimeedit/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.datetimeedit/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.datetimeedit/"/>
     </url>
     <url>
         <loc>Noneen/apis/pyguiadapter.widgets.dial/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.dial/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.dial/"/>
     </url>
     <url>
         <loc>Noneen/apis/pyguiadapter.widgets.dictedit/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.dictedit/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.dictedit/"/>
     </url>
     <url>
         <loc>Noneen/apis/pyguiadapter.widgets.dirselect/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.dirselect/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.dirselect/"/>
     </url>
     <url>
         <loc>Noneen/apis/pyguiadapter.widgets.enumselect/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.enumselect/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.enumselect/"/>
     </url>
     <url>
         <loc>Noneen/apis/pyguiadapter.widgets.exclusivechoice/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.exclusivechoice/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.exclusivechoice/"/>
     </url>
     <url>
         <loc>Noneen/apis/pyguiadapter.widgets.fileselect/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.fileselect/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.fileselect/"/>
     </url>
     <url>
         <loc>Noneen/apis/pyguiadapter.widgets.floatedit/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.floatedit/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.floatedit/"/>
     </url>
     <url>
         <loc>Noneen/apis/pyguiadapter.widgets.floatspin/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.floatspin/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.floatspin/"/>
     </url>
     <url>
+        <loc>Noneen/apis/pyguiadapter.widgets.fontselect/</loc>
+        <lastmod>2024-10-31</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.fontselect/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.fontselect/"/>
+    </url>
+    <url>
         <loc>Noneen/apis/pyguiadapter.widgets.intedit/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.intedit/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.intedit/"/>
     </url>
     <url>
         <loc>Noneen/apis/pyguiadapter.widgets.intspin/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.intspin/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.intspin/"/>
     </url>
     <url>
         <loc>Noneen/apis/pyguiadapter.widgets.jsonedit/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.jsonedit/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.jsonedit/"/>
     </url>
     <url>
         <loc>Noneen/apis/pyguiadapter.widgets.keysequenceedit/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.keysequenceedit/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.keysequenceedit/"/>
     </url>
     <url>
         <loc>Noneen/apis/pyguiadapter.widgets.lineedit/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.lineedit/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.lineedit/"/>
     </url>
     <url>
         <loc>Noneen/apis/pyguiadapter.widgets.listedit/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.listedit/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.listedit/"/>
     </url>
     <url>
         <loc>Noneen/apis/pyguiadapter.widgets.multichoice/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.multichoice/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.multichoice/"/>
     </url>
     <url>
         <loc>Noneen/apis/pyguiadapter.widgets.pathlist/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.pathlist/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.pathlist/"/>
     </url>
     <url>
         <loc>Noneen/apis/pyguiadapter.widgets.plaindict/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.plaindict/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.plaindict/"/>
     </url>
     <url>
         <loc>Noneen/apis/pyguiadapter.widgets.pyliteraledit/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.pyliteraledit/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.pyliteraledit/"/>
     </url>
     <url>
         <loc>Noneen/apis/pyguiadapter.widgets.setedit/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.setedit/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.setedit/"/>
     </url>
     <url>
         <loc>Noneen/apis/pyguiadapter.widgets.slider/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.slider/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.slider/"/>
     </url>
     <url>
         <loc>Noneen/apis/pyguiadapter.widgets.stringlist/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.stringlist/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.stringlist/"/>
     </url>
     <url>
         <loc>Noneen/apis/pyguiadapter.widgets.textedit/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.textedit/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.textedit/"/>
     </url>
     <url>
         <loc>Noneen/apis/pyguiadapter.widgets.timeedit/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.timeedit/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.timeedit/"/>
     </url>
     <url>
         <loc>Noneen/apis/pyguiadapter.widgets.tupleedit/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.widgets.tupleedit/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.widgets.tupleedit/"/>
     </url>
     <url>
         <loc>Noneen/apis/pyguiadapter.window/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.window/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.window/"/>
     </url>
     <url>
         <loc>Noneen/apis/pyguiadapter.windows.fnexec/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.windows.fnexec/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.windows.fnexec/"/>
     </url>
     <url>
         <loc>Noneen/apis/pyguiadapter.windows.fnselect/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.windows.fnselect/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.windows.fnselect/"/>
     </url>
     <url>
         <loc>Noneen/apis/pyguiadapter.windows/</loc>
-        <lastmod>2024-10-30</lastmod>
+        <lastmod>2024-10-31</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneen/apis/pyguiadapter.windows/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="Noneapis/pyguiadapter.windows/"/>
