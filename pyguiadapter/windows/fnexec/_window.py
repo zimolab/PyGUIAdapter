@@ -716,7 +716,9 @@ class FnExecuteWindow(BaseFnExecuteWindow):
         size = self._output_dock.size()
         return size.width(), size.height()
 
-    def resize_document_dock(self, size: Tuple[Optional[int], Optional[int]]) -> None:
+    def resize_document_dock(
+        self, size: Tuple[Union[int, float, None], Union[int, float, None]]
+    ) -> None:
         """
         调整Document Dock尺寸
 
@@ -727,18 +729,21 @@ class FnExecuteWindow(BaseFnExecuteWindow):
         - 在空间有限的情况下，将根据各个停靠窗口的相对大小占比进行可以利用空间的调整
 
         Args:
-            size: 目标尺寸
+            size: 目标尺寸。格式为`(width, height)`，可以只设置其中一个维度，另一个不需要设置的维度置为`None`即可。width和height可以为`int`或`float`, 为`int`时代表width或height的绝对值，为`float`时代表相对于窗口大小的百分比。
 
         Returns:
             无返回值
         """
+        size = self._calc_dock_size(size)
         width, height = size
         if width:
             self.resizeDocks([self._document_dock], [width], Qt.Horizontal)
         if height:
             self.resizeDocks([self._document_dock], [height], Qt.Vertical)
 
-    def resize_output_dock(self, size: Tuple[Optional[int], Optional[int]]) -> None:
+    def resize_output_dock(
+        self, size: Tuple[Union[int, float, None], Union[int, float, None]]
+    ) -> None:
         """
         调整Output Dock尺寸
 
@@ -749,11 +754,12 @@ class FnExecuteWindow(BaseFnExecuteWindow):
         - 在空间有限的情况下，将根据各个停靠窗口的相对大小占比进行可以利用空间的调整
 
         Args:
-            size: 目标尺寸
+            size: 目标尺寸。格式为`(width, height)`，可以只设置其中一个维度，另一个不需要设置的维度置为`None`即可。width和height可以为`int`或`float`, 为`int`时代表width或height的绝对值，为`float`时代表相对于窗口大小的百分比。
 
         Returns:
             无返回值
         """
+        size = self._calc_dock_size(size)
         width, height = size
         if width:
             self.resizeDocks([self._output_dock], [width], Qt.Horizontal)
@@ -1144,3 +1150,28 @@ class FnExecuteWindow(BaseFnExecuteWindow):
     # noinspection PyMethodMayBeStatic
     def _on_clear_button_clicked(self):
         uoutput.clear_output()
+
+    def _calc_dock_size(
+        self, size: Tuple[Union[int, float, None], Union[int, float, None]]
+    ) -> Tuple[Optional[int], Optional[int]]:
+        width, height = size
+        win_width = self.width()
+        win_height = self.height()
+
+        calc = [None, None]
+
+        if isinstance(width, int):
+            calc[0] = min(width, win_width)
+        elif isinstance(width, float):
+            calc[0] = min(int(win_width * width), win_width)
+        else:
+            calc[0] = None
+
+        if isinstance(height, int):
+            calc[1] = min(height, win_height)
+        elif isinstance(height, float):
+            calc[1] = min(int(win_height * height), win_height)
+        else:
+            calc[1] = None
+
+        return calc[0], calc[1]

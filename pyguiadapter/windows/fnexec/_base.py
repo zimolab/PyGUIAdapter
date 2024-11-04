@@ -85,8 +85,12 @@ class FnExecuteWindowConfig(BaseWindowConfig):
     output_dock_initial_area: DockWidgetArea = BottomDockWidgetArea
     """`Output停靠窗口`的初始停靠区域。"""
 
-    output_dock_initial_size: Tuple[Optional[int], Optional[int]] = (None, 150)
-    """`Output停靠窗口`的初始大小，格式为`(width, height)`，可以只设置其中一个维度，另一个不需要设置的维度置为`None`即可。"""
+    output_dock_initial_size: Tuple[
+        Union[int, float, None], Union[int, float, None]
+    ] = (None, 0.25)
+    """`Output停靠窗口`的初始大小，格式为`(width, height)`，可以只设置其中一个维度，另一个不需要设置的维度置为`None`即可。
+    width和height可以为`int`或`float`, 为`int`时代表width或height的绝对值，为`float`时代表相对于窗口大小的百分比。
+    """
 
     document_dock_visible: bool = True
     """是否显示`Document停靠窗口`。"""
@@ -100,8 +104,12 @@ class FnExecuteWindowConfig(BaseWindowConfig):
     document_dock_initial_area: DockWidgetArea = RightDockWidgetArea
     """`Document停靠窗口`的初始停靠区域。"""
 
-    document_dock_initial_size: Tuple[Optional[int], Optional[int]] = (450, None)
-    """`Document停靠窗口`的初始大小，格式为`(width, height)`，可以只设置其中一个维度，另一个不需要设置的维度置为`None`即可。"""
+    document_dock_initial_size: Tuple[
+        Union[int, float, None], Union[int, float, None]
+    ] = (0.56, None)
+    """`Document停靠窗口`的初始大小，格式为`(width, height)`，可以只设置其中一个维度，另一个不需要设置的维度置为`None`即可。
+    width和height可以为`int`或`float`, 为`int`时代表width或height的绝对值，为`float`时代表相对于窗口大小的百分比。
+    """
 
     output_browser_config: Optional[OutputBrowserConfig] = dataclasses.field(
         default_factory=OutputBrowserConfig
@@ -343,11 +351,15 @@ class BaseFnExecuteWindow(BaseWindow, ExecuteStateListener):
         pass
 
     @abstractmethod
-    def resize_document_dock(self, size: Tuple[Optional[int], Optional[int]]) -> None:
+    def resize_document_dock(
+        self, size: Tuple[Union[int, float, None], Union[int, float, None]]
+    ) -> None:
         pass
 
     @abstractmethod
-    def resize_output_dock(self, size: Tuple[Optional[int], Optional[int]]) -> None:
+    def resize_output_dock(
+        self, size: Tuple[Union[int, float, None], Union[int, float, None]]
+    ) -> None:
         pass
 
     @abstractmethod
