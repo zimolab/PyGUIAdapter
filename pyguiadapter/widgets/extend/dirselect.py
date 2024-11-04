@@ -30,6 +30,12 @@ class DirSelectConfig(CommonParameterWidgetConfig):
     clear_button: bool = False
     """是否显示清除按钮"""
 
+    normalize_path: bool = False
+    """是否将路径标准化。若设置为True，则在设置控件值或者从控件获取值时，使用os.path.normpath()函数进行标准化"""
+
+    absolutize_path: bool = False
+    """是否将路径绝对化。若设置为True，则在设置控件值或者从控件获取值时，将使用os.path.abspath()函数进行绝对化"""
+
     @classmethod
     def target_widget_class(cls) -> Type["DirSelect"]:
         return DirSelect
@@ -60,6 +66,8 @@ class DirSelect(CommonParameterWidget):
                 filters=None,
                 placeholder=self._config.placeholder,
                 clear_button=self._config.clear_button,
+                normalize_path=self._config.normalize_path,
+                absolutize_path=self._config.absolutize_path,
             )
         return self._value_widget
 
@@ -67,8 +75,7 @@ class DirSelect(CommonParameterWidget):
         type_check(value, (str,), allow_none=True)
 
     def set_value_to_widget(self, value: Any):
-        value = value or ""
-        self._value_widget.set_path(str(value))
+        self._value_widget.set_path(str(value or ""))
 
     def get_value_from_widget(self) -> str:
         return self._value_widget.get_path()

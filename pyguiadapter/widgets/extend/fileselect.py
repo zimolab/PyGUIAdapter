@@ -86,6 +86,8 @@ class FileSelect(CommonParameterWidget):
                 filters=self._config.filters,
                 placeholder=self._config.placeholder,
                 clear_button=self._config.clear_button,
+                normalize_path=self._config.normalize_path,
+                absolutize_path=self._config.absolutize_path,
             )
         return self._value_widget
 
@@ -93,19 +95,10 @@ class FileSelect(CommonParameterWidget):
         type_check(value, (str,), allow_none=True)
 
     def set_value_to_widget(self, value: Any):
-        self._config: FileSelectConfig
-        value = value or ""
-        value = str(value)
-        self._value_widget.set_path(value)
+        self._value_widget.set_path(str(value or ""))
 
     def get_value_from_widget(self) -> str:
-        self._config: FileSelectConfig
-        value = self._value_widget.get_path()
-        if self._config.normalize_path:
-            value = os.path.normpath(value)
-        if self._config.absolutize_path:
-            value = os.path.abspath(value)
-        return value
+        return self._value_widget.get_path()
 
     def on_drag(self, mime_data: QMimeData) -> bool:
         self._config: FileSelectConfig
@@ -126,11 +119,7 @@ class FileSelect(CommonParameterWidget):
         if not urls:
             return
         path = urls[0].toLocalFile()
-        if self._config.normalize_path:
-            path = os.path.normpath(path)
-        if self._config.absolutize_path:
-            path = os.path.abspath(path)
-        self._value_widget.set_paths(os.path.abspath(path))
+        self._value_widget.set_path(path)
 
 
 @dataclasses.dataclass(frozen=True)
@@ -172,10 +161,10 @@ class MultiFileSelectConfig(CommonParameterWidgetConfig):
     文件'hello.py'也可以被拖放，因为其命中了'Python files (*.py)'；文件'hello.png'则不能被拖放，因为其没有命中任何文件过滤器。"""
 
     normalize_path: bool = False
-    """是否将路径标准化。若设置为True，则在获取路径时，将使用os.path.normpath()函数进行标准化"""
+    """是否将路径标准化。若设置为True，则在设置控件值或者从控件获取值时，使用os.path.normpath()函数进行标准化"""
 
     absolutize_path: bool = False
-    """是否将路径绝对化。若设置为True，则在获取路径时，将使用os.path.abspath()函数进行绝对化"""
+    """是否将路径绝对化。若设置为True，则在设置控件值或者从控件获取值时，将使用os.path.abspath()函数进行绝对化"""
 
     @classmethod
     def target_widget_class(cls) -> Type["MultiFileSelect"]:
@@ -212,6 +201,8 @@ class MultiFileSelect(CommonParameterWidget):
                 placeholder=self._config.placeholder,
                 clear_button=self._config.clear_button,
                 file_separator=self._config.file_separator,
+                normalize_path=self._config.normalize_path,
+                absolutize_path=self._config.absolutize_path,
             )
         return self._value_widget
 
@@ -221,19 +212,10 @@ class MultiFileSelect(CommonParameterWidget):
     def set_value_to_widget(
         self, value: Union[str, List[str], Tuple[str, ...], Set[str]]
     ):
-        value = value or []
-        self._value_widget.set_paths(value)
+        self._value_widget.set_paths(value or [])
 
     def get_value_from_widget(self) -> List[str]:
         return self._value_widget.get_paths()
-
-    def _norm_path(self, path: str) -> str:
-        self._config: MultiFileSelectConfig
-        if self._config.normalize_path:
-            return os.path.normpath(path)
-        if self._config.absolutize_path:
-            return os.path.abspath(path)
-        return path
 
     def on_drag(self, mime_data: QMimeData) -> bool:
         if not mime_data.hasUrls():
@@ -247,7 +229,7 @@ class MultiFileSelect(CommonParameterWidget):
         if not urls:
             return
         paths = [
-            self._norm_path(f)
+            f
             for f in (url.toLocalFile() for url in urls)
             if os.path.isfile(f)
             and (
@@ -257,4 +239,4 @@ class MultiFileSelect(CommonParameterWidget):
         ]
         if not paths:
             return
-        self.set_value(paths)
+        self._value_widget.set_paths(paths)

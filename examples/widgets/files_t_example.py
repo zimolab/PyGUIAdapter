@@ -31,6 +31,8 @@ if __name__ == "__main__":
         placeholder="input files here",
         filters="Text files(*.txt);;All files(*.*)",
         dialog_title="Open Files",
+        absolutize_path=False,
+        normalize_path=False,
     )
     arg2_conf = MultiFileSelectConfig(
         default_value=[os.path.abspath(__file__)],
