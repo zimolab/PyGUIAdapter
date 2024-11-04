@@ -32,11 +32,15 @@ if __name__ == "__main__":
         placeholder="input file path here",
         filters="Text files(*.txt);;All files(*.*)",
         dialog_title="Open File",
+        absolutize_path=True,
+        normalize_path=True,
     )
     arg2_conf = FileSelectConfig(
         default_value=os.path.abspath(__file__),
         start_dir=os.path.expanduser("~"),
         clear_button=True,
+        absolutize_path=True,
+        normalize_path=True,
     )
     adapter = GUIAdapter()
     adapter.add(file_t_example, widget_configs={"arg1": arg1_conf, "arg2": arg2_conf})

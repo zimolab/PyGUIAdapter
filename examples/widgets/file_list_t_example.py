@@ -29,11 +29,15 @@ if __name__ == "__main__":
                 file_filters="Python Files (*.py);;Json Files (*.json)",
                 text_elide_mode=FileListEdit.ElideNone,
                 drag_n_drop=True,
+                normalize_path=False,
+                absolutize_path=False,
             ),
             "arg2": FileListEditConfig(
                 file_filters="Python Files (*.py);;Json Files (*.json)",
                 text_elide_mode=FileListEdit.ElideRight,
                 drag_n_drop=True,
+                normalize_path=True,
+                absolutize_path=True,
             ),
             "arg3": FileListEditConfig(
                 text_elide_mode=FileListEdit.ElideLeft,

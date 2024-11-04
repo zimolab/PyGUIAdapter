@@ -31,13 +31,15 @@ if __name__ == "__main__":
         placeholder="input files here",
         filters="Text files(*.txt);;All files(*.*)",
         dialog_title="Open Files",
-        absolutize_path=False,
-        normalize_path=False,
+        absolutize_path=True,
+        normalize_path=True,
     )
     arg2_conf = MultiFileSelectConfig(
         default_value=[os.path.abspath(__file__)],
         start_dir=os.path.expanduser("~"),
         clear_button=True,
+        normalize_path=False,
+        absolutize_path=False,
     )
     adapter = GUIAdapter()
     adapter.add(files_t_example, widget_configs={"arg1": arg1_conf, "arg2": arg2_conf})
