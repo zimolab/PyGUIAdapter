@@ -1607,3 +1607,145 @@ if __name__ == "__main__":
 <div style="text-align: center">
     <img src="../assets/font_t_example.png" />
 </div>
+
+---
+
+## （二十一）`int_quantity_t`类型
+
+### 0、说明
+`tuple`类型的扩展类型，具体为一个二元素元组`Tuple[int, str | None]`，语义上代表一个整数型的`数量`（所谓数量即带单位的量），第一个元素为数量的值，第二个元素为数量的单位。实现了专门的输入控件，允许用户输入数量的值和选择数量的单位。
+
+### 1、默认控件
+
+- [`IntQuantityBox`](apis/pyguiadapter.widgets.quantitybox.md#pyguiadapter.widgets.IntQuantityBox)
+- 外观
+
+<div style="text-align: center">
+    <img src="../assets/int_quantity_t.png" />
+</div>
+
+
+
+### 2、可配置属性
+
+参见配置类：[`IntQuantityBoxConfig`](apis/pyguiadapter.widgets.quantitybox.md#pyguiadapter.widgets.IntQuantityBoxConfig)
+
+### 3、示例
+
+```python
+from pyguiadapter.adapter import GUIAdapter
+from pyguiadapter.adapter.uoutput import uprint
+from pyguiadapter.extend_types import int_quantity_t, float_quantity_t
+from pyguiadapter.widgets import IntQuantityBoxConfig, FloatQuantityBoxConfig
+
+
+def quantity_t_example(arg1: int_quantity_t, arg2: float_quantity_t):
+    """
+    This is an example about **xxx_quantity_t** type hint and **XXXQuantityBox** widget.
+
+    Args:
+        arg1: description of arg1
+        arg2: description of arg2
+    """
+    uprint("arg1: ", arg1)
+    uprint("arg2: ", arg2)
+
+
+if __name__ == "__main__":
+    adapter = GUIAdapter()
+    adapter.add(
+        quantity_t_example,
+        widget_configs={
+            "arg1": IntQuantityBoxConfig(
+                default_value=(1, "kg"),
+                units=["kg", "g", "mg", "µg", "ng", "pg"],
+                min_value=0,
+                step=1,
+            ),
+            "arg2": FloatQuantityBoxConfig(
+                default_value=(1.0, "m"),
+                units=["m", "cm", "mm", "µm", "nm", "pm"],
+                min_value=0.0,
+                max_value=1000.0,
+                decimals=5,
+                step=0.00001,
+            ),
+        },
+    )
+    adapter.run()
+```
+
+<div style="text-align: center">
+    <img src="../assets/quantity_t_example.png" />
+</div>
+
+---
+
+## （二十二）`float_quantity_t`类型
+
+### 0、说明
+`tuple`类型的扩展类型，具体为一个二元素元组`Tuple[float, str | None]`，语义上代表一个浮点型的`数量`（所谓数量即带单位的量），第一个元素为数量的值，第二个元素为数量的单位。实现了专门的输入控件，允许用户输入数量的值和选择数量的单位。
+
+### 1、默认控件
+
+- [`FloatQuantityBox`](apis/pyguiadapter.widgets.quantitybox.md#pyguiadapter.widgets.FloatQuantityBox)
+- 外观
+
+<div style="text-align: center">
+    <img src="../assets/float_quantity_t.png" />
+</div>
+
+
+
+### 2、可配置属性
+
+参见配置类：[`FloatQuantityBoxConfig`](apis/pyguiadapter.widgets.quantitybox.md#pyguiadapter.widgets.FloatQuantityBoxConfig)
+
+### 3、示例
+
+```python
+from pyguiadapter.adapter import GUIAdapter
+from pyguiadapter.adapter.uoutput import uprint
+from pyguiadapter.extend_types import int_quantity_t, float_quantity_t
+from pyguiadapter.widgets import IntQuantityBoxConfig, FloatQuantityBoxConfig
+
+
+def quantity_t_example(arg1: int_quantity_t, arg2: float_quantity_t):
+    """
+    This is an example about **xxx_quantity_t** type hint and **XXXQuantityBox** widget.
+
+    Args:
+        arg1: description of arg1
+        arg2: description of arg2
+    """
+    uprint("arg1: ", arg1)
+    uprint("arg2: ", arg2)
+
+
+if __name__ == "__main__":
+    adapter = GUIAdapter()
+    adapter.add(
+        quantity_t_example,
+        widget_configs={
+            "arg1": IntQuantityBoxConfig(
+                default_value=(1, "kg"),
+                units=["kg", "g", "mg", "µg", "ng", "pg"],
+                min_value=0,
+                step=1,
+            ),
+            "arg2": FloatQuantityBoxConfig(
+                default_value=(1.0, "m"),
+                units=["m", "cm", "mm", "µm", "nm", "pm"],
+                min_value=0.0,
+                max_value=1000.0,
+                decimals=5,
+                step=0.00001,
+            ),
+        },
+    )
+    adapter.run()
+```
+
+<div style="text-align: center">
+    <img src="../assets/quantity_t_example.png" />
+</div>
