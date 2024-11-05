@@ -29,7 +29,7 @@ class JsonEditConfig(BaseCodeEditConfig):
     standalone_editor: bool = True
     """是否启用独立（standalone）代码编辑器"""
 
-    standalone_editor_button: bool = "Edit Json"
+    standalone_editor_button_text: str = "Edit Json"
     """standalone编辑器启动按钮文本"""
 
     standalone_editor_config: StandaloneCodeEditorConfig = dataclasses.field(

@@ -132,7 +132,7 @@ class BaseCodeEditConfig(CommonParameterWidgetConfig):
     standalone_editor: bool = True
     """是否启用standalone编辑器"""
 
-    standalone_editor_button: str = STANDALONE_EDITOR_BUTTON
+    standalone_editor_button_text: str = STANDALONE_EDITOR_BUTTON
     """standalone编辑器窗口打开按钮的文本"""
 
     standalone_editor_config: StandaloneCodeEditorConfig = dataclasses.field(
@@ -197,7 +197,7 @@ class BaseCodeEdit(CommonParameterWidget):
             if config.standalone_editor:
                 self._editor_button = QPushButton(self._value_widget)
                 self._editor_button.setText(
-                    config.standalone_editor_button or STANDALONE_EDITOR_BUTTON
+                    config.standalone_editor_button_text or STANDALONE_EDITOR_BUTTON
                 )
                 # noinspection PyUnresolvedReferences
                 self._editor_button.clicked.connect(self._on_open_standalone_editor)

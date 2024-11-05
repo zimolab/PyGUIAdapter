@@ -26,7 +26,7 @@ class PyLiteralEditConfig(BaseCodeEditConfig):
     standalone_editor: bool = True
     """是否使用独立（standalone）编辑器窗口"""
 
-    standalone_editor_button: str = "Edit Python Literal"
+    standalone_editor_button_text: str = "Edit Python Literal"
     """standalone编辑器窗口打开按钮的文本"""
 
     standalone_editor_config: StandaloneCodeEditorConfig = dataclasses.field(
