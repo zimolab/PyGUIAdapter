@@ -4,16 +4,25 @@ from pyguiadapter.extend_types import int_quantity_t, float_quantity_t
 from pyguiadapter.widgets import IntQuantityBoxConfig, FloatQuantityBoxConfig
 
 
-def quantity_t_example(arg1: int_quantity_t, arg2: float_quantity_t):
+def quantity_t_example(
+    arg1: int_quantity_t, arg2: float_quantity_t, arg3: int_quantity_t = None
+):
     """
     This is an example about **xxx_quantity_t** type hint and **XXXQuantityBox** widget.
 
     Args:
         arg1: description of arg1
         arg2: description of arg2
+        arg3: description of arg3
+    @params
+    [arg3]
+    units = ["kg", "g", "mg", "µg", "ng", "pg"]
+    default_value_description = "use the default value"
+    @end
     """
     uprint("arg1: ", arg1)
     uprint("arg2: ", arg2)
+    uprint("arg3: ", arg3)
 
 
 if __name__ == "__main__":
