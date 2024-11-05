@@ -130,6 +130,25 @@ def show_question_message(
     return QMessageBox.question(parent, title, message, buttons)
 
 
+def show_about_message(
+    parent: QWidget,
+    message: str,
+    title: str = "About",
+) -> None:
+    """
+    显示关于消息对话框。
+
+    Args:
+        parent: 父窗口
+        message: 消息内容
+        title: 对话框标题
+
+    Returns:
+        无返回值
+    """
+    QMessageBox.about(parent, title, message)
+
+
 ###########Custom MessageBox#############
 @dataclasses.dataclass
 class MessageBoxConfig(object):
