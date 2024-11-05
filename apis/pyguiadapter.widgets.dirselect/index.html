@@ -16,7 +16,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.40">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.41">
     
     
       
@@ -24,7 +24,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.8c3ca2c6.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
       
       
 
@@ -1596,6 +1596,15 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#pyguiadapter.widgets.DirSelectConfig.absolutize_path" class="md-nav__link">
+    <span class="md-ellipsis">
+      absolutize_path
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#pyguiadapter.widgets.DirSelectConfig.clear_button" class="md-nav__link">
     <span class="md-ellipsis">
       clear_button
@@ -1617,6 +1626,15 @@
   <a href="#pyguiadapter.widgets.DirSelectConfig.dialog_title" class="md-nav__link">
     <span class="md-ellipsis">
       dialog_title
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pyguiadapter.widgets.DirSelectConfig.normalize_path" class="md-nav__link">
+    <span class="md-ellipsis">
+      normalize_path
     </span>
   </a>
   
@@ -1890,6 +1908,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pyguiadapter.widgets.quantitybox/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pyguiadapter.widgets.quantitybox
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -2002,6 +2041,15 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#pyguiadapter.widgets.DirSelectConfig.absolutize_path" class="md-nav__link">
+    <span class="md-ellipsis">
+      absolutize_path
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#pyguiadapter.widgets.DirSelectConfig.clear_button" class="md-nav__link">
     <span class="md-ellipsis">
       clear_button
@@ -2023,6 +2071,15 @@
   <a href="#pyguiadapter.widgets.DirSelectConfig.dialog_title" class="md-nav__link">
     <span class="md-ellipsis">
       dialog_title
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pyguiadapter.widgets.DirSelectConfig.normalize_path" class="md-nav__link">
+    <span class="md-ellipsis">
+      normalize_path
     </span>
   </a>
   
@@ -2169,7 +2226,13 @@
 <span class="normal"><a href="#__codelineno-0-32">32</a></span>
 <span class="normal"><a href="#__codelineno-0-33">33</a></span>
 <span class="normal"><a href="#__codelineno-0-34">34</a></span>
-<span class="normal"><a href="#__codelineno-0-35">35</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-11" name="__codelineno-0-11"></a><span class="nd">@dataclasses</span><span class="o">.</span><span class="n">dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="normal"><a href="#__codelineno-0-35">35</a></span>
+<span class="normal"><a href="#__codelineno-0-36">36</a></span>
+<span class="normal"><a href="#__codelineno-0-37">37</a></span>
+<span class="normal"><a href="#__codelineno-0-38">38</a></span>
+<span class="normal"><a href="#__codelineno-0-39">39</a></span>
+<span class="normal"><a href="#__codelineno-0-40">40</a></span>
+<span class="normal"><a href="#__codelineno-0-41">41</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-11" name="__codelineno-0-11"></a><span class="nd">@dataclasses</span><span class="o">.</span><span class="n">dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <a id="__codelineno-0-12" name="__codelineno-0-12"></a><span class="k">class</span> <span class="nc">DirSelectConfig</span><span class="p">(</span><span class="n">CommonParameterWidgetConfig</span><span class="p">):</span>
 <a id="__codelineno-0-13" name="__codelineno-0-13"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;DirSelect的配置类。&quot;&quot;&quot;</span>
 <a id="__codelineno-0-14" name="__codelineno-0-14"></a>
@@ -2191,9 +2254,15 @@
 <a id="__codelineno-0-30" name="__codelineno-0-30"></a>    <span class="n">clear_button</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
 <a id="__codelineno-0-31" name="__codelineno-0-31"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;是否显示清除按钮&quot;&quot;&quot;</span>
 <a id="__codelineno-0-32" name="__codelineno-0-32"></a>
-<a id="__codelineno-0-33" name="__codelineno-0-33"></a>    <span class="nd">@classmethod</span>
-<a id="__codelineno-0-34" name="__codelineno-0-34"></a>    <span class="k">def</span> <span class="nf">target_widget_class</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Type</span><span class="p">[</span><span class="s2">&quot;DirSelect&quot;</span><span class="p">]:</span>
-<a id="__codelineno-0-35" name="__codelineno-0-35"></a>        <span class="k">return</span> <span class="n">DirSelect</span>
+<a id="__codelineno-0-33" name="__codelineno-0-33"></a>    <span class="n">normalize_path</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<a id="__codelineno-0-34" name="__codelineno-0-34"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;是否将路径标准化。若设置为True，则在设置控件值或者从控件获取值时，使用os.path.normpath()函数进行标准化&quot;&quot;&quot;</span>
+<a id="__codelineno-0-35" name="__codelineno-0-35"></a>
+<a id="__codelineno-0-36" name="__codelineno-0-36"></a>    <span class="n">absolutize_path</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<a id="__codelineno-0-37" name="__codelineno-0-37"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;是否将路径绝对化。若设置为True，则在设置控件值或者从控件获取值时，将使用os.path.abspath()函数进行绝对化&quot;&quot;&quot;</span>
+<a id="__codelineno-0-38" name="__codelineno-0-38"></a>
+<a id="__codelineno-0-39" name="__codelineno-0-39"></a>    <span class="nd">@classmethod</span>
+<a id="__codelineno-0-40" name="__codelineno-0-40"></a>    <span class="k">def</span> <span class="nf">target_widget_class</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Type</span><span class="p">[</span><span class="s2">&quot;DirSelect&quot;</span><span class="p">]:</span>
+<a id="__codelineno-0-41" name="__codelineno-0-41"></a>        <span class="k">return</span> <span class="n">DirSelect</span>
 </code></pre></div></td></tr></table></div>
               </details>
 
@@ -2206,6 +2275,28 @@
 
 
 
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="pyguiadapter.widgets.DirSelectConfig.absolutize_path" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">absolutize_path</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>是否将路径绝对化。若设置为True，则在设置控件值或者从控件获取值时，将使用os.path.abspath()函数进行绝对化</p>
+    </div>
+
+</div>
 
 <div class="doc doc-object doc-attribute">
 
@@ -2269,6 +2360,28 @@
     <div class="doc doc-contents ">
 
         <p>文件对话框标题</p>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="pyguiadapter.widgets.DirSelectConfig.normalize_path" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">normalize_path</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>是否将路径标准化。若设置为True，则在设置控件值或者从控件获取值时，使用os.path.normpath()函数进行标准化</p>
     </div>
 
 </div>
@@ -2439,7 +2552,7 @@
     <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.525ec568.min.js"></script>
+      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
       
     
   <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
