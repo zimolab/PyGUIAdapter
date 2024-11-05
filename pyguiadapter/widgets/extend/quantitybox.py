@@ -67,23 +67,22 @@ class _QuantityWidget(QWidget):
             self._unit_combo.addItem(unit)
         layout.addWidget(self._unit_combo, 1)
 
-        initial_quantity, initial_unit = config.default_value
-        if initial_unit is None:
-            initial_unit = config.units[0]
+        if config.default_value is not None:
+            initial_quantity, initial_unit = config.default_value
+            if initial_unit is None:
+                initial_unit = config.units[0]
+            self.set_quantity((initial_quantity, initial_unit))
 
         self._config = config
 
-        self.set_quantity((initial_quantity, initial_unit))
-
     def get_quantity(self) -> QuantityType:
-        return (
-            self._config.quantity_type(self._quantity_spin.value()),
-            self._unit_combo.currentText(),
-        )
+        return self._quantity_spin.value(), self._unit_combo.currentText()
 
     def set_quantity(self, quantity: QuantityType) -> None:
+        if quantity is None:
+            return
         quantity_value, unit_text = quantity
-        quantity_value = self._config.quantity_type(quantity_value)
+        # quantity_value = self._config.quantity_type(quantity_value)
         self._quantity_spin.setValue(quantity_value)
         if not unit_text:
             return
@@ -135,6 +134,8 @@ class QuantityBox(CommonParameterWidget):
         return self._value_widget
 
     def check_value_type(self, value: Any):
+        if value is None:
+            return
         self._config: QuantityBoxConfig
         if (
             not isinstance(value, tuple)
