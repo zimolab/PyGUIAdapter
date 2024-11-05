@@ -82,7 +82,6 @@ class _QuantityWidget(QWidget):
         if quantity is None:
             return
         quantity_value, unit_text = quantity
-        # quantity_value = self._config.quantity_type(quantity_value)
         self._quantity_spin.setValue(quantity_value)
         if not unit_text:
             return
