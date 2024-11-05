@@ -1,4 +1,5 @@
 import dataclasses
+import traceback
 from typing import Optional, Any, Dict, List, Tuple, Type
 
 from qtpy.QtWidgets import QWidget, QVBoxLayout
@@ -67,6 +68,7 @@ class ParameterArea(BaseParameterArea):
             raise e
         except Exception as e:
             # any other exceptions are seen as fatal and will cause the whole program to exit
+            traceback.print_exc()
             messagebox.show_exception_messagebox(
                 self,
                 message=f"cannot create parameter widget for parameter '{parameter_name}':",

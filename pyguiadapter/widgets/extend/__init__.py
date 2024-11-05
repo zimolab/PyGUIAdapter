@@ -35,6 +35,12 @@ from .pathlist import (
     DirectoryListEditConfig,
 )
 from .fontselect import FontSelect, FontSelectConfig
+from .quantitybox import (
+    IntQuantityBox,
+    IntQuantityBoxConfig,
+    FloatQuantityBox,
+    FloatQuantityBoxConfig,
+)
 
 
 __all__ = [
@@ -82,4 +88,8 @@ __all__ = [
     "DirectoryListEditConfig",
     "FontSelect",
     "FontSelectConfig",
+    "IntQuantityBox",
+    "IntQuantityBoxConfig",
+    "FloatQuantityBox",
+    "FloatQuantityBoxConfig",
 ]

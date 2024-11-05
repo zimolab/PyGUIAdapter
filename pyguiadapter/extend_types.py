@@ -113,3 +113,13 @@ class dir_list_t(list):
 # noinspection PyPep8Naming
 class font_t(str):
     pass
+
+
+# noinspection PyPep8Naming
+class int_quantity_t(tuple):
+    pass
+
+
+# noinspection PyPep8Naming
+class float_quantity_t(tuple):
+    pass

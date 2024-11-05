@@ -41,6 +41,8 @@ from .extend import (
     FileListEdit,
     DirectoryListEdit,
     FontSelect,
+    IntQuantityBox,
+    FloatQuantityBox,
 )
 from ..parser.typenames import (
     TYPE_STR,
@@ -87,6 +89,8 @@ from ..extend_types import (
     file_list_t,
     dir_list_t,
     font_t,
+    int_quantity_t,
+    float_quantity_t,
 )
 
 TYPE_TEXT = text_t.__name__
@@ -116,6 +120,8 @@ TYPE_PATH_LIST_T = path_list_t.__name__
 TYPE_FILE_LIST_T = file_list_t.__name__
 TYPE_DIR_LIST_T = dir_list_t.__name__
 TYPE_FONT_T = font_t.__name__
+TYPE_INT_QUANTITY = int_quantity_t.__name__
+TYPE_FLOAT_QUANTITY = float_quantity_t.__name__
 
 
 BUILTIN_WIDGETS_MAP = {
@@ -166,6 +172,8 @@ BUILTIN_WIDGETS_MAP = {
     TYPE_FILE_LIST_T: FileListEdit,
     TYPE_DIR_LIST_T: DirectoryListEdit,
     TYPE_FONT_T: FontSelect,
+    TYPE_INT_QUANTITY: IntQuantityBox,
+    TYPE_FLOAT_QUANTITY: FloatQuantityBox,
 }
 
 # noinspection PyProtectedMember
