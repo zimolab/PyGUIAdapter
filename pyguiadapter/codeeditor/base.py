@@ -240,12 +240,14 @@ class BaseCodeEditorWindow(BaseWindow):
             return
         if size <= 0:
             raise ValueError(f"invalid size: {size}")
-        self._editor.setFontPointSize(size)
+        self._editor.setFontSize(size)
 
     def set_text_font_family(self, family: Optional[str]):
         if family is None or family.strip() == "":
             return
-        self._editor.setFontFamily(family)
+        font = self._editor.font()
+        font.setFamily(family)
+        self._editor.setFont(font)
 
     def get_text_font_size(self) -> Optional[int]:
         return self._editor.fontSize()

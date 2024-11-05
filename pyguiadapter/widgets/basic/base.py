@@ -203,12 +203,6 @@ class BaseCodeEdit(CommonParameterWidget):
                 self._editor_button.clicked.connect(self._on_open_standalone_editor)
                 layout.addWidget(self._editor_button)
 
-            # if config.min_height and config.min_height > 0:
-            #     self._inplace_editor.setMinimumHeight(config.min_height)
-            #
-            # if config.min_width and config.min_width > 0:
-            #     self._inplace_editor.setMinimumWidth(config.min_width)
-
             if config.height is not None and config.height >= 0:
                 if config.height == 0:
                     self._inplace_editor.setVisible(False)
@@ -245,7 +239,9 @@ class BaseCodeEdit(CommonParameterWidget):
                 self._inplace_editor.setFontSize(config.text_font_size)
 
             if config.text_font_family and config.text_font_family.strip() != "":
-                self._inplace_editor.setFontFamily(config.text_font_family)
+                font = self._inplace_editor.font()
+                font.setFamily(config.text_font_family)
+                self._inplace_editor.setFont(font)
 
         return self._value_widget
 
@@ -255,39 +251,38 @@ class BaseCodeEdit(CommonParameterWidget):
             self._standalone_editor.deleteLater()
             self._standalone_editor = None
 
-        config: BaseCodeEditConfig = self.config
-        standalone_config = config.standalone_editor_config
-        event_listener = SimpleWindowEventListener(
-            on_close=self._on_standalone_editor_close
-        )
+        cfg: BaseCodeEditConfig = self.config
+        std_cfg = cfg.standalone_editor_config
+        listener = SimpleWindowEventListener(on_close=self._on_standalone_editor_close)
+
         editor_config = CodeEditorConfig(
             initial_text=self._inplace_editor.toPlainText(),
-            formatter=config.formatter,
-            highlighter=config.highlighter,
-            highlighter_args=config.highlighter_args,
+            formatter=cfg.formatter,
+            highlighter=cfg.highlighter,
+            highlighter_args=cfg.highlighter_args,
             check_unsaved_changes=False,
             show_filename_in_title=False,
-            title=standalone_config.title.format(self.parameter_name),
-            auto_indent=config.auto_indent,
-            auto_parentheses=config.auto_parentheses,
-            file_filters=standalone_config.file_filters,
-            start_dir=standalone_config.start_dir,
-            line_wrap_mode=standalone_config.line_wrap_mode,
-            line_wrap_width=standalone_config.line_wrap_width,
-            word_wrap_mode=standalone_config.word_wrap_mode,
-            text_font_size=standalone_config.text_font_size,
-            text_font_family=standalone_config.text_font_family,
+            title=std_cfg.title.format(self.parameter_name),
+            auto_indent=cfg.auto_indent,
+            auto_parentheses=cfg.auto_parentheses,
+            file_filters=std_cfg.file_filters,
+            start_dir=std_cfg.start_dir,
+            line_wrap_mode=std_cfg.line_wrap_mode,
+            line_wrap_width=std_cfg.line_wrap_width,
+            word_wrap_mode=std_cfg.word_wrap_mode,
+            text_font_size=std_cfg.text_font_size or cfg.text_font_size,
+            text_font_family=std_cfg.text_font_family or cfg.text_font_family,
             tab_replace=True,
-            tab_size=config.indent_size,
+            tab_size=cfg.indent_size,
             no_file_mode=True,
-            use_default_menus=standalone_config.use_default_menus,
-            use_default_toolbar=standalone_config.use_default_toolbar,
-            excluded_menus=standalone_config.excluded_menus,
-            excluded_menu_actions=standalone_config.excluded_menu_actions,
-            excluded_toolbar_actions=standalone_config.excluded_toolbar_actions,
+            use_default_menus=std_cfg.use_default_menus,
+            use_default_toolbar=std_cfg.use_default_toolbar,
+            excluded_menus=std_cfg.excluded_menus,
+            excluded_menu_actions=std_cfg.excluded_menu_actions,
+            excluded_toolbar_actions=std_cfg.excluded_toolbar_actions,
         )
         self._standalone_editor = CodeEditorWindow(
-            self, editor_config, listener=event_listener
+            self, editor_config, listener=listener
         )
         self._standalone_editor.setWindowModality(Qt.WindowModal)
         self._standalone_editor.setAttribute(Qt.WA_DeleteOnClose, True)
