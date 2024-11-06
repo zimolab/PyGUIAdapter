@@ -81,6 +81,9 @@ class BoolBox(CommonParameterWidget):
             self._button_group.addButton(self._false_radio_button)
             self._button_group.setExclusive(True)
 
+            if config.default_value is None:
+                self._false_radio_button.setChecked(True)
+
             layout.addWidget(self._true_radio_button)
             layout.addWidget(self._false_radio_button)
 
