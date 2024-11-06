@@ -294,8 +294,6 @@ def print_image(
         "width": width,
         "height": height,
     }
-    uprint("print image...")
-    uprint("<p>some text</p>", html=True)
     if isinstance(img, str):
         if not embed_base64:
             url = _make_img_url(img, props)
