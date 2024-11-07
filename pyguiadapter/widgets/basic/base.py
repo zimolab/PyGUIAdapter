@@ -26,6 +26,7 @@ from ...codeeditor.constants import (
     ACTION_SAVE_AS,
     CONFIRM_DIALOG_TITLE,
 )
+from ...constants.font import FONT_FAMILY, FONT_SIZE_CODE_TEXT
 from ...exceptions import ParameterError
 from ...utils import messagebox
 from ...window import SimpleWindowEventListener
@@ -105,10 +106,10 @@ class BaseCodeEditConfig(CommonParameterWidgetConfig):
     """BaseCodeEdit的配置类"""
 
     # 以下属性适用于inplace编辑器
-    text_font_size: Optional[int] = None
+    text_font_size: Optional[int] = FONT_SIZE_CODE_TEXT
     """inplace编辑器字体大小"""
 
-    text_font_family: Optional[str] = None
+    text_font_family: Optional[str] = FONT_FAMILY
     """inplace编辑器字体"""
 
     width: Optional[int] = EDITOR_WIDTH

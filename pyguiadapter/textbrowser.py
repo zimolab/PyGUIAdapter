@@ -16,7 +16,6 @@ from qtpy.QtGui import QTextOption, QColor, QPalette, QTextCursor
 from qtpy.QtWidgets import QTextBrowser, QWidget
 
 from .constants.color import COLOR_BASE_BACKGROUND, COLOR_BASE_TEXT
-from .constants.font import FONT_LARGE
 
 LineWrapMode = QTextBrowser.LineWrapMode
 NoLineWrap = QTextBrowser.NoWrap
@@ -42,7 +41,7 @@ class TextBrowserConfig(object):
     font_family: Union[Sequence[str], str] = None
     "文本的字体系列。"
 
-    font_size: Optional[int] = FONT_LARGE
+    font_size: Optional[int] = None
     """文本的字体大小（px）。"""
 
     background_color: str = COLOR_BASE_BACKGROUND

@@ -19,7 +19,6 @@ from qtpy.QtWidgets import (
 )
 
 from ..constants.color import COLOR_FATAL, COLOR_REGULAR_TEXT
-from ..constants.font import FONT_SMALL
 from ..exceptions import ParameterError
 from ..paramwidget import BaseParameterWidgetConfig, BaseParameterWidget
 
@@ -53,14 +52,14 @@ class CommonParameterWidgetConfig(BaseParameterWidgetConfig):
     set_deepcopy: bool = True
     get_deepcopy: bool = True
 
-    description_font_size: Optional[int] = FONT_SMALL
-    """控件描述文本字体大小。默认为 `FONT_SMALL`。"""
+    description_font_size: Optional[int] = None
+    """控件描述文本字体大小。"""
 
     description_color: Optional[str] = COLOR_REGULAR_TEXT
     """控件描述文本颜色。默认为 `COLOR_REGULAR_TEXT`。"""
 
-    parameter_error_font_size: Optional[int] = FONT_SMALL
-    """ParameterError文本字体大小。默认为 `FONT_SMALL`。"""
+    parameter_error_font_size: Optional[int] = None
+    """ParameterError文本字体大小。"""
 
     parameter_error_color: Optional[str] = COLOR_FATAL
     """ParameterError文本颜色。默认为 `COLOR_FATAL`。"""

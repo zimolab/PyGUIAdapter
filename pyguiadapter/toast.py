@@ -12,7 +12,7 @@ from typing import Optional, Union, Tuple, Dict, Sequence
 from qtpy.QtCore import Signal, QTimer, QMutex, Qt, QPropertyAnimation
 from qtpy.QtWidgets import QWidget, QLabel
 
-from .constants.font import FONT_FAMILY, FONT_HUGE
+from .constants.font import FONT_FAMILY
 from .constants.color import COLOR_TOAST_BACKGROUND_CLASSIC, COLOR_TOAST_TEXT_CLASSIC
 from .utils import move_window
 
@@ -55,7 +55,7 @@ class ToastConfig(object):
     font_family: Union[Sequence[str], str] = FONT_FAMILY
     """字体"""
 
-    font_size: Optional[int] = FONT_HUGE
+    font_size: int = 26
     """字体大小"""
 
     position: Optional[Tuple[Union[int, float, None], Union[int, float, None]]] = (
