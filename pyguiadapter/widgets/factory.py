@@ -84,8 +84,9 @@ class ParameterWidgetRegistry(object):
         # else:
         #     raise TypeError(f"typ must be a type or typename: {typ}")
         typename = typenames.get_typename(typ)
-        if typename is None or typename.strip():
+        if typename is None or typename.strip() == "":
             raise ValueError(f"unable to get typename form: {typ}")
+        return typename
 
 
 MappingRule = Callable[[ParameterInfo], Optional[Type[BaseParameterWidget]]]
