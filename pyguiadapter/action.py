@@ -94,6 +94,9 @@ class Action(object):
     """动作（`Action`）菜单角色（menu role）。在macOS应用程序菜单中，每个动作都有一个角色，该角色指示了动作在菜单中的用途。默认情况下，所有动作
     都具有TextHeuristicRole角色，这意味着动作是根据其文本内容被添加到菜单中的"""
 
+    data: Optional[object] = None
+    """用户自定义数据。"""
+
 
 @dataclasses.dataclass(frozen=True)
 class Separator(object):
