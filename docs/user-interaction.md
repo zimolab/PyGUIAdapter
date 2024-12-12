@@ -1113,3 +1113,7 @@ if __name__ == "__main__":
 <div style="text-align:center">
     <img src="../assets/utoast_example.gif" />
 </div>
+
+## （五）其它
+
+[**pyguiadapter.adapter.useful**](apis/pyguiadapter.adapter.useful.md) 中包含了其他一些可以在用户函数中调用的实用函数。

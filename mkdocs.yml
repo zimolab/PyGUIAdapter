@@ -41,6 +41,7 @@ nav:
     - pyguiadapter.adapter.ubeep: apis/pyguiadapter.adapter.ubeep.md
     - pyguiadapter.adapter.utoast: apis/pyguiadapter.adapter.utoast.md
     - pyguiadapter.adapter.uclipboard: apis/pyguiadapter.adapter.uclipboard.md
+    - pyguiadapter.adapter.useful: apis/pyguiadapter.adapter.useful.md
     - pyguiadapter.textbrowser: apis/pyguiadapter.textbrowser.md
     - pyguiadapter.windows: apis/pyguiadapter.windows.md
     - pyguiadapter.windows.fnexec: apis/pyguiadapter.windows.fnexec.md

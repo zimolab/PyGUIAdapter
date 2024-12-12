@@ -37,6 +37,7 @@ class _Context(QObject):
     sig_clipboard_operation = Signal(Future, int, object)
     sig_show_toast = Signal(str, int, object, bool)
     sig_clear_toasts = Signal()
+    sig_highlight_parameter = Signal(str)
 
     def __init__(self, parent):
         super().__init__(parent)
@@ -66,6 +67,8 @@ class _Context(QObject):
         self.sig_update_progressbar.connect(self._on_update_progressbar)
         # noinspection PyUnresolvedReferences
         self.sig_clipboard_operation.connect(self._on_clipboard_operation)
+        # noinspection PyUnresolvedReferences
+        self.sig_highlight_parameter.connect(self._on_highlight_parameter)
 
     @property
     def current_window(self) -> Optional[BaseFnExecuteWindow]:
@@ -186,6 +189,13 @@ class _Context(QObject):
             warnings.warn("current_window is None")
             return
         win.on_clipboard_operation(future, operation, data)
+
+    def _on_highlight_parameter(self, parameter_name: str):
+        win = self.current_window
+        if not isinstance(win, BaseFnExecuteWindow):
+            warnings.warn("current_window is None")
+            return
+        win.scroll_to_parameter(parameter_name, highlight_effect=True)
 
 
 _context = _Context(None)
