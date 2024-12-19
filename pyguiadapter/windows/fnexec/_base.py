@@ -468,6 +468,15 @@ class BaseFnExecuteWindow(BaseWindow, ExecuteStateListener):
     def activate_parameter_group(self, group_name: str) -> None:
         pass
 
+    def show_progress_dialog(self, config: Dict[str, Any]) -> None:
+        pass
+
+    def dismiss_progress_dialog(self) -> None:
+        pass
+
+    def update_progress_dialog(self, progress: int, info: str) -> None:
+        pass
+
 
 class FnExecuteWindowEventListener(BaseWindowEventListener):
     def on_execute_start(self, window: BaseFnExecuteWindow) -> None:

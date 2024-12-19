@@ -38,6 +38,10 @@ class _Context(QObject):
     sig_show_toast = Signal(str, int, object, bool)
     sig_clear_toasts = Signal()
     sig_highlight_parameter = Signal(str)
+    sig_show_progress_dialog = Signal(dict)
+    sig_dismiss_progress_dialog = Signal()
+    sig_update_progress_dialog = Signal(int, str)
+    sig_cancel_execution = Signal()
 
     def __init__(self, parent):
         super().__init__(parent)
@@ -69,6 +73,14 @@ class _Context(QObject):
         self.sig_clipboard_operation.connect(self._on_clipboard_operation)
         # noinspection PyUnresolvedReferences
         self.sig_highlight_parameter.connect(self._on_highlight_parameter)
+        # noinspection PyUnresolvedReferences
+        self.sig_show_progress_dialog.connect(self._on_show_progress_dialog)
+        # noinspection PyUnresolvedReferences
+        self.sig_dismiss_progress_dialog.connect(self._on_dismiss_progress_dialog)
+        # noinspection PyUnresolvedReferences
+        self.sig_update_progress_dialog.connect(self._on_update_progress_dialog)
+        # noinspection PyUnresolvedReferences
+        self.sig_cancel_execution.connect(self._on_cancel_execution)
 
     @property
     def current_window(self) -> Optional[BaseFnExecuteWindow]:
@@ -196,6 +208,30 @@ class _Context(QObject):
             warnings.warn("current_window is None")
             return
         win.scroll_to_parameter(parameter_name, highlight_effect=True)
+
+    def _on_show_progress_dialog(self, config: Dict[str, Any]):
+        win = self.current_window
+        if not isinstance(win, BaseFnExecuteWindow):
+            warnings.warn("current_window is None")
+            return
+        win.show_progress_dialog(config)
+
+    def _on_dismiss_progress_dialog(self):
+        win = self.current_window
+        if not isinstance(win, BaseFnExecuteWindow):
+            warnings.warn("current_window is None")
+            return
+        win.dismiss_progress_dialog()
+
+    def _on_update_progress_dialog(self, progress: int, info: str):
+        win = self.current_window
+        if not isinstance(win, BaseFnExecuteWindow):
+            warnings.warn("current_window is None")
+            return
+        win.update_progress_dialog(progress, info)
+
+    def _on_cancel_execution(self):
+        pass
 
 
 _context = _Context(None)

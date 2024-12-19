@@ -4,12 +4,7 @@ from typing import Literal, Optional
 from qtpy.QtCore import Qt
 from qtpy.QtWidgets import QWidget, QVBoxLayout, QProgressBar, QLabel
 
-_FORMATS = {
-    "richtext": Qt.TextFormat.RichText,
-    "markdown": Qt.TextFormat.MarkdownText,
-    "plaintext": Qt.TextFormat.PlainText,
-    "autotext": Qt.TextFormat.AutoText,
-}
+from ....utils import to_text_format
 
 
 @dataclasses.dataclass
@@ -60,9 +55,7 @@ class ProgressBar(QWidget):
         self._info_label.setVisible(self._config.show_info_label is True)
         if self._config.info_text_centered:
             self._info_label.setAlignment(Qt.AlignCenter)
-        text_format = _FORMATS.get(
-            self._config.info_text_format, Qt.TextFormat.AutoText
-        )
+        text_format = to_text_format(self._config.info_text_format)
         self._info_label.setTextFormat(text_format)
         self._update_info(self._config.initial_info)
 

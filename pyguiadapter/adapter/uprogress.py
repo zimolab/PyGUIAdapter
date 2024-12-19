@@ -81,3 +81,67 @@ def update_progress(value: int, info: Optional[str] = None) -> None:
         无返回值
     """
     _context.sig_update_progressbar.emit(value, info)
+
+
+def show_progress_dialog(
+    min_value: int = 0,
+    max_value: int = 100,
+    inverted_appearance: bool = False,
+    *,
+    title: str = "Progress",
+    message_visible: bool = False,
+    message_format: str = "%p%",
+    message_centered: str = True,
+    info_visible: bool = True,
+    info_centered: bool = True,
+    info_text_format: Literal[
+        "richtext", "markdown", "plaintext", "autotext"
+    ] = "autotext",
+    initial_info: str = "",
+    size: tuple = (400, 150),
+) -> None:
+    """
+    显示进度对话框
+
+    Returns:
+        无返回值
+    """
+    _context.sig_show_progress_dialog.emit(
+        {
+            "min_value": min_value,
+            "max_value": max_value,
+            "inverted_appearance": inverted_appearance,
+            "title": title,
+            "message_visible": message_visible,
+            "message_format": message_format,
+            "message_centered": message_centered,
+            "info_visible": info_visible,
+            "info_centered": info_centered,
+            "info_text_format": info_text_format,
+            "initial_info": initial_info,
+            "size": size,
+        }
+    )
+
+
+def dismiss_progress_dialog() -> None:
+    """
+    隐藏进度对话框
+
+    Returns:
+        无返回值
+    """
+    _context.sig_dismiss_progress_dialog.emit()
+
+
+def update_progress_dialog(value: int, info: Optional[str] = None) -> None:
+    """
+    更新进度对话框
+
+    Args:
+        value: 当前进度值
+        info:  当前info文本
+    Returns:
+        无返回值
+    """
+    _context.sig_update_progress_dialog.emit(value, info)

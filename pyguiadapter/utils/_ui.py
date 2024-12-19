@@ -11,6 +11,7 @@ import warnings
 from typing import Literal, Tuple, Union, Optional
 
 import qtawesome as qta
+from qtpy.QtCore import Qt
 from qtpy.QtCore import QSize
 from qtpy.QtGui import QColor
 from qtpy.QtGui import QIcon, QPixmap, QTextCursor
@@ -20,6 +21,13 @@ IconType = Union[str, Tuple[str, Union[list, dict]], QIcon, QPixmap, type(None)]
 
 SIZE_FLAG_DESKTOP = -1
 POSITION_FLAG_DESKTOP_CENTER = -1
+
+_LABEL_TEXT_FORMATS = {
+    "richtext": Qt.TextFormat.RichText,
+    "markdown": Qt.TextFormat.MarkdownText,
+    "plaintext": Qt.TextFormat.PlainText,
+    "autotext": Qt.TextFormat.AutoText,
+}
 
 
 # noinspection PyArgumentList
@@ -183,3 +191,10 @@ def move_window(
     else:
         pass
     window.move(x, y)
+
+
+def to_text_format(
+    text_format: Literal["richtext", "markdown", "plaintext", "autotext"],
+    default: Qt.TextFormat = Qt.TextFormat.AutoText,
+) -> Qt.TextFormat:
+    return _LABEL_TEXT_FORMATS.get(text_format.lower(), default)
