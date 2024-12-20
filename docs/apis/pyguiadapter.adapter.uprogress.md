@@ -13,3 +13,21 @@
     options:
         heading_level: 3
         show_root_full_path: false
+
+
+:::pyguiadapter.adapter.uprogress.show_progress_dialog
+    options:
+        heading_level: 3
+        show_root_full_path: false
+
+
+:::pyguiadapter.adapter.uprogress.dismiss_progress_dialog
+    options:
+        heading_level: 3
+        show_root_full_path: false
+
+
+:::pyguiadapter.adapter.uprogress.update_progress_dialog
+    options:
+        heading_level: 3
+        show_root_full_path: false

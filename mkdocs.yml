@@ -19,7 +19,7 @@ nav:
   - 窗口工具栏: toolbar.md
   - 窗口菜单栏: menu.md
   - 取消函数执行: cancel.md
-  - 进度条: progressbar.md
+  - 进度条与进度对话框: progressbar.md
   - 与用户交互: user-interaction.md
   - 界面美化: style.md
   - 自定义控件: custom-widget.md
