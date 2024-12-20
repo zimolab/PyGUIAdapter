@@ -17,7 +17,9 @@ def progress_dialog_example(total: int = 100, delay: float = 0.5):
     cancelled = False
     task_processed = 0
     # use this function to show a progress dialog
-    uprogress.show_progress_dialog(0, total, message_visible=True, info_visible=True)
+    uprogress.show_progress_dialog(
+        0, total, message_visible=True, info_visible=True, modal=False
+    )
     for i in range(total):
         if is_function_cancelled():
             uprint("Cancelled!")

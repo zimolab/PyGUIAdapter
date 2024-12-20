@@ -99,6 +99,7 @@ def show_progress_dialog(
     ] = "autotext",
     initial_info: str = "",
     size: tuple = (400, 150),
+    modal: bool = True,
 ) -> None:
     """
     显示进度对话框
@@ -120,6 +121,7 @@ def show_progress_dialog(
             "info_text_format": info_text_format,
             "initial_info": initial_info,
             "size": size,
+            "modal": modal,
         }
     )
 

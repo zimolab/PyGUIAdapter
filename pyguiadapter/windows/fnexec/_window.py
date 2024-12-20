@@ -993,9 +993,7 @@ class FnExecuteWindow(BaseFnExecuteWindow):
 
     def show_progress_dialog(self, config: Dict[str, Any]) -> None:
         self._config: FnExecuteWindowConfig
-        if self._progress_dialog is not None:
-            self._progress_dialog.close()
-            self._progress_dialog.deleteLater()
+        self.dismiss_progress_dialog()
         self._progress_dialog = ProgressDialog(
             self,
             cancellable=self._bundle.fn_info.cancelable,
@@ -1005,9 +1003,6 @@ class FnExecuteWindow(BaseFnExecuteWindow):
         self._progress_dialog.sig_cancel_requested.connect(
             self._on_cancel_button_clicked
         )
-        self._progress_dialog.setWindowModality(Qt.ApplicationModal)
-        flags = self._progress_dialog.windowFlags()
-        self._progress_dialog.setWindowFlags(flags & ~Qt.WindowCloseButtonHint)
         self._progress_dialog.show()
 
     def dismiss_progress_dialog(self) -> None:
@@ -1055,6 +1050,7 @@ class FnExecuteWindow(BaseFnExecuteWindow):
             self._parameter_area.disable_parameter_widgets(True)
         self._operation_area.set_cancel_button_enabled(False)
         self._parameter_area.clear_parameter_error(None)
+        self.dismiss_progress_dialog()
 
     def on_execute_start(self, fn_info: FnInfo, arguments: Dict[str, Any]) -> None:
         super().on_execute_start(fn_info, arguments)

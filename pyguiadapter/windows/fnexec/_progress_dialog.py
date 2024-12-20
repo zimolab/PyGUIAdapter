@@ -39,6 +39,7 @@ class ProgressDialog(QDialog):
         ] = "autotext",
         initial_info: str = "",
         size: Tuple[int, int] = (400, 150),
+        modal: bool = True,
         **kwargs
     ):
         super().__init__(parent)
@@ -82,6 +83,17 @@ class ProgressDialog(QDialog):
 
         if size:
             self.resize(*size)
+
+        if modal:
+            self.setWindowModality(Qt.ApplicationModal)
+        else:
+            self.setWindowModality(Qt.NonModal)
+
+        flags = self.windowFlags()
+        self.setWindowFlags(
+            flags & ~Qt.WindowCloseButtonHint & ~Qt.WindowContextHelpButtonHint
+        )
+
         self.setWindowTitle(title)
 
     def _update_info(self, info: Optional[str]):
