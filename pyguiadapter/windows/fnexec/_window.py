@@ -19,6 +19,7 @@ from ._document_area import DocumentArea
 from ._operation_area import OperationArea
 from ._output_area import OutputArea, ProgressBarConfig
 from ._parameter_area import ParameterArea
+from ._progress_dialog import ProgressDialog
 from ...adapter import ucontext
 from ...adapter import uoutput
 from ...bundle import FnBundle
@@ -49,6 +50,8 @@ class FnExecuteWindow(BaseFnExecuteWindow):
 
         self._document_dock: Optional[QDockWidget] = None
         self._output_dock: Optional[QDockWidget] = None
+
+        self._progress_dialog: Optional[ProgressDialog] = None
 
         super().__init__(
             parent,
@@ -988,6 +991,34 @@ class FnExecuteWindow(BaseFnExecuteWindow):
             group_name = None
         self._parameter_area.activate_parameter_group(group_name)
 
+    def show_progress_dialog(self, config: Dict[str, Any]) -> None:
+        self._config: FnExecuteWindowConfig
+        self.dismiss_progress_dialog()
+        self._progress_dialog = ProgressDialog(
+            self,
+            cancellable=self._bundle.fn_info.cancelable,
+            cancel_button_text=self._config.cancel_button_text,
+            **config,
+        )
+        self._progress_dialog.sig_cancel_requested.connect(
+            self._on_cancel_button_clicked
+        )
+        self._progress_dialog.show()
+
+    def dismiss_progress_dialog(self) -> None:
+        if self._progress_dialog is not None:
+            self._progress_dialog.sig_cancel_requested.disconnect(
+                self._on_cancel_button_clicked
+            )
+            self._progress_dialog.close()
+            self._progress_dialog.deleteLater()
+            self._progress_dialog = None
+
+    def update_progress_dialog(self, progress: int, info: str) -> None:
+        if self._progress_dialog is None:
+            return
+        self._progress_dialog.sig_update_progress.emit(progress, info)
+
     def scroll_to_parameter(
         self,
         parameter_name: str,
@@ -1019,6 +1050,7 @@ class FnExecuteWindow(BaseFnExecuteWindow):
             self._parameter_area.disable_parameter_widgets(True)
         self._operation_area.set_cancel_button_enabled(False)
         self._parameter_area.clear_parameter_error(None)
+        self.dismiss_progress_dialog()
 
     def on_execute_start(self, fn_info: FnInfo, arguments: Dict[str, Any]) -> None:
         super().on_execute_start(fn_info, arguments)
@@ -1033,6 +1065,8 @@ class FnExecuteWindow(BaseFnExecuteWindow):
         if self._config.disable_widgets_on_execute:
             self._parameter_area.disable_parameter_widgets(False)
         self._operation_area.set_cancel_button_enabled(False)
+
+        self.dismiss_progress_dialog()
 
         if isinstance(self._bundle.window_listener, FnExecuteWindowEventListener):
             self._bundle.window_listener.on_execute_finish(self)
@@ -1114,6 +1148,7 @@ class FnExecuteWindow(BaseFnExecuteWindow):
     def _on_cleanup(self):
         super()._on_cleanup()
         self._parameter_area.clear_parameters()
+        self.dismiss_progress_dialog()
 
     def _on_destroy(self):
         super()._on_destroy()
