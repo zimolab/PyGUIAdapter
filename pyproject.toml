@@ -34,7 +34,7 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 
-[[tool.poetry.source]]
-name = "tsinghua"
-url = "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple/"
-priority = "primary"
+#[[tool.poetry.source]]
+#name = "tsinghua"
+#url = "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple/"
+#priority = "primary"
