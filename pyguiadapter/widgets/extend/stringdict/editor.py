@@ -1,8 +1,7 @@
-from qtpy.QtGui import QCloseEvent
 from qtpy.QtCore import Qt
+from qtpy.QtGui import QCloseEvent
 from qtpy.QtWidgets import (
     QDialog,
-    QApplication,
     QVBoxLayout,
     QTableWidget,
     QHBoxLayout,
@@ -423,10 +422,10 @@ class StringDictEditor(QDialog):
         self._edit_button.setEnabled(selected_row >= 0)
 
 
-if __name__ == "__main__":
-    app = QApplication()
-    dialog = StringDictEditor()
-    dialog.string_dict = {"a": "1", "b": "2", "c": "3", "d": "4", "e": "5", "f": "6"}
-    dialog.show()
-    app.exec_()
-    print(dialog.string_dict)
+# if __name__ == "__main__":
+#     app = QApplication()
+#     dialog = StringDictEditor()
+#     dialog.string_dict = {"a": "1", "b": "2", "c": "3", "d": "4", "e": "5", "f": "6"}
+#     dialog.show()
+#     app.exec_()
+#     print(dialog.string_dict)
