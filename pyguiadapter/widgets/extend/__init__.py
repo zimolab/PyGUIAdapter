@@ -42,6 +42,8 @@ from .quantitybox import (
     FloatQuantityBoxConfig,
 )
 
+from .stringdict import StringDictEdit, StringDictEditConfig, StringDictItemDialogConfig
+
 
 __all__ = [
     "IntLineEdit",
@@ -92,4 +94,7 @@ __all__ = [
     "IntQuantityBoxConfig",
     "FloatQuantityBox",
     "FloatQuantityBoxConfig",
+    "StringDictEdit",
+    "StringDictEditConfig",
+    "StringDictItemDialogConfig",
 ]

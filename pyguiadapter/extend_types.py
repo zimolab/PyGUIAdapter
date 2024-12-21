@@ -123,3 +123,8 @@ class int_quantity_t(tuple):
 # noinspection PyPep8Naming
 class float_quantity_t(tuple):
     pass
+
+
+# noinspection PyPep8Naming
+class string_dict_t(dict):
+    pass

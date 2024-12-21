@@ -43,6 +43,7 @@ from .extend import (
     FontSelect,
     IntQuantityBox,
     FloatQuantityBox,
+    StringDictEdit,
 )
 from ..parser.typenames import (
     TYPE_STR,
@@ -91,6 +92,7 @@ from ..extend_types import (
     font_t,
     int_quantity_t,
     float_quantity_t,
+    string_dict_t,
 )
 
 TYPE_TEXT = text_t.__name__
@@ -122,6 +124,7 @@ TYPE_DIR_LIST_T = dir_list_t.__name__
 TYPE_FONT_T = font_t.__name__
 TYPE_INT_QUANTITY = int_quantity_t.__name__
 TYPE_FLOAT_QUANTITY = float_quantity_t.__name__
+TYPE_STRING_DICT_T = string_dict_t.__name__
 
 
 BUILTIN_WIDGETS_MAP = {
@@ -174,6 +177,7 @@ BUILTIN_WIDGETS_MAP = {
     TYPE_FONT_T: FontSelect,
     TYPE_INT_QUANTITY: IntQuantityBox,
     TYPE_FLOAT_QUANTITY: FloatQuantityBox,
+    TYPE_STRING_DICT_T: StringDictEdit,
 }
 
 # noinspection PyProtectedMember
