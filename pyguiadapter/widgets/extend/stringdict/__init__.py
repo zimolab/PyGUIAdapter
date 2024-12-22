@@ -1,4 +1,4 @@
 from .widget import StringDictEdit, StringDictEditConfig
-from .itemdlg import StringDictItemDialogConfig
+from .itemdlg import StringDictItemEditorConfig
 
-__all__ = ["StringDictEdit", "StringDictEditConfig", "StringDictItemDialogConfig"]
+__all__ = ["StringDictEdit", "StringDictEditConfig", "StringDictItemEditorConfig"]

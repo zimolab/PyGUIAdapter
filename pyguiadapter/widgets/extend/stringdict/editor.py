@@ -14,7 +14,7 @@ from qtpy.QtWidgets import (
 )
 from typing import Dict, Optional, Tuple, Callable
 
-from .itemdlg import StringDictItemDialogConfig, ItemDialog
+from .itemdlg import StringDictItemEditorConfig, StringDictItemEditor
 
 _KEY_COLUMN = 0
 _VALUE_COLUMN = 1
@@ -50,7 +50,7 @@ class StringDictEditor(QDialog):
         add_item_dialog_title: str = "Add Item",
         edit_item_dialog_title: str = "Edit Item",
         item_dialog_size: Optional[Tuple[int, int]] = None,
-        item_dialog_config: Optional[StringDictItemDialogConfig] = None,
+        item_dialog_config: Optional[StringDictItemEditorConfig] = None,
         before_close_callback: Optional[Callable[["StringDictEditor"], bool]] = None,
         **kwargs,
     ):
@@ -80,12 +80,12 @@ class StringDictEditor(QDialog):
                 item_dialog_config.value_label = self._value_label
             self._item_dialog_config = item_dialog_config
         else:
-            self._item_dialog_config = StringDictItemDialogConfig(
+            self._item_dialog_config = StringDictItemEditorConfig(
                 key_label=self._key_label,
                 value_label=self._value_label,
             )
 
-        self._item_dialog: Optional[ItemDialog] = None
+        self._item_dialog: Optional[StringDictItemEditor] = None
 
         self._layout = QVBoxLayout()
         self.setLayout(self._layout)
@@ -272,7 +272,7 @@ class StringDictEditor(QDialog):
 
     def _on_add_item(self):
         self._dismiss_item_dialog()
-        self._item_dialog = ItemDialog(
+        self._item_dialog = StringDictItemEditor(
             self,
             title=self._add_item_dialog_title,
             size=self._item_dialog_size,
@@ -294,7 +294,7 @@ class StringDictEditor(QDialog):
             return
         current_key = self._table_widget.item(current_row, _KEY_COLUMN).text()
         current_value = self._table_widget.item(current_row, _VALUE_COLUMN).text()
-        self._item_dialog = ItemDialog(
+        self._item_dialog = StringDictItemEditor(
             self,
             title=self._edit_item_dialog_title,
             size=self._item_dialog_size,

@@ -23,7 +23,7 @@ _DEFAULT_SIZE = (655, 185)
 
 
 @dataclasses.dataclass
-class StringDictItemDialogConfig(object):
+class StringDictItemEditorConfig(object):
     key_label: Optional[str] = None
     value_label: Optional[str] = None
     key_readonly: bool = False
@@ -42,7 +42,7 @@ class StringDictItemDialogConfig(object):
         return dataclasses.asdict(self)
 
 
-class ItemDialog(QDialog):
+class StringDictItemEditor(QDialog):
 
     def __init__(
         self,
