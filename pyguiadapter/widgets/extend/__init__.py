@@ -42,8 +42,10 @@ from .quantitybox import (
     FloatQuantityBoxConfig,
 )
 
-from .stringdict import StringDictEdit, StringDictEditConfig, StringDictItemDialogConfig
-
+from .stringdict import StringDictEdit, StringDictEditConfig, StringDictItemEditorConfig
+from .pathlist2 import PathListEdit as PathsEdit
+from .pathlist2 import PathListEditConfig as PathsEditConfig
+from .pathlist2 import PathListItemEditorConfig as PathItemEditorConfig
 
 __all__ = [
     "IntLineEdit",
@@ -96,5 +98,8 @@ __all__ = [
     "FloatQuantityBoxConfig",
     "StringDictEdit",
     "StringDictEditConfig",
-    "StringDictItemDialogConfig",
+    "StringDictItemEditorConfig",
+    "PathsEdit",
+    "PathsEditConfig",
+    "PathItemEditorConfig",
 ]
