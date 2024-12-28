@@ -1,7 +1,6 @@
 import dataclasses
 from pathlib import Path
 
-from PySide2.QtWidgets import QFileDialog
 from qtpy.QtCore import Qt
 from qtpy.QtWidgets import (
     QDialog,
@@ -14,6 +13,7 @@ from qtpy.QtWidgets import (
     QSpacerItem,
     QSizePolicy,
     QDialogButtonBox,
+    QFileDialog,
 )
 from typing import Optional, Tuple
 
@@ -21,7 +21,7 @@ _DEFAULT_SIZE = (520, 110)
 
 
 @dataclasses.dataclass(frozen=True)
-class PathListItemEditorConfig(object):
+class PathItemEditorConfig(object):
     title: str = "Edit Path"
     size: Optional[Tuple[int, int]] = None
     label: str = "Path:"
@@ -36,18 +36,18 @@ class PathListItemEditorConfig(object):
     path_as_posix: bool = False
 
 
-class PathListItemEditor(QDialog):
+class PathItemEditor(QDialog):
     def __init__(
         self,
         parent: Optional[QWidget] = None,
         initial_value: Optional[str] = None,
-        config: Optional[PathListItemEditorConfig] = None,
+        config: Optional[PathItemEditorConfig] = None,
     ):
         super().__init__(parent)
 
         self._current_value = initial_value
 
-        self._config = config or PathListItemEditorConfig()
+        self._config = config or PathItemEditorConfig()
 
         self._layout = QVBoxLayout()
         self.setLayout(self._layout)
@@ -103,6 +103,11 @@ class PathListItemEditor(QDialog):
     @property
     def current_value(self) -> Optional[str]:
         return self._current_value
+
+    @current_value.setter
+    def current_value(self, value: Optional[str]):
+        self._current_value = value
+        self._edit.setText(value or "")
 
     def _on_browser_file(self):
         filename, _ = QFileDialog.getOpenFileName(

@@ -19,7 +19,7 @@ from qtpy.QtWidgets import (
 from qtpy.compat import getopenfilename, getopenfilenames, getexistingdirectory
 from typing import Optional, Tuple, List
 
-from .itemdlg import PathListItemEditorConfig, PathListItemEditor
+from .itemdlg import PathItemEditorConfig, PathItemEditor
 from ...common import CommonParameterWidgetConfig
 
 _DEFAULT_SIZE = (600, 515)
@@ -116,7 +116,7 @@ class PathListEditorConfig(CommonParameterWidgetConfig):
     # persistent_editor: bool = True
     # """是否使用持久化编辑器"""
 
-    item_editor_config: Optional[PathListItemEditorConfig] = None
+    item_editor_config: Optional[PathItemEditorConfig] = None
     """路径列表项编辑器的配置"""
 
 
@@ -412,19 +412,16 @@ class PathListEditor(QDialog):
             self._remove_item(index)
 
     def _edit_item(self, item: str, index: int):
-        item_editor_config = (
-            self._config.item_editor_config
-            or PathListItemEditorConfig(
-                browse_file_button=self._config.add_file,
-                browse_dir_button=self._config.add_dir,
-                file_filters=self._config.file_filters,
-                start_dir=self._config.start_dir,
-                file_dialog_title=self._config.file_dialog_title,
-                dir_dialog_title=self._config.dir_dialog_title,
-                path_as_posix=self._config.path_as_posix,
-            )
+        item_editor_config = self._config.item_editor_config or PathItemEditorConfig(
+            browse_file_button=self._config.add_file,
+            browse_dir_button=self._config.add_dir,
+            file_filters=self._config.file_filters,
+            start_dir=self._config.start_dir,
+            file_dialog_title=self._config.file_dialog_title,
+            dir_dialog_title=self._config.dir_dialog_title,
+            path_as_posix=self._config.path_as_posix,
         )
-        item_editor = PathListItemEditor(
+        item_editor = PathItemEditor(
             self, initial_value=item, config=item_editor_config
         )
         ret = item_editor.exec_()

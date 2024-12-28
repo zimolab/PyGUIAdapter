@@ -23,6 +23,8 @@ from qtpy.QtWidgets import (
     QLabel,
 )
 
+from pyguiadapter.widgets.extend.pathlist2.itemdlg import PathItemEditor
+
 
 class DictValueWidgetInterface(QWidget):
 
@@ -88,37 +90,43 @@ class DateTimeValue(BaseDictValue):
         return DateTimeValueWidget(parent)
 
 
-class FilePathValueWidget(DictValueWidgetInterface):
+class FilePathValueWidget(QPushButton, DictValueWidgetInterface):
     def __init__(self, parent: QWidget):
         super().__init__(parent)
         self._current_value = ""
-        self._layout = QHBoxLayout()
-        self._layout.setContentsMargins(0, 0, 0, 0)
-        # self._layout.setSpacing(0)
-        self.setLayout(self._layout)
-
-        self._file_edit = QLineEdit(self)
-        self._layout.addWidget(self._file_edit)
-
-        self._browser_file_button = QPushButton("Browse", self)
-        self._browser_file_button.clicked.connect(self._on_browse_file)
-        self._layout.addWidget(self._browser_file_button)
+        # self._layout = QHBoxLayout()
+        # self._layout.setContentsMargins(0, 0, 0, 0)
+        # # self._layout.setSpacing(0)
+        # self.setLayout(self._layout)
+        #
+        # self._file_edit = QLineEdit(self)
+        # self._layout.addWidget(self._file_edit)
+        #
+        # self._browser_file_button = QPushButton("Browse", self)
+        # self._browser_file_button.clicked.connect(self._on_browse_file)
+        # self._layout.addWidget(self._browser_file_button)
+        self._current_value = ""
+        self.setText("Browse File")
+        self.clicked.connect(self._on_browse_file)
 
     def set_value(self, value: str):
-        self._file_edit.setText(value)
         self._current_value = value
 
     def get_value(self) -> str:
         return self._current_value
 
     def _on_browse_file(self):
-        file_path, _ = QFileDialog.getOpenFileName(
-            self, "Open File", "", "All Files (*)"
-        )
-        if not file_path:
-            return
-        self._file_edit.setText(file_path)
-        self._current_value = file_path
+        edt = PathItemEditor(self)
+        edt.current_value = self._current_value
+        ret = edt.exec()
+        if ret == QDialog.Accepted:
+            self._current_value = edt.current_value
+        edt.destroy()
+        edt.deleteLater()
+        self.parentWidget().setFocus()
+
+    # def _on_accept(self):
+    #     self.setText(self._editor.current_value)
 
 
 class FilePathValue(BaseDictValue):
