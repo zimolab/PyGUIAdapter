@@ -17,8 +17,11 @@ class ObjectEditViewConfig(TableViewConfig):
     value_column_header: str = "Value"
     validate_values: bool = True
     ignore_unknown_keys: bool = False
+    item_text_alignment: Union[Qt.AlignmentFlag, int, None] = Qt.AlignCenter
     value_item_alignment: Union[Qt.AlignmentFlag, int, None] = None
+    key_item_selectable: bool = False
     row_data_type: str = "tuple"
+    row_selection_mode: bool = True
 
 
 class ObjectEditView(TableView):
@@ -41,7 +44,9 @@ class ObjectEditView(TableView):
             config=config,
         )
 
+        # noinspection PyUnresolvedReferences
         self.cellDoubleClicked.connect(self._on_cell_double_clicked)
+        # noinspection PyUnresolvedReferences
         self.cellClicked.connect(self._on_cell_clicked)
 
         self.set_schema(schema)
@@ -203,6 +208,15 @@ class ObjectEditView(TableView):
                 item = self.item(row, col)
                 if item is not None:
                     item.setTextAlignment(self.config.value_item_alignment)
+        elif col == KEY_COLUMN_INDEX:
+            if not self.config.key_item_selectable:
+                item = self.item(row, col)
+                if not item:
+                    return
+                flags = item.flags() & ~Qt.ItemIsSelectable
+                item.setFlags(flags)
+        else:
+            raise ValueError(f"unexpected column: {col}")
 
     def on_get_item_data(self, row: int, col: int) -> Any:
         cell_widget = self.cellWidget(row, col)
@@ -260,7 +274,11 @@ class ObjectEditView(TableView):
             self.setHorizontalHeaderLabels(
                 [self.config.key_column_header, self.config.value_column_header]
             )
-        self.setSelectionBehavior(QAbstractItemView.SelectItems)
+        self.setSelectionMode(QAbstractItemView.SingleSelection)
+        if self.config.row_selection_mode:
+            self.setSelectionBehavior(QAbstractItemView.SelectRows)
+        else:
+            self.setSelectionBehavior(QAbstractItemView.SelectItems)
 
     def _get_value_type(self, row: int) -> Optional[ValueType]:
         keys = list(self._schema.keys())

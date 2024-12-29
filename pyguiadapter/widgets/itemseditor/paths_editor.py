@@ -15,10 +15,10 @@ from qtpy.QtWidgets import (
     QListWidgetItem,
 )
 
+from .common_config import CommonEditorConfig
+from .item_editor import BaseItemEditor
 from .itemsview_container import CommonItemsViewContainer, ControlButtonHooks
 from .listview import ListView, ListViewConfig
-from .item_editor import BaseItemEditor
-from .ui_utilities import Widget
 
 REMOVE_CONFIRM_MESSAGE = "Are you sure you want to remove selected path?"
 CLEAR_CONFIRM_MESSAGE = "Are you sure you want to clear all paths?"
@@ -32,10 +32,7 @@ CONFIRM_DIALOG_TITLE = "Confirm"
 
 
 @dataclasses.dataclass
-class PathsEditorConfig(ListViewConfig):
-    window_title: str = "Paths Editor"
-    window_size: Tuple[int, int] = (800, 600)
-    standard_buttons: bool = True
+class PathsEditorConfig(ListViewConfig, CommonEditorConfig):
     add_file_button_text: Optional[str] = "File..."
     add_directory_button_text: Optional[str] = "Folder..."
     file_filters: str = ""
@@ -44,14 +41,17 @@ class PathsEditorConfig(ListViewConfig):
     directory_dialog_title: str = ""
     as_posix: bool = False
     allow_duplicates: bool = True
+    window_size: Tuple[int, int] = (800, 600)
+    standard_buttons: bool = True
     warning_dialog_title: str = WARNING_DIALOG_TITLE
     confirm_dialog_title: str = CONFIRM_DIALOG_TITLE
-    duplicate_warning_message: Optional[str] = DUPLICATE_WARNING_MESSAGE
-    no_path_selected_warning_message: Optional[str] = NO_PATH_SELECTED_WARNING_MESSAGE
-    no_path_added_warning_message: Optional[str] = NO_PATH_ADDED_WARNING_MESSAGE
+    duplicate_items_warning_message: Optional[str] = DUPLICATE_WARNING_MESSAGE
+    no_selection_warning_message: Optional[str] = NO_PATH_SELECTED_WARNING_MESSAGE
+    no_items_warning_message: Optional[str] = NO_PATH_ADDED_WARNING_MESSAGE
     remove_confirm_message: Optional[str] = REMOVE_CONFIRM_MESSAGE
     clear_confirm_message: Optional[str] = CLEAR_CONFIRM_MESSAGE
-    multiple_path_warning_message: Optional[str] = MULTIPLE_PATH_WARNING_MESSAGE
+    multiple_selection_warning_message: Optional[str] = MULTIPLE_PATH_WARNING_MESSAGE
+    window_title: str = "Paths Editor"
     center_container_title: str = ""
     item_editor_title: str = ""
     item_editor_size: Tuple[int, int] = (620, 150)
@@ -73,7 +73,7 @@ class PathItemEditor(BaseItemEditor):
 
         self._setup_ui()
 
-    def user_bottom_widgets(self) -> List[Widget]:
+    def user_bottom_widgets(self) -> List[QWidget]:
         buttons = []
         if self._config.add_file_button_text:
             self._browse_file_button = QPushButton(self)
@@ -205,24 +205,25 @@ class PathsEditor(QDialog, ControlButtonHooks):
     def on_edit_button_clicked(self, source: QPushButton) -> bool:
         selected_rows = self._path_listview.get_selected_rows(reverse=True)
         if len(selected_rows) < 1:
-            if self._config.no_path_selected_warning_message:
-                self._show_warning_message(
-                    self._config.no_path_selected_warning_message
-                )
+            if self._config.no_selection_warning_message:
+                self._show_warning_message(self._config.no_selection_warning_message)
             return True
         if len(selected_rows) > 1:
-            if self._config.multiple_path_warning_message:
-                self._show_warning_message(self._config.multiple_path_warning_message)
+            if self._config.multiple_selection_warning_message:
+                self._show_warning_message(
+                    self._config.multiple_selection_warning_message
+                )
             return True
         item_editor = PathItemEditor(self, self._config)
         prev = self._path_listview.get_row_data(selected_rows[0])
         cur, ok = item_editor.start(prev)
+        item_editor.deleteLater()
         if not ok or cur == prev:
             return True
         if not self._config.allow_duplicates and self.contains_path(cur):
-            if self._config.duplicate_warning_message:
+            if self._config.duplicate_items_warning_message:
                 self._show_warning_message(
-                    self._config.duplicate_warning_message.format(cur)
+                    self._config.duplicate_items_warning_message.format(cur)
                 )
             return True
         self._path_listview.set_row_data(selected_rows[0], cur)
@@ -231,10 +232,8 @@ class PathsEditor(QDialog, ControlButtonHooks):
     def on_remove_button_clicked(self, source: QPushButton) -> bool:
         selected_rows = self._path_listview.get_selected_rows(reverse=True)
         if not selected_rows:
-            if self._config.no_path_selected_warning_message:
-                self._show_warning_message(
-                    self._config.no_path_selected_warning_message
-                )
+            if self._config.no_selection_warning_message:
+                self._show_warning_message(self._config.no_selection_warning_message)
             return True
         if self._config.remove_confirm_message:
             ret = self._show_confirm_message(self._config.remove_confirm_message)
@@ -245,8 +244,8 @@ class PathsEditor(QDialog, ControlButtonHooks):
 
     def on_clear_button_clicked(self, source: QPushButton) -> bool:
         if self._path_listview.row_count() <= 0:
-            if self._config.no_path_added_warning_message:
-                self._show_warning_message(self._config.no_path_added_warning_message)
+            if self._config.no_items_warning_message:
+                self._show_warning_message(self._config.no_items_warning_message)
             return True
 
         if self._config.clear_confirm_message:
@@ -305,9 +304,9 @@ class PathsEditor(QDialog, ControlButtonHooks):
             if self._config.as_posix:
                 filename = Path(filename).as_posix()
             ok = self.add_path(filename)
-            if not ok and self._config.duplicate_warning_message:
+            if not ok and self._config.duplicate_items_warning_message:
                 ret = self._show_warning_message(
-                    self._config.duplicate_warning_message.format(filename),
+                    self._config.duplicate_items_warning_message.format(filename),
                     QMessageBox.Ignore | QMessageBox.Abort,
                 )
                 if ret == QMessageBox.StandardButton.Abort:
@@ -324,9 +323,9 @@ class PathsEditor(QDialog, ControlButtonHooks):
         if self._config.as_posix:
             directory = Path(directory).as_posix()
         ok = self.add_path(directory)
-        if not ok and self._config.duplicate_warning_message:
+        if not ok and self._config.duplicate_items_warning_message:
             self._show_warning_message(
-                self._config.duplicate_warning_message.format(directory)
+                self._config.duplicate_items_warning_message.format(directory)
             )
 
     def _on_item_double_clicked(self, item: QListWidgetItem):
@@ -381,6 +380,7 @@ class PathsEditor(QDialog, ControlButtonHooks):
             )
 
         if self._config.double_click_to_edit:
+            # noinspection PyUnresolvedReferences
             self._path_listview.itemDoubleClicked.connect(self._on_item_double_clicked)
 
         flags = self.windowFlags() & ~Qt.WindowContextHelpButtonHint
@@ -389,13 +389,13 @@ class PathsEditor(QDialog, ControlButtonHooks):
     def _check_movement(self) -> int:
         selected_rows = self._path_listview.get_selected_rows(reverse=True)
         if len(selected_rows) < 1:
-            if self._config.no_path_selected_warning_message:
-                self._show_warning_message(
-                    self._config.no_path_selected_warning_message
-                )
+            if self._config.no_selection_warning_message:
+                self._show_warning_message(self._config.no_selection_warning_message)
             return -1
         if len(selected_rows) > 1:
-            if self._config.multiple_path_warning_message:
-                self._show_warning_message(self._config.multiple_path_warning_message)
+            if self._config.multiple_selection_warning_message:
+                self._show_warning_message(
+                    self._config.multiple_selection_warning_message
+                )
             return -1
         return selected_rows[0]

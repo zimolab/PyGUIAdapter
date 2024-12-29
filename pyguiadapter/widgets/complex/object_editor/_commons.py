@@ -1,2 +1,0 @@
-_KEY_COLUMN = 0
-_VALUE_COLUMN = 1

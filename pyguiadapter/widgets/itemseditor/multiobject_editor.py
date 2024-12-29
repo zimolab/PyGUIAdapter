@@ -1,21 +1,25 @@
 import dataclasses
-from typing import Optional, Tuple, Dict, Any, List
+from typing import Dict, Any, List, Optional, Tuple
 
 from qtpy.QtCore import Qt
 from qtpy.QtWidgets import (
     QDialog,
-    QWidget,
     QVBoxLayout,
     QDialogButtonBox,
     QMessageBox,
     QPushButton,
+    QWidget,
+    QGridLayout,
+    QLabel,
+    QSpacerItem,
+    QSizePolicy,
 )
 
-from .itemsview_container import CommonItemsViewContainer, ControlButtonHooks
+from .common_config import CommonEditorConfig
 from .item_editor import BaseScrollableItemEditor
+from .itemsview_container import CommonItemsViewContainer, ControlButtonHooks
 from .object_tableview import MultiObjectEditView, MultiObjectEditViewConfig
-from .object_tableview.schema import ValueType
-
+from .object_tableview.schema import ValueType, ValueWidgetMixin
 
 REMOVE_CONFIRM_MESSAGE = "Are you sure you want to remove selected object?"
 CLEAR_CONFIRM_MESSAGE = "Are you sure you want to clear all objects?"
@@ -23,33 +27,81 @@ NO_OBJECT_SELECTED_WARNING_MESSAGE = "No object selected!"
 NO_OBJECT_ADDED_WARNING_MESSAGE = "No object added!"
 MULTIPLE_OBJECTS_WARNING_MESSAGE = "Multiple objects selected!"
 
-WARNING_DIALOG_TITLE = "Warning"
-CONFIRM_DIALOG_TITLE = "Confirm"
-
 
 @dataclasses.dataclass
-class MultiObjectEditorConfig(MultiObjectEditViewConfig):
+class MultiObjectEditorConfig(MultiObjectEditViewConfig, CommonEditorConfig):
+    fill_missing_keys_with_default: bool = True
     window_title: str = "Objects Editor"
-    window_size: tuple = (800, 600)
-    standard_buttons: bool = True
-    warning_dialog_title: str = WARNING_DIALOG_TITLE
-    confirm_dialog_title: str = CONFIRM_DIALOG_TITLE
-    no_object_selected_warning_message: Optional[str] = (
-        NO_OBJECT_SELECTED_WARNING_MESSAGE
-    )
-    no_object_added_warning_message: Optional[str] = NO_OBJECT_ADDED_WARNING_MESSAGE
-    remove_confirm_message: Optional[str] = REMOVE_CONFIRM_MESSAGE
-    clear_confirm_message: Optional[str] = CLEAR_CONFIRM_MESSAGE
-    multiple_objects_warning_message: Optional[str] = MULTIPLE_OBJECTS_WARNING_MESSAGE
-    center_container_title: str = ""
-    item_editor_title: str = ""
-    item_editor_size: Tuple[int, int] = (620, 150)
-    item_editor_center_container_title: str = ""
-    double_click_to_edit: bool = True
-    wrap_movement: bool = False
+    window_size: Tuple[int, int] = (800, 600)
     stretch_last_section: bool = True
     ignore_unknown_columns: bool = True
-    fill_missing_keys_with_default: bool = True
+    alternating_row_colors: bool = False
+    validate_added_object: bool = True
+    no_selection_warning_message: Optional[str] = NO_OBJECT_SELECTED_WARNING_MESSAGE
+    no_items_warning_message: Optional[str] = NO_OBJECT_ADDED_WARNING_MESSAGE
+    remove_confirm_message: Optional[str] = REMOVE_CONFIRM_MESSAGE
+    clear_confirm_message: Optional[str] = CLEAR_CONFIRM_MESSAGE
+    multiple_selection_warning_message: Optional[str] = MULTIPLE_OBJECTS_WARNING_MESSAGE
+
+
+class ObjectItemEditor(BaseScrollableItemEditor):
+
+    def __init__(
+        self,
+        parent: QWidget,
+        config: CommonEditorConfig,
+        schema: Dict[str, ValueType],
+    ):
+        self._schema = schema
+        self._config = config
+
+        self._widgets: Dict[str, ValueWidgetMixin] = {}
+
+        super().__init__(parent)
+
+        self._setup_ui()
+
+    def user_bottom_widgets(self) -> List[QWidget]:
+        return []
+
+    def set_data(self, data: Dict[str, Any]):
+        if not data:
+            return
+        for key, value in data.items():
+            widget = self._widgets.get(key, None)
+            if widget:
+                widget.set_value(value)
+
+    def get_data(self) -> Dict[str, Any]:
+        data = {}
+        for key, widget in self._widgets.items():
+            data[key] = widget.get_value()
+        return data
+
+    def on_create_item_widgets(self, parent: QWidget):
+        layout = QGridLayout()
+        for i, (key, vt) in enumerate(self._schema.items()):
+            label = QLabel(key, parent)
+            layout.addWidget(label, i, 0)
+            edit = vt.create_item_editor_widget(parent)
+            layout.addWidget(edit, i, 1)
+            self._widgets[key] = edit
+        layout.addItem(QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Expanding))
+        parent.setLayout(layout)
+
+    def _setup_ui(self):
+        if self._config.item_editor_title:
+            self.setWindowTitle(self._config.item_editor_title)
+        flags = self.windowFlags() & ~Qt.WindowContextHelpButtonHint
+        self.setWindowFlags(flags)
+
+        if self._config.item_editor_size:
+            self.resize(*self._config.item_editor_size)
+
+        if self._config.item_editor_center_container_title:
+            self._center_container.setTitle(
+                self._config.item_editor_center_container_title
+            )
 
 
 class MultiObjectEditor(QDialog, ControlButtonHooks):
@@ -110,18 +162,32 @@ class MultiObjectEditor(QDialog, ControlButtonHooks):
         return self._objects_view.fill_missing_keys_with_default(obj, copy)
 
     def on_add_button_clicked(self, source: QPushButton) -> bool:
-        return super().on_add_button_clicked(source)
+        item_editor = ObjectItemEditor(self, self._config, self._schema)
+        obj, ok = item_editor.start(None)
+        item_editor.deleteLater()
+        if not ok:
+            return True
+        self.add_object(obj)
+        return True
 
     def on_edit_button_clicked(self, source: QPushButton) -> bool:
-        return super().on_edit_button_clicked(source)
+        selected_row = self._check_selected_row()
+        if selected_row < 0:
+            return True
+        item_editor = ObjectItemEditor(self, self._config, self._schema)
+        prev = self._objects_view.get_object(selected_row)
+        cur, ok = item_editor.start(prev)
+        item_editor.deleteLater()
+        if not ok:
+            return True
+        self.update_object(selected_row, cur)
+        return True
 
     def on_remove_button_clicked(self, source: QPushButton) -> bool:
         selected_rows = self._objects_view.get_selected_rows(reverse=True)
         if not selected_rows:
-            if self._config.no_object_selected_warning_message:
-                self._show_warning_message(
-                    self._config.no_object_selected_warning_message
-                )
+            if self._config.no_selection_warning_message:
+                self._show_warning_message(self._config.no_selection_warning_message)
             return True
         if self._config.remove_confirm_message:
             ret = self._show_confirm_message(self._config.remove_confirm_message)
@@ -132,10 +198,8 @@ class MultiObjectEditor(QDialog, ControlButtonHooks):
 
     def on_clear_button_clicked(self, source: QPushButton) -> bool:
         if self._objects_view.row_count() <= 0:
-            if self._config.no_object_selected_warning_message:
-                self._show_warning_message(
-                    self._config.no_object_selected_warning_message
-                )
+            if self._config.no_selection_warning_message:
+                self._show_warning_message(self._config.no_selection_warning_message)
             return True
 
         if self._config.clear_confirm_message:
@@ -146,14 +210,14 @@ class MultiObjectEditor(QDialog, ControlButtonHooks):
         return True
 
     def on_move_up_button_clicked(self, source: QPushButton) -> bool:
-        row_to_move = self._check_movement()
+        row_to_move = self._check_selected_row()
         if row_to_move < 0:
             return True
         self._objects_view.move_row_up(row_to_move, wrap=self._config.wrap_movement)
         return True
 
     def on_move_down_button_clicked(self, source: QPushButton) -> bool:
-        row_to_move = self._check_movement()
+        row_to_move = self._check_selected_row()
         if row_to_move < 0:
             return True
         self._objects_view.move_row_down(row_to_move, wrap=self._config.wrap_movement)
@@ -166,7 +230,8 @@ class MultiObjectEditor(QDialog, ControlButtonHooks):
         self.reject()
 
     def _on_item_double_clicked(self, item):
-        pass
+        _ = item
+        self.on_edit_button_clicked(self._view_container.edit_button)
 
     def _show_warning_message(
         self, message: str, buttons: QMessageBox.StandardButton = QMessageBox.Ok
@@ -206,18 +271,19 @@ class MultiObjectEditor(QDialog, ControlButtonHooks):
         self.setWindowFlags(flags)
 
         if self._config.double_click_to_edit:
+            # noinspection PyUnresolvedReferences
             self._objects_view.itemDoubleClicked.connect(self._on_item_double_clicked)
 
-    def _check_movement(self) -> int:
+    def _check_selected_row(self) -> int:
         selected_rows = self._objects_view.get_selected_rows(reverse=True)
         if len(selected_rows) < 1:
-            if self._config.no_object_selected_warning_message:
-                self._show_warning_message(self._config.no_object_added_warning_message)
+            if self._config.no_selection_warning_message:
+                self._show_warning_message(self._config.no_items_warning_message)
             return -1
         if len(selected_rows) > 1:
-            if self._config.multiple_objects_warning_message:
+            if self._config.multiple_selection_warning_message:
                 self._show_warning_message(
-                    self._config.multiple_objects_warning_message
+                    self._config.multiple_selection_warning_message
                 )
             return -1
         return selected_rows[0]
