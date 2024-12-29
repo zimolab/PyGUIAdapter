@@ -24,3 +24,9 @@ class CommonEditorConfig(object):
     no_items_warning_message: Optional[str] = None
     remove_confirm_message: Optional[str] = None
     clear_confirm_message: Optional[str] = None
+    add_button_text: str = "Add"
+    edit_button_text: str = "Edit"
+    remove_button_text: str = "Remove"
+    clear_button_text: str = "Clear"
+    move_up_button_text: str = "Move Up"
+    move_down_button_text: str = "Move Down"

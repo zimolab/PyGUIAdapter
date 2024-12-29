@@ -274,6 +274,28 @@ class MultiObjectEditor(QDialog, ControlButtonHooks):
             # noinspection PyUnresolvedReferences
             self._objects_view.itemDoubleClicked.connect(self._on_item_double_clicked)
 
+        if self._config.add_button_text:
+            self._view_container.add_button.setText(self._config.add_button_text)
+        if self._config.edit_button_text:
+            self._view_container.edit_button.setText(self._config.edit_button_text)
+        if self._config.remove_button_text:
+            self._view_container.remove_button.setText(self._config.remove_button_text)
+        if self._config.move_up_button_text:
+            self._view_container.move_up_button.setText(
+                self._config.move_up_button_text
+            )
+        if self._config.move_down_button_text:
+            self._view_container.move_down_button.setText(
+                self._config.move_down_button_text
+            )
+        if self._config.clear_button_text:
+            self._view_container.clear_button.setText(self._config.clear_button_text)
+
+        if self._config.center_container_title:
+            self._view_container.items_view_box.setTitle(
+                self._config.center_container_title
+            )
+
     def _check_selected_row(self) -> int:
         selected_rows = self._objects_view.get_selected_rows(reverse=True)
         if len(selected_rows) < 1:

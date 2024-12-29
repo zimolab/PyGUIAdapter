@@ -19,6 +19,11 @@ def paths_t_example(arg1: paths_t, arg2: paths_t, arg3: paths_t):
     [arg1]
     default_value = ["/path/to/file1.txt", "/path/to/file2.txt"]
 
+    [arg2]
+    add_dir = false
+
+    [arg3]
+    add_file = false
 
     @end
 

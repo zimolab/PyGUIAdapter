@@ -56,6 +56,10 @@ class ItemsViewContainer(QWidget):
     def control_widgets_panel(self) -> QWidget:
         return self._controls_widget_panel
 
+    @property
+    def items_view_box(self) -> QGroupBox:
+        return self._items_view_box
+
     def hide_control_widgets_panel(self):
         self._controls_widget_panel.hide()
 
@@ -181,17 +185,6 @@ class CommonItemsViewContainer(ItemsViewContainer):
         self._control_spacer_1 = self.create_control_spacer()
         self.add_control_widget(self._control_spacer_1)
 
-        self._move_up_button = QPushButton(move_up_button_text)
-        self._move_up_button.clicked.connect(self.on_move_up_button_clicked)
-        self.add_control_widget(self._move_up_button)
-
-        self._move_down_button = QPushButton(move_down_button_text)
-        self._move_down_button.clicked.connect(self.on_move_down_button_clicked)
-        self.add_control_widget(self._move_down_button)
-
-        self._control_spacer_2 = self.create_control_spacer()
-        self.add_control_widget(self._control_spacer_2)
-
         self._add_button = QPushButton(add_button_text)
         self._add_button.clicked.connect(self.on_add_button_clicked)
         self.add_control_widget(self._add_button)
@@ -207,6 +200,17 @@ class CommonItemsViewContainer(ItemsViewContainer):
         self._clear_button = QPushButton(clear_button_text)
         self._clear_button.clicked.connect(self.on_clear_button_clicked)
         self.add_control_widget(self._clear_button)
+
+        self._control_spacer_2 = self.create_control_spacer()
+        self.add_control_widget(self._control_spacer_2)
+
+        self._move_up_button = QPushButton(move_up_button_text)
+        self._move_up_button.clicked.connect(self.on_move_up_button_clicked)
+        self.add_control_widget(self._move_up_button)
+
+        self._move_down_button = QPushButton(move_down_button_text)
+        self._move_down_button.clicked.connect(self.on_move_down_button_clicked)
+        self.add_control_widget(self._move_down_button)
 
         self._control_spacer_3 = self.create_control_spacer()
         self.add_control_widget(self._control_spacer_3)

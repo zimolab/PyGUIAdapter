@@ -43,9 +43,7 @@ from .quantitybox import (
 )
 
 from .stringdict import StringDictEdit, StringDictEditConfig, StringDictItemEditorConfig
-from .pathlist2 import PathListEdit as PathsEdit
-from .pathlist2 import PathListEditConfig as PathsEditConfig
-from .pathlist2 import PathItemEditorConfig as PathItemEditorConfig
+from .pathsedit import PathsEdit, PathsEditConfig
 
 __all__ = [
     "IntLineEdit",
@@ -101,5 +99,4 @@ __all__ = [
     "StringDictItemEditorConfig",
     "PathsEdit",
     "PathsEditConfig",
-    "PathItemEditorConfig",
 ]

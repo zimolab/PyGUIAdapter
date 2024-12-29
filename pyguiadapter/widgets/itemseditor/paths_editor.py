@@ -199,6 +199,14 @@ class PathsEditor(QDialog, ControlButtonHooks):
     def contains_path(self, path: str) -> bool:
         return path in self.get_paths()
 
+    def start(self, paths: Optional[List[str]] = None) -> Tuple[List[str], bool]:
+        initial_paths = paths
+        self.set_paths(paths or [])
+        ret = self.exec_()
+        if ret == QDialog.Accepted:
+            return self.get_paths(), True
+        return initial_paths, False
+
     def on_add_button_clicked(self, source: QPushButton) -> bool:
         return True
 
@@ -385,6 +393,28 @@ class PathsEditor(QDialog, ControlButtonHooks):
 
         flags = self.windowFlags() & ~Qt.WindowContextHelpButtonHint
         self.setWindowFlags(flags)
+
+        if self._config.add_button_text:
+            self._view_container.add_button.setText(self._config.add_button_text)
+        if self._config.edit_button_text:
+            self._view_container.edit_button.setText(self._config.edit_button_text)
+        if self._config.remove_button_text:
+            self._view_container.remove_button.setText(self._config.remove_button_text)
+        if self._config.move_up_button_text:
+            self._view_container.move_up_button.setText(
+                self._config.move_up_button_text
+            )
+        if self._config.move_down_button_text:
+            self._view_container.move_down_button.setText(
+                self._config.move_down_button_text
+            )
+        if self._config.clear_button_text:
+            self._view_container.clear_button.setText(self._config.clear_button_text)
+
+        if self._config.center_container_title:
+            self._view_container.items_view_box.setTitle(
+                self._config.center_container_title
+            )
 
     def _check_movement(self) -> int:
         selected_rows = self._path_listview.get_selected_rows(reverse=True)
