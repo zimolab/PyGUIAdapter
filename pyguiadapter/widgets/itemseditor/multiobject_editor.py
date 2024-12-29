@@ -42,6 +42,7 @@ class MultiObjectEditorConfig(MultiObjectEditViewConfig, CommonEditorConfig):
     remove_confirm_message: Optional[str] = REMOVE_CONFIRM_MESSAGE
     clear_confirm_message: Optional[str] = CLEAR_CONFIRM_MESSAGE
     multiple_selection_warning_message: Optional[str] = MULTIPLE_OBJECTS_WARNING_MESSAGE
+    double_click_to_edit: bool = False
 
 
 class ObjectItemEditor(BaseScrollableItemEditor):

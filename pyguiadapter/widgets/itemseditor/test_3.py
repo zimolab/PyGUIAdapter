@@ -5,6 +5,7 @@ from pyguiadapter.widgets.itemseditor.object_tableview.valuetypes import (
     IntValue,
     BoolValue,
     FloatValue,
+    ChoiceValue,
 )
 from pyguiadapter.widgets.itemseditor.multiobject_editor import (
     MultiObjectEditor,
@@ -15,7 +16,7 @@ schema = {
     "Name": StringValue(),
     "Age": IntValue(),
     "Is Student": BoolValue(),
-    "Occupation": StringValue(),
+    "Occupation": ChoiceValue(0, ["Engineer", "Teacher", "Doctor"]),
     "Height": FloatValue(180.0),
 }
 
