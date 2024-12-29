@@ -3,12 +3,12 @@ from typing import Optional, Union
 from qtpy.QtCore import QModelIndex, QAbstractItemModel
 from qtpy.QtWidgets import QWidget, QStyleOptionViewItem
 
-
-from ..schema import ValueTypeItemDelegate, ValueTypeBase, ValueWidgetMixin
+from ..itemsview_base import TableViewItemDelegate
+from ..schema import ValueTypeBase, ValueWidgetMixin
 from ._commons import _KEY_COLUMN
 
 
-class ValueDelegate(ValueTypeItemDelegate):
+class ValueDelegate(TableViewItemDelegate):
     def __init__(self, parent: QWidget, value_type: ValueTypeBase):
         super().__init__(parent, value_type)
 

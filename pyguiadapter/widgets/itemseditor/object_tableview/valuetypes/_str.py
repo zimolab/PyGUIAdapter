@@ -4,7 +4,7 @@ from qtpy.QtCore import QRegularExpression
 from qtpy.QtGui import QValidator, QRegularExpressionValidator
 from qtpy.QtWidgets import QLineEdit, QWidget
 
-from ..schema import ValueWidgetMixin, ValueTypeBase
+from ..schema import ValueWidgetMixin, ValueType
 
 DEFAULT_VALUE = ""
 ECHO_MODE = None
@@ -47,7 +47,7 @@ class StringEditor(QLineEdit, ValueWidgetMixin):
             validator.setRegularExpression(regex)
         assert isinstance(validator, (QValidator, type(None)))
         if validator:
-            self._value_widget.setValidator(validator)
+            self.setValidator(validator)
 
         self.set_value(default_value)
 
@@ -58,7 +58,7 @@ class StringEditor(QLineEdit, ValueWidgetMixin):
         return self.text()
 
 
-class StringValue(ValueTypeBase):
+class StringValue(ValueType):
     def __init__(
         self,
         default_value: str = DEFAULT_VALUE,

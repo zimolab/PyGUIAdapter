@@ -22,9 +22,9 @@ class RowBasedTableViewFrameBase(CommonItemsViewFrameBase):
         self,
         parent: Optional[QWidget],
         column_headers: Union[List[str], Tuple[str, ...], Dict[str, str]],
-        config: Optional[RowBasedTableViewFrameConfig] = None,
+        config: RowBasedTableViewFrameConfig,
     ):
-        self._config = config or RowBasedTableViewFrameConfig()
+        self._config = config
         self._tableview: Optional[RowBasedTableView] = None
         self._column_headers = column_headers
 
@@ -44,7 +44,7 @@ class RowBasedTableViewFrameBase(CommonItemsViewFrameBase):
     def create_edit_item_editor(self) -> ItemEditorBase:
         pass
 
-    def on_create_items_view(self) -> QAbstractItemView:
+    def on_create_items_view(self) -> RowBasedTableView:
         if self._tableview is None:
             self._tableview = RowBasedTableView(
                 self,

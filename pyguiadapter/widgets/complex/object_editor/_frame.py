@@ -1,11 +1,11 @@
 import dataclasses
 from typing import Optional, Dict
 
-from qtpy.QtWidgets import QWidget, QAbstractItemView, QPushButton
+from qtpy.QtWidgets import QWidget, QAbstractItemView
 
+from ._view import ObjectTableView, ObjectTableViewConfig
 from ..itemsview_base import ItemsViewFrameBase, ItemsViewFrameConfig
 from ..schema import ValueTypeBase
-from ._tableview import ObjectTableView, ObjectTableViewConfig
 
 
 @dataclasses.dataclass

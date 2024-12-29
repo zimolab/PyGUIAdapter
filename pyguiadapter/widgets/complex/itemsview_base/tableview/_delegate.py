@@ -3,17 +3,21 @@ from typing import Optional, Union
 from qtpy.QtCore import Qt, QModelIndex, QAbstractItemModel
 from qtpy.QtWidgets import QWidget, QStyledItemDelegate, QStyleOptionViewItem
 
-from ._value_type import ValueTypeBase
-from ._widget_mixin import ValueWidgetMixin
+from ...schema import ValueTypeBase, ValueWidgetMixin
+from ._view import TableView
 
 
-class ValueTypeItemDelegate(QStyledItemDelegate):
-    def __init__(self, parent: QWidget, vt: ValueTypeBase):
+class TableViewItemDelegate(QStyledItemDelegate):
+    def __init__(self, parent: Union[QWidget, TableView], vt: ValueTypeBase):
         super().__init__(parent)
         self._vt = vt
+        self._parent = parent
 
     def createEditor(
-        self, parent: QWidget, option: QStyleOptionViewItem, index: QModelIndex
+        self,
+        parent: Union[QWidget, TableView],
+        option: QStyleOptionViewItem,
+        index: QModelIndex,
     ) -> Optional[QWidget]:
         return self._vt.create_item_delegate_widget(parent, option=option, index=index)
 
@@ -22,7 +26,10 @@ class ValueTypeItemDelegate(QStyledItemDelegate):
     ) -> None:
         if not editor:
             return
-        data = index.data(Qt.EditRole)
+        if isinstance(self._parent, TableView):
+            data = self._parent.get_item_data(index.row(), index.column())
+        else:
+            data = index.data(Qt.EditRole)
         editor.set_value(data)
 
     def setModelData(
@@ -34,4 +41,7 @@ class ValueTypeItemDelegate(QStyledItemDelegate):
         if not editor:
             return
         value = editor.get_value()
-        model.setData(index, value, Qt.EditRole)
+        if isinstance(self._parent, TableView):
+            self._parent.set_item_data(index.row(), index.column(), value)
+        else:
+            model.setData(index, value, Qt.EditRole)

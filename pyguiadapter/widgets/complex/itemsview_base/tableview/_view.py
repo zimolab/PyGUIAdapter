@@ -2,10 +2,15 @@ import dataclasses
 from typing import Optional, List, Any, Tuple, Union, Dict, Literal
 
 from qtpy.QtCore import Qt
-from qtpy.QtWidgets import QAbstractItemView, QWidget
-from qtpy.QtWidgets import QTableWidget, QTableWidgetItem
+from qtpy.QtWidgets import (
+    QTableWidget,
+    QTableWidgetItem,
+    QAbstractItemView,
+    QWidget,
+)
 
 from .._itemsview import ItemsViewInterface
+from ...schema import CellWidgetMixin
 
 
 @dataclasses.dataclass
@@ -17,6 +22,7 @@ class TableViewConfig(object):
     stretch_last_column: bool = True
     show_grid_lines: bool = True
     no_focus: bool = False
+    item_text_alignment: Optional[Qt.Alignment] = Qt.AlignCenter
 
 
 class TableView(QTableWidget):
@@ -30,25 +36,44 @@ class TableView(QTableWidget):
         self._setup_ui()
 
     # noinspection PyMethodMayBeStatic, PyUnusedLocal
-    def create_item(self, row: int, column: int, item_data: Any) -> QTableWidgetItem:
+    def create_item(
+        self, row: int, column: int, item_data: Any
+    ) -> Union[QTableWidgetItem, CellWidgetMixin]:
         item = QTableWidgetItem()
-        item.setText(str(item_data))
-        item.setData(Qt.EditRole, item_data)
+        self.setItem(row, column, item)
         return item
 
     # noinspection PyMethodMayBeStatic, PyUnusedLocal
     def set_item_data(self, row: int, column: int, item_data: Any):
+        cell_widget = self.cell_value_widget(row, column)
+        if isinstance(cell_widget, CellWidgetMixin):
+            cell_widget.set_value(item_data)
+            return
+
         item = self.item(row, column)
         if item is None:
             raise ValueError(f"no item found at row {row}, column {column}")
+
         item.setText(str(item_data))
         item.setData(Qt.EditRole, item_data)
 
+        if self._config.item_text_alignment is not None:
+            item.setTextAlignment(self._config.item_text_alignment)
+
     def get_item_data(self, row: int, column: int) -> Any:
+        cell_widget = self.cell_value_widget(row, column)
+        if isinstance(cell_widget, CellWidgetMixin):
+            return cell_widget.get_value()
         item = self.item(row, column)
         if item is None:
             raise ValueError(f"no item found at row {row}, column {column}")
         return item.data(Qt.EditRole)
+
+    def cell_value_widget(self, row: int, column: int) -> Optional[CellWidgetMixin]:
+        cell_widget = self.cellWidget(row, column)
+        if isinstance(cell_widget, CellWidgetMixin):
+            return cell_widget
+        return None
 
     def _setup_ui(self):
         self.setSelectionBehavior(QAbstractItemView.SelectRows)
@@ -80,7 +105,7 @@ class RowBasedTableView(TableView, ItemsViewInterface):
         self,
         parent: Optional[QWidget],
         column_headers: Union[List[str], Tuple[str, ...], Dict[str, str]],
-        config: Optional[TableViewConfig] = None,
+        config: TableViewConfig,
         *args,
         **kwargs,
     ):
@@ -91,12 +116,12 @@ class RowBasedTableView(TableView, ItemsViewInterface):
 
         When `column_headers` is a list or a tuple, the "column_label_text" will be the same as the "column_key".
         """
-        config = config or TableViewConfig()
+        self._config = config
         self._column_headers: Dict[str, str] = {}
 
-        super().__init__(parent, config, *args, **kwargs)
+        super().__init__(parent, self._config, *args, **kwargs)
 
-        self.reset_view(column_headers)
+        self.reset_view(column_headers, self._config)
 
     @property
     def column_headers(self) -> Dict[str, str]:
@@ -116,9 +141,9 @@ class RowBasedTableView(TableView, ItemsViewInterface):
     def reset_view(
         self,
         column_headers: Union[List[str], Tuple[str, ...], Dict[str, str]],
-        config: Optional[TableViewConfig] = None,
+        config: TableViewConfig,
     ):
-        self._config = config or TableViewConfig()
+        self._config = config
         if isinstance(column_headers, (list, tuple)):
             column_headers = {h: h for h in column_headers}
         self._column_headers.clear()
@@ -183,11 +208,14 @@ class RowBasedTableView(TableView, ItemsViewInterface):
                 col = self.index_of_column(col_key)
                 if col < 0:
                     continue
-                self._insert_item(row, col, item_data)
+                self.create_item(row, col, item_data)
+                self.set_item_data(row, col, item_data)
+
             return
         # for list or tuple, assume all columns are present and in the same order as the column headers
         for col, item_data in enumerate(row_data):
-            self._insert_item(row, col, item_data)
+            self.create_item(row, col, item_data)
+            self.set_item_data(row, col, item_data)
 
     def append_row(
         self, row_data: Any, ignore_unknown_columns: bool = False, *args, **kwargs
@@ -277,9 +305,6 @@ class RowBasedTableView(TableView, ItemsViewInterface):
     ) -> Union[Tuple[Any, ...], Dict[str, Any]]:
         if row < 0 or row >= self.row_count():
             raise IndexError(f"row out of range: {row}")
-        row_data = self.get_row_data(row, row_data_type, *args, **kwargs)
-        self.removeRow(row)
-        return row_data
 
     def remove_all_rows(self, *args, **kwargs):
         if self.row_count() <= 0:
@@ -309,23 +334,3 @@ class RowBasedTableView(TableView, ItemsViewInterface):
 
     def clear_selection(self, *args, **kwargs):
         self.clearSelection()
-
-    def swap_rows(self, row1: int, row2: int, *args, **kwargs):
-        row_count = self.row_count()
-        if row_count <= row1 < 0 or row_count <= row2 < 0:
-            raise IndexError("row out of range")
-        if row1 == row2:
-            return
-        # this maybe little faster than using set_row_data and get_row_data?
-        for col in range(self.column_count()):
-            # swap the items, here is how:
-            new_item1 = QTableWidgetItem(self.item(row2, col))
-            new_item2 = QTableWidgetItem(self.item(row1, col))
-            self.setItem(row1, col, new_item1)
-            self.setItem(row2, col, new_item2)
-
-    def _insert_item(self, row: int, column: int, item_data: Any):
-        if column < 0 or column >= self.column_count():
-            raise IndexError(f"column out of range: {column}")
-        item = self.create_item(row, column, item_data)
-        self.setItem(row, column, item)

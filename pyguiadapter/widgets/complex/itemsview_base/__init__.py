@@ -8,6 +8,7 @@ from .tableview import (
     RowBasedTableView,
     RowBasedTableViewFrameConfig,
     RowBasedTableViewFrameBase,
+    TableViewItemDelegate,
 )
 
 
@@ -25,4 +26,5 @@ __all__ = [
     "RowBasedTableViewFrameConfig",
     "TableViewConfig",
     "TableView",
+    "TableViewItemDelegate",
 ]

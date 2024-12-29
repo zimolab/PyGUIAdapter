@@ -41,9 +41,8 @@ class PlainObjectItemDelegate(QStyledItemDelegate):
         index: QModelIndex,
     ) -> None:
         value_widget = self._to_value_widget(editor)
-        # print("setModelData", value_widget.get_value())
         value = value_widget.get_value()
-        print("setModelData", value)
+        # print("setModelData", value)
         model.setData(index, value, Qt.EditRole)
 
     @staticmethod

@@ -49,9 +49,6 @@ class ListView(QListWidget, ItemsViewInterface):
     def row_count(self, *args, **kwargs) -> int:
         return self.count()
 
-    def swap_rows(self, row1: int, row2: int):
-        super().swap_rows(row1, row2)
-
     def select_row(self, row: int, *args, **kwargs):
         item = self.item(row)
         item.setSelected(True)

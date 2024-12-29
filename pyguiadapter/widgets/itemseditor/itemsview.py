@@ -1,46 +1,44 @@
 from abc import abstractmethod
 from typing import Any, List
 
+NOT_APPLICABLE = -1
 
-class ItemsViewInterface(object):
 
-    @abstractmethod
-    def insert_row(self, row: int, row_data: Any, *args, **kwargs):
-        pass
+class CommonItemsViewInterface(object):
 
     @abstractmethod
-    def append_row(self, row_data: Any, *args, **kwargs):
+    def row_count(self) -> int:
         pass
 
-    @abstractmethod
-    def get_row_data(self, row: int, *args, **kwargs) -> Any:
-        pass
+    def insert_row(self, row: int, row_data: Any):
+        item = self.on_create_item(row, NOT_APPLICABLE)
+        self.on_insert_item(row, NOT_APPLICABLE, item)
+        self.on_set_item_data(row, NOT_APPLICABLE, row_data)
 
-    @abstractmethod
-    def get_all_row_data(self, *args, **kwargs) -> List[Any]:
-        pass
+    def append_row(self, row_data: Any):
+        self.insert_row(self.row_count(), row_data)
 
-    @abstractmethod
-    def set_row_data(self, row: int, row_data: Any, *args, **kwargs):
-        pass
+    def get_row_data(self, row: int) -> Any:
+        return self.on_get_item_data(row, NOT_APPLICABLE)
 
-    @abstractmethod
-    def remove_row(self, row: int, *args, **kwargs):
-        pass
+    def get_all_row_data(self) -> List[Any]:
+        return [self.get_row_data(row) for row in range(self.row_count())]
 
-    @abstractmethod
-    def remove_all_rows(self, *args, **kwargs):
-        pass
+    def set_row_data(self, row: int, row_data: Any):
+        return self.on_set_item_data(row, NOT_APPLICABLE, row_data)
 
-    def remove_rows(self, rows: List[int], *args, **kwargs):
+    def remove_row(self, row: int) -> Any:
+        self.on_remove_item(row, NOT_APPLICABLE)
+
+    def remove_all_rows(self):
+        for row in range(self.row_count() - 1, -1, -1):
+            self.remove_row(row)
+
+    def remove_rows(self, rows: List[int]):
         rows = set(rows)
         rows = sorted(rows, reverse=True)
         for row in rows:
-            self.remove_row(row, *args, **kwargs)
-
-    @abstractmethod
-    def row_count(self, *args, **kwargs) -> int:
-        pass
+            self.remove_row(row)
 
     def swap_rows(self, row1: int, row2: int):
         # this is the default implementation, which can be overridden by subclasses
@@ -62,10 +60,6 @@ class ItemsViewInterface(object):
         self.set_row_data(row1, row_data2)
         self.set_row_data(row2, row_data1)
 
-    @abstractmethod
-    def select_row(self, row: int, *args, **kwargs):
-        pass
-
     def get_selected_row(self, last_one: bool = False) -> int:
         if not self.get_selected_rows():
             return -1
@@ -74,16 +68,22 @@ class ItemsViewInterface(object):
         return self.get_selected_rows()[0]
 
     @abstractmethod
-    def get_selected_rows(self, *args, **kwargs) -> List[int]:
+    def select_row(self, row: int):
         pass
 
     @abstractmethod
-    def clear_selection(self, *args, **kwargs):
+    def get_selected_rows(
+        self,
+        sort: bool = False,
+        reverse: bool = False,
+    ) -> List[int]:
         pass
 
-    def move_row_up(
-        self, row: int, steps: int = 1, wrap: bool = False, *args, **kwargs
-    ) -> int:
+    @abstractmethod
+    def clear_selection(self):
+        pass
+
+    def move_row_up(self, row: int, steps: int = 1, wrap: bool = False) -> int:
         if steps < 0:
             raise ValueError("steps must be a positive integer")
         if steps == 0:
@@ -91,15 +91,13 @@ class ItemsViewInterface(object):
         end_row = self._calc_movement(row, -steps, wrap)
         if end_row == row:
             return row  # no-op
-        self.clear_selection(*args, **kwargs)
+        self.clear_selection()
 
         self.swap_rows(row, end_row)
-        self.select_row(end_row, *args, **kwargs)
+        self.select_row(end_row)
         return end_row
 
-    def move_row_down(
-        self, row: int, steps: int = 1, wrap: bool = False, *args, **kwargs
-    ):
+    def move_row_down(self, row: int, steps: int = 1, wrap: bool = False):
         if steps < 0:
             raise ValueError("steps must be a positive integer")
         if steps == 0:
@@ -107,10 +105,30 @@ class ItemsViewInterface(object):
         end_row = self._calc_movement(row, steps, wrap)
         if end_row == row:
             return row  # no-op
-        self.clear_selection(*args, **kwargs)
+        self.clear_selection()
         self.swap_rows(row, end_row)
-        self.select_row(end_row, *args, **kwargs)
+        self.select_row(end_row)
         return end_row
+
+    @abstractmethod
+    def on_create_item(self, row: int, col: int) -> Any:
+        pass
+
+    @abstractmethod
+    def on_insert_item(self, row: int, col: int, item: Any):
+        pass
+
+    @abstractmethod
+    def on_remove_item(self, row: int, col: int) -> Any:
+        pass
+
+    @abstractmethod
+    def on_get_item_data(self, row: int, col: int) -> Any:
+        pass
+
+    @abstractmethod
+    def on_set_item_data(self, row: int, col: int, value: Any):
+        pass
 
     def _calc_movement(self, start_row: int, steps: int, wrap: bool):
         total = self.row_count()

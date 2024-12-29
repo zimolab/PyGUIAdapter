@@ -3,10 +3,10 @@ from typing import Any, Union, Dict
 
 from qtpy.QtWidgets import QWidget, QTableWidgetItem
 
-from ._widget_mixin import ValueWidgetMixin
+from ._widget_mixin import ValueWidgetMixin, CellWidgetMixin
 
 
-class ValueTypeBase(object):
+class ValueType(object):
 
     def __init__(self, default_value: Any):
         self._default_value = default_value
@@ -39,10 +39,10 @@ class ValueTypeBase(object):
     ) -> Union[QWidget, ValueWidgetMixin]:
         pass
 
-    # noinspection PyMethodMayBeStatic
+    # noinspection PyMethodMayBeStatic, PyUnusedLocal
     def create_cell_widget(
-        self, parent: QWidget, *args, **kwargs
-    ) -> Union[QWidget, ValueWidgetMixin, None]:
+        self, parent: QWidget, row: int, col: int, *args, **kwargs
+    ) -> Union[QWidget, CellWidgetMixin, None]:
         return None
 
     def on_item_double_clicked(
@@ -70,5 +70,5 @@ class ValueTypeBase(object):
         pass
 
 
-def default_object(schema: Dict[str, ValueTypeBase]) -> Dict[str, Any]:
+def default_object(schema: Dict[str, ValueType]) -> Dict[str, Any]:
     return {k: v.default_value for k, v in schema.items()}

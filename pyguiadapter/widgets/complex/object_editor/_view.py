@@ -31,8 +31,6 @@ class ObjectTableView(TableView):
         self._object_schema: Optional[Dict[str, ValueTypeBase]] = None
         self._item_double_clicked_hooks = {}
         self._item_clicked_hooks = {}
-        self._create_item_hooks = {}
-        self._set_item_data_hooks = {}
 
         super().__init__(parent, self._config)
 
@@ -59,8 +57,6 @@ class ObjectTableView(TableView):
 
         self._item_double_clicked_hooks.clear()
         self._item_clicked_hooks.clear()
-        self._create_item_hooks.clear()
-        self._set_item_data_hooks.clear()
 
         self.clearContents()
         if not self._config.key_column_header or not self._config.value_column_header:
@@ -78,12 +74,6 @@ class ObjectTableView(TableView):
 
             if vt.hook_item_double_clicked():
                 self._item_double_clicked_hooks[row] = vt
-
-            if vt.hook_create_item():
-                self._create_item_hooks[row] = vt
-
-            if vt.hook_set_item_data():
-                self._set_item_data_hooks[row] = vt
 
         # append rows with the default value and set the delegate for each of them
         for key, (row, default_value, delegate) in delegates.items():
@@ -178,13 +168,7 @@ class ObjectTableView(TableView):
         self.update_object(cur_obj, ignore_unknown_keys=True)
 
     def create_item(self, row: int, column: int, data: Any) -> QTableWidgetItem:
-        item = QTableWidgetItem()
-        if column == _VALUE_COLUMN:
-            # for value item
-            if row in self._create_item_hooks:
-                vt: ValueTypeBase = self._create_item_hooks[row]
-                vt.on_create_item(self, row, column, data=data, item=item)
-        return item
+        return super().create_item(row, column, data)
 
     def set_item_data(self, row: int, column: int, data: Any):
         item: QTableWidgetItem = self.item(row, column)
@@ -196,9 +180,6 @@ class ObjectTableView(TableView):
             item.setData(Qt.EditRole, data)
             # noinspection PyTypeChecker
             item.setTextAlignment(self._config.value_alignment)
-            if row in self._set_item_data_hooks:
-                vt: ValueTypeBase = self._set_item_data_hooks[row]
-                vt.on_set_item_data(self, row, column, data=data, item=item)
         else:  # for key item
             # noinspection PyUnresolvedReferences
             flags = item.flags() & ~Qt.ItemIsEditable & ~Qt.ItemIsSelectable
