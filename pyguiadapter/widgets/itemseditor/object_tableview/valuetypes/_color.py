@@ -120,6 +120,7 @@ class ColorWidget(QWidget, CellWidgetMixin):
         self._layout = QVBoxLayout()
         if cell_widget_margins:
             self._layout.setContentsMargins(*cell_widget_margins)
+        self._layout.setSpacing(0)
         self.setLayout(self._layout)
 
         self._color_label = ColorLabel(
@@ -178,7 +179,7 @@ class ColorValue(ValueType):
     def create_item_editor_widget(
         self, parent: QWidget, *args, **kwargs
     ) -> ColorWidget:
-        w = ColorWidget(
+        w = ColorLabel(
             parent,
             default_value=self.default_value,
             alpha_channel=self.alpha_channel,
@@ -186,7 +187,6 @@ class ColorValue(ValueType):
             return_color_type=self.return_color_type,
             border=self.border,
             edit_on_double_click=self.edit_on_double_click,
-            cell_widget_margins=CELL_WIDGET_MARGINS,
         )
         if self.min_item_editor_widget_height:
             w.setMinimumHeight(self.min_item_editor_widget_height)
