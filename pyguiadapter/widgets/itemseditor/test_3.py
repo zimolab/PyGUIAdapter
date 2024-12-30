@@ -6,11 +6,13 @@ from pyguiadapter.widgets.itemseditor.object_tableview.valuetypes import (
     BoolValue,
     FloatValue,
     ChoiceValue,
+    ColorValue,
 )
 from pyguiadapter.widgets.itemseditor.multiobject_editor import (
     MultiObjectEditor,
     MultiObjectEditorConfig,
 )
+
 
 schema = {
     "Name": StringValue(),
@@ -18,6 +20,7 @@ schema = {
     "Is Student": BoolValue(),
     "Occupation": ChoiceValue(0, ["Engineer", "Teacher", "Doctor"]),
     "Height": FloatValue(180.0),
+    "Favorite Color": ColorValue(),
 }
 
 app = QApplication([])
