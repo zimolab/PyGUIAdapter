@@ -6,6 +6,7 @@ from ..schema import ValueWidgetMixin, ValueType, CellWidgetMixin
 
 TRUE_TEXT = "True"
 FALSE_TEXT = "False"
+DEFAULT_VALUE = False
 
 
 class BoolCellWidget(QWidget, CellWidgetMixin):
@@ -47,7 +48,7 @@ class BoolItemEditorWidget(QWidget, ValueWidgetMixin):
     def __init__(
         self,
         parent: QWidget,
-        default_value: bool = False,
+        default_value: bool = DEFAULT_VALUE,
         true_text: str = TRUE_TEXT,
         false_text: str = FALSE_TEXT,
     ):
@@ -94,7 +95,7 @@ class BoolValue(ValueType):
 
     def __init__(
         self,
-        default_value: bool = False,
+        default_value: bool = DEFAULT_VALUE,
         *,
         true_text: str = TRUE_TEXT,
         false_text: str = FALSE_TEXT,
