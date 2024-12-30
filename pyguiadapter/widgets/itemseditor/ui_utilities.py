@@ -1,5 +1,6 @@
-from typing import Union
+from typing import Union, Literal, Tuple
 
+from qtpy.QtGui import QColor
 from qtpy.QtWidgets import (
     QFrame,
     QWidget,
@@ -110,3 +111,74 @@ def insert_widget(layout: QBoxLayout, index: int, widget: Widget, **kwargs):
         layout.insertLayout(index, widget, **kwargs)
     else:
         raise TypeError(f"unsupported widget type: {type(widget)}")
+
+
+def is_valid_color(color: Union[str, tuple, list, QColor]) -> bool:
+    if isinstance(color, QColor):
+        return True
+    if isinstance(color, (list, tuple)):
+        if len(color) < 3:
+            return False
+        return all(0 <= c <= 255 for c in color)
+    if isinstance(color, str):
+        if len(color) < 7:
+            return False
+        if color[0] != "#" or not all(c in "0123456789ABCDEFabcdef" for c in color[1:]):
+            return False
+        return True
+    return False
+
+
+def convert_color(
+    c: QColor,
+    return_type: Literal["tuple", "str", "QColor"],
+    alpha_channel: bool = True,
+) -> Union[Tuple[int, int, int, int], Tuple[int, int, int], str, QColor]:
+    assert isinstance(c, QColor)
+    if return_type == "QColor":
+        return c
+
+    if return_type == "tuple":
+        if alpha_channel:
+            return c.red(), c.green(), c.blue(), c.alpha()
+        else:
+            return c.red(), c.green(), c.blue()
+    if return_type == "str":
+        if alpha_channel:
+            return f"#{c.red():02x}{c.green():02x}{c.blue():02x}{c.alpha():02x}"
+        else:
+            return f"#{c.red():02x}{c.green():02x}{c.blue():02x}"
+
+    raise ValueError(f"invalid return_type: {return_type}")
+
+
+def get_inverted_color(color: QColor) -> QColor:
+    return QColor(255 - color.red(), 255 - color.green(), 255 - color.blue())
+
+
+def to_qcolor(color: Union[str, tuple, list, QColor]) -> QColor:
+    if isinstance(color, QColor):
+        return color
+    if isinstance(color, (list, tuple)):
+        if len(color) < 3:
+            raise ValueError(f"invalid color tuple: {color}")
+        c = QColor()
+        c.setRgb(*color)
+        return c
+    if isinstance(color, str):
+        alpha = None
+        if len(color) >= 9:
+            try:
+                print(color[7:9], int(color[7:9], 16))
+                alpha = int(color[7:9], 16)
+            except ValueError:
+                raise ValueError(
+                    f"unable to parse alpha channel from color string: {color}"
+                )
+            color = color[:7]
+        c = QColor(color)
+        if alpha is not None:
+            c.setAlpha(alpha)
+        return c
+
+    raise ValueError(f"invalid color type: {type(color)}")
