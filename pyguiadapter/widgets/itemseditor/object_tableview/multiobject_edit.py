@@ -100,9 +100,11 @@ class MultiObjectEditView(TableView):
         if not vt:
             return super().on_create_item(row, col)
         cell_widget = vt.create_cell_widget(self, row, col)
-        if not cell_widget:
-            return super().on_create_item(row, col)
-        return cell_widget
+        if isinstance(cell_widget, CellWidgetMixin):
+            return cell_widget
+        item = super().on_create_item(row, col)
+        vt.after_create_item(row, col, item)
+        return item
 
     def on_insert_item(
         self, row: int, col: int, item: Union[QTableWidgetItem, CellWidgetMixin]
@@ -112,6 +114,10 @@ class MultiObjectEditView(TableView):
             self.setCellWidget(row, col, item)
             return
         super().on_insert_item(row, col, item)
+        vt = self._schema.get(self.column_keys[col], None)
+        if not vt:
+            return
+        vt.after_insert_item(row, col, item)
 
     def on_set_item_data(self, row: int, col: int, data: Any):
         cell_widget = self.cellWidget(row, col)
@@ -119,6 +125,11 @@ class MultiObjectEditView(TableView):
             cell_widget.set_value(data)
             return
         super().on_set_item_data(row, col, data)
+        vt = self._schema.get(self.column_keys[col], None)
+        if not vt:
+            return
+        item = self.item(row, col)
+        vt.after_set_item_data(row, col, item, data)
 
     def on_get_item_data(self, row: int, col: int) -> Any:
         cell_widget = self.cellWidget(row, col)

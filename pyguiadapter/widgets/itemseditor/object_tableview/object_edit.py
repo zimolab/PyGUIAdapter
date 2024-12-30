@@ -175,17 +175,27 @@ class ObjectEditView(TableView):
     def on_create_item(
         self, row: int, col: int
     ) -> Union[QTableWidgetItem, CellWidgetMixin]:
+        # get value_type for this row
+        vt = self._get_value_type(row)
+
         # for key column, just create a normal item
         if col == KEY_COLUMN_INDEX:
-            return QTableWidgetItem()
+            item = QTableWidgetItem()
+            # call after_create_item hook in value_type
+            vt.after_create_item(row, col, item)
+            return item
+
         # create item or cell widget for value column
-        vt = self._get_value_type(row)
         if not vt:
             return super().on_create_item(row, col)
         cell_widget = vt.create_cell_widget(self, row, col)
-        if not cell_widget:
-            return super().on_create_item(row, col)
-        return cell_widget
+        if isinstance(cell_widget, CellWidgetMixin):
+            return cell_widget
+
+        # call after_create_item hook in value_type
+        item = super().on_create_item(row, col)
+        vt.after_create_item(row, col, item)
+        return item
 
     def on_insert_item(
         self, row: int, col: int, item: Union[QTableWidgetItem, CellWidgetMixin]
@@ -195,6 +205,10 @@ class ObjectEditView(TableView):
             self.setCellWidget(row, col, item)
             return
         super().on_insert_item(row, col, item)
+        vt = self._get_value_type(row)
+        if not vt:
+            return
+        vt.after_insert_item(row, col, item)
 
     def on_set_item_data(self, row: int, col: int, data: Any):
         cell_widget = self.cellWidget(row, col)
@@ -213,10 +227,17 @@ class ObjectEditView(TableView):
                 item = self.item(row, col)
                 if not item:
                     return
+                # noinspection PyUnresolvedReferences
                 flags = item.flags() & ~Qt.ItemIsSelectable
                 item.setFlags(flags)
         else:
             raise ValueError(f"unexpected column: {col}")
+
+        vt = self._get_value_type(row)
+        if not vt:
+            return
+        item = self.item(row, col)
+        vt.after_set_item_data(row, col, item, data)
 
     def on_get_item_data(self, row: int, col: int) -> Any:
         cell_widget = self.cellWidget(row, col)

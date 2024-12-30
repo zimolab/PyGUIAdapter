@@ -69,6 +69,17 @@ class ValueType(object):
     ):
         pass
 
+    def after_create_item(self, row: int, col: int, item: QTableWidgetItem):
+        pass
+
+    def after_set_item_data(
+        self, row: int, col: int, item: QTableWidgetItem, value: Any
+    ):
+        pass
+
+    def after_insert_item(self, row: int, col: int, item: QTableWidgetItem):
+        pass
+
 
 def default_object(schema: Dict[str, ValueType]) -> Dict[str, Any]:
     return {k: v.default_value for k, v in schema.items()}
