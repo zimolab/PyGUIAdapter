@@ -1,11 +1,15 @@
 from typing import Optional, Union
 
 from qtpy.QtCore import Qt, QModelIndex, QAbstractItemModel
-from qtpy.QtWidgets import QWidget, QStyledItemDelegate, QStyleOptionViewItem
+from qtpy.QtWidgets import (
+    QWidget,
+    QStyledItemDelegate,
+    QStyleOptionViewItem,
+)
 
-from ..tableview import TableView
-from .schema import ValueType, ValueWidgetMixin
 from ._commons import KEY_COLUMN_INDEX
+from .schema import ValueType, ValueWidgetMixin
+from ..tableview import TableView
 
 
 class ObjectItemDelegate(QStyledItemDelegate):
@@ -27,6 +31,7 @@ class ObjectItemDelegate(QStyledItemDelegate):
     ) -> None:
         if not editor:
             return
+        self._vt.before_set_editor_data(self._parent, editor, index)
         if isinstance(self._parent, TableView):
             data = self._parent.on_get_item_data(index.row(), index.column())
         else:

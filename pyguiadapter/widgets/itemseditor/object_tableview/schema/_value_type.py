@@ -1,9 +1,11 @@
 from abc import abstractmethod
 from typing import Any, Union, Dict
 
+from qtpy.QtCore import QModelIndex
 from qtpy.QtWidgets import QWidget, QTableWidgetItem
 
 from ._widget_mixin import ValueWidgetMixin, CellWidgetMixin
+from ...tableview import TableView
 
 
 class ValueType(object):
@@ -66,6 +68,14 @@ class ValueType(object):
         item: QTableWidgetItem,
         *args,
         **kwargs,
+    ):
+        pass
+
+    def before_set_editor_data(
+        self,
+        parent: TableView,
+        editor: Union[QWidget, ValueWidgetMixin],
+        index: QModelIndex,
     ):
         pass
 
