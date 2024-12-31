@@ -19,7 +19,6 @@ from ...ui_utilities import is_valid_color, to_qcolor, get_inverted_color, conve
 DEFAULT_VALUE = "#FFFFFF"
 ALPHA_CHANNEL = False
 DISPLAY_COLOR_NAME = True
-RETURN_COLOR_TYPE = "str"
 BORDER = False
 EDIT_ON_DOUBLE_CLICK = False
 CELL_WIDGET_MARGINS = (10, 10, 10, 10)
@@ -43,7 +42,6 @@ class ColorLabel(QLabel):
         *,
         alpha_channel: bool = ALPHA_CHANNEL,
         display_color_name: bool = DISPLAY_COLOR_NAME,
-        return_color_type: str = RETURN_COLOR_TYPE,
         border: bool = BORDER,
     ):
         super().__init__(parent)
@@ -60,17 +58,15 @@ class ColorLabel(QLabel):
         self._color = default_value
         self._alpha_channel = alpha_channel
         self._display_color_name = display_color_name
-        self._return_color_type = return_color_type
-
         self.set_value(default_value)
 
     def set_value(self, color: ColorType):
         self._color = self.normalize_color(color)
         self._update_ui()
 
-    def get_value(self) -> Union[str, Tuple[int, int, int, int], QColor]:
+    def get_value(self) -> str:
         # noinspection PyTypeChecker
-        return convert_color(self._color, self._return_color_type, self._alpha_channel)
+        return convert_color(self._color, "str", self._alpha_channel)
 
     def mouseReleaseEvent(self, ev):
         self._pick_color()
@@ -111,10 +107,8 @@ class ColorDialog(QColorDialog, ValueWidgetMixin):
         default_value: ColorType = DEFAULT_VALUE,
         *,
         alpha_channel: bool = ALPHA_CHANNEL,
-        return_color_type: str = RETURN_COLOR_TYPE,
     ):
         self._default_value = to_qcolor(default_value)
-        self._return_color_type = return_color_type
         self._alpha_channel = alpha_channel
         self._accepted = False
 
@@ -127,15 +121,13 @@ class ColorDialog(QColorDialog, ValueWidgetMixin):
         self._accepted = True
         super().accept()
 
-    def get_value(self) -> ColorType:
+    def get_value(self) -> str:
         cur_color = self.currentColor()
         if not self._accepted or not cur_color.isValid():
             # noinspection PyTypeChecker
-            return convert_color(
-                self._default_value, self._return_color_type, self._alpha_channel
-            )
+            return convert_color(self._default_value, "str", self._alpha_channel)
         # noinspection PyTypeChecker
-        return convert_color(cur_color, self._return_color_type, self._alpha_channel)
+        return convert_color(cur_color, "str", self._alpha_channel)
 
     def set_value(self, value: ColorType):
         self._accepted = False
@@ -151,25 +143,19 @@ class ColorValue(ValueType):
         *,
         alpha_channel: bool = ALPHA_CHANNEL,
         display_color_name: bool = DISPLAY_COLOR_NAME,
-        return_color_type: str = RETURN_COLOR_TYPE,
         cell_widget_margins: Tuple[int, int, int, int] = CELL_WIDGET_MARGINS,
         min_item_editor_widget_height: int = MIN_ITEM_EDITOR_WIDGET_HEIGHT,
         item_editor_widget_border: bool = BORDER,
     ):
         if default_value is None:
             default_value = DEFAULT_VALUE
-
-        if not return_color_type in ("str", "tuple", "QColor"):
-            raise ValueError(f"invalid return_color_type: {return_color_type}")
-
-        super().__init__(convert_color(to_qcolor(default_value), "str", alpha_channel))
-
         self.alpha_channel = alpha_channel
         self.display_color_name = display_color_name
-        self.return_color_type = return_color_type
         self.cell_widget_margins = cell_widget_margins
         self.min_item_editor_widget_height = min_item_editor_widget_height
         self.item_editor_widget_border = item_editor_widget_border
+
+        super().__init__(convert_color(to_qcolor(default_value), "str", alpha_channel))
 
     def validate(self, value: Any) -> bool:
         if value is None:
@@ -182,7 +168,6 @@ class ColorValue(ValueType):
             default_value=self.default_value,
             alpha_channel=self.alpha_channel,
             display_color_name=self.display_color_name,
-            return_color_type=self.return_color_type,
             border=self.item_editor_widget_border,
         )
         if self.min_item_editor_widget_height:
@@ -193,10 +178,7 @@ class ColorValue(ValueType):
         self, parent: QWidget, *args, **kwargs
     ) -> ColorDialog:
         return ColorDialog(
-            parent,
-            default_value=self.default_value,
-            alpha_channel=self.alpha_channel,
-            return_color_type=self.return_color_type,
+            parent, default_value=self.default_value, alpha_channel=self.alpha_channel
         )
 
     def before_set_editor_data(
