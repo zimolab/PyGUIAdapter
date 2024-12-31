@@ -1,10 +1,19 @@
 from typing import Optional, Any, Union, Tuple
 
-from qtpy.QtCore import Qt
+from qtpy.QtCore import Qt, QPoint, QModelIndex
 from qtpy.QtGui import QColor, QFont
-from qtpy.QtWidgets import QWidget, QLabel, QFrame, QColorDialog, QVBoxLayout
+from qtpy.QtWidgets import (
+    QWidget,
+    QLabel,
+    QFrame,
+    QColorDialog,
+    QTableWidgetItem,
+)
 
-from ..schema import CellWidgetMixin, ValueType
+from .. import ObjectEditView
+from .._commons import KEY_COLUMN_INDEX
+from ..schema import ValueType, ValueWidgetMixin
+from ...tableview import TableView
 from ...ui_utilities import is_valid_color, to_qcolor, get_inverted_color, convert_color
 
 DEFAULT_VALUE = "#FFFFFF"
@@ -14,7 +23,7 @@ RETURN_COLOR_TYPE = "str"
 BORDER = False
 EDIT_ON_DOUBLE_CLICK = False
 CELL_WIDGET_MARGINS = (10, 10, 10, 10)
-MIN_ITEM_EDITOR_WIDGET_HEIGHT = 50
+MIN_ITEM_EDITOR_WIDGET_HEIGHT = 35
 
 
 ColorType = Union[
@@ -36,7 +45,6 @@ class ColorLabel(QLabel):
         display_color_name: bool = DISPLAY_COLOR_NAME,
         return_color_type: str = RETURN_COLOR_TYPE,
         border: bool = BORDER,
-        edit_on_double_click: bool = EDIT_ON_DOUBLE_CLICK,
     ):
         super().__init__(parent)
 
@@ -53,7 +61,6 @@ class ColorLabel(QLabel):
         self._alpha_channel = alpha_channel
         self._display_color_name = display_color_name
         self._return_color_type = return_color_type
-        self._edit_on_double_click = edit_on_double_click
 
         self.set_value(default_value)
 
@@ -66,14 +73,8 @@ class ColorLabel(QLabel):
         return convert_color(self._color, self._return_color_type, self._alpha_channel)
 
     def mouseReleaseEvent(self, ev):
-        if not self._edit_on_double_click:
-            self._pick_color()
+        self._pick_color()
         super().mouseReleaseEvent(ev)
-
-    def mouseDoubleClickEvent(self, event):
-        if self._edit_on_double_click:
-            self._pick_color()
-        super().mouseDoubleClickEvent(event)
 
     def _pick_color(self):
         if self._alpha_channel:
@@ -103,42 +104,43 @@ class ColorLabel(QLabel):
         return to_qcolor(color)
 
 
-class ColorWidget(QWidget, CellWidgetMixin):
+class ColorDialog(QColorDialog, ValueWidgetMixin):
     def __init__(
         self,
         parent: Optional[QWidget],
         default_value: ColorType = DEFAULT_VALUE,
         *,
         alpha_channel: bool = ALPHA_CHANNEL,
-        display_color_name: bool = DISPLAY_COLOR_NAME,
         return_color_type: str = RETURN_COLOR_TYPE,
-        border: bool = BORDER,
-        edit_on_double_click: bool = EDIT_ON_DOUBLE_CLICK,
-        cell_widget_margins: Tuple[int, int, int, int] = CELL_WIDGET_MARGINS,
     ):
-        super().__init__(parent)
-        self._layout = QVBoxLayout()
-        if cell_widget_margins:
-            self._layout.setContentsMargins(*cell_widget_margins)
-        self._layout.setSpacing(0)
-        self.setLayout(self._layout)
+        self._default_value = to_qcolor(default_value)
+        self._return_color_type = return_color_type
+        self._alpha_channel = alpha_channel
+        self._accepted = False
 
-        self._color_label = ColorLabel(
-            self,
-            default_value=default_value,
-            alpha_channel=alpha_channel,
-            display_color_name=display_color_name,
-            return_color_type=return_color_type,
-            border=border,
-            edit_on_double_click=edit_on_double_click,
-        )
-        self._layout.addWidget(self._color_label)
+        super().__init__(parent)
+        self.setWindowModality(Qt.ApplicationModal)
+        self.setOption(QColorDialog.ShowAlphaChannel, alpha_channel)
+        self.set_value(default_value)
+
+    def accept(self):
+        self._accepted = True
+        super().accept()
+
+    def get_value(self) -> ColorType:
+        cur_color = self.currentColor()
+        if not self._accepted or not cur_color.isValid():
+            # noinspection PyTypeChecker
+            return convert_color(
+                self._default_value, self._return_color_type, self._alpha_channel
+            )
+        # noinspection PyTypeChecker
+        return convert_color(cur_color, self._return_color_type, self._alpha_channel)
 
     def set_value(self, value: ColorType):
-        self._color_label.set_value(value)
-
-    def get_value(self) -> Union[str, Tuple[int, int, int, int], QColor]:
-        return self._color_label.get_value()
+        self._accepted = False
+        self._default_value = to_qcolor(value)
+        self.setCurrentColor(self._default_value)
 
 
 class ColorValue(ValueType):
@@ -150,10 +152,9 @@ class ColorValue(ValueType):
         alpha_channel: bool = ALPHA_CHANNEL,
         display_color_name: bool = DISPLAY_COLOR_NAME,
         return_color_type: str = RETURN_COLOR_TYPE,
-        border: bool = BORDER,
-        edit_on_double_click: bool = EDIT_ON_DOUBLE_CLICK,
         cell_widget_margins: Tuple[int, int, int, int] = CELL_WIDGET_MARGINS,
         min_item_editor_widget_height: int = MIN_ITEM_EDITOR_WIDGET_HEIGHT,
+        item_editor_widget_border: bool = BORDER,
     ):
         if default_value is None:
             default_value = DEFAULT_VALUE
@@ -161,50 +162,68 @@ class ColorValue(ValueType):
         if not return_color_type in ("str", "tuple", "QColor"):
             raise ValueError(f"invalid return_color_type: {return_color_type}")
 
-        super().__init__(to_qcolor(default_value))
+        super().__init__(convert_color(to_qcolor(default_value), "str", alpha_channel))
 
         self.alpha_channel = alpha_channel
         self.display_color_name = display_color_name
         self.return_color_type = return_color_type
-        self.border = border
-        self.edit_on_double_click = edit_on_double_click
         self.cell_widget_margins = cell_widget_margins
         self.min_item_editor_widget_height = min_item_editor_widget_height
+        self.item_editor_widget_border = item_editor_widget_border
 
     def validate(self, value: Any) -> bool:
         if value is None:
             return True
         return is_valid_color(value)
 
-    def create_item_editor_widget(
-        self, parent: QWidget, *args, **kwargs
-    ) -> ColorWidget:
+    def create_item_editor_widget(self, parent: QWidget, *args, **kwargs) -> ColorLabel:
         w = ColorLabel(
             parent,
             default_value=self.default_value,
             alpha_channel=self.alpha_channel,
             display_color_name=self.display_color_name,
             return_color_type=self.return_color_type,
-            border=self.border,
-            edit_on_double_click=self.edit_on_double_click,
+            border=self.item_editor_widget_border,
         )
         if self.min_item_editor_widget_height:
             w.setMinimumHeight(self.min_item_editor_widget_height)
         return w
 
-    def create_item_delegate_widget(self, parent: QWidget, *args, **kwargs) -> None:
-        return None
-
-    def create_cell_widget(
-        self, parent: QWidget, row: int, col: int, *args, **kwargs
-    ) -> ColorLabel:
-        return ColorWidget(
+    def create_item_delegate_widget(
+        self, parent: QWidget, *args, **kwargs
+    ) -> ColorDialog:
+        return ColorDialog(
             parent,
             default_value=self.default_value,
             alpha_channel=self.alpha_channel,
-            display_color_name=self.display_color_name,
             return_color_type=self.return_color_type,
-            border=self.border,
-            edit_on_double_click=self.edit_on_double_click,
-            cell_widget_margins=self.cell_widget_margins,
         )
+
+    def before_set_editor_data(
+        self,
+        parent: TableView,
+        editor: Union[QWidget, ValueWidgetMixin],
+        index: QModelIndex,
+    ):
+        _ = index  # unused
+        if not isinstance(editor, ColorDialog):
+            return
+        global_pos = parent.mapToGlobal(QPoint(0, 0))
+        editor.move(global_pos)
+
+    def after_set_item_data(
+        self, row: int, col: int, item: QTableWidgetItem, value: Any
+    ):
+        if not item:
+            return
+        if isinstance(item.tableWidget(), ObjectEditView) and col == KEY_COLUMN_INDEX:
+            return
+        bg_color = to_qcolor(value)
+        text = convert_color(bg_color, "str", self.alpha_channel)
+        if self.display_color_name:
+            item.setText(text)
+        else:
+            item.setText("")
+        item.setBackground(bg_color)
+        item.setForeground(get_inverted_color(bg_color))
+        item.setToolTip(text)

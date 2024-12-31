@@ -2,14 +2,14 @@ from typing import Any, Union
 
 from qtpy.QtWidgets import QWidget, QHBoxLayout, QComboBox, QRadioButton, QButtonGroup
 
-from ..schema import ValueWidgetMixin, ValueType, CellWidgetMixin
+from ..schema import ValueWidgetMixin, ValueType
 
 TRUE_TEXT = "True"
 FALSE_TEXT = "False"
 DEFAULT_VALUE = False
 
 
-class BoolCellWidget(QWidget, CellWidgetMixin):
+class BoolDelegateWidget(QComboBox, ValueWidgetMixin):
     def __init__(
         self,
         parent: QWidget,
@@ -23,25 +23,27 @@ class BoolCellWidget(QWidget, CellWidgetMixin):
         self._default_value = default_value
         self._true_text = true_text
         self._false_text = false_text
-
-        self._layout = QHBoxLayout()
-        self.setLayout(self._layout)
-
-        self._value_widget = QComboBox(self)
-        self._value_widget.addItem(self._true_text, True)
-        self._value_widget.addItem(self._false_text, False)
-        self._layout.addWidget(self._value_widget)
+        self.addItem(self._true_text, True)
+        self.addItem(self._false_text, False)
+        if default_value:
+            self.setCurrentIndex(0)
+        else:
+            self.setCurrentIndex(1)
 
     def get_value(self) -> bool:
-        return self._value_widget.currentData()
+        return self.currentData()
 
-    def set_value(self, value: bool):
+    def set_value(self, value: Union[bool, str, None]):
         if value is None:
             value = False
-        if value:
-            self._value_widget.setCurrentIndex(0)
+        elif isinstance(value, str):
+            value = value.lower() == self._true_text.lower()
         else:
-            self._value_widget.setCurrentIndex(1)
+            value = bool(value)
+        if value:
+            self.setCurrentIndex(0)
+        else:
+            self.setCurrentIndex(1)
 
 
 class BoolItemEditorWidget(QWidget, ValueWidgetMixin):
@@ -82,9 +84,13 @@ class BoolItemEditorWidget(QWidget, ValueWidgetMixin):
     def get_value(self) -> bool:
         return self._true_button.isChecked()
 
-    def set_value(self, value: bool):
+    def set_value(self, value: Union[bool, str, None]):
         if value is None:
             value = False
+        elif isinstance(value, str):
+            value = value.lower() == self._true_text.lower()
+        else:
+            value = bool(value)
         if value:
             self._true_button.setChecked(True)
         else:
@@ -106,14 +112,21 @@ class BoolValue(ValueType):
         self.false_text = false_text
 
     def validate(self, value: Any) -> bool:
-        return isinstance(value, bool)
+        return isinstance(value, bool) or value in (self.true_text, self.false_text)
 
-    def create_item_delegate_widget(self, parent: QWidget, *args, **kwargs) -> None:
-        return None
+    def create_item_delegate_widget(
+        self, parent: QWidget, *args, **kwargs
+    ) -> BoolDelegateWidget:
+        return BoolDelegateWidget(
+            parent,
+            self.default_value,
+            true_text=self.true_text,
+            false_text=self.false_text,
+        )
 
     def create_item_editor_widget(
         self, parent: QWidget, *args, **kwargs
-    ) -> Union[QWidget, ValueWidgetMixin]:
+    ) -> BoolItemEditorWidget:
         return BoolItemEditorWidget(
             parent,
             self.default_value,
@@ -121,12 +134,5 @@ class BoolValue(ValueType):
             false_text=self.false_text,
         )
 
-    def create_cell_widget(
-        self, parent: QWidget, *args, **kwargs
-    ) -> Union[QWidget, ValueWidgetMixin, None]:
-        return BoolCellWidget(
-            parent,
-            self.default_value,
-            true_text=self.true_text,
-            false_text=self.false_text,
-        )
+    def create_cell_widget(self, parent: QWidget, *args, **kwargs) -> None:
+        return None
