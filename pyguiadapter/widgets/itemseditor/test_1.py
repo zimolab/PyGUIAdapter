@@ -11,6 +11,9 @@ from pyguiadapter.widgets.itemseditor.object_tableview.valuetypes import (
     ChoiceValue,
     FloatValue,
     ColorValue,
+    DateTimeValue,
+    DateValue,
+    TimeValue,
 )
 from pyguiadapter.widgets.itemseditor.object_tableview.valuetypes._dir import PathValue
 
@@ -23,7 +26,11 @@ schema = {
     "Height": FloatValue(180.0),
     "Favorite Color": ColorValue(),
     "dir": PathValue(),
+    "birthday": DateTimeValue(),
+    "date": DateValue(),
+    "time": TimeValue(),
 }
+
 config = ObjectEditorConfig()
 editor = ObjectEditor(None, schema, config)
 editor.set_object(

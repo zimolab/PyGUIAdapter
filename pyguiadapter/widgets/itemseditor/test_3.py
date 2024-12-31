@@ -7,6 +7,7 @@ from pyguiadapter.widgets.itemseditor.object_tableview.valuetypes import (
     FloatValue,
     ChoiceValue,
     ColorValue,
+    DateTimeValue,
 )
 from pyguiadapter.widgets.itemseditor.multiobject_editor import (
     MultiObjectEditor,
@@ -22,6 +23,7 @@ schema = {
     "Height": FloatValue(180.0),
     "Favorite Color": ColorValue(),
     "dir": PathValue(),
+    "birthday": DateTimeValue(),
 }
 
 app = QApplication([])
