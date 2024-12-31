@@ -1,67 +1,65 @@
 import datetime
 from typing import Any, Union, Optional
 
-from qtpy.QtCore import QDate, Qt
-from qtpy.QtWidgets import QDateEdit, QWidget
+from qtpy.QtCore import QTime, Qt
+from qtpy.QtWidgets import QTimeEdit, QWidget
 
 from ..schema import ValueType, ValueWidgetMixin
 
 DEFAULT_VALUE = None
 # default to ISO 8601 format
-STR_FORMAT = "%Y-%m-%d"
-DISPLAY_FORMAT = "yyyy-MM-dd"
+STR_FORMAT = "%H:%M:%S"
+DISPLAY_FORMAT = "HH:mm:ss"
 TIME_SPEC: Optional[Qt.TimeSpec] = None
-CALENDAR_POPUP = True
 
-DateType = Union[datetime.date, QDate, str, None]
+TimeType = Union[datetime.time, QTime, str, None]
 
 
-def to_string(value: DateType, str_format: str = STR_FORMAT) -> str:
+def to_string(value: TimeType, str_format: str = STR_FORMAT) -> str:
     if not value:
-        value = datetime.date.today()
+        value = datetime.datetime.now().time()
         return value.strftime(str_format)
     elif isinstance(value, str):
-        return datetime.date.strftime(
-            datetime.datetime.strptime(value, str_format), str_format
-        )
-    elif isinstance(value, datetime.date):
+        value = datetime.datetime.strptime(value, str_format).time()
         return value.strftime(str_format)
-    elif isinstance(value, QDate):
+    elif isinstance(value, datetime.time):
+        return value.strftime(str_format)
+    elif isinstance(value, QTime):
         return value.toPython().strftime(str_format)
     else:
-        raise TypeError(f"unsupported date type: {type(value)}")
+        raise TypeError(f"unsupported time type: {type(value)}")
 
 
-# def to_date(value: DateType, str_format: str = STR_FORMAT) -> datetime.date:
+# def to_time(value: TimeType, str_format: str = STR_FORMAT) -> datetime.time:
 #     if not value:
-#         return datetime.date.today()
-#     elif isinstance(value, datetime.date):
+#         return datetime.datetime.now().time()
+#     elif isinstance(value, datetime.time):
 #         return value
 #     elif isinstance(value, str):
-#         return datetime.datetime.strptime(value, str_format)
-#     elif isinstance(value, QDate):
+#         return datetime.datetime.strptime(value, str_format).time()
+#     elif isinstance(value, QTime):
 #         return value.toPython()
 #     else:
-#         raise TypeError(f"unsupported date type: {type(value)}")
+#         raise TypeError(f"unsupported time type: {type(value)}")
 
 
-def to_qt_date(value: DateType, str_format: str = STR_FORMAT) -> QDate:
+def to_qt_time(value: TimeType, str_format: str = STR_FORMAT) -> QTime:
     if not value:
-        return QDate.currentDate()
-    elif isinstance(value, QDate):
+        return QTime.currentTime()
+    elif isinstance(value, QTime):
         return value
-    elif isinstance(value, datetime.date):
-        return QDate(value)
+    elif isinstance(value, datetime.time):
+        return QTime(value)
     elif isinstance(value, str):
-        return QDate(datetime.datetime.strptime(value, str_format))
+        return QTime(datetime.datetime.strptime(value, str_format).time())
     else:
-        raise TypeError(f"unsupported date type: {type(value)}")
+        raise TypeError(f"unsupported time type: {type(value)}")
 
 
-def is_valid_date(value: DateType, str_format: str = STR_FORMAT) -> bool:
+def is_valid_time(value: TimeType, str_format: str = STR_FORMAT) -> bool:
     if value is None:
         return True
-    if isinstance(value, (datetime.datetime, QDate)):
+    if isinstance(value, (datetime.time, QTime)):
         return True
     elif isinstance(value, str):
         try:
@@ -73,7 +71,7 @@ def is_valid_date(value: DateType, str_format: str = STR_FORMAT) -> bool:
         return False
 
 
-class DateEdit(QDateEdit, ValueWidgetMixin):
+class DateEdit(QTimeEdit, ValueWidgetMixin):
 
     def __init__(
         self,
@@ -81,7 +79,6 @@ class DateEdit(QDateEdit, ValueWidgetMixin):
         default_value: str,
         *,
         str_format: str = STR_FORMAT,
-        calendar_popup: bool = CALENDAR_POPUP,
         display_format: str = DISPLAY_FORMAT,
         time_spec: Optional[Qt.TimeSpec] = None,
     ):
@@ -91,41 +88,38 @@ class DateEdit(QDateEdit, ValueWidgetMixin):
         self._time_spec = time_spec
 
         super().__init__(parent)
-        self.setCalendarPopup(calendar_popup)
         if self._display_format:
             self.setDisplayFormat(self._display_format)
         if self._time_spec:
             self.setTimeSpec(self._time_spec)
 
-    def set_value(self, value: DateType):
-        self._default_value = to_qt_date(value, self._str_format)
-        self.setDate(self._default_value)
+    def set_value(self, value: TimeType):
+        self._default_value = to_qt_time(value, self._str_format)
+        self.setTime(self._default_value)
 
     def get_value(self) -> str:
-        return to_string(self.date(), self._str_format)
+        return to_string(self.time(), self._str_format)
 
 
-class DateValue(ValueType):
+class TimeValue(ValueType):
     def __init__(
         self,
-        default_value: DateType = DEFAULT_VALUE,
+        default_value: TimeType = DEFAULT_VALUE,
         *,
         str_format: str = STR_FORMAT,
         display_format: str = DISPLAY_FORMAT,
-        calendar_popup: bool = CALENDAR_POPUP,
         time_spec: Optional[Qt.TimeSpec] = TIME_SPEC,
     ):
 
         default_value = to_string(default_value)
         self.str_format = str_format
         self.display_format = display_format
-        self.calendar_popup = calendar_popup
         self.time_spec = time_spec
 
         super().__init__(default_value)
 
     def validate(self, value: Any) -> bool:
-        return is_valid_date(value, self.str_format)
+        return is_valid_time(value, self.str_format)
 
     def create_item_editor_widget(
         self, parent: QWidget, *args, **kwargs
@@ -134,7 +128,6 @@ class DateValue(ValueType):
             parent,
             self.default_value,
             str_format=self.str_format,
-            calendar_popup=self.calendar_popup,
             display_format=self.display_format,
             time_spec=self.time_spec,
         )
@@ -146,7 +139,6 @@ class DateValue(ValueType):
             parent,
             self.default_value,
             str_format=self.str_format,
-            calendar_popup=self.calendar_popup,
             display_format=self.display_format,
             time_spec=self.time_spec,
         )
