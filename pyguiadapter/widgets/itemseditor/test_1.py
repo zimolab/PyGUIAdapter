@@ -24,7 +24,7 @@ schema = {
     "Is Student": BoolValue(),
     "Occupation": ChoiceValue(0, ["Engineer", "Teacher", "Doctor"]),
     "Height": FloatValue(180.0),
-    "Favorite Color": ColorValue(),
+    "Favorite Color": ColorValue(display_color_name=True),
     "dir": PathValue(),
     "birthday": DateTimeValue(),
     "date": DateValue(),
