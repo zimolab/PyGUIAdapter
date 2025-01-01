@@ -1,7 +1,13 @@
 from typing import Optional, Any, List, Union, Tuple, Dict
 
 from qtpy.QtCore import Qt
-from qtpy.QtWidgets import QTableWidget, QAbstractItemView, QWidget, QTableWidgetItem
+from qtpy.QtWidgets import (
+    QTableWidget,
+    QAbstractItemView,
+    QWidget,
+    QTableWidgetItem,
+    QHeaderView,
+)
 
 from ._config import TableViewConfig
 from ..exceptions import InsufficientColumnsError, UnexpectedColumnError
@@ -249,8 +255,42 @@ class TableView(QTableWidget, CommonItemsViewInterface):
         else:
             self.setSelectionMode(QAbstractItemView.SingleSelection)
 
-        if self.config.stretch_last_section:
-            self.horizontalHeader().setStretchLastSection(True)
+        self._set_column_widths()
+        self._set_resize_modes()
+        self.horizontalHeader().setStretchLastSection(self.config.stretch_last_section)
+
+    def _set_column_widths(self):
+        cols = self.columnCount()
+        if self.config.column_widths:
+            for col, col_width in self.config.column_widths.items():
+                if cols <= col < 0:
+                    raise IndexError(f"invalid column index: {col}")
+                self.setColumnWidth(col, col_width)
+
+    def _set_resize_modes(self):
+        cols = self.columnCount()
+        h_mode = self.config.horizontal_resize_modes
+        if isinstance(h_mode, dict):
+            for col, mode in h_mode.items():
+                if cols <= col < 0:
+                    raise IndexError(f"invalid column index: {col}")
+                self.horizontalHeader().setSectionResizeMode(col, mode)
+        elif isinstance(h_mode, (QHeaderView.ResizeMode, int)):
+            self.horizontalHeader().setSectionResizeMode(h_mode)
+        else:
+            pass
+
+        rows = self.rowCount()
+        v_mode = self.config.vertical_resize_modes
+        if isinstance(v_mode, dict):
+            for row, mode in self.v_mode.items():
+                if rows <= row < 0:
+                    raise IndexError(f"invalid row index: {row}")
+                self.verticalHeader().setSectionResizeMode(row, mode)
+        elif isinstance(v_mode, (QHeaderView.ResizeMode, int)):
+            self.verticalHeader().setSectionResizeMode(v_mode)
+        else:
+            pass
 
     @staticmethod
     def _normalize_column_headers(

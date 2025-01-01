@@ -1,8 +1,10 @@
-from typing import Union, Literal
+import dataclasses
+from typing import Union, Literal, Optional, Dict
 
 from qtpy.QtCore import Qt
+from qtpy.QtWidgets import QHeaderView
 
-import dataclasses
+ResizeMode = QHeaderView.ResizeMode
 
 
 @dataclasses.dataclass
@@ -17,5 +19,8 @@ class TableViewConfig(object):
     item_data_as_status_tip: bool = False
     row_data_type: Literal["tuple", "list", "dict"] = "tuple"
     ignore_unknown_columns: bool = False
-    stretch_last_section: bool = False
+    stretch_last_section: bool = True
     resize_rows_to_contents: bool = True
+    column_widths: Optional[Dict[int, int]] = None
+    horizontal_resize_modes: Union[Dict[int, ResizeMode], ResizeMode, None] = None
+    vertical_resize_modes: Union[Dict[int, ResizeMode], ResizeMode, None] = None
