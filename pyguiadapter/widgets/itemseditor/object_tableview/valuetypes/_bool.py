@@ -1,4 +1,4 @@
-from typing import Any, Union
+from typing import Any, Union, Optional
 
 from qtpy.QtWidgets import QWidget, QHBoxLayout, QComboBox, QRadioButton, QButtonGroup
 
@@ -103,11 +103,12 @@ class BoolValue(ValueType):
         self,
         default_value: bool = DEFAULT_VALUE,
         *,
+        display_name: Optional[str] = None,
         true_text: str = TRUE_TEXT,
         false_text: str = FALSE_TEXT,
     ):
         # do cast, if failed, an error will be raised
-        super().__init__(bool(default_value))
+        super().__init__(bool(default_value), display_name=display_name)
         self.true_text = true_text
         self.false_text = false_text
 

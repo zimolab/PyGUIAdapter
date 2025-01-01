@@ -1,4 +1,4 @@
-from typing import Any, Union, List, Tuple, Dict
+from typing import Any, Union, List, Tuple, Dict, Optional
 
 from qtpy.QtWidgets import QWidget, QComboBox
 
@@ -41,6 +41,8 @@ class ChoiceValue(ValueType):
         self,
         default_value: Union[int, str],
         choices: Union[List[Any], Tuple[Any, ...], Dict[str, Any]],
+        *,
+        display_name: Optional[str] = None
     ):
         if not isinstance(choices, (list, tuple, dict)):
             raise TypeError("choices must be a list, tuple or dict")
@@ -51,7 +53,7 @@ class ChoiceValue(ValueType):
         if isinstance(default_value, int):
             default_value = list(choices.keys())[default_value]
 
-        super().__init__(default_value)
+        super().__init__(default_value, display_name=display_name)
         self.choices = choices
 
     def validate(self, value: Any) -> bool:

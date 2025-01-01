@@ -69,7 +69,7 @@ class TableView(QTableWidget, CommonItemsViewInterface):
                 self.on_set_item_data(row, col, value)
         else:
             for col_key, value in row_data.items():
-                col = self.index_of_column(col_key)
+                col = self.index_of_column_key(col_key)
                 if col < 0:
                     continue
                 item = self.on_create_item(row, col)
@@ -116,7 +116,7 @@ class TableView(QTableWidget, CommonItemsViewInterface):
                 self.on_set_item_data(row, col, value)
         else:
             for col_key, value in row_data.items():
-                col = self.index_of_column(col_key)
+                col = self.index_of_column_key(col_key)
                 if col < 0:
                     continue
                 self.on_set_item_data(row, col, value)
@@ -189,10 +189,18 @@ class TableView(QTableWidget, CommonItemsViewInterface):
                 unknown.append(col)
         return unknown
 
-    def index_of_column(self, column: str) -> int:
-        for header, i in enumerate(self._column_headers.keys()):
-            if self._column_headers[i] == column:
-                return header
+    def index_of_column_key(self, column_key: str) -> int:
+        column_keys = list(self._column_headers.keys())
+        for i in range(len(column_keys)):
+            if column_keys[i] == column_key:
+                return i
+        return -1
+
+    def index_of_column_label(self, column_label: str) -> int:
+        column_labels = list(self._column_headers.values())
+        for i in range(len(column_labels)):
+            if column_labels[i] == column_label:
+                return i
         return -1
 
     def _check_missing_columns(

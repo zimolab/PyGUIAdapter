@@ -22,6 +22,7 @@ class ObjectEditViewConfig(TableViewConfig):
     key_item_selectable: bool = False
     row_data_type: str = "tuple"
     row_selection_mode: bool = True
+    real_key_as_tooltip: bool = False
 
 
 class ObjectEditView(TableView):
@@ -91,7 +92,8 @@ class ObjectEditView(TableView):
 
     def keys(self) -> List[str]:
         return [
-            self.item(row, KEY_COLUMN_INDEX).text() for row in range(self.row_count())
+            self.item(row, KEY_COLUMN_INDEX).data(Qt.UserRole)
+            for row in range(self.row_count())
         ]
 
     def contains_key(self, key: str) -> bool:
@@ -216,17 +218,24 @@ class ObjectEditView(TableView):
             cell_widget.set_value(data)
             return
         super().on_set_item_data(row, col, data)
-
         if col == VALUE_COLUMN_INDEX:
             if self.config.value_item_alignment is not None:
                 item = self.item(row, col)
                 if item is not None:
                     item.setTextAlignment(self.config.value_item_alignment)
         elif col == KEY_COLUMN_INDEX:
+            # we store the key as the data of the key column item,
+            # and we display the item using the display_name of the value_type if available
+            # so that the display name is not necessarily the same as the real key
+            item = self.item(row, col)
+            display_name = self._display_name_for_row(row) or data
+            item.setText(display_name)
+            item.setData(Qt.UserRole, data)
+            if self.config.real_key_as_tooltip:
+                item.setToolTip(data)
+            if not item:
+                return
             if not self.config.key_item_selectable:
-                item = self.item(row, col)
-                if not item:
-                    return
                 # noinspection PyUnresolvedReferences
                 flags = item.flags() & ~Qt.ItemIsSelectable
                 item.setFlags(flags)
@@ -288,6 +297,12 @@ class ObjectEditView(TableView):
         data = self.on_get_item_data(row, column)
         vt.on_item_clicked(self, row, column, data, item)
 
+    def _display_name_for_row(self, row: int) -> Optional[str]:
+        vt = self._get_value_type(row)
+        if not vt:
+            return ""
+        return vt.display_name
+
     def _setup_ui(self):
         super()._setup_ui()
         self.setColumnCount(2)
@@ -310,6 +325,6 @@ class ObjectEditView(TableView):
     def _row_for_key(self, key: str) -> int:
         for row in range(self.row_count()):
             item = self.item(row, KEY_COLUMN_INDEX)
-            if item and item.text() == key:
+            if item and item.data(Qt.UserRole) == key:
                 return row
         return -1

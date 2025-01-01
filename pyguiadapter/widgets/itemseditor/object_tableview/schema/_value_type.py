@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from typing import Any, Union, Dict
+from typing import Any, Union, Dict, Optional
 
 from qtpy.QtCore import QModelIndex
 from qtpy.QtWidgets import QWidget, QTableWidgetItem
@@ -10,12 +10,17 @@ from ...tableview import TableView
 
 class ValueType(object):
 
-    def __init__(self, default_value: Any):
+    def __init__(self, default_value: Any, *, display_name: Optional[str] = None):
         self._default_value = default_value
+        self._display_name = display_name
 
     @property
     def default_value(self) -> Any:
         return self._default_value
+
+    @property
+    def display_name(self) -> Optional[str]:
+        return self._display_name
 
     @abstractmethod
     def validate(self, value: Any) -> bool:

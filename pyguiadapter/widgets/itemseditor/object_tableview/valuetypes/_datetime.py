@@ -108,6 +108,7 @@ class DateTimeValue(ValueType):
         self,
         default_value: DateTimeType = DEFAULT_VALUE,
         *,
+        display_name: Optional[str] = None,
         str_format: str = STR_FORMAT,
         display_format: str = DISPLAY_FORMAT,
         calendar_popup: bool = CALENDAR_POPUP,
@@ -120,7 +121,7 @@ class DateTimeValue(ValueType):
         self.calendar_popup = calendar_popup
         self.time_spec = time_spec
 
-        super().__init__(default_value)
+        super().__init__(default_value, display_name=display_name)
 
     def validate(self, value: Any) -> bool:
         return is_valid_datetime(value, self.str_format)

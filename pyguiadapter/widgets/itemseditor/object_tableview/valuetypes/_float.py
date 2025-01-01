@@ -57,6 +57,7 @@ class FloatValue(ValueType):
         self,
         default_value: float = DEFAULT_VALUE,
         *,
+        display_name: Optional[str] = None,
         min_value: Optional[float] = MIN_VALUE,
         max_value: Optional[float] = MAX_VALUE,
         step: Optional[float] = STEP,
@@ -65,7 +66,7 @@ class FloatValue(ValueType):
         suffix: Optional[str] = SUFFIX,
     ):
         # do cast, if failed, an error will be raised
-        super().__init__(float(default_value))
+        super().__init__(float(default_value), display_name=display_name)
 
         self.min_value = min_value
         self.max_value = max_value

@@ -30,7 +30,9 @@ class MultiObjectEditView(TableView):
         # make sure row_data_type is "dict"
         config.row_data_type = "dict"
 
-        super().__init__(parent, column_headers=list(schema.keys()), config=config)
+        super().__init__(
+            parent, column_headers=self._get_column_headers(), config=config
+        )
 
         self.cellDoubleClicked.connect(self._on_cell_double_clicked)
         self.cellClicked.connect(self._on_cell_clicked)
@@ -147,6 +149,22 @@ class MultiObjectEditView(TableView):
             return data
         return super().on_remove_item(row, col)
 
+    def validate_object(self, obj: Dict[str, Any]) -> bool:
+        for key, value in obj.items():
+            vt = self._schema.get(key, None)
+            if not vt and not self.config.ignore_unknown_columns:
+                return False
+            if vt and not vt.validate(value):
+                return False
+        return True
+
+    def _get_column_headers(self) -> Dict[str, str]:
+        headers = {}
+        for key, vt in self._schema.items():
+            label = vt.display_name or key
+            headers[key] = label
+        return headers
+
     def _setup_columns(self):
         for column_index, column_key in enumerate(self.column_headers):
             column_key = self.column_keys[column_index]
@@ -179,12 +197,3 @@ class MultiObjectEditView(TableView):
         item = self.item(row, column)
         data = self.on_get_item_data(row, column)
         vt.on_item_clicked(self, row, column, data, item)
-
-    def validate_object(self, obj: Dict[str, Any]) -> bool:
-        for key, value in obj.items():
-            vt = self._schema.get(key, None)
-            if not vt and not self.config.ignore_unknown_columns:
-                return False
-            if vt and not vt.validate(value):
-                return False
-        return True

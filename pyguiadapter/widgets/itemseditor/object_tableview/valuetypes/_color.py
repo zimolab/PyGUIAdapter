@@ -141,6 +141,7 @@ class ColorValue(ValueType):
         self,
         default_value: ColorType = DEFAULT_VALUE,
         *,
+        display_name: Optional[str] = None,
         alpha_channel: bool = ALPHA_CHANNEL,
         display_color_name: bool = DISPLAY_COLOR_NAME,
         cell_widget_margins: Tuple[int, int, int, int] = CELL_WIDGET_MARGINS,
@@ -155,7 +156,10 @@ class ColorValue(ValueType):
         self.min_item_editor_widget_height = min_item_editor_widget_height
         self.item_editor_widget_border = item_editor_widget_border
 
-        super().__init__(convert_color(to_qcolor(default_value), "str", alpha_channel))
+        super().__init__(
+            convert_color(to_qcolor(default_value), "str", alpha_channel),
+            display_name=display_name,
+        )
 
     def validate(self, value: Any) -> bool:
         if value is None:

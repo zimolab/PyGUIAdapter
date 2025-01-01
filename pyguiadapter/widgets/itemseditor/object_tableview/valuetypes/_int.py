@@ -53,6 +53,7 @@ class IntValue(ValueType):
         self,
         default_value: int = DEFAULT_VALUE,
         *,
+        display_name: Optional[str] = None,
         min_value: Optional[int] = MIN_VALUE,
         max_value: Optional[int] = MAX_VALUE,
         step: Optional[int] = STEP,
@@ -60,7 +61,7 @@ class IntValue(ValueType):
         suffix: Optional[str] = SUFFIX,
     ):
         # do cast, if failed, an error will be raised
-        super().__init__(int(default_value))
+        super().__init__(int(default_value), display_name=display_name)
 
         self.min_value = min_value
         self.max_value = max_value

@@ -79,8 +79,8 @@ class PathEdit(QWidget, CellWidgetMixin):
 
 class PathValue(ValueType):
 
-    def __init__(self, default_value: str = ""):
-        super().__init__(default_value)
+    def __init__(self, default_value: str = "", *, display_name: Optional[str] = None):
+        super().__init__(default_value, display_name=display_name)
 
     def validate(self, value: Any) -> bool:
         return isinstance(value, str)

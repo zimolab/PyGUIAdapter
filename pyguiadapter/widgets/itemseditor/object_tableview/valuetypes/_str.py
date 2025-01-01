@@ -63,6 +63,7 @@ class StringValue(ValueType):
         self,
         default_value: str = DEFAULT_VALUE,
         *,
+        display_name: Optional[str] = None,
         echo_mode: Union[QLineEdit.EchoMode, int, None] = ECHO_MODE,
         clear_button: bool = CLEAR_BUTTON_ENABLED,
         max_length: Optional[int] = MAX_LENGTH,
@@ -70,7 +71,7 @@ class StringValue(ValueType):
         input_mask: Optional[str] = INPUT_MASK,
         validator: Union[QValidator, str, None] = None
     ):
-        super().__init__(str(default_value))
+        super().__init__(str(default_value), display_name=display_name)
 
         self.echo_mode = echo_mode
         self.clear_button = clear_button

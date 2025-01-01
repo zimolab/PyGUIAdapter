@@ -106,6 +106,7 @@ class TimeValue(ValueType):
         self,
         default_value: TimeType = DEFAULT_VALUE,
         *,
+        display_name: Optional[str] = None,
         str_format: str = STR_FORMAT,
         display_format: str = DISPLAY_FORMAT,
         time_spec: Optional[Qt.TimeSpec] = TIME_SPEC,
@@ -116,7 +117,7 @@ class TimeValue(ValueType):
         self.display_format = display_format
         self.time_spec = time_spec
 
-        super().__init__(default_value)
+        super().__init__(default_value, display_name=display_name)
 
     def validate(self, value: Any) -> bool:
         return is_valid_time(value, self.str_format)
