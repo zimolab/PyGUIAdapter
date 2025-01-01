@@ -1,5 +1,9 @@
-from qtpy.QtWidgets import QApplication, QHeaderView
+from qtpy.QtWidgets import QApplication
 
+from pyguiadapter.widgets.itemseditor.multiobject_editor import (
+    MultiObjectEditor,
+    MultiObjectEditorConfig,
+)
 from pyguiadapter.widgets.itemseditor.object_tableview.valuetypes import (
     StringValue,
     IntValue,
@@ -13,10 +17,6 @@ from pyguiadapter.widgets.itemseditor.object_tableview.valuetypes import (
     DirectoryValue,
     FileValue,
     GenericPathValue,
-)
-from pyguiadapter.widgets.itemseditor.multiobject_editor import (
-    MultiObjectEditor,
-    MultiObjectEditorConfig,
 )
 
 schema = {
