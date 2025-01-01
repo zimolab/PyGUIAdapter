@@ -8,12 +8,16 @@ from pyguiadapter.widgets.itemseditor.object_tableview.valuetypes import (
     ChoiceValue,
     ColorValue,
     DateTimeValue,
+    DateValue,
+    TimeValue,
+    DirectoryValue,
+    FileValue,
+    GenericPathValue,
 )
 from pyguiadapter.widgets.itemseditor.multiobject_editor import (
     MultiObjectEditor,
     MultiObjectEditorConfig,
 )
-from pyguiadapter.widgets.itemseditor.object_tableview.valuetypes._dir import PathValue
 
 schema = {
     "Name": StringValue(display_name="姓名"),
@@ -23,9 +27,13 @@ schema = {
         0, ["Engineer", "Teacher", "Doctor"], display_name="职业"
     ),
     "Height": FloatValue(180.0, display_name="身高"),
-    "Favorite Color": ColorValue(display_color_name=False, display_name="喜欢的颜色"),
-    "dir": PathValue(),
+    "Favorite Color": ColorValue(display_color_name=True, display_name="喜欢的颜色"),
+    "dir": DirectoryValue(display_name="目录"),
+    "file": FileValue(display_name="文件", file_filters="*.py"),
     "birthday": DateTimeValue(),
+    "date": DateValue(display_name="日期"),
+    "time": TimeValue(),
+    "generic": GenericPathValue(),
 }
 
 app = QApplication([])

@@ -14,8 +14,10 @@ from pyguiadapter.widgets.itemseditor.object_tableview.valuetypes import (
     DateTimeValue,
     DateValue,
     TimeValue,
+    DirectoryValue,
+    FileValue,
+    GenericPathValue,
 )
-from pyguiadapter.widgets.itemseditor.object_tableview.valuetypes._dir import PathValue
 
 app = QApplication([])
 schema = {
@@ -27,10 +29,12 @@ schema = {
     ),
     "Height": FloatValue(180.0, display_name="身高"),
     "Favorite Color": ColorValue(display_color_name=True, display_name="喜欢的颜色"),
-    "dir": PathValue(display_name="目录"),
+    "dir": DirectoryValue(display_name="目录"),
+    "file": FileValue(display_name="文件", file_filters="*.py"),
     "birthday": DateTimeValue(),
     "date": DateValue(display_name="日期"),
     "time": TimeValue(),
+    "generic": GenericPathValue(),
 }
 
 config = ObjectEditorConfig()
