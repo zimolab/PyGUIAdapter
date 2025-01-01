@@ -16,12 +16,14 @@ from pyguiadapter.widgets.itemseditor.multiobject_editor import (
 from pyguiadapter.widgets.itemseditor.object_tableview.valuetypes._dir import PathValue
 
 schema = {
-    "Name": StringValue(),
-    "Age": IntValue(),
-    "Is Student": BoolValue(),
-    "Occupation": ChoiceValue(0, ["Engineer", "Teacher", "Doctor"]),
-    "Height": FloatValue(180.0),
-    "Favorite Color": ColorValue(display_color_name=False),
+    "Name": StringValue(display_name="姓名"),
+    "Age": IntValue(display_name="年龄"),
+    "Is Student": BoolValue(display_name="是否学生"),
+    "Occupation": ChoiceValue(
+        0, ["Engineer", "Teacher", "Doctor"], display_name="职业"
+    ),
+    "Height": FloatValue(180.0, display_name="身高"),
+    "Favorite Color": ColorValue(display_color_name=False, display_name="喜欢的颜色"),
     "dir": PathValue(),
     "birthday": DateTimeValue(),
 }
