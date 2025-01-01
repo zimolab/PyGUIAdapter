@@ -7,6 +7,9 @@ from ._color import ColorValue
 from ._datetime import DateTimeValue
 from ._date import DateValue
 from ._time import TimeValue
+from ._file import FileValue
+from ._dir import DirectoryValue
+from ._generic_path import GenericPathValue
 
 
 __all__ = [
@@ -19,4 +22,7 @@ __all__ = [
     "DateTimeValue",
     "DateValue",
     "TimeValue",
+    "FileValue",
+    "DirectoryValue",
+    "GenericPathValue",
 ]
