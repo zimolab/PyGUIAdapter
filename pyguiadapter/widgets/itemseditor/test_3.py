@@ -1,4 +1,4 @@
-from qtpy.QtWidgets import QApplication
+from qtpy.QtWidgets import QApplication, QHeaderView
 
 from pyguiadapter.widgets.itemseditor.object_tableview.valuetypes import (
     StringValue,
