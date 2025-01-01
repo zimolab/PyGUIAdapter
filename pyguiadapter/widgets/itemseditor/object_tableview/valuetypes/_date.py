@@ -32,19 +32,6 @@ def to_string(value: DateType, str_format: str = STR_FORMAT) -> str:
         raise TypeError(f"unsupported date type: {type(value)}")
 
 
-# def to_date(value: DateType, str_format: str = STR_FORMAT) -> datetime.date:
-#     if not value:
-#         return datetime.date.today()
-#     elif isinstance(value, datetime.date):
-#         return value
-#     elif isinstance(value, str):
-#         return datetime.datetime.strptime(value, str_format)
-#     elif isinstance(value, QDate):
-#         return value.toPython()
-#     else:
-#         raise TypeError(f"unsupported date type: {type(value)}")
-
-
 def to_qt_date(value: DateType, str_format: str = STR_FORMAT) -> QDate:
     if not value:
         return QDate.currentDate()
@@ -84,6 +71,8 @@ class DateEdit(QDateEdit, ValueWidgetMixin):
         calendar_popup: bool = CALENDAR_POPUP,
         display_format: str = DISPLAY_FORMAT,
         time_spec: Optional[Qt.TimeSpec] = None,
+        minimum: Optional[DateType] = None,
+        maximum: Optional[DateType] = None,
     ):
         self._default_value = default_value
         self._str_format = str_format
@@ -96,6 +85,12 @@ class DateEdit(QDateEdit, ValueWidgetMixin):
             self.setDisplayFormat(self._display_format)
         if self._time_spec:
             self.setTimeSpec(self._time_spec)
+
+        if maximum:
+            self.setMaximumDate(to_qt_date(maximum, self._str_format))
+
+        if minimum:
+            self.setMinimumDate(to_qt_date(minimum, self._str_format))
 
     def set_value(self, value: DateType):
         self._default_value = to_qt_date(value, self._str_format)
@@ -115,6 +110,8 @@ class DateValue(ValueType):
         display_format: str = DISPLAY_FORMAT,
         calendar_popup: bool = CALENDAR_POPUP,
         time_spec: Optional[Qt.TimeSpec] = TIME_SPEC,
+        maximum: Optional[DateType] = None,
+        minimum: Optional[DateType] = None,
     ):
 
         default_value = to_string(default_value)
@@ -122,6 +119,8 @@ class DateValue(ValueType):
         self.display_format = display_format
         self.calendar_popup = calendar_popup
         self.time_spec = time_spec
+        self.maximum = maximum
+        self.minimum = minimum
 
         super().__init__(default_value, display_name=display_name)
 
@@ -138,6 +137,8 @@ class DateValue(ValueType):
             calendar_popup=self.calendar_popup,
             display_format=self.display_format,
             time_spec=self.time_spec,
+            minimum=self.minimum,
+            maximum=self.maximum,
         )
 
     def create_item_delegate_widget(
@@ -150,4 +151,6 @@ class DateValue(ValueType):
             calendar_popup=self.calendar_popup,
             display_format=self.display_format,
             time_spec=self.time_spec,
+            minimum=self.minimum,
+            maximum=self.maximum,
         )

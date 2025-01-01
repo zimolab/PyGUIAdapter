@@ -30,19 +30,6 @@ def to_string(value: TimeType, str_format: str = STR_FORMAT) -> str:
         raise TypeError(f"unsupported time type: {type(value)}")
 
 
-# def to_time(value: TimeType, str_format: str = STR_FORMAT) -> datetime.time:
-#     if not value:
-#         return datetime.datetime.now().time()
-#     elif isinstance(value, datetime.time):
-#         return value
-#     elif isinstance(value, str):
-#         return datetime.datetime.strptime(value, str_format).time()
-#     elif isinstance(value, QTime):
-#         return value.toPython()
-#     else:
-#         raise TypeError(f"unsupported time type: {type(value)}")
-
-
 def to_qt_time(value: TimeType, str_format: str = STR_FORMAT) -> QTime:
     if not value:
         return QTime.currentTime()
@@ -81,6 +68,8 @@ class DateEdit(QTimeEdit, ValueWidgetMixin):
         str_format: str = STR_FORMAT,
         display_format: str = DISPLAY_FORMAT,
         time_spec: Optional[Qt.TimeSpec] = None,
+        minimum: Optional[TimeType] = None,
+        maximum: Optional[TimeType] = None,
     ):
         self._default_value = default_value
         self._str_format = str_format
@@ -92,6 +81,10 @@ class DateEdit(QTimeEdit, ValueWidgetMixin):
             self.setDisplayFormat(self._display_format)
         if self._time_spec:
             self.setTimeSpec(self._time_spec)
+        if minimum:
+            self.setMinimumTime(to_qt_time(minimum, self._str_format))
+        if maximum:
+            self.setMaximumTime(to_qt_time(maximum, self._str_format))
 
     def set_value(self, value: TimeType):
         self._default_value = to_qt_time(value, self._str_format)
@@ -110,12 +103,16 @@ class TimeValue(ValueType):
         str_format: str = STR_FORMAT,
         display_format: str = DISPLAY_FORMAT,
         time_spec: Optional[Qt.TimeSpec] = TIME_SPEC,
+        minimum: Optional[TimeType] = None,
+        maximum: Optional[TimeType] = None,
     ):
 
         default_value = to_string(default_value)
         self.str_format = str_format
         self.display_format = display_format
         self.time_spec = time_spec
+        self.minimum = minimum
+        self.maximum = maximum
 
         super().__init__(default_value, display_name=display_name)
 
@@ -131,6 +128,8 @@ class TimeValue(ValueType):
             str_format=self.str_format,
             display_format=self.display_format,
             time_spec=self.time_spec,
+            minimum=self.minimum,
+            maximum=self.maximum,
         )
 
     def create_item_delegate_widget(
@@ -142,4 +141,6 @@ class TimeValue(ValueType):
             str_format=self.str_format,
             display_format=self.display_format,
             time_spec=self.time_spec,
+            minimum=self.minimum,
+            maximum=self.maximum,
         )
