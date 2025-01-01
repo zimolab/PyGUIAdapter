@@ -5,7 +5,7 @@ from qtpy.QtCore import Qt
 from qtpy.QtWidgets import QWidget, QTableWidgetItem, QAbstractItemView
 
 from ._commons import KEY_COLUMN_INDEX, VALUE_COLUMN_INDEX
-from ._delegate import ObjectItemDelegate, KeyValueDelegate
+from ._delegate import KeyValueDelegate
 from .schema import ValueType, CellWidgetMixin
 from ..exceptions import ValidationFailedError
 from ..tableview import TableView, TableViewConfig
@@ -263,19 +263,6 @@ class ObjectEditView(TableView):
             cell_widget.deleteLater()
             return data
         return super().on_remove_item(row, col)
-
-    def _setup_columns(self):
-        for column_index, column_key in enumerate(self.column_headers):
-            column_key = self.column_keys[column_index]
-            vt = self._schema[column_key]
-            delegate = ObjectItemDelegate(self, vt)
-            self.setItemDelegateForColumn(column_index, delegate)
-            # hook events if needed
-            if vt.hook_item_double_clicked():
-                self._item_double_clicked_handlers[column_index] = vt
-
-            if vt.hook_item_clicked():
-                self._item_clicked_handlers[column_index] = vt
 
     def _on_cell_double_clicked(self, row: int, column: int):
         if not self._item_double_clicked_handlers:

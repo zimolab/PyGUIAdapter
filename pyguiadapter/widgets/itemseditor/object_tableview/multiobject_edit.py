@@ -166,8 +166,8 @@ class MultiObjectEditView(TableView):
         return headers
 
     def _setup_columns(self):
-        for column_index, column_key in enumerate(self.column_headers):
-            column_key = self.column_keys[column_index]
+        for column_index, column_key in enumerate(self.column_keys):
+            # column_key = self.column_keys[column_index]
             vt = self._schema[column_key]
             delegate = ObjectItemDelegate(self, vt)
             self.setItemDelegateForColumn(column_index, delegate)
