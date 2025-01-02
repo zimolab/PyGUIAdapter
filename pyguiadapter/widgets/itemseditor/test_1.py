@@ -23,7 +23,7 @@ app = QApplication([])
 schema = {
     "Name": StringValue(display_name="姓名"),
     "Age": IntValue(display_name="年龄"),
-    "Is Student": BoolValue(display_name="是否学生"),
+    "Is Student": BoolValue(display_name="是否学生", true_text="是", false_text="否"),
     "Occupation": ChoiceValue(
         0, ["Engineer", "Teacher", "Doctor"], display_name="职业"
     ),
@@ -43,7 +43,6 @@ editor.set_object(
     {
         "Name": "John",
         "Age": 25,
-        "Is Student": True,
     }
 )
 editor.show()
