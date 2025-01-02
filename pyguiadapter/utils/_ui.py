@@ -155,7 +155,6 @@ def to_qcolor(color: Union[str, tuple, list, QColor]) -> QColor:
         alpha = None
         if len(color) >= 9:
             try:
-                print(color[7:9], int(color[7:9], 16))
                 alpha = int(color[7:9], 16)
             except ValueError:
                 raise ValueError(
