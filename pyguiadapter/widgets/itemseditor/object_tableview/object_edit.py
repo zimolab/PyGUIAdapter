@@ -315,3 +315,19 @@ class ObjectEditView(TableView):
             if item and item.data(Qt.UserRole) == key:
                 return row
         return -1
+
+    @classmethod
+    def is_key_item(cls, col: int, item: QTableWidgetItem) -> bool:
+        if not isinstance(item, QTableWidgetItem):
+            return False
+        if not isinstance(item.tableWidget(), cls):
+            return False
+        return col == KEY_COLUMN_INDEX
+
+    @classmethod
+    def is_value_item(cls, col: int, item: QTableWidgetItem) -> bool:
+        if not isinstance(item, QTableWidgetItem):
+            return False
+        if not isinstance(item.tableWidget(), cls):
+            return False
+        return col == VALUE_COLUMN_INDEX

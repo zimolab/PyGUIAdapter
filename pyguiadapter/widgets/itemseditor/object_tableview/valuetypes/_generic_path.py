@@ -26,7 +26,7 @@ from .._commons import KEY_COLUMN_INDEX
 from ..schema import ValueWidgetMixin, ValueType
 from ...item_editor import BaseItemEditor
 from ...tableview import TableView
-from ...ui_utilities import Widget
+from ...utils import Widget
 
 DEFAULT_VALUE = ""
 WINDOW_TITLE = "Path"

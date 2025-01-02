@@ -14,7 +14,7 @@ from qtpy.QtWidgets import (
     QScrollArea,
 )
 
-from .ui_utilities import Widget, insert_widget
+from .utils import Widget, insert_widget
 
 
 class BaseItemEditor(QDialog):

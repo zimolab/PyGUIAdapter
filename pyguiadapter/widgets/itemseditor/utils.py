@@ -1,4 +1,5 @@
-from typing import Union, Literal, Tuple
+import sys
+from typing import Union, Literal, Tuple, Any, Optional
 
 from qtpy.QtGui import QColor
 from qtpy.QtWidgets import (
@@ -169,7 +170,6 @@ def to_qcolor(color: Union[str, tuple, list, QColor]) -> QColor:
         alpha = None
         if len(color) >= 9:
             try:
-                print(color[7:9], int(color[7:9], 16))
                 alpha = int(color[7:9], 16)
             except ValueError:
                 raise ValueError(
@@ -182,3 +182,12 @@ def to_qcolor(color: Union[str, tuple, list, QColor]) -> QColor:
         return c
 
     raise ValueError(f"invalid color type: {type(color)}")
+
+
+def result_or_none(func, *args, **kwargs) -> Optional[Any]:
+    try:
+        value = func(*args, **kwargs)
+        return value
+    except Exception as e:
+        print(f"`{func.__name__}()`: {e}", file=sys.stderr)
+        return None

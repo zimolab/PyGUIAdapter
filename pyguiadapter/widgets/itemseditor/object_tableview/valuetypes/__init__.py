@@ -1,6 +1,12 @@
 from ._int import IntValue
 from ._float import FloatValue
-from ._str import StringValue
+from ._str import (
+    StringValue,
+    EchoMode,
+    PasswordEchoMode,
+    NormalEchoMode,
+    PasswordEchoOnEditMode,
+)
 from ._bool import BoolValue
 from ._choice import ChoiceValue
 from ._color import ColorValue
@@ -25,4 +31,8 @@ __all__ = [
     "FileValue",
     "DirectoryValue",
     "GenericPathValue",
+    "EchoMode",
+    "PasswordEchoMode",
+    "NormalEchoMode",
+    "PasswordEchoOnEditMode",
 ]

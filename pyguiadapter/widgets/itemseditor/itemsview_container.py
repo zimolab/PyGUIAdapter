@@ -12,7 +12,7 @@ from qtpy.QtWidgets import (
 )
 
 from .itemsview import CommonItemsViewInterface
-from .ui_utilities import (
+from .utils import (
     insert_widget,
     remove_widget_at,
     clear_layout,

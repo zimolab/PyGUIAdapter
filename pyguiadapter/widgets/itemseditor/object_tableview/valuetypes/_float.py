@@ -1,8 +1,10 @@
 from typing import Optional, Any, Union
 
-from qtpy.QtWidgets import QWidget, QDoubleSpinBox
+from qtpy.QtWidgets import QWidget, QDoubleSpinBox, QTableWidgetItem
 
+from .. import ObjectEditView
 from ..schema import ValueWidgetMixin, ValueType
+from ...utils import result_or_none
 
 DEFAULT_VALUE = 0.0
 STEP = 0.001
@@ -11,20 +13,28 @@ MIN_VALUE = -2147483648.0
 MAX_VALUE = 2147483647.0
 PREFIX = ""
 SUFFIX = ""
+DISPLAY_AFFIX = False
+DISPLAY_AS_DECIMALS = False
 
 
-class FloatValueEditor(QDoubleSpinBox, ValueWidgetMixin):
+def _to_float(value: Any) -> float:
+    if value is None:
+        return DEFAULT_VALUE
+    return float(value)
+
+
+class FloatEdit(QDoubleSpinBox, ValueWidgetMixin):
     def __init__(
         self,
         parent: QWidget,
-        default_value: float = DEFAULT_VALUE,
+        default_value: float,
         *,
-        min_value: Optional[float] = MIN_VALUE,
-        max_value: Optional[float] = MAX_VALUE,
-        step: Optional[float] = STEP,
-        decimals: Optional[int] = DECIMALS,
-        prefix: Optional[str] = SUFFIX,
-        suffix: Optional[str] = SUFFIX,
+        min_value: Optional[float],
+        max_value: Optional[float],
+        step: Optional[float],
+        decimals: Optional[int],
+        prefix: Optional[str],
+        suffix: Optional[str],
     ):
         super().__init__(parent)
         if max_value is not None:
@@ -46,9 +56,7 @@ class FloatValueEditor(QDoubleSpinBox, ValueWidgetMixin):
         return self.value()
 
     def set_value(self, value: float):
-        if value is None:
-            value = DEFAULT_VALUE
-        self.setValue(float(value))
+        self.setValue(_to_float(value))
 
 
 class FloatValue(ValueType):
@@ -64,6 +72,8 @@ class FloatValue(ValueType):
         decimals: Optional[int] = DECIMALS,
         prefix: Optional[str] = SUFFIX,
         suffix: Optional[str] = SUFFIX,
+        display_affix: bool = DISPLAY_AFFIX,
+        display_as_decimals: bool = DISPLAY_AS_DECIMALS,
     ):
         # do cast, if failed, an error will be raised
         super().__init__(float(default_value), display_name=display_name)
@@ -74,12 +84,21 @@ class FloatValue(ValueType):
         self.prefix = prefix
         self.suffix = suffix
         self.decimals = decimals
+        self.display_affix = display_affix
+        self.display_as_decimals = display_as_decimals
 
     def validate(self, value: Any) -> bool:
-        return isinstance(value, (int, float))
+        value = result_or_none(_to_float, value)
+        if value is None:
+            return False
+        if self.min_value is not None and value < self.min_value:
+            return False
+        if self.max_value is not None and value > self.max_value:
+            return False
+        return True
 
     def create_item_delegate_widget(self, parent: QWidget, *args, **kwargs) -> QWidget:
-        editor = FloatValueEditor(
+        return FloatEdit(
             parent,
             default_value=self.default_value,
             min_value=self.min_value,
@@ -89,9 +108,21 @@ class FloatValue(ValueType):
             prefix=self.prefix,
             suffix=self.suffix,
         )
-        return editor
 
     def create_item_editor_widget(
         self, parent: QWidget, *args, **kwargs
     ) -> Union[QWidget, ValueWidgetMixin]:
-        return self.create_item_delegate_widget(parent, *args, **kwargs)
+        return self.create_item_delegate_widget(parent)
+
+    def after_set_item_data(
+        self, row: int, col: int, item: QTableWidgetItem, value: Any
+    ):
+        if ObjectEditView.is_key_item(col, item):
+            return
+        if self.display_as_decimals and self.decimals:
+            value = f"{value:.{self.decimals}f}"
+        else:
+            value = str(value)
+        if self.display_affix:
+            value = f"{self.prefix}{value}{self.suffix}"
+        item.setText(value)
