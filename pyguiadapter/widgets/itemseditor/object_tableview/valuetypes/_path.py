@@ -11,7 +11,6 @@ from qtpy.QtWidgets import (
     QTableWidgetItem,
 )
 
-from .._commons import KEY_COLUMN_INDEX
 from ..object_edit import ObjectEditView
 from ..schema import ValueWidgetMixin, ValueType, CellWidgetMixin
 
@@ -32,12 +31,12 @@ class PathDialog(QFileDialog, ValueWidgetMixin):
         default_value: str,
         *,
         title: str = TITLE,
-        file_mode: Literal["any_file", "existing_file", "directory"] = FILE_MODE,
-        show_dirs_only: bool = SHOW_DIRS_ONLY,
-        start_directory: str = START_DIRECTORY,
-        file_filters: str = FILE_FILTERS,
-        selected_filter: str = SELECTED_FILTER,
-        as_posix: bool = AS_POSIX,
+        file_mode: Literal["any_file", "existing_file", "directory"],
+        show_dirs_only: bool,
+        start_directory: str,
+        file_filters: str,
+        selected_filter: str,
+        as_posix: bool,
     ):
         self._as_posix = as_posix
 
@@ -105,15 +104,15 @@ class PathEdit(QWidget, CellWidgetMixin):
         default_value: str,
         *,
         title: str = TITLE,
-        file_mode: Literal["any_file", "existing_file", "directory"] = FILE_FILTERS,
-        show_dirs_only: bool = SHOW_DIRS_ONLY,
-        start_directory: str = START_DIRECTORY,
-        file_filters: str = FILE_FILTERS,
-        selected_filter: str = SELECTED_FILTER,
-        as_posix: bool = AS_POSIX,
+        file_mode: Literal["any_file", "existing_file", "directory"],
+        show_dirs_only: bool,
+        start_directory: str,
+        file_filters: str,
+        selected_filter: str,
+        as_posix: bool,
     ):
         super().__init__(parent)
-        self._default_value = default_value
+        self._default_value = None
         self._title = title
         self._file_mode = file_mode
         self._show_dirs_only = show_dirs_only
@@ -136,6 +135,8 @@ class PathEdit(QWidget, CellWidgetMixin):
         self._layout.addWidget(self._browse_button)
 
         self.setLayout(self._layout)
+
+        self.set_value(default_value)
 
     def _on_browse_button_clicked(self):
         dialog = PathDialog(
@@ -160,7 +161,8 @@ class PathEdit(QWidget, CellWidgetMixin):
         return self._line_edit.text()
 
     def set_value(self, value: str):
-        self._line_edit.setText(str(value))
+        self._default_value = str(value or "")
+        self._line_edit.setText(self._default_value)
 
 
 class PathValue(ValueType):
@@ -186,7 +188,9 @@ class PathValue(ValueType):
         self.selected_filter = selected_filter
         self.as_posix = as_posix
 
-        super().__init__(str(default_value or ""), display_name=display_name)
+        default_value = str(default_value or "")
+
+        super().__init__(default_value, display_name=display_name)
 
     def validate(self, value: Any) -> bool:
         if value is None:
@@ -224,13 +228,6 @@ class PathValue(ValueType):
     def after_set_item_data(
         self, row: int, col: int, item: QTableWidgetItem, value: Any
     ):
-        if item:
-            if (
-                isinstance(item.tableWidget(), ObjectEditView)
-                and col == KEY_COLUMN_INDEX
-            ):
-                # this is a special case for object editor,
-                # we don't want to show tooltip for key column
-                return
-            text = str(value)
-            item.setToolTip(text)
+        if ObjectEditView.is_key_item(col, item):
+            return
+        item.setToolTip(str(value or ""))

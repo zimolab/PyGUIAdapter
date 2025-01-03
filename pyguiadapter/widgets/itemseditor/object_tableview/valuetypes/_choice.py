@@ -1,38 +1,29 @@
-from typing import Any, Union, List, Tuple, Dict, Optional
+from typing import Any, Union, Optional, Sequence
 
 from qtpy.QtWidgets import QWidget, QComboBox
 
 from ..schema import ValueWidgetMixin, ValueType
 
-DEFAULT_VALUE = 0
 
-
-class ChoiceEditor(QComboBox, ValueWidgetMixin):
-    def __init__(self, parent: QWidget, default_value: str, choices: Dict[str, Any]):
+class ChoiceCombo(QComboBox, ValueWidgetMixin):
+    def __init__(self, parent: QWidget, default_value: str, choices: Sequence[str]):
         super().__init__(parent)
 
-        self._choices = choices.copy()
-        for text, value in self._choices.items():
-            self.addItem(text, value)
+        self._choices = choices
+
+        for choice in choices:
+            self.addItem(choice)
 
         self.set_value(default_value)
 
-    def get_value(self) -> Any:
-        return self.currentData()
+    def get_value(self) -> str:
+        return self.currentText()
 
     def set_value(self, value: Union[int, str]):
-        if value is None:
-            value = DEFAULT_VALUE
-        if isinstance(value, str):
-            for index in range(self.count()):
-                text = self.itemText(index)
-                if text == value:
-                    self.setCurrentIndex(index)
-                    return
-        elif isinstance(value, int):
+        if isinstance(value, int):
             self.setCurrentIndex(value)
         else:
-            raise TypeError("value must be an int or str")
+            self.setCurrentText(value)
 
 
 class ChoiceValue(ValueType):
@@ -40,29 +31,36 @@ class ChoiceValue(ValueType):
     def __init__(
         self,
         default_value: Union[int, str],
-        choices: Union[List[Any], Tuple[Any, ...], Dict[str, Any]],
+        choices: Sequence[str],
         *,
-        display_name: Optional[str] = None
+        display_name: Optional[str] = None,
     ):
-        if not isinstance(choices, (list, tuple, dict)):
-            raise TypeError("choices must be a list, tuple or dict")
+        if not choices:
+            raise ValueError("choices cannot be empty")
 
-        if isinstance(choices, (list, tuple)):
-            choices = {str(v): v for v in choices}
-
-        if isinstance(default_value, int):
-            default_value = list(choices.keys())[default_value]
-
-        super().__init__(default_value, display_name=display_name)
         self.choices = choices
 
-    def validate(self, value: Any) -> bool:
-        return isinstance(value, (int, str))
+        if isinstance(default_value, int):
+            if default_value < 0 or default_value >= len(choices):
+                raise IndexError(f"index out of range: {default_value}")
+            default_value = choices[default_value]
 
-    def create_item_delegate_widget(self, parent: QWidget, *args, **kwargs) -> QWidget:
-        return ChoiceEditor(parent, self.default_value, self.choices)
+        super().__init__(default_value, display_name=display_name)
+
+    def validate(self, value: Any) -> bool:
+        if isinstance(value, int):
+            return 0 <= value < len(self.choices)
+        elif isinstance(value, str):
+            return value in self.choices
+        else:
+            return False
+
+    def create_item_delegate_widget(
+        self, parent: QWidget, *args, **kwargs
+    ) -> ChoiceCombo:
+        return ChoiceCombo(parent, self.default_value, self.choices)
 
     def create_item_editor_widget(
         self, parent: QWidget, *args, **kwargs
-    ) -> Union[QWidget, ValueWidgetMixin]:
-        return self.create_item_delegate_widget(parent, *args, **kwargs)
+    ) -> ChoiceCombo:
+        return self.create_item_delegate_widget(parent)

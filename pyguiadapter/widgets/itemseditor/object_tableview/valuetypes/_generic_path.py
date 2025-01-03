@@ -22,7 +22,6 @@ from ._path import (
     PathDialog,
 )
 from .. import ObjectEditView
-from .._commons import KEY_COLUMN_INDEX
 from ..schema import ValueWidgetMixin, ValueType
 from ...item_editor import BaseItemEditor
 from ...tableview import TableView
@@ -43,20 +42,20 @@ class GenericPathDialog(BaseItemEditor, ValueWidgetMixin):
     def __init__(
         self,
         parent: QWidget,
-        default_value: str = DEFAULT_VALUE,
-        window_title: str = WINDOW_TITLE,
-        window_size: Tuple[int, int] = WINDOW_SIZE,
-        center_container_title: str = CENTER_CONTAINER_TITLE,
-        file_button_text: str = FILE_BUTTON_TEXT,
-        directory_button_text: str = DIRECTORY_BUTTON_TEXT,
-        file_dialog_title: str = FILE_DIALOG_TITLE,
-        directory_dialog_title: str = DIRECTORY_DIALOG_TITLE,
-        any_file: bool = ANY_FILE,
-        show_dirs_only: bool = SHOW_DIRS_ONLY,
-        start_directory: str = START_DIRECTORY,
-        file_filters: str = FILE_FILTERS,
-        selected_filter: str = SELECTED_FILTER,
-        as_posix: bool = AS_POSIX,
+        default_value: str,
+        window_title: str,
+        window_size: Tuple[int, int],
+        center_container_title: str,
+        file_button_text: str,
+        directory_button_text: str,
+        file_dialog_title: str,
+        directory_dialog_title: str,
+        any_file: bool,
+        show_dirs_only: bool,
+        start_directory: str,
+        file_filters: str,
+        selected_filter: str,
+        as_posix: bool,
     ):
         self._file_button_text = file_button_text
         self._directory_button_text = directory_button_text
@@ -83,7 +82,7 @@ class GenericPathDialog(BaseItemEditor, ValueWidgetMixin):
 
         self._setup_ui()
 
-        self.set_value(str(default_value or ""))
+        self.set_value(default_value)
 
     def user_bottom_widgets(self) -> List[Widget]:
         buttons = []
@@ -112,16 +111,15 @@ class GenericPathDialog(BaseItemEditor, ValueWidgetMixin):
         super().reject()
 
     def set_data(self, data: str):
-        data = data or ""
-        self._path_edit.setText(str(data))
+        self._path_edit.setText(data)
 
     def get_data(self) -> str:
         return self._path_edit.text()
 
     def set_value(self, value: str):
         self._accepted = False
-        self._default_value = value
-        self.set_data(value)
+        self._default_value = str(value or "")
+        self.set_data(self._default_value)
 
     def get_value(self) -> str:
         if not self._accepted:
@@ -134,12 +132,8 @@ class GenericPathDialog(BaseItemEditor, ValueWidgetMixin):
         return self._path_edit
 
     def _setup_ui(self):
-        self.setModal(True)
         if self._window_title:
             self.setWindowTitle(self._window_title)
-        # noinspection PyUnresolvedReferences
-        flags = self.windowFlags() & ~Qt.WindowContextHelpButtonHint
-        self.setWindowFlags(flags)
 
         if self._window_size:
             self.resize(*self._window_size)
@@ -150,6 +144,8 @@ class GenericPathDialog(BaseItemEditor, ValueWidgetMixin):
         # noinspection PyUnresolvedReferences
         flags = self.windowFlags() & ~Qt.WindowContextHelpButtonHint
         self.setWindowFlags(flags)
+
+        self.setModal(True)
 
     def _on_browse_file(self):
         file_mode = "any_file" if self._any_file else "existing_file"
@@ -197,20 +193,20 @@ class GenericPathEdit(QWidget, ValueWidgetMixin):
     def __init__(
         self,
         parent: Optional[QWidget],
-        default_value: str = DEFAULT_VALUE,
-        window_title: str = WINDOW_TITLE,
-        window_size: Tuple[int, int] = WINDOW_SIZE,
-        center_container_title: str = CENTER_CONTAINER_TITLE,
-        file_button_text: str = FILE_BUTTON_TEXT,
-        directory_button_text: str = DIRECTORY_BUTTON_TEXT,
-        file_dialog_title: str = FILE_DIALOG_TITLE,
-        directory_dialog_title: str = DIRECTORY_DIALOG_TITLE,
-        any_file: bool = ANY_FILE,
-        show_dirs_only: bool = SHOW_DIRS_ONLY,
-        start_directory: str = START_DIRECTORY,
-        file_filters: str = FILE_FILTERS,
-        selected_filter: str = SELECTED_FILTER,
-        as_posix: bool = AS_POSIX,
+        default_value: str,
+        window_title: str,
+        window_size: Tuple[int, int],
+        center_container_title: str,
+        file_button_text: str,
+        directory_button_text: str,
+        file_dialog_title: str,
+        directory_dialog_title: str,
+        any_file: bool,
+        show_dirs_only: bool,
+        start_directory: str,
+        file_filters: str,
+        selected_filter: str,
+        as_posix: bool,
     ):
         self._window_title = window_title
         self._window_size = window_size
@@ -308,33 +304,14 @@ class GenericPathValue(ValueType):
         self._file_filters = file_filters
         self._selected_filter = selected_filter
         self._as_posix = as_posix
-        super().__init__(str(default_value or ""), display_name=display_name)
+
+        default_value = str(default_value or "")
+        super().__init__(default_value, display_name=display_name)
 
     def validate(self, value: Any) -> bool:
         if value is None:
             return True
         return isinstance(value, (str, Path, PathLike))
-
-    def create_item_editor_widget(
-        self, parent: QWidget, *args, **kwargs
-    ) -> GenericPathEdit:
-        return GenericPathEdit(
-            parent,
-            default_value=self.default_value,
-            window_title=self._window_title,
-            window_size=self._window_size,
-            center_container_title=self._center_container_title,
-            file_button_text=self._file_button_text,
-            directory_button_text=self._directory_button_text,
-            show_dirs_only=self._show_dirs_only,
-            file_dialog_title=self._file_dialog_title,
-            directory_dialog_title=self._directory_dialog_title,
-            start_directory=self._start_directory,
-            file_filters=self._file_filters,
-            selected_filter=self._selected_filter,
-            as_posix=self._as_posix,
-            any_file=self._any_file,
-        )
 
     def create_item_delegate_widget(
         self, parent: QWidget, *args, **kwargs
@@ -357,19 +334,33 @@ class GenericPathValue(ValueType):
             as_posix=self._as_posix,
         )
 
+    def create_item_editor_widget(
+        self, parent: QWidget, *args, **kwargs
+    ) -> GenericPathEdit:
+        return GenericPathEdit(
+            parent,
+            default_value=self.default_value,
+            window_title=self._window_title,
+            window_size=self._window_size,
+            center_container_title=self._center_container_title,
+            file_button_text=self._file_button_text,
+            directory_button_text=self._directory_button_text,
+            show_dirs_only=self._show_dirs_only,
+            file_dialog_title=self._file_dialog_title,
+            directory_dialog_title=self._directory_dialog_title,
+            start_directory=self._start_directory,
+            file_filters=self._file_filters,
+            selected_filter=self._selected_filter,
+            as_posix=self._as_posix,
+            any_file=self._any_file,
+        )
+
     def after_set_item_data(
         self, row: int, col: int, item: QTableWidgetItem, value: Any
     ):
-        if item:
-            if (
-                isinstance(item.tableWidget(), ObjectEditView)
-                and col == KEY_COLUMN_INDEX
-            ):
-                # this is a special case for object editor,
-                # we don't want to show tooltip for key column
-                return
-            text = str(value)
-            item.setToolTip(text)
+        if ObjectEditView.is_key_item(col, item):
+            return
+        item.setToolTip(str(value or ""))
 
     def before_set_editor_data(
         self,
