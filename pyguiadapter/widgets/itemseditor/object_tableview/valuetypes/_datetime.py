@@ -16,7 +16,7 @@ CALENDAR_POPUP = True
 DateTimeType = Union[datetime.datetime, QDateTime, str, None]
 
 
-def to_string(value: DateTimeType, str_format: str = STR_FORMAT) -> str:
+def to_string(value: DateTimeType, str_format: str) -> str:
     if not value:
         value = datetime.datetime.now()
         return value.strftime(str_format)
@@ -30,7 +30,7 @@ def to_string(value: DateTimeType, str_format: str = STR_FORMAT) -> str:
         raise TypeError(f"unsupported datetime type: {type(value)}")
 
 
-def to_qt_datetime(value: DateTimeType, str_format: str = STR_FORMAT) -> QDateTime:
+def to_qt_datetime(value: DateTimeType, str_format: str) -> QDateTime:
     if not value:
         return QDateTime.currentDateTime()
     elif isinstance(value, QDateTime):
@@ -43,7 +43,7 @@ def to_qt_datetime(value: DateTimeType, str_format: str = STR_FORMAT) -> QDateTi
         raise TypeError(f"unsupported datetime type: {type(value)}")
 
 
-def is_valid_datetime(value: DateTimeType, str_format: str = STR_FORMAT) -> bool:
+def is_valid_datetime(value: DateTimeType, str_format: str) -> bool:
     if value is None:
         return True
     if isinstance(value, (datetime.datetime, QDateTime)):
@@ -65,20 +65,21 @@ class DateTimeEdit(QDateTimeEdit, ValueWidgetMixin):
         parent: QWidget,
         default_value: str,
         *,
-        str_format: str = STR_FORMAT,
-        calendar_popup: bool = CALENDAR_POPUP,
-        display_format: str = DISPLAY_FORMAT,
-        time_spec: Optional[Qt.TimeSpec] = None,
-        minimum: Optional[DateTimeType] = None,
-        maximum: Optional[DateTimeType] = None,
+        str_format: str,
+        calendar_popup: bool,
+        display_format: str,
+        time_spec: Optional[Qt.TimeSpec],
+        minimum: Optional[DateTimeType],
+        maximum: Optional[DateTimeType],
     ):
-        self._default_value = default_value
+        self._default_value = None
         self._str_format = str_format
         self._display_format = display_format
         self._time_spec = time_spec
 
         super().__init__(parent)
         self.setCalendarPopup(calendar_popup)
+
         if self._display_format:
             self.setDisplayFormat(self._display_format)
         if self._time_spec:
@@ -89,6 +90,8 @@ class DateTimeEdit(QDateTimeEdit, ValueWidgetMixin):
 
         if maximum:
             self.setMaximumDateTime(to_qt_datetime(maximum, self._str_format))
+
+        self.set_value(default_value)
 
     def set_value(self, value: DateTimeType):
         self._default_value = to_qt_datetime(value, self._str_format)
@@ -112,7 +115,6 @@ class DateTimeValue(ValueType):
         maximum: Optional[DateTimeType] = None,
     ):
 
-        default_value = to_string(default_value)
         self.str_format = str_format
         self.display_format = display_format
         self.calendar_popup = calendar_popup
@@ -120,14 +122,15 @@ class DateTimeValue(ValueType):
         self.minimum = minimum
         self.maximum = maximum
 
+        default_value = to_string(default_value, self.str_format)
         super().__init__(default_value, display_name=display_name)
 
     def validate(self, value: Any) -> bool:
         return is_valid_datetime(value, self.str_format)
 
-    def create_item_editor_widget(
+    def create_item_delegate_widget(
         self, parent: QWidget, *args, **kwargs
-    ) -> Union[QWidget, ValueWidgetMixin, None]:
+    ) -> DateTimeEdit:
         return DateTimeEdit(
             parent,
             self.default_value,
@@ -139,16 +142,7 @@ class DateTimeValue(ValueType):
             maximum=self.maximum,
         )
 
-    def create_item_delegate_widget(
+    def create_item_editor_widget(
         self, parent: QWidget, *args, **kwargs
-    ) -> Union[QWidget, ValueWidgetMixin]:
-        return DateTimeEdit(
-            parent,
-            self.default_value,
-            str_format=self.str_format,
-            calendar_popup=self.calendar_popup,
-            display_format=self.display_format,
-            time_spec=self.time_spec,
-            minimum=self.minimum,
-            maximum=self.maximum,
-        )
+    ) -> DateTimeEdit:
+        return self.create_item_delegate_widget(parent)

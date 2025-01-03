@@ -16,7 +16,7 @@ CALENDAR_POPUP = True
 DateType = Union[datetime.date, QDate, str, None]
 
 
-def to_string(value: DateType, str_format: str = STR_FORMAT) -> str:
+def to_string(value: DateType, str_format: str) -> str:
     if not value:
         value = datetime.date.today()
         return value.strftime(str_format)
@@ -32,7 +32,7 @@ def to_string(value: DateType, str_format: str = STR_FORMAT) -> str:
         raise TypeError(f"unsupported date type: {type(value)}")
 
 
-def to_qt_date(value: DateType, str_format: str = STR_FORMAT) -> QDate:
+def to_qt_date(value: DateType, str_format: str) -> QDate:
     if not value:
         return QDate.currentDate()
     elif isinstance(value, QDate):
@@ -45,7 +45,7 @@ def to_qt_date(value: DateType, str_format: str = STR_FORMAT) -> QDate:
         raise TypeError(f"unsupported date type: {type(value)}")
 
 
-def is_valid_date(value: DateType, str_format: str = STR_FORMAT) -> bool:
+def is_valid_date(value: DateType, str_format: str) -> bool:
     if value is None:
         return True
     if isinstance(value, (datetime.datetime, QDate)):
@@ -67,19 +67,19 @@ class DateEdit(QDateEdit, ValueWidgetMixin):
         parent: QWidget,
         default_value: str,
         *,
-        str_format: str = STR_FORMAT,
-        calendar_popup: bool = CALENDAR_POPUP,
-        display_format: str = DISPLAY_FORMAT,
-        time_spec: Optional[Qt.TimeSpec] = None,
-        minimum: Optional[DateType] = None,
-        maximum: Optional[DateType] = None,
+        str_format: str,
+        calendar_popup: bool,
+        display_format: str,
+        time_spec: Optional[Qt.TimeSpec],
+        minimum: Optional[DateType],
+        maximum: Optional[DateType],
     ):
-        self._default_value = default_value
+        self._default_value = None
         self._str_format = str_format
         self._display_format = display_format
         self._time_spec = time_spec
-
         super().__init__(parent)
+
         self.setCalendarPopup(calendar_popup)
         if self._display_format:
             self.setDisplayFormat(self._display_format)
@@ -91,6 +91,8 @@ class DateEdit(QDateEdit, ValueWidgetMixin):
 
         if minimum:
             self.setMinimumDate(to_qt_date(minimum, self._str_format))
+
+        self.set_value(default_value)
 
     def set_value(self, value: DateType):
         self._default_value = to_qt_date(value, self._str_format)
@@ -114,7 +116,6 @@ class DateValue(ValueType):
         minimum: Optional[DateType] = None,
     ):
 
-        default_value = to_string(default_value)
         self.str_format = str_format
         self.display_format = display_format
         self.calendar_popup = calendar_popup
@@ -122,14 +123,13 @@ class DateValue(ValueType):
         self.maximum = maximum
         self.minimum = minimum
 
+        default_value = to_string(default_value, self.str_format)
         super().__init__(default_value, display_name=display_name)
 
     def validate(self, value: Any) -> bool:
         return is_valid_date(value, self.str_format)
 
-    def create_item_editor_widget(
-        self, parent: QWidget, *args, **kwargs
-    ) -> Union[QWidget, ValueWidgetMixin, None]:
+    def create_item_delegate_widget(self, parent: QWidget, *args, **kwargs) -> DateEdit:
         return DateEdit(
             parent,
             self.default_value,
@@ -141,16 +141,5 @@ class DateValue(ValueType):
             maximum=self.maximum,
         )
 
-    def create_item_delegate_widget(
-        self, parent: QWidget, *args, **kwargs
-    ) -> Union[QWidget, ValueWidgetMixin]:
-        return DateEdit(
-            parent,
-            self.default_value,
-            str_format=self.str_format,
-            calendar_popup=self.calendar_popup,
-            display_format=self.display_format,
-            time_spec=self.time_spec,
-            minimum=self.minimum,
-            maximum=self.maximum,
-        )
+    def create_item_editor_widget(self, parent: QWidget, *args, **kwargs) -> DateEdit:
+        return self.create_item_delegate_widget(parent)

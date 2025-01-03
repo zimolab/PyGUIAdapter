@@ -15,7 +15,7 @@ TIME_SPEC: Optional[Qt.TimeSpec] = None
 TimeType = Union[datetime.time, QTime, str, None]
 
 
-def to_string(value: TimeType, str_format: str = STR_FORMAT) -> str:
+def to_string(value: TimeType, str_format: str) -> str:
     if not value:
         value = datetime.datetime.now().time()
         return value.strftime(str_format)
@@ -30,7 +30,7 @@ def to_string(value: TimeType, str_format: str = STR_FORMAT) -> str:
         raise TypeError(f"unsupported time type: {type(value)}")
 
 
-def to_qt_time(value: TimeType, str_format: str = STR_FORMAT) -> QTime:
+def to_qt_time(value: TimeType, str_format: str) -> QTime:
     if not value:
         return QTime.currentTime()
     elif isinstance(value, QTime):
@@ -43,7 +43,7 @@ def to_qt_time(value: TimeType, str_format: str = STR_FORMAT) -> QTime:
         raise TypeError(f"unsupported time type: {type(value)}")
 
 
-def is_valid_time(value: TimeType, str_format: str = STR_FORMAT) -> bool:
+def is_valid_time(value: TimeType, str_format: str) -> bool:
     if value is None:
         return True
     if isinstance(value, (datetime.time, QTime)):
@@ -58,20 +58,20 @@ def is_valid_time(value: TimeType, str_format: str = STR_FORMAT) -> bool:
         return False
 
 
-class DateEdit(QTimeEdit, ValueWidgetMixin):
+class TimeEdit(QTimeEdit, ValueWidgetMixin):
 
     def __init__(
         self,
         parent: QWidget,
         default_value: str,
         *,
-        str_format: str = STR_FORMAT,
-        display_format: str = DISPLAY_FORMAT,
-        time_spec: Optional[Qt.TimeSpec] = None,
-        minimum: Optional[TimeType] = None,
-        maximum: Optional[TimeType] = None,
+        str_format: str,
+        display_format: str,
+        time_spec: Optional[Qt.TimeSpec],
+        minimum: Optional[TimeType],
+        maximum: Optional[TimeType],
     ):
-        self._default_value = default_value
+        self._default_value = None
         self._str_format = str_format
         self._display_format = display_format
         self._time_spec = time_spec
@@ -85,6 +85,8 @@ class DateEdit(QTimeEdit, ValueWidgetMixin):
             self.setMinimumTime(to_qt_time(minimum, self._str_format))
         if maximum:
             self.setMaximumTime(to_qt_time(maximum, self._str_format))
+
+        self.set_value(default_value)
 
     def set_value(self, value: TimeType):
         self._default_value = to_qt_time(value, self._str_format)
@@ -107,22 +109,20 @@ class TimeValue(ValueType):
         maximum: Optional[TimeType] = None,
     ):
 
-        default_value = to_string(default_value)
         self.str_format = str_format
         self.display_format = display_format
         self.time_spec = time_spec
         self.minimum = minimum
         self.maximum = maximum
 
+        default_value = to_string(default_value, self.str_format)
         super().__init__(default_value, display_name=display_name)
 
     def validate(self, value: Any) -> bool:
         return is_valid_time(value, self.str_format)
 
-    def create_item_editor_widget(
-        self, parent: QWidget, *args, **kwargs
-    ) -> Union[QWidget, ValueWidgetMixin, None]:
-        return DateEdit(
+    def create_item_delegate_widget(self, parent: QWidget, *args, **kwargs) -> TimeEdit:
+        return TimeEdit(
             parent,
             self.default_value,
             str_format=self.str_format,
@@ -132,15 +132,5 @@ class TimeValue(ValueType):
             maximum=self.maximum,
         )
 
-    def create_item_delegate_widget(
-        self, parent: QWidget, *args, **kwargs
-    ) -> Union[QWidget, ValueWidgetMixin]:
-        return DateEdit(
-            parent,
-            self.default_value,
-            str_format=self.str_format,
-            display_format=self.display_format,
-            time_spec=self.time_spec,
-            minimum=self.minimum,
-            maximum=self.maximum,
-        )
+    def create_item_editor_widget(self, parent: QWidget, *args, **kwargs) -> TimeEdit:
+        return self.create_item_delegate_widget(parent)
