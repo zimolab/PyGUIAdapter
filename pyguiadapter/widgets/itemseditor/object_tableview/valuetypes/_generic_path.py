@@ -372,4 +372,7 @@ class GenericPathValue(ValueType):
         if not isinstance(editor, GenericPathDialog):
             return
         global_pos = parent.mapToGlobal(QPoint(0, 0))
-        editor.move(global_pos)
+        editor.move(
+            global_pos.x() + (parent.width() - editor.width()) // 3,
+            global_pos.y() + (parent.height() - editor.height()) // 3,
+        )
