@@ -29,7 +29,7 @@ from ...utils import Widget
 
 DEFAULT_VALUE = ""
 WINDOW_TITLE = "Path"
-WINDOW_SIZE = (620, 150)
+WINDOW_SIZE = (600, 100)
 CENTER_CONTAINER_TITLE = ""
 FILE_BUTTON_TEXT = "File..."
 DIRECTORY_BUTTON_TEXT = "Directory..."
@@ -371,6 +371,8 @@ class GenericPathValue(ValueType):
         _ = index  # unused
         if not isinstance(editor, GenericPathDialog):
             return
+        if self._window_size:
+            editor.resize(*self._window_size)
         global_pos = parent.mapToGlobal(QPoint(0, 0))
         editor.move(
             global_pos.x() + (parent.width() - editor.width()) // 3,

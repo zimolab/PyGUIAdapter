@@ -90,10 +90,12 @@ class ObjectItemEditor(BaseScrollableItemEditor):
     def on_create_item_widgets(self, parent: QWidget):
         layout = QGridLayout()
         for i, (key, vt) in enumerate(self._schema.items()):
+            edit = vt.create_item_editor_widget(parent)
+            if edit is None:
+                continue
             label = QLabel(parent)
             label.setText(vt.display_name or key)
             layout.addWidget(label, i, 0)
-            edit = vt.create_item_editor_widget(parent)
             layout.addWidget(edit, i, 1)
             self._widgets[key] = edit
         layout.addItem(QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Expanding))
