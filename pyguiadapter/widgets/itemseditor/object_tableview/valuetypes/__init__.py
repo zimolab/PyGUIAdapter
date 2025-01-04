@@ -16,6 +16,7 @@ from ._time import TimeValue
 from ._file import FileValue
 from ._dir import DirectoryValue
 from ._generic_path import GenericPathValue
+from ._variant import VariantValue
 
 
 __all__ = [
@@ -35,4 +36,5 @@ __all__ = [
     "PasswordEchoMode",
     "NormalEchoMode",
     "PasswordEchoOnEditMode",
+    "VariantValue",
 ]
