@@ -29,7 +29,7 @@ from ...utils import Widget
 
 DEFAULT_VALUE = ""
 WINDOW_TITLE = "Path"
-WINDOW_SIZE = (600, 100)
+WINDOW_SIZE = (500, 100)
 CENTER_CONTAINER_TITLE = ""
 FILE_BUTTON_TEXT = "File..."
 DIRECTORY_BUTTON_TEXT = "Directory..."
@@ -291,19 +291,19 @@ class GenericPathValue(ValueType):
         selected_filter: str = SELECTED_FILTER,
         as_posix: bool = AS_POSIX
     ):
-        self._window_title = window_title
-        self._window_size = window_size
-        self._center_container_title = center_container_title
-        self._file_button_text = file_button_text
-        self._directory_button_text = directory_button_text
-        self._file_dialog_title = file_dialog_title
-        self._directory_dialog_title = directory_dialog_title
-        self._show_dirs_only = show_dirs_only
-        self._start_directory = start_directory
-        self._any_file = any_file
-        self._file_filters = file_filters
-        self._selected_filter = selected_filter
-        self._as_posix = as_posix
+        self.window_title = window_title
+        self.window_size = window_size
+        self.center_container_title = center_container_title
+        self.file_button_text = file_button_text
+        self.directory_button_text = directory_button_text
+        self.file_dialog_title = file_dialog_title
+        self.directory_dialog_title = directory_dialog_title
+        self.show_dirs_only = show_dirs_only
+        self.start_directory = start_directory
+        self.any_file = any_file
+        self.file_filters = file_filters
+        self.selected_filter = selected_filter
+        self.as_posix = as_posix
 
         default_value = str(default_value or "")
         super().__init__(default_value, display_name=display_name)
@@ -319,19 +319,19 @@ class GenericPathValue(ValueType):
         return GenericPathDialog(
             parent,
             default_value=self.default_value,
-            window_title=self._window_title,
-            window_size=self._window_size,
-            center_container_title=self._center_container_title,
-            file_button_text=self._file_button_text,
-            directory_button_text=self._directory_button_text,
-            file_dialog_title=self._file_dialog_title,
-            directory_dialog_title=self._directory_dialog_title,
-            any_file=self._any_file,
-            show_dirs_only=self._show_dirs_only,
-            start_directory=self._start_directory,
-            file_filters=self._file_filters,
-            selected_filter=self._selected_filter,
-            as_posix=self._as_posix,
+            window_title=self.window_title,
+            window_size=self.window_size,
+            center_container_title=self.center_container_title,
+            file_button_text=self.file_button_text,
+            directory_button_text=self.directory_button_text,
+            file_dialog_title=self.file_dialog_title,
+            directory_dialog_title=self.directory_dialog_title,
+            any_file=self.any_file,
+            show_dirs_only=self.show_dirs_only,
+            start_directory=self.start_directory,
+            file_filters=self.file_filters,
+            selected_filter=self.selected_filter,
+            as_posix=self.as_posix,
         )
 
     def create_item_editor_widget(
@@ -340,19 +340,19 @@ class GenericPathValue(ValueType):
         return GenericPathEdit(
             parent,
             default_value=self.default_value,
-            window_title=self._window_title,
-            window_size=self._window_size,
-            center_container_title=self._center_container_title,
-            file_button_text=self._file_button_text,
-            directory_button_text=self._directory_button_text,
-            show_dirs_only=self._show_dirs_only,
-            file_dialog_title=self._file_dialog_title,
-            directory_dialog_title=self._directory_dialog_title,
-            start_directory=self._start_directory,
-            file_filters=self._file_filters,
-            selected_filter=self._selected_filter,
-            as_posix=self._as_posix,
-            any_file=self._any_file,
+            window_title=self.window_title,
+            window_size=self.window_size,
+            center_container_title=self.center_container_title,
+            file_button_text=self.file_button_text,
+            directory_button_text=self.directory_button_text,
+            show_dirs_only=self.show_dirs_only,
+            file_dialog_title=self.file_dialog_title,
+            directory_dialog_title=self.directory_dialog_title,
+            start_directory=self.start_directory,
+            file_filters=self.file_filters,
+            selected_filter=self.selected_filter,
+            as_posix=self.as_posix,
+            any_file=self.any_file,
         )
 
     def after_set_item_data(
@@ -371,8 +371,8 @@ class GenericPathValue(ValueType):
         _ = index  # unused
         if not isinstance(editor, GenericPathDialog):
             return
-        if self._window_size:
-            editor.resize(*self._window_size)
+        if self.window_size:
+            editor.resize(*self.window_size)
         global_pos = parent.mapToGlobal(QPoint(0, 0))
         editor.move(
             global_pos.x() + (parent.width() - editor.width()) // 3,
