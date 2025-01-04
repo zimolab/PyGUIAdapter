@@ -1,5 +1,5 @@
 import dataclasses
-from typing import Dict, Any, List, Optional, Tuple
+from typing import Dict, Any, List, Optional, Tuple, Callable
 
 from qtpy.QtCore import Qt
 from qtpy.QtWidgets import (
@@ -50,11 +50,19 @@ class ObjectItemEditor(BaseScrollableItemEditor):
     def __init__(
         self,
         parent: QWidget,
-        config: CommonEditorConfig,
         schema: Dict[str, ValueType],
+        config: CommonEditorConfig,
+        *,
+        accept_hook: Optional[
+            Callable[["ObjectItemEditor", Dict[str, Any]], bool]
+        ] = None,
+        reject_hook: Optional[Callable[["ObjectItemEditor"], bool]] = None,
     ):
         self._schema = schema
         self._config = config
+
+        self._accept_hook = accept_hook
+        self._reject_hook = reject_hook
 
         self._widgets: Dict[str, ValueWidgetMixin] = {}
 
@@ -82,13 +90,24 @@ class ObjectItemEditor(BaseScrollableItemEditor):
     def on_create_item_widgets(self, parent: QWidget):
         layout = QGridLayout()
         for i, (key, vt) in enumerate(self._schema.items()):
-            label = QLabel(key, parent)
+            label = QLabel(parent)
+            label.setText(vt.display_name or key)
             layout.addWidget(label, i, 0)
             edit = vt.create_item_editor_widget(parent)
             layout.addWidget(edit, i, 1)
             self._widgets[key] = edit
         layout.addItem(QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Expanding))
         parent.setLayout(layout)
+
+    def accept(self):
+        if self._accept_hook is None or self._accept_hook(self, self.get_data()):
+            super().accept()
+            return
+
+    def reject(self):
+        if self._reject_hook is None or self._reject_hook(self):
+            super().reject()
+            return
 
     def _setup_ui(self):
         if self._config.item_editor_title:
@@ -111,10 +130,23 @@ class MultiObjectEditor(QDialog, ControlButtonHooks):
         parent: Optional[QWidget],
         schema: Dict[str, ValueType],
         config: MultiObjectEditorConfig,
+        *,
+        accept_hook: Optional[
+            Callable[["MultiObjectEditor", List[Dict[str, Any]]], bool]
+        ] = None,
+        reject_hook: Optional[Callable[["MultiObjectEditor"], bool]] = None,
+        item_editor_accept_hook: Optional[
+            Callable[["ObjectItemEditor", Dict[str, Any]], bool]
+        ] = None,
+        item_editor_reject_hook: Optional[Callable[["ObjectItemEditor"], bool]] = None,
     ):
         self._config = config
         self._schema = schema
         self._dialog_button_box: Optional[QWidget] = None
+        self._accept_hook = accept_hook
+        self._reject_hook = reject_hook
+        self._item_editor_accept_hook = item_editor_accept_hook
+        self._item_editor_reject_hook = item_editor_reject_hook
 
         super().__init__(parent)
 
@@ -163,7 +195,13 @@ class MultiObjectEditor(QDialog, ControlButtonHooks):
         return self._objects_view.fill_missing_keys_with_default(obj, copy)
 
     def on_add_button_clicked(self, source: QPushButton) -> bool:
-        item_editor = ObjectItemEditor(self, self._config, self._schema)
+        item_editor = ObjectItemEditor(
+            self,
+            self._schema,
+            self._config,
+            accept_hook=self._item_editor_accept_hook,
+            reject_hook=self._item_editor_reject_hook,
+        )
         obj, ok = item_editor.start(None)
         item_editor.deleteLater()
         if not ok:
@@ -175,7 +213,13 @@ class MultiObjectEditor(QDialog, ControlButtonHooks):
         selected_row = self._check_selected_row()
         if selected_row < 0:
             return True
-        item_editor = ObjectItemEditor(self, self._config, self._schema)
+        item_editor = ObjectItemEditor(
+            self,
+            self._schema,
+            self._config,
+            accept_hook=self._item_editor_accept_hook,
+            reject_hook=self._item_editor_reject_hook,
+        )
         prev = self._objects_view.get_object(selected_row)
         cur, ok = item_editor.start(prev)
         item_editor.deleteLater()
@@ -224,11 +268,15 @@ class MultiObjectEditor(QDialog, ControlButtonHooks):
         self._objects_view.move_row_down(row_to_move, wrap=self._config.wrap_movement)
         return True
 
-    def on_accept(self):
-        self.accept()
+    def accept(self):
+        if self._accept_hook is None or self._accept_hook(self, self.get_objects()):
+            super().accept()
+            return
 
-    def on_reject(self):
-        self.reject()
+    def reject(self):
+        if self._reject_hook is None or self._reject_hook(self):
+            super().reject()
+            return
 
     def _on_item_double_clicked(self, item):
         _ = item
@@ -257,9 +305,9 @@ class MultiObjectEditor(QDialog, ControlButtonHooks):
                 QDialogButtonBox.Ok | QDialogButtonBox.Cancel
             )
             # noinspection PyUnresolvedReferences
-            self._dialog_button_box.accepted.connect(self.on_accept)
+            self._dialog_button_box.accepted.connect(self.accept)
             # noinspection PyUnresolvedReferences
-            self._dialog_button_box.rejected.connect(self.on_reject)
+            self._dialog_button_box.rejected.connect(self.reject)
             self._layout.addWidget(self._dialog_button_box)
 
         if self._config.window_title:

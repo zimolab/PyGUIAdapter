@@ -1,5 +1,5 @@
 import dataclasses
-from typing import Tuple, Optional, Dict, Any, List
+from typing import Tuple, Optional, Dict, Any, List, Callable
 
 from qtpy.QtCore import Qt
 from qtpy.QtWidgets import QDialog, QWidget, QVBoxLayout, QDialogButtonBox
@@ -27,9 +27,14 @@ class ObjectEditor(QDialog):
         parent: Optional[QWidget],
         schema: Dict[str, ValueType],
         config: ObjectEditorConfig,
+        *,
+        accept_hook: Optional[Callable[["ObjectEditor", Dict[str, Any]], bool]] = None,
+        reject_hook: Optional[Callable[["ObjectEditor"], bool]] = None,
     ):
         self._schema = schema
         self._config = config
+        self._accept_hook = accept_hook
+        self._reject_hook = reject_hook
 
         super().__init__(parent)
 
@@ -109,9 +114,9 @@ class ObjectEditor(QDialog):
                 QDialogButtonBox.Ok | QDialogButtonBox.Cancel
             )
             # noinspection PyUnresolvedReferences
-            self._dialog_button_box.accepted.connect(self.on_accept)
+            self._dialog_button_box.accepted.connect(self.accept)
             # noinspection PyUnresolvedReferences
-            self._dialog_button_box.rejected.connect(self.on_reject)
+            self._dialog_button_box.rejected.connect(self.reject)
             self._layout.addWidget(self._dialog_button_box)
 
         if self._config.window_title:
@@ -123,8 +128,12 @@ class ObjectEditor(QDialog):
         flags = self.windowFlags() & ~Qt.WindowContextHelpButtonHint
         self.setWindowFlags(flags)
 
-    def on_accept(self):
-        self.accept()
+    def accept(self):
+        if self._accept_hook is None or self._accept_hook(self, self.get_object()):
+            super().accept()
+            return
 
-    def on_reject(self):
-        self.reject()
+    def reject(self):
+        if self._reject_hook is None or self._reject_hook(self):
+            super().reject()
+            return
