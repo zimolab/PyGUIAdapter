@@ -36,9 +36,38 @@ schema = {
     "generic": GenericPathValue(),
 }
 
+
+def on_accept(s, objects) -> bool:
+    print("on_accept: ", s, objects)
+    return True
+
+
+def on_reject(s) -> bool:
+    print("on_reject: ", s)
+    return True
+
+
+def on_item_editor_accept(s, obj) -> bool:
+    print("on_item_editor_accept: ", s, obj)
+    return True
+
+
+def on_item_editor_reject(s) -> bool:
+    print("on_item_editor_reject: ", s)
+    return True
+
+
 app = QApplication([])
 config = MultiObjectEditorConfig()
-editor = MultiObjectEditor(None, schema, config)
+editor = MultiObjectEditor(
+    None,
+    schema,
+    config,
+    accept_hook=on_accept,
+    reject_hook=on_reject,
+    item_editor_accept_hook=on_item_editor_accept,
+    item_editor_reject_hook=on_item_editor_reject,
+)
 editor.set_objects(
     [
         {"Name": "John", "Age": 25, "Is Student": True, "Occupation": "Engineer"},

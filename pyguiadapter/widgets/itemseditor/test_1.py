@@ -1,3 +1,4 @@
+from PySide2.QtWidgets import QMessageBox
 from qtpy.QtWidgets import QApplication
 
 from pyguiadapter.widgets.itemseditor.object_editor import (
@@ -37,8 +38,16 @@ schema = {
     "generic": GenericPathValue(),
 }
 
+
+def on_accept(s, obj) -> bool:
+    if obj.get("Age") < 18:
+        QMessageBox.warning(s, "警告", "年龄必须大于等于18")
+        return False
+    return True
+
+
 config = ObjectEditorConfig()
-editor = ObjectEditor(None, schema, config)
+editor = ObjectEditor(None, schema, config, accept_hook=on_accept)
 editor.set_object(
     {
         "Name": "John",
