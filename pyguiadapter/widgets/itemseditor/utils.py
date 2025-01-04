@@ -10,6 +10,7 @@ from qtpy.QtWidgets import (
     QLayout,
     QBoxLayout,
 )
+from yapf.yapflib.yapf_api import FormatCode
 
 
 # Type definitions
@@ -191,3 +192,7 @@ def result_or_none(func, *args, **kwargs) -> Optional[Any]:
     except Exception as e:
         print(f"`{func.__name__}()`: {e}", file=sys.stderr)
         return None
+
+
+def format_py_code(code: str, style_config: Optional[str] = None) -> Tuple[str, bool]:
+    return FormatCode(code, style_config=style_config)

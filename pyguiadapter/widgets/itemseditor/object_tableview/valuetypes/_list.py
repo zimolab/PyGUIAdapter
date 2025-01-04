@@ -1,0 +1,106 @@
+from typing import Any, Optional, Union, Tuple
+
+from qtpy.QtWidgets import QWidget
+
+from ._variant import VariantEditor, VariantValue
+from ..schema import ValueWidgetMixin
+
+WINDOW_TITLE = "List Editor"
+WINDOW_SIZE = (600, 400)
+CENTER_CONTAINER_TITLE = "List"
+TEXT_FONT_SIZE = 14
+TEXT_FONT_FAMILY = "Arial, Consolas, monospace"
+FORMAT_BUTTON_TEXT = "Format"
+
+
+class ListEditor(VariantEditor):
+
+    def __init__(
+        self,
+        parent: Optional[QWidget],
+        default_value: list,
+        *,
+        window_title: str,
+        window_size: Optional[Tuple[int, int]],
+        center_container_title: str,
+        text_font_size: int,
+        text_font_family: str,
+        format_button_text: Optional[str],
+    ):
+        super().__init__(
+            parent,
+            default_value,
+            window_title=window_title,
+            window_size=window_size,
+            center_container_title=center_container_title,
+            text_font_size=text_font_size,
+            text_font_family=text_font_family,
+            format_button_text=format_button_text,
+        )
+
+    def from_variant_literal(self, variant_literal_str: str) -> Tuple[Any, bool]:
+        value, ok = super().from_variant_literal(variant_literal_str)
+        if not ok:
+            return self._value, False
+        if not isinstance(value, list):
+            self.show_error_message("Error", f"Not a valid list!")
+            return self._value, False
+        return value, True
+
+    def to_variant_literal(self, value: Any) -> Tuple[str, bool]:
+        if not isinstance(value, list):
+            self.show_error_message("Error", f"Not a valid list!")
+            return repr(self._value), False
+        literal_str, ok = super().to_variant_literal(value)
+        if not ok:
+            return repr(self._value), False
+        return literal_str, True
+
+
+class ListValue(VariantValue):
+    def __init__(
+        self,
+        default_value: list,
+        *,
+        display_name: Optional[str] = None,
+        window_title: str = WINDOW_TITLE,
+        window_size: Optional[Tuple[int, int]] = WINDOW_SIZE,
+        center_container_title: str = CENTER_CONTAINER_TITLE,
+        text_font_size: int = TEXT_FONT_SIZE,
+        text_font_family: str = TEXT_FONT_FAMILY,
+        format_button_text: Optional[str] = FORMAT_BUTTON_TEXT,
+    ):
+        super().__init__(
+            default_value,
+            display_name=display_name,
+            window_title=window_title,
+            window_size=window_size,
+            center_container_title=center_container_title,
+            text_font_size=text_font_size,
+            text_font_family=text_font_family,
+            format_button_text=format_button_text,
+        )
+
+    def validate(self, value: Any) -> bool:
+        if not isinstance(value, list):
+            return False
+        return super().validate(value)
+
+    def create_item_editor_widget(
+        self, parent: QWidget, *args, **kwargs
+    ) -> Union[QWidget, ValueWidgetMixin, None]:
+        return None
+
+    def create_item_delegate_widget(
+        self, parent: QWidget, *args, **kwargs
+    ) -> ListEditor:
+        return ListEditor(
+            parent,
+            self.default_value,
+            window_title=self.window_title,
+            window_size=self.window_size,
+            center_container_title=self.center_container_title,
+            text_font_size=self.text_font_size,
+            text_font_family=self.text_font_family,
+            format_button_text=self.format_button_text,
+        )

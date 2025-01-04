@@ -17,6 +17,9 @@ from ._file import FileValue
 from ._dir import DirectoryValue
 from ._generic_path import GenericPathValue
 from ._variant import VariantValue
+from ._list import ListValue
+from ._tuple import TupleValue
+from ._dict import DictValue
 
 
 __all__ = [
@@ -37,4 +40,7 @@ __all__ = [
     "NormalEchoMode",
     "PasswordEchoOnEditMode",
     "VariantValue",
+    "ListValue",
+    "TupleValue",
+    "DictValue",
 ]
