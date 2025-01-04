@@ -38,7 +38,7 @@ class PyLiteralEditConfig(BaseCodeEditConfig):
 
     # DON'T CHANGE THE VALUES BELOW
     highlighter: Type[QPythonHighlighter] = QPythonHighlighter
-    formatter: QPythonHighlighter = PythonFormatter()
+    formatter: PythonFormatter = PythonFormatter()
 
     @classmethod
     def target_widget_class(cls) -> Type["PyLiteralEdit"]:
