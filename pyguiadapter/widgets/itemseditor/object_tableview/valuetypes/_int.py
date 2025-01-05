@@ -68,14 +68,14 @@ class IntValue(ValueType):
         suffix: Optional[str] = SUFFIX,
         display_affix: bool = DISPLAY_AFFIX,
     ):
-        super().__init__(_to_int(default_value), display_name=display_name)
-
         self.min_value = min_value
         self.max_value = max_value
         self.step = step
         self.prefix = prefix
         self.suffix = suffix
         self.display_affix = display_affix
+
+        super().__init__(_to_int(default_value), display_name=display_name)
 
     def validate(self, value: Any) -> bool:
         value = result_or_none(_to_int, value)

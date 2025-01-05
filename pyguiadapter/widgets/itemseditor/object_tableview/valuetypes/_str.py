@@ -91,8 +91,6 @@ class StringValue(ValueType):
         password_symbol: str = "•",
         max_password_symbols: int = MAX_PASSWORD_SYMBOLS,
     ):
-        super().__init__(_to_str(default_value), display_name=display_name)
-
         self.echo_mode = echo_mode
         self.clear_button = clear_button
         self.max_length = max_length
@@ -101,6 +99,8 @@ class StringValue(ValueType):
         self.validator = validator
         self.password_symbol = password_symbol
         self.max_password_symbols = max_password_symbols
+
+        super().__init__(_to_str(default_value), display_name=display_name)
 
     def validate(self, value: str) -> bool:
         return value is None or isinstance(value, str)
