@@ -5,7 +5,17 @@ from typing import Any, List, Optional, Union, Tuple
 from pyqcodeeditor.QCodeEditor import QCodeEditor
 from pyqcodeeditor.highlighters.QPythonHighlighter import QPythonHighlighter
 from qtpy.QtCore import QModelIndex, QPoint, Qt
-from qtpy.QtWidgets import QWidget, QMessageBox, QPushButton, QSpacerItem, QSizePolicy
+from qtpy.QtGui import QTextOption, QFont
+from qtpy.QtWidgets import (
+    QWidget,
+    QMessageBox,
+    QPushButton,
+    QSpacerItem,
+    QSizePolicy,
+    QDialog,
+    QVBoxLayout,
+    QTextBrowser,
+)
 
 from ..schema import ValueWidgetMixin, ValueType
 from ...tableview import TableView
@@ -18,6 +28,83 @@ CENTER_CONTAINER_TITLE = "Variant"
 TEXT_FONT_SIZE = 14
 TEXT_FONT_FAMILY = "Arial, Consolas, monospace"
 FORMAT_BUTTON_TEXT = "Format"
+VARIANT_EDITOR_BUTTON_TEXT = "Edit Variant"
+
+
+class VariantEditBox(QWidget, ValueWidgetMixin):
+    def __init__(
+        self,
+        parent: QWidget,
+        default_value: Any,
+        *args,
+        editor_button_text: str,
+        window_title: str,
+        window_size: Optional[Tuple[int, int]],
+        center_container_title: str,
+        text_font_size: int,
+        text_font_family: str,
+        format_button_text: Optional[str],
+        **kwargs,
+    ):
+        self._editor_button_text = editor_button_text
+        self._window_title = window_title
+        self._window_size = window_size
+        self._center_container_title = center_container_title
+        self._text_font_size = text_font_size
+        self._text_font_family = text_font_family
+        self._format_button_text = format_button_text
+        self._value = None
+
+        super().__init__(parent, *args, **kwargs)
+
+        self._layout = QVBoxLayout()
+        self.setLayout(self._layout)
+
+        self._value_preview = QTextBrowser(self)
+        self._value_preview.setLineWrapMode(QTextBrowser.WidgetWidth)
+        self._value_preview.setWordWrapMode(QTextOption.WrapAnywhere)
+        self._value_preview.setFontFamily(self._text_font_family)
+        font: QFont = self._value_preview.font()
+        font.setPixelSize(self._text_font_size)
+        self._value_preview.setFont(font)
+
+        self._layout.addWidget(self._value_preview)
+
+        self._edit_button = QPushButton(self)
+        self._edit_button.setText(self._editor_button_text)
+        # noinspection PyUnresolvedReferences
+        self._edit_button.clicked.connect(self._on_edit_button_clicked)
+        self._layout.addWidget(self._edit_button)
+
+        self.set_value(default_value)
+
+    def set_value(self, value: Any):
+        self._value = value
+        self._update_text()
+
+    def get_value(self) -> Any:
+        return self._value
+
+    def on_create_variant_editor(self, **kwargs) -> "VariantEditor":
+        return VariantEditor(self, self._value, **kwargs)
+
+    def _update_text(self):
+        text = repr(self._value)
+        self._value_preview.setPlainText(text)
+
+    def _on_edit_button_clicked(self):
+        editor = self.on_create_variant_editor(
+            window_title=self._window_title,
+            window_size=self._window_size,
+            center_container_title=self._center_container_title,
+            text_font_size=self._text_font_size,
+            text_font_family=self._text_font_family,
+            format_button_text=self._format_button_text,
+        )
+        ret = editor.exec()
+        if ret == QDialog.Accepted:
+            self.set_value(editor.get_value())
+        editor.deleteLater()
 
 
 class VariantEditor(BaseItemEditor, ValueWidgetMixin):
@@ -55,7 +142,6 @@ class VariantEditor(BaseItemEditor, ValueWidgetMixin):
 
         if center_container_title:
             self.center_container.setTitle(center_container_title)
-
         flags = self.windowFlags() & ~Qt.WindowContextHelpButtonHint
         self.setWindowFlags(flags)
 
@@ -68,7 +154,6 @@ class VariantEditor(BaseItemEditor, ValueWidgetMixin):
             self._format_button.setText(self._format_button_text)
             # noinspection PyUnresolvedReferences
             self._format_button.clicked.connect(self._on_format_button_clicked)
-
             widgets.append(self._format_button)
         return widgets
 
@@ -154,6 +239,7 @@ class VariantValue(ValueType):
         text_font_size: int = TEXT_FONT_SIZE,
         text_font_family: str = TEXT_FONT_FAMILY,
         format_button_text: Optional[str] = FORMAT_BUTTON_TEXT,
+        editor_button_text: Optional[str] = VARIANT_EDITOR_BUTTON_TEXT,
     ):
 
         self.window_title = window_title
@@ -162,10 +248,13 @@ class VariantValue(ValueType):
         self.text_font_size = text_font_size
         self.text_font_family = text_font_family
         self.format_button_text = format_button_text
+        self.editor_button_text = editor_button_text
 
         super().__init__(default_value, display_name=display_name)
 
     def validate(self, value: Any) -> bool:
+        if value is None:
+            return True
         try:
             _ = ast.literal_eval(repr(value))
             return True
@@ -175,8 +264,18 @@ class VariantValue(ValueType):
 
     def create_item_editor_widget(
         self, parent: QWidget, *args, **kwargs
-    ) -> Union[QWidget, ValueWidgetMixin, None]:
-        return None
+    ) -> VariantEditBox:
+        return VariantEditBox(
+            parent,
+            self.default_value,
+            editor_button_text=self.editor_button_text,
+            window_title=self.window_title,
+            window_size=self.window_size,
+            center_container_title=self.center_container_title,
+            text_font_size=self.text_font_size,
+            text_font_family=self.text_font_family,
+            format_button_text=self.format_button_text,
+        )
 
     def create_item_delegate_widget(
         self, parent: QWidget, *args, **kwargs

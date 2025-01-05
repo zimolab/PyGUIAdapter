@@ -1,9 +1,8 @@
-from typing import Any, Optional, Union, Tuple
+from typing import Any, Optional, Tuple
 
 from qtpy.QtWidgets import QWidget
 
-from ._variant import VariantEditor, VariantValue
-from ..schema import ValueWidgetMixin
+from ._variant import VariantEditor, VariantValue, VariantEditBox
 
 WINDOW_TITLE = "List Editor"
 WINDOW_SIZE = (600, 400)
@@ -11,6 +10,38 @@ CENTER_CONTAINER_TITLE = "List"
 TEXT_FONT_SIZE = 14
 TEXT_FONT_FAMILY = "Arial, Consolas, monospace"
 FORMAT_BUTTON_TEXT = "Format"
+VARIANT_EDITOR_BUTTON_TEXT = "Edit List"
+
+
+class ListEditBox(VariantEditBox):
+    def __init__(
+        self,
+        parent: QWidget,
+        default_value: Any,
+        *args,
+        editor_button_text: str,
+        window_title: str,
+        window_size: Optional[Tuple[int, int]],
+        center_container_title: str,
+        text_font_size: int,
+        text_font_family: str,
+        format_button_text: Optional[str],
+    ):
+        super().__init__(
+            parent,
+            default_value,
+            *args,
+            editor_button_text=editor_button_text,
+            window_title=window_title,
+            window_size=window_size,
+            center_container_title=center_container_title,
+            text_font_size=text_font_size,
+            text_font_family=text_font_family,
+            format_button_text=format_button_text,
+        )
+
+    def on_create_variant_editor(self, **kwargs) -> "ListEditor":
+        return ListEditor(self, self._value, **kwargs)
 
 
 class ListEditor(VariantEditor):
@@ -69,9 +100,10 @@ class ListValue(VariantValue):
         text_font_size: int = TEXT_FONT_SIZE,
         text_font_family: str = TEXT_FONT_FAMILY,
         format_button_text: Optional[str] = FORMAT_BUTTON_TEXT,
+        editor_button_text: str = VARIANT_EDITOR_BUTTON_TEXT,
     ):
         super().__init__(
-            default_value,
+            default_value or [],
             display_name=display_name,
             window_title=window_title,
             window_size=window_size,
@@ -79,17 +111,30 @@ class ListValue(VariantValue):
             text_font_size=text_font_size,
             text_font_family=text_font_family,
             format_button_text=format_button_text,
+            editor_button_text=editor_button_text,
         )
 
     def validate(self, value: Any) -> bool:
+        if value is None:
+            return True
         if not isinstance(value, list):
             return False
         return super().validate(value)
 
     def create_item_editor_widget(
         self, parent: QWidget, *args, **kwargs
-    ) -> Union[QWidget, ValueWidgetMixin, None]:
-        return None
+    ) -> ListEditBox:
+        return ListEditBox(
+            parent,
+            self.default_value,
+            editor_button_text=self.editor_button_text,
+            window_title=self.window_title,
+            window_size=self.window_size,
+            center_container_title=self.center_container_title,
+            text_font_size=self.text_font_size,
+            text_font_family=self.text_font_family,
+            format_button_text=self.format_button_text,
+        )
 
     def create_item_delegate_widget(
         self, parent: QWidget, *args, **kwargs
