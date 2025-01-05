@@ -4,15 +4,25 @@ from qtpy.QtWidgets import QWidget, QComboBox
 
 from ..schema import ValueWidgetMixin, ValueType
 
+EDITABLE = False
+
 
 class ChoiceCombo(QComboBox, ValueWidgetMixin):
-    def __init__(self, parent: QWidget, default_value: str, choices: Sequence[str]):
+    def __init__(
+        self,
+        parent: QWidget,
+        default_value: str,
+        choices: Sequence[str],
+        *,
+        editable: bool,
+    ):
         super().__init__(parent)
 
-        self._choices = choices
-
         for choice in choices:
+            # noinspection PyArgumentList
             self.addItem(choice)
+
+        self.setEditable(editable)
 
         self.set_value(default_value)
 
@@ -34,11 +44,13 @@ class ChoiceValue(ValueType):
         choices: Sequence[str],
         *,
         display_name: Optional[str] = None,
+        editable: bool = EDITABLE,
     ):
         if not choices:
             raise ValueError("choices cannot be empty")
 
         self.choices = choices
+        self.editable = editable
 
         if isinstance(default_value, int):
             if default_value < 0 or default_value >= len(choices):
@@ -58,7 +70,9 @@ class ChoiceValue(ValueType):
     def create_item_delegate_widget(
         self, parent: QWidget, *args, **kwargs
     ) -> ChoiceCombo:
-        return ChoiceCombo(parent, self.default_value, self.choices)
+        return ChoiceCombo(
+            parent, self.default_value, self.choices, editable=self.editable
+        )
 
     def create_item_editor_widget(
         self, parent: QWidget, *args, **kwargs

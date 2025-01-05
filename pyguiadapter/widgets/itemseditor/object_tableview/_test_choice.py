@@ -15,7 +15,9 @@ if __name__ == "__main__":
             default_value="apple",
             choices=["apple", "banana", "orange"],
         ),
-        "B": ChoiceValue(default_value=1, choices=["apple", "banana", "orange"]),
+        "B": ChoiceValue(
+            default_value=1, choices=["apple", "banana", "orange"], editable=True
+        ),
         "C": ChoiceValue(
             default_value=2,
             choices=["apple", "banana", "orange"],
