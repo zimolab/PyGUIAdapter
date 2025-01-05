@@ -19,7 +19,7 @@ from .common_config import CommonEditorConfig
 from .item_editor import BaseScrollableItemEditor
 from .itemsview_container import CommonItemsViewContainer, ControlButtonHooks
 from .object_tableview import MultiObjectEditView, MultiObjectEditViewConfig
-from .object_tableview.schema import ValueType, ValueWidgetMixin
+from .schema import ValueType, ValueWidgetMixin
 
 REMOVE_CONFIRM_MESSAGE = "Are you sure you want to remove selected object?"
 CLEAR_CONFIRM_MESSAGE = "Are you sure you want to clear all objects?"

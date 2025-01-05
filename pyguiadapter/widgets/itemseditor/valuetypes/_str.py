@@ -4,7 +4,7 @@ from qtpy.QtCore import QRegularExpression
 from qtpy.QtGui import QValidator, QRegularExpressionValidator
 from qtpy.QtWidgets import QLineEdit, QWidget, QTableWidgetItem
 
-from .. import ObjectEditView
+from ..object_tableview import ObjectEditView
 from ..schema import ValueWidgetMixin, ValueType
 
 EchoMode = QLineEdit.EchoMode

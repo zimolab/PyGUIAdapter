@@ -6,7 +6,7 @@ if __name__ == "__main__":
         ObjectEditorConfig,
         ObjectEditor,
     )
-    from pyguiadapter.widgets.itemseditor.object_tableview.valuetypes import (
+    from pyguiadapter.widgets.itemseditor.valuetypes import (
         DirectoryValue,
         FileValue,
         GenericPathValue,

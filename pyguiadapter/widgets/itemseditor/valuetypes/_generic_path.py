@@ -21,11 +21,11 @@ from ._path import (
     AS_POSIX,
     PathDialog,
 )
-from .. import ObjectEditView
+from ..object_tableview import ObjectEditView
 from ..schema import ValueWidgetMixin, ValueType
-from ...item_editor import BaseItemEditor
-from ...tableview import TableView
-from ...utils import Widget
+from ..item_editor import BaseItemEditor
+from ..tableview import TableView
+from ..utils import Widget
 
 DEFAULT_VALUE = ""
 WINDOW_TITLE = "Path"

@@ -5,7 +5,7 @@ if __name__ == "__main__":
         ObjectEditorConfig,
         ObjectEditor,
     )
-    from pyguiadapter.widgets.itemseditor.object_tableview.valuetypes import FloatValue
+    from pyguiadapter.widgets.itemseditor.valuetypes import FloatValue
 
     app = QApplication([])
     schema = {

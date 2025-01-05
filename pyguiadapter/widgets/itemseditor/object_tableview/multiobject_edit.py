@@ -4,7 +4,7 @@ from typing import Dict, Union, Any, Optional, cast, List
 from qtpy.QtWidgets import QWidget, QTableWidgetItem
 
 from ._delegate import ObjectItemDelegate
-from .schema import ValueType, CellWidgetMixin
+from ..schema import ValueType, CellWidgetMixin
 from ..exceptions import ValidationFailedError
 from ..tableview import TableView, TableViewConfig
 

@@ -2,9 +2,9 @@ from typing import Optional, Any
 
 from qtpy.QtWidgets import QWidget, QSpinBox, QTableWidgetItem
 
-from .. import ObjectEditView
+from ..object_tableview import ObjectEditView
 from ..schema import ValueWidgetMixin, ValueType
-from ...utils import result_or_none
+from ..utils import result_or_none
 
 DEFAULT_VALUE = 0
 STEP = 1

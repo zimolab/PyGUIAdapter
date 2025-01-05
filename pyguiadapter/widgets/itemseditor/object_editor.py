@@ -7,7 +7,7 @@ from qtpy.QtWidgets import QDialog, QWidget, QVBoxLayout, QDialogButtonBox
 from .common_config import CommonEditorConfig
 from .itemsview_container import CommonItemsViewContainer
 from .object_tableview import ObjectEditViewConfig, ObjectEditView
-from .object_tableview.schema import ValueType
+from .schema import ValueType
 
 
 @dataclasses.dataclass

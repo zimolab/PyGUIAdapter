@@ -6,7 +6,7 @@ from qtpy.QtWidgets import QWidget, QTableWidgetItem, QAbstractItemView
 
 from ._commons import KEY_COLUMN_INDEX, VALUE_COLUMN_INDEX
 from ._delegate import KeyValueDelegate
-from .schema import ValueType, CellWidgetMixin
+from ..schema import ValueType, CellWidgetMixin
 from ..exceptions import ValidationFailedError
 from ..tableview import TableView, TableViewConfig
 

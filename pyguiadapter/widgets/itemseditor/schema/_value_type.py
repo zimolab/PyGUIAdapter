@@ -5,8 +5,8 @@ from qtpy.QtCore import QModelIndex
 from qtpy.QtWidgets import QWidget, QTableWidgetItem
 
 from ._widget_mixin import ValueWidgetMixin, CellWidgetMixin
-from ...exceptions import ValidationFailedError
-from ...tableview import TableView
+from ..exceptions import ValidationFailedError
+from ..tableview import TableView
 
 
 class ValueType(object):

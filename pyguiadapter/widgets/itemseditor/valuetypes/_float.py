@@ -2,9 +2,9 @@ from typing import Optional, Any, Union
 
 from qtpy.QtWidgets import QWidget, QDoubleSpinBox, QTableWidgetItem
 
-from .. import ObjectEditView
+from ..object_tableview import ObjectEditView
 from ..schema import ValueWidgetMixin, ValueType
-from ...utils import result_or_none
+from ..utils import result_or_none
 
 DEFAULT_VALUE = 0.0
 STEP = 0.001

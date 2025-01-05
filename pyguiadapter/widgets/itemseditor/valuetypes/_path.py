@@ -11,7 +11,7 @@ from qtpy.QtWidgets import (
     QTableWidgetItem,
 )
 
-from ..object_edit import ObjectEditView
+from ..object_tableview import ObjectEditView
 from ..schema import ValueWidgetMixin, ValueType, CellWidgetMixin
 
 TITLE = ""

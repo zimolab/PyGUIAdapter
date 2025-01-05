@@ -5,7 +5,7 @@ if __name__ == "__main__":
         ObjectEditorConfig,
         ObjectEditor,
     )
-    from pyguiadapter.widgets.itemseditor.object_tableview.valuetypes import ColorValue
+    from pyguiadapter.widgets.itemseditor.valuetypes import ColorValue
 
     app = QApplication([])
     schema = {

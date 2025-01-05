@@ -18,9 +18,9 @@ from qtpy.QtWidgets import (
 )
 
 from ..schema import ValueWidgetMixin, ValueType
-from ...tableview import TableView
-from ...utils import Widget, format_py_code
-from ....itemseditor.item_editor import BaseItemEditor
+from ..tableview import TableView
+from ..utils import Widget, format_py_code
+from ..item_editor import BaseItemEditor
 
 WINDOW_TITLE = "Variant Editor"
 WINDOW_SIZE = (600, 400)

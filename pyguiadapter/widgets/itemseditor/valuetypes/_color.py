@@ -10,10 +10,10 @@ from qtpy.QtWidgets import (
     QTableWidgetItem,
 )
 
-from .. import ObjectEditView
+from ..object_tableview import ObjectEditView
 from ..schema import ValueType, ValueWidgetMixin
-from ...tableview import TableView
-from ...utils import is_valid_color, to_qcolor, get_inverted_color, convert_color
+from ..tableview import TableView
+from ..utils import is_valid_color, to_qcolor, get_inverted_color, convert_color
 
 DEFAULT_VALUE = "#FFFFFF"
 ALPHA_CHANNEL = False

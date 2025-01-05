@@ -8,7 +8,7 @@ from qtpy.QtWidgets import (
 )
 
 from ._commons import KEY_COLUMN_INDEX
-from .schema import ValueType, ValueWidgetMixin
+from ..schema import ValueType, ValueWidgetMixin
 from ..tableview import TableView
 
 
