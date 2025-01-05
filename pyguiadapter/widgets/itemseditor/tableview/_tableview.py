@@ -10,8 +10,15 @@ from qtpy.QtWidgets import (
 )
 
 from ._config import TableViewConfig
-from ..exceptions import InsufficientColumnsError, UnexpectedColumnError
 from ..itemsview import CommonItemsViewInterface
+
+
+class InsufficientColumnsError(ValueError):
+    pass
+
+
+class UnexpectedColumnError(ValueError):
+    pass
 
 
 class TableView(QTableWidget, CommonItemsViewInterface):

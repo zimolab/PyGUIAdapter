@@ -45,6 +45,8 @@ from .quantitybox import (
 from .stringdict import StringDictEdit, StringDictEditConfig, StringDictItemEditorConfig
 from .pathsedit import PathsEdit, PathsEditConfig
 
+from .objecteditor import SchemaObjectEditorConfig, SchemaObjectEditor
+
 __all__ = [
     "IntLineEdit",
     "IntLineEditConfig",
@@ -99,4 +101,6 @@ __all__ = [
     "StringDictItemEditorConfig",
     "PathsEdit",
     "PathsEditConfig",
+    "SchemaObjectEditorConfig",
+    "SchemaObjectEditor",
 ]

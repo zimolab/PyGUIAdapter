@@ -1,12 +1,15 @@
 from abc import abstractmethod
-from typing import Any, Union, Dict, Optional
+from typing import Any, Union, Optional
 
 from qtpy.QtCore import QModelIndex
 from qtpy.QtWidgets import QWidget, QTableWidgetItem
 
 from ._widget_mixin import ValueWidgetMixin, CellWidgetMixin
-from ..exceptions import ValidationFailedError
 from ..tableview import TableView
+
+
+class ValidationFailedError(Exception):
+    pass
 
 
 class ValueType(object):
@@ -14,7 +17,7 @@ class ValueType(object):
     def __init__(self, default_value: Any, *, display_name: Optional[str] = None):
 
         if not self.validate(default_value):
-            raise ValidationFailedError(f"invalid default value: {default_value}")
+            raise ValidationFailedError(f"invalid `default_value`: {default_value}")
 
         self._default_value = default_value
         self._display_name = display_name
@@ -99,7 +102,3 @@ class ValueType(object):
 
     def after_insert_item(self, row: int, col: int, item: QTableWidgetItem):
         pass
-
-
-def default_object(schema: Dict[str, ValueType]) -> Dict[str, Any]:
-    return {k: v.default_value for k, v in schema.items()}

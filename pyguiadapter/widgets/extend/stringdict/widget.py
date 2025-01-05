@@ -13,7 +13,7 @@ class StringDictEditConfig(CommonParameterWidgetConfig):
     default_value: Dict[str, str] = dataclasses.field(default_factory=dict)
     """默认值"""
 
-    display_button_text: str = "Edit({} items in total)"
+    display_text: str = "Edit({} items in total)"
     """在编辑按钮上显示的文本，其中{}会被替换为当前字典的长度"""
 
     editor_title: str = ""
@@ -112,8 +112,8 @@ class StringDictEdit(CommonParameterWidget):
     def value_widget(self) -> QCommandLinkButton:
         if not self._value_widget:
             self._value_widget = QCommandLinkButton(self)
+            # noinspection PyUnresolvedReferences
             self._value_widget.clicked.connect(self._on_edit)
-
         return self._value_widget
 
     def check_value_type(self, value: Any):
@@ -132,13 +132,13 @@ class StringDictEdit(CommonParameterWidget):
         return self._current_value
 
     def _update_value_widget(self):
-        display_text = self.config.display_button_text.format(len(self._current_value))
+        display_text = self.config.display_text.format(len(self._current_value))
         self._value_widget.setText(display_text)
 
     def _on_edit(self):
         editor_config = dataclasses.asdict(self.config)
         editor_config.pop("default_value")
-        editor_config.pop("display_button_text")
+        editor_config.pop("display_text")
         editor_config.pop("editor_title")
         editor_config.pop("editor_size")
         editor_config.pop("accept_changes_message")
