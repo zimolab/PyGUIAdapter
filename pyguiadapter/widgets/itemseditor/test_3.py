@@ -17,6 +17,10 @@ from pyguiadapter.widgets.itemseditor.object_tableview.valuetypes import (
     DirectoryValue,
     FileValue,
     GenericPathValue,
+    VariantValue,
+    TupleValue,
+    ListValue,
+    DictValue,
 )
 
 schema = {
@@ -34,6 +38,10 @@ schema = {
     "date": DateValue(display_name="日期"),
     "time": TimeValue(),
     "generic": GenericPathValue(),
+    "variant": VariantValue(default_value=None),
+    "tuple": TupleValue(default_value=("a", 1, True)),
+    "list": ListValue(default_value=["a", 1, True]),
+    "dict": DictValue(default_value={"a": 1, "b": 2}),
 }
 
 
