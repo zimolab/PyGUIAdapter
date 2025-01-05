@@ -5,12 +5,17 @@ from qtpy.QtCore import QModelIndex
 from qtpy.QtWidgets import QWidget, QTableWidgetItem
 
 from ._widget_mixin import ValueWidgetMixin, CellWidgetMixin
+from ...exceptions import ValidationFailedError
 from ...tableview import TableView
 
 
 class ValueType(object):
 
     def __init__(self, default_value: Any, *, display_name: Optional[str] = None):
+
+        if not self.validate(default_value):
+            raise ValidationFailedError(f"invalid default value: {default_value}")
+
         self._default_value = default_value
         self._display_name = display_name
 
