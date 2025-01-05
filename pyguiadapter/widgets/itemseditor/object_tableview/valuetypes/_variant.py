@@ -58,6 +58,7 @@ class VariantEditBox(QWidget, ValueWidgetMixin):
         super().__init__(parent, *args, **kwargs)
 
         self._layout = QVBoxLayout()
+        self._layout.setContentsMargins(0, 0, 0, 0)
         self.setLayout(self._layout)
 
         self._value_preview = QTextBrowser(self)
