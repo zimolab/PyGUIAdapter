@@ -1,6 +1,7 @@
 import dataclasses
-from typing import Any, Dict, Type, Optional
+from typing import Any, Dict, Type, Optional, Union, Tuple
 
+from qtpy.QtCore import Qt
 from qtpy.QtWidgets import QWidget, QCommandLinkButton, QDialog
 
 from ..common import CommonParameterWidgetConfig, CommonParameterWidget
@@ -26,6 +27,19 @@ class SchemaObjectEditorConfig(CommonParameterWidgetConfig):
     ignore_unknown_keys: bool = False
     fill_missing_keys: bool = False
     display_text: str = "Edit"
+    window_title: str = "Object Editor"
+    window_size: Tuple[int, int] = (500, 600)
+    center_container_title: str = ""
+    key_column_header: str = "Key"
+    value_column_header: str = "Value"
+    item_text_alignment: Union[Qt.AlignmentFlag, int, None] = Qt.AlignCenter
+    value_item_alignment: Union[Qt.AlignmentFlag, int, None] = None
+    key_item_selectable: bool = False
+    row_selection_mode: bool = True
+    real_key_as_tooltip: bool = False
+    stretch_last_section: bool = True
+    alternating_row_colors: bool = False
+    show_vertical_header: bool = False
 
     @classmethod
     def target_widget_class(cls) -> Type["SchemaObjectEditor"]:
@@ -47,7 +61,7 @@ class SchemaObjectEditor(CommonParameterWidget):
 
         if not isinstance(config.default_value, (type(None), dict)):
             raise TypeError(
-                f"default_value of {parameter_name} should be a dict or None, but got {type(config.default_value)}"
+                f"default_value of {parameter_name} should be a dict, but got {type(config.default_value)}"
             )
 
         if config.default_value is not None:
@@ -61,9 +75,6 @@ class SchemaObjectEditor(CommonParameterWidget):
                     schema=config.schema, obj=default_value, copy=False
                 )
             config = dataclasses.replace(config, default_value=default_value)
-            self._validate_value(config.default_value, config)
-
-        # print(config.default_value)
 
         self._value_widget: Optional[QCommandLinkButton] = None
         self._current_value: Dict[str, Any] = config.default_value or make_default(
@@ -92,14 +103,26 @@ class SchemaObjectEditor(CommonParameterWidget):
         return self._current_value
 
     def _on_edit(self):
+        config: SchemaObjectEditorConfig = self.config
         editor_config = ObjectEditorConfig(
-            ignore_unknown_columns=self.config.ignore_unknown_keys
+            ignore_unknown_columns=config.ignore_unknown_keys,
+            window_title=config.window_title,
+            window_size=config.window_size,
+            key_column_header=config.key_column_header,
+            value_column_header=config.value_column_header,
+            item_text_alignment=config.item_text_alignment,
+            value_item_alignment=config.value_item_alignment,
+            key_item_selectable=config.key_item_selectable,
+            row_selection_mode=config.row_selection_mode,
+            real_key_as_tooltip=config.real_key_as_tooltip,
+            alternating_row_colors=config.alternating_row_colors,
+            show_vertical_header=config.show_vertical_header,
+            stretch_last_section=config.stretch_last_section,
+            ignore_unknown_keys=config.ignore_unknown_keys,
+            center_container_title=config.center_container_title,
         )
         object_editor = ObjectEditor(
-            self,
-            self.config.schema,
-            editor_config,
-            accept_hook=self._before_editor_accept,
+            self, config.schema, editor_config, accept_hook=self._before_editor_accept
         )
         object_editor.set_object(self._current_value)
         ret = object_editor.exec_()
@@ -127,6 +150,7 @@ class SchemaObjectEditor(CommonParameterWidget):
                 f"Value of {self.parameter_name} should be a dict, but got {type(value)}"
             )
 
+        # make a copy of input argument to avoid modifying it
         value = {**value}
 
         if config.fill_missing_keys:

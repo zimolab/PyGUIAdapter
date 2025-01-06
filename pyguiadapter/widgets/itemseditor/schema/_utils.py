@@ -158,7 +158,7 @@ def remove_unknown_keys(
     schema: Dict[str, ValueType], obj: Dict[str, Any], copy: bool = True
 ) -> Dict[str, Any]:
     if copy:
-        obj = obj.copy()
+        obj = {**obj}
     unknown_keys = unknown_keys_of(schema, obj)
     if not unknown_keys:
         return obj
@@ -171,7 +171,7 @@ def fill_missing_keys(
     schema: Dict[str, ValueType], obj: Dict[str, Any], copy: bool = True
 ):
     if copy:
-        obj = obj.copy()
+        obj = {**obj}
     missing_keys = missing_keys_of(schema, obj)
     if not missing_keys:
         return obj

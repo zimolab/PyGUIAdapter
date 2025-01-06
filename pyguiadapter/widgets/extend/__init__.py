@@ -46,6 +46,7 @@ from .stringdict import StringDictEdit, StringDictEditConfig, StringDictItemEdit
 from .pathsedit import PathsEdit, PathsEditConfig
 
 from .objecteditor import SchemaObjectEditorConfig, SchemaObjectEditor
+from .objectseditor import SchemaObjectsEditorConfig, SchemaObjectsEditor
 
 __all__ = [
     "IntLineEdit",
@@ -103,4 +104,6 @@ __all__ = [
     "PathsEditConfig",
     "SchemaObjectEditorConfig",
     "SchemaObjectEditor",
+    "SchemaObjectsEditorConfig",
+    "SchemaObjectsEditor",
 ]

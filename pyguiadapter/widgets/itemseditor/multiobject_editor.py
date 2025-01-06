@@ -246,7 +246,7 @@ class MultiObjectEditor(QDialog, ControlButtonHooks):
     def on_clear_button_clicked(self, source: QPushButton) -> bool:
         if self._objects_view.row_count() <= 0:
             if self._config.no_selection_warning_message:
-                self._show_warning_message(self._config.no_selection_warning_message)
+                self._show_warning_message(self._config.no_items_warning_message)
             return True
 
         if self._config.clear_confirm_message:
@@ -351,7 +351,7 @@ class MultiObjectEditor(QDialog, ControlButtonHooks):
         selected_rows = self._objects_view.get_selected_rows(reverse=True)
         if len(selected_rows) < 1:
             if self._config.no_selection_warning_message:
-                self._show_warning_message(self._config.no_items_warning_message)
+                self._show_warning_message(self._config.no_selection_warning_message)
             return -1
         if len(selected_rows) > 1:
             if self._config.multiple_selection_warning_message:
