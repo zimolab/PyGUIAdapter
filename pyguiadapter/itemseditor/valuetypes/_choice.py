@@ -1,7 +1,8 @@
 from typing import Any, Union, Optional, Sequence
 
-from qtpy.QtWidgets import QWidget, QComboBox
+from qtpy.QtWidgets import QWidget, QComboBox, QTableWidgetItem
 
+from ..object_tableview import ObjectEditView
 from ..schema import ValueWidgetMixin, ValueType
 
 EDITABLE = False
@@ -78,3 +79,11 @@ class ChoiceValue(ValueType):
         self, parent: QWidget, *args, **kwargs
     ) -> ChoiceCombo:
         return self.create_item_delegate_widget(parent)
+
+    def after_set_item_data(
+        self, row: int, col: int, item: QTableWidgetItem, value: Any
+    ):
+        if ObjectEditView.is_key_item(col, item):
+            return
+        if isinstance(value, int) and 0 <= value < len(self.choices):
+            item.setText(self.choices[value])
