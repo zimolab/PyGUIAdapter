@@ -41,8 +41,6 @@ class _Context(QObject):
     sig_show_progress_dialog = Signal(dict)
     sig_dismiss_progress_dialog = Signal()
     sig_update_progress_dialog = Signal(int, str)
-    sig_show_schema_object_editor = Signal(dict, dict, object)
-    sig_show_schema_objects_editor = Signal(dict, list, object)
 
     def __init__(self, parent):
         super().__init__(parent)
