@@ -104,11 +104,15 @@ def make_default(schema: Dict[str, ValueType]) -> Dict[str, Any]:
 
 
 def validate_object(
-    schema: Dict[str, ValueType], obj: Dict[str, Any], ignore_unknown_keys: bool = False
+    schema: Dict[str, ValueType],
+    obj: Dict[str, Any],
+    ignore_unknown_keys: bool = False,
+    ignore_missing_keys: bool = False,
 ) -> ValidationResultWrapper:
-    missing_keys = missing_keys_of(schema, obj)
-    if missing_keys:
-        return ValidationResultWrapper.MissingKeys(missing_keys)
+    if not ignore_missing_keys:
+        missing_keys = missing_keys_of(schema, obj)
+        if missing_keys:
+            return ValidationResultWrapper.MissingKeys(missing_keys)
 
     if not ignore_unknown_keys:
         unknown_keys = unknown_keys_of(schema, obj)

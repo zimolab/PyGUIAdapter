@@ -3,7 +3,7 @@ from typing import List, Optional, Tuple, Type, Any
 
 from qtpy.QtWidgets import QWidget, QCommandLinkButton
 
-from ..itemseditor import PathsEditor, PathsEditorConfig
+from ...itemseditor import PathsEditor, PathsEditorConfig
 from ...widgets.common import CommonParameterWidgetConfig, CommonParameterWidget
 
 

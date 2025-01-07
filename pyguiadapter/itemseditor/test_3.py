@@ -1,11 +1,11 @@
 if __name__ == "__main__":
     from qtpy.QtWidgets import QApplication
 
-    from pyguiadapter.widgets.itemseditor.multiobject_editor import (
+    from pyguiadapter.itemseditor.multiobject_editor import (
         MultiObjectEditor,
         MultiObjectEditorConfig,
     )
-    from pyguiadapter.widgets.itemseditor.valuetypes import (
+    from pyguiadapter.itemseditor.valuetypes import (
         StringValue,
         IntValue,
         BoolValue,

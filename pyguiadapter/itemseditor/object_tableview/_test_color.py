@@ -1,11 +1,11 @@
 if __name__ == "__main__":
     from qtpy.QtWidgets import QApplication
 
-    from pyguiadapter.widgets.itemseditor.object_editor import (
+    from pyguiadapter.itemseditor.object_editor import (
         ObjectEditorConfig,
         ObjectEditor,
     )
-    from pyguiadapter.widgets.itemseditor.valuetypes import ColorValue
+    from pyguiadapter.itemseditor.valuetypes import ColorValue
 
     app = QApplication([])
     schema = {

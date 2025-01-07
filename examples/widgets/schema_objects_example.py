@@ -2,16 +2,16 @@ from typing import Dict, Any, List
 
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.adapter.uoutput import uprint
-from pyguiadapter.widgets import (
+from pyguiadapter.widgets import SchemaObjectsEditorConfig
+from pyguiadapter.itemseditor.valuetypes import (
     StringValue,
     IntValue,
     ChoiceValue,
     DateTimeValue,
     FileValue,
-    SchemaObjectsEditorConfig,
     ColorValue,
+    PasswordEchoOnEditMode,
 )
-from pyguiadapter.widgets.itemseditor.valuetypes import PasswordEchoOnEditMode
 
 
 def schema_objects_example(arg1: List[Dict[str, Any]]):
@@ -38,7 +38,7 @@ if __name__ == "__main__":
         schema_objects_example,
         widget_configs={
             "arg1": SchemaObjectsEditorConfig(
-                default_value=[],
+                default_value=[{"name": "Alice", "age": 25, "gender": "female"}],
                 schema=schema,
                 fill_missing_keys=True,
                 ignore_unknown_keys=True,

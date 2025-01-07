@@ -5,19 +5,13 @@ from qtpy.QtCore import Qt
 from qtpy.QtWidgets import QWidget, QCommandLinkButton, QDialog
 
 from ..common import CommonParameterWidgetConfig, CommonParameterWidget
-from ..itemseditor.object_editor import ObjectEditor, ObjectEditorConfig
-from ..itemseditor.schema import (
-    ValueType,
-    ValidationResult,
-    MissingKeysError,
-    UnknownKeysError,
-    validate_object,
-    InvalidValueError,
-    make_default,
-    remove_unknown_keys,
-    fill_missing_keys,
+from ...itemseditor import ObjectEditor, ObjectEditorConfig
+from ...itemseditor.schema import ValueType, make_default
+from ...utils import (
+    show_critical_message,
+    validate_schema_object,
+    normalize_schema_object,
 )
-from ...utils import show_critical_message
 
 
 @dataclasses.dataclass(frozen=True)
@@ -65,15 +59,13 @@ class SchemaObjectEditor(CommonParameterWidget):
             )
 
         if config.default_value is not None:
-            default_value = {**config.default_value}
-            if config.ignore_unknown_keys:
-                default_value = remove_unknown_keys(
-                    schema=config.schema, obj=default_value, copy=False
-                )
-            if config.fill_missing_keys:
-                default_value = fill_missing_keys(
-                    schema=config.schema, obj=default_value, copy=False
-                )
+            default_value = normalize_schema_object(
+                config.schema,
+                config.default_value,
+                copy=True,
+                fill_missing_keys=config.fill_missing_keys,
+                ignore_unknown_keys=config.ignore_unknown_keys,
+            )
             config = dataclasses.replace(config, default_value=default_value)
 
         self._value_widget: Optional[QCommandLinkButton] = None
@@ -93,7 +85,7 @@ class SchemaObjectEditor(CommonParameterWidget):
         return self._value_widget
 
     def check_value_type(self, value: Any):
-        self._validate_value(value, self.config)
+        self.validate_value(value, self.config)
 
     def set_value_to_widget(self, value: Dict[str, Any]) -> None:
         del self._current_value
@@ -124,7 +116,7 @@ class SchemaObjectEditor(CommonParameterWidget):
         object_editor = ObjectEditor(
             self, config.schema, editor_config, accept_hook=self._before_editor_accept
         )
-        object_editor.set_object(self._current_value)
+        object_editor.set_object(self._current_value, normalize=False, copy=False)
         ret = object_editor.exec_()
         if ret == QDialog.Accepted:
             self.set_value_to_widget(object_editor.get_object())
@@ -134,43 +126,19 @@ class SchemaObjectEditor(CommonParameterWidget):
         self, object_editor: ObjectEditor, new_value: Dict[str, Any]
     ) -> bool:
         try:
-            self._validate_value(new_value, self.config)
+            self.validate_value(new_value, self.config)
         except Exception as e:
             show_critical_message(object_editor, str(e), title="Error")
             return False
         return True
 
-    def _validate_value(self, value: Dict[str, Any], config: SchemaObjectEditorConfig):
+    @staticmethod
+    def validate_value(value: Dict[str, Any], config: SchemaObjectEditorConfig):
         if value is None:
             return
-
-        if not isinstance(value, dict):
-            raise TypeError(
-                f"Value of {self.parameter_name} should be a dict, but got {type(value)}"
-            )
-
-        # make a copy of input argument to avoid modifying it
-        value = {**value}
-
-        if config.fill_missing_keys:
-            value = fill_missing_keys(config.schema, value, copy=False)
-
-        if config.ignore_unknown_keys:
-            value = remove_unknown_keys(config.schema, value, copy=False)
-
-        result_wrapper = validate_object(
-            config.schema, value, ignore_unknown_keys=config.ignore_unknown_keys
+        validate_schema_object(
+            config.schema,
+            value,
+            ignore_unknown_keys=config.ignore_unknown_keys,
+            ignore_missing_keys=config.fill_missing_keys,
         )
-        result = result_wrapper.result
-        if result == ValidationResult.Valid:
-            return
-        if result == ValidationResult.MissingKeys:
-            missing_keys = result_wrapper.extra_info
-            raise MissingKeysError(f"missing keys: {missing_keys}", missing_keys)
-        if result == ValidationResult.UnknownKeys:
-            unknown_keys = result_wrapper.extra_info
-            raise UnknownKeysError(f"unknown keys: {unknown_keys}", unknown_keys)
-        if result == ValidationResult.InvalidValue:
-            key, value, vt = result_wrapper.extra_info
-            raise InvalidValueError(f"invalid value: {key}: {value}", key, value, vt)
-        raise ValueError(f"unknown validation result: {result}")

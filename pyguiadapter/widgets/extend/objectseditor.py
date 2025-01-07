@@ -5,27 +5,22 @@ from qtpy.QtCore import Qt
 from qtpy.QtWidgets import QWidget, QCommandLinkButton, QDialog, QHeaderView
 
 from ..common import CommonParameterWidgetConfig, CommonParameterWidget
-from ..itemseditor.multiobject_editor import (
-    MultiObjectEditor,
-    MultiObjectEditorConfig,
-    ObjectItemEditor,
+from ...itemseditor.multiobject_editor import (
     NO_OBJECT_SELECTED_WARNING_MESSAGE,
     NO_OBJECT_ADDED_WARNING_MESSAGE,
     REMOVE_CONFIRM_MESSAGE,
     CLEAR_CONFIRM_MESSAGE,
     MULTIPLE_OBJECTS_WARNING_MESSAGE,
+    MultiObjectEditorConfig,
+    MultiObjectEditor,
+    ObjectItemEditor,
 )
-from ..itemseditor.schema import (
-    ValueType,
-    ValidationResult,
-    MissingKeysError,
-    UnknownKeysError,
-    validate_object,
-    InvalidValueError,
-    remove_unknown_keys,
-    fill_missing_keys,
+from ...itemseditor.schema import ValueType
+from ...utils import (
+    show_critical_message,
+    normalize_schema_object,
+    validate_schema_object,
 )
-from ...utils import show_critical_message
 
 
 @dataclasses.dataclass(frozen=True)
@@ -196,7 +191,12 @@ class SchemaObjectsEditor(CommonParameterWidget):
         self, item_editor: ObjectItemEditor, new_value: Dict[str, Any]
     ) -> bool:
         try:
-            self._validate_one(new_value, self.config)
+            validate_schema_object(
+                self.config.schema,
+                new_value,
+                ignore_missing_keys=self.config.fill_missing_keys,
+                ignore_unknown_keys=self.config.ignore_unknown_keys,
+            )
         except Exception as e:
             show_critical_message(item_editor, str(e), title="Error")
             return False
@@ -207,58 +207,30 @@ class SchemaObjectsEditor(CommonParameterWidget):
             self.config.display_text.format(object_count=len(self._current_value))
         )
 
-    def _validate_all(
-        self, objects: List[Dict[str, Any]], config: SchemaObjectsEditorConfig
-    ):
+    @staticmethod
+    def _validate_all(objects: List[Dict[str, Any]], config: SchemaObjectsEditorConfig):
         for obj in objects:
-            self._validate_one(obj, config)
-
-    def _validate_one(self, obj: Dict[str, Any], config: SchemaObjectsEditorConfig):
-        if not isinstance(obj, dict):
-            raise TypeError(
-                f"Value of {self.parameter_name} should be a dict, but got {type(obj)}"
+            validate_schema_object(
+                config.schema,
+                obj,
+                ignore_unknown_keys=config.ignore_unknown_keys,
+                ignore_missing_keys=config.fill_missing_keys,
             )
 
-        result_wrapper = validate_object(
-            config.schema, obj, ignore_unknown_keys=config.ignore_unknown_keys
-        )
-        result = result_wrapper.result
-        if result == ValidationResult.Valid:
-            return
-        if result == ValidationResult.MissingKeys:
-            missing_keys = result_wrapper.extra_info
-            raise MissingKeysError(f"missing keys: {missing_keys}", missing_keys)
-        if result == ValidationResult.UnknownKeys:
-            unknown_keys = result_wrapper.extra_info
-            raise UnknownKeysError(f"unknown keys: {unknown_keys}", unknown_keys)
-        if result == ValidationResult.InvalidValue:
-            key, value, vt = result_wrapper.extra_info
-            raise InvalidValueError(f"invalid value: {key}: {value}", key, value, vt)
-        raise ValueError(f"unknown validation result: {result}")
-
-    @classmethod
+    @staticmethod
     def _normalize_all(
-        cls,
         config: SchemaObjectsEditorConfig,
         objects: List[Dict[str, Any]],
         copy_object: bool = True,
     ) -> List[Dict[str, Any]]:
         ret = []
         for obj in objects:
-            ret.append(cls._normalize_object(config, obj, copy_object))
+            normalized_obj = normalize_schema_object(
+                config.schema,
+                obj,
+                copy=copy_object,
+                fill_missing_keys=config.fill_missing_keys,
+                ignore_unknown_keys=config.ignore_unknown_keys,
+            )
+            ret.append(normalized_obj)
         return ret
-
-    @classmethod
-    def _normalize_object(
-        cls, config: SchemaObjectsEditorConfig, obj: Dict[str, Any], copy: bool = True
-    ) -> Dict[str, Any]:
-        if copy:
-            obj = {**obj}
-
-        if config.fill_missing_keys:
-            obj = fill_missing_keys(config.schema, obj, copy=False)
-
-        if config.ignore_unknown_keys:
-            obj = remove_unknown_keys(config.schema, obj, copy=False)
-
-        return obj

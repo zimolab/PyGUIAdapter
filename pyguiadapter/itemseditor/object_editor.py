@@ -96,7 +96,7 @@ class ObjectEditor(QDialog):
         self, obj: Dict[str, Any], copy: bool = True
     ) -> Dict[str, Any]:
         if copy:
-            obj = obj.copy()
+            obj = {**obj}
         # remove unknown keys
         for key in self.unknown_keys(obj):
             del obj[key]

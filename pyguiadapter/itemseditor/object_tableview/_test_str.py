@@ -2,11 +2,11 @@ if __name__ == "__main__":
     from qtpy.QtGui import QIntValidator
     from qtpy.QtWidgets import QApplication
 
-    from pyguiadapter.widgets.itemseditor.object_editor import (
+    from pyguiadapter.itemseditor.object_editor import (
         ObjectEditorConfig,
         ObjectEditor,
     )
-    from pyguiadapter.widgets.itemseditor.valuetypes import (
+    from pyguiadapter.itemseditor.valuetypes import (
         StringValue,
         PasswordEchoOnEditMode,
         NormalEchoMode,

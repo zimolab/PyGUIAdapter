@@ -2,16 +2,16 @@ from typing import Dict, Any
 
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.adapter.uoutput import uprint
-from pyguiadapter.widgets import (
+from pyguiadapter.itemseditor.valuetypes import (
     StringValue,
     IntValue,
     ChoiceValue,
     DateTimeValue,
     FileValue,
-    SchemaObjectEditorConfig,
     ColorValue,
+    PasswordEchoOnEditMode,
 )
-from pyguiadapter.widgets.itemseditor.valuetypes import PasswordEchoOnEditMode
+from pyguiadapter.widgets import SchemaObjectEditorConfig
 
 
 def schema_object_example(arg1: Dict[str, Any]):
