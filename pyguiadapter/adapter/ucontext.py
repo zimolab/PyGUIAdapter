@@ -41,7 +41,8 @@ class _Context(QObject):
     sig_show_progress_dialog = Signal(dict)
     sig_dismiss_progress_dialog = Signal()
     sig_update_progress_dialog = Signal(int, str)
-    sig_cancel_execution = Signal()
+    sig_show_schema_object_editor = Signal(dict, dict, object)
+    sig_show_schema_objects_editor = Signal(dict, list, object)
 
     def __init__(self, parent):
         super().__init__(parent)
@@ -79,8 +80,6 @@ class _Context(QObject):
         self.sig_dismiss_progress_dialog.connect(self._on_dismiss_progress_dialog)
         # noinspection PyUnresolvedReferences
         self.sig_update_progress_dialog.connect(self._on_update_progress_dialog)
-        # noinspection PyUnresolvedReferences
-        self.sig_cancel_execution.connect(self._on_cancel_execution)
 
     @property
     def current_window(self) -> Optional[BaseFnExecuteWindow]:
@@ -229,9 +228,6 @@ class _Context(QObject):
             warnings.warn("current_window is None")
             return
         win.update_progress_dialog(progress, info)
-
-    def _on_cancel_execution(self):
-        pass
 
 
 _context = _Context(None)
