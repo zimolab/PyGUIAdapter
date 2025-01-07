@@ -56,7 +56,7 @@ class SchemaObjectsEditorConfig(CommonParameterWidgetConfig):
     multiple_selection_warning_message: Optional[str] = MULTIPLE_OBJECTS_WARNING_MESSAGE
     double_click_to_edit: bool = False
     resize_rows_to_contents: bool = True
-    alternating_row_colors: bool = True
+    alternating_row_colors: bool = False
     show_horizontal_header: bool = True
     show_vertical_header: bool = True
     show_grid: bool = True
@@ -123,7 +123,7 @@ class SchemaObjectsEditor(CommonParameterWidget):
         self._validate_all(value, self.config)
 
     def set_value_to_widget(self, value: List[Dict[str, Any]]) -> None:
-        self._current_value.clear()
+        del self._current_value[:]
         self._current_value = value
         self._update_display_text()
 
@@ -179,8 +179,7 @@ class SchemaObjectsEditor(CommonParameterWidget):
         editor.set_objects(self._current_value)
         ret = editor.exec_()
         if ret == QDialog.Accepted:
-            new_value = editor.get_objects()
-            self.set_value_to_widget(new_value)
+            self.set_value_to_widget(editor.get_objects())
         editor.deleteLater()
 
     def _before_editor_accept(

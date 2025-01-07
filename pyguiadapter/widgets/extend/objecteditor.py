@@ -96,7 +96,7 @@ class SchemaObjectEditor(CommonParameterWidget):
         self._validate_value(value, self.config)
 
     def set_value_to_widget(self, value: Dict[str, Any]) -> None:
-        self._current_value.clear()
+        del self._current_value
         self._current_value = value
 
     def get_value_from_widget(self) -> Dict[str, Any]:
@@ -127,8 +127,7 @@ class SchemaObjectEditor(CommonParameterWidget):
         object_editor.set_object(self._current_value)
         ret = object_editor.exec_()
         if ret == QDialog.Accepted:
-            new_value = object_editor.get_object()
-            self._current_value.update(new_value)
+            self.set_value_to_widget(object_editor.get_object())
         object_editor.deleteLater()
 
     def _before_editor_accept(
