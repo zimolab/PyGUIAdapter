@@ -1,5 +1,8 @@
-from typing import Dict, Any
+from typing import Dict, Any, Optional, Callable, Tuple
 
+from qtpy.QtWidgets import QWidget, QDialog
+
+from ..itemseditor import ObjectEditorConfig, ObjectEditor
 from ..itemseditor.schema import (
     ValueType,
     remove_unknown_keys,
@@ -59,24 +62,37 @@ def validate_schema_object(
     raise ValueError(f"unknown validation result: {result}")
 
 
-# def show_object_editor(
-#     arent: Optional[QWidget],
-#     schema: Dict[str, ValueType],
-#     obj: Dict[str, Any],
-#     config: ObjectEditorConfig,
-#     *,
-#     copy: bool = True,
-#     validate_object: bool = True,
-#     normalize_object: bool = True,
-#     accept_hook: Optional[Callable[[ObjectEditor, Dict[str, Any]], bool]] = None,
-#     reject_hook: Optional[Callable[[ObjectEditor], bool]] = None,
-# ) -> Tuple[Dict[str, Any], bool]:
-#     if copy:
-#         obj = {**obj}
-#
-#     if normalize_object:
-#         fill_keys(schema, obj, copy=False)
-#         remove_unknown_keys(schema, obj, copy=False)
-#
-#     if validate_object:
-#         pass
+def show_schema_object_editor(
+    parent: Optional[QWidget],
+    schema: Dict[str, ValueType],
+    obj: Dict[str, Any],
+    config: ObjectEditorConfig,
+    *,
+    copy: bool = True,
+    normalize_object: bool = True,
+    validate: bool = True,
+    accept_hook: Optional[Callable[[ObjectEditor, Dict[str, Any]], bool]] = None,
+    reject_hook: Optional[Callable[[ObjectEditor], bool]] = None,
+) -> Tuple[Dict[str, Any], bool]:
+    if copy:
+        obj = {**obj}
+
+    if normalize_object:
+        obj = normalize_schema_object(schema, obj, copy=False)
+
+    if validate:
+        validate_schema_object(schema, obj)
+
+    editor = ObjectEditor(
+        parent,
+        schema=schema,
+        config=config,
+        accept_hook=accept_hook,
+        reject_hook=reject_hook,
+    )
+    editor.set_object(obj, normalize=False, copy=False)
+    ret = editor.exec_()
+    if ret == QDialog.Accepted:
+        return editor.get_object(), True
+    else:
+        return obj, False
