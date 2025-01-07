@@ -17,7 +17,7 @@ JSON_FILE_FILTERS = (
 class JsonEditConfig(BaseCodeEditConfig):
     """JsonEdit的配置类。"""
 
-    default_value: Optional[Any] = dataclasses.field(default_factory=set)
+    default_value: Optional[Any] = dataclasses.field(default_factory=dict)
     """控件的默认值"""
 
     height: Optional[int] = 230
