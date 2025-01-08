@@ -1,7 +1,10 @@
+from typing import Any, Dict
+
+from qtpy.QtWidgets import QWidget
+
 from pyguiadapter.action import Action, Separator
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.adapter.uoutput import uprint
-from pyguiadapter.itemseditor import ObjectEditorConfig
 from pyguiadapter.itemseditor.valuetypes import (
     StringValue,
     PasswordEchoOnEditMode,
@@ -9,9 +12,14 @@ from pyguiadapter.itemseditor.valuetypes import (
     ChoiceValue,
 )
 from pyguiadapter.menu import Menu
-from pyguiadapter.utils import messagebox, show_schema_object_editor
+from pyguiadapter.utils import (
+    messagebox,
+    show_schema_object_editor,
+    show_schema_object_panel,
+    SchemaObjectEditorConfig,
+    SchemaObjectPanelConfig,
+)
 from pyguiadapter.windows.fnselect import FnSelectWindow
-
 
 setting_schema = {
     "username": StringValue(
@@ -63,14 +71,48 @@ settings = {
 }
 
 
+def _accept_hook(editor: QWidget, obj: Dict[str, Any]) -> bool:
+    password = obj.get("password")
+    if len(password) < 6:
+        messagebox.show_warning_message(
+            editor,
+            message="Password should be at least 6 characters long.",
+            title="Warning",
+        )
+        return False
+    return True
+
+
 def on_action_settings(window: FnSelectWindow, action: Action):
+    _ = action  # unused
     new_settings, ok = show_schema_object_editor(
         window,
         schema=setting_schema,
         obj=settings,
-        config=ObjectEditorConfig(
-            window_title="Settings", center_container_title="configurations"
+        config=SchemaObjectEditorConfig(
+            title="Settings",
+            center_container_title="configurations",
+            icon="ri.settings-5-fill",
         ),
+        accept_hook=_accept_hook,
+    )
+    if not ok:
+        return
+    settings.update(new_settings)
+
+
+def on_action_settings_panel(window: FnSelectWindow, action: Action):
+    _ = action  # unused
+    new_settings, ok = show_schema_object_panel(
+        window,
+        schema=setting_schema,
+        obj=settings,
+        config=SchemaObjectPanelConfig(
+            title="Settings",
+            center_container_title="configurations",
+            icon="ri.settings-5-fill",
+        ),
+        accept_hook=_accept_hook,
     )
     if not ok:
         return
@@ -88,10 +130,16 @@ def on_action_close(window: FnSelectWindow, _: Action):
 
 
 action_settings = Action(
-    text="Configurations",
+    text="Settings",
     icon="msc.settings-gear",
     on_triggered=on_action_settings,
     shortcut="Ctrl+O",
+)
+action_settings_panel = Action(
+    text="Settings Panel",
+    icon="msc.settings-gear",
+    on_triggered=on_action_settings_panel,
+    shortcut="Ctrl+P",
 )
 action_close = Action(
     text="Close", icon="fa.close", on_triggered=on_action_close, shortcut="Ctrl+Q"
@@ -100,7 +148,7 @@ action_close = Action(
 
 menu_file = Menu(
     title="File",
-    actions=[action_settings, Separator(), action_close],
+    actions=[action_settings, action_settings_panel, Separator(), action_close],
 )
 
 
