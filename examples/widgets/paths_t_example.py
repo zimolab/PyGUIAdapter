@@ -5,7 +5,7 @@ from pyguiadapter.extend_types import paths_t
 
 def paths_t_example(arg1: paths_t, arg2: paths_t, arg3: paths_t):
     """
-    This is an example for **PathsEdit** for **paths_t** types.
+    This is an example for **PathsEditor** for **paths_t** types.
 
     Args:
         arg1: description of arg1.

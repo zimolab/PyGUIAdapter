@@ -43,7 +43,7 @@ from .quantitybox import (
 )
 
 from .stringdict import StringDictEdit, StringDictEditConfig, StringDictItemEditorConfig
-from .pathsedit import PathsEdit, PathsEditConfig
+from .pathseditor import PathsEditor, PathsEditorConfig
 
 from .objecteditor import SchemaObjectEditorConfig, SchemaObjectEditor
 from .objectseditor import SchemaObjectsEditorConfig, SchemaObjectsEditor
@@ -100,8 +100,8 @@ __all__ = [
     "StringDictEdit",
     "StringDictEditConfig",
     "StringDictItemEditorConfig",
-    "PathsEdit",
-    "PathsEditConfig",
+    "PathsEditor",
+    "PathsEditorConfig",
     "SchemaObjectEditorConfig",
     "SchemaObjectEditor",
     "SchemaObjectsEditorConfig",

@@ -44,7 +44,7 @@ from .extend import (
     IntQuantityBox,
     FloatQuantityBox,
     StringDictEdit,
-    PathsEdit,
+    PathsEditor,
 )
 from ..parser.typenames import (
     TYPE_STR,
@@ -181,7 +181,7 @@ BUILTIN_WIDGETS_MAP = {
     TYPE_INT_QUANTITY: IntQuantityBox,
     TYPE_FLOAT_QUANTITY: FloatQuantityBox,
     TYPE_STRING_DICT_T: StringDictEdit,
-    TYPE_PATHS_T: PathsEdit,
+    TYPE_PATHS_T: PathsEditor,
 }
 
 # noinspection PyProtectedMember

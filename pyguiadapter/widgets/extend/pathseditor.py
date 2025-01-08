@@ -3,15 +3,18 @@ from typing import List, Optional, Tuple, Type, Any
 
 from qtpy.QtWidgets import QWidget, QCommandLinkButton
 
-from ...itemseditor import PathsEditor, PathsEditorConfig
+from ...itemseditor.paths_editor import (
+    PathsEditor as _PathsEditor,
+    PathsEditorConfig as _PathsEditorConfig,
+)
 from ...widgets.common import CommonParameterWidgetConfig, CommonParameterWidget
 
 
 @dataclasses.dataclass(frozen=True)
-class PathsEditConfig(CommonParameterWidgetConfig):
+class PathsEditorConfig(CommonParameterWidgetConfig):
     default_value: List[str] = dataclasses.field(default_factory=list)
 
-    editor_button_text: str = "Edit({} paths in total)"
+    editor_button_text: str = "Edit({} paths in list)"
     """编辑按钮的文本"""
 
     editor_title: str = ""
@@ -93,18 +96,18 @@ class PathsEditConfig(CommonParameterWidgetConfig):
     """路径编辑对话框中中心容器的标题"""
 
     @classmethod
-    def target_widget_config(cls) -> Type["PathsEdit"]:
-        return PathsEdit
+    def target_widget_config(cls) -> Type["PathsEditor"]:
+        return PathsEditor
 
 
-class PathsEdit(CommonParameterWidget):
-    ConfigClass = PathsEditConfig
+class PathsEditor(CommonParameterWidget):
+    ConfigClass = PathsEditorConfig
 
     def __init__(
         self,
         parent: Optional[QWidget],
         parameter_name: str,
-        config: PathsEditConfig,
+        config: PathsEditorConfig,
     ):
         self._value_widget: Optional[QCommandLinkButton] = None
         self._current_value: List[str] = []
@@ -127,7 +130,6 @@ class PathsEdit(CommonParameterWidget):
 
     def set_value_to_widget(self, value: List[str]) -> None:
         self._current_value.clear()
-        # self._current_value.extend(value)
         self._current_value = value
         self._update_value_widget()
 
@@ -135,13 +137,12 @@ class PathsEdit(CommonParameterWidget):
         return self._current_value
 
     def _on_edit(self):
-        paths_editor = PathsEditor(self, self._create_paths_editor_config())
+        paths_editor = _PathsEditor(self, self._create_paths_editor_config())
         edited, ok = paths_editor.start(self._current_value)
         paths_editor.deleteLater()
         if not ok:
             return
-        self._current_value = edited
-        self._update_value_widget()
+        self.set_value_to_widget(edited)
 
     def _update_value_widget(self):
 
@@ -150,11 +151,11 @@ class PathsEdit(CommonParameterWidget):
         )
         self._value_widget.setText(editor_button_text)
 
-    def _create_paths_editor_config(self) -> PathsEditorConfig:
-        config: PathsEditConfig = self.config
+    def _create_paths_editor_config(self) -> _PathsEditorConfig:
+        config: PathsEditorConfig = self.config
         add_file_button_text = config.add_file_button_text if config.add_file else None
         add_dir_button_text = config.add_dir_button_text if config.add_dir else None
-        return PathsEditorConfig(
+        return _PathsEditorConfig(
             window_title=config.editor_title,
             window_size=config.editor_size,
             as_posix=config.path_as_posix,
