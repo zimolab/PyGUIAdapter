@@ -79,6 +79,9 @@ nav:
     - pyguiadapter.widgets.pathlist: apis/pyguiadapter.widgets.pathlist.md
     - pyguiadapter.widgets.fontselect: apis/pyguiadapter.widgets.fontselect.md
     - pyguiadapter.widgets.quantitybox: apis/pyguiadapter.widgets.quantitybox.md
+    - pyguiadapter.widgets.objecteditor: apis/pyguiadapter.widgets.objecteditor.md
+    - pyguiadapter.widgets.objectseditor: apis/pyguiadapter.widgets.objectseditor.md
+    - pyguiadapter.widgets.pathseditor: apis/pyguiadapter.widgets.pathseditor.md
   - 贡献: contribution.md
   - 开源许可: license.md
   - 版本历史: changelog.md

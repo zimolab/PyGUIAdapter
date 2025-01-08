@@ -1749,3 +1749,93 @@ if __name__ == "__main__":
 <div style="text-align: center">
     <img src="../assets/quantity_t_example.png" />
 </div>
+
+---
+
+## （二十三）`paths_t`类型
+
+### 0、说明
+`List[str]`的扩展类型，语义上表示一组路径，提供了一个功能丰富的外置路径编辑器，通过该编辑器，用户可以方便地管理一组路径，包括添加、删除以及改变路径的顺序。
+
+在功能上，`paths_t`在语义上与`path_list_t`类型相同。二者的区别主要在于参数控件。`paths_t`对应的参数控件为`PathsEditor`，
+而`path_list_t`对应的参数控件为`PathListEdit`。
+
+之所以要实现`PathsEditor`，主要是为了弥补`PathListEdit`占用空间过大、长路径显示不全（需要滚动条）以及路径操作不够灵活（如排序不方便）等不足。
+`PathsEditor`是一个外置的路径编辑器，它在控件参数控件区域仅显示为一个按钮，因此占用的空间更小。同时，对于路径的添加、删除、修改、排序等操作，
+`PathsEditor`也提供了更加友好和直观的操作逻辑。
+
+下面是一组直观的对比：
+
+<div style="text-align: center">
+    <img src="../assets/path_list_edit_1.png" />
+</div>
+
+
+<div style="text-align: center">
+    <img src="../assets/paths_editor_1.png" />
+</div>
+
+
+### 1、默认控件
+
+- [`PathsEditor`](apis/pyguiadapter.widgets.pathseditor.md#pyguiadapter.widgets.PathsEditor)
+- 外观
+
+<div style="text-align: center">
+    <img src="../assets/paths_t.png" />
+</div>
+
+
+
+### 2、可配置属性
+
+参见配置类：[`PathsEditorConfig`](apis/pyguiadapter.widgets.pathseditor.md#pyguiadapter.widgets.PathsEditorConfig)
+
+### 3、示例
+
+```python
+from pyguiadapter.adapter import GUIAdapter
+from pyguiadapter.adapter.uoutput import uprint
+from pyguiadapter.extend_types import paths_t
+
+
+def paths_t_example(arg1: paths_t, arg2: paths_t, arg3: paths_t):
+    """
+    This is an example for **PathsEditor** for **paths_t** types.
+
+    Args:
+        arg1: description of arg1.
+        arg2: description of arg2.
+        arg3: description of arg3.
+
+    Returns:
+        None.
+
+    @params
+    [arg1]
+    default_value = ["/path/to/file1.txt", "/path/to/file2.txt"]
+
+    [arg2]
+    add_dir = false
+
+    [arg3]
+    add_file = false
+
+    @end
+
+    """
+    uprint("arg1:", arg1)
+    uprint("arg2:", arg2)
+    uprint("arg3:", arg3)
+
+
+if __name__ == "__main__":
+    adapter = GUIAdapter()
+    adapter.add(paths_t_example)
+    adapter.run()
+```
+
+<div style="text-align: center">
+    <img src="../assets/paths_t_example.gif" />
+</div>
+
