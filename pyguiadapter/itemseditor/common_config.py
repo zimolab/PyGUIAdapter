@@ -1,5 +1,7 @@
 import dataclasses
-from typing import Tuple, Optional
+from typing import Tuple, Optional, Union
+
+from qtpy.QtCore import Qt
 
 WARNING_DIALOG_TITLE = "Warning"
 CONFIRM_DIALOG_TITLE = "Confirm"
@@ -16,6 +18,8 @@ class CommonEditorConfig(object):
     item_editor_title: str = ""
     item_editor_size: Tuple[int, int] = (500, 600)
     item_editor_center_container_title: str = ""
+    item_editor_key_column_alignment: Union[Qt.AlignmentFlag, int, None] = None
+    item_editor_value_column_alignment: Union[Qt.AlignmentFlag, int, None] = None
     double_click_to_edit: bool = True
     wrap_movement: bool = False
     duplicate_items_warning_message: Optional[str] = None
