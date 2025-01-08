@@ -95,8 +95,20 @@ class ObjectItemEditor(BaseScrollableItemEditor):
                 continue
             label = QLabel(parent)
             label.setText(vt.display_name or key)
-            layout.addWidget(label, i, 0)
-            layout.addWidget(edit, i, 1)
+            layout.addWidget(
+                label,
+                i,
+                0,
+                alignment=self._config.item_editor_key_column_alignment
+                or Qt.Alignment(),
+            )
+            layout.addWidget(
+                edit,
+                i,
+                1,
+                alignment=self._config.item_editor_value_column_alignment
+                or Qt.Alignment(),
+            )
             self._widgets[key] = edit
         layout.addItem(QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Expanding))
         parent.setLayout(layout)
@@ -114,8 +126,6 @@ class ObjectItemEditor(BaseScrollableItemEditor):
     def _setup_ui(self):
         if self._config.item_editor_title:
             self.setWindowTitle(self._config.item_editor_title)
-        flags = self.windowFlags() & ~Qt.WindowContextHelpButtonHint
-        self.setWindowFlags(flags)
 
         if self._config.item_editor_size:
             self.resize(*self._config.item_editor_size)
@@ -124,6 +134,9 @@ class ObjectItemEditor(BaseScrollableItemEditor):
             self._center_container.setTitle(
                 self._config.item_editor_center_container_title
             )
+
+        flags = self.windowFlags() & ~Qt.WindowContextHelpButtonHint
+        self.setWindowFlags(flags)
 
 
 class MultiObjectEditor(QDialog, ControlButtonHooks):

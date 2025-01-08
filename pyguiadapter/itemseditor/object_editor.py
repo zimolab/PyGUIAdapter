@@ -125,6 +125,11 @@ class ObjectEditor(QDialog):
         if self._config.window_size:
             self.resize(*self._config.window_size)
 
+        if self._config.center_container_title:
+            self._view_container.items_view_box.setTitle(
+                self._config.center_container_title
+            )
+
         flags = self.windowFlags() & ~Qt.WindowContextHelpButtonHint
         self.setWindowFlags(flags)
 
