@@ -28,6 +28,7 @@ class SchemaObjectEditorConfig(object):
     alternating_row_colors: bool = False
     show_grid: bool = True
     show_vertical_header: bool = False
+    show_horizontal_header: bool = True
     key_column_header: str = "Key"
     value_column_header: str = "Value"
     key_column_selectable: bool = True
@@ -104,6 +105,23 @@ def show_schema_object_editor(
     accept_hook: Optional[Callable[[ObjectEditor, Dict[str, Any]], bool]] = None,
     reject_hook: Optional[Callable[[ObjectEditor], bool]] = None,
 ) -> Tuple[Dict[str, Any], bool]:
+    """
+    弹出一个结构化对象编辑器
+
+    Args:
+        parent: 父窗口
+        schema: 对象的Schema
+        obj: 要编辑的对象
+        config: 编辑器配置
+        copy: 是否复制对象
+        normalize_object: 是否规范化对象，规范化对象是指：删除obj中不在schema未定义的键，并且使用默认值填充缺失的键
+        validate: 是否验证对象，即检查obj是否符合schema定义的格式，如果不符合则引发异常
+        accept_hook: 点击编辑器`Ok`按钮后执行的钩子函数，函数签名为(editor: ObjectEditor, obj: Dict[str, Any]) -> bool，返回True则关闭编辑器，返回False则不关闭编辑器。
+        reject_hook: 点击编辑器`Cancel`按钮或关闭编辑器后执行的钩子函数，函数签名为(editor: ObjectEditor) -> bool，返回True则关闭编辑器，返回False则不关闭编辑器。
+
+    Returns:
+        返回一个元组，该元组的第一个元素是编辑后的对象，第二个元素编辑器是否accepted（一般是点击`Ok`按钮）。
+    """
     if copy:
         obj = {**obj}
 
@@ -123,6 +141,7 @@ def show_schema_object_editor(
             ignore_unknown_columns=True,
             alternating_row_colors=config.alternating_row_colors,
             show_vertical_header=config.show_vertical_header,
+            show_horizontal_header=config.show_horizontal_header,
             show_grid=config.show_grid,
             key_item_selectable=config.key_column_selectable,
             item_text_alignment=config.key_column_alignment,
@@ -157,6 +176,23 @@ def show_schema_object_panel(
     accept_hook: Optional[Callable[[ObjectEditor, Dict[str, Any]], bool]] = None,
     reject_hook: Optional[Callable[[ObjectEditor], bool]] = None,
 ) -> Tuple[Dict[str, Any], bool]:
+    """
+    弹出一个结构化对象编辑面板
+
+    Args:
+        parent: 父窗口
+        schema: 对象的Schema
+        obj: 要编辑的对象
+        config: 编辑器配置
+        copy: 是否复制对象
+        normalize_object: 是否规范化对象，规范化对象是指：删除obj中不在schema未定义的键，并且使用默认值填充缺失的键
+        validate: 是否验证对象，即检查obj是否符合schema定义的格式，如果不符合则引发异常
+        accept_hook: 点击编辑器`Ok`按钮后执行的钩子函数，函数签名为(editor: ObjectEditor, obj: Dict[str, Any]) -> bool，返回True则关闭编辑器，返回False则不关闭编辑器。
+        reject_hook: 点击编辑器`Cancel`按钮或关闭编辑器后执行的钩子函数，函数签名为(editor: ObjectEditor) -> bool，返回True则关闭编辑器，返回False则不关闭编辑器。
+
+    Returns:
+        返回一个元组，该元组的第一个元素是编辑后的对象，第二个元素编辑器是否accepted（一般是点击`Ok`按钮）。
+    """
     if copy:
         obj = {**obj}
 
