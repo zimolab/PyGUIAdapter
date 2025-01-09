@@ -241,6 +241,8 @@ class VariantValue(ValueType):
         text_font_family: str = TEXT_FONT_FAMILY,
         format_button_text: Optional[str] = FORMAT_BUTTON_TEXT,
         editor_button_text: Optional[str] = VARIANT_EDITOR_BUTTON_TEXT,
+        readonly: bool = False,
+        hidden: bool = False,
     ):
 
         self.window_title = window_title
@@ -251,7 +253,9 @@ class VariantValue(ValueType):
         self.format_button_text = format_button_text
         self.editor_button_text = editor_button_text
 
-        super().__init__(default_value, display_name=display_name)
+        super().__init__(
+            default_value, display_name=display_name, readonly=readonly, hidden=hidden
+        )
 
     def validate(self, value: Any) -> bool:
         if value is None:

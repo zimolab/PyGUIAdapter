@@ -179,6 +179,8 @@ class PathValue(ValueType):
         file_filters: str = FILE_FILTERS,
         selected_filter: str = SELECTED_FILTER,
         as_posix: bool = AS_POSIX,
+        readonly: bool = False,
+        hidden: bool = False,
     ):
         self.title = title
         self.file_mode = file_mode
@@ -190,7 +192,9 @@ class PathValue(ValueType):
 
         default_value = str(default_value or "")
 
-        super().__init__(default_value, display_name=display_name)
+        super().__init__(
+            default_value, display_name=display_name, readonly=readonly, hidden=hidden
+        )
 
     def validate(self, value: Any) -> bool:
         if value is None:

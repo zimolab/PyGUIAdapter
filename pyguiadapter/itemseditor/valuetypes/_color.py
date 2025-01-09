@@ -143,6 +143,8 @@ class ColorValue(ValueType):
         display_color_name: bool = DISPLAY_COLOR_NAME,
         widget_height: int = WIDGET_HEIGHT,
         widget_border: bool = WIDGET_BORDER,
+        readonly: bool = False,
+        hidden: bool = False,
     ):
 
         self.alpha_channel = alpha_channel
@@ -154,6 +156,8 @@ class ColorValue(ValueType):
         super().__init__(
             convert_color(default_value, "str", alpha_channel),
             display_name=display_name,
+            readonly=readonly,
+            hidden=hidden,
         )
 
     def validate(self, value: Any) -> bool:

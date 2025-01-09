@@ -74,6 +74,8 @@ class FloatValue(ValueType):
         suffix: Optional[str] = SUFFIX,
         display_affix: bool = DISPLAY_AFFIX,
         display_as_decimals: bool = DISPLAY_AS_DECIMALS,
+        readonly: bool = False,
+        hidden: bool = False,
     ):
         self.min_value = min_value
         self.max_value = max_value
@@ -85,7 +87,12 @@ class FloatValue(ValueType):
         self.display_as_decimals = display_as_decimals
 
         # do cast, if failed, an error will be raised
-        super().__init__(float(default_value), display_name=display_name)
+        super().__init__(
+            float(default_value),
+            display_name=display_name,
+            readonly=readonly,
+            hidden=hidden,
+        )
 
     def validate(self, value: Any) -> bool:
         value = result_or_none(_to_float, value)

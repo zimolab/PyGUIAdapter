@@ -107,6 +107,8 @@ class TimeValue(ValueType):
         time_spec: Optional[Qt.TimeSpec] = TIME_SPEC,
         minimum: Optional[TimeType] = None,
         maximum: Optional[TimeType] = None,
+        readonly: bool = False,
+        hidden: bool = False,
     ):
 
         self.str_format = str_format
@@ -116,7 +118,9 @@ class TimeValue(ValueType):
         self.maximum = maximum
 
         default_value = to_string(default_value, self.str_format)
-        super().__init__(default_value, display_name=display_name)
+        super().__init__(
+            default_value, display_name=display_name, readonly=readonly, hidden=hidden
+        )
 
     def validate(self, value: Any) -> bool:
         return is_valid_time(value, self.str_format)

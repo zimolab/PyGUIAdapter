@@ -289,7 +289,9 @@ class GenericPathValue(ValueType):
         start_directory: str = START_DIRECTORY,
         file_filters: str = FILE_FILTERS,
         selected_filter: str = SELECTED_FILTER,
-        as_posix: bool = AS_POSIX
+        as_posix: bool = AS_POSIX,
+        readonly: bool = False,
+        hidden: bool = False,
     ):
         self.window_title = window_title
         self.window_size = window_size
@@ -306,7 +308,9 @@ class GenericPathValue(ValueType):
         self.as_posix = as_posix
 
         default_value = str(default_value or "")
-        super().__init__(default_value, display_name=display_name)
+        super().__init__(
+            default_value, display_name=display_name, readonly=readonly, hidden=hidden
+        )
 
     def validate(self, value: Any) -> bool:
         if value is None:

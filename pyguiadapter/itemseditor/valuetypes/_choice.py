@@ -46,6 +46,8 @@ class ChoiceValue(ValueType):
         *,
         display_name: Optional[str] = None,
         editable: bool = EDITABLE,
+        readonly: bool = False,
+        hidden: bool = False,
     ):
         if not choices:
             raise ValueError("choices cannot be empty")
@@ -58,7 +60,9 @@ class ChoiceValue(ValueType):
                 raise IndexError(f"index out of range: {default_value}")
             default_value = choices[default_value]
 
-        super().__init__(default_value, display_name=display_name)
+        super().__init__(
+            default_value, display_name=display_name, readonly=readonly, hidden=hidden
+        )
 
     def validate(self, value: Any) -> bool:
         if isinstance(value, int):

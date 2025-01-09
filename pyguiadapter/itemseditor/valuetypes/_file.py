@@ -12,7 +12,9 @@ class FileValue(PathValue):
         file_filters: str = FILE_FILTERS,
         selected_filter: str = SELECTED_FILTER,
         start_directory: str = START_DIRECTORY,
-        as_posix: bool = AS_POSIX
+        as_posix: bool = AS_POSIX,
+        readonly: bool = False,
+        hidden: bool = False,
     ):
         if any_file:
             file_mode = "any_file"
@@ -30,4 +32,6 @@ class FileValue(PathValue):
             file_filters=file_filters,
             selected_filter=selected_filter,
             as_posix=as_posix,
+            readonly=readonly,
+            hidden=hidden,
         )

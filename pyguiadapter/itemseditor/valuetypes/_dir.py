@@ -10,7 +10,9 @@ class DirectoryValue(PathValue):
         title: str = TITLE,
         show_dirs_only: bool = SHOW_DIRS_ONLY,
         start_directory: str = START_DIRECTORY,
-        as_posix: bool = AS_POSIX
+        as_posix: bool = AS_POSIX,
+        readonly: bool = False,
+        hidden: bool = False,
     ):
         super().__init__(
             default_value or "",
@@ -22,4 +24,6 @@ class DirectoryValue(PathValue):
             file_filters="",
             selected_filter="",
             as_posix=as_posix,
+            readonly=readonly,
+            hidden=hidden,
         )

@@ -90,6 +90,8 @@ class StringValue(ValueType):
         validator: Union[QValidator, str, None] = VALIDATOR,
         password_symbol: str = "•",
         max_password_symbols: int = MAX_PASSWORD_SYMBOLS,
+        readonly: bool = False,
+        hidden: bool = False,
     ):
         self.echo_mode = echo_mode
         self.clear_button = clear_button
@@ -100,7 +102,12 @@ class StringValue(ValueType):
         self.password_symbol = password_symbol
         self.max_password_symbols = max_password_symbols
 
-        super().__init__(_to_str(default_value), display_name=display_name)
+        super().__init__(
+            _to_str(default_value),
+            display_name=display_name,
+            readonly=readonly,
+            hidden=hidden,
+        )
 
     def validate(self, value: str) -> bool:
         return value is None or isinstance(value, str)

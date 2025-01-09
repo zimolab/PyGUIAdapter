@@ -114,6 +114,8 @@ class DateValue(ValueType):
         time_spec: Optional[Qt.TimeSpec] = TIME_SPEC,
         maximum: Optional[DateType] = None,
         minimum: Optional[DateType] = None,
+        readonly: bool = False,
+        hidden: bool = False,
     ):
 
         self.str_format = str_format
@@ -124,7 +126,9 @@ class DateValue(ValueType):
         self.minimum = minimum
 
         default_value = to_string(default_value, self.str_format)
-        super().__init__(default_value, display_name=display_name)
+        super().__init__(
+            default_value, display_name=display_name, readonly=readonly, hidden=hidden
+        )
 
     def validate(self, value: Any) -> bool:
         return is_valid_date(value, self.str_format)

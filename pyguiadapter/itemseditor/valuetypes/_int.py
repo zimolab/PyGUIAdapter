@@ -67,6 +67,8 @@ class IntValue(ValueType):
         prefix: Optional[str] = PREFIX,
         suffix: Optional[str] = SUFFIX,
         display_affix: bool = DISPLAY_AFFIX,
+        readonly: bool = False,
+        hidden: bool = False,
     ):
         self.min_value = min_value
         self.max_value = max_value
@@ -75,7 +77,12 @@ class IntValue(ValueType):
         self.suffix = suffix
         self.display_affix = display_affix
 
-        super().__init__(_to_int(default_value), display_name=display_name)
+        super().__init__(
+            _to_int(default_value),
+            display_name=display_name,
+            readonly=readonly,
+            hidden=hidden,
+        )
 
     def validate(self, value: Any) -> bool:
         value = result_or_none(_to_int, value)

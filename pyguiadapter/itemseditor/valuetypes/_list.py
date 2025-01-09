@@ -101,6 +101,8 @@ class ListValue(VariantValue):
         text_font_family: str = TEXT_FONT_FAMILY,
         format_button_text: Optional[str] = FORMAT_BUTTON_TEXT,
         editor_button_text: str = VARIANT_EDITOR_BUTTON_TEXT,
+        readonly: bool = False,
+        hidden: bool = False,
     ):
         super().__init__(
             default_value or [],
@@ -112,6 +114,8 @@ class ListValue(VariantValue):
             text_font_family=text_font_family,
             format_button_text=format_button_text,
             editor_button_text=editor_button_text,
+            readonly=readonly,
+            hidden=hidden,
         )
 
     def validate(self, value: Any) -> bool:

@@ -110,11 +110,18 @@ class BoolValue(ValueType):
         display_name: Optional[str] = None,
         true_text: str = TRUE_TEXT,
         false_text: str = FALSE_TEXT,
+        readonly: bool = False,
+        hidden: bool = False,
     ):
         self.true_text = true_text
         self.false_text = false_text
 
-        super().__init__(_to_bool(default_value, true_text), display_name=display_name)
+        super().__init__(
+            _to_bool(default_value, true_text),
+            display_name=display_name,
+            readonly=readonly,
+            hidden=hidden,
+        )
 
     def validate(self, value: Any) -> bool:
         return isinstance(value, bool) or value in (self.true_text, self.false_text)

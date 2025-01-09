@@ -14,13 +14,22 @@ class ValidationFailedError(Exception):
 
 class ValueType(object):
 
-    def __init__(self, default_value: Any, *, display_name: Optional[str] = None):
+    def __init__(
+        self,
+        default_value: Any,
+        *,
+        display_name: Optional[str] = None,
+        readonly: bool = False,
+        hidden=False,
+    ):
 
         if not self.validate(default_value):
             raise ValidationFailedError(f"invalid `default_value`: {default_value}")
 
         self._default_value = default_value
         self._display_name = display_name
+        self._readonly = readonly
+        self._hidden = hidden
 
     @property
     def default_value(self) -> Any:
@@ -29,6 +38,14 @@ class ValueType(object):
     @property
     def display_name(self) -> Optional[str]:
         return self._display_name
+
+    @property
+    def readonly(self) -> bool:
+        return self._readonly
+
+    @property
+    def hidden(self) -> bool:
+        return self._hidden
 
     @abstractmethod
     def validate(self, value: Any) -> bool:
