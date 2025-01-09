@@ -275,7 +275,7 @@ if __name__ == "__main__":
         heading_level: 3
         show_root_full_path: false
 
-下面是一个相对完整的示例，展示了如何使用`show_schema_object_editor()`来编辑一个结构化对象：
+下面是一个相对完整的示例，展示了如何使用`show_schema_object_panel()`来编辑一个结构化对象：
 
 ```python
 from typing import Any, Dict
