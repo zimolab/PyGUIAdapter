@@ -23,6 +23,7 @@ nav:
   - 与用户交互: user-interaction.md
   - 界面美化: style.md
   - 自定义控件: custom-widget.md
+  - 结构化对象及其编辑器: schema-object.md
   - 实用函数: utility.md
   - 关于图标: icon_type.md
   - 应用打包: packaging.md

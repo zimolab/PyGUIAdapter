@@ -7,7 +7,8 @@
 - [`filedialog`]({{main_branch}}/pyguiadapter/utils/filedialog.py)，主要提供文件选择对话框功能。
 - [`messagebox`]({{main_branch}}/pyguiadapter/utils/messagebox.py)，主要提供消息对话框功能。
 - [`inputdialog`]({{main_branch}}/pyguiadapter/utils/inputdialog.py)，主要提供输入对话框功能。
-- [`editor`]({{main_branch}}/pyguiadapter/utils/editor.py) ，主要提供结构化对象编辑器功能。
+- [`editor`]({{main_branch}}/pyguiadapter/utils/editor.py) ，主要提供结构化对象编辑器功能。关于结构化对象及其编辑器，可以参考以下文档：
+[结构化对象及其编辑器](schema_editor.md)
 
 ## （二）使用方法
 
