@@ -98,7 +98,7 @@ def show_progress_dialog(
     ] = "autotext",
     initial_info: str = "",
     title: str = "Progress",
-    size: tuple = (400, 150),
+    size: tuple = (400, 100),
     modal: bool = True,
 ) -> None:
     """
