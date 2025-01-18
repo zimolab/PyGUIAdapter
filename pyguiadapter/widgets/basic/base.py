@@ -1,7 +1,7 @@
 import dataclasses
 import warnings
 from abc import abstractmethod
-from typing import Type, TypeVar, Callable, Tuple, Optional, Union
+from typing import Type, TypeVar, Callable, Tuple, Optional, Union, Sequence
 
 from pyqcodeeditor.QCodeEditor import QCodeEditor
 from pyqcodeeditor.QStyleSyntaxHighlighter import QStyleSyntaxHighlighter
@@ -26,7 +26,7 @@ from ...codeeditor.constants import (
     ACTION_SAVE_AS,
     CONFIRM_DIALOG_TITLE,
 )
-from ...constants.font import FONT_FAMILY, FONT_SIZE_CODE_TEXT
+from ...constants.font import FONT_FAMILY, CODE_TEXT_FONT_SIZE
 from ...exceptions import ParameterError
 from ...utils import messagebox
 from ...window import SimpleWindowEventListener
@@ -49,7 +49,7 @@ class StandaloneCodeEditorConfig(object):
     title: str = STANDALONE_EDITOR_TITLE
     """standalone编辑器窗口标题"""
 
-    text_font_family: Optional[str] = None
+    text_font_family: Union[Sequence[str], str, None] = None
     """standalone编辑器字体"""
 
     text_font_size: Optional[int] = None
@@ -106,10 +106,10 @@ class BaseCodeEditConfig(CommonParameterWidgetConfig):
     """BaseCodeEdit的配置类"""
 
     # 以下属性适用于inplace编辑器
-    text_font_size: Optional[int] = FONT_SIZE_CODE_TEXT
+    text_font_size: Optional[int] = CODE_TEXT_FONT_SIZE
     """inplace编辑器字体大小"""
 
-    text_font_family: Optional[str] = FONT_FAMILY
+    text_font_family: Union[Sequence[str], str, None] = FONT_FAMILY
     """inplace编辑器字体"""
 
     width: Optional[int] = EDITOR_WIDTH
@@ -239,9 +239,12 @@ class BaseCodeEdit(CommonParameterWidget):
             if config.text_font_size and config.text_font_size > 0:
                 self._inplace_editor.setFontSize(config.text_font_size)
 
-            if config.text_font_family and config.text_font_family.strip() != "":
+            if config.text_font_family:
                 font = self._inplace_editor.font()
-                font.setFamily(config.text_font_family)
+                if isinstance(config.text_font_family, str):
+                    font.setFamily(config.text_font_family)
+                else:
+                    font.setFamilies(config.text_font_family)
                 self._inplace_editor.setFont(font)
 
         return self._value_widget

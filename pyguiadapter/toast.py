@@ -182,11 +182,16 @@ class ToastWidget(QLabel):
 
     def _stylesheet(self) -> str:
         more_styles = self._config.styles or {}
+
+        font_family = self._config.font_family
+        if not isinstance(font_family, str):
+            font_family = ",".join(font_family)
+
         style_dict = {
             "background-color": f'"{self._config.background_color}"',
             "color": f'"{self._config.text_color}"',
             "font-size": f"{self._config.font_size}px",
-            "font-family": f'"{self._config.font_family}"',
+            "font-family": f'"{font_family}"',
             "padding": f"{self._config.text_padding}",
             **more_styles,
         }

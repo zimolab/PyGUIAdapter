@@ -2,7 +2,7 @@ import dataclasses
 import inspect
 import os
 from abc import abstractmethod
-from typing import Type, Callable, Tuple, Optional, Union, List
+from typing import Type, Callable, Tuple, Optional, Union, List, Sequence
 
 from pyqcodeeditor.QCodeEditor import QCodeEditor
 from pyqcodeeditor.QStyleSyntaxHighlighter import QStyleSyntaxHighlighter
@@ -50,7 +50,7 @@ class CodeEditorConfig(BaseWindowConfig):
     auto_indent: bool = True
     auto_parentheses: bool = True
     text_font_size: Optional[int] = None
-    text_font_family: Optional[str] = None
+    text_font_family: Union[Sequence[str], str, None] = None
     tab_size: int = DEFAULT_TAB_SIZE
     tab_replace: bool = True
     initial_text: str = ""
@@ -242,11 +242,14 @@ class BaseCodeEditorWindow(BaseWindow):
             raise ValueError(f"invalid size: {size}")
         self._editor.setFontSize(size)
 
-    def set_text_font_family(self, family: Optional[str]):
-        if family is None or family.strip() == "":
+    def set_text_font_family(self, family: Union[Sequence[str], str, None]):
+        if not family:
             return
         font = self._editor.font()
-        font.setFamily(family)
+        if isinstance(family, str):
+            font.setFamily(family)
+        else:
+            font.setFamilies(family)
         self._editor.setFont(font)
 
     def get_text_font_size(self) -> Optional[int]:

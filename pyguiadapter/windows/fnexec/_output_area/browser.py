@@ -1,5 +1,5 @@
 import dataclasses
-from typing import Optional
+from typing import Optional, Union, Sequence
 
 from qtpy.QtWidgets import QWidget
 
@@ -16,7 +16,7 @@ class OutputBrowserConfig(TextBrowserConfig):
     """输出浏览器配置类。"""
 
     text_color: str = COLOR_TERMINAL_TEXT_CLASSIC
-    font_family: str = FONT_FAMILY
+    font_family: Union[Sequence[str], str, None] = FONT_FAMILY
     background_color: str = COLOR_TERMINAL_BACKGROUND_CLASSIC
 
 

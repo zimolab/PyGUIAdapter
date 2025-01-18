@@ -38,7 +38,7 @@ class TextBrowserConfig(object):
     text_color: str = COLOR_BASE_TEXT
     """文本颜色。"""
 
-    font_family: Union[Sequence[str], str] = None
+    font_family: Union[Sequence[str], str, None] = None
     "文本的字体系列。"
 
     font_size: Optional[int] = None

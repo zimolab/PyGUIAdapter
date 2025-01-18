@@ -373,7 +373,9 @@ class BaseWindow(QMainWindow):
         pos = self.pos()
         return pos.x(), pos.y()
 
-    def set_font(self, font_family: Union[str, Sequence[str]], font_size: int) -> None:
+    def set_font(
+        self, font_family: Union[str, Sequence[str], None], font_size: int
+    ) -> None:
         """
         设置窗口字体。
 
@@ -386,18 +388,16 @@ class BaseWindow(QMainWindow):
 
         """
         font = self.font()
+
         if not font_family:
             pass
         elif isinstance(font_family, str):
             font.setFamily(font_family)
-        elif isinstance(font_family, Sequence):
-            font = self.font()
-            font.setFamilies(font_family)
         else:
-            raise TypeError(f"invalid font_family type: {type(font_family)}")
+            font.setFamilies(font_family)
+
         if font_size and font_size > 0:
             font.setPixelSize(font_size)
-            # font.setPointSize(font_size)
         self.setFont(font)
 
     def get_font_size(self) -> int:
