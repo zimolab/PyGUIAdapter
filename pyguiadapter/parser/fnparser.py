@@ -4,7 +4,9 @@ import warnings
 from collections import OrderedDict
 from typing import Callable, Literal, List, Tuple, Set, Dict, Any, Type, Union, Optional
 
-import tomli
+# fix issue: https://github.com/zimolab/PyGUIAdapter/issues/4
+# import tomli
+import tomlkit
 
 from .docstring import FnDocstring
 from .typenames import get_typename, get_type_args
@@ -25,13 +27,13 @@ UNSET = _Unset
 
 @dataclasses.dataclass
 class WidgetMeta(object):
-    widget_class: Union[str, None, UNSET] = UNSET
-    default_value: Union[Any, UNSET] = UNSET
-    label: Union[str, None, UNSET] = UNSET
-    description: Union[str, None, UNSET] = UNSET
-    default_value_description: Union[str, None, UNSET] = UNSET
-    stylesheet: Union[str, None, UNSET] = UNSET
-    custom_configs: Union[Dict[str, Any], UNSET] = UNSET
+    widget_class: Union[str, None, Type[_Unset]] = UNSET
+    default_value: Union[Any, Type[_Unset]] = UNSET
+    label: Union[str, None, Type[_Unset]] = UNSET
+    description: Union[str, None, Type[_Unset]] = UNSET
+    default_value_description: Union[str, None, Type[_Unset]] = UNSET
+    stylesheet: Union[str, None, Type[_Unset]] = UNSET
+    custom_configs: Union[Dict[str, Any], Type[_Unset]] = UNSET
 
     def to_config_dict(self) -> Dict[str, Any]:
         config_dict = dataclasses.asdict(self)
@@ -142,7 +144,8 @@ class FnParser(object):
         meta_text = meta_text.strip()
 
         try:
-            metadata = tomli.loads(meta_text)
+            # metadata = tomli.loads(meta_text)
+            metadata = tomlkit.parse(meta_text).unwrap()
             if not isinstance(metadata, dict):
                 raise ValueError("invalid widget configs text")
         except Exception as e:
