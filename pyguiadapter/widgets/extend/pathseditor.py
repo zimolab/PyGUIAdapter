@@ -96,7 +96,7 @@ class PathsEditorConfig(CommonParameterWidgetConfig):
     """路径编辑对话框中中心容器的标题"""
 
     @classmethod
-    def target_widget_config(cls) -> Type["PathsEditor"]:
+    def target_widget_class(cls) -> Type["PathsEditor"]:
         return PathsEditor
 
 

@@ -1,6 +1,7 @@
 from pyguiadapter.adapter import GUIAdapter
 from pyguiadapter.adapter.uoutput import uprint
 from pyguiadapter.extend_types import paths_t
+from pyguiadapter.widgets import PathsEditorConfig
 
 
 def paths_t_example(arg1: paths_t, arg2: paths_t, arg3: paths_t):
@@ -34,6 +35,7 @@ def paths_t_example(arg1: paths_t, arg2: paths_t, arg3: paths_t):
 
 
 if __name__ == "__main__":
+    widget_configs = {"arg1": PathsEditorConfig()}
     adapter = GUIAdapter()
-    adapter.add(paths_t_example)
+    adapter.add(paths_t_example, widget_configs=widget_configs)
     adapter.run()
