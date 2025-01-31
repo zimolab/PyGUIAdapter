@@ -167,7 +167,7 @@ class PathsEditor(CommonParameterWidget):
             directory_dialog_title=config.dir_dialog_title,
             confirm_dialog_title=config.confirm_dialog_title,
             warning_dialog_title=config.warning_dialog_title,
-            add_button_text=config.edit_button_text,
+            edit_button_text=config.edit_button_text,
             remove_button_text=config.remove_button_text,
             clear_button_text=config.clear_button_text,
             move_up_button_text=config.up_button_text,
