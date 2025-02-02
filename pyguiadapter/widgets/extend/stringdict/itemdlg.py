@@ -1,6 +1,7 @@
 import dataclasses
 from pathlib import Path
 
+from PySide2.QtWidgets import QFileDialog
 from qtpy.QtCore import Qt
 from qtpy.QtWidgets import (
     QDialog,
@@ -16,7 +17,8 @@ from qtpy.QtWidgets import (
     QDialogButtonBox,
     QMessageBox,
 )
-from qtpy.compat import getopenfilename, getexistingdirectory
+
+# from qtpy.compat import getopenfilename, getexistingdirectory
 from typing import Optional, Tuple
 
 _DEFAULT_SIZE = (655, 185)
@@ -164,11 +166,17 @@ class StringDictItemEditor(QDialog):
         self.reject()
 
     def _on_browse_file(self):
-        filename, _ = getopenfilename(
-            parent=self,
-            basedir=self._browse_file_start_dir or "",
-            filters=self._browse_file_filters or "",
-            caption=self._browse_file_dialog_title,
+        # filename, _ = getopenfilename(
+        #     parent=self,
+        #     basedir=self._browse_file_start_dir or "",
+        #     filters=self._browse_file_filters or "",
+        #     caption=self._browse_file_dialog_title,
+        # )
+        filename, _ = QFileDialog.getOpenFileName(
+            self,
+            self._browse_file_dialog_title,
+            self._browse_file_start_dir or "",
+            self._browse_file_filters or "",
         )
         if not filename:
             return
@@ -178,10 +186,15 @@ class StringDictItemEditor(QDialog):
             self._value_edit.setText(filename)
 
     def _on_browse_dir(self):
-        dir_name = getexistingdirectory(
-            parent=self,
-            basedir=self._browse_dir_start_dir or "",
-            caption=self._browse_dir_dialog_title,
+        # dir_name = getexistingdirectory(
+        #     parent=self,
+        #     basedir=self._browse_dir_start_dir or "",
+        #     caption=self._browse_dir_dialog_title,
+        # )
+        dir_name = QFileDialog.getExistingDirectory(
+            self,
+            self._browse_dir_dialog_title,
+            self._browse_dir_start_dir or "",
         )
         if not dir_name:
             return

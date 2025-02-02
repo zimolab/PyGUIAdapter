@@ -8,7 +8,6 @@
 
 from typing import List, Optional
 
-from qtpy import compat
 from qtpy.QtCore import QUrl
 from qtpy.QtWidgets import QWidget, QFileDialog
 
@@ -30,7 +29,7 @@ def get_existing_directory(
         用户选择的目录路径，如果用户取消选择，则返回None。
 
     """
-    return compat.getexistingdirectory(parent, title, start_dir) or None
+    return QFileDialog.getExistingDirectory(parent, title, start_dir) or None
 
 
 def get_existing_directory_url(
@@ -89,7 +88,7 @@ def get_open_file(
     Returns:
         用户选择的文件路径，如果用户取消选择，则返回None。
     """
-    filename, _ = compat.getopenfilename(parent, title, start_dir, filters)
+    filename, _ = QFileDialog.getOpenFileName(parent, title, start_dir, filters)
     return filename or None
 
 
@@ -111,8 +110,7 @@ def get_open_files(
     Returns:
         用户选择的文件路径列表，如果用户取消选择，则返回None。
     """
-    filenames, _ = compat.getopenfilenames(parent, title, start_dir, filters)
-    return filenames or None
+    return QFileDialog.getOpenFileNames(parent, title, start_dir, filters)[0] or None
 
 
 def get_save_file(
@@ -133,5 +131,5 @@ def get_save_file(
     Returns:
         用户选择的保存文件路径，如果用户取消选择，则返回None。
     """
-    filename, _ = compat.getsavefilename(parent, title, start_dir, filters)
+    filename, _ = QFileDialog.getSaveFileName(parent, title, start_dir, filters)
     return filename or None
