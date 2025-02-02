@@ -1,7 +1,6 @@
 import dataclasses
 from pathlib import Path
 
-from PySide2.QtWidgets import QFileDialog
 from qtpy.QtCore import Qt
 from qtpy.QtWidgets import (
     QDialog,
@@ -16,9 +15,9 @@ from qtpy.QtWidgets import (
     QSpacerItem,
     QDialogButtonBox,
     QMessageBox,
+    QFileDialog,
 )
 
-# from qtpy.compat import getopenfilename, getexistingdirectory
 from typing import Optional, Tuple
 
 _DEFAULT_SIZE = (655, 185)
