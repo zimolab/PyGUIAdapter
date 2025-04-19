@@ -73,10 +73,10 @@ class StandaloneCodeEditorConfig(object):
     use_default_menus: bool = True
     """是否使用默认菜单栏"""
 
-    excluded_menus: Tuple[str] = ()
+    excluded_menus: Tuple[str, ...] = ()
     """禁用的默认菜单"""
 
-    excluded_menu_actions: Tuple[Tuple[str, str]] = (
+    excluded_menu_actions: Tuple[Tuple[str, str], ...] = (
         (MENU_FILE, ACTION_SAVE),
         (MENU_FILE, ACTION_SAVE_AS),
     )
