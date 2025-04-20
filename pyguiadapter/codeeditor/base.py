@@ -76,7 +76,7 @@ class CodeEditorConfig(BaseWindowConfig):
     format_failed_message: Optional[str] = None
 
     use_default_menus: bool = True
-    excluded_menus: Tuple[str] = ()
+    excluded_menus: Tuple[str, ...] = ()
     excluded_menu_actions: Tuple[Tuple[str, str], ...] = ()
 
     use_default_toolbar: bool = True
