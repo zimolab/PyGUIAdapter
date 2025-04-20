@@ -100,8 +100,8 @@ class BaseCodeEditorWindow(BaseWindow):
         super().__init__(parent, config, listener, toolbar, menus)
 
     def apply_configs(self):
+        assert isinstance(self._config, CodeEditorConfig)
         super().apply_configs()
-        self._config: CodeEditorConfig
         self.set_highlighter(self._config.highlighter)
         self.set_completer(self._config.completer)
         self.set_auto_indent_enabled(self._config.auto_indent)
@@ -114,7 +114,7 @@ class BaseCodeEditorWindow(BaseWindow):
         self.set_word_wrap_mode(self._config.word_wrap_mode)
 
     def _create_ui(self):
-        self._config: CodeEditorConfig
+        assert isinstance(self._config, CodeEditorConfig)
 
         center_widget = QWidget(self)
         self._editor = QCodeEditor(center_widget)
@@ -170,7 +170,7 @@ class BaseCodeEditorWindow(BaseWindow):
         pass
 
     def _update_title(self):
-        self._config: CodeEditorConfig
+        assert isinstance(self._config, CodeEditorConfig)
         if self._config.title is None:
             win_title = DEFAULT_WINDOW_TITLE
         else:
@@ -285,13 +285,13 @@ class BaseCodeEditorWindow(BaseWindow):
         return current_fingerprint != self._current_fingerprint()
 
     def check_modification(self) -> bool:
-        self._config: CodeEditorConfig
+        assert isinstance(self._config, CodeEditorConfig)
         if not self._config.check_unsaved_changes:
             return False
         return self.is_modified()
 
     def open_file(self):
-        self._config: CodeEditorConfig
+        assert isinstance(self._config, CodeEditorConfig)
         if self.check_modification():
             # noinspection PyUnresolvedReferences
             ret = utils.show_question_message(
@@ -333,15 +333,19 @@ class BaseCodeEditorWindow(BaseWindow):
             self._update_title()
 
     def save_file(self):
-        self._config: CodeEditorConfig
+        assert isinstance(self._config, CodeEditorConfig)
+
         if self._config.no_file_mode:
             return
+
         current_file = self._current_file()
         if not current_file:
-            return self.save_as_file()
+            self.save_as_file()
+            return
 
         if not self.check_modification():
             return
+
         try:
             utils.write_text_file(
                 current_file, self.get_text(), encoding=self._config.file_encoding
@@ -359,9 +363,11 @@ class BaseCodeEditorWindow(BaseWindow):
             self._update_fingerprint()
 
     def save_as_file(self):
-        self._config: CodeEditorConfig
+        assert isinstance(self._config, CodeEditorConfig)
+
         if self._config.no_file_mode:
             return
+
         filepath = utils.get_save_file(
             self,
             title=self._config.save_as_dialog_title or SAVE_AS_DIALOG_TITLE,
@@ -370,6 +376,7 @@ class BaseCodeEditorWindow(BaseWindow):
         )
         if not filepath:
             return
+
         try:
             utils.write_text_file(
                 filepath, self.get_text(), encoding=self._config.file_encoding
@@ -389,7 +396,7 @@ class BaseCodeEditorWindow(BaseWindow):
             self._update_title()
 
     def format_code(self):
-        self._config: CodeEditorConfig
+        assert isinstance(self._config, CodeEditorConfig)
         if not self._config.formatter:
             return
 
