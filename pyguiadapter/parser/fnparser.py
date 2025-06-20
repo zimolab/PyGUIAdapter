@@ -71,6 +71,7 @@ class FnParser(object):
         icon: IconType = None,
         group: Optional[str] = None,
         ignore_self_param: bool = True,
+        capture_system_exit_exception=True,
     ) -> FnInfo:
         if not inspect.ismethod(fn) and not inspect.isfunction(fn):
             raise ValueError("fn must be a function or method")
@@ -102,6 +103,7 @@ class FnParser(object):
             icon=icon,
             group=group,
             parameters=self._parse_fn_params(fn, fn_docstring, ignore_self_param),
+            capture_system_exit_exception=capture_system_exit_exception,
         )
 
     def parse_widget_configs(
