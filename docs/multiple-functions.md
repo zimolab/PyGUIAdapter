@@ -173,7 +173,7 @@ if __name__ == "__main__":
     <img src="../assets/html_docstring.png" />
 </div>
 
-> 
+>
 
 ```python
 from pyguiadapter.adapter import GUIAdapter
@@ -304,22 +304,22 @@ DOCUMENT_PATH = os.path.join(os.path.dirname(__file__), "anchors_in_document.md"
 
 
 def anchors_in_document(
-    a: str,
-    b: str,
-    c: str,
-    d: str,
-    e: str,
-    f: str,
-    g: str,
-    h: str,
-    i: str,
-    j: str,
-    k: str,
-    l: str,
-    m: str,
-    n: str,
-    o: str,
-    p: str,
+        a: str,
+        b: str,
+        c: str,
+        d: str,
+        e: str,
+        f: str,
+        g: str,
+        h: str,
+        i: str,
+        j: str,
+        k: str,
+        l: str,
+        m: str,
+        n: str,
+        o: str,
+        p: str,
 ):
     """
     This is an example demonstrating how to use parameter anchors and group anchors in the document of function.
@@ -346,7 +346,6 @@ def anchors_in_document(
 
 
 if __name__ == "__main__":
-
     widget_configs = {
         # parameters in Group-A
         "a": {"group": "Group-A"},
@@ -372,17 +371,12 @@ if __name__ == "__main__":
 
     document = read_text_file(DOCUMENT_PATH)
     adapter = GUIAdapter()
-    adapter.add(
-        anchors_in_document,
-        document=document,
-        document_format="markdown",
-        widget_configs=widget_configs,
-        window_config=FnExecuteWindowConfig(
-            document_browser_config=DocumentBrowserConfig(
-                parameter_anchor=True, group_anchor=True
-            )
-        ),
-    )
+    adapter.add(anchors_in_document, document=document, document_format="markdown", widget_configs=widget_configs,
+                window_config=FnExecuteWindowConfig(
+                    document_browser_config=DocumentBrowserConfig(
+                        parameter_anchor=True, group_anchor=True
+                    )
+                ))
     adapter.run()
 ```
 
@@ -403,8 +397,6 @@ if __name__ == "__main__":
 </div>
 
 > [examples/function_groups_example.py]({{main_branch}}/examples/function_groups_example.py)
-
-
 
 ```python
 from pyguiadapter.adapter import GUIAdapter

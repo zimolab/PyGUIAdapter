@@ -38,8 +38,5 @@ if __name__ == "__main__":
         editor_width=0,
     )
     adapter = GUIAdapter()
-    adapter.add(
-        list_example,
-        widget_configs={"arg3": arg3_conf},
-    )
+    adapter.add(list_example, widget_configs={"arg3": arg3_conf})
     adapter.run()

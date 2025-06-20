@@ -44,8 +44,5 @@ if __name__ == "__main__":
         alignment=TimeEdit.AlignCenter,
     )
     adapter = GUIAdapter()
-    adapter.add(
-        time_example,
-        widget_configs={"arg1": arg1_conf, "arg2": arg2_conf},
-    )
+    adapter.add(time_example, widget_configs={"arg1": arg1_conf, "arg2": arg2_conf})
     adapter.run()

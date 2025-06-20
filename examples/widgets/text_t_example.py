@@ -39,8 +39,5 @@ if __name__ == "__main__":
     )
 
     adapter = GUIAdapter()
-    adapter.add(
-        text_t_example,
-        widget_configs={"arg3": arg3_conf},
-    )
+    adapter.add(text_t_example, widget_configs={"arg3": arg3_conf})
     adapter.run()

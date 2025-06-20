@@ -144,9 +144,9 @@ if __name__ == "__main__":
     adapter = GUIAdapter()
     adapter.add(
         menu_toolbar_example,
-        window_menus=[menu_file, menu_help],
         window_toolbar=ToolBar(
             actions=[action_open, action_save, Separator(), action_close]
         ),
+        window_menus=[menu_file, menu_help],
     )
     adapter.run()

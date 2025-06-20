@@ -244,7 +244,7 @@ foo_configs = {
         label="c",
         description="parameter c",
     ),
-	}
+}
 
 adapter = GUIAdapter()
 adapter.add(foo, widget_configs=foo_configs)
@@ -262,8 +262,10 @@ adapter.run()
 ```python
 from pyguiadapter.adapter import GUIAdapter
 
+
 def foo2(a: int, b: int, c: str = "hello world!"):
     pass
+
 
 foo2_configs = {
     "a": {
@@ -287,7 +289,6 @@ foo2_configs = {
         "description": "parameter c",
     },
 }
-
 
 adapter = GUIAdapter()
 adapter.add(foo2, widget_configs=foo2_configs)

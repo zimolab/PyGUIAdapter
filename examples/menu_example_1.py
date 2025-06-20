@@ -203,5 +203,5 @@ if __name__ == "__main__":
     #################Window Event Listener##################
 
     adapter = GUIAdapter()
-    adapter.add(menu_example, window_menus=menus, window_listener=window_listener)
+    adapter.add(menu_example, window_listener=window_listener, window_menus=menus)
     adapter.run()

@@ -70,8 +70,6 @@ if __name__ == "__main__":
     adapter = GUIAdapter()
     adapter.add(
         equation_solver_5,
-        window_menus=[menu_help],
-        window_config=window_config,
         widget_configs={
             "a": FloatSpinBoxConfig(
                 default_value=1.0,
@@ -81,5 +79,7 @@ if __name__ == "__main__":
             "b": FloatSpinBoxConfig(decimals=5, step=0.00005),
             "c": FloatSpinBoxConfig(decimals=5, step=0.00005),
         },
+        window_config=window_config,
+        window_menus=[menu_help],
     )
     adapter.run()

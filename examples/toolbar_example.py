@@ -163,6 +163,6 @@ if __name__ == "__main__":
 
     adapter = GUIAdapter()
     adapter.add(
-        toolbar_example, window_toolbar=toolbar, window_listener=window_listener
+        toolbar_example, window_listener=window_listener, window_toolbar=toolbar
     )
     adapter.run()

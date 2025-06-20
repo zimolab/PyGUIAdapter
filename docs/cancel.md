@@ -46,11 +46,8 @@ def cancel_function_example(target: int = 10, delay_per_iter: float = 0.5):
 
 if __name__ == "__main__":
     adapter = GUIAdapter()
-    adapter.add(
-        cancel_function_example,
-        cancelable=True,
-        window_config=FnExecuteWindowConfig(disable_widgets_on_execute=True),
-    )
+    adapter.add(cancel_function_example, cancelable=True,
+                window_config=FnExecuteWindowConfig(disable_widgets_on_execute=True))
     adapter.run()
 
 ```

@@ -93,7 +93,6 @@ def fn4():
 
 
 if __name__ == "__main__":
-
     select_window_config = FnSelectWindowConfig(
         title="My Tool Kit",
         icon="fa5s.tools",
@@ -381,24 +380,16 @@ def function_2(arg1: int, arg2: str, arg3: bool) -> None:
 
 if __name__ == "__main__":
     adapter = GUIAdapter()
-    adapter.add(
-        function_1,
-        # set window config for function_1
-        window_config=FnExecuteWindowConfig(
-            title="Function 1", clear_checkbox_visible=True
-        ),
-    )
-    adapter.add(
-        function_2,
-        # set window config for function_2
-        window_config=FnExecuteWindowConfig(
-            title="Function 2",
-            size=(400, 600),
-            clear_checkbox_visible=False,
-            clear_checkbox_checked=False,
-            document_dock_visible=False,
-        ),
-    )
+    adapter.add(function_1, window_config=FnExecuteWindowConfig(
+        title="Function 1", clear_checkbox_visible=True
+    ))
+    adapter.add(function_2, window_config=FnExecuteWindowConfig(
+        title="Function 2",
+        size=(400, 600),
+        clear_checkbox_visible=False,
+        clear_checkbox_checked=False,
+        document_dock_visible=False,
+    ))
     adapter.run()
 
 ```
@@ -429,13 +420,13 @@ def equation_solver(a: float, b: float, c: float) -> Optional[tuple]:
     if a == 0:
         raise ParameterError(parameter_name="a", message="a cannot be zero!")
 
-    delta = b**2 - 4 * a * c
+    delta = b ** 2 - 4 * a * c
     if delta < 0:
         return None
-    x1 = (-b + delta**0.5) / (2 * a)
+    x1 = (-b + delta ** 0.5) / (2 * a)
     if delta == 0:
         return x1, x1
-    x2 = (-b - delta**0.5) / (2 * a)
+    x2 = (-b - delta ** 0.5) / (2 * a)
     return x1, x2
 
 

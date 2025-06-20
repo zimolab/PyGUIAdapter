@@ -289,7 +289,7 @@ from pyguiadapter.windows.fnexec import FnExecuteWindowConfig
 
 
 def equation_solver_2(
-    a: float = 1.0, b: float = 0.0, c: float = 0.0
+        a: float = 1.0, b: float = 0.0, c: float = 0.0
 ) -> Optional[tuple]:
     """A simple equation solver for equations like:
 
@@ -304,13 +304,13 @@ def equation_solver_2(
         raise ParameterError(parameter_name="a", message="a cannot be zero!")
     uprint(f"Equation:")
     uprint(f"  {a}x² + {b}x + {c} = 0")
-    delta = b**2 - 4 * a * c
+    delta = b ** 2 - 4 * a * c
     if delta < 0:
         return None
-    x1 = (-b + delta**0.5) / (2 * a)
+    x1 = (-b + delta ** 0.5) / (2 * a)
     if delta == 0:
         return x1, x1
-    x2 = (-b - delta**0.5) / (2 * a)
+    x2 = (-b - delta ** 0.5) / (2 * a)
     return x1, x2
 
 
@@ -390,7 +390,7 @@ from pyguiadapter.windows.fnexec import FnExecuteWindowConfig
 
 
 def equation_solver_3(
-    a: float = 1.0, b: float = 0.0, c: float = 0.0
+        a: float = 1.0, b: float = 0.0, c: float = 0.0
 ) -> Optional[tuple]:
     """A simple equation solver for equations like:
 
@@ -420,13 +420,13 @@ def equation_solver_3(
         raise ParameterError(parameter_name="a", message="a cannot be zero!")
     uprint(f"Equation:")
     uprint(f"  {a}x² + {b}x + {c} = 0")
-    delta = b**2 - 4 * a * c
+    delta = b ** 2 - 4 * a * c
     if delta < 0:
         return None
-    x1 = (-b + delta**0.5) / (2 * a)
+    x1 = (-b + delta ** 0.5) / (2 * a)
     if delta == 0:
         return x1, x1
-    x2 = (-b - delta**0.5) / (2 * a)
+    x2 = (-b - delta ** 0.5) / (2 * a)
     return x1, x2
 
 
@@ -484,7 +484,7 @@ from pyguiadapter.windows.fnexec import FnExecuteWindowConfig
 
 
 def equation_solver_4(
-    a: float = 1.0, b: float = 0.0, c: float = 0.0
+        a: float = 1.0, b: float = 0.0, c: float = 0.0
 ) -> Optional[tuple]:
     """A simple equation solver for equations like:
 
@@ -499,13 +499,13 @@ def equation_solver_4(
         raise ParameterError(parameter_name="a", message="a cannot be zero!")
     uprint(f"Equation:")
     uprint(f"  {a}x² + {b}x + {c} = 0")
-    delta = b**2 - 4 * a * c
+    delta = b ** 2 - 4 * a * c
     if delta < 0:
         return None
-    x1 = (-b + delta**0.5) / (2 * a)
+    x1 = (-b + delta ** 0.5) / (2 * a)
     if delta == 0:
         return x1, x1
-    x2 = (-b - delta**0.5) / (2 * a)
+    x2 = (-b - delta ** 0.5) / (2 * a)
     return x1, x2
 
 
@@ -523,19 +523,15 @@ if __name__ == "__main__":
     )
 
     adapter = GUIAdapter()
-    adapter.add(
-        equation_solver_4,
-        window_config=window_config,
-        widget_configs={
-            "a": FloatSpinBoxConfig(
-                default_value=1.0,
-                decimals=5,
-                step=0.00005,
-            ),
-            "b": FloatSpinBoxConfig(decimals=5, step=0.00005),
-            "c": FloatSpinBoxConfig(decimals=5, step=0.00005),
-        },
-    )
+    adapter.add(equation_solver_4, widget_configs={
+        "a": FloatSpinBoxConfig(
+            default_value=1.0,
+            decimals=5,
+            step=0.00005,
+        ),
+        "b": FloatSpinBoxConfig(decimals=5, step=0.00005),
+        "c": FloatSpinBoxConfig(decimals=5, step=0.00005),
+    }, window_config=window_config)
     adapter.run()
 
 ```
@@ -562,7 +558,7 @@ from pyguiadapter.windows.fnexec import FnExecuteWindowConfig, FnExecuteWindow
 
 
 def equation_solver_5(
-    a: float = 1.0, b: float = 0.0, c: float = 0.0
+        a: float = 1.0, b: float = 0.0, c: float = 0.0
 ) -> Optional[tuple]:
     """A simple equation solver for equations like:
 
@@ -577,13 +573,13 @@ def equation_solver_5(
         raise ParameterError(parameter_name="a", message="a cannot be zero!")
     uprint(f"Equation:")
     uprint(f"  {a}x² + {b}x + {c} = 0")
-    delta = b**2 - 4 * a * c
+    delta = b ** 2 - 4 * a * c
     if delta < 0:
         return None
-    x1 = (-b + delta**0.5) / (2 * a)
+    x1 = (-b + delta ** 0.5) / (2 * a)
     if delta == 0:
         return x1, x1
-    x2 = (-b - delta**0.5) / (2 * a)
+    x2 = (-b - delta ** 0.5) / (2 * a)
     return x1, x2
 
 
@@ -604,6 +600,7 @@ if __name__ == "__main__":
         print_function_result=False,
     )
 
+
     def on_action_about(wind: FnExecuteWindow, action: Action):
         messagebox.show_text_file(
             wind,
@@ -612,24 +609,20 @@ if __name__ == "__main__":
             title="About",
         )
 
+
     action_about = Action(text="About", on_triggered=on_action_about)
     menu_help = Menu(title="Help", actions=[action_about])
 
     adapter = GUIAdapter()
-    adapter.add(
-        equation_solver_5,
-        window_menus=[menu_help],
-        window_config=window_config,
-        widget_configs={
-            "a": FloatSpinBoxConfig(
-                default_value=1.0,
-                decimals=5,
-                step=0.00005,
-            ),
-            "b": FloatSpinBoxConfig(decimals=5, step=0.00005),
-            "c": FloatSpinBoxConfig(decimals=5, step=0.00005),
-        },
-    )
+    adapter.add(equation_solver_5, widget_configs={
+        "a": FloatSpinBoxConfig(
+            default_value=1.0,
+            decimals=5,
+            step=0.00005,
+        ),
+        "b": FloatSpinBoxConfig(decimals=5, step=0.00005),
+        "c": FloatSpinBoxConfig(decimals=5, step=0.00005),
+    }, window_config=window_config, window_menus=[menu_help])
     adapter.run()
 
 ```

@@ -243,6 +243,8 @@ if __name__ == "__main__":
         allowed_areas=RightToolBarArea | LeftToolBarArea | TopToolBarArea,
         button_style=ToolButtonTextUnderIcon,
     )
+
+
     ###################~ToolBar#############################
 
     ################Window Event Listener###################
@@ -250,6 +252,7 @@ if __name__ == "__main__":
         print("on_window_create()")
         # make action_confirm_quit checked after the select window is created
         window.set_action_state(action_confirm_quit, True)
+
 
     def on_window_close(window: FnExecuteWindow) -> bool:
         # get the state of action_confirm_quit
@@ -267,15 +270,14 @@ if __name__ == "__main__":
             return ret == messagebox.Yes
         return True
 
+
     window_listener = SimpleWindowEventListener(
         on_create=on_window_create, on_close=on_window_close
     )
     #################Window Event Listener##################
 
     adapter = GUIAdapter()
-    adapter.add(
-        toolbar_example, window_toolbar=toolbar, window_listener=window_listener
-    )
+    adapter.add(toolbar_example, window_listener=window_listener, window_toolbar=toolbar)
     adapter.run()
 
 ```

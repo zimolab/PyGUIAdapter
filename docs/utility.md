@@ -95,6 +95,7 @@ def on_action_open(window: FnExecuteWindow, _: Action):
 ```
 
 完整的示例代码如下：
+
 ```python
 from pyguiadapter.action import Action, Separator
 from pyguiadapter.adapter import GUIAdapter
@@ -240,13 +241,9 @@ def menu_toolbar_example(arg1: int, arg2: str, arg3: bool):
 
 if __name__ == "__main__":
     adapter = GUIAdapter()
-    adapter.add(
-        menu_toolbar_example,
-        window_menus=[menu_file, menu_help],
-        window_toolbar=ToolBar(
-            actions=[action_open, action_save, Separator(), action_close]
-        ),
-    )
+    adapter.add(menu_toolbar_example, window_toolbar=ToolBar(
+        actions=[action_open, action_save, Separator(), action_close]
+    ), window_menus=[menu_file, menu_help])
     adapter.run()
 ```
 

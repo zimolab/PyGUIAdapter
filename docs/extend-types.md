@@ -57,17 +57,13 @@ def text_t_example(arg1: text_t, arg2: text_t, arg3: text_t = "foo") -> str:
 
 
 if __name__ == "__main__":
-
     arg3_conf = TextEditConfig(
         default_value="bar",
         placeholder="Please input some text here!",
     )
 
     adapter = GUIAdapter()
-    adapter.add(
-        text_t_example,
-        widget_configs={"arg3": arg3_conf},
-    )
+    adapter.add(text_t_example, widget_configs={"arg3": arg3_conf})
     adapter.run()
 ```
 
@@ -140,7 +136,6 @@ def int_t_example(arg1: int_t, arg2: int_t, arg3: int_t = 100) -> int:
 
 
 if __name__ == "__main__":
-
     arg3_conf = IntLineEditConfig(
         default_value=-99,
         min_value=-100,
@@ -151,10 +146,7 @@ if __name__ == "__main__":
     )
 
     adapter = GUIAdapter()
-    adapter.add(
-        int_t_example,
-        widget_configs={"arg3": arg3_conf},
-    )
+    adapter.add(int_t_example, widget_configs={"arg3": arg3_conf})
     adapter.run()
 ```
 
@@ -227,7 +219,6 @@ def float_t_example(arg1: float_t, arg2: float_t, arg3: float_t = 100) -> float:
 
 
 if __name__ == "__main__":
-
     arg3_conf = FloatLineEditConfig(
         default_value=-0.00005,
         min_value=-100.0,
@@ -240,10 +231,7 @@ if __name__ == "__main__":
     )
 
     adapter = GUIAdapter()
-    adapter.add(
-        float_t_example,
-        widget_configs={"arg3": arg3_conf},
-    )
+    adapter.add(float_t_example, widget_configs={"arg3": arg3_conf})
     adapter.run()
 ```
 
@@ -286,7 +274,7 @@ from pyguiadapter.widgets.extend.slider import TickPosition
 
 
 def int_slider_t_example(
-    arg1: int_slider_t, arg2: int_slider_t, arg3: int_slider_t = 100
+        arg1: int_slider_t, arg2: int_slider_t, arg3: int_slider_t = 100
 ) -> int:
     """
     This is an example for **int_slider_t** type hint and **Slider** widget.
@@ -320,7 +308,6 @@ def int_slider_t_example(
 
 
 if __name__ == "__main__":
-
     arg3_conf = SliderConfig(
         default_value=-99,
         min_value=-100,
@@ -333,10 +320,7 @@ if __name__ == "__main__":
     )
 
     adapter = GUIAdapter()
-    adapter.add(
-        int_slider_t_example,
-        widget_configs={"arg3": arg3_conf},
-    )
+    adapter.add(int_slider_t_example, widget_configs={"arg3": arg3_conf})
     adapter.run()
 ```
 
@@ -378,7 +362,7 @@ from pyguiadapter.widgets import DialConfig
 
 
 def int_dial_t_example(
-    arg1: int_dial_t, arg2: int_dial_t, arg3: int_dial_t = 100
+        arg1: int_dial_t, arg2: int_dial_t, arg3: int_dial_t = 100
 ) -> int:
     """
     This is an example for **int_dial_t** type hint and **Dial** widget.
@@ -412,7 +396,6 @@ def int_dial_t_example(
 
 
 if __name__ == "__main__":
-
     arg3_conf = DialConfig(
         default_value=-99,
         min_value=-100,
@@ -464,9 +447,9 @@ from pyguiadapter.widgets import ColorHexPickerConfig
 
 
 def color_hex_t_example(
-    arg1: color_hex_t,
-    arg2: color_hex_t,
-    arg3: color_hex_t = "red",
+        arg1: color_hex_t,
+        arg2: color_hex_t,
+        arg3: color_hex_t = "red",
 ):
     """
     This is an example for type **color_hex_t** type hint and **ColorPicker** widget.
@@ -490,9 +473,7 @@ if __name__ == "__main__":
     arg2_conf = ColorHexPickerConfig(default_value="#effeedff", alpha_channel=True)
     arg3_conf = ColorHexPickerConfig(display_color_name=False)
     adapter = GUIAdapter()
-    adapter.add(
-        color_hex_t_example, widget_configs={"arg2": arg2_conf, "arg3": arg3_conf}
-    )
+    adapter.add(color_hex_t_example, widget_configs={"arg2": arg2_conf, "arg3": arg3_conf})
     adapter.run()
 ```
 
@@ -531,9 +512,9 @@ from pyguiadapter.widgets import ColorTuplePickerConfig
 
 
 def color_tuple_t_example(
-    arg1: color_tuple_t,
-    arg2: color_tuple_t,
-    arg3: color_tuple_t = (125, 230, 156),
+        arg1: color_tuple_t,
+        arg2: color_tuple_t,
+        arg3: color_tuple_t = (125, 230, 156),
 ):
     """
     This is an example for type **color_tuple_t** type hint and **ColorPicker** widget.
@@ -559,9 +540,7 @@ if __name__ == "__main__":
     )
     arg3_conf = ColorTuplePickerConfig(display_color_name=False)
     adapter = GUIAdapter()
-    adapter.add(
-        color_tuple_t_example, widget_configs={"arg2": arg2_conf, "arg3": arg3_conf}
-    )
+    adapter.add(color_tuple_t_example, widget_configs={"arg2": arg2_conf, "arg3": arg3_conf})
     adapter.run()
 ```
 
@@ -671,10 +650,7 @@ if __name__ == "__main__":
     )
 
     adapter = GUIAdapter()
-    adapter.add(
-        choice_t_example,
-        widget_configs={"arg2": arg2_conf, "arg3": arg3_conf, "arg4": arg4_conf},
-    )
+    adapter.add(choice_t_example, widget_configs={"arg2": arg2_conf, "arg3": arg3_conf, "arg4": arg4_conf})
     adapter.run()
 ```
 
@@ -768,9 +744,7 @@ if __name__ == "__main__":
         columns=2,
     )
     adapter = GUIAdapter()
-    adapter.add(
-        choices_t_example, widget_configs={"arg2": arg2_conf, "arg3": arg3_conf}
-    )
+    adapter.add(choices_t_example, widget_configs={"arg2": arg2_conf, "arg3": arg3_conf})
     adapter.run()
 ```
 
@@ -812,9 +786,9 @@ from pyguiadapter.widgets import KeySequenceEditConfig, KeySequenceEdit
 
 
 def key_sequence_t_example(
-    arg1: key_sequence_t,
-    arg2: key_sequence_t,
-    arg3: key_sequence_t,
+        arg1: key_sequence_t,
+        arg2: key_sequence_t,
+        arg3: key_sequence_t,
 ):
     """
     This is an example for type **key_sequence_t** type hint and **KeySequenceEdit** widget.
@@ -843,9 +817,7 @@ if __name__ == "__main__":
         return_type="list",
     )
     adapter = GUIAdapter()
-    adapter.add(
-        key_sequence_t_example, widget_configs={"arg2": arg2_conf, "arg3": arg3_conf}
-    )
+    adapter.add(key_sequence_t_example, widget_configs={"arg2": arg2_conf, "arg3": arg3_conf})
     adapter.run()
 ```
 
@@ -926,9 +898,7 @@ if __name__ == "__main__":
         vertical_header_visible=True,
     )
     adapter = GUIAdapter()
-    adapter.add(
-        plain_dict_t_example, widget_configs={"arg1": arg1_conf, "arg2": arg2_conf}
-    )
+    adapter.add(plain_dict_t_example, widget_configs={"arg1": arg1_conf, "arg2": arg2_conf})
     adapter.run()
 ```
 
@@ -970,9 +940,9 @@ from pyguiadapter.extend_types import string_list_t
 
 
 def string_list_t_example(
-    arg1: string_list_t,
-    arg2: string_list_t,
-    arg3: string_list_t,
+        arg1: string_list_t,
+        arg2: string_list_t,
+        arg3: string_list_t,
 ):
     """
     This is an example for type **string_list_t** type hint and **StringListEdit** widget.
@@ -1000,9 +970,7 @@ if __name__ == "__main__":
     arg2_conf = StringListEditConfig(add_file=False, add_dir=True)
     arg3_conf = StringListEditConfig(add_file=False, add_dir=False)
     adapter = GUIAdapter()
-    adapter.add(
-        string_list_t_example, widget_configs={"arg2": arg2_conf, "arg3": arg3_conf}
-    )
+    adapter.add(string_list_t_example, widget_configs={"arg2": arg2_conf, "arg3": arg3_conf})
     adapter.run()
 ```
 
@@ -1073,9 +1041,7 @@ if __name__ == "__main__":
         width=0,
     )
     adapter = GUIAdapter()
-    adapter.add(
-        json_obj_t_example, widget_configs={"arg1": arg1_conf, "arg2": arg2_conf}
-    )
+    adapter.add(json_obj_t_example, widget_configs={"arg1": arg1_conf, "arg2": arg2_conf})
     adapter.run()
 ```
 
@@ -1149,9 +1115,7 @@ if __name__ == "__main__":
         clear_button=True,
     )
     adapter = GUIAdapter()
-    adapter.add(
-        directory_t_example, widget_configs={"arg1": arg1_conf, "arg2": arg2_conf}
-    )
+    adapter.add(directory_t_example, widget_configs={"arg1": arg1_conf, "arg2": arg2_conf})
     adapter.run()
 ```
 
@@ -1359,31 +1323,28 @@ def path_list_t_example(arg1: path_list_t, arg2: path_list_t, arg3: path_list_t)
 
 if __name__ == "__main__":
     adapter = GUIAdapter()
-    adapter.add(
-        path_list_t_example,
-        widget_configs={
-            "arg1": PathListEditConfig(
-                add_files=True,
-                add_dirs=True,
-                file_filters="Python Files (*.py);;Json Files (*.json)",
-                text_elide_mode=PathListEdit.ElideNone,
-                drag_n_drop=True,
-            ),
-            "arg2": PathListEditConfig(
-                add_files=True,
-                add_dirs=False,
-                file_filters="Python Files (*.py);;Json Files (*.json)",
-                text_elide_mode=PathListEdit.ElideRight,
-                drag_n_drop=True,
-            ),
-            "arg3": PathListEditConfig(
-                add_files=False,
-                add_dirs=True,
-                text_elide_mode=PathListEdit.ElideLeft,
-                drag_n_drop=True,
-            ),
-        },
-    )
+    adapter.add(path_list_t_example, widget_configs={
+        "arg1": PathListEditConfig(
+            add_files=True,
+            add_dirs=True,
+            file_filters="Python Files (*.py);;Json Files (*.json)",
+            text_elide_mode=PathListEdit.ElideNone,
+            drag_n_drop=True,
+        ),
+        "arg2": PathListEditConfig(
+            add_files=True,
+            add_dirs=False,
+            file_filters="Python Files (*.py);;Json Files (*.json)",
+            text_elide_mode=PathListEdit.ElideRight,
+            drag_n_drop=True,
+        ),
+        "arg3": PathListEditConfig(
+            add_files=False,
+            add_dirs=True,
+            text_elide_mode=PathListEdit.ElideLeft,
+            drag_n_drop=True,
+        ),
+    })
     adapter.run()
 ```
 
@@ -1440,25 +1401,22 @@ def file_list_t_example(arg1: file_list_t, arg2: file_list_t, arg3: file_list_t)
 
 if __name__ == "__main__":
     adapter = GUIAdapter()
-    adapter.add(
-        file_list_t_example,
-        widget_configs={
-            "arg1": FileListEditConfig(
-                file_filters="Python Files (*.py);;Json Files (*.json)",
-                text_elide_mode=FileListEdit.ElideNone,
-                drag_n_drop=True,
-            ),
-            "arg2": FileListEditConfig(
-                file_filters="Python Files (*.py);;Json Files (*.json)",
-                text_elide_mode=FileListEdit.ElideRight,
-                drag_n_drop=True,
-            ),
-            "arg3": FileListEditConfig(
-                text_elide_mode=FileListEdit.ElideLeft,
-                drag_n_drop=True,
-            ),
-        },
-    )
+    adapter.add(file_list_t_example, widget_configs={
+        "arg1": FileListEditConfig(
+            file_filters="Python Files (*.py);;Json Files (*.json)",
+            text_elide_mode=FileListEdit.ElideNone,
+            drag_n_drop=True,
+        ),
+        "arg2": FileListEditConfig(
+            file_filters="Python Files (*.py);;Json Files (*.json)",
+            text_elide_mode=FileListEdit.ElideRight,
+            drag_n_drop=True,
+        ),
+        "arg3": FileListEditConfig(
+            text_elide_mode=FileListEdit.ElideLeft,
+            drag_n_drop=True,
+        ),
+    })
     adapter.run()
 ```
 
@@ -1515,23 +1473,20 @@ def dir_list_t_example(arg1: dir_list_t, arg2: dir_list_t, arg3: dir_list_t):
 
 if __name__ == "__main__":
     adapter = GUIAdapter()
-    adapter.add(
-        dir_list_t_example,
-        widget_configs={
-            "arg1": DirectoryListEditConfig(
-                text_elide_mode=DirectoryListEdit.ElideNone,
-                drag_n_drop=True,
-            ),
-            "arg2": DirectoryListEditConfig(
-                text_elide_mode=DirectoryListEdit.ElideRight,
-                drag_n_drop=True,
-            ),
-            "arg3": DirectoryListEditConfig(
-                text_elide_mode=DirectoryListEdit.ElideLeft,
-                drag_n_drop=True,
-            ),
-        },
-    )
+    adapter.add(dir_list_t_example, widget_configs={
+        "arg1": DirectoryListEditConfig(
+            text_elide_mode=DirectoryListEdit.ElideNone,
+            drag_n_drop=True,
+        ),
+        "arg2": DirectoryListEditConfig(
+            text_elide_mode=DirectoryListEdit.ElideRight,
+            drag_n_drop=True,
+        ),
+        "arg3": DirectoryListEditConfig(
+            text_elide_mode=DirectoryListEdit.ElideLeft,
+            drag_n_drop=True,
+        ),
+    })
     adapter.run()
 ```
 
@@ -1586,21 +1541,18 @@ def font_t_example(arg1: font_t, arg2: font_t, arg3: font_t):
 
 if __name__ == "__main__":
     adapter = GUIAdapter()
-    adapter.add(
-        font_t_example,
-        widget_configs={
-            "arg1": FontSelectConfig(
-                default_value="Arial",
-                font_filters=FontSelect.MonospacedFonts,
-            ),
-            "arg2": FontSelectConfig(
-                font_filters=FontSelect.ProportionalFonts,
-            ),
-            "arg3": FontSelectConfig(
-                font_filters=FontSelect.MonospacedFonts | FontSelect.ProportionalFonts,
-            ),
-        },
-    )
+    adapter.add(font_t_example, widget_configs={
+        "arg1": FontSelectConfig(
+            default_value="Arial",
+            font_filters=FontSelect.MonospacedFonts,
+        ),
+        "arg2": FontSelectConfig(
+            font_filters=FontSelect.ProportionalFonts,
+        ),
+        "arg3": FontSelectConfig(
+            font_filters=FontSelect.MonospacedFonts | FontSelect.ProportionalFonts,
+        ),
+    })
     adapter.run()
 ```
 
@@ -1653,25 +1605,22 @@ def quantity_t_example(arg1: int_quantity_t, arg2: float_quantity_t):
 
 if __name__ == "__main__":
     adapter = GUIAdapter()
-    adapter.add(
-        quantity_t_example,
-        widget_configs={
-            "arg1": IntQuantityBoxConfig(
-                default_value=(1, "kg"),
-                units=["kg", "g", "mg", "µg", "ng", "pg"],
-                min_value=0,
-                step=1,
-            ),
-            "arg2": FloatQuantityBoxConfig(
-                default_value=(1.0, "m"),
-                units=["m", "cm", "mm", "µm", "nm", "pm"],
-                min_value=0.0,
-                max_value=1000.0,
-                decimals=5,
-                step=0.00001,
-            ),
-        },
-    )
+    adapter.add(quantity_t_example, widget_configs={
+        "arg1": IntQuantityBoxConfig(
+            default_value=(1, "kg"),
+            units=["kg", "g", "mg", "µg", "ng", "pg"],
+            min_value=0,
+            step=1,
+        ),
+        "arg2": FloatQuantityBoxConfig(
+            default_value=(1.0, "m"),
+            units=["m", "cm", "mm", "µm", "nm", "pm"],
+            min_value=0.0,
+            max_value=1000.0,
+            decimals=5,
+            step=0.00001,
+        ),
+    })
     adapter.run()
 ```
 
@@ -1724,25 +1673,22 @@ def quantity_t_example(arg1: int_quantity_t, arg2: float_quantity_t):
 
 if __name__ == "__main__":
     adapter = GUIAdapter()
-    adapter.add(
-        quantity_t_example,
-        widget_configs={
-            "arg1": IntQuantityBoxConfig(
-                default_value=(1, "kg"),
-                units=["kg", "g", "mg", "µg", "ng", "pg"],
-                min_value=0,
-                step=1,
-            ),
-            "arg2": FloatQuantityBoxConfig(
-                default_value=(1.0, "m"),
-                units=["m", "cm", "mm", "µm", "nm", "pm"],
-                min_value=0.0,
-                max_value=1000.0,
-                decimals=5,
-                step=0.00001,
-            ),
-        },
-    )
+    adapter.add(quantity_t_example, widget_configs={
+        "arg1": IntQuantityBoxConfig(
+            default_value=(1, "kg"),
+            units=["kg", "g", "mg", "µg", "ng", "pg"],
+            min_value=0,
+            step=1,
+        ),
+        "arg2": FloatQuantityBoxConfig(
+            default_value=(1.0, "m"),
+            units=["m", "cm", "mm", "µm", "nm", "pm"],
+            min_value=0.0,
+            max_value=1000.0,
+            decimals=5,
+            step=0.00001,
+        ),
+    })
     adapter.run()
 ```
 

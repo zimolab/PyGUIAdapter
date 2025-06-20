@@ -206,7 +206,7 @@ if __name__ == "__main__":
     adapter = GUIAdapter()
     adapter.add(
         menu_example,
-        window_menus=menus,
+        window_listener=window_listener,
         window_toolbar=ToolBar(
             actions=[
                 action_open,
@@ -218,6 +218,6 @@ if __name__ == "__main__":
                 action_license,
             ]
         ),
-        window_listener=window_listener,
+        window_menus=menus,
     )
     adapter.run()

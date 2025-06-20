@@ -42,8 +42,5 @@ if __name__ == "__main__":
         time_spec=DateEdit.UTC,
     )
     adapter = GUIAdapter()
-    adapter.add(
-        date_example,
-        widget_configs={"arg1": arg1_conf, "arg3": arg3_conf},
-    )
+    adapter.add(date_example, widget_configs={"arg1": arg1_conf, "arg3": arg3_conf})
     adapter.run()

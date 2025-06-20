@@ -57,15 +57,12 @@ def int_example(arg1: int, arg2: int, arg3: int = 100) -> int:
 
 if __name__ == "__main__":
     adapter = GUIAdapter()
-    adapter.add(
-        int_example,
-        widget_configs={
-            # parameter config for arg3
-            "arg3": IntSpinBoxConfig(
-                default_value=100, min_value=0, max_value=1000, step=10, prefix="$"
-            )
-        },
-    )
+    adapter.add(int_example, widget_configs={
+        # parameter config for arg3
+        "arg3": IntSpinBoxConfig(
+            default_value=100, min_value=0, max_value=1000, step=10, prefix="$"
+        )
+    })
     adapter.run()
 ```
 
@@ -134,19 +131,16 @@ if __name__ == "__main__":
         default_value=-0.5, max_value=1.0, step=0.000005, decimals=5, prefix="R: "
     )
 
-    adapter.add(
-        float_example,
-        widget_configs={
-            "float_arg2": float_arg2_config,
-            "float_arg3": {
-                # this will override the default_value in the function signature
-                "default_value": 1,
-                "max_value": 2.0,
-                "step": 0.00001,
-                "decimals": 5,
-            },
+    adapter.add(float_example, widget_configs={
+        "float_arg2": float_arg2_config,
+        "float_arg3": {
+            # this will override the default_value in the function signature
+            "default_value": 1,
+            "max_value": 2.0,
+            "step": 0.00001,
+            "decimals": 5,
         },
-    )
+    })
     adapter.run()
 ```
 
@@ -181,7 +175,7 @@ from pyguiadapter.widgets import BoolBoxConfig
 
 
 def bool_example(
-    bool_arg1: bool = False, bool_arg2: bool = True, bool_arg3: bool = False
+        bool_arg1: bool = False, bool_arg2: bool = True, bool_arg3: bool = False
 ):
     """
     example for type **bool** and **BoolBox** widget
@@ -207,7 +201,6 @@ def bool_example(
 
 
 if __name__ == "__main__":
-
     bool_arg2_conf = {
         # this will override the default value defined in the function signature
         "default_value": True,
@@ -227,10 +220,7 @@ if __name__ == "__main__":
     )
 
     adapter = GUIAdapter()
-    adapter.add(
-        bool_example,
-        widget_configs={"bool_arg2": bool_arg2_conf, "bool_arg3": bool_arg3_conf},
-    )
+    adapter.add(bool_example, widget_configs={"bool_arg2": bool_arg2_conf, "bool_arg3": bool_arg3_conf})
     adapter.run()
 ```
 
@@ -266,11 +256,11 @@ from pyguiadapter.widgets import LineEditConfig, LineEdit
 
 
 def str_example(
-    str_arg1: str = "arg1",
-    str_arg2: str = "arg2",
-    str_arg3: str = "arg3",
-    str_arg4: str = "arg4",
-    str_arg5: str = "arg5",
+        str_arg1: str = "arg1",
+        str_arg2: str = "arg2",
+        str_arg3: str = "arg3",
+        str_arg4: str = "arg4",
+        str_arg5: str = "arg5",
 ):
     """
     example for type **str** and **LineEdit** widget
@@ -311,7 +301,6 @@ def str_example(
 
 
 if __name__ == "__main__":
-
     str_arg4_conf = LineEditConfig(
         # override the default value of str_arg4 defined in the function signature
         default_value="this is a readonly text",
@@ -325,13 +314,10 @@ if __name__ == "__main__":
     }
 
     adapter = GUIAdapter()
-    adapter.add(
-        str_example,
-        widget_configs={
-            "str_arg4": str_arg4_conf,
-            "str_arg5": str_arg5_conf,
-        },
-    )
+    adapter.add(str_example, widget_configs={
+        "str_arg4": str_arg4_conf,
+        "str_arg5": str_arg5_conf,
+    })
     adapter.run()
 ```
 
@@ -401,10 +387,7 @@ if __name__ == "__main__":
         editor_width=0,
     )
     adapter = GUIAdapter()
-    adapter.add(
-        list_example,
-        widget_configs={"arg3": arg3_conf},
-    )
+    adapter.add(list_example, widget_configs={"arg3": arg3_conf})
     adapter.run()
 ```
 
@@ -473,14 +456,11 @@ if __name__ == "__main__":
         editor_width=0,
     )
     adapter = GUIAdapter()
-    adapter.add(
-        tuple_example,
-        widget_configs={
-            "arg1": arg1_conf,
-            "arg2": arg2_conf,
-            "arg3": arg3_conf,
-        },
-    )
+    adapter.add(tuple_example, widget_configs={
+        "arg1": arg1_conf,
+        "arg2": arg2_conf,
+        "arg3": arg3_conf,
+    })
     adapter.run()
 
 ```
@@ -546,14 +526,11 @@ if __name__ == "__main__":
         "default_value": {1, 2, 3, (1, 2, 3, 4)},
     }
     adapter = GUIAdapter()
-    adapter.add(
-        set_example,
-        widget_configs={
-            "arg1": arg1_conf,
-            "arg2": arg2_conf,
-            "arg3": arg3_conf,
-        },
-    )
+    adapter.add(set_example, widget_configs={
+        "arg1": arg1_conf,
+        "arg2": arg2_conf,
+        "arg3": arg3_conf,
+    })
     adapter.run()
 ```
 
@@ -599,7 +576,7 @@ class User(TypedDict):
 
 
 def dict_example(
-    arg1: dict, arg2: Dict, arg3: MutableMapping, arg4: Mapping, arg5: User
+        arg1: dict, arg2: Dict, arg3: MutableMapping, arg4: Mapping, arg5: User
 ):
     """
     This is an example for **DictEdit** widget and **dict** types.
@@ -649,15 +626,12 @@ if __name__ == "__main__":
     )
 
     adapter = GUIAdapter()
-    adapter.add(
-        dict_example,
-        widget_configs={
-            "arg1": arg1_conf,
-            "arg3": arg3_conf,
-            "arg4": arg4_conf,
-            "arg5": arg5_conf,
-        },
-    )
+    adapter.add(dict_example, widget_configs={
+        "arg1": arg1_conf,
+        "arg3": arg3_conf,
+        "arg4": arg4_conf,
+        "arg5": arg5_conf,
+    })
     adapter.run()
 ```
 
@@ -731,10 +705,7 @@ if __name__ == "__main__":
         time_spec=DateEdit.UTC,
     )
     adapter = GUIAdapter()
-    adapter.add(
-        date_example,
-        widget_configs={"arg1": arg1_conf, "arg3": arg3_conf},
-    )
+    adapter.add(date_example, widget_configs={"arg1": arg1_conf, "arg3": arg3_conf})
     adapter.run()
 ```
 
@@ -810,10 +781,7 @@ if __name__ == "__main__":
         alignment=TimeEdit.AlignCenter,
     )
     adapter = GUIAdapter()
-    adapter.add(
-        time_example,
-        widget_configs={"arg1": arg1_conf, "arg2": arg2_conf},
-    )
+    adapter.add(time_example, widget_configs={"arg1": arg1_conf, "arg2": arg2_conf})
     adapter.run()
 ```
 
@@ -888,13 +856,10 @@ if __name__ == "__main__":
         calendar_popup=False,
     )
     adapter = GUIAdapter()
-    adapter.add(
-        datetime_example,
-        widget_configs={
-            "arg1": arg1_conf,
-            "arg3": arg3_conf,
-        },
-    )
+    adapter.add(datetime_example, widget_configs={
+        "arg1": arg1_conf,
+        "arg3": arg3_conf,
+    })
     adapter.run()
 ```
 
@@ -951,10 +916,10 @@ my_objects = [MyObj("obj1"), MyObj("obj2"), MyObj("obj3")]
 
 
 def literal_example(
-    arg1: Literal["option1", "option2", "option3"] = "option2",
-    arg2: Literal[1, 2, 3, 4, 5] = 3,
-    arg3: Literal["option1", "option2", 1, 2, True, False] = 1,
-    arg4: MyObj = my_objects[0],
+        arg1: Literal["option1", "option2", "option3"] = "option2",
+        arg2: Literal[1, 2, 3, 4, 5] = 3,
+        arg3: Literal["option1", "option2", 1, 2, True, False] = 1,
+        arg4: MyObj = my_objects[0],
 ):
     """
     This is an example for **ExclusiveChoiceBox** widget and **Literal** type hint.
@@ -1146,14 +1111,11 @@ if __name__ == "__main__":
         default_value={1, 2, 3},
     )
     adapter = GUIAdapter()
-    adapter.add(
-        py_literal_example,
-        widget_configs={
-            "arg1": arg1_config,
-            "arg2": arg2_config,
-            "arg3": arg3_config,
-        },
-    )
+    adapter.add(py_literal_example, widget_configs={
+        "arg1": arg1_config,
+        "arg2": arg2_config,
+        "arg3": arg3_config,
+    })
     adapter.run()
 ```
 

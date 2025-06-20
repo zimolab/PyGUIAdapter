@@ -190,10 +190,12 @@ if __name__ == "__main__":
         on_toggled=on_action_confirm_quit,
     )
 
+
     def on_window_create(window: FnSelectWindow):
         print("on_window_create()")
         # make action_confirm_quit checked after the select window is created
         window.set_action_state(action_confirm_quit, True)
+
 
     def on_window_close(window: FnSelectWindow) -> bool:
         # get the state of action_confirm_quit
@@ -210,6 +212,7 @@ if __name__ == "__main__":
             )
             return ret == messagebox.Yes
         return True
+
 
     window_listener = SimpleWindowEventListener(
         on_create=on_window_create, on_close=on_window_close
@@ -230,7 +233,7 @@ if __name__ == "__main__":
     ]
 
     adapter = GUIAdapter()
-    adapter.add(menu_example, window_menus=menus, window_listener=window_listener)
+    adapter.add(menu_example, window_listener=window_listener, window_menus=menus)
     adapter.run()
 ```
 

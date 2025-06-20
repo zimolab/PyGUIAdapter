@@ -53,8 +53,5 @@ if __name__ == "__main__":
     )
 
     adapter = GUIAdapter()
-    adapter.add(
-        int_slider_t_example,
-        widget_configs={"arg3": arg3_conf},
-    )
+    adapter.add(int_slider_t_example, widget_configs={"arg3": arg3_conf})
     adapter.run()
