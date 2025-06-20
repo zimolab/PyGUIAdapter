@@ -95,20 +95,23 @@ class ObjectItemEditor(BaseScrollableItemEditor):
                 continue
             label = QLabel(parent)
             label.setText(vt.display_name or key)
-            layout.addWidget(
-                label,
-                i,
-                0,
-                alignment=self._config.item_editor_key_column_alignment
-                or Qt.AlignmentFlag.AlignLeft,
-            )
-            layout.addWidget(
-                edit,
-                i,
-                1,
-                alignment=self._config.item_editor_value_column_alignment
-                or Qt.AlignmentFlag.AlignLeft,
-            )
+            if self._config.item_editor_key_column_alignment is not None:
+                layout.addWidget(
+                    label, i, 0, alignment=self._config.item_editor_key_column_alignment
+                )
+            else:
+                layout.addWidget(label, i, 0)
+
+            if self._config.item_editor_value_column_alignment is not None:
+                layout.addWidget(
+                    edit,
+                    i,
+                    1,
+                    alignment=self._config.item_editor_value_column_alignment,
+                )
+            else:
+                layout.addWidget(edit, i, 1)
+
             self._widgets[key] = edit
         layout.addItem(QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Expanding))
         parent.setLayout(layout)
