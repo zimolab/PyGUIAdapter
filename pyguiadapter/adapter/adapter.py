@@ -107,6 +107,7 @@ class GUIAdapter(object):
         window_listener: Optional[BaseWindowEventListener] = None,
         window_toolbar: Optional[ToolBar] = None,
         window_menus: Optional[List[Union[Menu, Separator]]] = None,
+        capture_system_exit_exception: bool = True,
     ) -> None:
         """
         添加一个函数。
@@ -124,7 +125,7 @@ class GUIAdapter(object):
             window_listener: 窗口事件监听器。
             window_toolbar: 窗口的工具栏。
             window_menus: 窗口菜单列表。
-
+            capture_system_exit_exception: 是否捕获用户函数中的SystemExit异常，并将其转换为RuntimeError。
         Returns:
             无返回值
         """
@@ -132,10 +133,11 @@ class GUIAdapter(object):
         fn_info = self._fn_parser.parse_fn_info(
             fn,
             display_name=display_name,
-            group=group,
-            icon=icon,
             document=document,
             document_format=document_format,
+            icon=icon,
+            group=group,
+            capture_system_exit_exception=capture_system_exit_exception,
         )
         fn_info.cancelable = cancelable
         # configs for parameter widget can be from various sources
@@ -242,7 +244,7 @@ class GUIAdapter(object):
                 )
 
             self._application.exec()
-        except Exception as e:
+        except BaseException as e:
             raise e
         finally:
             self._shutdown_application()

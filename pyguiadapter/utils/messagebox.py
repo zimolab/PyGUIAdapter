@@ -238,7 +238,7 @@ def show_messagebox(parent: Optional[QWidget], **kwargs) -> Union[int, StandardB
 
 def show_exception_messagebox(
     parent: Optional[QWidget],
-    exception: Exception,
+    exception: BaseException,
     message: str = "",
     title: str = "Error",
     detail: bool = True,

@@ -66,7 +66,7 @@ class FnExecuteWindow(BaseFnExecuteWindow):
 
         try:
             self.add_parameters(self._bundle.widget_configs)
-        except Exception as e:
+        except BaseException as e:
             messagebox.show_exception_messagebox(
                 self,
                 exception=e,
@@ -1096,7 +1096,7 @@ class FnExecuteWindow(BaseFnExecuteWindow):
             )
 
     def on_execute_error(
-        self, fn_info: FnInfo, arguments: Dict[str, Any], error: Exception
+        self, fn_info: FnInfo, arguments: Dict[str, Any], error: BaseException
     ):
 
         self._config: FnExecuteWindowConfig

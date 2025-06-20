@@ -142,7 +142,7 @@ def get_type_args(raw: str) -> list:
     content = "[" + content + "]"
     try:
         args = ast.literal_eval(content)
-    except Exception as e:
+    except BaseException as e:
         warnings.warn(f"unable to parse type args '{raw}': {e}")
         return []
     return args
@@ -155,9 +155,9 @@ def is_subclass_of(cls: Any, base_cls: Any):
 
 
 def get_traceback(
-    error: Exception, limit: Optional[int] = None, complete_msg: bool = True
+    error: BaseException, limit: Optional[int] = None, complete_msg: bool = True
 ) -> str:
-    assert isinstance(error, Exception)
+    assert isinstance(error, BaseException)
     buffer = StringIO()
     if complete_msg:
         buffer.write("Traceback (most recent call last):\n")

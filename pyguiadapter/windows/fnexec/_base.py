@@ -504,7 +504,9 @@ class FnExecuteWindowEventListener(BaseWindowEventListener):
         """
         return True
 
-    def on_execute_error(self, window: BaseFnExecuteWindow, error: Exception) -> bool:
+    def on_execute_error(
+        self, window: BaseFnExecuteWindow, error: BaseException
+    ) -> bool:
         """
         在函数执行失败（函数抛出异常）时回调。
 
@@ -544,7 +546,7 @@ class SimpleFnExecuteWindowEventListener(FnExecuteWindowEventListener):
         on_destroy: Callable[[BaseFnExecuteWindow], None] = None,
         on_execute_start: Callable[[BaseFnExecuteWindow], None] = None,
         on_execute_result: Callable[[BaseFnExecuteWindow, Any], bool] = None,
-        on_execute_error: Callable[[BaseFnExecuteWindow, Exception], bool] = None,
+        on_execute_error: Callable[[BaseFnExecuteWindow, BaseException], bool] = None,
         on_execute_finish: Callable[[BaseFnExecuteWindow], None] = None,
     ):
         """
@@ -606,7 +608,9 @@ class SimpleFnExecuteWindowEventListener(FnExecuteWindowEventListener):
             return self._on_execute_result(window, result)
         return super().on_execute_result(window, result)
 
-    def on_execute_error(self, window: BaseFnExecuteWindow, error: Exception) -> bool:
+    def on_execute_error(
+        self, window: BaseFnExecuteWindow, error: BaseException
+    ) -> bool:
         if self._on_execute_error is not None:
             return self._on_execute_error(window, error)
         return super().on_execute_error(window, error)

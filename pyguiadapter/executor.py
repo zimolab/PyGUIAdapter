@@ -30,7 +30,7 @@ class ExecuteStateListener(object):
         pass
 
     def on_execute_error(
-        self, fn_info: FnInfo, arguments: Dict[str, Any], exception: Exception
+        self, fn_info: FnInfo, arguments: Dict[str, Any], exception: BaseException
     ) -> None:
         pass
 

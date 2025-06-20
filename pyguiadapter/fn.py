@@ -32,3 +32,4 @@ class FnInfo(object):
     parameters: Dict[str, ParameterInfo] = dataclasses.field(default_factory=dict)
     cancelable: bool = False
     executor: Optional[ForwardRef("BaseFunctionExecutor")] = None
+    capture_system_exit_exception: bool = True

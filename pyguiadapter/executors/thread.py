@@ -46,7 +46,7 @@ class _WorkerThread(QThread):
         try:
             self._cancel_event.clear()
             result = self._on_execute()
-        except Exception as e:
+        except BaseException as e:
             traceback.print_exc()
             self.sig_error_raised.emit(self._fn_info, self._arguments, e)
         else:
@@ -57,7 +57,20 @@ class _WorkerThread(QThread):
     def _on_execute(self) -> Any:
         arguments = self._arguments.copy()
         func = self._fn_info.fn
-        result = func(**arguments)
+
+        def _func():
+            try:
+                return func(**arguments)
+            except SystemExit as e:
+                if self._fn_info.capture_system_exit_exception:
+                    raise RuntimeError("SystemExit") from e
+                else:
+                    raise e
+            except BaseException as e:
+                raise e
+
+        # result = func(**arguments)
+        result = _func()
         return result
 
     def _on_cancel_requested(self):
@@ -103,7 +116,7 @@ class ThreadFunctionExecutor(BaseFunctionExecutor):
             self._worker_thread.sig_error_raised.connect(self._on_execute_error)
             self._worker_thread.sig_result_ready.connect(self._on_execute_result)
             self._worker_thread.start()
-        except Exception as e:
+        except BaseException as e:
             traceback.print_exc()
             self._on_execute_error(fn_info, arguments, e)
             self._on_execute_finish(fn_info, arguments)
@@ -121,7 +134,7 @@ class ThreadFunctionExecutor(BaseFunctionExecutor):
             self._listener.before_execute(fn_info, arguments)
 
     def _on_execute_error(
-        self, fn_info: FnInfo, arguments: Dict[str, Any], error: Exception
+        self, fn_info: FnInfo, arguments: Dict[str, Any], error: BaseException
     ):
         if self._listener:
             self._listener.on_execute_error(fn_info, arguments, error)
