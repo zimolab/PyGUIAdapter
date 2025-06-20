@@ -100,14 +100,14 @@ class ObjectItemEditor(BaseScrollableItemEditor):
                 i,
                 0,
                 alignment=self._config.item_editor_key_column_alignment
-                or Qt.Alignment(),
+                or Qt.AlignmentFlag.AlignCenter,
             )
             layout.addWidget(
                 edit,
                 i,
                 1,
                 alignment=self._config.item_editor_value_column_alignment
-                or Qt.Alignment(),
+                or Qt.AlignmentFlag.AlignCenter,
             )
             self._widgets[key] = edit
         layout.addItem(QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Expanding))
