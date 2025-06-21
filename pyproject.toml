@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pyguiadapter"
-version = "1.0.8"
+version = "1.0.9"
 description = "A gui library which can turn almost any python function into a gui application"
 authors = ["zimolab <zimolab@aliyun.com>"]
 readme = "README.md"
