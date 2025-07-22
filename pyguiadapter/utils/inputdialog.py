@@ -211,7 +211,7 @@ def input_color(
     title: str = "",
     alpha_channel: bool = True,
     return_type: Literal["tuple", "str", "QColor"] = "str",
-) -> Union[Tuple[int, int, int], Tuple[int, int, int], str, QColor, None]:
+) -> Union[Tuple[int, int, int], Tuple[int, int, int, int], str, QColor, None]:
     initial = to_qcolor(initial)
     """
     弹出一个颜色选择对话框，并返回用户选择的颜色。
