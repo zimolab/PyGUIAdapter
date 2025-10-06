@@ -253,7 +253,7 @@ class FnParser(object):
 
     def _get_param_type_info(
         self, param: inspect.Parameter, default_value: Any, fn_docstring: FnDocstring
-    ) -> (Type, str, List[Any]):
+    ) -> Tuple[Type, str, List[Any]]:
         param_typename = None
         param_type_args = None
 
